@@ -24,12 +24,12 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
@@ -284,7 +284,7 @@ public class CuttingRecipes implements Runnable {
 
         // From ProcessingFood - foodCheese
         for (net.minecraft.item.ItemStack stack : OreDictionary.getOres("foodCheese")) {
-            GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Cheese, 3628800L));
+            MaterialData.add(stack, new ItemData(Materials.Cheese, 3628800L));
         }
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("foodCheese", 1), ItemList.Shape_Slicer_Flat.get(0L))

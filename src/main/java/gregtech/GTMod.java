@@ -67,6 +67,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.material.LegacyNameDomainTable;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialDeclarationValidator;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -513,7 +514,7 @@ public class GTMod {
             new ItemStack(Blocks.stone, 1),
             new ItemStack(Items.leather, 1));
 
-        GTOreDictUnificator.addItemData(
+        MaterialData.add(
             GTModHandler.getRecipeOutput(
                 null,
                 MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),

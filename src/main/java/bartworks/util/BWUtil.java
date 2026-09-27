@@ -43,6 +43,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
@@ -68,7 +69,7 @@ public class BWUtil {
         if (!ret.contains("%material")) return ret;
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack)) {
-            Material material = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial;
+            Material material = MaterialData.getAssociation(itemStack).mMaterial.mMaterial;
             if (LegacyNameDomain.contains(material)) matname = MaterialUtils.localName(material);
         }
         return ret.replace("%material", matname);
@@ -167,7 +168,7 @@ public class BWUtil {
     }
 
     public static boolean checkStackAndPrefix(ItemStack itemStack) {
-        return checkStackAndPrefix(GTOreDictUnificator.getAssociation(itemStack));
+        return checkStackAndPrefix(MaterialData.getAssociation(itemStack));
     }
 
     public static boolean checkStackAndPrefix(ItemData association) {
@@ -415,7 +416,7 @@ public class BWUtil {
             switch (in) {
                 case ItemStack itemStack -> {
                     tItemStackMap.put(chr, GTUtility.copy(in));
-                    tItemDataMap.put(chr, GTOreDictUnificator.getItemData(itemStack));
+                    tItemDataMap.put(chr, MaterialData.get(itemStack));
                 }
                 case ItemData itemData -> {
                     String tString = in.toString();
@@ -470,7 +471,7 @@ public class BWUtil {
                 x++;
                 tData[x] = tItemDataMap.get(chr);
             }
-            if (GTUtility.arrayContainsNonNull(tData)) GTOreDictUnificator.addItemData(aResult, new ItemData(tData));
+            if (GTUtility.arrayContainsNonNull(tData)) MaterialData.add(aResult, new ItemData(tData));
         }
 
         if (aCheckForCollisions && tRemoveRecipe) {

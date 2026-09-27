@@ -21,10 +21,10 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialData;
 import gregtech.api.metatileentity.implementations.MTESpecialFilter;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.MTETypeFilterGui;
@@ -120,7 +120,7 @@ public class MTETypeFilter extends MTESpecialFilter {
     }
 
     private void copyHeldItemPrefix(ItemStack handStack) {
-        ItemData data = GTOreDictUnificator.getAssociation(handStack);
+        ItemData data = MaterialData.getAssociation(handStack);
         if (data != null && data.hasValidPrefixData()) {
             this.mPrefix = data.mPrefix;
             this.mRotationIndex = -1;
@@ -182,7 +182,7 @@ public class MTETypeFilter extends MTESpecialFilter {
     @Override
     protected boolean isStackAllowed(ItemStack aStack) {
         if (this.mPrefix == OrePrefixes.ore) {
-            ItemData data = GTOreDictUnificator.getItemData(aStack);
+            ItemData data = MaterialData.get(aStack);
             if (data != null && data.mPrefix != null && OREBLOCK_PREFIXES.contains(data.mPrefix)) {
                 return true;
             }

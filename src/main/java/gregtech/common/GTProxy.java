@@ -118,6 +118,7 @@ import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.net.GTPacketMusicSystemData;
@@ -741,9 +742,8 @@ public class GTProxy implements IFuelHandler {
         // onInitialization() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
         MetaGeneratedItem98.init();
 
-        GTOreDictUnificator.addItemData(new ItemStack(Items.iron_door, 1), new ItemData(Materials.Iron, 21772800L));
-        GTOreDictUnificator
-            .addItemData(new ItemStack(Items.wooden_door, 1, 32767), new ItemData(Materials.Wood, 21772800L));
+        MaterialData.add(new ItemStack(Items.iron_door, 1), new ItemData(Materials.Iron, 21772800L));
+        MaterialData.add(new ItemStack(Items.wooden_door, 1, 32767), new ItemData(Materials.Wood, 21772800L));
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {

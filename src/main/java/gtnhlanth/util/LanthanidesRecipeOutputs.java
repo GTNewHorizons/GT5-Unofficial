@@ -10,9 +10,9 @@ import bartworks.system.material.gtenhancement.PlatinumSludgeOutputs;
 import goodgenerator.util.NaquadahRecipeOutputs;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 /// Rewrites cerium and samarium dust outputs into the lanthanide-line concentrates at recipe-generation time.
@@ -81,7 +81,7 @@ public final class LanthanidesRecipeOutputs {
                 replacement = Materials.SamariumOreConcentrate;
                 shape = Shapes.dustTiny;
             } else {
-                ItemData association = GTOreDictUnificator.getAssociation(output);
+                ItemData association = MaterialData.getAssociation(output);
                 if (association == null || association.mPrefix == null || association.mMaterial == null) continue;
                 Material material = association.mMaterial.mMaterial;
                 if (material == Materials.Cerium) {

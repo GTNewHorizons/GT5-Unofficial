@@ -9,9 +9,9 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 
 public enum NaniteTier {
 
@@ -93,7 +93,7 @@ public enum NaniteTier {
     public static NaniteTier fromStack(ItemStack stack) {
         if (stack == null) return null;
 
-        ItemData data = GTOreDictUnificator.getAssociation(stack);
+        ItemData data = MaterialData.getAssociation(stack);
 
         if (data == null) return null;
         if (data.mPrefix != OrePrefixes.nanite) return null;

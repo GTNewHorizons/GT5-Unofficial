@@ -41,6 +41,7 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialData;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.objects.ItemData;
@@ -591,7 +592,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                         if (GTUtility.isStringValid(tRandomData)) {
                             GTOreDictUnificator.registerOre(tRandomData, rStack);
                         } else {
-                            GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                            MaterialData.add(rStack, (ItemData) tRandomData);
                         }
                         continue;
                     }

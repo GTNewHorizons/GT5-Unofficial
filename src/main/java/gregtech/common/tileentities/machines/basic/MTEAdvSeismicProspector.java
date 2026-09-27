@@ -25,12 +25,12 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import ic2.core.Ic2Items;
@@ -227,7 +227,7 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
             .getBlockMetadata(x, y, z);
 
         ItemStack is = new ItemStack(tBlock, 1, tMetaID);
-        ItemData association = GTOreDictUnificator.getAssociation(is);
+        ItemData association = MaterialData.getAssociation(is);
         if ((association != null) && (association.mPrefix.toString()
             .startsWith("ore"))) return MaterialUtils.localName(association.mMaterial.mMaterial);
         else if (GTUtility.isOre(tBlock, tMetaID)) return tBlock.getLocalizedName();

@@ -29,13 +29,13 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
@@ -153,7 +153,7 @@ public class ScannerHandlerLoader {
         @Nullable ItemStack aSpecialSlot, @Nullable FluidStack aFluid) {
         if (aSpecialSlot == null) return null;
         if (!ItemList.Tool_DataOrb.isStackEqual(aSpecialSlot, false, true)) return null;
-        ItemData tData = GTOreDictUnificator.getAssociation(aInput);
+        ItemData tData = MaterialData.getAssociation(aInput);
         if (tData == null) return null;
         // must be a dust or a cell
         if (tData.mPrefix != OrePrefixes.dust && tData.mPrefix != OrePrefixes.cell) return null;

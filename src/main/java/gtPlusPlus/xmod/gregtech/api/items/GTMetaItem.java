@@ -22,6 +22,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
@@ -165,7 +166,7 @@ public abstract class GTMetaItem extends GTMetaItemBase {
                         if (GTUtility.isStringValid(tRandomData)) {
                             GTOreDictUnificator.registerOre(tRandomData, rStack);
                         } else {
-                            GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                            MaterialData.add(rStack, (ItemData) tRandomData);
                         }
                         continue;
                     }

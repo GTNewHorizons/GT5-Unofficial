@@ -326,6 +326,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.items.MetaGeneratedItemX32;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
@@ -2162,23 +2163,23 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             GTOreDictUnificator.set(OrePrefixes.componentCircuit, component.materialName(), component.get(1));
         }
 
-        GTOreDictUnificator.addAssociation(
+        MaterialData.addAssociation(
             OrePrefixes.componentCircuit,
             CircuitComponents.RESISTOR.materialName(),
             ItemList.Circuit_Parts_ResistorSMD.get(1L));
-        GTOreDictUnificator.addAssociation(
+        MaterialData.addAssociation(
             OrePrefixes.componentCircuit,
             CircuitComponents.DIODE.materialName(),
             ItemList.Circuit_Parts_DiodeSMD.get(1L));
-        GTOreDictUnificator.addAssociation(
+        MaterialData.addAssociation(
             OrePrefixes.componentCircuit,
             CircuitComponents.TRANSISTOR.materialName(),
             ItemList.Circuit_Parts_TransistorSMD.get(1L));
-        GTOreDictUnificator.addAssociation(
+        MaterialData.addAssociation(
             OrePrefixes.componentCircuit,
             CircuitComponents.CAPACITOR.materialName(),
             ItemList.Circuit_Parts_CapacitorSMD.get(1L));
-        GTOreDictUnificator.addAssociation(
+        MaterialData.addAssociation(
             OrePrefixes.componentCircuit,
             CircuitComponents.INDUCTOR.materialName(),
             ItemList.Circuit_Parts_InductorSMD.get(1L));
@@ -2259,7 +2260,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     @Override
     @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
-        ItemData data = GTOreDictUnificator.getAssociation(itemStack);
+        ItemData data = MaterialData.getAssociation(itemStack);
         if (data == null || data.mMaterial == null || data.mPrefix == null) {
             return false;
         }

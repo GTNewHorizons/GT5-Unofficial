@@ -19,8 +19,8 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.gui.modularui.singleblock.base.MTESpecialFilterBaseGui;
 import gregtech.common.tileentities.automation.MTETypeFilter;
 
@@ -77,7 +77,7 @@ public class MTETypeFilterGui extends MTESpecialFilterBaseGui<MTETypeFilter> {
                     }
 
                     private void copyHeldItemPrefix(ItemStack handStack) {
-                        ItemData data = GTOreDictUnificator.getAssociation(handStack);
+                        ItemData data = MaterialData.getAssociation(handStack);
                         if (data != null && data.hasValidPrefixData()) {
                             orePrefixSyncer.setValue(data.mPrefix.toString());
                             rotationIndexSyncer.setValue(-1);

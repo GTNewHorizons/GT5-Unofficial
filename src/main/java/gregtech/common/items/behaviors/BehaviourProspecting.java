@@ -17,11 +17,11 @@ import net.minecraftforge.fluids.IFluidBlock;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreManager;
 
@@ -36,7 +36,7 @@ public class BehaviourProspecting extends BehaviourNone {
     }
 
     private static com.ruling_0.materiallib.api.Material getOreMaterial(Block block, int meta) {
-        ItemData association = GTOreDictUnificator.getAssociation(new ItemStack(block, 1, meta));
+        ItemData association = MaterialData.getAssociation(new ItemStack(block, 1, meta));
         if (association == null) return null;
         if (association.mPrefix == null) return null;
         if (association.mMaterial == null) return null;

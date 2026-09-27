@@ -78,6 +78,7 @@ import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -1129,7 +1130,7 @@ public class GTModHandler {
             switch (in) {
                 case ItemStack is -> {
                     tItemStackMap.put(chr, GTUtility.copyOrNull(is));
-                    tItemDataMap.put(chr, GTOreDictUnificator.getItemData(is));
+                    tItemDataMap.put(chr, MaterialData.get(is));
                 }
                 case ItemData itemData -> {
                     String tString = in.toString();
@@ -1171,7 +1172,7 @@ public class GTModHandler {
             int x = -1;
             for (char chr : shape.toString()
                 .toCharArray()) tData[++x] = tItemDataMap.get(chr);
-            if (GTUtility.arrayContainsNonNull(tData)) GTOreDictUnificator.addItemData(aResult, new ItemData(tData));
+            if (GTUtility.arrayContainsNonNull(tData)) MaterialData.add(aResult, new ItemData(tData));
         }
 
         if (aCheckForCollisions && tRemoveRecipe) {

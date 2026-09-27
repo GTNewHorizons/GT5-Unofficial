@@ -56,6 +56,7 @@ import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.overclockdescriber.EUNoOverclockDescriber;
@@ -244,7 +245,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         ArrayList<ItemStack> tResults = new ArrayList<>();
         tResults.add(aResult);
 
-        ItemData tPrefixMaterial = GTOreDictUnificator.getAssociation(aResult);
+        ItemData tPrefixMaterial = MaterialData.getAssociation(aResult);
         if (tPrefixMaterial != null && tPrefixMaterial.hasValidPrefixMaterialData()
             && !GTOreDictUnificator.isBlacklisted(aResult)
             && !tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty()) {
@@ -324,7 +325,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack aInput) {
-        ItemData tPrefixMaterial = GTOreDictUnificator.getAssociation(aInput);
+        ItemData tPrefixMaterial = MaterialData.getAssociation(aInput);
         ArrayList<ItemStack> tInputs = new ArrayList<>();
         tInputs.add(aInput);
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {

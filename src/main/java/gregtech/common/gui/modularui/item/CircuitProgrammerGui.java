@@ -19,9 +19,9 @@ import bartworks.common.items.ItemCircuitProgrammer;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class CircuitProgrammerGui {
@@ -143,7 +143,7 @@ public class CircuitProgrammerGui {
     }
 
     private boolean isLVCircuit(ItemStack stack) {
-        ItemData data = GTOreDictUnificator.getItemData(stack);
+        ItemData data = MaterialData.get(stack);
         return data != null && OrePrefixes.circuit.oreDictName(Circuits.LV.materialName())
             .equals(data.toString());
     }

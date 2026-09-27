@@ -17,12 +17,12 @@ import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -80,7 +80,7 @@ public class MicrowaveBackend extends NonGTBackend {
                     .orElse(null);
             }
 
-            ItemData itemData = GTOreDictUnificator.getItemData(item);
+            ItemData itemData = MaterialData.get(item);
             if (itemData != null) {
                 if (itemData.mMaterial != null && itemData.mMaterial.mMaterial != null) {
                     if (MaterialUtils.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.METAL)

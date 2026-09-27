@@ -75,6 +75,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
@@ -88,7 +89,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -695,11 +695,11 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             for (ItemStack inputItem : getAllStoredInputs()) {
                 ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(inputItem, false, null);
                 if (smeltedOutput != null) {
-                    ItemData data = GTOreDictUnificator.getItemData(inputItem);
+                    ItemData data = MaterialData.get(inputItem);
                     if (data != null && data.mPrefix != null
                         && data.mPrefix.getMaterialPostfix()
                             .equals(" Ore")) {
-                        ItemData outputData = GTOreDictUnificator.getItemData(smeltedOutput);
+                        ItemData outputData = MaterialData.get(smeltedOutput);
                         if (outputData != null) {
                             FluidStack output = MaterialUtils.molten(outputData.mMaterial.mMaterial, 1);
                             long amount = outputData.mPrefix.getMaterialAmount() / (GTValues.M / 144L)
@@ -885,7 +885,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 for (ItemStack inputItem : inputItems) {
                     ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(inputItem, false, null);
                     if (smeltedOutput != null) {
-                        ItemData data = GTOreDictUnificator.getItemData(inputItem);
+                        ItemData data = MaterialData.get(inputItem);
                         if (data != null && data.mPrefix != null
                             && data.mPrefix.getMaterialPostfix()
                                 .equals(" Ore")) {

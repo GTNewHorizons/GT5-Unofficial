@@ -18,6 +18,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
@@ -104,7 +105,7 @@ public class LoaderWerkstoffRegistrations {
             if (!prefixes.contains(prefix.name())) continue;
             ItemStack stack = resolve(prefix, material);
             if (stack == null || stack.getItem() == null) continue;
-            GTOreDictUnificator.addAssociation(prefix, material, stack);
+            MaterialData.addAssociation(prefix, material, stack);
         }
     }
 
@@ -126,13 +127,13 @@ public class LoaderWerkstoffRegistrations {
     /// materials with no MaterialLib casing shape keep resolving to the legacy block they still use.
     private static void registerLegacyCasings(Material material, int id) {
         if (LoaderLegacyBartworksBlocks.casings != null) {
-            GTOreDictUnificator.addAssociation(
+            MaterialData.addAssociation(
                 OrePrefixes.blockCasing,
                 material,
                 new ItemStack(LoaderLegacyBartworksBlocks.casings, 1, id));
         }
         if (LoaderLegacyBartworksBlocks.casingsAdvanced != null) {
-            GTOreDictUnificator.addAssociation(
+            MaterialData.addAssociation(
                 OrePrefixes.blockCasingAdvanced,
                 material,
                 new ItemStack(LoaderLegacyBartworksBlocks.casingsAdvanced, 1, id));

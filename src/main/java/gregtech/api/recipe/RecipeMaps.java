@@ -64,6 +64,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -116,7 +117,6 @@ import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
@@ -698,7 +698,7 @@ public final class RecipeMaps {
                 aInput = (aInput + tScale - 1) / tScale;
                 aOutput = aOutput / tScale;
                 if (!isArrayEmptyOrNull(r.mOutputs)) {
-                    ItemData tData = GTOreDictUnificator.getItemData(r.mOutputs[0]);
+                    ItemData tData = MaterialData.get(r.mOutputs[0]);
                     if (tData != null && (tData.mPrefix == OrePrefixes.dust
                         || OrePrefixes.dust.mFamiliarPrefixes.contains(tData.mPrefix))) {
                         r.mOutputs[0] = MaterialParts.dustOf(
@@ -2289,8 +2289,8 @@ public final class RecipeMaps {
     }
 
     private static boolean isGemUpgradeRecipe(GTRecipeBuilder builder) {
-        ItemData inputData = GTOreDictUnificator.getAssociation(builder.getItemInputBasic(0));
-        ItemData outputData = GTOreDictUnificator.getAssociation(builder.getItemOutput(0));
+        ItemData inputData = MaterialData.getAssociation(builder.getItemInputBasic(0));
+        ItemData outputData = MaterialData.getAssociation(builder.getItemOutput(0));
 
         if (inputData == null || outputData == null) return false;
         if (inputData.mMaterial.mMaterial != outputData.mMaterial.mMaterial) return false;

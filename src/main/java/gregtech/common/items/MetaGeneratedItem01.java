@@ -514,6 +514,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.GTMaterialGenerationFlag;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -779,15 +780,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Compressed_Fireclay.ID,
                 "gt.item.compressed_fireclay.name",
                 "gt.item.compressed_fireclay.tooltip"));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.CompressedFireclay.get(1),
             MaterialLibAPI.getStack(Materials.Fireclay, Shapes.dust, 1));
 
         ItemList.Firebrick
             .set(addItemWithLocalizationKeys(Firebrick.ID, "gt.item.firebrick.name", "gt.item.firebrick.tooltip"));
-        GTOreDictUnificator.addItemDataFromInputs(
-            ItemList.Firebrick.get(1),
-            MaterialLibAPI.getStack(Materials.Fireclay, Shapes.dust, 1));
+        MaterialData
+            .addFromInputs(ItemList.Firebrick.get(1), MaterialLibAPI.getStack(Materials.Fireclay, Shapes.dust, 1));
 
         ItemList.Shape_Empty.set(
             addItemWithLocalizationKeys(
@@ -5338,7 +5338,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     @Override
     @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
     public boolean shouldBurn(ItemStack itemStack) {
-        ItemData data = GTOreDictUnificator.getAssociation(itemStack);
+        ItemData data = MaterialData.getAssociation(itemStack);
         if (data == null || data.mMaterial == null
             || data.mMaterial.mMaterial != Materials.Firestone
             || data.mPrefix == null) {

@@ -31,10 +31,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -445,7 +445,7 @@ public class GTAchievements {
         if (player == null || stack == null) {
             return;
         }
-        ItemData data = GTOreDictUnificator.getItemData(stack);
+        ItemData data = MaterialData.get(stack);
 
         if ((data != null) && (data.mPrefix == OrePrefixes.ingot)) {
             Material tMaterial = data.mMaterial.mMaterial;
@@ -499,7 +499,7 @@ public class GTAchievements {
         if (player == null || stack == null) {
             return;
         }
-        ItemData data = GTOreDictUnificator.getItemData(stack);
+        ItemData data = MaterialData.get(stack);
         if (data != null) {
             if (data.mPrefix == OrePrefixes.dust && data.mMaterial.mMaterial == Materials.Bronze) {
                 issueAchievement(player, "bronze");
@@ -666,7 +666,7 @@ public class GTAchievements {
         if (player == null || stack == null) {
             return;
         }
-        ItemData data = GTOreDictUnificator.getItemData(stack);
+        ItemData data = MaterialData.get(stack);
         if (data != null && data.mPrefix != null) {
             if (data.mPrefix == OrePrefixes.dust) {
                 if (data.mMaterial.mMaterial == Materials.Lutetium) {

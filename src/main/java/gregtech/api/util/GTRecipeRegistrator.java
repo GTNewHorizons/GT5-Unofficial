@@ -54,6 +54,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -313,7 +314,7 @@ public class GTRecipeRegistrator {
             if (tMaterial.mMaterial == Materials.Iron || tMaterial.mMaterial == Materials.Copper
                 || tMaterial.mMaterial == Materials.CastIron
                 || tMaterial.mMaterial == Materials.AnnealedCopper) {
-                ItemData stackData = GTOreDictUnificator.getItemData(stack);
+                ItemData stackData = MaterialData.get(stack);
                 if (stackData != null
                     && (stackData.mPrefix == OrePrefixes.ingot || stackData.mPrefix == OrePrefixes.dust)) {
                     // iron ingot/dust -> cast iron, copper ingot/dust -> annealed copper
@@ -412,7 +413,7 @@ public class GTRecipeRegistrator {
     private static Set<Material> getArcSmeltingGases(List<ItemStack> outputs) {
         Set<Material> gases = new LinkedHashSet<>();
         for (ItemStack output : outputs) {
-            ItemData outputData = GTOreDictUnificator.getAssociation(output);
+            ItemData outputData = MaterialData.getAssociation(output);
             if (outputData != null) gases.addAll(
                 MaterialArcSmeltHelper.withGas(outputData.mMaterial.mMaterial)
                     .keySet());
@@ -425,7 +426,7 @@ public class GTRecipeRegistrator {
         boolean replacedOutput = false;
         for (int i = 0; i < outputs.size(); i++) {
             ItemStack output = outputs.get(i);
-            ItemData outputData = GTOreDictUnificator.getAssociation(output);
+            ItemData outputData = MaterialData.getAssociation(output);
             Material gasSmeltingMaterial = outputData == null ? null
                 : MaterialArcSmeltHelper.withGas(outputData.mMaterial.mMaterial)
                     .get(gas);
@@ -544,7 +545,7 @@ public class GTRecipeRegistrator {
 
             if (mat == null) continue;
 
-            ItemData itemData = GTOreDictUnificator.getItemData(mat);
+            ItemData itemData = MaterialData.get(mat);
             if (itemData == null || itemData.mPrefix != OrePrefixes.ingot) plate = null;
             if (plate != null && GTOreDictUnificator.getOresImmutable(plate)
                 .isEmpty()) plate = null;
@@ -560,7 +561,7 @@ public class GTRecipeRegistrator {
             if (itemData != null && itemData.hasValidPrefixMaterialData()) {
                 for (RecipeShape tRecipe : sShapes) {
                     for (ItemStack tCrafted : GTModHandler.getRecipeOutputsBuffered(tRecipe.shape)) {
-                        GTOreDictUnificator.addItemData(
+                        MaterialData.add(
                             tCrafted,
                             new ItemData(itemData.mMaterial.mMaterial, itemData.mMaterial.mAmount * tRecipe.amount1));
                         //
@@ -704,7 +705,7 @@ public class GTRecipeRegistrator {
                     tRecipe.shape,
                     tCanReplace ? tKnownMatches : null)) {
                     if (itemData != null && itemData.hasValidPrefixMaterialData()) {
-                        GTOreDictUnificator.addItemData(
+                        MaterialData.add(
                             tCrafted,
                             new ItemData(
                                 itemData.mMaterial.mMaterial,

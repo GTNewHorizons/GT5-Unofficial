@@ -23,6 +23,7 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
@@ -96,7 +97,7 @@ public class GGMetaItemDumbItems extends MetaBaseItem {
                 if (GTUtility.isStringValid(tRandomData)) {
                     GTOreDictUnificator.registerOre(tRandomData, rStack);
                 } else {
-                    GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                    MaterialData.add(rStack, (ItemData) tRandomData);
                 }
             } else if (tUseOreDict) {
                 GTOreDictUnificator.registerOre(tRandomData, rStack);

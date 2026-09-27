@@ -11,9 +11,9 @@ import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialRenderers;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
@@ -74,7 +74,7 @@ public final class MetaGeneratedItemRenderer implements IItemRenderer {
 
             // Handle fluid rendering.
             if (aMaterialRenderer == null) {
-                ItemData itemData = GTOreDictUnificator.getAssociation(aStack);
+                ItemData itemData = MaterialData.getAssociation(aStack);
                 if (itemData != null && itemData.mMaterial != null) {
                     GeneratedMaterialRenderer materialRenderer = MaterialRenderers
                         .rendererOf(itemData.mMaterial.mMaterial);

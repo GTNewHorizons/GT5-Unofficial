@@ -8,6 +8,7 @@ import net.minecraftforge.common.config.Property;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.material.MaterialData;
 
 public class GTConfig implements Runnable {
 
@@ -46,7 +47,7 @@ public class GTConfig implements Runnable {
 
     public static String getStackConfigName(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return E;
-        Object rName = GTOreDictUnificator.getAssociation(aStack);
+        Object rName = MaterialData.getAssociation(aStack);
         if (rName != null) return rName.toString();
         if (GTUtility.isStringValid(rName = aStack.getUnlocalizedName())) return rName.toString();
         String sName = aStack.getItem()

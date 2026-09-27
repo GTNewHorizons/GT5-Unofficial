@@ -22,8 +22,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class StaticRecipeChangeLoaders {
 
@@ -40,7 +40,7 @@ public class StaticRecipeChangeLoaders {
         String internalName = MaterialUtils.internalName(material);
         for (OrePrefixes prefixes : OrePrefixes.VALUES) if (LegacyWerkstoffIndex.generatesPrefix(material, prefixes)) {
             for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
-                GTOreDictUnificator.addAssociation(prefixes, material, stack);
+                MaterialData.addAssociation(prefixes, material, stack);
             }
         }
     }

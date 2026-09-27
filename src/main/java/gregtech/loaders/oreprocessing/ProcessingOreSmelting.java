@@ -21,10 +21,10 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -229,6 +229,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
 
         if (smeltingOutput != null) GTModHandler.addSmeltingRecipe(
             stack,
-            convertSmelting(material, GTOreDictUnificator.getAssociation(stack).mPrefix, smeltingOutput));
+            convertSmelting(material, MaterialData.getAssociation(stack).mPrefix, smeltingOutput));
     }
 }

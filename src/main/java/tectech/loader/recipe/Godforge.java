@@ -39,10 +39,10 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -72,7 +72,7 @@ public class Godforge implements Runnable {
         FluidStack[] molten = new FluidStack[items.length];
 
         for (int i = 0; i < items.length; i++) {
-            ItemData association = GTOreDictUnificator.getAssociation(items[i]);
+            ItemData association = MaterialData.getAssociation(items[i]);
             if (association == null) {
                 GT_FML_LOGGER.error("Godforge.convertToFluid: no unification data for {}", items[i]);
                 continue;
@@ -1024,7 +1024,7 @@ public class Godforge implements Runnable {
 
     private static FluidStack convertToMolten(ItemStack stack) {
         // if this is null it has to be a gt++ material
-        ItemData data = GTOreDictUnificator.getAssociation(stack);
+        ItemData data = MaterialData.getAssociation(stack);
         Material mat = data != null ? data.mMaterial.mMaterial : null;
         if (mat != null && LegacyNameDomain.contains(mat)) {
             if (MaterialUtils.hasMolten(mat)) {

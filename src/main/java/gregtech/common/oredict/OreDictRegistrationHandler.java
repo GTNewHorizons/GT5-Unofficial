@@ -37,6 +37,7 @@ import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
@@ -309,7 +310,7 @@ public final class OreDictRegistrationHandler {
                 || oreName.equals("cellXenon"));
 
         if (prefix.isUnifiable() && !excludeGtppCells) {
-            GTOreDictUnificator.addAssociation(prefix, censusMaterial, stack);
+            MaterialData.addAssociation(prefix, censusMaterial, stack);
         }
 
         OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, censusMaterial, modId);
@@ -348,12 +349,12 @@ public final class OreDictRegistrationHandler {
             }
             case "plank" -> {
                 if (materialName.equals("Wood")) {
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M));
+                    MaterialData.add(stack, new ItemData(Materials.Wood, GTValues.M));
                 }
             }
             case "slab" -> {
                 if (materialName.equals("Wood")) {
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M / 2));
+                    MaterialData.add(stack, new ItemData(Materials.Wood, GTValues.M / 2));
                 }
             }
 

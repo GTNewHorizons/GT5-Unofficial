@@ -56,6 +56,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -69,7 +70,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -438,7 +438,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     List<MaterialStack> inputNaniteMats = new ArrayList<>();
 
                     for (ItemStack input : recipe.mInputs) {
-                        ItemData data = GTOreDictUnificator.getAssociation(input);
+                        ItemData data = MaterialData.getAssociation(input);
                         if (data == null) {
                             continue;
                         }
@@ -458,7 +458,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                             ItemStack inputItem = inputBus.getStackInSlot(j);
 
                             if (inputItem != null) {
-                                ItemData data = GTOreDictUnificator.getAssociation(inputItem);
+                                ItemData data = MaterialData.getAssociation(inputItem);
                                 if (data == null) {
                                     continue;
                                 }
@@ -469,7 +469,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                                         foundNanite = true;
                                     } else {
                                         if (!inputNaniteMats
-                                            .contains(GTOreDictUnificator.getAssociation(inputItem).mMaterial)) {
+                                            .contains(MaterialData.getAssociation(inputItem).mMaterial)) {
                                             foundNanite = false;
                                             break busScan;
                                         }
@@ -481,7 +481,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
                     if (renderActive) {
                         RenderingTileEntityNanoForge tile = getRenderer();
-                        ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
+                        ItemData data = MaterialData.getAssociation(outputNanite);
                         Material mat = data != null ? data.mMaterial.mMaterial : null;
                         short[] color = mat == null ? null : MaterialUtils.rgba(mat);
                         if (color != null) {

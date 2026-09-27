@@ -27,7 +27,6 @@ import gregtech.api.enums.materials.GTShapeStore;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 /// The bridge between GregTech's legacy [OrePrefixes] domain and MaterialLib's [Shape] domain.
@@ -210,11 +209,11 @@ public class MaterialParts {
         return GTUtility.copyAmount((int) amount, stack(prefix, material, 1));
     }
 
-    /// Whether `stack`'s unification association ([GTOreDictUnificator#getAssociation]) names `material` as
+    /// Whether `stack`'s unification association ([MaterialData#getAssociation]) names `material` as
     /// its primary material, compared by identity.
     public static boolean isPartOf(@Nullable ItemStack stack, @Nullable Material material) {
         if (material == null) return false;
-        ItemData association = GTOreDictUnificator.getAssociation(stack);
+        ItemData association = MaterialData.getAssociation(stack);
         return association != null && association.mMaterial.mMaterial == material;
     }
 

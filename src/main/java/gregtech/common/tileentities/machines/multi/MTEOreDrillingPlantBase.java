@@ -43,6 +43,7 @@ import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.ItemData;
@@ -50,7 +51,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -940,7 +940,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     private boolean doUseMaceratorRecipe(ItemStack currentItem) {
-        ItemData itemData = GTOreDictUnificator.getItemData(currentItem);
+        ItemData itemData = MaterialData.get(currentItem);
         return itemData == null || itemData.mPrefix != OrePrefixes.crushed && itemData.mPrefix != OrePrefixes.dustImpure
             && itemData.mPrefix != OrePrefixes.dust
             && itemData.mPrefix != OrePrefixes.gem

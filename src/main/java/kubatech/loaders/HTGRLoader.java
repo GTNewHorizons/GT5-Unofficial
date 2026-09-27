@@ -28,13 +28,13 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import kubatech.api.gui.HighTemperatureGasCooledReactorRecipeMapFrontend;
 import kubatech.loaders.item.htgritem.HTGRItem;
@@ -60,7 +60,7 @@ public class HTGRLoader {
         .frontend(HighTemperatureGasCooledReactorRecipeMapFrontend::new)
         .builderTransformer(builder -> {
             ItemStack[] inputs = builder.getItemInputsBasic();
-            Material material = GTOreDictUnificator.getAssociation(inputs[0]).mMaterial.mMaterial;
+            Material material = MaterialData.getAssociation(inputs[0]).mMaterial.mMaterial;
             Pair<ItemStack, Integer>[] fuels = builder.getMetadata(FUEL);
             ItemStack[] shells = builder.getMetadataOrDefault(SHELL, new ItemStack[0]);
             Triple<Double, Double, Double> fuelModificator = builder.getMetadata(FUEL_MODIFICATOR);

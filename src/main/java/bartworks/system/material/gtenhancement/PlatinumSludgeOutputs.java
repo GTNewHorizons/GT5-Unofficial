@@ -15,8 +15,8 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 /// Rewrites platinum-group outputs at recipe-generation time so that ore processing yields the sludge-line
@@ -42,7 +42,7 @@ public final class PlatinumSludgeOutputs {
         if (!GTUtility.isStackValid(output) || isMaterialBlacklisted(inputMaterial)) return output;
         if (inputMaterial == Materials.Platinum && (inputPrefix == dust || inputPrefix == dustTiny)) return output;
 
-        ItemData association = GTOreDictUnificator.getAssociation(output);
+        ItemData association = MaterialData.getAssociation(output);
         if (association == null || association.mPrefix == null || association.mMaterial == null) return output;
         Material replacement = association.mMaterial.mMaterial == Materials.Platinum ? Materials.PlatinumMetallicPowder
             : association.mMaterial.mMaterial == Materials.Palladium ? Materials.PalladiumMetallicPowder : null;
@@ -74,7 +74,7 @@ public final class PlatinumSludgeOutputs {
         if (matchesDust(Materials.Rhodium, output)) return MaterialLibAPI
             .getStack(Materials.CrudeRhodiumMetal, Shapes.dust, Math.min(64, output.stackSize * 2));
 
-        ItemData association = GTOreDictUnificator.getAssociation(output);
+        ItemData association = MaterialData.getAssociation(output);
         if (association == null || association.mPrefix == null || association.mMaterial == null) return output;
 
         Material replacement;

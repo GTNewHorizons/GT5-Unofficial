@@ -13,6 +13,7 @@ import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -103,7 +104,7 @@ public class LoaderMaterialLibCutover implements Runnable {
         if (prefix.isUnifiable()) {
             GTOreDictUnificator.registerOre(prefix, material, stack);
             // The ore-dictionary event cannot parse legacy names holding spaces or colons back to a material.
-            GTOreDictUnificator.addAssociation(prefix, material, stack);
+            MaterialData.addAssociation(prefix, material, stack);
         } else {
             GTOreDictUnificator.registerOre(prefix.oreDictName(material), stack);
         }

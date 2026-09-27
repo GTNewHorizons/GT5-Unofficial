@@ -170,6 +170,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemEnergyArmor;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
@@ -1459,7 +1460,7 @@ public class GTUtility {
     public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList,
         NBTTagCompound aNBT, Object... aOutput) {
         if (isStackInvalid(aInput) || aOutput.length == 0 || aRecipeList == null) return false;
-        ItemData tOreName = GTOreDictUnificator.getAssociation(aInput);
+        ItemData tOreName = MaterialData.getAssociation(aInput);
         for (Object o : aOutput) {
             if (o == null) {
                 GT_FML_LOGGER.info("EmptyIC2Output!{}", aInput.getUnlocalizedName());
@@ -1969,14 +1970,14 @@ public class GTUtility {
     }
 
     public static float getHeatDamageFromItem(ItemStack aStack) {
-        ItemData tData = GTOreDictUnificator.getItemData(aStack);
+        ItemData tData = MaterialData.get(aStack);
         return tData == null ? 0
             : (tData.mPrefix == null ? 0 : tData.mPrefix.mHeatDamage)
                 + (tData.hasValidMaterialData() ? MaterialUtils.heatDamage(tData.mMaterial.mMaterial) : 0);
     }
 
     public static int getRadioactivityLevel(ItemStack aStack) {
-        ItemData tData = GTOreDictUnificator.getItemData(aStack);
+        ItemData tData = MaterialData.get(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
             Material material = tData.mMaterial.mMaterial;
             if (MaterialUtils.getArmorEnchantment(material) instanceof EnchantmentRadioactivity)
@@ -2650,8 +2651,7 @@ public class GTUtility {
      * there's no creative or 111 stack.
      */
     public static boolean consumeItems(EntityPlayer player, ItemStack stack, Material mat, int count) {
-        if (stack != null && GTOreDictUnificator.getItemData(stack).mMaterial.mMaterial == mat
-            && stack.stackSize >= count) {
+        if (stack != null && MaterialData.get(stack).mMaterial.mMaterial == mat && stack.stackSize >= count) {
             if ((!player.capabilities.isCreativeMode) && (stack.stackSize != 111)) stack.stackSize -= count;
             return true;
         }
@@ -3165,8 +3165,8 @@ public class GTUtility {
     }
 
     public static boolean isPartOfOrePrefix(ItemStack aStack, OrePrefixes aPrefix) {
-        return GTOreDictUnificator.getAssociation(aStack) != null
-            && GTOreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
+        return MaterialData.getAssociation(aStack) != null
+            && MaterialData.getAssociation(aStack).mPrefix.equals(aPrefix);
     }
 
     public static boolean isOre(Block block, int meta) {

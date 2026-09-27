@@ -18,10 +18,10 @@ import com.ruling_0.materiallib.api.ShapeItem;
 
 import codechicken.nei.ItemStackMap;
 import codechicken.nei.api.ItemFilter;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialFormulas;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class ChemicalFormulaFilter implements ItemFilter {
 
@@ -129,7 +129,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
             if (formula != null) return formula;
         }
 
-        ItemData data = GTOreDictUnificator.getAssociation(itemstack);
+        ItemData data = MaterialData.getAssociation(itemstack);
         if (data != null) {
             return MaterialUtils.chemicalFormula(data.mMaterial.mMaterial);
         }

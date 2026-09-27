@@ -51,11 +51,11 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import tectech.thing.CustomItemList;
 
@@ -3220,7 +3220,7 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Machine_Bronze_Boiler_Solar.get(1L),
             new ItemStack(Blocks.glass, 1),
             new ItemStack(Blocks.glass, 1),
@@ -3256,7 +3256,7 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Machine_HP_Solar.get(1L),
             ItemList.ReinforcedGlass.get(1L),
             ItemList.ReinforcedGlass.get(1L),

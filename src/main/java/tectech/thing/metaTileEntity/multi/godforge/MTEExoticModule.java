@@ -44,13 +44,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -361,7 +361,7 @@ public class MTEExoticModule extends MTEBaseModule {
         List<FluidStack> plasmas = new ArrayList<>();
 
         for (ItemStack itemStack : items) {
-            ItemData association = GTOreDictUnificator.getAssociation(itemStack);
+            ItemData association = MaterialData.getAssociation(itemStack);
             FluidStack plasma = association == null ? null
                 : MaterialUtils.plasma(association.mMaterial.mMaterial, INGOTS * multiplier * itemStack.stackSize);
             if (plasma == null) {

@@ -46,6 +46,7 @@ import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTConfig;
@@ -208,7 +209,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                 }
                 if (tRandomData instanceof ItemData) {
                     if (GTUtility.isStringValid(tRandomData)) GTOreDictUnificator.registerOre(tRandomData, rStack);
-                    else GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                    else MaterialData.add(rStack, (ItemData) tRandomData);
                     continue;
                 }
                 if (tUseOreDict) {

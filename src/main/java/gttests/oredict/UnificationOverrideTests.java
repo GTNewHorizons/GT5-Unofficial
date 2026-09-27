@@ -24,6 +24,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -217,7 +218,7 @@ public class UnificationOverrideTests {
         if (named == null || named.getItem() != item || named.getItemDamage() != meta) {
             mismatches.add(pair + ": the ore-dictionary name stands for " + describe(named));
         }
-        ItemData association = GTOreDictUnificator.getAssociation(new ItemStack(item, 1, meta));
+        ItemData association = MaterialData.getAssociation(new ItemStack(item, 1, meta));
         if (association == null || association.mPrefix != prefix
             || association.mMaterial == null
             || association.mMaterial.mMaterial != material) {

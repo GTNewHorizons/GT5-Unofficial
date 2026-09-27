@@ -42,10 +42,10 @@ import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -2613,52 +2613,52 @@ public class MTERecipeLoader implements Runnable {
                 "plateNeutronium", 'P', "platePolybenzimidazole" });
 
         // hull recycling data
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hull_ULV.get(1L),
             ItemList.Casing_ULV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Lead),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Lead));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hull_LV.get(1L),
             ItemList.Casing_LV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hull_MV.get(1L),
             ItemList.Casing_MV.get(1),
             OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper),
             OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hull_HV.get(1L),
             ItemList.Casing_HV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Gold),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Gold));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hull_EV.get(1L),
             ItemList.Casing_EV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Aluminium),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Aluminium));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hull_IV.get(1L),
             ItemList.Casing_IV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tungsten),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tungsten));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hull_LuV.get(1L),
             ItemList.Casing_LuV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.VanadiumGallium),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.VanadiumGallium));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hull_ZPM.get(1L),
             ItemList.Casing_ZPM.get(1),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Naquadah),
             MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Naquadah));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hull_UV.get(1L),
             ItemList.Casing_UV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.NaquadahAlloy),
             MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.NaquadahAlloy));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hull_MAX.get(1L),
             ItemList.Casing_MAX.get(1),
             MaterialParts.namedIngredient(OrePrefixes.cableGt04, Materials.SuperconductorUV),
@@ -2809,43 +2809,43 @@ public class MTERecipeLoader implements Runnable {
                 MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), 'X', ItemList.Electric_Motor_MV });
 
         // recycling data for the other mufflers, recipes are in assembler
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hatch_Muffler_HV.get(1L),
             ItemList.Hull_HV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.StainlessSteel),
             MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.StainlessSteel),
             ItemList.Electric_Motor_HV.get(1));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hatch_Muffler_EV.get(1L),
             ItemList.Hull_EV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.Titanium),
             MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Titanium),
             ItemList.Electric_Motor_EV.get(1));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hatch_Muffler_IV.get(1L),
             ItemList.Hull_IV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.TungstenSteel),
             MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.TungstenSteel),
             ItemList.Electric_Motor_IV.get(1));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hatch_Muffler_LuV.get(1L),
             ItemList.Hull_LuV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.Enderium),
             MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Enderium),
             ItemList.Electric_Motor_LuV.get(1));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hatch_Muffler_ZPM.get(1L),
             ItemList.Hull_ZPM.get(1),
             MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.Naquadah),
             MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.NaquadahAlloy),
             ItemList.Electric_Motor_ZPM.get(1));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hatch_Muffler_UV.get(1L),
             ItemList.Hull_UV.get(1),
             MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.NetherStar),
             MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Neutronium),
             ItemList.Electric_Motor_UV.get(1));
-        GTOreDictUnificator.addItemDataFromInputs(
+        MaterialData.addFromInputs(
             ItemList.Hatch_Muffler_MAX.get(1L),
             ItemList.Hull_MAX.get(1),
             MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.MysteriousCrystal),
