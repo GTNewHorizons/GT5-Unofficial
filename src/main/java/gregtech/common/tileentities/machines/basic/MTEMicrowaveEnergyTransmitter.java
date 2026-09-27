@@ -229,24 +229,27 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
                     }
                     int tDistance = distanceCalculation();
                     if (tTile != null) {
-                        if (tTile instanceof IEnergyConnected) {
-                            long packetSize = V[mTier];
-                            if (tTile instanceof IGregTechTileEntity) {
-                                IMetaTileEntity mte = ((IGregTechTileEntity) tTile).getMetaTileEntity();
-                                if (mte instanceof BaseMetaTileEntity) {
-                                    packetSize = ((BaseMetaTileEntity) mte).getMaxSafeInput();
+                        boolean isCrossDimensional = this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId;
+                        if (!isCrossDimensional || isDimensionalTeleportAvailable()) {
+                            if (tTile instanceof IEnergyConnected) {
+                                long packetSize = V[mTier];
+                                if (tTile instanceof IGregTechTileEntity) {
+                                    IMetaTileEntity mte = ((IGregTechTileEntity) tTile).getMetaTileEntity();
+                                    if (mte instanceof BaseMetaTileEntity) {
+                                        packetSize = ((BaseMetaTileEntity) mte).getMaxSafeInput();
+                                    }
                                 }
-                            }
-                            long energyUse = 10;
-                            if (mMaxLossDistance != 0) {
-                                energyUse = GTUtility
-                                    .safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
-                            }
-                            energyUse = packetSize + ((V[mTier] * energyUse) / 100);
-                            if (getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) {
-                                if (((IEnergyConnected) tTile).injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1)
-                                    > 0) {
-                                    getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
+                                long energyUse = 10;
+                                if (mMaxLossDistance != 0) {
+                                    energyUse = GTUtility
+                                        .safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
+                                }
+                                energyUse = packetSize + ((V[mTier] * energyUse) / 100);
+                                if (getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) {
+                                    if (((IEnergyConnected) tTile).injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1)
+                                        > 0) {
+                                        getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
+                                    }
                                 }
                             }
                         }
