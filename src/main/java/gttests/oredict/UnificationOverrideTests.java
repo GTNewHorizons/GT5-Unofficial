@@ -43,9 +43,9 @@ public class UnificationOverrideTests {
         for (String oreName : GREGTECH_PREFERRED) {
             if (OreDictionary.getOres(oreName)
                 .isEmpty()) continue;
-            ItemStack target = GTOreDictUnificator.get(oreName, 1);
+            ItemStack target = GTOreDictUnificator.getFirstOre(oreName, 1);
             String owner = ownerOf(target);
-            GT_FML_LOGGER.info("Unification target of {} is {} ({})", oreName, describe(target), owner);
+            GT_FML_LOGGER.info("Item standing for {} is {} ({})", oreName, describe(target), owner);
             if (!"gregtech".equals(owner) && !"materiallib".equals(owner)) {
                 foreignTargets.add(oreName + " -> " + describe(target) + " of " + owner + candidates(oreName));
             }
@@ -56,8 +56,8 @@ public class UnificationOverrideTests {
         helper.succeed();
     }
 
-    /// A pair served by a shape override has one item everywhere: MaterialLib, the unificator's prefix lookup
-    /// and the association other mods read a vanilla stack's material from.
+    /// A pair served by a shape override has one item everywhere: MaterialLib, the item its ore-dictionary name
+    /// stands for, and the association other mods read a vanilla stack's material from.
     @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
     public static void overriddenPairsResolveToTheirVanillaItemEverywhere(GameTestHelper helper) {
         List<String> mismatches = new ArrayList<>();
@@ -213,9 +213,9 @@ public class UnificationOverrideTests {
         if (fromMaterialLib.getItem() != item || fromMaterialLib.getItemDamage() != meta) {
             mismatches.add(pair + ": MaterialLib serves " + describe(fromMaterialLib));
         }
-        ItemStack unified = GTOreDictUnificator.get(prefix, material, 1);
-        if (unified == null || unified.getItem() != item || unified.getItemDamage() != meta) {
-            mismatches.add(pair + ": unificator serves " + describe(unified));
+        ItemStack named = GTOreDictUnificator.getFirstOre(prefix.oreDictName(material), 1);
+        if (named == null || named.getItem() != item || named.getItemDamage() != meta) {
+            mismatches.add(pair + ": the ore-dictionary name stands for " + describe(named));
         }
         ItemData association = GTOreDictUnificator.getAssociation(new ItemStack(item, 1, meta));
         if (association == null || association.mPrefix != prefix

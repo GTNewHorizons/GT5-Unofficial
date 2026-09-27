@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import static gregtech.GTLoggers.GT_ORE_DICT_LOGGER;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -26,7 +25,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.GTShapeStore;
@@ -69,7 +67,6 @@ public class GTOreDictUnificator {
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     private static final Set<Item> unificationWildcardBlacklist = new ReferenceOpenHashSet<>();
 
-    private static int isRegisteringOre = 0, isAddingOre = 0;
     private static boolean batchRegisteredRecyclingRecipes = false;
 
     /**
@@ -105,13 +102,11 @@ public class GTOreDictUnificator {
         if (materialName == null || prefix == null || GTUtility.isStackInvalid(stack)) return;
         if (Items.feather.getDamage(stack) == WILDCARD) return;
 
-        isAddingOre++;
         stack = GTUtility.copyAmount(1, stack);
         String oreName = prefix.oreDictName(materialName);
         registerOre(oreName, stack);
         addAssociation(prefix, materialName, stack);
         sName2StackMap.put(oreName, stack);
-        isAddingOre--;
     }
 
     public static void set(OrePrefixes prefix, Material material, ItemStack stack, boolean overwrite,
@@ -120,7 +115,6 @@ public class GTOreDictUnificator {
         if (material == null || prefix == null || GTUtility.isStackInvalid(stack)) return;
         if (Items.feather.getDamage(stack) == WILDCARD) return;
 
-        isAddingOre++;
         stack = GTUtility.copyAmount(1, stack);
         String oreName = prefix.oreDictName(material);
         if (!alreadyRegistered) registerOre(oreName, stack);
@@ -129,7 +123,6 @@ public class GTOreDictUnificator {
         if (overwrite || GTUtility.isStackInvalid(sName2StackMap.get(oreName))) {
             sName2StackMap.put(oreName, stack);
         }
-        isAddingOre--;
     }
 
     private record MaterialLibPair(OrePrefixes prefix, Material material) {}
@@ -197,7 +190,7 @@ public class GTOreDictUnificator {
         return GTUtility.copyAmount(amount, getFirstOre_nocopy(name.toString()));
     }
 
-    public static ItemStack getFirstOre_nocopy(String name) {
+    private static ItemStack getFirstOre_nocopy(String name) {
         ItemStack served = materialLibTarget(name);
         if (served != null) return served;
         ItemStack stack = sName2StackMap.get(name);
@@ -211,44 +204,6 @@ public class GTOreDictUnificator {
             }
         }
         return firstStack;
-    }
-
-    public static ItemStack get(Object name, long amount) {
-        return get(name, null, amount, true, true);
-    }
-
-    public static ItemStack get(Object name, ItemStack replacement, long amount) {
-        return get(name, replacement, amount, true, true);
-    }
-
-    public static ItemStack get(OrePrefixes prefix, Material material, long amount) {
-        return get(prefix, material, null, amount);
-    }
-
-    public static ItemStack get(OrePrefixes prefix, Material material, ItemStack replacement, long amount) {
-        if (material == null) return replacement;
-        if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
-            return replacement;
-        return get(prefix.oreDictName(material), replacement, amount, false, true);
-    }
-
-    public static ItemStack get(OrePrefixes prefix, Material material, long amount, boolean noInvalidAmounts) {
-        if (material == null) return null;
-        if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material))
-            return null;
-        return get(prefix.oreDictName(material), null, amount, false, noInvalidAmounts);
-    }
-
-    public static ItemStack get(Object aName, ItemStack aReplacement, long aAmount, boolean aMentionPossibleTypos,
-        boolean aNoInvalidAmounts) {
-
-        if (aNoInvalidAmounts && aAmount < 1) return null;
-
-        final ItemStack stackFirstOre = getFirstOre(aName, aAmount);
-        if (stackFirstOre != null) return GTUtility.copyAmount(aAmount, stackFirstOre);
-
-        if (aMentionPossibleTypos) GT_ORE_DICT_LOGGER.error("Unknown Key for Unification, Typo? {}", aName);
-        return GTUtility.copyAmount(aAmount, aReplacement);
     }
 
     /// Whether `stack` is another mod's copy of a part that unifies onto a different item. Recipes generated for such
@@ -486,14 +441,6 @@ public class GTOreDictUnificator {
         return false;
     }
 
-    public static boolean isItemStackDye(ItemStack stack) {
-        if (GTUtility.isStackInvalid(stack)) return false;
-
-        for (Dyes tDye : Dyes.VALUES) if (isItemStackInstanceOf(stack, tDye.toString())) return true;
-
-        return false;
-    }
-
     public static boolean registerOre(OrePrefixes prefix, Material material, ItemStack stack) {
         return registerOre(prefix.oreDictName(material), stack);
     }
@@ -508,18 +455,8 @@ public class GTOreDictUnificator {
         for (ItemStack itemStack : getOresImmutable(tName))
             if (GTUtility.areStacksEqual(itemStack, stack, true)) return false;
 
-        isRegisteringOre++;
         OreDictionary.registerOre(tName, stack);
-        isRegisteringOre--;
         return true;
-    }
-
-    public static boolean isRegisteringOres() {
-        return isRegisteringOre > 0;
-    }
-
-    public static boolean isAddingOres() {
-        return isAddingOre > 0;
     }
 
     /**
@@ -548,9 +485,5 @@ public class GTOreDictUnificator {
 
         return GTUtility.isStringValid(name) ? Collections.unmodifiableList(OreDictionary.getOres(name))
             : Collections.emptyList();
-    }
-
-    public static Map<String, ItemStack> getName2StackMap() {
-        return sName2StackMap;
     }
 }

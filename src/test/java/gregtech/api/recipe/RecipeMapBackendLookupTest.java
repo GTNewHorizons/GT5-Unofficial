@@ -1,6 +1,5 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.enums.OrePrefixes.circuit;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -45,7 +44,6 @@ import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.RecipeMetadataStorage;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -643,43 +641,6 @@ class RecipeMapBackendLookupTest {
         assertTrue(
             error.getMessage()
                 .contains("oreDictId=12345"));
-    }
-
-    @Test
-    void runtimeItemStackKeysDoNotIncludeGtUnificationTarget() {
-        ensureMinecraftStackComparisonItem();
-        Item representativeItem = item("lookup.unified.representative");
-        Item equivalentItem = item("lookup.unified.equivalent");
-        ItemStack representative = new ItemStack(representativeItem, 1, 0);
-        ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.oreDictName("Tin");
-        boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
-            .containsKey(unificationName);
-        ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
-            .put(unificationName, representative);
-
-        try {
-            GTOreDictUnificator.addAssociation(circuit, "Tin", representative);
-            GTOreDictUnificator.addAssociation(circuit, "Tin", equivalent);
-
-            List<GTRecipeLookupIngredient> group = new ArrayList<>();
-            GTItemStackLookupIngredient.fromRuntime(group::add, equivalent);
-
-            assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntime(equivalent)));
-            assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntimeWildcard(equivalent)));
-            assertFalse(group.contains(GTItemStackLookupIngredient.fromRuntime(representative)));
-            assertFalse(group.contains(GTItemStackLookupIngredient.fromRuntimeWildcard(representative)));
-        } finally {
-            if (hadPreviousTarget) {
-                GTOreDictUnificator.getName2StackMap()
-                    .put(unificationName, previousTarget);
-            } else {
-                GTOreDictUnificator.getName2StackMap()
-                    .remove(unificationName);
-            }
-            GTOreDictUnificator.removeItemData(representative);
-            GTOreDictUnificator.removeItemData(equivalent);
-        }
     }
 
     @Test
