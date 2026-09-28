@@ -228,38 +228,42 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
                         }
                     }
                     int tDistance = distanceCalculation();
-                    if (tTile != null) {
-                        boolean isCrossDimensional = this.mTargetD
-                            != getBaseMetaTileEntity().getWorld().provider.dimensionId;
-                        if (!isCrossDimensional || isDimensionalTeleportAvailable()) {
-                            if (tTile instanceof IEnergyConnected) {
-                                long packetSize = V[mTier];
-                                if (tTile instanceof IGregTechTileEntity) {
-                                    IMetaTileEntity mte = ((IGregTechTileEntity) tTile).getMetaTileEntity();
-                                    if (mte instanceof BaseMetaTileEntity) {
-                                        packetSize = ((BaseMetaTileEntity) mte).getMaxSafeInput();
-                                    }
-                                }
-                                long energyUse = 10;
-                                if (mMaxLossDistance != 0) {
-                                    energyUse = GTUtility
-                                        .safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
-                                }
-                                energyUse = packetSize + ((V[mTier] * energyUse) / 100);
-                                if (getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) {
-                                    if (((IEnergyConnected) tTile)
-                                        .injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1) > 0) {
-                                        getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    tryTransferEnergy(tDistance);
                 }
                 getBaseMetaTileEntity().setActive(true);
             } else {
                 getBaseMetaTileEntity().setActive(false);
             }
+        }
+    }
+
+    private void tryTransferEnergy(int tDistance) {
+        if (tTile == null) return;
+
+        boolean isCrossDimensional = this.mTargetD
+            != getBaseMetaTileEntity().getWorld().provider.dimensionId;
+        if (isCrossDimensional && !isDimensionalTeleportAvailable()) return;
+
+        if (!(tTile instanceof IEnergyConnected)) return;
+
+        long packetSize = V[mTier];
+        if (tTile instanceof IGregTechTileEntity) {
+            IMetaTileEntity mte = ((IGregTechTileEntity) tTile).getMetaTileEntity();
+            if (mte instanceof BaseMetaTileEntity) {
+                packetSize = ((BaseMetaTileEntity) mte).getMaxSafeInput();
+            }
+        }
+        long energyUse = 10;
+        if (mMaxLossDistance != 0) {
+            energyUse = GTUtility.safeInt(
+                10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
+        }
+        energyUse = packetSize + ((V[mTier] * energyUse) / 100);
+
+        if (!getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) return;
+
+        if (((IEnergyConnected) tTile).injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1) > 0) {
+            getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
         }
     }
 
