@@ -1734,8 +1734,8 @@ public class RecipeLoader {
             .fluidInputs(WerkstoffMaterialPool.CalciumFluoride.getFluidOrGas(3_000))
             .itemOutputs(Materials.Calcium.getDust(1))
             .fluidOutputs(Materials.Fluorine.getGas(2_000))
-            .duration(13 * TICKS)
-            .eut(60)
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
