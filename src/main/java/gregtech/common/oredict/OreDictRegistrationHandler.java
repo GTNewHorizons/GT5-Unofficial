@@ -7,6 +7,7 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -25,6 +26,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.CircuitComponents;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
@@ -57,6 +60,18 @@ import gregtech.loaders.materials.DeclaredMaterialNameTable;
 public final class OreDictRegistrationHandler {
 
     private OreDictRegistrationHandler() {}
+
+    /// Material names of the tiered and circuit-component entries (`circuitBasic`, `batteryGood`,
+    /// `componentCircuitResistor`), which name no material. Every item under such a name gets a name-only
+    /// association, so recipes accept any of them.
+    private static final Set<String> NAME_ONLY_MATERIALS = new HashSet<>();
+
+    static {
+        for (Circuits circuit : Circuits.values()) NAME_ONLY_MATERIALS.add(circuit.materialName());
+        for (CircuitComponents component : CircuitComponents.values()) {
+            NAME_ONLY_MATERIALS.add(component.materialName());
+        }
+    }
 
     private static final HashSet<String> IGNORED_NAMES = new HashSet<>(
         Arrays.asList(
@@ -363,6 +378,9 @@ public final class OreDictRegistrationHandler {
         @Nullable Material material, String materialName) {
 
         if (material == null) {
+            if (NAME_ONLY_MATERIALS.contains(materialName)) {
+                MaterialData.addAssociation(prefix, materialName, stack);
+            }
             return reconstructedMaterial(materialName) == null;
         }
 
