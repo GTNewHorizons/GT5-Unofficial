@@ -17,7 +17,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
+import static gtnhlanth.common.register.WerkstoffMaterialPool.CalciumFluoride;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ElectrolyzerRecipes implements Runnable {
