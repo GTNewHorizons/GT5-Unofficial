@@ -6052,6 +6052,7 @@ gt.Item_Redstone_Sniffer.tooltip=What are these frequencies?!
 gt.Item_Drone_Remote_Interface.name=Drone Remote Interface
 gt.Item_Drone_Remote_Interface.tooltip=Built-in super powerful navigation beacon!!
 gt.item.vajra_core.name=Vajra Core
+gt.Tool_Vajra.name=Vajra
 gt.item.magnetron.name=Magnetron
 gt.Item_Chaos_Locator.name=Chaos Locator
 gt.Item_Chaos_Locator.tooltip=Warps to areas with extreme entropy
