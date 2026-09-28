@@ -3,6 +3,7 @@ package tectech.thing.casing;
 import static com.google.common.math.LongMath.pow;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTAuthors.AuthorColen;
+import static gregtech.api.enums.GTValues.W;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
@@ -25,6 +26,7 @@ public class ItemCasingsSpacetime extends ItemCasings {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
+        if (aStack.getItemDamage() == W) return super.getItemStackDisplayName(aStack);
         return StatCollector.translateToLocalFormatted(
             "tt.eoh.spacetime.name",
             WHITE + CommonValues.getLocalizedEohTierFancyNames(aStack.getItemDamage()) + RESET);
