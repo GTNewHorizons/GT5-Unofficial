@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -399,6 +400,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                     .put("light_offset", LIGHT_MODE_TIER_OFFSET)
                     .put("heavy_div", HEAVY_MODE_PARALLEL_DIVISOR)
                     .put("heavy_eu", HEAVY_MODE_EU_MULTIPLIER)
+                    .put("fluid_unit", getFluidUnit())
                     .build())
             .addSeparator()
             .addSupportAny()
@@ -573,11 +575,12 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                amountToDrain = Math.max(1, GTUtility.getTier(recipe.mEUt)) * FLUID_PER_RECIPE_TIER;
+                final int recipeTier = GTUtility.getTier(recipe.mEUt);
+                amountToDrain = Math.max(1, recipeTier) * FLUID_PER_RECIPE_TIER;
                 euMultiplier = 1;
                 if (!checkFluid(5 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
-                if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)
-                    < LIGHT_MODE_TIER_OFFSET) return CheckRecipeResultRegistry.NO_RECIPE;
+                if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - recipeTier < LIGHT_MODE_TIER_OFFSET)
+                    return CheckRecipeResultRegistry.NO_RECIPE;
                 if (mode == 2.0) {
                     if (!tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                     euMultiplier = HEAVY_MODE_EU_MULTIPLIER;
