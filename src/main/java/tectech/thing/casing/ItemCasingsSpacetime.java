@@ -3,6 +3,8 @@ package tectech.thing.casing;
 import static com.google.common.math.LongMath.pow;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTAuthors.AuthorColen;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.List;
 
@@ -13,11 +15,19 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTAuthors;
 import gregtech.common.blocks.ItemCasings;
+import tectech.util.CommonValues;
 
 public class ItemCasingsSpacetime extends ItemCasings {
 
     public ItemCasingsSpacetime(Block par1) {
         super(par1);
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        return StatCollector.translateToLocalFormatted(
+            "tt.eoh.spacetime.name",
+            WHITE + CommonValues.getLocalizedEohTierFancyNames(aStack.getItemDamage()) + RESET);
     }
 
     @Override

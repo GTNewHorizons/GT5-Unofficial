@@ -1,6 +1,8 @@
 package tectech.thing.casing;
 
 import static gregtech.api.enums.GTAuthors.AuthorColen;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.List;
 
@@ -11,11 +13,19 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTAuthors;
 import gregtech.common.blocks.ItemCasings;
+import tectech.util.CommonValues;
 
 public class ItemCasingsStabilisation extends ItemCasings {
 
     public ItemCasingsStabilisation(Block par1) {
         super(par1);
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        return StatCollector.translateToLocalFormatted(
+            "tt.eoh.stabilisation.name",
+            WHITE + CommonValues.getLocalizedEohTierFancyNames(aStack.getItemDamage()) + RESET);
     }
 
     @Override
