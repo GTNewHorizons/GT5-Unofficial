@@ -9585,7 +9585,6 @@ gt.metatool.01.file.name=Напильник (%s)
 gt.metatool.01.file.tooltip=Ручной электрический напильник
 
 # Side names
-gt.lang.face.any=Любая сторона
 gt.lang.face.back=Задняя сторона
 gt.lang.face.bottom=Нижняя сторона
 gt.lang.face.front=Передняя сторона
