@@ -740,6 +740,30 @@ public class GTRecipeBuilder {
         }
     }
 
+    private static @Nullable ItemStack omittedInput;
+
+    /// Runs `body` leaving out every machine recipe it adds that takes `stack` as an item input, for an item that
+    /// recipe inputs holding another item already accept ([OreDictUtils#isInterchangeableWithTarget]): its own
+    /// recipes would repeat that item's, while NEI cycles it into them. Recipe removals and crafting-table and
+    /// furnace recipes, which match exactly, are unaffected.
+    public static void withoutRecipesTaking(ItemStack stack, Runnable body) {
+        ItemStack previous = omittedInput;
+        omittedInput = stack;
+        try {
+            body.run();
+        } finally {
+            omittedInput = previous;
+        }
+    }
+
+    private boolean takesOmittedInput() {
+        if (omittedInput == null) return false;
+        for (ItemStack input : inputsBasic) {
+            if (GTUtility.areStacksEqual(input, omittedInput, true)) return true;
+        }
+        return false;
+    }
+
     /// The metadata the recipe under construction is built with: the builder's own storage, plus the enclosing
     /// [#withVariantGroup] tag when there is one. Never mutates the builder's storage.
     private @Nullable IRecipeMetadataStorage buildMetadata() {
@@ -1244,14 +1268,14 @@ public class GTRecipeBuilder {
     }
 
     public Collection<GTRecipe> addTo(IRecipeMap recipeMap) {
-        if (skip) {
+        if (skip || takesOmittedInput()) {
             return Collections.emptyList();
         }
         return recipeMap.doAdd(this);
     }
 
     public Collection<GTRecipe> addTo(IRecipeMap... recipeMaps) {
-        if (skip) {
+        if (skip || takesOmittedInput()) {
             return Collections.emptyList();
         }
 

@@ -153,6 +153,12 @@ public class OreDictUtils {
         return !GTUtility.isStackInvalid(stack) && !isBlacklisted(stack) && unifiedTargetOf(stack) != null;
     }
 
+    /// Whether `stack` is a blacklisted item registered under a name that stands for a different item: its own thing,
+    /// so it stays in play, yet recipe inputs holding that other item accept it.
+    public static boolean isInterchangeableWithTarget(ItemStack stack) {
+        return !GTUtility.isStackInvalid(stack) && isBlacklisted(stack) && unifiedTargetOf(stack) != null;
+    }
+
     /// The item `stack` unifies onto, or null when it unifies onto nothing but itself.
     @Nullable
     private static ItemStack unifiedTargetOf(ItemStack stack) {

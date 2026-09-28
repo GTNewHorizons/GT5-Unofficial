@@ -11,6 +11,7 @@ import com.ruling_0.materiallib.api.Material;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MaterialParts;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OreDictUtils;
 
@@ -52,7 +53,12 @@ final class OreDictRegistration {
             stack.stackSize = 1;
         }
 
-        prefix.processOre(material, oreName, modId, GTUtility.copyAmount(1, stack));
+        ItemStack single = GTUtility.copyAmount(1, stack);
+        if (OreDictUtils.isInterchangeableWithTarget(stack)) {
+            GTRecipeBuilder.withoutRecipesTaking(single, () -> prefix.processOre(material, oreName, modId, single));
+        } else {
+            prefix.processOre(material, oreName, modId, single);
+        }
     }
 
     /// Whether `stack` is the foreign item MaterialLib serves for this registration's (prefix, material) pair,

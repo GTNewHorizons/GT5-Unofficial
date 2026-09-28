@@ -22,6 +22,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OreDictUtils;
@@ -35,7 +36,8 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 ///
 /// Storing an entry with recyclable material registers the stack's recycling recipes (macerating, arc and fluid
 /// smelting): every stored stack at once when loading starts, then each later entry as it arrives. Unified copies
-/// ([OreDictUtils#isUnifiedCopy]) get none.
+/// ([OreDictUtils#isUnifiedCopy]) get none, and a blacklisted item interchangeable with its ore-dictionary target
+/// ([OreDictUtils#isInterchangeableWithTarget]) gets no machine recipes.
 public final class MaterialData {
 
     private static final Map<ItemStack, ItemData> dataByStack = new Object2ObjectOpenCustomHashMap<>(
@@ -182,13 +184,22 @@ public final class MaterialData {
                 ItemData entryData = entry.getValue();
 
                 if (shouldRegisterMaterialRecycling(entryData) && !OreDictUtils.isUnifiedCopy(entryStack)) {
-                    GTRecipeRegistrator.registerMaterialRecycling(entryStack, entryData);
+                    registerMaterialRecycling(entryStack, entryData);
                 }
             }
         } else if (shouldRegisterMaterialRecycling(data) && !shouldRegisterMaterialRecycling(prevData)
             && !OreDictUtils.isUnifiedCopy(stack)) {
-                GTRecipeRegistrator.registerMaterialRecycling(stack, data);
+                registerMaterialRecycling(stack, data);
             }
+    }
+
+    private static void registerMaterialRecycling(ItemStack stack, ItemData data) {
+        if (OreDictUtils.isInterchangeableWithTarget(stack)) {
+            GTRecipeBuilder
+                .withoutRecipesTaking(stack, () -> GTRecipeRegistrator.registerMaterialRecycling(stack, data));
+        } else {
+            GTRecipeRegistrator.registerMaterialRecycling(stack, data);
+        }
     }
 
     private static boolean shouldRegisterMaterialRecycling(ItemData data) {
