@@ -18,6 +18,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public class DroneConnection {
 
@@ -34,7 +35,7 @@ public class DroneConnection {
 
     private String customName;
     private boolean machineStatus;
-    private String shutdownReason;
+    private ShutDownReason shutdownReason;
     private boolean isSelected;
     private long groupMask;
 
@@ -63,8 +64,7 @@ public class DroneConnection {
         this.groupMask = centre.getConnectionGroups(uuid);
         this.machineStatus = machine.isAllowedToWork();
         this.shutdownReason = machine.getBaseMetaTileEntity()
-            .getLastShutDownReason()
-            .getDisplayString();
+            .getLastShutDownReason();
     }
 
     public DroneConnection(NBTTagCompound aNBT) {
@@ -86,7 +86,7 @@ public class DroneConnection {
         this.unlocalizedName = aNBT.getString("unlocalizedName");
         this.uuid = UUID.fromString(aNBT.getString("uuid"));
         this.machineStatus = aNBT.getBoolean("machineStatus");
-        this.shutdownReason = aNBT.getString("shutdownReason");
+        this.shutdownReason = ShutDownReasonRegistry.NONE;
         this.isSelected = aNBT.getBoolean("isSelected");
         this.groupMask = aNBT.getLong("groupMask");
         if (!NetworkUtils.isClient()) {
@@ -146,11 +146,12 @@ public class DroneConnection {
     }
 
     public boolean isMachineShutdown() {
-        return !shutdownReason.isEmpty() && !machineStatus;
+        return !getShutdownReason().isEmpty() && !machineStatus;
     }
 
+    /** Localized on the client, so the player sees it in their own language. */
     public String getShutdownReason() {
-        return shutdownReason;
+        return shutdownReason.getDisplayString();
     }
 
     public NBTTagCompound writeToNBT() {
@@ -165,7 +166,6 @@ public class DroneConnection {
         aNBT.setString("unlocalizedName", unlocalizedName);
         aNBT.setString("uuid", this.uuid.toString());
         aNBT.setBoolean("machineStatus", machineStatus);
-        aNBT.setString("shutdownReason", shutdownReason);
         aNBT.setBoolean("isSelected", isSelected);
         aNBT.setLong("groupMask", groupMask);
         return aNBT;
@@ -191,24 +191,42 @@ public class DroneConnection {
     }
 
     public void setShutdownReason(ShutDownReason reason) {
-        shutdownReason = reason.getDisplayString();
+        shutdownReason = reason;
     }
 
     public static DroneConnection deserialize(PacketBuffer buf) throws IOException {
         NBTTagCompound tag = buf.readNBTTagCompoundFromBuffer();
         if (tag == null) return null;
-        return new DroneConnection(tag);
+        DroneConnection connection = new DroneConnection(tag);
+        // The reason is sent as its id plus its own data, so the client can localize it itself
+        connection.shutdownReason = ShutDownReasonRegistry.getSampleFromRegistry(buf.readStringFromBuffer(32767))
+            .newInstance();
+        connection.shutdownReason.decode(buf);
+        return connection;
     }
 
     public static void serialize(PacketBuffer buf, DroneConnection connection) throws IOException {
         buf.writeNBTTagCompoundToBuffer(connection.writeToNBT());
+        buf.writeStringToBuffer(connection.shutdownReason.getID());
+        connection.shutdownReason.encode(buf);
+    }
+
+    /**
+     * Reasons have no equals, and every simple reason shares the same id, so their data is compared instead. This runs
+     * on the server, so it must not localize anything.
+     */
+    private static boolean haveSameShutdownReason(DroneConnection a, DroneConnection b) {
+        if (!a.shutdownReason.getID()
+            .equals(b.shutdownReason.getID())) return false;
+        return a.shutdownReason.writeToNBT(new NBTTagCompound())
+            .equals(b.shutdownReason.writeToNBT(new NBTTagCompound()));
     }
 
     public static boolean areEqual(DroneConnection a, DroneConnection b) {
         if (a == null || b == null) return false;
         return a.customName.equals(b.customName) && a.isSelected == b.isSelected
             && a.machineStatus == b.machineStatus
-            && a.shutdownReason.equals(b.shutdownReason)
+            && haveSameShutdownReason(a, b)
             && a.groupMask == b.groupMask;
     }
 
