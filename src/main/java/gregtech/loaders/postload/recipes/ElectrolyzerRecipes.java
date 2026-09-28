@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gtnhlanth.common.register.WerkstoffMaterialPool.CalciumFluoride;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -17,7 +18,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import static gtnhlanth.common.register.WerkstoffMaterialPool.CalciumFluoride;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ElectrolyzerRecipes implements Runnable {
