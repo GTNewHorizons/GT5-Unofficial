@@ -870,7 +870,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(WerkstoffMaterialPool.CalciumFluoride.getFluidOrGas(3_000))
+            .fluidInputs(CalciumFluoride.getFluidOrGas(3_000))
             .itemOutputs(Materials.Calcium.getDust(1))
             .fluidOutputs(Materials.Fluorine.getGas(2_000))
             .duration(2 * SECONDS)
