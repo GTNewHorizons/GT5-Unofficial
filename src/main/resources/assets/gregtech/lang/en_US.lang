@@ -4804,6 +4804,7 @@ gt.item.scrap.name=Scrap
 gt.item.scrap.tooltip=A pile of... something
 gt.Item_Scrapbox.name=Scrapbox
 gt.Item_Scrapboxtooltip=Recycled and boxed
+gt.recipe.scrapbox=Scrapbox
 
 ## Shape
 gt.item.shape_empty.name=Empty Shape Plate

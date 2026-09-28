@@ -11,13 +11,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTRecipeConstants;
 
 public class ItemScrapbox extends GTGenericItem {
 
-    private static float weightTotal;
+    public static float weightTotal;
 
     public ItemScrapbox(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
@@ -58,6 +61,14 @@ public class ItemScrapbox extends GTGenericItem {
         public static void addDrop(float weight, ItemStack drop) {
             possibleDrops.add(new ScrapDrop(weight, drop));
             weightTotal += weight;
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Scrapbox.get(1))
+                .metadata(GTRecipeConstants.SCRAPBOX_DROP_WEIGHT, weight)
+                .itemOutputs(drop)
+                .duration(1)
+                .eut(1)
+                .fake()
+                .addTo(RecipeMaps.scrapboxFakeRecipes);
         }
 
         public static ItemStack getDrop() {
