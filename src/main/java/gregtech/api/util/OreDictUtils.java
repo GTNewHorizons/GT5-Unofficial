@@ -19,8 +19,10 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.GTShapeStore;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.GTItemStack;
@@ -34,8 +36,8 @@ import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 /// MaterialLib decides the item for every name of a (prefix, material) pair it serves: the pair's stack, MaterialLib's
 /// own item or the foreign item a shape override declares, whatever else registers under the name and in whatever
 /// order. A pair MaterialLib's own item serves answers from GregTech's preInit on; one a foreign item stands in for
-/// answers from GregTech's init, once that item is registered (see [#useMaterialLibTargets]). Other names stand for
-/// no item.
+/// answers from GregTech's init, once that item is registered (see [#useMaterialLibTargets]). `cellEmpty` stands
+/// for the empty cell every cell drains to; other names stand for no item.
 ///
 /// Another mod's item registered under a name that stands for a different item is a unified copy
 /// ([#isUnifiedCopy]): GregTech generates no recipes for it, and `ForeignPartTable` migrates saved stacks of it.
@@ -129,8 +131,9 @@ public class OreDictUtils {
     }
 
     /// The item every stack registered under `oreName` unifies to: the MaterialLib stack of the pair the name stands
-    /// for. Null when MaterialLib serves no pair under the name, when GregTech's shapes are not registered yet, or when
-    /// a foreign item stands in for the pair and [#useMaterialLibTargets] has not run yet.
+    /// for, or the empty cell for `cellEmpty`, which MaterialLib serves outside any pair. Null when MaterialLib serves
+    /// nothing under the name, when GregTech's shapes are not registered yet, or when a foreign item stands in for the
+    /// pair and [#useMaterialLibTargets] has not run yet.
     @Nullable
     public static ItemStack unificationTarget(String oreName) {
         ItemStack target = materialLibTargets.get(oreName);
@@ -138,9 +141,15 @@ public class OreDictUtils {
         if (GTShapeStore.all()
             .isEmpty()) return null;
         MaterialLibPair pair = materialLibPairs().get(oreName);
-        if (pair == null) return null;
-        if (!materialLibTargetsLive && !MaterialParts.isMinted(pair.prefix(), pair.material())) return null;
-        target = MaterialParts.stack(pair.prefix(), pair.material(), 1);
+        if (pair == null) {
+            if (!oreName.equals(OrePrefixes.cell.oreDictName(Materials.Empty)) || !ItemList.Cell_Empty.hasBeenSet()) {
+                return null;
+            }
+            target = ItemList.Cell_Empty.get(1);
+        } else {
+            if (!materialLibTargetsLive && !MaterialParts.isMinted(pair.prefix(), pair.material())) return null;
+            target = MaterialParts.stack(pair.prefix(), pair.material(), 1);
+        }
         if (target != null) materialLibTargets.put(oreName, target);
         return target;
     }
