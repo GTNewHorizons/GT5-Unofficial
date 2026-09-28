@@ -10240,7 +10240,6 @@ gt.metatool.01.file.name=File (%s)
 gt.metatool.01.file.tooltip=Hand-held electric filing device
 
 # Side names
-gt.lang.face.any=Any Side
 gt.lang.face.back=Back
 gt.lang.face.bottom=Bottom
 gt.lang.face.front=Front
