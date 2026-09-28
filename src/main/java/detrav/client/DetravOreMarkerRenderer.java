@@ -32,7 +32,7 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.GTMaterialIcons;
-import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialUtils;
 import gregtech.client.renderer.BillboardRenderHelper;
 import gregtech.client.renderer.BillboardRenderHelper.Plane;
 import gregtech.common.config.Client;
@@ -75,7 +75,7 @@ public class DetravOreMarkerRenderer {
     @Nullable
     private static IIconContainer resolveIcon(String materialName) {
         if (materialName == null || materialName.isEmpty()) return null;
-        Material mat = LegacyNameDomain.lookup(materialName);
+        Material mat = MaterialUtils.gregTechMaterial(materialName);
         if (mat == null) return null;
         return GTMaterialIcons.oreBlock("ore", mat);
     }

@@ -44,7 +44,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
@@ -164,7 +163,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 blastFurnaceBuilder(material, stack, tDustStack, 11).metadata(ADDITIVE_AMOUNT, 1000)
                                     .addTo(BlastFurnaceWithGas);
                             }
-                            if (!gasSmelting || LegacyNameDomain.contains(material)) {
+                            if (!gasSmelting || MaterialUtils.isGregTechMaterial(material)) {
                                 blastFurnaceBuilder(material, stack, tDustStack, 1).addTo(blastFurnaceRecipes);
                             }
                             // Californium is the sole blast-required material melting low enough for the

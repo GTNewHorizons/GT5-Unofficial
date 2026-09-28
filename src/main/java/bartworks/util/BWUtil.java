@@ -42,7 +42,6 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -69,7 +68,7 @@ public class BWUtil {
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack)) {
             Material material = MaterialData.getAssociation(itemStack).mMaterial.mMaterial;
-            if (LegacyNameDomain.contains(material)) matname = MaterialUtils.localName(material);
+            if (MaterialUtils.isGregTechMaterial(material)) matname = MaterialUtils.localName(material);
         }
         return ret.replace("%material", matname);
     }

@@ -30,7 +30,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
-import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.GTMockWorld;
 import gregtech.common.blocks.GTBlockOre;
 import it.unimi.dsi.fastutil.Pair;
@@ -100,7 +100,7 @@ public class UnificationOreAdapter implements IOreAdapter {
                 ore.getName()
                     .length());
 
-            Material ml = LegacyNameDomain.lookup(matName);
+            Material ml = MaterialUtils.gregTechMaterial(matName);
 
             if (ml == null) continue;
 
@@ -126,7 +126,7 @@ public class UnificationOreAdapter implements IOreAdapter {
                     prefix.getName()
                         .length());
 
-                Material ml = LegacyNameDomain.lookup(matName);
+                Material ml = MaterialUtils.gregTechMaterial(matName);
 
                 if (ml == null) continue;
 

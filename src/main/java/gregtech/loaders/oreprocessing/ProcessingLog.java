@@ -19,7 +19,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -33,7 +32,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (!LegacyNameDomain.contains(material)) return;
+        if (!MaterialUtils.isGregTechMaterial(material)) return;
 
         short meta = (short) stack.getItemDamage();
 

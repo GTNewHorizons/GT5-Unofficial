@@ -33,7 +33,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
@@ -552,7 +551,8 @@ public class EyeOfHarmonyRecipe {
     public static void processHelperIfPossible(HashMapHelper outputMap, @Nullable Material material,
         double mainMultiplier, double probability) {
         if (material == null) return;
-        if (LegacyNameDomain.contains(material) || material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
+        if (MaterialUtils.isGregTechMaterial(material)
+            || material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
             processHelper(outputMap, material, mainMultiplier, probability);
         }
     }

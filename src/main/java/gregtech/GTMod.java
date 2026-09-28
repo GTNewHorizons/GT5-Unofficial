@@ -66,7 +66,6 @@ import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.gui.modularui.GTUIInfos;
-import gregtech.api.material.LegacyNameDomainTable;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialDeclarationValidator;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -345,7 +344,6 @@ public class GTMod {
         LegacyMaterialIDIndex.init();
         LegacyWerkstoffIndex.init();
         MaterialDeclarationValidator.validate();
-        LegacyNameDomainTable.verifyResolvable();
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
 

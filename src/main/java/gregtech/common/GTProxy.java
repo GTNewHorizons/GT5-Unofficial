@@ -117,7 +117,6 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -763,7 +762,7 @@ public class GTProxy implements IFuelHandler {
         }
         GT_FML_LOGGER.debug("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!LegacyNameDomain.contains(material)) continue;
+            if (!MaterialUtils.isGregTechMaterial(material)) continue;
             if (MaterialUtils.unifiable(material)) {
                 if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(

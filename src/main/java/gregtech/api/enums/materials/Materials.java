@@ -17664,6 +17664,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "NH₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Nitrogen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 4L)))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Adluorite = MaterialLibAPI.newMaterial("gregtech", "Adluorite", TextureSet.of("gregtech", "NONE"))
             .setTint(0xFFFFFFFF)
@@ -18190,6 +18191,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.CarbonDioxide), 2L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "Bi₂O₂(CO₂)₂")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Bismuthinite = MaterialLibAPI.newMaterial("gregtech", "Bismuthinite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFC0C0C0)
@@ -18210,6 +18212,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Bi₂S₃")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Zirconium = MaterialLibAPI.newMaterial("gregtech", "Zirconium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFAFAFAF)
@@ -18253,6 +18256,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 51200)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.zirconium")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CubicZirconia = MaterialLibAPI.newMaterial("gregtech", "CubicZirconia", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFFFFFFFF)
@@ -18282,6 +18286,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "ZrO₂")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FluorBuergerite = MaterialLibAPI.newMaterial("gregtech", "Fluor-Buergerite", TextureSet.of("gregtech", "RUBY"))
             .setTint(0xFF202020)
@@ -18309,6 +18314,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "NaFe₃Al₆(Si₆O₁₈)(BO₃)₃O₃F")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.YttriumOxide = MaterialLibAPI.newMaterial("gregtech", "YttriumOxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
@@ -18329,6 +18335,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Yttrium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Y₂O₃")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ChromoAluminoPovondraite = MaterialLibAPI.newMaterial("gregtech", "Chromo-Alumino-Povondraite", TextureSet.of("gregtech", "RUBY"))
             .setTint(0xFF00796A)
@@ -18356,6 +18363,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "NaCr₃(Al₄Mg₂)(Si₆O₁₈)(BO₃)₃(OH)₃O")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.VanadioOxyDravite = MaterialLibAPI.newMaterial("gregtech", "Vanadio-Oxy-Dravite", TextureSet.of("gregtech", "RUBY"))
             .setTint(0xFF60A0A0)
@@ -18383,6 +18391,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "NaV₃(Al₄Mg₂)(Si₆O₁₈)(BO₃)₃(OH)₃O")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Olenite = MaterialLibAPI.newMaterial("gregtech", "Olenite", TextureSet.of("gregtech", "RUBY"))
             .setTint(0xFFD2D2D2)
@@ -18410,6 +18419,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "NaAl₃Al₆(Si₆O₁₈)(BO₃)₃O₃OH")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Arsenopyrite = MaterialLibAPI.newMaterial("gregtech", "Arsenopyrite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB0B0B0)
@@ -18431,6 +18441,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Arsenic), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "FeAsS")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Ferberite = MaterialLibAPI.newMaterial("gregtech", "Ferberite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB0B0B0)
@@ -18451,6 +18462,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "FeWO₃")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Loellingite = MaterialLibAPI.newMaterial("gregtech", "Loellingite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFD0D0D0)
@@ -18472,6 +18484,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Arsenic), 2L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "FeAs₂")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Roquesite = MaterialLibAPI.newMaterial("gregtech", "Roquesite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFA0A0A0)
@@ -18492,6 +18505,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Indium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "CuInS₂")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Bornite = MaterialLibAPI.newMaterial("gregtech", "Bornite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF97662B)
@@ -18513,6 +18527,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 4L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "Cu₅FeS₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Wittichenite = MaterialLibAPI.newMaterial("gregtech", "Wittichenite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFFF6400)
@@ -18533,6 +18548,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "Cu₅BiS₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Djurleite = MaterialLibAPI.newMaterial("gregtech", "Djurleite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF606060)
@@ -18552,6 +18568,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 31L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 16L)))
             .setProperty(GTMaterialProperties.FORMULA, "Cu₃₁S₁₆")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Huebnerite = MaterialLibAPI.newMaterial("gregtech", "Huebnerite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF806060)
@@ -18571,6 +18588,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Manganese), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "MnWO₃")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Thorianite = MaterialLibAPI.newMaterial("gregtech", "Thorianite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF303030)
@@ -18591,6 +18609,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "ThO₂")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RedZircon = MaterialLibAPI.newMaterial("gregtech", "RedZircon", TextureSet.of("gregtech", "GEM_VERTICAL"))
             .setTint(0xFFC31313)
@@ -18618,6 +18637,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "ZrSiO₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Fayalite = MaterialLibAPI.newMaterial("gregtech", "Fayalite", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFF323232)
@@ -18645,6 +18665,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "Fe₂SiO₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Forsterite = MaterialLibAPI.newMaterial("gregtech", "Forsterite", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFFFFFFFF)
@@ -18672,6 +18693,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Magnesium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "Mg₂SiO₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Hedenbergite = MaterialLibAPI.newMaterial("gregtech", "Hedenbergite", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFF649664)
@@ -18699,6 +18721,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 6L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "CaFeSi₂O₆")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RedDescloizite = MaterialLibAPI.newMaterial("gregtech", "RedDescloizite", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFFBF180F)
@@ -18719,6 +18742,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lead), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Zinc), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Vanadium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "PbZnVO₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.OrangeDescloizite = MaterialLibAPI.newMaterial("gregtech", "OrangeDescloizite", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFFF96D18)
@@ -18739,6 +18763,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lead), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Vanadium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "PbCuVO₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.GreenFuchsite = MaterialLibAPI.newMaterial("gregtech", "GreenFuchsite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF4D7F64)
@@ -18757,6 +18782,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Aluminium), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 12L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "KAl₃Si₃O₁(OH)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RedFuchsite = MaterialLibAPI.newMaterial("gregtech", "RedFuchsite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF800000)
@@ -18775,6 +18801,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chrome), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 12L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "KCr₃Si₃O₁(OH)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Thorium232 = MaterialLibAPI.newMaterial("gregtech", "Thorium232", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF004000)
@@ -18823,6 +18850,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 1)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.thorium232")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BismuthTelluride = MaterialLibAPI.newMaterial("gregtech", "BismuthTelluride", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF204820)
@@ -18844,6 +18872,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tellurium), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Bi₂Te₃")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Dibismuthhydroborat = MaterialLibAPI.newMaterial("gregtech", "Dibismuthhydroborat", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF489048)
@@ -18865,6 +18894,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Bi₂BH")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CircuitCompoundMK3 = MaterialLibAPI.newMaterial("gregtech", "CircuitCompoundMK3", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF242424)
@@ -18886,6 +18916,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.IndiumGalliumPhosphide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Dibismuthhydroborat), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.BismuthTelluride), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "InGaP(Bi₂BH)₃(Bi₂Te₃)₂")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Prasiolite = MaterialLibAPI.newMaterial("gregtech", "Prasiolite", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFFD0DD95)
@@ -18913,6 +18944,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 10L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "Si₅O₁Fe")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MagnetoResonatic = MaterialLibAPI.newMaterial("gregtech", "MagnetoResonatic", TextureSet.of("gregtech", "MAGNETIC"))
             .setTint(0xFFDD77DD)
@@ -18942,6 +18974,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Prasiolite), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.BismuthTelluride), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.CubicZirconia), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SteelMagnetic), 1L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "NoBlast"))
             .setProperty(GTMaterialProperties.FORMULA, "(Si₅O₁Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅C")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Xenon = MaterialLibAPI.newMaterial("gregtech", "Xenon", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF14397F)
@@ -18974,6 +19007,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BOILING_POINT, 165)
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_GAS")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.xenon")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Oganesson = MaterialLibAPI.newMaterial("gregtech", "Oganesson", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF14397F)
@@ -18999,6 +19033,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("AnaerobeGas", "NobleGas"))
             .setProperty(GTMaterialProperties.FORMULA, "Og")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Californium = MaterialLibAPI.newMaterial("gregtech", "Californium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFAAAAAA)
@@ -19041,6 +19076,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 4)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.californium")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -19078,6 +19114,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BOILING_POINT, 27)
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_GAS")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.neon")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Krypton = MaterialLibAPI.newMaterial("gregtech", "Krypton", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFB1FF32)
@@ -19110,6 +19147,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BOILING_POINT, 120)
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_GAS")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.krypton")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BArTiMaEuSNeK = MaterialLibAPI.newMaterial("gregtech", "BArTiMaEuSNeK", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFF00FF00)
@@ -19151,6 +19189,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "Are you serious?")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PlatinumConcentrate = MaterialLibAPI.newMaterial("gregtech", "PlatinumConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFC8)
@@ -19170,6 +19209,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "PtPd??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PlatinumSalt = MaterialLibAPI.newMaterial("gregtech", "PlatinumSalt", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFC8)
@@ -19187,6 +19227,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pt??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RefinedPlatinumSalt = MaterialLibAPI.newMaterial("gregtech", "RefinedPlatinumSalt", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFFFFFC8)
@@ -19204,6 +19245,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pt??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PlatinumMetallicPowder = MaterialLibAPI.newMaterial("gregtech", "PlatinumMetallicPowder", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFFFFFC8)
@@ -19224,6 +19266,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Platinum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "PtPdIrOsRhRu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PlatinumResidue = MaterialLibAPI.newMaterial("gregtech", "PlatinumResidue", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFF64632E)
@@ -19241,6 +19284,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "IrOsRhRu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AmmoniumChloride = MaterialLibAPI.newMaterial("gregtech", "AmmoniumChloride", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
@@ -19263,6 +19307,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Ammonium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HydrochloricAcidGT5U), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "NH₄Cl")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ReprecipitatedPlatinum = MaterialLibAPI.newMaterial("gregtech", "ReprecipitatedPlatinum", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFFFFFC8)
@@ -19280,6 +19325,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "PtCl")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PalladiumEnrichedAmmonia = MaterialLibAPI.newMaterial("gregtech", "PalladiumEnrichedAmmonia", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFB1B1B1)
@@ -19302,6 +19348,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Ammonium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Palladium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Pd??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PalladiumMetallicPowder = MaterialLibAPI.newMaterial("gregtech", "PalladiumMetallicPowder", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB1B1B1)
@@ -19322,6 +19369,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Palladium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "Pd??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ReprecipitatedPalladium = MaterialLibAPI.newMaterial("gregtech", "ReprecipitatedPalladium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB1B1B1)
@@ -19339,6 +19387,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pd??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PalladiumSalt = MaterialLibAPI.newMaterial("gregtech", "PalladiumSalt", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB1B1B1)
@@ -19356,6 +19405,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pd??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SodiumFormate = MaterialLibAPI.newMaterial("gregtech", "SodiumFormate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFAAAA)
@@ -19378,6 +19428,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SodiumHydroxideGT5U), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CarbonMonoxide), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "HCOONa")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SodiumSulfate = MaterialLibAPI.newMaterial("gregtech", "SodiumSulfate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
@@ -19397,6 +19448,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Sodium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "Na₂SO₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FormicAcid = MaterialLibAPI.newMaterial("gregtech", "FormicAcid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFAA77)
@@ -19417,6 +19469,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "CH₂O₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PotassiumDisulfate = MaterialLibAPI.newMaterial("gregtech", "PotassiumDisulfate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFBBB66)
@@ -19438,6 +19491,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cellMolten"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 7L)))
             .setProperty(GTMaterialProperties.FORMULA, "K₂S₂O₇")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LeachResidue = MaterialLibAPI.newMaterial("gregtech", "LeachResidue", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFF644629)
@@ -19455,6 +19509,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "IsOsRu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RhodiumSulfate = MaterialLibAPI.newMaterial("gregtech", "RhodiumSulfate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFEEAA55)
@@ -19475,6 +19530,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RhKSO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RhodiumSulfateSolution = MaterialLibAPI.newMaterial("gregtech", "RhodiumSulfateSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFBB66)
@@ -19494,6 +19550,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RhSO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CalciumChloride = MaterialLibAPI.newMaterial("gregtech", "CalciumChloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
@@ -19516,6 +19573,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "CaCl₂")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Ruthenium = MaterialLibAPI.newMaterial("gregtech", "Ruthenium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF646464)
@@ -19557,6 +19615,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.ruthenium")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SodiumRuthenate = MaterialLibAPI.newMaterial("gregtech", "SodiumRuthenate", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF3A40CB)
@@ -19574,6 +19633,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "NaRu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RutheniumTetroxide = MaterialLibAPI.newMaterial("gregtech", "RutheniumTetroxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFC7C7C7)
@@ -19595,6 +19655,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RuO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HotRutheniumTetroxideSolution = MaterialLibAPI.newMaterial("gregtech", "HotRutheniumTetroxideSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFC7C7C7)
@@ -19614,6 +19675,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RuO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RutheniumTetroxideSolution = MaterialLibAPI.newMaterial("gregtech", "RutheniumTetroxideSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFC7C7C7)
@@ -19633,6 +19695,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RuO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RarestMetalResidue = MaterialLibAPI.newMaterial("gregtech", "RarestMetalResidue", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFF644629)
@@ -19653,6 +19716,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Osmiridium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "OsIr??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.IridiumMetalResidue = MaterialLibAPI.newMaterial("gregtech", "IridiumMetalResidue", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFF846649)
@@ -19673,6 +19737,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iridium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ir??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SludgeDustResidue = MaterialLibAPI.newMaterial("gregtech", "SludgeDustResidue", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF846649)
@@ -19694,6 +19759,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SiliconDioxide), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Gold), 2L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_GOLD"))
             .setProperty(GTMaterialProperties.FORMULA, "(SiO₂)₃Au₂")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AcidicOsmiumSolution = MaterialLibAPI.newMaterial("gregtech", "AcidicOsmiumSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF846649)
@@ -19713,6 +19779,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "OsHCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.IridiumDioxide = MaterialLibAPI.newMaterial("gregtech", "IridiumDioxide", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF846649)
@@ -19730,6 +19797,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "IrO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.OsmiumSolution = MaterialLibAPI.newMaterial("gregtech", "OsmiumSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF846649)
@@ -19749,6 +19817,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "OsCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AcidicIridiumSolution = MaterialLibAPI.newMaterial("gregtech", "AcidicIridiumSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF846649)
@@ -19768,6 +19837,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "IrCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.IridiumChloride = MaterialLibAPI.newMaterial("gregtech", "IridiumChloride", TextureSet.of("gregtech", "LAPIS"))
             .setTint(0xFF846649)
@@ -19785,6 +19855,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "IrCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MetallicSludgeDustResidue = MaterialLibAPI.newMaterial("gregtech", "MetallicSludgeDustResidue", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF846649)
@@ -19805,6 +19876,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Nickel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "NiCu")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Rhodium = MaterialLibAPI.newMaterial("gregtech", "Rhodium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFF4F4F4)
@@ -19846,6 +19918,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.rhodium")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CrudeRhodiumMetal = MaterialLibAPI.newMaterial("gregtech", "CrudeRhodiumMetal", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF666666)
@@ -19866,6 +19939,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Rhodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Rh??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RhodiumSalt = MaterialLibAPI.newMaterial("gregtech", "RhodiumSalt", TextureSet.of("gregtech", "GEM_VERTICAL"))
             .setTint(0xFF848484)
@@ -19883,6 +19957,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "RhNaCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RhodiumSaltSolution = MaterialLibAPI.newMaterial("gregtech", "RhodiumSaltSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF667788)
@@ -19902,6 +19977,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RhNaCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SodiumNitrate = MaterialLibAPI.newMaterial("gregtech", "SodiumNitrate", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFF846684)
@@ -19924,6 +20000,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BOILING_POINT, 922)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Sodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Nitrogen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RhodiumNitrate = MaterialLibAPI.newMaterial("gregtech", "RhodiumNitrate", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFF776649)
@@ -19941,6 +20018,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "RhNO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ZincSulfate = MaterialLibAPI.newMaterial("gregtech", "ZincSulfate", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFF846649)
@@ -19960,6 +20038,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zinc), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "ZnSO₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RhodiumFilterCake = MaterialLibAPI.newMaterial("gregtech", "RhodiumFilterCake", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFF776649)
@@ -19977,6 +20056,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "RhNO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RhodiumFilterCakeSolution = MaterialLibAPI.newMaterial("gregtech", "RhodiumFilterCakeSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF667788)
@@ -19996,6 +20076,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RhN??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -20018,6 +20099,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "RhNH??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RhodiumPlatedPalladium = MaterialLibAPI.newMaterial("gregtech", "Rhodium-PlatedPalladium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFFFE6E6)
@@ -20054,6 +20136,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Pd₃Rh")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Tiberium = MaterialLibAPI.newMaterial("gregtech", "Tiberium", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFF22EE22)
@@ -20094,6 +20177,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Ruridit = MaterialLibAPI.newMaterial("gregtech", "Ruridit", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFA4A4A4)
@@ -20130,6 +20214,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ru₂Ir")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Fluorspar = MaterialLibAPI.newMaterial("gregtech", "Fluorspar", TextureSet.of("gregtech", "GEM_VERTICAL"))
             .setTint(0xFFB945FB)
@@ -20158,6 +20243,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 2L)))
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "CaF₂")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HighDurabilityCompoundSteel = MaterialLibAPI.newMaterial("gregtech", "HighDurabilityCompoundSteel", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF334433)
@@ -20192,6 +20278,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "((Fe₅C)W)₁₂((((Fe₅C)W)₅CrMo₂V)₆CoMnSi)₉(((Fe₅C)W)₅CrMo₂V)₆(Ru₂Ir)₃((Si₅O₁Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅C)₂Pu")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Atheneite = MaterialLibAPI.newMaterial("gregtech", "Atheneite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFAFAFAF)
@@ -20213,6 +20300,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PalladiumMetallicPowder), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Mercury), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Arsenic), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "(Pd,Hg)₃As")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Temagamite = MaterialLibAPI.newMaterial("gregtech", "Temagamite", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFFF5F5F5)
@@ -20234,6 +20322,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PalladiumMetallicPowder), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Mercury), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tellurium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Pd₃HgTe")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Terlinguaite = MaterialLibAPI.newMaterial("gregtech", "Terlinguaite", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFFF5F5F5)
@@ -20254,6 +20343,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Mercury), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Hg₂ClO")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AdemicSteel = MaterialLibAPI.newMaterial("gregtech", "AdemicSteel", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFCCCCCC)
@@ -20289,6 +20379,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RawAdemicSteel = MaterialLibAPI.newMaterial("gregtech", "RawAdemicSteel", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFFEDEDED)
@@ -20310,6 +20401,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Steel), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.VanadiumSteel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.DamascusSteel), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "(Fe₅C)₂VCr(Fe₅C)₇Fe₅C")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HexafluorosilicicAcid = MaterialLibAPI.newMaterial("gregtech", "HexafluorosilicicAcid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF2C70B5)
@@ -20331,6 +20423,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 6L)))
             .setProperty(GTMaterialProperties.FORMULA, "H₂SiF₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Potassiumfluorosilicate = MaterialLibAPI.newMaterial("gregtech", "Potassiumfluorosilicate", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF2E97B2)
@@ -20351,6 +20444,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 6L)))
             .setProperty(GTMaterialProperties.FORMULA, "K₂SiF₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PotassiumCarbonate = MaterialLibAPI.newMaterial("gregtech", "PotassiumCarbonate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF7B964F)
@@ -20371,6 +20465,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "K₂CO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RawFluorophlogopite = MaterialLibAPI.newMaterial("gregtech", "RawFluorophlogopite", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF36510B)
@@ -20388,6 +20483,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "K₄Al₂(SiO₂)F₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.UnformedFluorophlogopite = MaterialLibAPI.newMaterial("gregtech", "UnformedFluorophlogopite", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFBFD355)
@@ -20407,6 +20503,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "KMg₃(Si₃Al)O₁F₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Fluorophlogopite = MaterialLibAPI.newMaterial("gregtech", "Fluorophlogopite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFBFD355)
@@ -20437,6 +20534,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "KMg₃(Si₃Al)O₁F₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LiquidHelium = MaterialLibAPI.newMaterial("gregtech", "LiquidHelium", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFD2E6FA)
@@ -20456,6 +20554,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "He")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HafniumCarbide = MaterialLibAPI.newMaterial("gregtech", "HafniumCarbide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF7D877D)
@@ -20476,6 +20575,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "HfC")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TantalumCarbideHafniumCarbideMixture = MaterialLibAPI.newMaterial("gregtech", "TantalumCarbide/HafniumCarbideMixture", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF4B554B)
@@ -20493,6 +20593,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "(TaC)₄HfC")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TantalumHafniumCarbide = MaterialLibAPI.newMaterial("gregtech", "TantalumHafniumCarbide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF505A50)
@@ -20527,6 +20628,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Ta₄HfC₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.GraphiteUraniumMixture = MaterialLibAPI.newMaterial("gregtech", "Graphite-UraniumMixture", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF3A773D)
@@ -20548,6 +20650,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Graphite), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Uranium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "C₃U")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.UraniumBasedLiquidFuel = MaterialLibAPI.newMaterial("gregtech", "UraniumBasedLiquidFuel", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF00FF00)
@@ -20572,6 +20675,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "U₃₆K₈Qt₄Rn")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.UraniumBasedLiquidFuelExcitedState = MaterialLibAPI.newMaterial("gregtech", "UraniumBasedLiquidFuel(ExcitedState)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF00FF00)
@@ -20596,6 +20700,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "*(U₃₆K₈Qt₄Rn)*")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.UraniumBasedLiquidFuelDepleted = MaterialLibAPI.newMaterial("gregtech", "UraniumBasedLiquidFuel(Depleted)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6E8B3D)
@@ -20616,6 +20721,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "PbBiBaXe")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.UraniumCarbideThoriumMixture = MaterialLibAPI.newMaterial("gregtech", "UraniumCarbide-ThoriumMixture", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF163207)
@@ -20637,6 +20743,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium), 11L), new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium232), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Uranium235), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Th₁₁ThU-235C₃")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumBasedLiquidFuel = MaterialLibAPI.newMaterial("gregtech", "ThoriumBasedLiquidFuel", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF503266)
@@ -20661,6 +20768,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Th₄₃₂Li₄D₂Hg")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumBasedLiquidFuelExcitedState = MaterialLibAPI.newMaterial("gregtech", "ThoriumBasedLiquidFuel(ExcitedState)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF503266)
@@ -20685,6 +20793,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "*(Th₄₃₂Li₄D₂Hg)*")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumBasedLiquidFuelDepleted = MaterialLibAPI.newMaterial("gregtech", "ThoriumBasedLiquidFuel(Depleted)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF7D6C8A)
@@ -20705,6 +20814,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "ThPrBIn")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PlutoniumOxideUraniumMixture = MaterialLibAPI.newMaterial("gregtech", "PlutoniumOxide-UraniumMixture", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD11F4A)
@@ -20726,6 +20836,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Plutonium), 10L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 12L), new MaterialRefStack(MaterialRef.of(() -> Materials.Uranium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 8L)))
             .setProperty(GTMaterialProperties.FORMULA, "Pu₁O₁₂U₂C₈")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PlutoniumBasedLiquidFuel = MaterialLibAPI.newMaterial("gregtech", "PlutoniumBasedLiquidFuel", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFEF1515)
@@ -20750,6 +20861,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Pu₄₅Nt₈Cs₁₆Nq₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PlutoniumBasedLiquidFuelExcitedState = MaterialLibAPI.newMaterial("gregtech", "PlutoniumBasedLiquidFuel(ExcitedState)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFEF1515)
@@ -20774,6 +20886,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "*(Pu₄₅Nt₈Cs₁₆Nq₂)*")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PlutoniumBasedLiquidFuelDepleted = MaterialLibAPI.newMaterial("gregtech", "PlutoniumBasedLiquidFuel(Depleted)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF671919)
@@ -20794,6 +20907,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "TnCeAuKr")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.OxalicAcid = MaterialLibAPI.newMaterial("gregtech", "OxalicAcid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF79D855)
@@ -20814,6 +20928,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "H₂C₂O₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.VanadiumPentoxide = MaterialLibAPI.newMaterial("gregtech", "VanadiumPentoxide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFDE8D12)
@@ -20833,6 +20948,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Vanadium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 5L)))
             .setProperty(GTMaterialProperties.FORMULA, "V₂O₅")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumNitrate = MaterialLibAPI.newMaterial("gregtech", "ThoriumNitrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFBAE826)
@@ -20852,6 +20968,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Th(NO₃)₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumOxalate = MaterialLibAPI.newMaterial("gregtech", "ThoriumOxalate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF506313)
@@ -20869,6 +20986,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Th(C₂O₄)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumHydroxide = MaterialLibAPI.newMaterial("gregtech", "ThoriumHydroxide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF92AE89)
@@ -20886,6 +21004,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Th(OH)₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SodiumOxalate = MaterialLibAPI.newMaterial("gregtech", "SodiumOxalate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFE4F89B)
@@ -20903,6 +21022,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Na₂C₂O₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumTetrachloride = MaterialLibAPI.newMaterial("gregtech", "ThoriumTetrachloride", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF137C16)
@@ -20922,6 +21042,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "ThCl₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumTetrafluoride = MaterialLibAPI.newMaterial("gregtech", "ThoriumTetrafluoride", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF156A6A)
@@ -20949,6 +21070,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 500000)
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium232), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 4L)))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Thorium232Tetrafluoride = MaterialLibAPI.newMaterial("gregtech", "Thorium-232Tetrafluoride", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF156A6A)
@@ -20970,6 +21092,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium232), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "ThF₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Orundum = MaterialLibAPI.newMaterial("gregtech", "Orundum", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFFCD2626)
@@ -20999,6 +21122,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "Or")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AtomicSeparationCatalyst = MaterialLibAPI.newMaterial("gregtech", "AtomicSeparationCatalyst", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE85E0C)
@@ -21031,6 +21155,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ExtremelyUnstableNaquadah = MaterialLibAPI.newMaterial("gregtech", "ExtremelyUnstableNaquadah", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF062605)
@@ -21069,6 +21194,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -21099,6 +21225,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Far from enough")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HeavyNaquadahFuel = MaterialLibAPI.newMaterial("gregtech", "HeavyNaquadahFuel", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF36FF36)
@@ -21124,6 +21251,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Still needs processing")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahGas = MaterialLibAPI.newMaterial("gregtech", "NaquadahGas", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF5DDB00)
@@ -21150,6 +21278,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Who needs it?")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahAsphalt = MaterialLibAPI.newMaterial("gregtech", "NaquadahAsphalt", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF052505)
@@ -21175,6 +21304,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Atomic runoff")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Ether = MaterialLibAPI.newMaterial("gregtech", "Ether", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFEBBC2F)
@@ -21196,6 +21326,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 10L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "CH₃CH₂OCH₂CH₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AntimonyTrichlorideSolution = MaterialLibAPI.newMaterial("gregtech", "AntimonyTrichlorideSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF0FDC34)
@@ -21215,6 +21346,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SbCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AntimonyPentachlorideSolution = MaterialLibAPI.newMaterial("gregtech", "AntimonyPentachlorideSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF15932C)
@@ -21234,6 +21366,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SbCl₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AntimonyPentachloride = MaterialLibAPI.newMaterial("gregtech", "AntimonyPentachloride", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF15932C)
@@ -21253,6 +21386,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SbCl₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AntimonyPentafluoride = MaterialLibAPI.newMaterial("gregtech", "AntimonyPentafluoride", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF16D5E2)
@@ -21272,6 +21406,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SbF₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FluoroantimonicAcid = MaterialLibAPI.newMaterial("gregtech", "FluoroantimonicAcid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF16D5E2)
@@ -21291,6 +21426,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "HSbF₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RadioactiveSludge = MaterialLibAPI.newMaterial("gregtech", "RadioactiveSludge", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFB3491E)
@@ -21313,6 +21449,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, ">>> DANGER <<<")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AcidNaquadahEmulsion = MaterialLibAPI.newMaterial("gregtech", "AcidNaquadahEmulsion", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF252222)
@@ -21337,6 +21474,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??Nq??H⁺")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahEmulsion = MaterialLibAPI.newMaterial("gregtech", "NaquadahEmulsion", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF4A4645)
@@ -21361,6 +21499,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??Nq??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahSolution = MaterialLibAPI.newMaterial("gregtech", "NaquadahSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF848180)
@@ -21385,6 +21524,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~Nq~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkI = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkI", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF625C5B)
@@ -21409,6 +21549,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE FIRST STEP")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkIDepleted = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkI(Depleted)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFCBC3C1)
@@ -21429,6 +21570,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE FIRST STEP (taken)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkII = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkII", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF524E4D)
@@ -21453,6 +21595,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SIXTY BILLION KILOWATT-HOURS")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkIIDepleted = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkII(Depleted)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFB5B0AE)
@@ -21473,6 +21616,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SIXTY BILLION KILOWATT-HOURS (spent)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkIII = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkIII", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF292221)
@@ -21497,6 +21641,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "POWER OVERWHELMING")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkIIIDepleted = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkIII(Depleted)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF664038)
@@ -21517,6 +21662,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "POWER OVERWHELMING (no longer)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkIV = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkIV", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF0E0C0C)
@@ -21541,6 +21687,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "STRIKE DOWN THE SUN")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkIVDepleted = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkIV(Depleted)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF8E3422)
@@ -21561,6 +21708,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "STRIKE DOWN THE SUN (done)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkV = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkV", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF000000)
@@ -21585,6 +21733,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE END")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkVDepleted = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkV(Depleted)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
@@ -21605,6 +21754,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE END (literally)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkVI = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkVI", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF300000)
@@ -21629,6 +21779,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE FUTURE")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahBasedLiquidFuelMkVIDepleted = MaterialLibAPI.newMaterial("gregtech", "NaquadahBasedLiquidFuelMkVI(Depleted)", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF993333)
@@ -21649,6 +21800,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE FUTURE (achieved)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ZincChloride = MaterialLibAPI.newMaterial("gregtech", "ZincChloride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF73A5FC)
@@ -21670,6 +21822,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zinc), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "ZnCl₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ZnThAlloy = MaterialLibAPI.newMaterial("gregtech", "Zn-ThAlloy", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF123456)
@@ -21704,6 +21857,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zinc), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "ZnTh")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahOxideMixture = MaterialLibAPI.newMaterial("gregtech", "NaquadahOxideMixture", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF4C4C4C)
@@ -21721,6 +21875,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "NqTiGaAd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TitaniumTrifluoride = MaterialLibAPI.newMaterial("gregtech", "TitaniumTrifluoride", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFC092A8)
@@ -21740,6 +21895,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Titanium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "TiF₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LowQualityNaquadahEmulsion = MaterialLibAPI.newMaterial("gregtech", "LowQualityNaquadahEmulsion", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF4C4C4C)
@@ -21759,6 +21915,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "NqGaAd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.GalliumHydroxide = MaterialLibAPI.newMaterial("gregtech", "GalliumHydroxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA6A6A6)
@@ -21777,6 +21934,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Gallium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ga(OH)₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LowQualityNaquadahSolution = MaterialLibAPI.newMaterial("gregtech", "LowQualityNaquadahSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF716262)
@@ -21796,6 +21954,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~NqAd~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials._2Ethyl1Hexanol = MaterialLibAPI.newMaterial("gregtech", "2-Ethyl-1-Hexanol", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF80B557)
@@ -21817,6 +21976,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 18L)))
             .setProperty(GTMaterialProperties.FORMULA, "C₈H₁₈O")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.P507 = MaterialLibAPI.newMaterial("gregtech", "P-507", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF29C22A)
@@ -21838,6 +21998,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 16L), new MaterialRefStack(MaterialRef.of(() -> Materials.Phosphorus), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 35L)))
             .setProperty(GTMaterialProperties.FORMULA, "(C₈H₁₇)₂PO₃H")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahAdamantiumSolution = MaterialLibAPI.newMaterial("gregtech", "Naquadah-AdamantiumSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF3D3838)
@@ -21857,6 +22018,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~NqAd~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahRichSolution = MaterialLibAPI.newMaterial("gregtech", "Naquadah-RichSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF333333)
@@ -21876,6 +22038,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~Nq~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Naquadahine = MaterialLibAPI.newMaterial("gregtech", "Naquadahine", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF333333)
@@ -21896,6 +22059,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadah), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "NqO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FluorineRichWasteLiquid = MaterialLibAPI.newMaterial("gregtech", "Fluorine-RichWasteLiquid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF136862)
@@ -21916,6 +22080,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??F??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.WasteLiquid = MaterialLibAPI.newMaterial("gregtech", "WasteLiquid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF141C68)
@@ -21936,6 +22101,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "????")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Adamantine = MaterialLibAPI.newMaterial("gregtech", "Adamantine", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFB7B7B7)
@@ -21957,6 +22123,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Adamantium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ad₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EnrichedNaquadahOxideMixture = MaterialLibAPI.newMaterial("gregtech", "Enriched-NaquadahOxideMixture", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF826868)
@@ -21979,6 +22146,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "KeNq⁺")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TriniumSulphate = MaterialLibAPI.newMaterial("gregtech", "TriniumSulphate", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFDADADA)
@@ -21998,6 +22166,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Trinium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "KeSO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EnrichedNaquadahRichSolution = MaterialLibAPI.newMaterial("gregtech", "Enriched-Naquadah-RichSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF523939)
@@ -22022,6 +22191,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~Nq⁺~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ConcentratedEnrichedNaquadahSludge = MaterialLibAPI.newMaterial("gregtech", "ConcentratedEnriched-NaquadahSludge", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF523939)
@@ -22044,6 +22214,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Nq⁺")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -22074,6 +22245,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NaquadahEnriched), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 8L)))
             .setProperty(GTMaterialProperties.FORMULA, "Nq⁺(SO₄)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadriaOxideMixture = MaterialLibAPI.newMaterial("gregtech", "NaquadriaOxideMixture", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF4D4D55)
@@ -22097,6 +22269,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Nq*BaIn")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.IndiumPhosphate = MaterialLibAPI.newMaterial("gregtech", "IndiumPhosphate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF2B2E70)
@@ -22117,6 +22290,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Indium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Phosphorus), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "InPO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LowQualityNaquadriaPhosphate = MaterialLibAPI.newMaterial("gregtech", "LowQualityNaquadriaPhosphate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF4D4D55)
@@ -22140,6 +22314,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "??Nq*₃(PO₄)₄??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadriaRichSolution = MaterialLibAPI.newMaterial("gregtech", "Naquadria-RichSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF1F1E33)
@@ -22165,6 +22340,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~Nq*~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LowQualityNaquadriaSulphate = MaterialLibAPI.newMaterial("gregtech", "LowQualityNaquadriaSulphate", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF737284)
@@ -22191,6 +22367,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??Nq*(SO₄)₂??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadriaSulphate = MaterialLibAPI.newMaterial("gregtech", "NaquadriaSulphate", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF1F1E33)
@@ -22217,6 +22394,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadria), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 8L)))
             .setProperty(GTMaterialProperties.FORMULA, "Nq*(SO₄)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadahGoo = MaterialLibAPI.newMaterial("gregtech", "NaquadahGoo", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF4C4C4C)
@@ -22236,6 +22414,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "NqTiGaAd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EnrichedNaquadahGoo = MaterialLibAPI.newMaterial("gregtech", "EnrichedNaquadahGoo", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF826868)
@@ -22260,6 +22439,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "KeNq⁺")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NaquadriaGoo = MaterialLibAPI.newMaterial("gregtech", "NaquadriaGoo", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF4D4D55)
@@ -22285,6 +22465,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Nq*BaIn")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Zircaloy4 = MaterialLibAPI.newMaterial("gregtech", "Zircaloy-4", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF8A6E68)
@@ -22322,6 +22503,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Zircaloy2 = MaterialLibAPI.newMaterial("gregtech", "Zircaloy-2", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFA48F8B)
@@ -22359,6 +22541,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Incoloy903 = MaterialLibAPI.newMaterial("gregtech", "Incoloy-903", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFA48F8B)
@@ -22396,6 +22579,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AdamantiumAlloy = MaterialLibAPI.newMaterial("gregtech", "AdamantiumAlloy", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA0A0A0)
@@ -22432,6 +22616,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EthanolGasoline = MaterialLibAPI.newMaterial("gregtech", "EthanolGasoline", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE4C661)
@@ -22449,6 +22634,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10086))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Cyclopentadiene = MaterialLibAPI.newMaterial("gregtech", "Cyclopentadiene", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFF6BD)
@@ -22468,6 +22654,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "C₅H₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.IronIIChloride = MaterialLibAPI.newMaterial("gregtech", "IronIIChloride", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF5B5B5B)
@@ -22487,6 +22674,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "FeCl₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Diethylamine = MaterialLibAPI.newMaterial("gregtech", "Diethylamine", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6977CA)
@@ -22506,6 +22694,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "C₄H₁₁N")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ImpureFerroceneMixture = MaterialLibAPI.newMaterial("gregtech", "ImpureFerroceneMixture", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF795508)
@@ -22525,6 +22714,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??Fe??C??H??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FerroceneSolution = MaterialLibAPI.newMaterial("gregtech", "FerroceneSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFDE7E1C)
@@ -22544,6 +22734,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Fe(C₅H₅)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FerroceneWaste = MaterialLibAPI.newMaterial("gregtech", "FerroceneWaste", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF351D03)
@@ -22563,6 +22754,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??C??H??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Ferrocene = MaterialLibAPI.newMaterial("gregtech", "Ferrocene", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFF18F2B)
@@ -22580,6 +22772,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Fe(C₅H₅)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.JetFuelNo3 = MaterialLibAPI.newMaterial("gregtech", "JetFuelNo.3", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF970061)
@@ -22597,6 +22790,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10094))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.JetFuelA = MaterialLibAPI.newMaterial("gregtech", "JetFuelA", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFF9800)
@@ -22614,6 +22808,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10095))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MARM200Steel = MaterialLibAPI.newMaterial("gregtech", "MAR-M200Steel", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF515151)
@@ -22649,6 +22844,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Nb₂Cr₉Al₅Ti₂Co₁W₁₃Ni₁₈")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MARCeM200Steel = MaterialLibAPI.newMaterial("gregtech", "MAR-Ce-M200Steel", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF383030)
@@ -22681,6 +22877,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Nb₂Cr₉Al₅Ti₂Co₁W₁₃Ni₁₈)₁₈Ce")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LithiumChloride = MaterialLibAPI.newMaterial("gregtech", "LithiumChloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFB7E2CE)
@@ -22715,6 +22912,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lithium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "LiCl")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Signalium = MaterialLibAPI.newMaterial("gregtech", "Signalium", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD44000)
@@ -22747,6 +22945,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Cu₄?₂(Cu(Si(FeS₂)₅(CrAl₂O₃)Hg₃)₄)₂")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Lumiinessence = MaterialLibAPI.newMaterial("gregtech", "Lumiinessence", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFE8F224)
@@ -22764,6 +22963,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "(Al??)₂(PO₄)₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Lumiium = MaterialLibAPI.newMaterial("gregtech", "Lumiium", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE8F224)
@@ -22796,6 +22996,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(SnFe)₄(CuAg₄)₂(Al??)₂(PO₄)₄₂")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ArtheriumSn = MaterialLibAPI.newMaterial("gregtech", "Artherium-Sn", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF6036F7)
@@ -22831,6 +23032,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Ad₅Nq₂La₃)₁₂Or₉Sn₈As₇Cs₄(Ir₃Os)₃")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TanmolyiumBetaC = MaterialLibAPI.newMaterial("gregtech", "TanmolyiumBeta-C", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFC72FCC)
@@ -22866,6 +23068,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ti₅Mo₅V₂Cr₃Al")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Dalisenite = MaterialLibAPI.newMaterial("gregtech", "Dalisenite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFB0B812)
@@ -22900,6 +23103,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Ti₅Mo₅V₂Cr₃Al)₁₄W₁(NbTi)₉(Pd₃Rh)₈?₇Er₃")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Hikarium = MaterialLibAPI.newMaterial("gregtech", "Hikarium", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFD6FB)
@@ -22935,6 +23139,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "((SnFe)₄(CuAg₄)₂(Al??)₂(PO₄)₄₂)₁₈Ag₈?₄")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Tairitsu = MaterialLibAPI.newMaterial("gregtech", "Tairitsu", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF363636)
@@ -22970,6 +23175,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "W₈?₇((SiO₂)₂₆₂₄₄C₉)₄C₄V₃?")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AntimonyPentafluorideSolution = MaterialLibAPI.newMaterial("gregtech", "AntimonyPentafluorideSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF16D5E2)
@@ -22989,6 +23195,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SbF₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MagnesiumSulphate = MaterialLibAPI.newMaterial("gregtech", "MagnesiumSulphate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF877491)
@@ -23009,6 +23216,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Magnesium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "MgSO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PreciousMetalsAlloy = MaterialLibAPI.newMaterial("gregtech", "PreciousMetalsAlloy", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF9D90C6)
@@ -23044,6 +23252,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "RuRhPdPtOsIr")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EnrichedNaquadahAlloy = MaterialLibAPI.newMaterial("gregtech", "EnrichedNaquadahAlloy", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF160740)
@@ -23079,6 +23288,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "?₈Tn₅Cf₃?₂")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MetastableOganesson = MaterialLibAPI.newMaterial("gregtech", "MetastableOganesson", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF14397F)
@@ -23111,6 +23321,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Shirabon = MaterialLibAPI.newMaterial("gregtech", "Shirabon", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE0156D)
@@ -23144,6 +23355,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.InertNaquadah = MaterialLibAPI.newMaterial("gregtech", "InertNaquadah", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF3B3B3B)
@@ -23162,6 +23374,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadah), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Nq")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.InertEnrichedNaquadah = MaterialLibAPI.newMaterial("gregtech", "InertEnrichedNaquadah", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF614444)
@@ -23186,6 +23399,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NaquadahEnriched), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "?")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.InertNaquadria = MaterialLibAPI.newMaterial("gregtech", "InertNaquadria", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF000000)
@@ -23210,6 +23424,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadria), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "?")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Hafnium = MaterialLibAPI.newMaterial("gregtech", "Hafnium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFE8E0DB)
@@ -23252,6 +23467,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 51200)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.hafnium")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -23274,6 +23490,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Hf")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Hafnia = MaterialLibAPI.newMaterial("gregtech", "Hafnia", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFF7DFCB)
@@ -23291,6 +23508,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "HfO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HafniumTetrachloride = MaterialLibAPI.newMaterial("gregtech", "HafniumTetrachloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFEEF7F9)
@@ -23308,6 +23526,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "HfCl₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HafniumTetrachlorideSolution = MaterialLibAPI.newMaterial("gregtech", "HafniumTetrachlorideSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFEEF7F9)
@@ -23327,6 +23546,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "HfCl₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HafniumIodide = MaterialLibAPI.newMaterial("gregtech", "HafniumIodide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFD83C01)
@@ -23344,6 +23564,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "HfI₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HafniumRunoff = MaterialLibAPI.newMaterial("gregtech", "HafniumRunoff", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF4A412A)
@@ -23361,6 +23582,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "??????")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Zirconia = MaterialLibAPI.newMaterial("gregtech", "Zirconia", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFB19865)
@@ -23378,6 +23600,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "ZrO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ZirconiumTetrachloride = MaterialLibAPI.newMaterial("gregtech", "ZirconiumTetrachloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFB3A497)
@@ -23395,6 +23618,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "ZrCl₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ZirconiumTetrachlorideSolution = MaterialLibAPI.newMaterial("gregtech", "ZirconiumTetrachlorideSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFB3A497)
@@ -23414,6 +23638,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "ZrCl₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HafniaZirconiaBlend = MaterialLibAPI.newMaterial("gregtech", "Hafnia-ZirconiaBlend", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFF7DFCB)
@@ -23431,6 +23656,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "HfZr")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Iodine = MaterialLibAPI.newMaterial("gregtech", "Iodine", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFAB28AF)
@@ -23474,6 +23700,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.iodine")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MuddyMonaziteRareEarthSolution = MaterialLibAPI.newMaterial("gregtech", "MuddyMonaziteRareEarthSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6F4E37)
@@ -23493,6 +23720,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmHfZr??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DilutedMonaziteRareEarthMud = MaterialLibAPI.newMaterial("gregtech", "DilutedMonaziteRareEarthMud", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0785A)
@@ -23512,6 +23740,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTiSi??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DilutedMonaziteSulfate = MaterialLibAPI.newMaterial("gregtech", "DilutedMonaziteSulfate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFEDC9AF)
@@ -23531,6 +23760,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmThU??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NitrogenatedMonaziteRareEarthConcentrate = MaterialLibAPI.newMaterial("gregtech", "NitrogenatedMonaziteRareEarthConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFADFAD)
@@ -23550,6 +23780,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeEu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NitricMonaziteLeachedConcentrate = MaterialLibAPI.newMaterial("gregtech", "NitricMonaziteLeachedConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFF4CA16)
@@ -23569,6 +23800,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmGdEu")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MonaziteSulfate = MaterialLibAPI.newMaterial("gregtech", "MonaziteSulfate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF987654)
@@ -23586,6 +23818,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmThU??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AcidicMonazitePowder = MaterialLibAPI.newMaterial("gregtech", "AcidicMonazitePowder", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF32174D)
@@ -23603,6 +23836,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmThU??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MonaziteRareEarthFiltrate = MaterialLibAPI.newMaterial("gregtech", "MonaziteRareEarthFiltrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF483C32)
@@ -23620,6 +23854,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeU??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NeutralizedMonaziteRareEarthFiltrate = MaterialLibAPI.newMaterial("gregtech", "NeutralizedMonaziteRareEarthFiltrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF32174D)
@@ -23637,6 +23872,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeU??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MonaziteRareEarthHydroxideConcentrate = MaterialLibAPI.newMaterial("gregtech", "MonaziteRareEarthHydroxideConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFC19A6B)
@@ -23654,6 +23890,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeEu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DriedMonaziteRareEarthConcentrate = MaterialLibAPI.newMaterial("gregtech", "DriedMonaziteRareEarthConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFAD6A5)
@@ -23671,6 +23908,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeEu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CeriumDioxide = MaterialLibAPI.newMaterial("gregtech", "CeriumDioxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
@@ -23689,6 +23927,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "CeO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CeriumChloride = MaterialLibAPI.newMaterial("gregtech", "CeriumChloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
@@ -23706,6 +23945,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "CeCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CeriumOxalate = MaterialLibAPI.newMaterial("gregtech", "CeriumOxalate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFE0)
@@ -23723,6 +23963,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Ce₂(C₂O₄)₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CeriumIIIOxide = MaterialLibAPI.newMaterial("gregtech", "Cerium(III)Oxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFF66)
@@ -23744,6 +23985,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ce₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CeriumRichMixture = MaterialLibAPI.newMaterial("gregtech", "Cerium-RichMixture", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFF4A460)
@@ -23761,6 +24003,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Ce")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CooledMonaziteRareEarthConcentrate = MaterialLibAPI.newMaterial("gregtech", "CooledMonaziteRareEarthConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFAD6A5)
@@ -23778,6 +24021,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmGdEu")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MonaziteRarerEarthSediment = MaterialLibAPI.newMaterial("gregtech", "MonaziteRarerEarthSediment", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFAD6A5)
@@ -23795,6 +24039,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmGd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HeterogenousHalogenicMonaziteRareEarthMixture = MaterialLibAPI.newMaterial("gregtech", "HeterogenousHalogenicMonaziteRareEarthMixture", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFAD6A5)
@@ -23812,6 +24057,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmGd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SaturatedMonaziteRareEarth = MaterialLibAPI.newMaterial("gregtech", "SaturatedMonaziteRareEarth", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFAD6A5)
@@ -23829,6 +24075,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmGd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamaricResidue = MaterialLibAPI.newMaterial("gregtech", "SamaricResidue", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFF8F3E7)
@@ -23846,6 +24093,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm₂Gd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AmmoniumNitrateSolution = MaterialLibAPI.newMaterial("gregtech", "AmmoniumNitrateSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
@@ -23865,6 +24113,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "NH₄NO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumPhosphateCake = MaterialLibAPI.newMaterial("gregtech", "Thorium-PhosphateCake", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFBC8F8F)
@@ -23882,6 +24131,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "ThP")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumPhosphateConcentrate = MaterialLibAPI.newMaterial("gregtech", "Thorium-PhosphateConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFD99058)
@@ -23899,6 +24149,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "ThP")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.UraniumFiltrate = MaterialLibAPI.newMaterial("gregtech", "UraniumFiltrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFBEF05E)
@@ -23916,6 +24167,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "U")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NeutralizedUraniumFiltrate = MaterialLibAPI.newMaterial("gregtech", "NeutralizedUraniumFiltrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFD97858)
@@ -23933,6 +24185,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "U")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SeaweedAsh = MaterialLibAPI.newMaterial("gregtech", "SeaweedAsh", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF464B47)
@@ -23950,6 +24203,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "C?I?Ca?")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SeaweedConcentrate = MaterialLibAPI.newMaterial("gregtech", "SeaweedConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF466447)
@@ -23969,6 +24223,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "I")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PotassiumPermanganate = MaterialLibAPI.newMaterial("gregtech", "PotassiumPermanganate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA5328A)
@@ -23986,6 +24241,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "KMnO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PotassiumPermanganateSolution = MaterialLibAPI.newMaterial("gregtech", "PotassiumPermanganateSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA5328A)
@@ -24005,6 +24261,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "KMnO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SeaweedByproducts = MaterialLibAPI.newMaterial("gregtech", "SeaweedByproducts", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF7D328A)
@@ -24024,6 +24281,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "????")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NitricLeachedMonaziteMixture = MaterialLibAPI.newMaterial("gregtech", "Nitric-LeachedMonaziteMixture", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF7D328A)
@@ -24043,6 +24301,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeEu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EuropiumOxide = MaterialLibAPI.newMaterial("gregtech", "EuropiumOxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
@@ -24060,6 +24319,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "EuO")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EuropiumSulfide = MaterialLibAPI.newMaterial("gregtech", "EuropiumSulfide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF050005)
@@ -24077,6 +24337,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "EuS")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -24099,6 +24360,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EuropiumIIIOxide = MaterialLibAPI.newMaterial("gregtech", "EuropiumIIIOxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFE6FF)
@@ -24116,6 +24378,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Eu₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MuddyBastnasiteRareEarthSolution = MaterialLibAPI.newMaterial("gregtech", "MuddyBastnasiteRareEarthSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFCD853F)
@@ -24135,6 +24398,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTiSi??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Sodiumfluorosilicate = MaterialLibAPI.newMaterial("gregtech", "Sodiumfluorosilicate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFCD853F)
@@ -24154,6 +24418,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Na₂SiF₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SteamCrackedBastnasiteMud = MaterialLibAPI.newMaterial("gregtech", "Steam-CrackedBastnasiteMud", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFCD853F)
@@ -24173,6 +24438,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTiSi??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ConditionedBastnasiteMud = MaterialLibAPI.newMaterial("gregtech", "ConditionedBastnasiteMud", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFCD853F)
@@ -24192,6 +24458,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTiSi??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DilutedBastnasiteMud = MaterialLibAPI.newMaterial("gregtech", "DilutedBastnasiteMud", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFCD853F)
@@ -24211,6 +24478,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTiSi??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilteredBastnasiteMud = MaterialLibAPI.newMaterial("gregtech", "FilteredBastnasiteMud", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFCD853F)
@@ -24230,6 +24498,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BastnasiteRareEarthOxides = MaterialLibAPI.newMaterial("gregtech", "BastnasiteRareEarthOxides", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFCD853F)
@@ -24247,6 +24516,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AcidLeachedBastnasiteRareEarthOxides = MaterialLibAPI.newMaterial("gregtech", "Acid-LeachedBastnasiteRareEarthOxides", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFCD853F)
@@ -24264,6 +24534,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Gangue = MaterialLibAPI.newMaterial("gregtech", "Gangue", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF000000)
@@ -24282,6 +24553,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "block"))
             .setProperty(GTMaterialProperties.FORMULA, "Useless...")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RoastedRareEarthOxides = MaterialLibAPI.newMaterial("gregtech", "RoastedRareEarthOxides", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA0522D)
@@ -24299,6 +24571,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.WetRareEarthOxides = MaterialLibAPI.newMaterial("gregtech", "WetRareEarthOxides", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA05231)
@@ -24316,6 +24589,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CeriumOxidisedRareEarthOxides = MaterialLibAPI.newMaterial("gregtech", "Cerium-OxidisedRareEarthOxides", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA05231)
@@ -24333,6 +24607,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BastnasiteRarerEarthOxides = MaterialLibAPI.newMaterial("gregtech", "BastnasiteRarerEarthOxides", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA05231)
@@ -24350,6 +24625,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLa??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NitrogenatedBastnasiteRarerEarthOxides = MaterialLibAPI.newMaterial("gregtech", "NitrogenatedBastnasiteRarerEarthOxides", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA05A3C)
@@ -24369,6 +24645,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLa??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BastnasiteRarerEarthOxideSuspension = MaterialLibAPI.newMaterial("gregtech", "BastnasiteRarerEarthOxideSuspension", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFAA5A3C)
@@ -24388,6 +24665,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLa??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamaricRareEarthConcentrate = MaterialLibAPI.newMaterial("gregtech", "SamaricRareEarthConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFAA5A3C)
@@ -24405,6 +24683,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmHoTb")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NeodymiumRareEarthConcentrate = MaterialLibAPI.newMaterial("gregtech", "NeodymiumRareEarthConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFAA5A3C)
@@ -24422,6 +24701,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "LaNd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LanthanumChloride = MaterialLibAPI.newMaterial("gregtech", "LanthaniumChloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF527066)
@@ -24443,6 +24723,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lanthanum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "LaCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NeodymiumOxide = MaterialLibAPI.newMaterial("gregtech", "NeodymiumOxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF527066)
@@ -24465,6 +24746,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_NEODYMIUM"))
             .setProperty(GTMaterialProperties.FORMULA, "Nd₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FluorinatedSamaricConcentrate = MaterialLibAPI.newMaterial("gregtech", "FluorinatedSamaricConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFB6C1)
@@ -24482,6 +24764,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmHoTb??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CalciumFluoride = MaterialLibAPI.newMaterial("gregtech", "CalciumFluoride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFAFA)
@@ -24505,6 +24788,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "CaF₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamariumTerbiumMixture = MaterialLibAPI.newMaterial("gregtech", "Samarium-TerbiumMixture", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFDFB6C1)
@@ -24522,6 +24806,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTb??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NitrogenatedSamariumTerbiumMixture = MaterialLibAPI.newMaterial("gregtech", "NitrogenatedSamarium-TerbiumMixture", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFDFB6C1)
@@ -24539,6 +24824,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTbNH₄NO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TerbiumNitrate = MaterialLibAPI.newMaterial("gregtech", "TerbiumNitrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA7FC00)
@@ -24559,6 +24845,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Terbium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Nitrogen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "TbNO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamariumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "SamariumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFC8E6)
@@ -24576,6 +24863,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DephosphatedSamariumConcentrate = MaterialLibAPI.newMaterial("gregtech", "DephosphatedSamariumConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFAADC)
@@ -24593,6 +24881,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials._14Butanediol = MaterialLibAPI.newMaterial("gregtech", "1,4-Butanediol", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFB94E48)
@@ -24612,6 +24901,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "HO(CH₂)₄OH")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TelluriumMolybdenumOxideCatalyst = MaterialLibAPI.newMaterial("gregtech", "Tellurium-Molybdenum-OxideCatalyst", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFEE83EE)
@@ -24629,6 +24919,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "(MoO₂)(TeO₂)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TelluriumIVOxide = MaterialLibAPI.newMaterial("gregtech", "Tellurium(IV)Oxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFE5C7BB)
@@ -24646,6 +24937,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "TeO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MolybdenumIVOxide = MaterialLibAPI.newMaterial("gregtech", "Molybdenum(IV)Oxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF343539)
@@ -24663,6 +24955,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "MoO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Dinitrotoluene = MaterialLibAPI.newMaterial("gregtech", "Dinitrotoluene", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFD8BFD8)
@@ -24682,6 +24975,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "C₇H₆N₂O₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Diaminotoluene = MaterialLibAPI.newMaterial("gregtech", "Diaminotoluene", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE3DAC9)
@@ -24701,6 +24995,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "C₆H₃(NH₂)₂CH₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PotassiumChlorate = MaterialLibAPI.newMaterial("gregtech", "PotassiumChlorate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFF0FFFF)
@@ -24719,6 +25014,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cellMolten"))
             .setProperty(GTMaterialProperties.FORMULA, "KClO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DilutedAcetone = MaterialLibAPI.newMaterial("gregtech", "DilutedAcetone", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFEFEFA)
@@ -24738,6 +25034,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "C₃H₆O")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MolybdenumTrioxide = MaterialLibAPI.newMaterial("gregtech", "MolybdenumTrioxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFECFFF8)
@@ -24755,6 +25052,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "MoO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MuddySamariumRareEarthSolution = MaterialLibAPI.newMaterial("gregtech", "MuddySamariumRareEarthSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE2B46C)
@@ -24774,6 +25072,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamariumRareEarthMud = MaterialLibAPI.newMaterial("gregtech", "SamariumRareEarthMud", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE2B480)
@@ -24793,6 +25092,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DilutedSamariumRareEarthSolution = MaterialLibAPI.newMaterial("gregtech", "DilutedSamariumRareEarthSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE2B494)
@@ -24812,6 +25112,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamariumIIIOxalate = MaterialLibAPI.newMaterial("gregtech", "Samarium(III)Oxalate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFF8F8B4)
@@ -24829,6 +25130,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm₂(C₂O₄)₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamariumIIIChloride = MaterialLibAPI.newMaterial("gregtech", "Samarium(III)-Chloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFF8F878)
@@ -24847,6 +25149,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cellMolten"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamariumChlorideSodiumChlorideBlend = MaterialLibAPI.newMaterial("gregtech", "SamariumChloride-SodiumChlorideBlend", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFC8E6)
@@ -24864,6 +25167,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCl₃NaCl")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ImpureLanthanumChloride = MaterialLibAPI.newMaterial("gregtech", "ImpureLanthanumChloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF5A641E)
@@ -24881,6 +25185,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "LaCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamariumOxide = MaterialLibAPI.newMaterial("gregtech", "SamariumOxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFDFB6C1)
@@ -24902,6 +25207,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Samarium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Sm₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -24926,6 +25232,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Cl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ChlorinatedRareEarthEnrichedSolution = MaterialLibAPI.newMaterial("gregtech", "ChlorinatedRareEarthEnrichedSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF825A3C)
@@ -24945,6 +25252,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Cl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ChlorinatedRareEarthDilutedSolution = MaterialLibAPI.newMaterial("gregtech", "ChlorinatedRareEarthDilutedSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFD8B464)
@@ -24964,6 +25272,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Cl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RarestEarthResidue = MaterialLibAPI.newMaterial("gregtech", "RarestEarthResidue", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFE0D3D3)
@@ -24981,6 +25290,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LanthanumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "LanthanumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF325028)
@@ -24999,6 +25309,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11401))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledLanthanumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledLanthanumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF808050)
@@ -25017,6 +25328,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11402))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PraseodymiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "PraseodymiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF50C082)
@@ -25035,6 +25347,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11403))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledPraseodymiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledPraseodymiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF8CC082)
@@ -25053,6 +25366,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11404))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CeriumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "CeriumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF50F0A0)
@@ -25071,6 +25385,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11405))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledCeriumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledCeriumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0F0B4)
@@ -25089,6 +25404,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11406))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NeodymiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "NeodymiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF808C80)
@@ -25107,6 +25423,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11407))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledNeodymiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledNeodymiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF969696)
@@ -25125,6 +25442,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11408))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamariumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "SamariumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFF064)
@@ -25143,6 +25461,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11411))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledSamariumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledSamariumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFF0C4)
@@ -25161,6 +25480,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11412))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EuropiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "EuropiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFF0A0F0)
@@ -25179,6 +25499,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11413))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledEuropiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledEuropiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFF0C8F0)
@@ -25197,6 +25518,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11414))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.GadoliniumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "GadoliniumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF78FF50)
@@ -25215,6 +25537,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11415))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledGadoliniumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledGadoliniumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0FF8C)
@@ -25233,6 +25556,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11416))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TerbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "TerbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFC8C8C8)
@@ -25251,6 +25575,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11417))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledTerbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledTerbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
@@ -25269,6 +25594,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11418))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DysprosiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "DysprosiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6EF0B4)
@@ -25287,6 +25613,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11419))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledDysprosiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledDysprosiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF96F0B4)
@@ -25305,6 +25632,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11420))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HolmiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "HolmiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF1010D8)
@@ -25323,6 +25651,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11421))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledHolmiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledHolmiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF3C5AFF)
@@ -25341,6 +25670,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11422))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ErbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "ErbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFC8A050)
@@ -25359,6 +25689,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11423))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledErbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledErbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE9AA64)
@@ -25377,6 +25708,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11424))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThuliumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "ThuliumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF80B2FF)
@@ -25395,6 +25727,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11425))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledThuliumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledThuliumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0C8FF)
@@ -25413,6 +25746,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11426))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.YtterbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "YtterbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF00FF00)
@@ -25431,6 +25765,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11427))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledYtterbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledYtterbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF64FF64)
@@ -25449,6 +25784,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11428))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LutetiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "LutetiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE610E6)
@@ -25467,6 +25803,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11429))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FilledLutetiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledLutetiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFF064F0)
@@ -25485,6 +25822,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11430))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LanthanumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "LanthanumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF808050)
@@ -25504,6 +25842,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "LaCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PraseodymiumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "PraseodymiumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF8CC082)
@@ -25523,6 +25862,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "PrCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CeriumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "CeriumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0F0B4)
@@ -25542,6 +25882,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "CeCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NeodymiumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "NeodymiumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF969696)
@@ -25561,6 +25902,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "NdCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PromethiumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "PromethiumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF96FF8C)
@@ -25580,6 +25922,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "PmCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamariumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "SamariumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFF0C4)
@@ -25599,6 +25942,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EuropiumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "EuropiumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFF0C8F0)
@@ -25618,6 +25962,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "EuCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.GadoliniumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "GadoliniumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0FF8C)
@@ -25637,6 +25982,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "GdCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TerbiumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "TerbiumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
@@ -25656,6 +26002,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "TbCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DysprosiumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "DysprosiumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF96F0B4)
@@ -25675,6 +26022,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "DyCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HolmiumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "HolmiumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF3C5AFF)
@@ -25694,6 +26042,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "HoCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ErbiumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "ErbiumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE9AA64)
@@ -25713,6 +26062,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "ErCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThuliumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "ThuliumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0C8FF)
@@ -25732,6 +26082,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "TmCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -25756,6 +26107,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "YbCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LutetiumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "LutetiumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFF064F0)
@@ -25775,6 +26127,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "LuCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LanthanumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "LanthanumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF808060)
@@ -25792,6 +26145,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "La")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PraseodymiumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "PraseodymiumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF8CC082)
@@ -25809,6 +26163,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pr")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NeodymiumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "NeodymiumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF808080)
@@ -25826,6 +26181,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Nd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PromethiumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "PromethiumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF96FF8C)
@@ -25843,6 +26199,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pm")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EuropiumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "EuropiumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFF0C8F0)
@@ -25860,6 +26217,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Eu")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.GadoliniumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "GadoliniumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA0FF8C)
@@ -25877,6 +26235,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Gd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TerbiumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "TerbiumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
@@ -25894,6 +26253,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Tb")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DysprosiumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "DysprosiumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF96F0B4)
@@ -25911,6 +26271,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Dy")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HolmiumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "HolmiumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF3C5AFF)
@@ -25928,6 +26289,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Ho")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ErbiumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "ErbiumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFE9AA64)
@@ -25945,6 +26307,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Er")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThuliumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "ThuliumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFA0C8FF)
@@ -25962,6 +26325,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Tm")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.YtterbiumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "YtterbiumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF64FF64)
@@ -25979,6 +26343,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Yb")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LutetiumOreConcentrate = MaterialLibAPI.newMaterial("gregtech", "LutetiumOreConcentrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFF064F0)
@@ -25996,6 +26361,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Lu")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CeriumdopedLutetiumAluminiumOxygenBlend = MaterialLibAPI.newMaterial("gregtech", "Cerium-dopedLutetiumAluminiumOxygenBlend", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF80C050)
@@ -26015,6 +26381,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cellMolten"))
             .setProperty(GTMaterialProperties.FORMULA, "CeLu₃(Al₂O₃)₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG = MaterialLibAPI.newMaterial("gregtech", "Cerium-dopedLutetiumAluminiumGarnet(CeLuAG)", TextureSet.of("gregtech", "GEM_VERTICAL"))
             .setTint(0xFF90FF3F)
@@ -26042,6 +26409,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "CeLu₃(Al₂O₃)₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Permalloy = MaterialLibAPI.newMaterial("gregtech", "Permalloy", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFC3E6E1)
@@ -26080,6 +26448,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "Ni₄FeMo")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Mumetal = MaterialLibAPI.newMaterial("gregtech", "Mu-metal", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFD2E6E1)
@@ -26112,6 +26481,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Ni₄FeMo)₉CuCr")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Thorium234 = MaterialLibAPI.newMaterial("gregtech", "Thorium234", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF002800)
@@ -26137,6 +26507,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Th")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.ELEMENT, "Th_234")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SiliconNitride = MaterialLibAPI.newMaterial("gregtech", "SiliconNitride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF848C78)
@@ -26168,6 +26539,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Si₃N₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Fluoroform = MaterialLibAPI.newMaterial("gregtech", "Fluoroform", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF000000)
@@ -26189,6 +26561,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "CHF₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ReactiveIonEtchingMixture = MaterialLibAPI.newMaterial("gregtech", "Reactive-IonEtchingMixture", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF000000)
@@ -26208,6 +26581,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "CHF₃/O₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BoronTrioxide = MaterialLibAPI.newMaterial("gregtech", "BoronTrioxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFEEDED1)
@@ -26227,6 +26601,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "B₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BoronTrichloride = MaterialLibAPI.newMaterial("gregtech", "BoronTrichloride", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF9A60D0)
@@ -26249,6 +26624,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "BCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LanthanumHexaboride = MaterialLibAPI.newMaterial("gregtech", "LanthanumHexaboride", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFF8C6E78)
@@ -26276,6 +26652,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "LaB₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LanthanumOxide = MaterialLibAPI.newMaterial("gregtech", "LanthanumOxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF69D1B4)
@@ -26293,6 +26670,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "La₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SilaneNitrogenPlasmaMixture = MaterialLibAPI.newMaterial("gregtech", "Silane-NitrogenPlasmaMixture", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF8C7DDC)
@@ -26312,6 +26690,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SiH₄/N")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HotSuperCoolant = MaterialLibAPI.newMaterial("gregtech", "HotSuperCoolant", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF9B111E)
@@ -26329,6 +26708,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11361))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TungsticAcid = MaterialLibAPI.newMaterial("gregtech", "TungsticAcid", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFF5F116)
@@ -26348,6 +26728,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "H₂WO₄")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TungstenTrioxide = MaterialLibAPI.newMaterial("gregtech", "TungstenTrioxide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF0F0516)
@@ -26368,6 +26749,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "WO₃")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AmmoniumNitrate = MaterialLibAPI.newMaterial("gregtech", "AmmoniumNitrate", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF81CC00)
@@ -26385,6 +26767,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Nitrogen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "NH₄NO₃")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SodiumTungstate = MaterialLibAPI.newMaterial("gregtech", "SodiumTungstate", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF0CEDD7)
@@ -26404,6 +26787,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Na₂WO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Phosgene = MaterialLibAPI.newMaterial("gregtech", "Phosgene", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF15A11A)
@@ -26423,6 +26807,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "COCl₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Nitromethane = MaterialLibAPI.newMaterial("gregtech", "Nitromethane", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF877D60)
@@ -26442,6 +26827,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "CH₃NO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AbyssalAlloy = MaterialLibAPI.newMaterial("gregtech", "AbyssalAlloy", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFBB9BB6)
@@ -26468,6 +26854,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Fe₆CrMnNi)₅(WC)₅(Ni₄Cr)₅(SnCu₃)₅(Fe₁₆Al₃Cr₅Y)₅IRnGe")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AceticAnhydride = MaterialLibAPI.newMaterial("gregtech", "AceticAnhydride", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFFAF06E)
@@ -26480,6 +26867,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 58000)
             .setProperty(GTMaterialProperties.FORMULA, "(CH3CO)2O")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AdvancedNitinol = MaterialLibAPI.newMaterial("gregtech", "AdvancedNitinol", TextureSet.of("gregtech", "FIERY"))
             .setTint(0xFFD2B4F5)
@@ -26511,6 +26899,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "⚷⚙⚷Ni₄Ti₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.advancednitinol")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AgarditeCd = MaterialLibAPI.newMaterial("gregtech", "AgarditeCd", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF877DA9)
@@ -26524,6 +26913,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 614000)
             .setProperty(GTMaterialProperties.FORMULA, "CdCaCu₇As₄O₂₁H₁₁")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AgarditeLa = MaterialLibAPI.newMaterial("gregtech", "AgarditeLa", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF968BB6)
@@ -26537,6 +26927,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 666000)
             .setProperty(GTMaterialProperties.FORMULA, "LaCaCu₅As₂O₁₉H₁")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AgarditeNd = MaterialLibAPI.newMaterial("gregtech", "AgarditeNd", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF9085AF)
@@ -26550,6 +26941,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 678000)
             .setProperty(GTMaterialProperties.FORMULA, "NdCaCu₆As₆O₂₁H₁₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AgarditeY = MaterialLibAPI.newMaterial("gregtech", "AgarditeY", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFA49EC3)
@@ -26563,6 +26955,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 568000)
             .setProperty(GTMaterialProperties.FORMULA, "YCaCu₅As₆O₂₁H₁₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Alburnite = MaterialLibAPI.newMaterial("gregtech", "Alburnite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFD8D86E)
@@ -26576,6 +26969,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 858000)
             .setProperty(GTMaterialProperties.FORMULA, "Au₈GeTe₂S₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AmmoniumBifluoride = MaterialLibAPI.newMaterial("gregtech", "AmmoniumBifluoride", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF5587EC)
@@ -26591,6 +26985,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 52000)
             .setProperty(GTMaterialProperties.FORMULA, "(NH₄)HF₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AmmoniumTetrafluoroberyllate = MaterialLibAPI.newMaterial("gregtech", "AmmoniumTetrafluoroberyllate", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF5892CA)
@@ -26603,6 +26998,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 68000)
             .setProperty(GTMaterialProperties.FORMULA, "(NH₄)₂BeF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -26639,6 +27035,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 772000)
             .setProperty(GTMaterialProperties.FORMULA, "«»")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Arcanite = MaterialLibAPI.newMaterial("gregtech", "Arcanite", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFF798A6E)
@@ -26666,6 +27063,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Th)₄()₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ArceusAlloy2B = MaterialLibAPI.newMaterial("gregtech", "ArceusAlloy2B", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFCDC517)
@@ -26692,6 +27090,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "₃((Fe₅C)₁₆AlMoNi₄Co₂)₄(Fe₅CW)₂(Ir₃Os)Sr")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.AstralTitanium = MaterialLibAPI.newMaterial("gregtech", "AstralTitanium", TextureSet.of("gregtech", "CUSTOM/astraltitanium"))
             .setTint(0xFFFFFFFF)
@@ -26720,6 +27119,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.astraltitanium")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BabbitAlloy = MaterialLibAPI.newMaterial("gregtech", "BabbitAlloy", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFD0C6D5)
@@ -26748,6 +27148,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1042000)
             .setProperty(GTMaterialProperties.FORMULA, "Sn₅Pb₃₆Sb₈As")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BariteRa = MaterialLibAPI.newMaterial("gregtech", "BariteRa", TextureSet.of("gregtech", "FLINT"))
             .setTint(0xFF9BB49B)
@@ -26761,6 +27162,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 822000)
             .setProperty(GTMaterialProperties.FORMULA, "Ba₃₂RaS₁₆O₁₅")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BerylliumFluoride = MaterialLibAPI.newMaterial("gregtech", "BerylliumFluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFB1D9B1)
@@ -26776,6 +27178,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 54000)
             .setProperty(GTMaterialProperties.FORMULA, "BeF₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BerylliumHydroxide = MaterialLibAPI.newMaterial("gregtech", "BerylliumHydroxide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF215DB9)
@@ -26791,6 +27194,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 52000)
             .setProperty(GTMaterialProperties.FORMULA, "Be(OH)₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BlackMetal = MaterialLibAPI.newMaterial("gregtech", "BlackMetal", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF050505)
@@ -26818,6 +27222,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "҈")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BlackTitanium = MaterialLibAPI.newMaterial("gregtech", "BlackTitanium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF97AB91)
@@ -26847,6 +27252,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1506000)
             .setProperty(GTMaterialProperties.FORMULA, "Ti₅₅La₁₂W₈Co₆Mn₄P₄Pd₄Nb₂Ar₅")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BloodSteel = MaterialLibAPI.newMaterial("gregtech", "BloodSteel", TextureSet.of("gregtech", "GEM_VERTICAL"))
             .setTint(0xFF8E1C00)
@@ -26874,6 +27280,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Fe₅C)")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Botmium = MaterialLibAPI.newMaterial("gregtech", "Botmium", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFF50A050)
@@ -26899,6 +27306,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Ni₂Ti₃)Os₆Ru₆Tl₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Brine = MaterialLibAPI.newMaterial("gregtech", "Brine", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF3F58D7)
@@ -26912,6 +27320,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 92000)
             .setProperty(GTMaterialProperties.FORMULA, "((H₂O)₃(NaCl))(NaCl)₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Bromine = MaterialLibAPI.newMaterial("gregtech", "Bromine", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFFC81919)
@@ -26927,6 +27336,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Br")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.bromine")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BurntReactorFuelI = MaterialLibAPI.newMaterial("gregtech", "BurntReactorFuelI", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA8CDAC)
@@ -26939,6 +27349,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 752000)
             .setProperty(GTMaterialProperties.FORMULA, "LiBeF₂UF₄FP")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.BurntReactorFuelII = MaterialLibAPI.newMaterial("gregtech", "BurntReactorFuelII", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA8CDAC)
@@ -26951,6 +27362,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 752000)
             .setProperty(GTMaterialProperties.FORMULA, "LiBeF₂UF₄FP")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CelestialTungsten = MaterialLibAPI.newMaterial("gregtech", "CelestialTungsten", TextureSet.of("gregtech", "CUSTOM/celestialtungsten"))
             .setTint(0xFFFFFFFF)
@@ -26977,6 +27389,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.celestialtungsten")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Cerite = MaterialLibAPI.newMaterial("gregtech", "Cerite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF8090B6)
@@ -26990,6 +27403,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 886000)
             .setProperty(GTMaterialProperties.FORMULA, "Ce₉La₉Ca₉Mg₃Fe₃Si₇O₂H₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ChloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "ChloroaceticAcid", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFE6C85A)
@@ -27002,6 +27416,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 128000)
             .setProperty(GTMaterialProperties.FORMULA, "ClCH2COOH")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ChloroaceticMixture = MaterialLibAPI.newMaterial("gregtech", "ChloroaceticMixture", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFD2A00A)
@@ -27014,6 +27429,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 128000)
             .setProperty(GTMaterialProperties.FORMULA, "Cl?H?CCOOH")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ChromaticGlass = MaterialLibAPI.newMaterial("gregtech", "ChromaticGlass", TextureSet.of("gregtech", "CUSTOM/chromaticglass"))
             .setTint(0xFFFFFFFF)
@@ -27041,6 +27457,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.chromaticglass")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CinobiteA243 = MaterialLibAPI.newMaterial("gregtech", "CinobiteA243", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA09AA2)
@@ -27067,6 +27484,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Cr₁₃Ni₃Mo₂Cu₁W₂(Fe₅C)₂)₁₆₇Gd₅Al₃Hg₂Sn₂Ti₁₂(Ir₃Os)₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Comancheite = MaterialLibAPI.newMaterial("gregtech", "Comancheite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF767DC0)
@@ -27080,6 +27498,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 692000)
             .setProperty(GTMaterialProperties.FORMULA, "Hg₁₃N₇H₃O₂Cl₈Br₈")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CopperIISulfate = MaterialLibAPI.newMaterial("gregtech", "CopperIISulfate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFC8C8C8)
@@ -27094,6 +27513,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 222000)
             .setProperty(GTMaterialProperties.FORMULA, "CuSO4")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CopperIISulfatePentahydrate = MaterialLibAPI.newMaterial("gregtech", "CopperIISulfatePentahydrate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF5AAAFF)
@@ -27108,6 +27528,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 222000)
             .setProperty(GTMaterialProperties.FORMULA, "CuSO4∙(H2O)5")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Crocoite = MaterialLibAPI.newMaterial("gregtech", "Crocoite", TextureSet.of("gregtech", "GEM_VERTICAL"))
             .setTint(0xFF8E9CC6)
@@ -27121,6 +27542,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 814000)
             .setProperty(GTMaterialProperties.FORMULA, "Pb₂Cr₂O₃Cs")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CryoliteF = MaterialLibAPI.newMaterial("gregtech", "CryoliteF", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF7F97D7)
@@ -27134,6 +27556,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 132000)
             .setProperty(GTMaterialProperties.FORMULA, "Na₃AlF₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Curium = MaterialLibAPI.newMaterial("gregtech", "Curium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFAF556E)
@@ -27169,6 +27592,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Cm")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.curium")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CyanoaceticAcid = MaterialLibAPI.newMaterial("gregtech", "CyanoaceticAcid", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF828228)
@@ -27183,6 +27607,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 86000)
             .setProperty(GTMaterialProperties.FORMULA, "C3H3NO2")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.CyanoacrylatePolymer = MaterialLibAPI.newMaterial("gregtech", "CyanoacrylatePolymer", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF8C96A0)
@@ -27195,6 +27620,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 128000)
             .setProperty(GTMaterialProperties.FORMULA, "(C6H7NO2)n")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DemicheleiteBr = MaterialLibAPI.newMaterial("gregtech", "DemicheleiteBr", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA6803D)
@@ -27208,6 +27634,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 640000)
             .setProperty(GTMaterialProperties.FORMULA, "Bi₁₃S₁₁Br")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.DichloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "DichloroaceticAcid", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFBEA03C)
@@ -27220,6 +27647,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 128000)
             .setProperty(GTMaterialProperties.FORMULA, "Cl2CHCOOH")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Dragonblood = MaterialLibAPI.newMaterial("gregtech", "Dragonblood", TextureSet.of("gregtech", "CUSTOM/hypogen"))
             .setTint(0xFFDC2814)
@@ -27248,6 +27676,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.dragonblood")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EglinSteel = MaterialLibAPI.newMaterial("gregtech", "EglinSteel", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF8B4513)
@@ -27274,6 +27703,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Fe₄(FeAlCr)(Fe₂Ni)₅)₁SSi₄C")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EglinSteelBaseCompound = MaterialLibAPI.newMaterial("gregtech", "EglinSteelBaseCompound", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFBFC4B5)
@@ -27287,6 +27717,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 312000)
             .setProperty(GTMaterialProperties.FORMULA, "Fe₄(FeAlCr)(Fe₂Ni)₅")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EnergyCrystal = MaterialLibAPI.newMaterial("gregtech", "EnergyCrystal", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFFE4FF00)
@@ -27314,6 +27745,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EthylCyanoacetate = MaterialLibAPI.newMaterial("gregtech", "EthylCyanoacetate", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF004BA0)
@@ -27326,6 +27758,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 128000)
             .setProperty(GTMaterialProperties.FORMULA, "C5H7NO2")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.EthylCyanoacrylateSuperGlue = MaterialLibAPI.newMaterial("gregtech", "EthylCyanoacrylateSuperGlue", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFAABEC8)
@@ -27338,6 +27771,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 128000)
             .setProperty(GTMaterialProperties.FORMULA, "C6H7NO2")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Fermium = MaterialLibAPI.newMaterial("gregtech", "Fermium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF4B5A19)
@@ -27373,6 +27807,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Fm")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.fermium")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Florencite = MaterialLibAPI.newMaterial("gregtech", "Florencite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF7FA2B3)
@@ -27386,6 +27821,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 446000)
             .setProperty(GTMaterialProperties.FORMULA, "SmAl₃PO₁H₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Fluorcaphite = MaterialLibAPI.newMaterial("gregtech", "Fluorcaphite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF9FB69D)
@@ -27399,6 +27835,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 634000)
             .setProperty(GTMaterialProperties.FORMULA, "Ca₅(SrO)₅Ce₅Na₅P₃O₁₂F₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FluorinatedUraniumHexafluorideFUF6 = MaterialLibAPI.newMaterial("gregtech", "FluorinatedUraniumHexafluorideFUF6", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA4EDA9)
@@ -27411,6 +27848,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 178000)
             .setProperty(GTMaterialProperties.FORMULA, "UF₆F₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FluorineSpargedTBSalt = MaterialLibAPI.newMaterial("gregtech", "FluorineSpargedTBSalt", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF94B29C)
@@ -27423,6 +27861,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 298000)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂ThF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FluorineSpargedTSalt = MaterialLibAPI.newMaterial("gregtech", "FluorineSpargedTSalt", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA5B2AF)
@@ -27435,6 +27874,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 272000)
             .setProperty(GTMaterialProperties.FORMULA, "LiFThF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.FluoriteF = MaterialLibAPI.newMaterial("gregtech", "FluoriteF", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF307D5D)
@@ -27450,6 +27890,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 252000)
             .setProperty(GTMaterialProperties.FORMULA, "Ca₈F₁₆Fe₂C")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -27468,6 +27909,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1776000)
             .setProperty(GTMaterialProperties.FORMULA, "Ce₄Er₂La₂Nd₂Y₂GdBe₂Si₇O₁₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.GadoliniteY = MaterialLibAPI.newMaterial("gregtech", "GadoliniteY", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF6C9979)
@@ -27481,6 +27923,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1776000)
             .setProperty(GTMaterialProperties.FORMULA, "Ce₂Er₂La₂Nd₂Y₄Gd₂Be₃Si₄O₉")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Geikielite = MaterialLibAPI.newMaterial("gregtech", "Geikielite", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFF9E99D5)
@@ -27494,6 +27937,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 176000)
             .setProperty(GTMaterialProperties.FORMULA, "MgTiO₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Germanium = MaterialLibAPI.newMaterial("gregtech", "Germanium", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFFC8C8C8)
@@ -27522,6 +27966,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.germanium")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Greenockite = MaterialLibAPI.newMaterial("gregtech", "Greenockite", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFF7D7D1E)
@@ -27537,6 +27982,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 288000)
             .setProperty(GTMaterialProperties.FORMULA, "CdS")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Grisium = MaterialLibAPI.newMaterial("gregtech", "Grisium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF355D6A)
@@ -27563,6 +28009,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ti₉C₉K₉Li₉S₉H₅")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HG1223 = MaterialLibAPI.newMaterial("gregtech", "HG1223", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF27559F)
@@ -27591,6 +28038,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 912000)
             .setProperty(GTMaterialProperties.FORMULA, "HgBa₂Ca₂Cu₃O₈")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HS188A = MaterialLibAPI.newMaterial("gregtech", "HS188A", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA5A3A7)
@@ -27618,6 +28066,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Co₁Hf₁(Co₄Cr₃P₂Mo)₈Re₅(NbC)₅(Fe₉MnSiMo₄Cr₁₁Ni₂₄)₄(Fe₅CW)₄(ZrC)₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HastelloyC276 = MaterialLibAPI.newMaterial("gregtech", "HastelloyC276", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFAA8CA6)
@@ -27645,6 +28094,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "CoMo₈WCuCr₇Ni₃₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HastelloyN = MaterialLibAPI.newMaterial("gregtech", "HastelloyN", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD7CCE8)
@@ -27672,6 +28122,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Y₂Mo₄Cr₂Ti₂Ni₁₅")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HastelloyW = MaterialLibAPI.newMaterial("gregtech", "HastelloyW", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFB7B2E6)
@@ -27699,6 +28150,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Fe₃CoMo₁₂Cr₃Ni₃₁")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HastelloyX = MaterialLibAPI.newMaterial("gregtech", "HastelloyX", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFBEBACD)
@@ -27726,6 +28178,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Fe₉MnSiMo₄Cr₁₁Ni₂₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HeLiCoPtEr = MaterialLibAPI.newMaterial("gregtech", "HeLiCoPtEr", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC6C09D)
@@ -27753,6 +28206,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "HeLiCoPtEr")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HeliumSpargedUSalt = MaterialLibAPI.newMaterial("gregtech", "HeliumSpargedUSalt", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA8CDAC)
@@ -27765,6 +28219,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 762000)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂UF₄FP")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Hibonite = MaterialLibAPI.newMaterial("gregtech", "Hibonite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFA3BAD3)
@@ -27778,6 +28233,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 588000)
             .setProperty(GTMaterialProperties.FORMULA, "CaCeAl₁₂Ti₁₂Mg₁₂O₁₉")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Honeaite = MaterialLibAPI.newMaterial("gregtech", "Honeaite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFFD5D58A)
@@ -27791,6 +28247,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1056000)
             .setProperty(GTMaterialProperties.FORMULA, "Au₃TlTe₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HydrogenChlorideMix = MaterialLibAPI.newMaterial("gregtech", "HydrogenChlorideMix", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF7F7FFF)
@@ -27803,6 +28260,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 72000)
             .setProperty(GTMaterialProperties.FORMULA, "HCl")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.HydrogenCyanide = MaterialLibAPI.newMaterial("gregtech", "HydrogenCyanide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF06389E)
@@ -27815,6 +28273,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 54000)
             .setProperty(GTMaterialProperties.FORMULA, "HCN")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_GAS")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Hypogen = MaterialLibAPI.newMaterial("gregtech", "Hypogen", TextureSet.of("gregtech", "CUSTOM/hypogen"))
             .setTint(0xFFFFFFFF)
@@ -27841,6 +28300,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.hypogen")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Incoloy020 = MaterialLibAPI.newMaterial("gregtech", "Incoloy020", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE3B6AA)
@@ -27868,6 +28328,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Fe₁CuCr₅Ni₉")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.IncoloyDS = MaterialLibAPI.newMaterial("gregtech", "IncoloyDS", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB7B1E8)
@@ -27895,6 +28356,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Fe₂₃Co₉Cr₉Ni₉")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.IncoloyMA956 = MaterialLibAPI.newMaterial("gregtech", "IncoloyMA956", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC8DCDE)
@@ -27922,6 +28384,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Fe₁₆Al₃Cr₅Y")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Inconel625 = MaterialLibAPI.newMaterial("gregtech", "Inconel625", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF80C880)
@@ -27949,6 +28412,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ni₃Cr₇Mo₁(Fe₂Ni)₁(Ni₄Cr)₁₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Inconel690 = MaterialLibAPI.newMaterial("gregtech", "Inconel690", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF76DC8A)
@@ -27976,6 +28440,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "CrNb₂Mo₂(Ni₄Cr)₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Inconel792 = MaterialLibAPI.newMaterial("gregtech", "Inconel792", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF6CF076)
@@ -28003,6 +28468,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ni₂NbAl₂(Ni₄Cr)")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Indalloy140 = MaterialLibAPI.newMaterial("gregtech", "Indalloy140", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF726A8D)
@@ -28033,6 +28499,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1518000)
             .setProperty(GTMaterialProperties.FORMULA, "Bi₄₇Pb₂₅Sn₁₃Cd₁In₅")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Irarsite = MaterialLibAPI.newMaterial("gregtech", "Irarsite", TextureSet.of("gregtech", "FIERY"))
             .setTint(0xFFC6D4BF)
@@ -28046,6 +28513,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1428000)
             .setProperty(GTMaterialProperties.FORMULA, "IrRuRhPtAsSO")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Kashinite = MaterialLibAPI.newMaterial("gregtech", "Kashinite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFDCDC9B)
@@ -28059,6 +28527,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 654000)
             .setProperty(GTMaterialProperties.FORMULA, "Ir₂Rh₂S₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Koboldite = MaterialLibAPI.newMaterial("gregtech", "Koboldite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF50D2FF)
@@ -28079,6 +28548,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 340000)
             .setProperty(GTMaterialProperties.FORMULA, "Ni₇(FeMa)₆Fe₇")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LFTRFuel1 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel1", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFB5E7B1)
@@ -28097,6 +28567,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.PROTONS, 32L)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂ZrF₄U")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LFTRFuel2 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel2", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFB5E1B3)
@@ -28115,6 +28586,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.PROTONS, 21L)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂ZrF₄UF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LFTRFuel3 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel3", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF85BB8D)
@@ -28133,6 +28605,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.PROTONS, 27L)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂ThF₄UF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LFTRFuelBase = MaterialLibAPI.newMaterial("gregtech", "LFTRFuelBase", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA3DAAD)
@@ -28145,6 +28618,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 274000)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂UF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LafiumCompound = MaterialLibAPI.newMaterial("gregtech", "LafiumCompound", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF8FA89C)
@@ -28171,6 +28645,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Y₂Mo₄Cr₂Ti₂Ni₁₅)₄Nq₂SmW₂ArAl₃Ni₄C")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Lafossaite = MaterialLibAPI.newMaterial("gregtech", "Lafossaite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFFD29797)
@@ -28184,6 +28659,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 638000)
             .setProperty(GTMaterialProperties.FORMULA, "ClBrTl")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LanthaniteCe = MaterialLibAPI.newMaterial("gregtech", "LanthaniteCe", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF5E8BD3)
@@ -28197,6 +28673,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 426000)
             .setProperty(GTMaterialProperties.FORMULA, "Ce₂C₃O₁₇H₁₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LanthaniteLa = MaterialLibAPI.newMaterial("gregtech", "LanthaniteLa", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF6278D1)
@@ -28210,6 +28687,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 422000)
             .setProperty(GTMaterialProperties.FORMULA, "La₂C₃O₁₇H₁₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LanthaniteNd = MaterialLibAPI.newMaterial("gregtech", "LanthaniteNd", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF586FC8)
@@ -28223,6 +28701,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 434000)
             .setProperty(GTMaterialProperties.FORMULA, "Nd₂C₃O₁₇H₁₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Laurenium = MaterialLibAPI.newMaterial("gregtech", "Laurenium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFF4A8FF)
@@ -28248,6 +28727,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "((Fe₄(FeAlCr)(Fe₂Ni)₅)₁SSi₄C)₈In₂Cr₄DyRe")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Lautarite = MaterialLibAPI.newMaterial("gregtech", "Lautarite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF7593B4)
@@ -28261,6 +28741,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 366000)
             .setProperty(GTMaterialProperties.FORMULA, "CaI₂O₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Lepersonnite = MaterialLibAPI.newMaterial("gregtech", "Lepersonnite", TextureSet.of("gregtech", "EMERALD"))
             .setTint(0xFF56A597)
@@ -28274,6 +28755,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1570000)
             .setProperty(GTMaterialProperties.FORMULA, "CaYb₃Gd₂Dy₂(U₂₃₅)₂O₂₉H₂₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Lithium7 = MaterialLibAPI.newMaterial("gregtech", "Lithium7", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE1DCFF)
@@ -28303,6 +28785,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.ELEMENT, "Li")
             .setProperty(GTMaterialProperties.FORMULA, "Li")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LithiumFluoride = MaterialLibAPI.newMaterial("gregtech", "LithiumFluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFF0EDFF)
@@ -28318,6 +28801,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 50000)
             .setProperty(GTMaterialProperties.FORMULA, "LiF")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LithiumTetrafluoroberyllateLFTB = MaterialLibAPI.newMaterial("gregtech", "LithiumTetrafluoroberyllateLFTB", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFC1DACB)
@@ -28335,6 +28819,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 4)
             .setProperty(GTMaterialProperties.FORMULA, "Li₂BeF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MaragingSteel250 = MaterialLibAPI.newMaterial("gregtech", "MaragingSteel250", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA195D9)
@@ -28361,6 +28846,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Fe₅C)₁₆MoTiNi₄Co₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -28393,6 +28879,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Fe₅C)₁₆TiAlNi₄Co₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MaragingSteel350 = MaterialLibAPI.newMaterial("gregtech", "MaragingSteel350", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF8F9DD9)
@@ -28420,6 +28907,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Fe₅C)₁₆AlMoNi₄Co₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Miessiite = MaterialLibAPI.newMaterial("gregtech", "Miessiite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFFC0C0C0)
@@ -28433,6 +28921,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 626000)
             .setProperty(GTMaterialProperties.FORMULA, "Pd₁₁Te₂Se₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.MutatedLivingSolder = MaterialLibAPI.newMaterial("gregtech", "MutatedLivingSolder", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF936D9B)
@@ -28445,6 +28934,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 652000)
             .setProperty(GTMaterialProperties.FORMULA, "?Sn?Bi?If?")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Neptunium = MaterialLibAPI.newMaterial("gregtech", "Neptunium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFC8DCCD)
@@ -28478,6 +28968,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Np")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.neptunium")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NeptuniumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "NeptuniumHexafluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE3EDE6)
@@ -28496,6 +28987,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.PROTONS, 51L)
             .setProperty(GTMaterialProperties.FORMULA, "NpF₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "GAS")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Nichromite = MaterialLibAPI.newMaterial("gregtech", "Nichromite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF8FA8E4)
@@ -28509,6 +29001,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 534000)
             .setProperty(GTMaterialProperties.FORMULA, "NiCoFe₃Al₂Cr₂O₈")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.NiobiumCarbide = MaterialLibAPI.newMaterial("gregtech", "NiobiumCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFCDC5BF)
@@ -28536,6 +29029,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "NbC")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Nitinol60 = MaterialLibAPI.newMaterial("gregtech", "Nitinol60", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD2B4F5)
@@ -28561,6 +29055,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ni₂Ti₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Octiron = MaterialLibAPI.newMaterial("gregtech", "Octiron", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF7C7880)
@@ -28588,6 +29083,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "((Th)₄()₄)₆(((WC)₇Ti₃)₃)₆()(NiAuAgCu₃Fe₅C₃)₂(FeMa)₅")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Perroudite = MaterialLibAPI.newMaterial("gregtech", "Perroudite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFCCA98D)
@@ -28601,6 +29097,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1162000)
             .setProperty(GTMaterialProperties.FORMULA, "S₅Ag₄I₂Hg₅Br₂Cl₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.PhosphorousUraniumHexafluoridePUF6 = MaterialLibAPI.newMaterial("gregtech", "PhosphorousUraniumHexafluoridePUF6", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC2F370)
@@ -28613,6 +29110,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 238000)
             .setProperty(GTMaterialProperties.FORMULA, "UF₆F₂FP")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Pikyonium64B = MaterialLibAPI.newMaterial("gregtech", "Pikyonium64B", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF3467BA)
@@ -28639,6 +29137,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Ni₂NbAl₂(Ni₄Cr))₈((Fe₄(FeAlCr)(Fe₂Ni)₅)₁SSi₄C)₅₄Ce₃Sb₂Pt₂Yb(Fe₅CW)₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Plutonium238 = MaterialLibAPI.newMaterial("gregtech", "Plutonium238", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFFA4646)
@@ -28672,6 +29171,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.plutonium238")
             .setProperty(GTMaterialProperties.ELEMENT, "Pu_238")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Polonium = MaterialLibAPI.newMaterial("gregtech", "Polonium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFB4AAB4)
@@ -28705,6 +29205,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Po")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.polonium")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Polycrase = MaterialLibAPI.newMaterial("gregtech", "Polycrase", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFF83B2AE)
@@ -28718,6 +29219,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 2148000)
             .setProperty(GTMaterialProperties.FORMULA, "YCaCe(U₂₃₅)ThTi₂Nb₂Ta₂O₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Potin = MaterialLibAPI.newMaterial("gregtech", "Potin", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFC99781)
@@ -28745,6 +29247,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Pb₂(SnCu₃)₂Sn")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Protactinium = MaterialLibAPI.newMaterial("gregtech", "Protactinium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFBE96AA)
@@ -28780,6 +29283,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Pa")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.protactinium")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Quantum = MaterialLibAPI.newMaterial("gregtech", "Quantum", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF989EA2)
@@ -28804,6 +29308,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Co₇Cr₇Mn₄Ti₂)₃()(SiC)GaAmPdBiGe")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RadioactiveMineralMix = MaterialLibAPI.newMaterial("gregtech", "RadioactiveMineralMix", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF8CA096)
@@ -28821,6 +29326,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 4)
             .setProperty(GTMaterialProperties.FORMULA, "Rn₂Ra(U₂₃₅)U₁Th₂₅(Th)₄(Ca₅(SrO)₅Ce₅Na₅P₃O₁₂F₆)₆(Y₂Fe₁(U₂₃₅)₂Th₃Nb₂Ta₃)₈(Ca₂Ti₂Si₂ThO₁)₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Radium = MaterialLibAPI.newMaterial("gregtech", "Radium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFA5A5A5)
@@ -28854,6 +29360,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ra")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.radium")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RareEarthI = MaterialLibAPI.newMaterial("gregtech", "RareEarthI", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFF868A90)
@@ -28869,6 +29376,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1256000)
             .setProperty(GTMaterialProperties.FORMULA, "??????")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RareEarthII = MaterialLibAPI.newMaterial("gregtech", "RareEarthII", TextureSet.of("gregtech", "FIERY"))
             .setTint(0xFF92A4BD)
@@ -28884,6 +29392,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1150000)
             .setProperty(GTMaterialProperties.FORMULA, "??????")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.RareEarthIII = MaterialLibAPI.newMaterial("gregtech", "RareEarthIII", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF94A788)
@@ -28899,6 +29408,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1540000)
             .setProperty(GTMaterialProperties.FORMULA, "??????")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Rhenium = MaterialLibAPI.newMaterial("gregtech", "Rhenium", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFF969696)
@@ -28929,6 +29439,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.rhenium")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Rhugnor = MaterialLibAPI.newMaterial("gregtech", "Rhugnor", TextureSet.of("gregtech", "CUSTOM/rhugnor"))
             .setTint(0xFFBE00FF)
@@ -28962,6 +29473,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Fs⚶")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.rhugnor")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Runite = MaterialLibAPI.newMaterial("gregtech", "Runite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF3CC8BE)
@@ -28997,6 +29509,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Rt*")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.runite")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamarskiteY = MaterialLibAPI.newMaterial("gregtech", "SamarskiteY", TextureSet.of("gregtech", "FIERY"))
             .setTint(0xFF82B69D)
@@ -29010,6 +29523,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1772000)
             .setProperty(GTMaterialProperties.FORMULA, "Y₂Fe₁(U₂₃₅)₂Th₃Nb₂Ta₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SamarskiteYb = MaterialLibAPI.newMaterial("gregtech", "SamarskiteYb", TextureSet.of("gregtech", "FIERY"))
             .setTint(0xFF65AD86)
@@ -29023,6 +29537,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1940000)
             .setProperty(GTMaterialProperties.FORMULA, "Yb₂Fe₉(U₂₃₅)₃Th₂Nb₃Ta₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SeleniousAcid = MaterialLibAPI.newMaterial("gregtech", "SeleniousAcid", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF3F60D7)
@@ -29035,6 +29550,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 128000)
             .setProperty(GTMaterialProperties.FORMULA, "(SeO₂)H₈O₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Selenium = MaterialLibAPI.newMaterial("gregtech", "Selenium", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFFBEBEBE)
@@ -29063,6 +29579,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.selenium")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SeleniumDioxide = MaterialLibAPI.newMaterial("gregtech", "SeleniumDioxide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF5F91C3)
@@ -29076,6 +29593,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 190000)
             .setProperty(GTMaterialProperties.FORMULA, "SeO₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SeleniumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "SeleniumHexafluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFDEDEDE)
@@ -29091,6 +29609,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 194000)
             .setProperty(GTMaterialProperties.FORMULA, "SeF₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "GAS")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SiliconCarbide = MaterialLibAPI.newMaterial("gregtech", "SiliconCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF283024)
@@ -29118,6 +29637,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "SiC")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SodiumChloride = MaterialLibAPI.newMaterial("gregtech", "SodiumChloride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF7F7FCA)
@@ -29129,6 +29649,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 114000)
             .setProperty(GTMaterialProperties.FORMULA, "NaCl")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_GAS")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SodiumCyanide = MaterialLibAPI.newMaterial("gregtech", "SodiumCyanide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB4BEFF)
@@ -29143,6 +29664,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 96000)
             .setProperty(GTMaterialProperties.FORMULA, "NaCN")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SodiumFluoride = MaterialLibAPI.newMaterial("gregtech", "SodiumFluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF7F7FCA)
@@ -29156,6 +29678,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 80000)
             .setProperty(GTMaterialProperties.FORMULA, "NaF")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SolarSaltCold = MaterialLibAPI.newMaterial("gregtech", "SolarSaltCold", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF2669C1)
@@ -29168,6 +29691,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 76000)
             .setProperty(GTMaterialProperties.FORMULA, "(KNO₃)₂(NaNO₃)₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SolarSaltHot = MaterialLibAPI.newMaterial("gregtech", "SolarSaltHot", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC81919)
@@ -29182,6 +29706,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 76000)
             .setProperty(GTMaterialProperties.FORMULA, "(KNO₃)₂(NaNO₃)₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.SolidAcidCatalystMixture = MaterialLibAPI.newMaterial("gregtech", "SolidAcidCatalystMixture", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF502800)
@@ -29194,6 +29719,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 98000)
             .setProperty(GTMaterialProperties.FORMULA, "?H2SO4?")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Staballoy = MaterialLibAPI.newMaterial("gregtech", "Staballoy", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF444B42)
@@ -29220,6 +29746,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "U₉Ti")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.StableMoltenSaltBase = MaterialLibAPI.newMaterial("gregtech", "StableMoltenSaltBase", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC1DACB)
@@ -29232,6 +29759,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 50000)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Stellite = MaterialLibAPI.newMaterial("gregtech", "Stellite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC9B4F2)
@@ -29259,6 +29787,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Co₇Cr₇Mn₄Ti₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.StrontiumHydroxide = MaterialLibAPI.newMaterial("gregtech", "StrontiumHydroxide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF4C67BC)
@@ -29273,6 +29802,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 208000)
             .setProperty(GTMaterialProperties.FORMULA, "Sr(OH)₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.StrontiumOxide = MaterialLibAPI.newMaterial("gregtech", "StrontiumOxide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF739B9B)
@@ -29287,6 +29817,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 206000)
             .setProperty(GTMaterialProperties.FORMULA, "SrO")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }
@@ -29319,6 +29850,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Co₄Cr₃P₂Mo")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Tantalloy60 = MaterialLibAPI.newMaterial("gregtech", "Tantalloy60", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD5E7ED)
@@ -29346,6 +29878,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "W₂Ta₂₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Tantalloy61 = MaterialLibAPI.newMaterial("gregtech", "Tantalloy61", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC1D3D9)
@@ -29373,6 +29906,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(W₂Ta₂₃)Ti₆Y₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TantalumCarbide = MaterialLibAPI.newMaterial("gregtech", "TantalumCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF8B8878)
@@ -29400,6 +29934,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "TaC")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Technetium = MaterialLibAPI.newMaterial("gregtech", "Technetium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFDCDCDC)
@@ -29434,6 +29969,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Tc")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.technetium")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TechnetiumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "TechnetiumHexafluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFEDEDED)
@@ -29452,6 +29988,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.PROTONS, 26L)
             .setProperty(GTMaterialProperties.FORMULA, "TcF₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "GAS")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Thallium = MaterialLibAPI.newMaterial("gregtech", "Thallium", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFFAFAFAF)
@@ -29480,6 +30017,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.thallium")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt = MaterialLibAPI.newMaterial("gregtech", "ThoriumBerylliumDepletedMoltenSaltTBSalt", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF94B29C)
@@ -29492,6 +30030,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 298000)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂ThF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumDepletedMoltenSaltTSalt = MaterialLibAPI.newMaterial("gregtech", "ThoriumDepletedMoltenSaltTSalt", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA5B2AF)
@@ -29504,6 +30043,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 272000)
             .setProperty(GTMaterialProperties.FORMULA, "LiFThF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ThoriumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "ThoriumHexafluoride", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF5A735A)
@@ -29519,6 +30059,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 964000)
             .setProperty(GTMaterialProperties.FORMULA, "(Th)ThF₁₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Titanite = MaterialLibAPI.newMaterial("gregtech", "Titanite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF6B7799)
@@ -29532,6 +30073,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 728000)
             .setProperty(GTMaterialProperties.FORMULA, "Ca₂Ti₂Si₂ThO₁")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Titansteel = MaterialLibAPI.newMaterial("gregtech", "Titansteel", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFF7A5D5C)
@@ -29558,6 +30100,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "((WC)₇Ti₃)₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TrichloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "TrichloroaceticAcid", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF78641E)
@@ -29570,6 +30113,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 128000)
             .setProperty(GTMaterialProperties.FORMULA, "Cl3CCOOH")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TriniumNaquadahAlloy = MaterialLibAPI.newMaterial("gregtech", "TriniumNaquadahAlloy", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF7D7D82)
@@ -29600,6 +30144,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 856000)
             .setProperty(GTMaterialProperties.FORMULA, "₅Nq₉")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TriniumNaquadahCarbonite = MaterialLibAPI.newMaterial("gregtech", "TriniumNaquadahCarbonite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF5A5A5D)
@@ -29627,6 +30172,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(₅Nq₉)₉C")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TriniumTitaniumAlloy = MaterialLibAPI.newMaterial("gregtech", "TriniumTitaniumAlloy", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD2B4E1)
@@ -29654,6 +30200,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "₃Ti₇")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Tumbaga = MaterialLibAPI.newMaterial("gregtech", "Tumbaga", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFB20F)
@@ -29681,6 +30228,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Au₇Cu₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.TungstenTitaniumCarbide = MaterialLibAPI.newMaterial("gregtech", "TungstenTitaniumCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF8750AB)
@@ -29708,6 +30256,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(CW)₇Ti₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Uranium232 = MaterialLibAPI.newMaterial("gregtech", "Uranium232", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF58DC67)
@@ -29742,6 +30291,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.uranium232")
             .setProperty(GTMaterialProperties.ELEMENT, "U_232")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Uranium233 = MaterialLibAPI.newMaterial("gregtech", "Uranium233", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF49DC53)
@@ -29776,6 +30326,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.uranium233")
             .setProperty(GTMaterialProperties.ELEMENT, "U_233")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.UraniumDepletedMoltenSaltUSalt = MaterialLibAPI.newMaterial("gregtech", "UraniumDepletedMoltenSaltUSalt", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA8CDAC)
@@ -29788,6 +30339,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 762000)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂UF₄FP")
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.UraniumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "UraniumHexafluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA4EDA9)
@@ -29803,6 +30355,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 286000)
             .setProperty(GTMaterialProperties.FORMULA, "((U)F₄)F₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.UraniumTetrafluoride = MaterialLibAPI.newMaterial("gregtech", "UraniumTetrafluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA4EDA9)
@@ -29821,6 +30374,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.PROTONS, 50L)
             .setProperty(GTMaterialProperties.FORMULA, "(U)F₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.WatertightSteel = MaterialLibAPI.newMaterial("gregtech", "WatertightSteel", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF7878B4)
@@ -29847,6 +30401,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Fe₅C)₁₂C₂MnSi₂PSAl")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.WoodsGlass = MaterialLibAPI.newMaterial("gregtech", "Wood'sGlass", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFFDC3CFF)
@@ -29861,6 +30416,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 490000)
             .setProperty(GTMaterialProperties.FORMULA, "Si4Ba3Na2Ni")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Xenotime = MaterialLibAPI.newMaterial("gregtech", "Xenotime", TextureSet.of("gregtech", "OPAL"))
             .setTint(0xFF9CBD8B)
@@ -29874,6 +30430,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1252000)
             .setProperty(GTMaterialProperties.FORMULA, "Y₂Yb₂Er₂EuP₂O₈")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Yttriaite = MaterialLibAPI.newMaterial("gregtech", "Yttriaite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF80B8D0)
@@ -29887,6 +30444,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 586000)
             .setProperty(GTMaterialProperties.FORMULA, "YO₃Fe₄SnN₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Yttrialite = MaterialLibAPI.newMaterial("gregtech", "Yttrialite", TextureSet.of("gregtech", "RUBY"))
             .setTint(0xFF466E7D)
@@ -29900,6 +30458,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 730000)
             .setProperty(GTMaterialProperties.FORMULA, "Y₂Th₂Si₂O₇")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Yttrocerite = MaterialLibAPI.newMaterial("gregtech", "Yttrocerite", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFFD5F0D8)
@@ -29913,6 +30472,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 574000)
             .setProperty(GTMaterialProperties.FORMULA, "CeCaF₅Y")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Zeron100 = MaterialLibAPI.newMaterial("gregtech", "Zeron100", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB4B414)
@@ -29940,6 +30500,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Cr₁₃Ni₃Mo₂Cu₁W₂(Fe₅C)₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Zimbabweite = MaterialLibAPI.newMaterial("gregtech", "Zimbabweite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFFA4AEDB)
@@ -29953,6 +30514,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1398000)
             .setProperty(GTMaterialProperties.FORMULA, "Ca₂K₂PbAs₄Nb₄Ta₄Ti₄O₁₈")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Zircon = MaterialLibAPI.newMaterial("gregtech", "Zircon", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFF6988A1)
@@ -29966,6 +30528,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 270000)
             .setProperty(GTMaterialProperties.FORMULA, "ZrSiO₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ZirconiumCarbide = MaterialLibAPI.newMaterial("gregtech", "ZirconiumCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFDECAB4)
@@ -29993,6 +30556,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "ZrC")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .generateShape(TEBlockShapes.frameGt)
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.ZirconiumTetrafluoride = MaterialLibAPI.newMaterial("gregtech", "ZirconiumTetrafluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFFCE6)
@@ -30008,6 +30572,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 218000)
             .setProperty(GTMaterialProperties.FORMULA, "ZrF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Zirconolite = MaterialLibAPI.newMaterial("gregtech", "Zirconolite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFFAAC1CE)
@@ -30021,6 +30586,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 670000)
             .setProperty(GTMaterialProperties.FORMULA, "Ca₂Zr₂Ti₄CeO₁₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Zircophyllite = MaterialLibAPI.newMaterial("gregtech", "Zircophyllite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF9EA2C8)
@@ -30034,6 +30600,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 934000)
             .setProperty(GTMaterialProperties.FORMULA, "K₃Na₃Mn₇Fe₇Zr₂Ti₂Nb₂Si₈O₁₃F₇")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.Zirkelite = MaterialLibAPI.newMaterial("gregtech", "Zirkelite", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFF95A8B0)
@@ -30047,6 +30614,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1322000)
             .setProperty(GTMaterialProperties.FORMULA, "CaThCeZrTi₂Nb₂O₇")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         // spotless:on
     }

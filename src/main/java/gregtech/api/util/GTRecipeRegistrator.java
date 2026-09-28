@@ -54,7 +54,6 @@ import gregtech.api.enums.materials.MaterialArcSmeltHelper;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -306,7 +305,7 @@ public class GTRecipeRegistrator {
         if (!data.hasValidMaterialData()) return;
 
         Material primary = data.mMaterial.mMaterial;
-        if ((LegacyNameDomain.contains(primary) || !primary.getShapes()
+        if ((MaterialUtils.isGregTechMaterial(primary) || !primary.getShapes()
             .isEmpty()) && MaterialUtils.hasFlag(primary, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
 
         boolean isRecycle = true;
@@ -464,8 +463,9 @@ public class GTRecipeRegistrator {
 
         if (!data.hasValidMaterialData()) return;
 
-        for (MaterialStack tMaterial : data.getAllMaterialStacks()) if (LegacyNameDomain.contains(tMaterial.mMaterial))
-            tMaterial.mMaterial = MaterialUtils.macerateInto(tMaterial.mMaterial);
+        for (MaterialStack tMaterial : data.getAllMaterialStacks())
+            if (MaterialUtils.isGregTechMaterial(tMaterial.mMaterial))
+                tMaterial.mMaterial = MaterialUtils.macerateInto(tMaterial.mMaterial);
 
         data = new ItemData(data);
 
@@ -473,7 +473,7 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (LegacyNameDomain.contains(tMaterial.mMaterial))
+            if (MaterialUtils.isGregTechMaterial(tMaterial.mMaterial))
                 tAmount += tMaterial.mAmount * MaterialUtils.mass(tMaterial.mMaterial);
         }
 
@@ -505,7 +505,7 @@ public class GTRecipeRegistrator {
         }
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (LegacyNameDomain.contains(tMaterial.mMaterial)
+            if (MaterialUtils.isGregTechMaterial(tMaterial.mMaterial)
                 && MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
                 && !MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)
                 && tMaterial.mMaterial != Materials.Glass

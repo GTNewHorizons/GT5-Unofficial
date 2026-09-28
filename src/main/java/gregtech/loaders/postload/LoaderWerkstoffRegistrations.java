@@ -17,7 +17,6 @@ import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -81,10 +80,10 @@ public class LoaderWerkstoffRegistrations {
     }
 
     /// Pairs a werkstoff-origin material with its tool handle: a burning or magical material takes its themed
-    /// handle, otherwise durability picks the metal. A material in the legacy name domain is skipped --
-    /// gregtech's own declaration owns its handle, through [GTMaterialProperties#HANDLE_MATERIAL].
+    /// handle, otherwise durability picks the metal. GregTech's own materials are skipped -- their
+    /// declaration owns the handle, through [GTMaterialProperties#HANDLE_MATERIAL].
     private static void registerHandleMaterial(Material material) {
-        if (LegacyNameDomain.lookup(MaterialUtils.internalName(material)) == material) return;
+        if (MaterialUtils.isGregTechMaterial(material)) return;
         Material handle;
         if (MaterialUtils.hasSubTag(material, SubTag.BURNING.mName)) handle = Materials.Blaze;
         else if (MaterialUtils.hasSubTag(material, SubTag.MAGICAL.mName)) handle = Materials.Thaumium;

@@ -28,7 +28,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -159,7 +158,7 @@ public class ScannerHandlerLoader {
         if (tData.mPrefix != OrePrefixes.dust && tData.mPrefix != OrePrefixes.cell) return null;
         // must be a scannable element
         Material material = tData.mMaterial.mMaterial;
-        if (LegacyNameDomain.contains(material)) return getElementScanResult(material);
+        if (MaterialUtils.isGregTechMaterial(material)) return getElementScanResult(material);
         // A reconstructed werkstoff element has no legacy counterpart left; the cell-bearing ones are exactly
         // the population carrying an element.
         List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);

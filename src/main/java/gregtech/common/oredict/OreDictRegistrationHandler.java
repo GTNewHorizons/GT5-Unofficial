@@ -38,7 +38,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -46,16 +45,15 @@ import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OreDictUtils;
 import gregtech.common.config.OPStuff;
-import gregtech.loaders.materials.DeclaredMaterialNameTable;
 
 /// Turns every `OreDictionary.OreRegisterEvent` into GregTech's view of that stack: the prefix it belongs to,
 /// the material it stands for, its aliases, its unification association, and (buffered until
 /// [#processBufferedRegistrations]) the ore-processing recipes for it.
 ///
-/// A name's material side resolves in two tiers. The legacy name domain ([LegacyNameDomain]) is the
-/// declared-materials table; a name outside it is dropped as unknown unless it is a werkstoff- or
-/// gtPlusPlus-reconstructed MaterialLib material ([#reconstructedMaterial]). What the buffered registration
-/// finally carries is decided by [#resolveCensusMaterial], MaterialLib-registry-first.
+/// A name's material side resolves in two tiers. A name naming one of GregTech's own materials
+/// ([MaterialUtils#gregTechMaterial]) resolves to it; any other name is dropped as unknown unless it is a
+/// werkstoff- or gtPlusPlus-reconstructed MaterialLib material ([#reconstructedMaterial]). What the buffered
+/// registration finally carries is decided by [#resolveCensusMaterial].
 public final class OreDictRegistrationHandler {
 
     private OreDictRegistrationHandler() {}
@@ -287,8 +285,8 @@ public final class OreDictRegistrationHandler {
         }
 
         Material material = null;
-        if (prefix.isMaterialBased() && !materialName.isEmpty()) {
-            material = LegacyNameDomain.lookup(materialName);
+        if (prefix.isMaterialBased() && !materialName.isEmpty() && !NAME_ONLY_MATERIALS.contains(materialName)) {
+            material = MaterialUtils.gregTechMaterial(materialName);
         }
 
         OreDictAliases.registerAliases(oreName, stack);
@@ -403,18 +401,17 @@ public final class OreDictRegistrationHandler {
         return prefix.isUnifiable() && !MaterialUtils.unifiable(material);
     }
 
-    /// The MaterialLib material an ore-dictionary registration carries downstream. `materialName` resolves
-    /// ML-registry-first, falling back to `material` (or the `NULL` placeholder) when the registry holds no
-    /// shaped material under that name, or when `materialName` is one [DeclaredMaterialNameTable] freezes.
+    /// The MaterialLib material an ore-dictionary registration carries downstream: GregTech's own `material`
+    /// when there is one, else the shaped reconstructed or foreign MaterialLib material registered under
+    /// `materialName`, else the `NULL` placeholder. A name naming one of GregTech's own materials under a prefix
+    /// that is not material-based (`plankWood`, `plateAlloyIridium`) carries `NULL`, and a shapeless registry hit
+    /// is a wildcard backing that does the same.
     private static Material resolveCensusMaterial(@Nullable String materialName, @Nullable Material material) {
-        if (materialName != null && !materialName.isEmpty() && !hasDeclaredMaterialsField(materialName)) {
-            Material ml = MaterialLibAPI.getMaterial("gregtech", materialName);
-            // A shapeless registry hit is a wildcard backing; those names resolve through the legacy path
-            // instead.
-            if (ml != null && !ml.getShapes()
-                .isEmpty()) return ml;
-        }
-        return material != null ? material : Materials.NULL;
+        if (material != null) return material;
+        Material ml = registryMaterial(materialName);
+        return ml != null && !MaterialUtils.isGregTechMaterial(ml)
+            && !ml.getShapes()
+                .isEmpty() ? ml : Materials.NULL;
     }
 
     /// The reconstructed (werkstoff- or gtpp-owned) MaterialLib material registered under `materialName`, or
@@ -423,18 +420,17 @@ public final class OreDictRegistrationHandler {
     /// to null. A gtPlusPlus-originated material never gets that record and qualifies instead on
     /// [GTMaterialProperties#GTPP_STATE] plus a shaped registry hit.
     private static @Nullable Material reconstructedMaterial(@Nullable String materialName) {
-        if (materialName == null || materialName.isEmpty() || hasDeclaredMaterialsField(materialName)) return null;
-        Material ml = MaterialLibAPI.getMaterial("gregtech", materialName);
-        if (ml == null) return null;
+        Material ml = registryMaterial(materialName);
+        if (ml == null || MaterialUtils.isGregTechMaterial(ml)) return null;
         if (MaterialUtils.hasBridgeRegistration(ml)) return ml;
         if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) return null;
         return ml.getShapes()
             .isEmpty() ? null : ml;
     }
 
-    /// Whether `name` is in the frozen domain [DeclaredMaterialNameTable] backs.
-    private static boolean hasDeclaredMaterialsField(String name) {
-        return DeclaredMaterialNameTable.NAMES.contains(name);
+    private static @Nullable Material registryMaterial(@Nullable String materialName) {
+        if (materialName == null || materialName.isEmpty()) return null;
+        return MaterialLibAPI.getMaterial("gregtech", materialName);
     }
 
     @SuppressWarnings("deprecation")

@@ -51,7 +51,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
@@ -261,7 +260,7 @@ public class GTPostLoad {
             }
         }
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!LegacyNameDomain.contains(material)) continue;
+            if (!MaterialUtils.isGregTechMaterial(material)) continue;
             GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(material);
             if (scannerResult == null || scannerResult.isNotMet()) continue;
 
@@ -273,7 +272,7 @@ public class GTPostLoad {
         }
 
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (LegacyNameDomain.contains(material)) continue;
+            if (MaterialUtils.isGregTechMaterial(material)) continue;
             List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
             if (werkstoffPrefixes == null || !werkstoffPrefixes.contains(OrePrefixes.cell.name())) continue;
 

@@ -38,7 +38,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
@@ -315,12 +314,12 @@ public final class GTOreAdapter implements IOreAdapter {
         return mlMat.hasShape(info.isSmall ? OreShapes.oreSmall : OreShapes.ore);
     }
 
-    /// The MaterialLib [Material] backing an [OreInfo], or null when `material` is outside the
-    /// [LegacyNameDomain]. Broader than [#isGtFamily]: a material carrying both
+    /// The MaterialLib [Material] backing an [OreInfo], or null when `material` is not one of GregTech's own
+    /// (see [MaterialUtils#isGregTechMaterial]). Broader than [#isGtFamily]: a material carrying both
     /// [GTMaterialProperties#WERKSTOFF_IDS] and a live legacy id (such as Salt) passes here, while
     /// [#getOreInfo] defers it to [BWOreAdapter].
     private static @Nullable Material gtFamilyOf(@Nullable Material material) {
-        return LegacyNameDomain.contains(material) ? material : null;
+        return MaterialUtils.isGregTechMaterial(material) ? material : null;
     }
 
     /// Whether a MaterialLib material belongs to GT's own ore family: it carries no
@@ -361,7 +360,7 @@ public final class GTOreAdapter implements IOreAdapter {
         if (blockInfo == null || !isOreShape(blockInfo.shape()) || blockInfo.material() == null) return null;
 
         Material material = blockInfo.material();
-        // Werkstoff-origin materials are in the legacy name domain too; BWOreAdapter owns their ore behavior.
+        // BWOreAdapter owns the ore behavior of every werkstoff-origin material, GregTech's own included.
         if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) return null;
 
         if (isGtppFamily(material)) {

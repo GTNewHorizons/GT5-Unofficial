@@ -8,7 +8,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneType;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Gregtech;
 import gregtech.common.ores.BWOreAdapter;
@@ -35,7 +34,7 @@ public class VoidMinerLoader {
         var weights = parseWeights(Gregtech.voidMiners.gregtechWeightsDD);
 
         for (Material mat : MaterialLibAPI.getMaterials()) {
-            if (!LegacyNameDomain.contains(mat)) continue;
+            if (!MaterialUtils.isGregTechMaterial(mat)) continue;
 
             info.material = mat;
 

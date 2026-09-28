@@ -14,7 +14,6 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.ores.GTOreAdapter;
@@ -63,8 +62,9 @@ final class ShapeConsumerSupport {
         });
     }
 
-    /// [#delegate(Shape, OrePrefixes, Supplier)] for the two variant-carrying ore shapes: a material in the
-    /// [LegacyNameDomain] dispatches once per [StoneType] it generates a block on, under that stone's own
+    /// [#delegate(Shape, OrePrefixes, Supplier)] for the two variant-carrying ore shapes: one of GregTech's own
+    /// materials ([MaterialUtils#isGregTechMaterial]) dispatches once per [StoneType] it generates a block on, under
+    /// that stone's own
     /// [StoneType#getPrefix] (or [OrePrefixes#oreSmall] for small ore) and that stone's block. gtPlusPlus' and
     /// bartworks' materials, which own no stone variants, dispatch once under `fallbackPrefix` with the
     /// shape's canonical stack.
@@ -72,21 +72,20 @@ final class ShapeConsumerSupport {
     /// Every variant of one material shares a [GTRecipeBuilder#withVariantGroup] tag, so NEI shows the fan-out
     /// as a single cycling entry per action instead of one entry per stone.
     ///
-    /// [StoneType], [GTOreAdapter] and [LegacyNameDomain] are touched only from inside the postInit callback:
+    /// [StoneType] and [GTOreAdapter] are touched only from inside the postInit callback:
     /// see the class-init trap [gregtech.api.enums.materials.OreShapes]'s javadoc describes.
     static void delegateOreVariants(Shape shape, OrePrefixes fallbackPrefix, boolean small,
         Supplier<IOreRecipeRegistrator> registrator) {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
-            if (!LegacyNameDomain.contains(material)) {
+            if (!MaterialUtils.isGregTechMaterial(material)) {
                 dispatch(registrator, fallbackPrefix, material, MaterialLibAPI.getStack(material, s, 1));
                 return;
             }
 
             if (MaterialUtils.oldSubId(material) < 0) {
-                GT_FML_LOGGER.warn(
-                    "Ore material {} is in the legacy name domain but carries no legacy sub id",
-                    MaterialUtils.internalName(material));
+                GT_FML_LOGGER
+                    .warn("GregTech ore material {} carries no legacy sub id", MaterialUtils.internalName(material));
             }
 
             String group = fallbackPrefix.getName() + ":" + MaterialUtils.internalName(material);

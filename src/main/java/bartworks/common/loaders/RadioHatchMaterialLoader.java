@@ -19,7 +19,6 @@ import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.recipe.Sievert;
@@ -112,7 +111,7 @@ public class RadioHatchMaterialLoader {
         }
 
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!LegacyNameDomain.contains(material) || MaterialUtils.element(material) == null) continue;
+            if (!MaterialUtils.isGregTechMaterial(material) || MaterialUtils.element(material) == null) continue;
 
             // Naquadah is handled below with a special value.
             boolean validProton = MaterialUtils.protons(material) >= 83 && material != Materials.Tritanium

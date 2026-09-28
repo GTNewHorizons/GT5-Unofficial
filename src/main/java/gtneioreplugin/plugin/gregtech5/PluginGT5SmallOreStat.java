@@ -14,7 +14,7 @@ import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
 import gregtech.api.enums.StoneType;
-import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.ores.IOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
@@ -60,7 +60,7 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
         for (ParsedOreDictName oredict : OrePrefixes.detectPrefix(stack)) {
             if (!PluginGT5VeinStat.PREFIX_WHITELIST.contains(oredict.prefix)) continue;
 
-            Material legacyMat = LegacyNameDomain.lookup(oredict.material);
+            Material legacyMat = MaterialUtils.gregTechMaterial(oredict.material);
 
             if (legacyMat != null) {
                 isMatItem |= loadSmallOre(legacyMat);

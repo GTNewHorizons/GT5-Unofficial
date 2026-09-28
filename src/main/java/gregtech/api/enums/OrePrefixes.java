@@ -47,7 +47,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTShapeProperties;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialSubTagView;
 import gregtech.api.material.MaterialUtils;
@@ -2331,15 +2330,15 @@ public class OrePrefixes {
     }
 
     public static Material getMaterial(String oreName) {
-        return LegacyNameDomain.lookup(stripPrefix(oreName));
+        return MaterialUtils.gregTechMaterial(stripPrefix(oreName));
     }
 
     public static Material getMaterial(String oreName, OrePrefixes prefix) {
-        return LegacyNameDomain.lookup(oreName.replaceFirst(prefix.toString(), ""));
+        return MaterialUtils.gregTechMaterial(oreName.replaceFirst(prefix.toString(), ""));
     }
 
     public static Material getRealMaterial(String oreName, OrePrefixes prefix) {
-        return LegacyNameDomain.lookup(oreName.replaceFirst(prefix.toString(), ""));
+        return MaterialUtils.gregTechMaterial(oreName.replaceFirst(prefix.toString(), ""));
     }
 
     /// Removes a [Material] from [#mDisabledItems] if present.

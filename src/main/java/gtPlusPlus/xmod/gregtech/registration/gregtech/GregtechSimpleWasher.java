@@ -27,7 +27,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
@@ -122,7 +121,7 @@ public class GregtechSimpleWasher {
         ItemStack dustDirty;
         ItemStack dustPure;
         for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (!LegacyNameDomain.contains(ml)) {
+            if (!MaterialUtils.isGregTechMaterial(ml)) {
                 continue;
             }
             if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
@@ -188,7 +187,7 @@ public class GregtechSimpleWasher {
         ItemStack crushedClean;
         ItemStack crushedDirty;
         for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (!LegacyNameDomain.contains(ml)) {
+            if (!MaterialUtils.isGregTechMaterial(ml)) {
                 continue;
             }
             if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING) || MaterialFacades.isWildcard(ml)) {

@@ -27,7 +27,7 @@ import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialUtils;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
@@ -94,7 +94,7 @@ public final class BWAtmosphereManager {
         String name = gas.toString();
         name = name.charAt(0) + name.substring(1)
             .toLowerCase(Locale.US);
-        Material mat = LegacyNameDomain.lookup(name);
+        Material mat = MaterialUtils.gregTechMaterial(name);
         if (mat == null) {
             Material bwMaterial = MaterialLibAPI.getMaterial("gregtech", name);
             if (bwMaterial == null || bwMaterial.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) {

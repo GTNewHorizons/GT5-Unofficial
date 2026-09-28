@@ -36,6 +36,7 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFluidNames;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
@@ -54,9 +55,21 @@ public class MaterialUtils {
 
     private MaterialUtils() {}
 
-    /// The MaterialLib material whose [#internalName] is `name`, or null on a miss. Wider than
-    /// [gregtech.api.material.LegacyNameDomain#lookup], whose frozen table does not cover every material
-    /// whose registration name MaterialLib sanitized.
+    /// Whether `material` is one of GregTech's own materials, as opposed to another mod's or one
+    /// [GTMaterialProperties#RECONSTRUCTED] from bartworks' Werkstoff or gtPlusPlus. The distinction keeps behavior
+    /// those systems implemented separately, such as their own ore, recycling and radiation handling.
+    public static boolean isGregTechMaterial(@Nullable Material material) {
+        return material != null && "gregtech".equals(material.getModId())
+            && !material.getProperty(GTMaterialProperties.RECONSTRUCTED);
+    }
+
+    /// GregTech's own material (see [#isGregTechMaterial]) whose [#internalName] is `name`, or null.
+    public static @Nullable Material gregTechMaterial(@Nullable String name) {
+        Material material = byLegacyName(name);
+        return material != Materials.NULL && isGregTechMaterial(material) ? material : null;
+    }
+
+    /// The MaterialLib material whose [#internalName] is `name`, or null on a miss.
     public static @Nullable Material byLegacyName(@Nullable String name) {
         if (name == null) return null;
         if (legacyNameToMaterial == null) {
@@ -633,7 +646,7 @@ public class MaterialUtils {
     }
 
     /// The tool-handle material a material's part recipes pair it with, defaulting to the material itself. A
-    /// material outside the legacy name domain resolves its [#recordHandleMaterial] override;
+    /// reconstructed material resolves its [#recordHandleMaterial] override;
     /// [GTMaterialProperties#HANDLE_MATERIAL] is the fallback, resolved one hop only.
     public static @Nullable Material handleMaterial(@Nullable Material material) {
         if (material == null) return null;

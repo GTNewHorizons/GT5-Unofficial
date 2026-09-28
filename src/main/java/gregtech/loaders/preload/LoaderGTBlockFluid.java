@@ -50,7 +50,6 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -1895,7 +1894,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(MaterialParts.requireCell(Materials.Ammonia, 1), ItemList.Cell_Empty.get(1L));
 
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (LegacyNameDomain.contains(material) && MaterialUtils.canBeCracked(material)) {
+            if (MaterialUtils.isGregTechMaterial(material) && MaterialUtils.canBeCracked(material)) {
                 GTMod.proxy.addHydroCrackingRecipes(material);
                 GTMod.proxy.addSteamCrackingRecipes(material);
             }

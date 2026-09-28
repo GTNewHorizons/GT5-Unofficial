@@ -38,7 +38,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -1026,7 +1025,7 @@ public class Godforge implements Runnable {
         // if this is null it has to be a gt++ material
         ItemData data = MaterialData.getAssociation(stack);
         Material mat = data != null ? data.mMaterial.mMaterial : null;
-        if (mat != null && LegacyNameDomain.contains(mat)) {
+        if (mat != null && MaterialUtils.isGregTechMaterial(mat)) {
             if (MaterialUtils.hasMolten(mat)) {
                 return MaterialUtils.molten(mat, INGOTS * data.mMaterial.mAmount / GTValues.M);
             } else if (MaterialUtils.fluidOf(mat) != null) {

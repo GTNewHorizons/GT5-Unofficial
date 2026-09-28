@@ -20,7 +20,7 @@ import codechicken.nei.recipe.StackInfo;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
 import gregtech.api.enums.StoneType;
-import gregtech.api.material.LegacyNameDomain;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
@@ -63,7 +63,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
         for (ParsedOreDictName oredict : OrePrefixes.detectPrefix(stack)) {
             if (!PREFIX_WHITELIST.contains(oredict.prefix)) continue;
 
-            Material legacyMat = LegacyNameDomain.lookup(oredict.material);
+            Material legacyMat = MaterialUtils.gregTechMaterial(oredict.material);
 
             if (legacyMat != null) {
                 isMatItem |= loadMatchingVeins(legacyMat);
