@@ -252,7 +252,7 @@ public final class GTRecipeLookupBuilder {
             return;
         }
         addIfAbsent(group, GTItemStackLookupIngredient.fromRecipe(stack, recipe.isNBTSensitive));
-        addItemDataIngredient(stack, group);
+        if (!recipe.exactItemInputs) addItemDataIngredient(stack, group);
     }
 
     private static void addItemDataIngredient(ItemStack stack, List<GTRecipeLookupIngredient> group) {

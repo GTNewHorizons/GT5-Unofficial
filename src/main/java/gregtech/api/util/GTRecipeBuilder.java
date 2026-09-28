@@ -109,6 +109,7 @@ public class GTRecipeBuilder {
     protected boolean mCanBeBuffered = true;
     protected boolean mNeedsEmptyOutput = false;
     protected boolean nbtSensitive = false;
+    protected boolean exactItemInputs = false;
     protected String[] neiDesc;
     protected RecipeCategory recipeCategory;
     @Nullable
@@ -128,9 +129,9 @@ public class GTRecipeBuilder {
         FluidStack[][] altFluidInputs, int[] altOreIds, FluidStack[] fluidInputs, FluidStack[] fluidOutputs,
         int[] inputChances, int[] outputChances, int[] fluidInputChances, int[] fluidOutputChances, Object special,
         int duration, int eut, int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe,
-        boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc,
-        RecipeCategory recipeCategory, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision,
-        boolean skip, boolean valid) {
+        boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive, boolean exactItemInputs,
+        String[] neiDesc, RecipeCategory recipeCategory, @Nullable IRecipeMetadataStorage metadataStorage,
+        boolean checkForCollision, boolean skip, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -153,6 +154,7 @@ public class GTRecipeBuilder {
         this.mCanBeBuffered = mCanBeBuffered;
         this.mNeedsEmptyOutput = mNeedsEmptyOutput;
         this.nbtSensitive = nbtSensitive;
+        this.exactItemInputs = exactItemInputs;
         this.neiDesc = neiDesc;
         this.recipeCategory = recipeCategory;
         this.metadataStorage = metadataStorage;
@@ -689,6 +691,13 @@ public class GTRecipeBuilder {
         return this;
     }
 
+    /// Makes each item input accept only its own item, instead of every item sharing its association (see
+    /// [OreDictUtils#inputAssociationName]). For recipes whose output depends on which interchangeable item goes in.
+    public GTRecipeBuilder exactItemInputs() {
+        this.exactItemInputs = true;
+        return this;
+    }
+
     public GTRecipeBuilder setNEIDesc(String... neiDesc) {
         this.neiDesc = neiDesc;
         return this;
@@ -883,6 +892,7 @@ public class GTRecipeBuilder {
             mCanBeBuffered,
             mNeedsEmptyOutput,
             nbtSensitive,
+            exactItemInputs,
             copy(neiDesc),
             recipeCategory,
             metadataStorage,
@@ -918,6 +928,7 @@ public class GTRecipeBuilder {
             mCanBeBuffered,
             mNeedsEmptyOutput,
             nbtSensitive,
+            exactItemInputs,
             copy(neiDesc),
             recipeCategory,
             null,
@@ -1233,6 +1244,7 @@ public class GTRecipeBuilder {
         r.mCanBeBuffered = mCanBeBuffered;
         r.mNeedsEmptyOutput = mNeedsEmptyOutput;
         r.isNBTSensitive = nbtSensitive;
+        r.exactItemInputs = exactItemInputs;
         r.mFakeRecipe = fakeRecipe;
         r.mEnabled = enabled;
         if (neiDesc != null) r.setNeiDesc(neiDesc);

@@ -124,6 +124,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * If this is set to true, NBT equality is required for recipe check.
      */
     public boolean isNBTSensitive = false;
+    /// If true, each item input accepts only its own item rather than every item sharing its association.
+    public boolean exactItemInputs = false;
     /**
      * Used for describing recipes that do not fit the default recipe pattern (for example Large Boiler Fuels)
      */
@@ -171,6 +173,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         mEUt = aRecipe.mEUt;
         mNeedsEmptyOutput = aRecipe.mNeedsEmptyOutput;
         isNBTSensitive = aRecipe.isNBTSensitive;
+        exactItemInputs = aRecipe.exactItemInputs;
         mCanBeBuffered = aRecipe.mCanBeBuffered;
         mFakeRecipe = aRecipe.mFakeRecipe;
         mEnabled = aRecipe.mEnabled;
@@ -471,7 +474,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 .orElse(null);
 
             if (existingInput == null) {
-                RecipeItemInput newInput = new RecipeItemInput(itemStack, isNBTSensitive);
+                RecipeItemInput newInput = new RecipeItemInput(itemStack, isNBTSensitive, exactItemInputs);
                 // Initialize weighted amount: (actual stack size * chance percentage)
                 newInput.chanceWeightedAmount = (itemStack.stackSize * (double) chance) / 10000.0;
                 newCache.add(newInput);
@@ -992,11 +995,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
          */
         public final int oreDictId;
         private final ItemStack[] alternativeStacks;
-        /// [OreDictUtils#inputAssociationName] of [#unifiedStack] for a regular slot that ignores NBT; any item with
-        /// the same association name also matches. Null otherwise.
+        /// [OreDictUtils#inputAssociationName] of [#unifiedStack] for a regular slot that ignores NBT and is not
+        /// exact; any item with the same association name also matches. Null otherwise.
         private final @Nullable String associationName;
 
-        public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
+        public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive, boolean exact) {
             Objects.requireNonNull(stack);
             this.inputAmount = stack.stackSize;
             // Initialize weighted amount with 100% chance by default.
@@ -1015,7 +1018,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     this.unifiedStack.setTagCompound(null);
                 }
             }
-            this.associationName = this.usesNbtMatching ? null : OreDictUtils.inputAssociationName(stack);
+            this.associationName = this.usesNbtMatching || exact ? null : OreDictUtils.inputAssociationName(stack);
         }
 
         /**
@@ -1603,7 +1606,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 } else {
                     RecipeItemInput ri = (slotOreDictId >= 0)
                         ? new RecipeItemInput(slotOreDictId, mInputs[i], amount, isNBTSensitive, alternatives)
-                        : new RecipeItemInput(mInputs[i], isNBTSensitive);
+                        : new RecipeItemInput(mInputs[i], isNBTSensitive, exactItemInputs);
                     ri.chanceWeightedAmount = weighted;
                     newCache.add(ri);
                 }

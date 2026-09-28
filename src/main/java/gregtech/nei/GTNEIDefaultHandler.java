@@ -620,7 +620,9 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         public FixedPositionedStack(CachedDefaultRecipe recipe, Object object, boolean renderRealStackSize, int x,
             int y, int aChance, boolean aIsInput) {
             super(
-                aIsInput && object instanceof ItemStack stack ? OreDictUtils.getInterchangeableStacks(stack) : object,
+                aIsInput && object instanceof ItemStack stack && !recipe.mRecipe.exactItemInputs
+                    ? OreDictUtils.getInterchangeableStacks(stack)
+                    : object,
                 x,
                 y,
                 true);
