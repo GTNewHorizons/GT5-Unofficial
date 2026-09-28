@@ -17,6 +17,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ElectrolyzerRecipes implements Runnable {
@@ -864,6 +865,14 @@ public class ElectrolyzerRecipes implements Runnable {
             .fluidInputs(CalciumChloride.getFluidOrGas(3_000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1))
             .fluidOutputs(Materials.Chlorine.getGas(2_000))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(WerkstoffMaterialPool.CalciumFluoride.getFluidOrGas(3_000))
+            .itemOutputs(Materials.Calcium.getDust(1))
+            .fluidOutputs(Materials.Fluorine.getGas(2_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
