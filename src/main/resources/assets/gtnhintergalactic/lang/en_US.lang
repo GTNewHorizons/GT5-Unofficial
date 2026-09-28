@@ -311,6 +311,9 @@ ig.nei.siphon.baserate=Rate
 ig.nei.siphon.name=Planetary Gas Siphon
 ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
+nei.options.tools.dump.ig=GTNH Intergalactic
+nei.options.tools.dump.ig.asteroid=Space Miner Asteroids
+nei.options.tools.dump.ig.asteroids=Space Miner Asteroids
 
 # Structure and Tooltip
 ig.siphon.structure.ControllerPos=Front center of the main body, 16th layer

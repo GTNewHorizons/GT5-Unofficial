@@ -36,6 +36,7 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import kekztech.common.Blocks;
 import kekztech.common.TileEntities;
@@ -291,11 +292,12 @@ public class BECRecipes implements Runnable {
     }
 
     public void runLateRecipes() {
+        ItemStack SuperdenseBedrockium = MaterialLibAPI.getStack(Materials.Bedrockium, Shapes.plateSuperdense, 1);
         // Shielding Casing
-        addBec(
+        addBecUnsafe(
             CustomItemList.Godforge_SingularityShieldingCasing.get(6),
             new ItemStack[] { MaterialLibAPI.getStack(Materials.SixPhasedCopper, TEBlockShapes.frameGt, 4),
-                MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, 2),
+                GTUtility.copyAmountUnsafe(256, SuperdenseBedrockium),
                 MaterialLibAPI.getStack(Materials.Quantum, Shapes.plate, 16),
                 MaterialLibAPI.getStack(Materials.InfinityCatalyst, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.plateSuperdense, 2),
@@ -312,11 +314,24 @@ public class BECRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, TEBlockShapes.frameGt, 4) },
             nanites(1, 2, 1, 1, 2, 4, 3, 1, 1, 3, 4, 2, 1, 1, 2, 1),
             new FluidStack[] { CondensateType.Hypogen.getEntangled(4 * INGOTS),
-                CondensateType.Bedrockium.getEntangled(256 * STACKS),
+                CondensateType.Infinity.getEntangled(2 * STACKS),
                 CondensateType.CelestialTungsten.getEntangled(32 * STACKS),
                 CondensateType.Neutronium.getEntangled(32 * STACKS) },
             300 * SECONDS,
             TierEU.RECIPE_UMV);
+    }
+
+    // Copied from Coremod
+    private void addBecUnsafe(ItemStack output, ItemStack[] inputs, NaniteTier[] nanites, FluidStack[] condensates,
+        int duration, long eut) {
+        GTValues.RA.stdBuilder()
+            .itemInputsUnsafe(inputs)
+            .fluidInputs(condensates)
+            .itemOutputs(output)
+            .metadata(NANITE_TIERS, nanites)
+            .duration(duration)
+            .eut(eut)
+            .addTo(TecTechRecipeMaps.condensateAssemblingRecipes);
     }
 
     private void addBECCasingRecipes() {

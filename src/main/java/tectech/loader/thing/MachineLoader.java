@@ -1391,24 +1391,28 @@ public class MachineLoader implements Runnable {
         dataIn_Hatch.set(
             new MTEHatchDataInput(OpticalSlaveConnector.ID, "hatch.datain.tier.07", "Optical Reception Connector", 7)
                 .getStackForm(1L));
+        API.setAliases(dataIn_Hatch.get(1L), "gt.alias.fibre");
         dataOut_Hatch.set(
             new MTEHatchDataOutput(
                 OpticalMasterConnector.ID,
                 "hatch.dataout.tier.07",
                 "Optical Transmission Connector",
                 7).getStackForm(1L));
+        API.setAliases(dataOut_Hatch.get(1L), "gt.alias.fibre");
         dataInAss_Hatch.set(
             new MTEHatchDataItemsInput(
                 AssemblylineSlaveConnector.ID,
                 "hatch.datainass.tier.07",
                 "Assembly Line Reception Connector",
                 7).getStackForm(1L));
+        API.setAliases(dataInAss_Hatch.get(1L), "gt.alias.fibre");
         dataOutAss_Hatch.set(
             new MTEHatchDataItemsOutput(
                 DataBankMasterConnector.ID,
                 "hatch.dataoutass.tier.07",
                 "Data Bank Transmission Connector",
                 7).getStackForm(1L));
+        API.setAliases(dataOutAss_Hatch.get(1L), "gt.alias.fibre");
         dataOut_Wireless_Hatch.set(
             new MTEHatchWirelessComputationOutput(
                 CloudComputationServerHatch.ID,
@@ -1447,7 +1451,7 @@ public class MachineLoader implements Runnable {
         LASERpipeSmart.set(
             new MTEPipeLaserMirror(LaserVacuumMirror.ID, "pipe.energymirror", "Laser Vacuum Mirror").getStackForm(1L));
         DATApipe.set(new MTEPipeData(OpticalFiberCable.ID, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
-
+        API.setAliases(DATApipe.get(1L), "gt.alias.fibre");
         if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
             TestPipe.set(new TestFactoryPipe(TestFactoryPipe.ID, "pipe.test").getStackForm(1));
             TestHatch.set(new TestFactoryHatch(TestFactoryHatch.ID, "hatch.test", 7).getStackForm(1));
@@ -1459,7 +1463,7 @@ public class MachineLoader implements Runnable {
         DATApipeBlock.set(
             new MTEPipeBlockData(OpticalFiberCableCasing.ID, "pipe.datastream.block", "Optical Fiber Cable Casing")
                 .getStackForm(1L));
-
+        API.setAliases(DATApipeBlock.get(1L), "gt.alias.fibre");
         // ===================================================================================================
         // Single Blocks
         // ===================================================================================================

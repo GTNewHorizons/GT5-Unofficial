@@ -273,7 +273,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingCh
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEncasementWrapperModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEOpticalOrganizerModule;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESMDProcessorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEPartProcessorModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESuperconductorSplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEWireTracerModule;
@@ -752,13 +752,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         addItemTooltip(
             ItemList.NanoChipModule_AssemblyMatrix.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
-        ItemList.NanoChipModule_SMDProcessor.set(
-            new MTESMDProcessorModule(
-                NANOCHIP_MODULE_SMD_PROCESSOR.ID,
+        ItemList.NanoChipModule_PartProcessor.set(
+            new MTEPartProcessorModule(
+                NANOCHIP_MODULE_PART_PROCESSOR.ID,
                 "multimachine.nanochipmodule.smdprocessor",
                 "Part Preparation Apparatus").getStackForm(1));
         addItemTooltip(
-            ItemList.NanoChipModule_SMDProcessor.get(1),
+            ItemList.NanoChipModule_PartProcessor.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_BoardProcessor.set(
             new MTEBoardProcessorModule(
@@ -9340,12 +9340,14 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "vacuum.hatch.input",
                 "Vacuum Conveyor Input",
                 9).getStackForm(1L));
+        API.setAliases(ItemList.Hatch_VacuumConveyor_Input.get(1L), "gt.alias.vci");
         ItemList.Hatch_VacuumConveyor_Output.set(
             new MTEHatchVacuumConveyorOutput(
                 HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
                 "vacuum.hatch.output",
                 "Vacuum Conveyor Output",
                 9).getStackForm(1L));
+        API.setAliases(ItemList.Hatch_VacuumConveyor_Output.get(1L), "gt.alias.vco");
         ItemList.Hatch_Splitter_Level.set(
             new MTEHatchSplitterRedstone(
                 HATCH_SPLITTER_LEVEL.ID,

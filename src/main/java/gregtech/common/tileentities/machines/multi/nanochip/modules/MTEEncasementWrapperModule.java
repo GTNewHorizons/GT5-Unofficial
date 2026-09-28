@@ -118,6 +118,7 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
             .addCasing("32", translateToLocal("gt.blockcasings12.2.name"), false)
             // Quantium Frame Box
             .addCasing("32", "Quantium Frame Box", false)
+            .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
             .addMiscHatch(
                 "0+",
                 TOOLTIP_VCI_LONG,

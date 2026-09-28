@@ -25,7 +25,7 @@ public enum ModuleTypes {
 
     EncasementWrapper("GT5U.tooltip.nac.module.encasement_wrapper.name", ItemList.NanoChipModule_EncasementWrapper.get(1)),
 
-    SMDProcessor("GT5U.tooltip.nac.module.smd_processor.name", ItemList.NanoChipModule_SMDProcessor.get(1)),
+    PartProcessor("GT5U.tooltip.nac.module.part_processor.name", ItemList.NanoChipModule_PartProcessor.get(1)),
 
     Splitter("GT5U.tooltip.nac.module.splitter.name", ItemList.NanoChipModule_Splitter.get(1)),
 

@@ -227,13 +227,26 @@ public enum IDMetaItem03 {
     Circuit_Chip_PlPIC(275),
     Circuit_Silicon_Wafer8(276),
     Gravitational_Lens(277),
-    Planck_Manifold(278),
-    IridiumAlloyPlate(279),
-    AdvancedAlloyPlate(280),
-    CarbonAlloyPlate(281),
-    MixedMetalIngot(282),
-    RawCarbonFibre(283),
-    CarbonMesh(284),
+
+    Calabi_Yau_Manifold(278),
+    Raw_Manifold_Bud(279),
+    Blossoming_Manifold_Bud(280),
+
+    Pulsating_WDM_Strands(281),
+    Unbound_WDM_Strands(282),
+    Macrocosmic_Strands(283),
+    Isolated_BDM_Strands(284),
+
+    Lost_Quantum_Circuit_Rack(285),
+    Realized_Quantum_Circuit_Rack(286),
+
+    IridiumAlloyPlate(287),
+    AdvancedAlloyPlate(288),
+    CarbonAlloyPlate(289),
+    MixedMetalIngot(290),
+    RawCarbonFibre(291),
+    CarbonMesh(292),
+
     StableBaryonContainmentUnit(300),
     StableLeptonContainmentUnit(301),
     StableMesonContainmentUnit(302),

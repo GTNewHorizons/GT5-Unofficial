@@ -128,8 +128,8 @@ item.masked_mask_substrate.name=Processed Mask Substrate
 beamline.info=Machine Information
 beamline.info.hdr=§lMachine Information: §r
 
-beamline.in_pre=Multiblock Beamline Input
-beamline.in_pre.hdr=§lMultiblock Beamline Input: §r
+beamline.in_pre=Multiblock Beam Line Input
+beamline.in_pre.hdr=§lMultiblock Beam Line Input: §r
 beamline.particle=Particle
 beamline.particle.fmt=Particle: §6%s (%s)§r
 beamline.energy=Energy
@@ -148,8 +148,8 @@ beamline.temperature.fmt=Temperature: §4%s§r K
 beamline.coolusage=Coolant Usage
 beamline.coolusage.fmt=Coolant Usage: §b%s§r kL/s
 
-beamline.out_pre=Multiblock Beamline Output
-beamline.out_pre.hdr=§lMultiblock Beamline Output: §r
+beamline.out_pre=Multiblock Beam Line Output
+beamline.out_pre.hdr=§lMultiblock Beam Line Output: §r
 
 gt.blockmachines.beamline_pipe.name=Beam Pipe
 

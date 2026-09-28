@@ -1260,7 +1260,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         tag.getInteger("progressSingleBlock")));
             }
 
-            if (!isSteampowered()) {
+            if (isElectric() && !isSteampowered()) {
                 currenttip.add(
                     TTRenderBar.create(
                         euText,
@@ -1270,7 +1270,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             }
 
             if (isActive) {
-                if (!isSteampowered()) {
+                if (isElectric() && !isSteampowered()) {
                     if (euT > 0) {
                         double exactAmps = GTUtility.getExactAmperageForTier(euT, (byte) getInputTier());
 

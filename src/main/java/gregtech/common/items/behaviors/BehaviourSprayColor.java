@@ -105,7 +105,9 @@ public class BehaviourSprayColor extends BehaviourNone implements EnderStorageDy
         Block initialBlock = aWorld.getBlock(aX, aY, aZ);
         int initialBlockMeta = aWorld.getBlockMetadata(aX, aY, aZ);
         TileEntity initialTE = aWorld.getTileEntity(aX, aY, aZ);
-        while ((GTUtility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, side, aPlayer))) {
+        ColoredBlockContainer initialContainer = ColoredBlockContainer.getInstance(aPlayer, aX, aY, aZ, side);
+        ColoredBlockContainer container = initialContainer;
+        while ((GTUtility.areStacksEqual(aStack, this.mUsed, true)) && colorize(container)) {
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SPRAY_CAN, 1.0F, 1.0F, aX, aY, aZ);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
@@ -142,6 +144,7 @@ public class BehaviourSprayColor extends BehaviourNone implements EnderStorageDy
                     if (currentGTTile.getMetaTileID() != targetGTTile.getMetaTileID()) break;
                 }
             }
+            container = initialContainer.getChainInstance(aPlayer, aX, aY, aZ, side);
         }
         setRemainingUses(aStack, tNBT, tUses);
         return rOutput;
@@ -193,9 +196,8 @@ public class BehaviourSprayColor extends BehaviourNone implements EnderStorageDy
         }
     }
 
-    protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        return ColoredBlockContainer.getInstance(player, aX, aY, aZ, side)
-            .setColor(getColor());
+    protected boolean colorize(ColoredBlockContainer container) {
+        return container.setColor(getColor());
     }
 
     protected byte getColor() {
