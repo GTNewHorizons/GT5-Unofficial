@@ -11,11 +11,14 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.WaferEngravingRecipes;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
@@ -87,9 +90,9 @@ public class LaserEngraverRecipes implements Runnable {
         // From ProcessingCrafting - craftingQuartz
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new net.minecraft.item.ItemStack(Blocks.redstone_torch, 3, GTRecipeBuilder.WILDCARD),
+                new ItemStack(Blocks.redstone_torch, 3, GTRecipeBuilder.WILDCARD),
                 new OreDictItemStack("craftingQuartz", 1))
-            .itemOutputs(new net.minecraft.item.ItemStack(Items.comparator, 1, 0))
+            .itemOutputs(new ItemStack(Items.comparator, 1, 0))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, INGOTS))
             .duration(2 * SECONDS)
             .eut(20)
@@ -432,28 +435,22 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new net.minecraft.item.ItemStack(Blocks.sandstone, 1, 2),
-                new OreDictItemStack("craftingLensWhite", 0))
-            .itemOutputs(new net.minecraft.item.ItemStack(Blocks.sandstone, 1, 1))
+            .itemInputs(new ItemStack(Blocks.sandstone, 1, 2), new OreDictItemStack("craftingLensWhite", 0))
+            .itemOutputs(new ItemStack(Blocks.sandstone, 1, 1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new net.minecraft.item.ItemStack(Blocks.stone, 1, 0),
-                new OreDictItemStack("craftingLensWhite", 0))
-            .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stonebrick, 1, 3))
+            .itemInputs(new ItemStack(Blocks.stone, 1, 0), new OreDictItemStack("craftingLensWhite", 0))
+            .itemOutputs(new ItemStack(Blocks.stonebrick, 1, 3))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                new net.minecraft.item.ItemStack(Blocks.quartz_block, 1, 0),
-                new OreDictItemStack("craftingLensWhite", 0))
-            .itemOutputs(new net.minecraft.item.ItemStack(Blocks.quartz_block, 1, 1))
+            .itemInputs(new ItemStack(Blocks.quartz_block, 1, 0), new OreDictItemStack("craftingLensWhite", 0))
+            .itemOutputs(new ItemStack(Blocks.quartz_block, 1, 1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(laserEngraverRecipes);
@@ -507,5 +504,16 @@ public class LaserEngraverRecipes implements Runnable {
             .eut(TierEU.RECIPE_LuV)
             .addTo(WaferEngravingRecipes);
 
+        for (Block stones : new Block[] { GregTechAPI.sBlockGranites, GregTechAPI.sBlockStones,
+            GregTechAPI.sBlockConcretes }) {
+            for (int meta : new int[] { 7, 15 }) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(new ItemStack(stones, 1, meta), new OreDictItemStack("craftingLensWhite", 0))
+                    .itemOutputs(new ItemStack(stones, 1, meta - 1))
+                    .duration(2 * SECONDS + 10 * TICKS)
+                    .eut(TierEU.RECIPE_LV / 2)
+                    .addTo(laserEngraverRecipes);
+            }
+        }
     }
 }

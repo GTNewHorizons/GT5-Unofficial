@@ -31,7 +31,6 @@ import gtPlusPlus.core.item.chemistry.RecipeLoaderGenericChem;
 import gtPlusPlus.core.item.chemistry.RecipeLoaderMilling;
 import gtPlusPlus.core.item.chemistry.RecipeLoaderRocketFuels;
 import gtPlusPlus.core.recipe.RecipesGregTech;
-import gtPlusPlus.core.recipe.RecipesLaserEngraver;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderAlgaePond;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderChemicalSkips;
@@ -128,7 +127,6 @@ public class CompatHandler {
          * --- 859 to 868 --- 911 to 940
          */
 
-        new RecipesLaserEngraver();
         GregtechEnergyBuffer.run();
         GregtechLFTR.run();
         GregtechNuclearSaltProcessingPlant.run();

@@ -73,6 +73,7 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -89,6 +90,7 @@ import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import ic2.core.Ic2Items;
+import toxiceverglades.dimension.DimensionEverglades;
 
 public class RecipesGregTech {
 
@@ -852,6 +854,82 @@ public class RecipesGregTech {
             .itemOutputs(MaterialLibAPI.getStack(Materials.ChromaticGlass, Shapes.dust, 1))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_UHV)
+            .addTo(laserEngraverRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.plate, 2),
+                new OreDictItemStack("craftingLensWhite", 0))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium7, Shapes.plateDouble, 1))
+            .duration(4 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(laserEngraverRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 3),
+                new OreDictItemStack("craftingLensWhite", 0))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium7, Shapes.dust, 1))
+            .duration(2 * MINUTES)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(laserEngraverRecipes);
+
+        dehydratorCoilWireRecipe(
+            Materials.Aluminium,
+            GregtechItemList.DehydratorCoilWireEV,
+            10 * SECONDS,
+            TierEU.RECIPE_HV);
+        dehydratorCoilWireRecipe(
+            Materials.Nichrome,
+            GregtechItemList.DehydratorCoilWireEV,
+            10 * SECONDS,
+            TierEU.RECIPE_HV);
+        dehydratorCoilWireRecipe(
+            Materials.Osmium,
+            GregtechItemList.DehydratorCoilWireIV,
+            20 * SECONDS,
+            TierEU.RECIPE_EV);
+        dehydratorCoilWireRecipe(
+            Materials.Platinum,
+            GregtechItemList.DehydratorCoilWireIV,
+            20 * SECONDS,
+            TierEU.RECIPE_EV);
+        dehydratorCoilWireRecipe(
+            Materials.VanadiumGallium,
+            GregtechItemList.DehydratorCoilWireLuV,
+            30 * SECONDS,
+            TierEU.RECIPE_IV);
+        dehydratorCoilWireRecipe(
+            Materials.YttriumBariumCuprate,
+            GregtechItemList.DehydratorCoilWireLuV,
+            30 * SECONDS,
+            TierEU.RECIPE_IV);
+        dehydratorCoilWireRecipe(
+            Materials.NiobiumTitanium,
+            GregtechItemList.DehydratorCoilWireLuV,
+            30 * SECONDS,
+            TierEU.RECIPE_IV);
+        dehydratorCoilWireRecipe(
+            Materials.Naquadah,
+            GregtechItemList.DehydratorCoilWireZPM,
+            40 * SECONDS,
+            TierEU.RECIPE_LuV);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.AlkalusDisk.get(1), new OreDictItemStack("craftingLensOrange", 0))
+            .itemOutputs(new ItemStack(DimensionEverglades.portalItem))
+            .duration(3 * HOURS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(laserEngraverRecipes);
+    }
+
+    private static void dehydratorCoilWireRecipe(Material wire, GregtechItemList coil, int duration, long eut) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialLibAPI.getStack(wire, TEBlockShapes.wireGt02, 1),
+                new OreDictItemStack("craftingLensLime", 0))
+            .itemOutputs(coil.get(1))
+            .duration(duration)
+            .eut(eut)
             .addTo(laserEngraverRecipes);
     }
 
