@@ -91,6 +91,7 @@ public final class LegacyNameDomainTable {
         m.put("BioDiesel", "BioDiesel");
         m.put("BioMediumRaw", "BioMediumRaw");
         m.put("BiocatalyzedPropulsionFluid", "BiocatalyzedPropulsionFluid");
+        m.put("Biogas", "Biogas");
         m.put("BiohMediumSterilized", "BiohMediumSterilized");
         m.put("Biomass", "Biomass");
         m.put("Biotite", "Biotite");
@@ -184,6 +185,7 @@ public final class LegacyNameDomainTable {
         m.put("Concrete", "Concrete");
         m.put("ConductiveIron", "ConductiveIron");
         m.put("ConstructionFoam", "ConstructionFoam");
+        m.put("Coolant", "Coolant");
         m.put("Cooperite", "Cooperite");
         m.put("Copper", "Copper");
         m.put("Cordierite", "Cordierite");
@@ -236,6 +238,7 @@ public final class LegacyNameDomainTable {
         m.put("DiphenylIsophtalate", "DiphenylIsophtalate");
         m.put("DiphenylmethaneDiisocyanate", "DiphenylmethaneDiisocyanate");
         m.put("DiphenylmethaneDiisocyanateMixture", "DiphenylmethaneDiisocyanateMixture");
+        m.put("DistilledWater", "DistilledWater");
         m.put("Dolomite", "Dolomite");
         m.put("Draconium", "Draconium");
         m.put("DraconiumAwakened", "DraconiumAwakened");
@@ -366,12 +369,14 @@ public final class LegacyNameDomainTable {
         m.put("Holmium", "Holmium");
         m.put("HolyWater", "HolyWater");
         m.put("Honey", "Honey");
+        m.put("HotCoolant", "HotCoolant");
         m.put("HydratedCoal", "HydratedCoal");
         m.put("HydricSulfide", "HydricSulfide");
         m.put("HydrochloricAcid_GT5U", "HydrochloricAcid_GT5U");
         m.put("HydrofluoricAcid_GT5U", "HydrofluoricAcid_GT5U");
         m.put("Hydrogen", "Hydrogen");
         m.put("HypochlorousAcid", "HypochlorousAcid");
+        m.put("IC2Biomass", "IC2Biomass");
         m.put("Ice", "Ice");
         m.put("Ichorium", "Ichorium");
         m.put("Ilmenite", "Ilmenite");
@@ -526,6 +531,7 @@ public final class LegacyNameDomainTable {
         m.put("Osmonium", "Osmonium");
         m.put("Oxygen", "Oxygen");
         m.put("Ozone", "Ozone");
+        m.put("PahoehoeLava", "PahoehoeLava");
         m.put("Palladium", "Palladium");
         m.put("Paper", "Paper");
         m.put("Pentacadmiummagnesiumhexaoxid", "Pentacadmiummagnesiumhexaoxid");
@@ -715,6 +721,7 @@ public final class LegacyNameDomainTable {
         m.put("SuperconductorUEVBase", "SuperconductorUEVBase");
         m.put("SuperconductorUIVBase", "SuperconductorUIVBase");
         m.put("SuperconductorUMVBase", "SuperconductorUMVBase");
+        m.put("SuperheatedSteam", "SuperheatedSteam");
         m.put("TPVAlloy", "TPVAlloy");
         m.put("Talc", "Talc");
         m.put("Tantalite", "Tantalite");
