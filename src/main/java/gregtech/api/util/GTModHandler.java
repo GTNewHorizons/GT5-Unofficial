@@ -52,6 +52,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -1016,7 +1017,7 @@ public class GTModHandler {
         if (target != null) return GTUtility.copyAmount(1, target);
 
         ItemStack first = null;
-        for (ItemStack ore : OreDictUtils.getOresImmutable(oreName)) {
+        for (ItemStack ore : OreDictionary.getOres(oreName)) {
             if (ore == null) continue;
             if (!OreDictUtils.isBlacklisted(ore)) return GTUtility.copyAmount(1, ore);
             if (first == null) first = ore;

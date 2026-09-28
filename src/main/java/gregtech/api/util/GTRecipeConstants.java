@@ -14,6 +14,7 @@ import java.util.Optional;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -781,7 +782,7 @@ public class GTRecipeConstants {
      */
     public static IRecipeMap AssemblerOD = IRecipeMap.newRecipeMap(builder -> {
         Collection<GTRecipe> ret = new ArrayList<>();
-        for (ItemStack input : OreDictUtils.getOresImmutable(builder.getMetadata(OREDICT_INPUT))) {
+        for (ItemStack input : OreDictionary.getOres(String.valueOf(builder.getMetadata(OREDICT_INPUT)))) {
             ret.addAll(
                 builder.copy()
                     .itemInputs(GTRecipeMapUtil.appendArray(builder.getItemInputsBasic(), input))

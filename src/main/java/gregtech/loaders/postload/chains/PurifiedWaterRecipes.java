@@ -25,6 +25,7 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -39,7 +40,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
@@ -101,7 +101,7 @@ public class PurifiedWaterRecipes {
             .addTo(assemblerRecipes);
 
         // Grade 2 - Ozonation
-        for (ItemStack lens : OreDictUtils.getOres("craftingLensBlue")) {
+        for (ItemStack lens : OreDictionary.getOres("craftingLensBlue")) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(0, lens))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Air, FluidShapes.fluidGas, 10_000))

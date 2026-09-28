@@ -35,6 +35,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -547,7 +548,7 @@ public class GTRecipeRegistrator {
 
             ItemData itemData = MaterialData.get(mat);
             if (itemData == null || itemData.mPrefix != OrePrefixes.ingot) plate = null;
-            if (plate != null && OreDictUtils.getOresImmutable(plate)
+            if (plate != null && OreDictionary.getOres(plate)
                 .isEmpty()) plate = null;
 
             sMt1.func_150996_a(mat.getItem());

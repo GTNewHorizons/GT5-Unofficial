@@ -1,10 +1,8 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -203,18 +201,11 @@ public class OreDictUtils {
         stacks.add(stack);
         String name = inputAssociationName(stack);
         if (name == null) return stacks;
-        for (ItemStack ore : getOresImmutable(name)) {
+        for (ItemStack ore : OreDictionary.getOres(name)) {
             if (ore == null || GTUtility.areStacksEqual(ore, stack, true) || isUnifiedCopy(ore)) continue;
             if (name.equals(associationName(ore))) stacks.add(GTUtility.copyAmountUnsafe(stack.stackSize, ore));
         }
         return stacks;
-    }
-
-    public static boolean isItemStackInstanceOf(ItemStack stack, Object name) {
-        if (GTUtility.isStringInvalid(name) || GTUtility.isStackInvalid(stack)) return false;
-        for (ItemStack tOreStack : getOresImmutable(name.toString()))
-            if (GTUtility.areStacksEqual(tOreStack, stack, true)) return true;
-        return false;
     }
 
     public static boolean registerOre(OrePrefixes prefix, Material material, ItemStack stack) {
@@ -228,38 +219,11 @@ public class OreDictUtils {
 
         if (GTUtility.isStringInvalid(tName)) return false;
 
-        for (ItemStack itemStack : getOresImmutable(tName))
+        for (ItemStack itemStack : OreDictionary.getOres(tName))
             if (GTUtility.areStacksEqual(itemStack, stack, true)) return false;
 
         OreDictionary.registerOre(tName, stack);
         return true;
     }
 
-    /**
-     * @return a Copy of the OreDictionary.getOres() List
-     */
-    public static ArrayList<ItemStack> getOres(OrePrefixes prefix, Material material) {
-        return getOres(prefix.oreDictName(material));
-    }
-
-    /**
-     * @return a Copy of the OreDictionary.getOres() List
-     */
-    public static ArrayList<ItemStack> getOres(Object oreName) {
-        String name = oreName == null ? E : oreName.toString();
-        ArrayList<ItemStack> rList = new ArrayList<>();
-        if (GTUtility.isStringValid(name)) rList.addAll(OreDictionary.getOres(name));
-        return rList;
-    }
-
-    /**
-     * Fast version of {@link #getOres(Object)}, which doesn't call
-     * {@link System#arraycopy(Object, int, Object, int, int)} in {@link ArrayList#addAll}
-     */
-    public static List<ItemStack> getOresImmutable(@Nullable Object oreName) {
-        String name = oreName == null ? E : oreName.toString();
-
-        return GTUtility.isStringValid(name) ? Collections.unmodifiableList(OreDictionary.getOres(name))
-            : Collections.emptyList();
-    }
 }

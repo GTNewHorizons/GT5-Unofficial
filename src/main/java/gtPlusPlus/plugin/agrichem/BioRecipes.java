@@ -28,6 +28,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -44,7 +45,6 @@ import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.OreDictUtils;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -422,7 +422,7 @@ public class BioRecipes {
     }
 
     private static void recipeSodiumCarbonate() {
-        if (!OreDictUtils.getOres("fuelCoke")
+        if (!OreDictionary.getOres("fuelCoke")
             .isEmpty()) {
             // Na2CO3 + Al2O3 =C= 2NaAlO2 + CO2
             GTValues.RA.stdBuilder()

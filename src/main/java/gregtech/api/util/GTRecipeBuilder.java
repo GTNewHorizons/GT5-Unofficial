@@ -402,7 +402,7 @@ public class GTRecipeBuilder {
                 }
                 case OreDictItemStack ods -> {
                     altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
-                    ArrayList<ItemStack> ores = OreDictUtils.getOres(ods.mOreName);
+                    List<ItemStack> ores = OreDictionary.getOres(ods.mOreName);
                     if (ores.isEmpty()) {
                         alts[i] = GTValues.emptyItemStackArray;
                         GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", ods.mOreName);
@@ -422,7 +422,7 @@ public class GTRecipeBuilder {
                 case Object[] arr -> {
                     if (arr.length != 2) continue;
                     altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
-                    ArrayList<ItemStack> ores = OreDictUtils.getOres(arr[0]);
+                    List<ItemStack> ores = OreDictionary.getOres(arr[0].toString());
                     if (ores.isEmpty()) {
                         alts[i] = GTValues.emptyItemStackArray;
                         GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", arr[0]);

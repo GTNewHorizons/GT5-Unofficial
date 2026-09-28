@@ -23,7 +23,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.OreDictUtils;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -175,7 +174,7 @@ public class RecipeLoaderAgriculturalChem {
             .addTo(chemicalPlantRecipes);
 
         // Sugar Beet
-        if (!OreDictUtils.getOres("cropSugarbeet")
+        if (!OreDictionary.getOres("cropSugarbeet")
             .isEmpty()) {
 
             GTValues.RA.stdBuilder()
