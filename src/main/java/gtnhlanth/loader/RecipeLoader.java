@@ -1731,14 +1731,6 @@ public class RecipeLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(WerkstoffMaterialPool.CalciumFluoride.getFluidOrGas(3_000))
-            .itemOutputs(Materials.Calcium.getDust(1))
-            .fluidOutputs(Materials.Fluorine.getGas(2_000))
-            .duration(2 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(electrolyzerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(
                 WerkstoffMaterialPool.SamariumTerbiumMixture.get(OrePrefixes.dust, 1),
                 BotWerkstoffMaterialPool.AmmoniumNitrate.get(OrePrefixes.dust, 9))
