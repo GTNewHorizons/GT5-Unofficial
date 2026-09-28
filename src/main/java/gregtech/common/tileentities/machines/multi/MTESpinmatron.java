@@ -436,13 +436,13 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                     + EnumChatFormatting.GREEN
                     + "32"
                     + EnumChatFormatting.GRAY
-                    + ", Requires T3+ Structure and "
+                    + " and requires "
                     + EnumChatFormatting.DARK_PURPLE
                     + "Biocatalyzed Propulsion Fluid")
             .addInfo("Multiplies EU Cost by " + EnumChatFormatting.RED + "16")
+            .addInfo("Maximum Overclocks become uncapped")
             .addInfo(
                 "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GREEN + " Heavy Mode")
-
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
@@ -638,8 +638,9 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) { // implements Hatch+1 OC
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(
-                    (GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)) + 1);
+                int overclocks = (mode == 2.0) ? Integer.MAX_VALUE
+                    : GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) + 1;
+                return super.createOverclockCalculator(recipe).setMaxOverclocks(overclocks);
             }
         };
     }
