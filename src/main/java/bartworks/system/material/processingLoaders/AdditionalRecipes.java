@@ -228,8 +228,7 @@ public class AdditionalRecipes {
                             ItemList.EmptyPetriDish.get(1),
                             fluidStack.equals(GTUtility.getWater(1_000))
                                 ? MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1)
-                                : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1_000))
-                                    .get(0))
+                                : MaterialLibAPI.getStack(Materials.DistilledWater, CellShapes.cell, 1))
                         .itemOutputs(BioCultureEnum.getPetriDish(bioCulture), GTUtility.getEmptyCell(1))
                         .outputChances(bioCulture.getChance(), 100_00)
                         .fluidInputs(new FluidStack(bioCulture.getFluid(), 1_000))

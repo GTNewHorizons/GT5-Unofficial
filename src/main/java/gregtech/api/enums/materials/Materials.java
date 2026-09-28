@@ -537,6 +537,13 @@ public class Materials {
     public static Material CoalFuel;
     public static Material FishOil;
     public static Material Creosote;
+    public static Material DistilledWater;
+    public static Material Coolant;
+    public static Material HotCoolant;
+    public static Material IC2Biomass;
+    public static Material Biogas;
+    public static Material PahoehoeLava;
+    public static Material SuperheatedSteam;
     public static Material SeedOil;
     public static Material Glyceryl;
     public static Material Methane;
@@ -12923,6 +12930,63 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
             .setProperty(GTMaterialProperties.DYE, "dyeBrown")
+            .build();
+        // IC2's own fluids, reused by name (see MaterialFluidNames), so their cells are MaterialLib cells.
+        Materials.DistilledWater = MaterialLibAPI.newMaterial("gregtech", "DistilledWater", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF7FB2FF)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Distilled Water")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .build();
+        Materials.Coolant = MaterialLibAPI.newMaterial("gregtech", "Coolant", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF0D9FB0)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Coolant")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .build();
+        Materials.HotCoolant = MaterialLibAPI.newMaterial("gregtech", "HotCoolant", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFFE0502B)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Hot Coolant")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .build();
+        Materials.IC2Biomass = MaterialLibAPI.newMaterial("gregtech", "IC2Biomass", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF3D6B0F)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Biomass")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .build();
+        Materials.Biogas = MaterialLibAPI.newMaterial("gregtech", "Biogas", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFFB9A13F)
+            .addToFamily(Families.all)
+            .addToFamily(Families.gases)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Biogas")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .build();
+        Materials.PahoehoeLava = MaterialLibAPI.newMaterial("gregtech", "PahoehoeLava", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF8C3B12)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Pahoehoe Lava")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .build();
+        Materials.SuperheatedSteam = MaterialLibAPI.newMaterial("gregtech", "SuperheatedSteam", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFFE8E8E8)
+            .addToFamily(Families.all)
+            .addToFamily(Families.gases)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superheated Steam")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
             .build();
         Materials.SeedOil = MaterialLibAPI.newMaterial("gregtech", "SeedOil", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFC4FF00)

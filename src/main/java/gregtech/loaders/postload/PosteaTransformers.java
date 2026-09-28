@@ -190,6 +190,7 @@ public class PosteaTransformers implements Runnable {
         registerEmptyCellCutoverTransformer();
         registerIC2FilledCellCutoverTransformers();
         registerGtppIC2CellCutoverTransformers();
+        registerRailcraftCreosoteCellCutoverTransformer();
         registerIC2ItemCasingCutoverTransformers();
         registerGtppThermalDustCutoverTransformers();
     }
@@ -230,19 +231,35 @@ public class PosteaTransformers implements Runnable {
         addItemReplacement("IC2:itemCellEmpty", 0, cutover.getItem(), cutover.getItemDamage());
     }
 
-    /// Migrates the IC2 filled cells gregtech took over onto the equivalent gregtech cell:
-    /// water (meta 1), lava (2), UU-Matter (3), construction foam (4) and air (5) become MaterialLib cells, and
-    /// steam (meta 14) becomes [MetaGeneratedItem98.FluidCell#STEAM]. Air is lossy -- the IC2 cell held 2000 mB
-    /// against the MaterialLib cell's 1000 mB -- the same halving the meta-15 remap in
-    /// [#registerGtppIC2CellCutoverTransformers] takes.
+    /// Migrates IC2's filled cells onto the equivalent gregtech cell: water (meta 1), lava (2), UU-Matter (3),
+    /// construction foam (4), air (5), biomass (6), biogas (7), coolant (9), hot coolant (10), pahoehoe lava (11),
+    /// distilled water (12) and superheated steam (13) become MaterialLib cells, and steam (meta 14) becomes
+    /// [MetaGeneratedItem98.FluidCell#STEAM]. Air is lossy -- the IC2 cell held 2000 mB against the MaterialLib
+    /// cell's 1000 mB -- the same halving the meta-15 remap in [#registerGtppIC2CellCutoverTransformers] takes.
     private static void registerIC2FilledCellCutoverTransformers() {
         remapIC2Cell(1, Materials.Water);
         remapIC2Cell(2, Materials.Lava);
         remapIC2Cell(3, Materials.UUMatter);
         remapIC2Cell(4, Materials.ConstructionFoam);
         remapIC2Cell(5, Materials.Air);
+        remapIC2Cell(6, Materials.IC2Biomass);
+        remapIC2Cell(7, Materials.Biogas);
+        remapIC2Cell(9, Materials.Coolant);
+        remapIC2Cell(10, Materials.HotCoolant);
+        remapIC2Cell(11, Materials.PahoehoeLava);
+        remapIC2Cell(12, Materials.DistilledWater);
+        remapIC2Cell(13, Materials.SuperheatedSteam);
         ItemStack steam = MetaGeneratedItem98.FluidCell.STEAM.get();
         addItemReplacement("IC2:itemCellEmpty", 14, steam.getItem(), steam.getItemDamage());
+    }
+
+    /// Migrates Railcraft's creosote cell, which drains into an IC2 empty cell, onto the MaterialLib creosote cell.
+    private static void registerRailcraftCreosoteCellCutoverTransformer() {
+        ItemStack cutover = MaterialParts.cell(Materials.Creosote, 1);
+        if (cutover == null) {
+            throw new IllegalStateException("No MaterialLib cell stack for the Railcraft creosote cell cutover");
+        }
+        addItemReplacement("Railcraft:fluid.creosote.cell", 0, cutover.getItem(), cutover.getItemDamage());
     }
 
     private static void remapIC2Cell(int meta, Material material) {
