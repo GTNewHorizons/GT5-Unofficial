@@ -55,8 +55,9 @@ public class OreDictUtils {
     private static final Set<Item> unificationWildcardBlacklist = new ReferenceOpenHashSet<>();
 
     /// Marks `stack` as never being a unified copy, for items that share an ore-dictionary name with a different item
-    /// but are their own thing (the Industrial Diamond under `gemDiamond`). [GTModHandler#collisionProbe(String)]
-    /// passes over blacklisted items.
+    /// but are their own thing (the Industrial Diamond under `gemDiamond`). A recipe input holding a blacklisted item
+    /// with a name-only association, such as a specific circuit or SMD component, accepts only that item.
+    /// [GTModHandler#collisionProbe(String)] passes over blacklisted items.
     public static void addToBlacklist(ItemStack stack) {
         if (GTUtility.isStackInvalid(stack)) return;
 
@@ -180,12 +181,21 @@ public class OreDictUtils {
         return data != null && data.hasUnificationName() ? data.toString() : null;
     }
 
+    /// The association name by which a recipe input holding `stack` accepts other items, or null when it accepts
+    /// only `stack`: when `stack` has no association, or is blacklisted with a name-only association.
+    @Nullable
+    public static String inputAssociationName(@Nullable ItemStack stack) {
+        ItemData data = MaterialData.get(stack);
+        if (data == null || !data.hasUnificationName() || data.isNameOnly() && isBlacklisted(stack)) return null;
+        return data.toString();
+    }
+
     /// `stack` followed by every other obtainable item that shares its association: what a recipe input holding
     /// `stack` also accepts. Unified copies are left out.
     public static List<ItemStack> getInterchangeableStacks(ItemStack stack) {
         List<ItemStack> stacks = new ArrayList<>();
         stacks.add(stack);
-        String name = associationName(stack);
+        String name = inputAssociationName(stack);
         if (name == null) return stacks;
         for (ItemStack ore : getOresImmutable(name)) {
             if (ore == null || GTUtility.areStacksEqual(ore, stack, true) || isUnifiedCopy(ore)) continue;

@@ -17,16 +17,12 @@ public final class GTItemDataLookupIngredient extends GTRecipeLookupIngredient {
         this.unificationName = unificationName;
     }
 
-    public static GTItemDataLookupIngredient fromItemData(ItemData itemData) {
-        Objects.requireNonNull(itemData, "itemData");
-        if (!itemData.hasUnificationName()) {
-            throw new IllegalArgumentException("itemData must name a unification target");
+    public static GTItemDataLookupIngredient fromAssociationName(String associationName) {
+        Objects.requireNonNull(associationName, "associationName");
+        if (associationName.isEmpty()) {
+            throw new IllegalArgumentException("associationName must not be empty");
         }
-        String unificationName = itemData.toString();
-        if (unificationName.isEmpty()) {
-            throw new IllegalArgumentException("itemData unification name must not be empty");
-        }
-        return new GTItemDataLookupIngredient(unificationName);
+        return new GTItemDataLookupIngredient(associationName);
     }
 
     public static void fromRuntime(Consumer<? super GTItemDataLookupIngredient> ingredients, ItemStack stack) {

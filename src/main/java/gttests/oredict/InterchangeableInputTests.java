@@ -15,9 +15,13 @@ import com.gtnewhorizons.horizonqa.api.annotation.GameTestHolder;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MaterialData;
+import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class InterchangeableInputTests {
@@ -47,6 +51,42 @@ public class InterchangeableInputTests {
             }
         }
         helper.assertTrue(rejected.isEmpty(), "Circuits rejected by their tier's recipes: " + rejected);
+        helper.succeed();
+    }
+
+    /// A recipe input holding one specific circuit or SMD component accepts no other item of its tier or kind.
+    @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
+    public static void specificCircuitsAndComponentsAcceptOnlyThemselves(GameTestHelper helper) {
+        List<String> accepted = new ArrayList<>();
+        int checked = 0;
+        for (RecipeMap<?> map : new RecipeMap<?>[] { RecipeMaps.cutterRecipes, RecipeMaps.circuitAssemblerRecipes,
+            RecipeMaps.assemblerRecipes }) {
+            for (GTRecipe recipe : map.getAllRecipes()) {
+                if (recipe.mFakeRecipe || !recipe.mEnabled || recipe.mSpecialItems != null) continue;
+                for (ItemStack input : recipe.mInputs) {
+                    ItemData data = MaterialData.get(input);
+                    if (data == null || !data.isNameOnly() || !OreDictUtils.isBlacklisted(input)) continue;
+                    for (ItemStack other : OreDictionary.getOres(data.toString())) {
+                        if (other.getItemDamage() == OreDictionary.WILDCARD_VALUE
+                            || GTUtility.areStacksEqual(other, input, true)) continue;
+                        checked++;
+                        ItemStack[] items = swap(recipe.mInputs, input, other);
+                        FluidStack[] fluids = plenty(recipe.mFluidInputs);
+                        boolean found = map.findRecipeQuery()
+                            .items(items)
+                            .fluids(fluids)
+                            .findAll()
+                            .anyMatch(r -> r == recipe);
+                        boolean consumed = recipe.isRecipeInputEqual(false, true, fluids, items);
+                        if (found || consumed) {
+                            accepted.add(describe(input) + " took " + describe(other) + " in " + map.unlocalizedName);
+                        }
+                    }
+                }
+            }
+        }
+        helper.assertTrue(checked > 0, "No specific circuit or component inputs found");
+        helper.assertTrue(accepted.isEmpty(), "Specific inputs accepted other items: " + accepted);
         helper.succeed();
     }
 

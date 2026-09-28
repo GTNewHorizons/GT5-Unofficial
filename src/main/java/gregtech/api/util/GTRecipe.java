@@ -992,8 +992,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
          */
         public final int oreDictId;
         private final ItemStack[] alternativeStacks;
-        /// The association name of [#unifiedStack] for a regular slot that ignores NBT; any item with the same
-        /// association name also matches. Null otherwise.
+        /// [OreDictUtils#inputAssociationName] of [#unifiedStack] for a regular slot that ignores NBT; any item with
+        /// the same association name also matches. Null otherwise.
         private final @Nullable String associationName;
 
         public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
@@ -1015,7 +1015,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     this.unifiedStack.setTagCompound(null);
                 }
             }
-            this.associationName = this.usesNbtMatching ? null : OreDictUtils.associationName(stack);
+            this.associationName = this.usesNbtMatching ? null : OreDictUtils.inputAssociationName(stack);
         }
 
         /**
@@ -1052,7 +1052,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         /**
          * @return True if the given item can be used as a valid recipe ingredient for this input slot. For oredict
          *         slots, checks the OreDict ID dynamically. For regular slots, accepts the same item or any item
-         *         sharing its association ({@link OreDictUtils#associationName}).
+         *         sharing its association ({@link OreDictUtils#inputAssociationName}).
          */
         public boolean matchesRecipe(final ItemStack other) {
             return matchesRecipe(other, associationName == null ? null : OreDictUtils.associationName(other));

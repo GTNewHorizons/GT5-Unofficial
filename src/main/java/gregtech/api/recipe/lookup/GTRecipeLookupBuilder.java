@@ -12,10 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import gregtech.api.material.MaterialData;
-import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.OreDictUtils;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
@@ -257,9 +256,9 @@ public final class GTRecipeLookupBuilder {
     }
 
     private static void addItemDataIngredient(ItemStack stack, List<GTRecipeLookupIngredient> group) {
-        ItemData itemData = MaterialData.get(stack);
-        if (itemData != null && itemData.hasUnificationName()) {
-            addIfAbsent(group, GTItemDataLookupIngredient.fromItemData(itemData));
+        String associationName = OreDictUtils.inputAssociationName(stack);
+        if (associationName != null) {
+            addIfAbsent(group, GTItemDataLookupIngredient.fromAssociationName(associationName));
         }
     }
 

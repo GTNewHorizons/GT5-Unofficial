@@ -185,6 +185,11 @@ public class ItemData {
         return oreDictName != null || hasValidPrefixMaterialData();
     }
 
+    /// Whether this is a name-only association (see [#ItemData(OrePrefixes, String)]).
+    public final boolean isNameOnly() {
+        return oreDictName != null;
+    }
+
     public final boolean hasValidPrefixData() {
         return mPrefix != null;
     }
