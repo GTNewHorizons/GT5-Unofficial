@@ -1,7 +1,8 @@
 Galaxy Collapse
-{aqua:{var:power}} EU/t and {aqua:{var:capacity}M} EU capacity per Energy Hatch
-If the recipe has a startup cost greater than the
-number of energy hatches * cap, you can't do it
-If the recipe requires a voltage tier over {var:tier}{gray:, you can't do it either}
-Performs 4/4 overclock
-Has {white:(1 + }{light_purple:Machine Tier}{white: - }{green:Recipe Tier}{white:) * 64}{gold: Parallels}
+{gold:(1 + Machine Tier - Recipe Tier) * {var:max_para}} Parallels
+{aqua:{var:power}} EU/t and {aqua:{var:capacity}} EU capacity per {white:Energy Hatch}
+If the start cost exceeds the combined {white:Energy Hatch} capacity, the recipe won't start
+Can only perform {light_purple:{var:tier}} recipes and below
+{gray:{hr}}
+{yellow:Changing recipes will consume the startup power again}
+{light_purple:Performs 4/4 Perfect Overclock}

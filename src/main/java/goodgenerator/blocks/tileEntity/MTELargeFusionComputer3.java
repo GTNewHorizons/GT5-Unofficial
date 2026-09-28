@@ -22,11 +22,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
+
+    private static final int MAX_ENERGY_HATCHES = 32;
 
     private static final ITexture textureOverlay = TextureFactory.of(
         TextureFactory.builder()
@@ -54,10 +55,12 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fusion_reactor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-fusion-computer-mk3"),
-                ImmutableMap.of(
-                    "power", formatNumber(getSingleHatchPower()),
-                    "capacity", formatNumber(capableStartupCanonical() / 32 / M),
-                    "tier", GTUtility.getColoredTierNameFromTier((byte) tier())))
+                ImmutableMap.<String, Object>builder()
+                    .put("power", formatNumber(getSingleHatchPower()))
+                    .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
+                    .put("tier", GTValues.VN[tier()])
+                    .put("max_para", formatNumber(getMaxPara()))
+                    .build())
             .addSupportAny()
             .beginStructureBlock(47, 7, 47, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_center_4th_layer"))

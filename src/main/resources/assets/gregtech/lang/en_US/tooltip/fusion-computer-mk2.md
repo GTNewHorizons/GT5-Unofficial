@@ -1,5 +1,4 @@
-Critical Power!!!
-{gold:(1 + Machine Tier - Recipe Tier) * {var:max_para}} Parallels
+More Power!!!!
 {aqua:{var:power}} EU/t and {aqua:{var:capacity}} EU capacity per {white:Energy Hatch}
 If the start cost exceeds the combined {white:Energy Hatch} capacity, the recipe won't start
 Can only perform {light_purple:{var:tier}} recipes and below
