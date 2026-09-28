@@ -28,8 +28,6 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
 
     public ProcessingGear() {
         INSTANCE = this;
-        OrePrefixes.gearGt.add(this);
-        OrePrefixes.gearGtSmall.add(this);
     }
 
     @Override

@@ -31,13 +31,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    private final OrePrefixes[] mRawOrePrefixes = { OrePrefixes.rawOre };
-
     public static ProcessingRawOre INSTANCE;
 
     public ProcessingRawOre() {
         INSTANCE = this;
-        for (OrePrefixes tPrefix : this.mRawOrePrefixes) tPrefix.add(this);
     }
 
     @Override

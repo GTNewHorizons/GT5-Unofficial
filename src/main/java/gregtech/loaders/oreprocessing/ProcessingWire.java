@@ -50,12 +50,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
     public ProcessingWire() {
         INSTANCE = this;
-        OrePrefixes.wireGt01.add(this);
-        OrePrefixes.wireGt02.add(this);
-        OrePrefixes.wireGt04.add(this);
-        OrePrefixes.wireGt08.add(this);
-        OrePrefixes.wireGt12.add(this);
-        OrePrefixes.wireGt16.add(this);
     }
 
     @Override

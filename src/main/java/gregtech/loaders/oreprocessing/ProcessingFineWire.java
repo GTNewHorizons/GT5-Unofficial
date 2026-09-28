@@ -18,7 +18,6 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
 
     public ProcessingFineWire() {
         INSTANCE = this;
-        OrePrefixes.wireFine.add(this);
     }
 
     @Override

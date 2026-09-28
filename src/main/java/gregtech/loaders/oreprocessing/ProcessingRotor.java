@@ -29,7 +29,6 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
 
     public ProcessingRotor() {
         INSTANCE = this;
-        OrePrefixes.rotor.add(this);
     }
 
     @Override

@@ -37,8 +37,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
     public ProcessingShaping() {
         INSTANCE = this;
-        OrePrefixes.ingot.add(this);
-        OrePrefixes.dust.add(this);
     }
 
     @Override

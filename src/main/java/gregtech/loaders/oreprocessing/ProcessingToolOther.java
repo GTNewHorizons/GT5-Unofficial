@@ -23,7 +23,6 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
 
     public ProcessingToolOther() {
         INSTANCE = this;
-        OrePrefixes.toolHeadHammer.add(this);
     }
 
     @Override

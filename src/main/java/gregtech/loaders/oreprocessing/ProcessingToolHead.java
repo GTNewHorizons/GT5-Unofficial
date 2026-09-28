@@ -34,14 +34,6 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
 
     public ProcessingToolHead() {
         INSTANCE = this;
-        OrePrefixes.toolHeadBuzzSaw.add(this);
-        OrePrefixes.toolHeadChainsaw.add(this);
-        OrePrefixes.toolHeadDrill.add(this);
-        OrePrefixes.toolHeadFile.add(this);
-        OrePrefixes.toolHeadSaw.add(this);
-        OrePrefixes.toolHeadWrench.add(this);
-        OrePrefixes.toolHeadHammer.add(this);
-        OrePrefixes.turbineBlade.add(this);
     }
 
     @Override

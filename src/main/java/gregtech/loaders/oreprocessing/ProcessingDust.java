@@ -60,12 +60,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
 
     public ProcessingDust() {
         INSTANCE = this;
-        OrePrefixes.dust.add(this);
-        OrePrefixes.dustPure.add(this);
-        OrePrefixes.dustImpure.add(this);
-        OrePrefixes.dustRefined.add(this);
-        OrePrefixes.dustSmall.add(this);
-        OrePrefixes.dustTiny.add(this);
     }
 
     /// A material's own non-molten fluid, preferring its gas form over its liquid form.

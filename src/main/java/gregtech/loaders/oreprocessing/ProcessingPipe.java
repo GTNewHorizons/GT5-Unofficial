@@ -29,18 +29,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
 
     public ProcessingPipe() {
         INSTANCE = this;
-        OrePrefixes.pipeHuge.add(this);
-        OrePrefixes.pipeLarge.add(this);
-        OrePrefixes.pipeMedium.add(this);
-        OrePrefixes.pipeSmall.add(this);
-        OrePrefixes.pipeTiny.add(this);
-        OrePrefixes.pipeRestrictiveHuge.add(this);
-        OrePrefixes.pipeRestrictiveLarge.add(this);
-        OrePrefixes.pipeRestrictiveMedium.add(this);
-        OrePrefixes.pipeRestrictiveSmall.add(this);
-        OrePrefixes.pipeRestrictiveTiny.add(this);
-        OrePrefixes.pipeQuadruple.add(this);
-        OrePrefixes.pipeNonuple.add(this);
     }
 
     /*

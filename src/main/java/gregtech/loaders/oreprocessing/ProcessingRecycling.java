@@ -22,9 +22,6 @@ public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRe
 
     public ProcessingRecycling() {
         INSTANCE = this;
-        for (OrePrefixes tPrefix : OrePrefixes.VALUES)
-            if ((tPrefix.isMaterialBased()) && (tPrefix.getMaterialAmount() > 0L) && (tPrefix.isContainer()))
-                tPrefix.add(this);
     }
 
     @Override

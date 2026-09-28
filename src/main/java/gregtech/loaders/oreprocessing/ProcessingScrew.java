@@ -23,7 +23,6 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
 
     public ProcessingScrew() {
         INSTANCE = this;
-        OrePrefixes.screw.add(this);
     }
 
     @Override

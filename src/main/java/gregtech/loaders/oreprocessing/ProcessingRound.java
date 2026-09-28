@@ -23,7 +23,6 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
 
     public ProcessingRound() {
         INSTANCE = this;
-        OrePrefixes.round.add(this);
     }
 
     @Override

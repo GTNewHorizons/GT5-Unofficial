@@ -18,7 +18,6 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
 
     public ProcessingBolt() {
         INSTANCE = this;
-        OrePrefixes.bolt.add(this);
     }
 
     @Override

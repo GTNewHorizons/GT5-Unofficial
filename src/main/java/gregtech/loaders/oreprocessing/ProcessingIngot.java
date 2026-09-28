@@ -35,8 +35,6 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
     public ProcessingIngot() {
         INSTANCE = this;
-        OrePrefixes.ingot.add(this);
-        OrePrefixes.ingotHot.add(this);
     }
 
     @Override

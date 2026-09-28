@@ -29,7 +29,6 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
 
     public ProcessingLens() {
         INSTANCE = this;
-        OrePrefixes.lens.add(this);
     }
 
     @Override

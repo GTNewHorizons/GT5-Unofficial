@@ -27,18 +27,11 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
 
     public ProcessingTransforming() {
         INSTANCE = this;
-        for (OrePrefixes tPrefix : OrePrefixes.VALUES)
-            if (((tPrefix.getMaterialAmount() > 0L) && (!tPrefix.isContainer()) && (!tPrefix.isEnchantable()))
-                || (tPrefix == OrePrefixes.plank)) tPrefix.add(this);
     }
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (prefix == OrePrefixes.plank) {
-            prefix = OrePrefixes.plate;
-        }
-
         Shape shape = MaterialParts.shape(prefix);
         if (shape == null) return;
 

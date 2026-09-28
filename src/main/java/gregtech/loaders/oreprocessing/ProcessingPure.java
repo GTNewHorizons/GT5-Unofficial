@@ -24,9 +24,6 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
 
     public ProcessingPure() {
         INSTANCE = this;
-        OrePrefixes.crushedPurified.add(this);
-        OrePrefixes.cleanGravel.add(this);
-        OrePrefixes.reduced.add(this);
     }
 
     @Override

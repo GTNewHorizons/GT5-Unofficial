@@ -28,7 +28,6 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
 
     public ProcessingStickLong() {
         INSTANCE = this;
-        OrePrefixes.stickLong.add(this);
     }
 
     @Override

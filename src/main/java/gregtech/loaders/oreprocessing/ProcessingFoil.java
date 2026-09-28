@@ -23,7 +23,6 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
 
     public ProcessingFoil() {
         INSTANCE = this;
-        OrePrefixes.foil.add(this);
     }
 
     @Override

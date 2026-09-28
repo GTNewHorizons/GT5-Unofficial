@@ -36,8 +36,6 @@ public class ProcessingCell implements IOreRecipeRegistrator {
 
     public ProcessingCell() {
         INSTANCE = this;
-        OrePrefixes.cell.add(this);
-        OrePrefixes.cellPlasma.add(this);
     }
 
     @Override
