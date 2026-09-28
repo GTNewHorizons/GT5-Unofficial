@@ -487,6 +487,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.google.common.collect.ImmutableList;
+
 import codechicken.enderstorage.api.EnderStorageDyeTool;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
@@ -775,12 +777,24 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItemWithLocalizationKeys(Firebrick.ID, "gt.item.firebrick.name", "gt.item.firebrick.tooltip"));
         GTOreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
 
-        ItemList.Scrap.set(addItemWithLocalizationKeys(Scrap.ID, "gt.item.scrap.name", "gt.item.scrap.tooltip"));
+        ItemList.Scrap.set(
+            addItemWithLocalizationKeys(
+                Scrap.ID,
+                "gt.item.scrap.name",
+                "gt.item.scrap.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 2L)));
         ItemList.Scrapbox.set(
             new ItemScrapbox(
                 "Item_Scrapbox",
                 StatCollector.translateToLocal("gt.Item_Scrapbox.name"),
                 StatCollector.translateToLocal("gt.Item_Scrapboxtooltip")));
+
+        if (GregTechAPI.sThaumcraftCompat != null) {
+            GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(
+                ItemList.Scrapbox.get(1),
+                ImmutableList.of(new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 4)),
+                false);
+        }
 
         ItemList.Shape_Empty.set(
             addItemWithLocalizationKeys(
