@@ -119,10 +119,14 @@ public class GTPostLoad {
         GT_FML_LOGGER.debug("IC2 Removal ({}). Have a Cake.", stopwatch.stop());
     }
 
+    /// Registers canner recipes filling and emptying every registered fluid container, except those draining into
+    /// an IC2 empty cell: [PosteaTransformers] migrates IC2's cells and Railcraft's creosote cell onto gregtech
+    /// cells, so none of them is made anew.
     public static void registerFluidCannerRecipes() {
+        ItemStack ic2EmptyCell = GTModHandler.getIC2Item("cell", 1L);
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
-            if (tData.fluid.amount <= 0) {
+            if (tData.fluid.amount <= 0 || GTUtility.areStacksEqual(tData.emptyContainer, ic2EmptyCell)) {
                 continue;
             }
             // lava clay bucket is registered with empty container with 0 stack size

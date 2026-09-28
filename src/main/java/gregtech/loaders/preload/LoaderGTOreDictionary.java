@@ -28,26 +28,6 @@ public class LoaderGTOreDictionary implements Runnable {
     public void run() {
         GT_FML_LOGGER.debug("GTMod: Register OreDict Entries of Non-GT-Items.");
         OreDictUtils.registerAndAssociate(OrePrefixes.cell, Materials.Empty, ItemList.Cell_Empty.get(1L));
-        // IC2 keeps minting its own empty cells when its water and lava cells drain, so they must match cellEmpty
-        // recipes.
-        OreDictUtils.registerOre(
-            OrePrefixes.cell,
-            Materials.Empty,
-            GTModHandler.getIC2Item(
-                "cell",
-                1L,
-                GTModHandler.getIC2Item("cellEmpty", 1L, GTModHandler.getIC2Item("emptyCell", 1L))));
-        OreDictUtils.registerOre(
-            OrePrefixes.cell,
-            Materials.Creosote,
-            GTModHandler.getModItem(Railcraft.ID, "fluid.creosote.cell", 1L));
-
-        // registerOre, not set: IC2 keeps minting these filled cells, so they must keep matching cell recipes,
-        // but the MaterialLib cells stay the unification targets.
-        OreDictUtils.registerOre(OrePrefixes.cell, Materials.Water, GTModHandler.getIC2Item("waterCell", 1L));
-        OreDictUtils.registerOre(OrePrefixes.cell, Materials.Lava, GTModHandler.getIC2Item("lavaCell", 1L));
-        OreDictUtils.registerOre(OrePrefixes.cell, Materials.UUMatter, GTModHandler.getIC2Item("uuMatterCell", 1L));
-        OreDictUtils.registerOre(OrePrefixes.cell, Materials.ConstructionFoam, GTModHandler.getIC2Item("CFCell", 1L));
 
         OreDictUtils.registerAndAssociate(OrePrefixes.bucket, Materials.Empty, new ItemStack(Items.bucket, 1, 0));
         OreDictUtils.registerAndAssociate(OrePrefixes.bucket, Materials.Water, new ItemStack(Items.water_bucket, 1, 0));
