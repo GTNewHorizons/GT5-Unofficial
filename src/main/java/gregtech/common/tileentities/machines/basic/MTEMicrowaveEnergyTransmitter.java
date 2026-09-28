@@ -240,8 +240,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
     private void tryTransferEnergy(int tDistance) {
         if (tTile == null) return;
 
-        boolean isCrossDimensional = this.mTargetD
-            != getBaseMetaTileEntity().getWorld().provider.dimensionId;
+        boolean isCrossDimensional = this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId;
         if (isCrossDimensional && !isDimensionalTeleportAvailable()) return;
 
         if (!(tTile instanceof IEnergyConnected)) return;
@@ -255,8 +254,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
         }
         long energyUse = 10;
         if (mMaxLossDistance != 0) {
-            energyUse = GTUtility.safeInt(
-                10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
+            energyUse = GTUtility.safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
         }
         energyUse = packetSize + ((V[mTier] * energyUse) / 100);
 
