@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -205,10 +204,6 @@ public final class OreDictRegistrationHandler {
             }
 
             String oreOriginPath = modId + (bufferRegistrationProcessing ? " -> " : " --Late--> ") + oreName;
-
-            if (GTUtility.getBlockFromStack(stack) != Blocks.air) {
-                OreDictUtils.addToBlacklist(stack);
-            }
 
             registeredOres.add(stack);
 

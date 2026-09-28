@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -157,13 +158,19 @@ public class OreDictUtils {
     /// Whether `stack` is another mod's copy of a part that unifies onto a different item. Recipes generated for such
     /// a copy would only repeat those of the item it unifies onto.
     public static boolean isUnifiedCopy(ItemStack stack) {
-        return !GTUtility.isStackInvalid(stack) && !isBlacklisted(stack) && unifiedTargetOf(stack) != null;
+        return !GTUtility.isStackInvalid(stack) && !staysDistinct(stack) && unifiedTargetOf(stack) != null;
     }
 
-    /// Whether `stack` is a blacklisted item registered under a name that stands for a different item: its own thing,
-    /// so it stays in play, yet recipe inputs holding that other item accept it.
+    /// Whether `stack` stays in play under a name that stands for a different item (see [#staysDistinct]), while
+    /// recipe inputs holding that other item accept it.
     public static boolean isInterchangeableWithTarget(ItemStack stack) {
-        return !GTUtility.isStackInvalid(stack) && isBlacklisted(stack) && unifiedTargetOf(stack) != null;
+        return !GTUtility.isStackInvalid(stack) && staysDistinct(stack) && unifiedTargetOf(stack) != null;
+    }
+
+    /// Whether `stack` is never a unified copy: blacklisted, or a block. Blocks are placed in the world, and other
+    /// mods' storage and decorative blocks stay obtainable in their own right.
+    private static boolean staysDistinct(ItemStack stack) {
+        return isBlacklisted(stack) || GTUtility.getBlockFromStack(stack) != Blocks.air;
     }
 
     /// The item `stack` unifies onto, or null when it unifies onto nothing but itself.

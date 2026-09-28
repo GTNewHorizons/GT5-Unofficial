@@ -36,7 +36,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 ///
 /// Storing an entry with recyclable material registers the stack's recycling recipes (macerating, arc and fluid
 /// smelting): every stored stack at once when loading starts, then each later entry as it arrives. Unified copies
-/// ([OreDictUtils#isUnifiedCopy]) get none, and a blacklisted item interchangeable with its ore-dictionary target
+/// ([OreDictUtils#isUnifiedCopy]) get none, and an item interchangeable with its ore-dictionary target
 /// ([OreDictUtils#isInterchangeableWithTarget]) gets no machine recipes.
 public final class MaterialData {
 
