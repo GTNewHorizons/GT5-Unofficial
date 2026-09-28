@@ -618,6 +618,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         }
 
         final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
+        final String[] providedNames = associationNames(itemInputs);
 
         for (final RecipeItemInput recipeItemCost : combinedInputs) {
             long actualMultiplier = amountMultiplier;
@@ -644,7 +645,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     continue;
                 }
 
-                if (!recipeItemCost.matchesRecipe(providedItem)) {
+                if (!recipeItemCost.matchesRecipe(providedItem, providedNames[iProvided])) {
                     continue;
                 }
 
@@ -723,13 +724,15 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 return 0;
             }
 
+            final String[] providedNames = associationNames(aInputs);
+
             recipeItemLoop: for (final RecipeItemInput combinedInput : combinedInputs) {
                 double remainingCost = combinedInput.inputAmount * currentParallel;
                 long providedAmount = 0;
 
                 for (int i = 0; i < aInputs.length; i++) {
                     final ItemStack providedItem = aInputs[i];
-                    if (!combinedInput.matchesRecipe(providedItem)) {
+                    if (!combinedInput.matchesRecipe(providedItem, providedNames[i])) {
                         continue;
                     }
 
@@ -961,6 +964,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return this;
     }
 
+    private static String[] associationNames(ItemStack[] stacks) {
+        String[] names = new String[stacks.length];
+        for (int i = 0; i < stacks.length; i++) names[i] = OreDictUtils.associationName(stacks[i]);
+        return names;
+    }
+
     /** A single recipe input, used for an internal cache to speed up recipe matching */
     public static final class RecipeItemInput {
 
@@ -983,6 +992,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
          */
         public final int oreDictId;
         private final ItemStack[] alternativeStacks;
+        /// The association name of [#unifiedStack] for a regular slot that ignores NBT; any item with the same
+        /// association name also matches. Null otherwise.
+        private final @Nullable String associationName;
 
         public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
             Objects.requireNonNull(stack);
@@ -1003,6 +1015,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     this.unifiedStack.setTagCompound(null);
                 }
             }
+            this.associationName = this.usesNbtMatching ? null : OreDictUtils.associationName(stack);
         }
 
         /**
@@ -1022,6 +1035,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             this.usesNbtMatching = nbtSensitive;
             this.alternativeStacks = alternativeStacks == null || alternativeStacks.length == 0 ? null
                 : alternativeStacks;
+            this.associationName = null;
         }
 
         /**
@@ -1037,13 +1051,20 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         /**
          * @return True if the given item can be used as a valid recipe ingredient for this input slot. For oredict
-         *         slots, checks the OreDict ID dynamically. For regular slots, uses GT unification matching.
+         *         slots, checks the OreDict ID dynamically. For regular slots, accepts the same item or any item
+         *         sharing its association ({@link OreDictUtils#associationName}).
          */
         public boolean matchesRecipe(final ItemStack other) {
+            return matchesRecipe(other, associationName == null ? null : OreDictUtils.associationName(other));
+        }
+
+        /// [#matchesRecipe(ItemStack)] with the association name of `other` already looked up.
+        public boolean matchesRecipe(final ItemStack other, @Nullable String otherAssociationName) {
             if (oreDictId >= 0) {
                 return hasOreDictId(other, oreDictId) || matchesAlternativeStack(other);
             }
-            return GTUtility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching);
+            return GTUtility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching)
+                || associationName != null && associationName.equals(otherAssociationName);
         }
 
         private boolean matchesAlternativeStack(final ItemStack other) {

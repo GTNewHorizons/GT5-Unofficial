@@ -172,6 +172,28 @@ public class OreDictUtils {
         return rData != null && rData.hasUnificationName() ? rData : null;
     }
 
+    /// The ore-dictionary name of `stack`'s association, or null when it has none. Recipe inputs with the same
+    /// association name are interchangeable.
+    @Nullable
+    public static String associationName(@Nullable ItemStack stack) {
+        ItemData data = MaterialData.get(stack);
+        return data != null && data.hasUnificationName() ? data.toString() : null;
+    }
+
+    /// `stack` followed by every other obtainable item that shares its association: what a recipe input holding
+    /// `stack` also accepts. Unified copies are left out.
+    public static List<ItemStack> getInterchangeableStacks(ItemStack stack) {
+        List<ItemStack> stacks = new ArrayList<>();
+        stacks.add(stack);
+        String name = associationName(stack);
+        if (name == null) return stacks;
+        for (ItemStack ore : getOresImmutable(name)) {
+            if (ore == null || GTUtility.areStacksEqual(ore, stack, true) || isUnifiedCopy(ore)) continue;
+            if (name.equals(associationName(ore))) stacks.add(GTUtility.copyAmountUnsafe(stack.stackSize, ore));
+        }
+        return stacks;
+    }
+
     public static boolean isItemStackInstanceOf(ItemStack stack, Object name) {
         if (GTUtility.isStringInvalid(name) || GTUtility.isStackInvalid(stack)) return false;
         for (ItemStack tOreStack : getOresImmutable(name.toString()))
