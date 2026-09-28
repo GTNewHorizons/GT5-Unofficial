@@ -1,7 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.AvaritiaAddons;
-import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -11,7 +9,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_STATION_DATA;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
@@ -775,93 +772,6 @@ public class AssemblyLineRecipes implements Runnable {
                 .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
 
-            // UHV Tier
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.Hatch_Input_Bus_MAX.get(1))
-                .metadata(RESEARCH_STATION_DATA, 0)
-                .itemInputs(
-                    ItemList.Hatch_Input_Bus_MAX.get(1),
-                    ItemList.Electric_Piston_UHV.get(2),
-                    ItemList.Quantum_Chest_HV.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 1))
-                .itemOutputs(ItemList.CompressedInputBusUHV.get(1))
-                .fluidInputs(Materials.Polybenzimidazole.getMolten(128 * INGOTS))
-                .eut((int) TierEU.RECIPE_UHV)
-                .duration(25 * SECONDS)
-                .addTo(AssemblyLine);
-
-            // UEV Tier
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.Hull_UEV.get(1))
-                .metadata(RESEARCH_STATION_DATA, 0)
-                .itemInputs(
-                    ItemList.Hull_UEV.get(1),
-                    getModItem(AvaritiaAddons.ID, "CompressedChest", 2),
-                    ItemList.Electric_Piston_UEV.get(2),
-                    ItemList.Quantum_Chest_EV.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsElements.STANDALONE.HYPOGEN, 1))
-                .itemOutputs(ItemList.CompressedInputBusUEV.get(1))
-                .fluidInputs(Materials.RadoxPolymer.getMolten(32 * INGOTS))
-                .eut((int) TierEU.RECIPE_UEV)
-                .duration(25 * SECONDS)
-                .addTo(AssemblyLine);
-
-            // UIV Tier
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.Hull_UIV.get(1))
-                .metadata(RESEARCH_STATION_DATA, 0)
-                .itemInputs(
-                    ItemList.Hull_UIV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconiumChest", 1, 0),
-                    ItemList.Electric_Piston_UIV.get(2),
-                    ItemList.Quantum_Chest_IV.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
-                    GTOreDictUnificator
-                        .get(OrePrefixes.plateSuperdense, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN, 1))
-                .itemOutputs(ItemList.CompressedInputBusUIV.get(1))
-                .fluidInputs(Materials.RadoxPolymer.getMolten(64 * INGOTS))
-                .eut((int) TierEU.RECIPE_UIV)
-                .duration(25 * SECONDS)
-                .addTo(AssemblyLine);
-
-            // UMV Tier
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.Hull_UMV.get(1))
-                .metadata(RESEARCH_STATION_DATA, 0)
-                .itemInputs(
-                    ItemList.Hull_UMV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconiumChest", 2, 0),
-                    ItemList.Electric_Piston_UMV.get(2),
-                    ItemList.Quantum_Chest_IV.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 1) // dense plate
-                )
-                .itemOutputs(ItemList.CompressedInputBusUMV.get(1))
-                .fluidInputs(Materials.RadoxPolymer.getMolten(128 * INGOTS))
-                .eut((int) TierEU.RECIPE_UMV)
-                .duration(25 * SECONDS)
-                .addTo(AssemblyLine);
-
-            // UXV Tier
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.Hull_UXV.get(1))
-                .metadata(RESEARCH_STATION_DATA, 0)
-                .itemInputs(
-                    ItemList.Hull_UXV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconiumChest", 3, 0),
-                    ItemList.Electric_Piston_UXV.get(2),
-                    ItemList.Quantum_Chest_IV.get(3),
-                    new Object[] { OrePrefixes.circuit.get(Materials.MAX), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 1) // dense plate
-                )
-                .itemOutputs(ItemList.CompressedInputBusUXV.get(1))
-                .fluidInputs(Materials.RadoxPolymer.getMolten(256 * INGOTS))
-                .eut((int) TierEU.RECIPE_UXV)
-                .duration(25 * SECONDS)
-                .addTo(AssemblyLine);
-
             // Outputs
             // LuV Tier
             GTValues.RA.stdBuilder()
@@ -925,93 +835,6 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.CompressedOutputBusUV.get(1))
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(64 * INGOTS))
                 .eut((int) TierEU.RECIPE_UV)
-                .duration(25 * SECONDS)
-                .addTo(AssemblyLine);
-
-            // UHV Tier
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.Hatch_Output_Bus_MAX.get(1))
-                .metadata(RESEARCH_STATION_DATA, 0)
-                .itemInputs(
-                    ItemList.Hatch_Output_Bus_MAX.get(1),
-                    ItemList.Electric_Piston_UHV.get(2),
-                    ItemList.Quantum_Chest_HV.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UEV), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 1))
-                .itemOutputs(ItemList.CompressedOutputBusUHV.get(1))
-                .fluidInputs(Materials.Polybenzimidazole.getMolten(128 * INGOTS))
-                .eut((int) TierEU.RECIPE_UHV)
-                .duration(25 * SECONDS)
-                .addTo(AssemblyLine);
-
-            // UEV Tier
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.Hull_UEV.get(1))
-                .metadata(RESEARCH_STATION_DATA, 0)
-                .itemInputs(
-                    ItemList.Hull_UEV.get(1),
-                    getModItem(AvaritiaAddons.ID, "CompressedChest", 2),
-                    ItemList.Electric_Piston_UEV.get(2),
-                    ItemList.Quantum_Chest_EV.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UIV), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsElements.STANDALONE.HYPOGEN, 1))
-                .itemOutputs(ItemList.CompressedOutputBusUEV.get(1))
-                .fluidInputs(Materials.RadoxPolymer.getMolten(32 * INGOTS))
-                .eut((int) TierEU.RECIPE_UEV)
-                .duration(25 * SECONDS)
-                .addTo(AssemblyLine);
-
-            // UIV Tier
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.Hull_UIV.get(1))
-                .metadata(RESEARCH_STATION_DATA, 0)
-                .itemInputs(
-                    ItemList.Hull_UIV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconiumChest", 1, 0),
-                    ItemList.Electric_Piston_UIV.get(2),
-                    ItemList.Quantum_Chest_IV.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UMV), 1 },
-                    GTOreDictUnificator
-                        .get(OrePrefixes.plateSuperdense, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN, 1))
-                .itemOutputs(ItemList.CompressedOutputBusUIV.get(1))
-                .fluidInputs(Materials.RadoxPolymer.getMolten(64 * INGOTS))
-                .eut((int) TierEU.RECIPE_UIV)
-                .duration(25 * SECONDS)
-                .addTo(AssemblyLine);
-
-            // UMV Tier
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.Hull_UMV.get(1))
-                .metadata(RESEARCH_STATION_DATA, 0)
-                .itemInputs(
-                    ItemList.Hull_UMV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconiumChest", 2, 0),
-                    ItemList.Electric_Piston_UMV.get(2),
-                    ItemList.Quantum_Chest_IV.get(2),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 1) // dense plate
-                )
-                .itemOutputs(ItemList.CompressedOutputBusUMV.get(1))
-                .fluidInputs(Materials.RadoxPolymer.getMolten(128 * INGOTS))
-                .eut((int) TierEU.RECIPE_UMV)
-                .duration(25 * SECONDS)
-                .addTo(AssemblyLine);
-
-            // UXV Tier
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemList.Hull_UXV.get(1))
-                .metadata(RESEARCH_STATION_DATA, 0)
-                .itemInputs(
-                    ItemList.Hull_UXV.get(1),
-                    getModItem(DraconicEvolution.ID, "draconiumChest", 3, 0),
-                    ItemList.Electric_Piston_UXV.get(2),
-                    ItemList.Quantum_Chest_IV.get(3),
-                    new Object[] { OrePrefixes.circuit.get(Materials.MAX), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 1) // dense plate
-                )
-                .itemOutputs(ItemList.CompressedOutputBusUXV.get(1))
-                .fluidInputs(Materials.RadoxPolymer.getMolten(256 * INGOTS))
-                .eut((int) TierEU.RECIPE_UXV)
                 .duration(25 * SECONDS)
                 .addTo(AssemblyLine);
         }
