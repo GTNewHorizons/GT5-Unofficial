@@ -12,8 +12,6 @@ import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import net.minecraft.item.ItemStack;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -149,12 +147,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
 
-        Material werkstoffWash = werkstoffWashFluid(material);
-        if (werkstoffWash != null) {
-            if (orePrefix == OrePrefixes.crushed) addWerkstoffWash(material, werkstoffWash, stack);
-            return;
-        }
-
         didPersulfate = false;
         didMercury = false;
 
@@ -164,34 +156,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             addChemicalBathRecipes(material, tMaterial, stack, orePrefix);
         }
 
-    }
-
-    /// The bath fluid of a former Werkstoff ore whose washing flag bartworks inherited from its composition, or
-    /// null. These wash only as crushed ore, with their second ore byproduct, as bartworks' crushed-ore loader did.
-    private static @Nullable Material werkstoffWashFluid(Material material) {
-        if (material == Materials.Roquesite || material == Materials.Bornite || material == Materials.Wittichenite) {
-            return Materials.SodiumPersulfate;
-        }
-        return material == Materials.PlatinumMetallicPowder ? Materials.Mercury : null;
-    }
-
-    private static void addWerkstoffWash(Material material, Material fluid, ItemStack stack) {
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, stack))
-            .itemOutputs(
-                MaterialParts.stack(OrePrefixes.crushedPurified, material, 1L),
-                MaterialParts.stack(
-                    OrePrefixes.dust,
-                    MaterialUtils.oreByProducts(material)
-                        .get(1),
-                    1L),
-                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1))
-            .outputChances(10000, 7000, 4000)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(fluid, FluidShapes.fluidLiquid, fluid == Materials.Mercury ? 1_000 : 100))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_ULV)
-            .addTo(chemicalBathRecipes);
     }
 
     private void addChemicalBathRecipes(Material material, Material byproduct, ItemStack stack, OrePrefixes prefix) {
