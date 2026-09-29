@@ -44,6 +44,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
@@ -93,7 +94,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         return recipeBuilder
             .duration(
                 (Math.max(MaterialUtils.mass(material) / 40L, 1L) * MaterialUtils.blastFurnaceTemp(material)) * TICKS)
-            .eut(TierEU.RECIPE_MV)
+            .eut(
+                material.getProperty(GTMaterialProperties.MELTING_VOLTAGE) != null
+                    ? material.getProperty(GTMaterialProperties.MELTING_VOLTAGE)
+                    : TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, MaterialUtils.blastFurnaceTemp(material));
     }
 
