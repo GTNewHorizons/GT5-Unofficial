@@ -384,14 +384,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             case 0 -> {
                 int[] sizes = aNBT.hasKey("sizes") ? aNBT.getIntArray("sizes") : new int[0];
 
-                final NBTTagList inventory = aNBT.getTagList("Inventory", Constants.NBT.TAG_COMPOUND);
+                final List<NBTTagCompound> inventory = GTUtility.getCompoundTagList(aNBT, "Inventory");
 
                 ItemStack[] oldInventory = new ItemStack[SLOT_COUNT * 2 + 2];
 
                 // Copy of the current mInventory loading code, because otherwise the upper stacks are discarded due to
                 // the reduced mInventory size.
                 // noinspection unchecked
-                for (NBTTagCompound tag : (List<NBTTagCompound>) inventory.tagList) {
+                for (NBTTagCompound tag : (List<NBTTagCompound>) inventory) {
                     oldInventory[tag.getInteger("IntSlot")] = GTUtility.loadItem(tag);
                 }
 
@@ -414,10 +414,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                 }
             }
             case 1 -> {
-                NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
+                List<NBTTagCompound> slotList = GTUtility.getCompoundTagList(aNBT, "slots");
 
                 // noinspection unchecked
-                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
+                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList) {
                     Slot slot = Slot.readFromNBT(tag);
 
                     if (slot != null) {
