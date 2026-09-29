@@ -432,32 +432,11 @@ public class MaterialUtils {
         return material != null && material.getProperty(GTMaterialProperties.CAN_BE_CRACKED);
     }
 
-    /// A material's [Dyes] -- [GTMaterialProperties#DYE] when present, otherwise [#nearestDye]. [Dyes#_NULL]
-    /// for a null `material`.
+    /// A material's [Dyes] -- [GTMaterialProperties#DYE], or [Dyes#_NULL] when absent or for a null `material`.
     public static Dyes dye(@Nullable Material material) {
         if (material == null) return Dyes._NULL;
         String dye = material.getProperty(GTMaterialProperties.DYE);
-        return dye == null ? nearestDye(material) : Dyes.valueOf(dye);
-    }
-
-    /// The vanilla [Dyes] nearest a material's [StandardProperties#TINT] by squared RGB distance, or
-    /// [Dyes#_NULL] when it has no color.
-    private static Dyes nearestDye(@Nullable Material material) {
-        short[] rgba = rgba(material);
-        if (rgba == null) return Dyes._NULL;
-        Dyes best = Dyes._NULL;
-        long bestDistance = Long.MAX_VALUE;
-        for (int i = 0; i <= 15; i++) {
-            Dyes candidate = Dyes.get(i);
-            short[] c = candidate.getRGBA();
-            long dr = rgba[0] - c[0], dg = rgba[1] - c[1], db = rgba[2] - c[2];
-            long distance = dr * dr + dg * dg + db * db;
-            if (distance < bestDistance) {
-                bestDistance = distance;
-                best = candidate;
-            }
-        }
-        return best;
+        return dye == null ? Dyes._NULL : Dyes.valueOf(dye);
     }
 
     /// Whether a material auto-generates blast furnace recipes --
