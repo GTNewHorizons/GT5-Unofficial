@@ -43,7 +43,7 @@ public class GTGenericItem extends Item implements IProjectileItem {
     public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
         super();
         this.mName = aUnlocalized;
-        GTLanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
+        if (aEnglish != null) GTLanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
         if (GTUtility.isStringValid(aEnglishTooltip)) {
             GTLanguageManager.addStringLocalization(this.mTooltip = this.mName + ".tooltip_main", aEnglishTooltip);
         } else {
