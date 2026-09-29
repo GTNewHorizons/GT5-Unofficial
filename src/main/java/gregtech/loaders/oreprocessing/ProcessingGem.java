@@ -27,6 +27,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
@@ -279,7 +280,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 }
 
                 // Forge-hammer recipes
-                if (MaterialParts.stack(OrePrefixes.dustTiny, material, 1L) != null) {
+                if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
+                    && MaterialParts.stack(OrePrefixes.dustTiny, material, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(MaterialParts.stack(OrePrefixes.dustTiny, material, 1L))
