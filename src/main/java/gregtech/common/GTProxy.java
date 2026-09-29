@@ -762,7 +762,6 @@ public class GTProxy implements IFuelHandler {
         }
         GT_FML_LOGGER.debug("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!MaterialUtils.isGregTechMaterial(material)) continue;
             if (MaterialUtils.unifiable(material)) {
                 if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
