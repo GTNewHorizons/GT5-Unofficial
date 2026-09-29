@@ -40,6 +40,7 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.GTProxy.OreDropSystem;
 import gregtech.common.blocks.GTBlockOre;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
@@ -158,6 +159,25 @@ public final class GTOreAdapter implements IOreAdapter {
         });
 
         registerCurrentGenTransformers();
+        registerOreNames();
+    }
+
+    /// Registers every material's ore on every stone type under that stone type's ore-dictionary prefix,
+    /// associating it with the material where the prefix unifies.
+    private void registerOreNames() {
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            for (StoneType stoneType : StoneType.VALUES) {
+                ItemStack stack = getVariantStack(material, stoneType, false);
+                if (stack == null) continue;
+
+                OrePrefixes prefix = stoneType.getPrefix();
+                if (prefix.isUnifiable()) {
+                    OreDictUtils.registerAndAssociate(prefix, material, stack);
+                } else {
+                    OreDictUtils.registerOre(prefix, stack);
+                }
+            }
+        }
     }
 
     /// Decodes the legacy 7-stone meta packing (see [#LEGACY_STONES]), or null when the meta names no ore this

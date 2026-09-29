@@ -43,13 +43,11 @@ import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialIcons;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.OreDictUtils;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
@@ -83,21 +81,6 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         this.stoneType = stoneType;
         this.isSmall = small;
         this.isNatural = natural;
-    }
-
-    public void registerOredict() {
-        for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
-            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
-            doRegistrationStuff(material);
-        }
-    }
-
-    protected void doRegistrationStuff(com.ruling_0.materiallib.api.Material material) {
-        if (!LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ore)) return;
-
-        ItemStack self = new ItemStack(this, 1, LegacyWerkstoffIndex.idOf(material));
-
-        OreDictUtils.registerOre(getPrefix().oreDictName(material), self);
     }
 
     @Override

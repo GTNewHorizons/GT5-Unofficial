@@ -1,7 +1,6 @@
 package gregtech.common.ores;
 
 import java.util.EnumMap;
-import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -24,12 +23,8 @@ import bartworks.system.material.BWItemMetaGeneratedOre;
 import bartworks.system.material.BWMetaGeneratedOres;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
-import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialData;
-import gregtech.api.material.MaterialParts;
 
 /// The legacy `bw.blockores*` ore blocks, kept registered so a saved world's placed and inventory blocks still
 /// resolve. A legacy meta is a werkstoff id, decoded to its material through [LegacyWerkstoffIndex]; the
@@ -72,13 +67,6 @@ public final class BWOreAdapter {
                 .registerBlock(smallNatural, BWItemMetaGeneratedOre.class, "bw.blockores.natural." + smallSuffix);
         }
 
-        void registerOredict() {
-            big.registerOredict();
-            bigNatural.registerOredict();
-            small.registerOredict();
-            smallNatural.registerOredict();
-        }
-
         BWMetaGeneratedOres get(boolean small, boolean natural) {
             if (small) {
                 return natural ? this.smallNatural : this.small;
@@ -109,24 +97,6 @@ public final class BWOreAdapter {
         });
 
         registerCurrentGenTransformers();
-    }
-
-    /// Registers the legacy ore blocks under their ore-dictionary names and associates each werkstoff-origin
-    /// material's ore and small ore with its MaterialLib stack.
-    public void registerOredict() {
-        legacyOres.values()
-            .forEach(Ores::registerOredict);
-        for (Material material : MaterialLibAPI.getMaterials()) {
-            List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
-            if (prefixes == null) continue;
-            if (prefixes.contains(OrePrefixes.ore.name())) associate(material, OrePrefixes.ore);
-            if (prefixes.contains(OrePrefixes.oreSmall.name())) associate(material, OrePrefixes.oreSmall);
-        }
-    }
-
-    private static void associate(Material material, OrePrefixes prefix) {
-        ItemStack stack = MaterialParts.stack(prefix, material, 1);
-        if (stack != null && stack.getItem() != null) MaterialData.addAssociation(prefix, material, stack);
     }
 
     /// Decodes one of the legacy blocks at `meta`, or null when the meta names no ore. The returned [OreInfo]
