@@ -44,6 +44,8 @@ public class GTMaterialProperties {
     public static final Property<Integer> DENSITY_MULTIPLIER = Property.of("gregtech", "densityMultiplier");
     public static final Property<MaterialRef> DIRECT_SMELTING = Property.of("gregtech", "directSmelting");
     public static final Property<Integer> DURABILITY = Property.of("gregtech", "durability", 0);
+    /// The litres of this material's liquid or gas fluid one dust extracts into and solidifies from.
+    public static final Property<Integer> DUST_FLUID_AMOUNT = Property.of("gregtech", "dustFluidAmount", 1000);
     public static final Property<String> DYE = Property.of("gregtech", "dye");
     public static final Property<String> ELEMENT = Property.of("gregtech", "element");
     public static final Property<EnumSet<GTMaterialFlag>> FLAGS = Property.of("gregtech", "flags");

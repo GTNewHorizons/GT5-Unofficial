@@ -10,7 +10,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.OreDictUtils;
 import gregtech.loaders.oreprocessing.ProcessingDustGeneration;
-import gregtech.loaders.oreprocessing.ProcessingNuclearDehydratorGtpp;
 import gregtech.loaders.oreprocessing.ProcessingOreCrafting;
 import gregtech.loaders.oreprocessing.ProcessingOreMachine;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
@@ -211,6 +210,5 @@ public class CompatHandler {
         ProcessingDustGeneration.run();
         ProcessingOreCrafting.run();
         ProcessingOreMachine.run();
-        ProcessingNuclearDehydratorGtpp.run();
     }
 }

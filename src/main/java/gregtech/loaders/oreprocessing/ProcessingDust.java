@@ -64,10 +64,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         INSTANCE = this;
     }
 
-    /// A material's own non-molten fluid, preferring its gas form over its liquid form.
+    /// A material's own non-molten fluid: its gas form when it declares a corresponding gas, else its liquid form,
+    /// else its gas form.
     private static FluidStack fluidFor(Material material, int amount) {
-        return MaterialUtils.hasCorrespondingGas(material) ? MaterialUtils.gas(material, amount)
-            : MaterialUtils.fluid(material, amount);
+        if (MaterialUtils.hasCorrespondingGas(material)) return MaterialUtils.gas(material, amount);
+        FluidStack liquid = MaterialUtils.fluid(material, amount);
+        return liquid != null ? liquid : MaterialUtils.gas(material, amount);
     }
 
     /// Whether a dust resolves for `material`. An ore material need not have one (ChargedCertusQuartz removes
@@ -223,13 +225,13 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 // GT's other fluid-extractor and fluid-solidifier autogen only handles the molten fluid, so a
-                // former Werkstoff material's own liquid/gas form gets its dust extraction and solidification here.
-                if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.cell)
-                    && (MaterialUtils.hasCorrespondingGas(material) || MaterialUtils.hasCorrespondingFluid(material))) {
+                // material's own liquid/gas form gets its dust extraction and solidification here.
+                FluidStack dustFluid = fluidFor(material, material.getProperty(GTMaterialProperties.DUST_FLUID_AMOUNT));
+                if (dustFluid != null) {
                     long fluidEut = calculateRecipeEU(material, MaterialUtils.mass(material) > 128 ? 64 : 30);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .fluidOutputs(fluidFor(material, 1000))
+                        .fluidOutputs(dustFluid)
                         .duration((int) MaterialUtils.mass(material))
                         .eut(fluidEut)
                         .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -237,7 +239,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .circuit(1)
                         .itemOutputs(GTUtility.copyAmount(1, stack))
-                        .fluidInputs(fluidFor(material, 1000))
+                        .fluidInputs(dustFluid.copy())
                         .duration((int) MaterialUtils.mass(material))
                         .eut(fluidEut)
                         .addTo(fluidSolidifierRecipes);
