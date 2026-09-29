@@ -16,7 +16,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -37,7 +36,6 @@ import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -50,11 +48,9 @@ import gregtech.common.config.OPStuff;
 /// the material it stands for, its aliases, its unification association, and (buffered until
 /// [#processBufferedRegistrations]) the ore-processing recipes for it.
 ///
-/// A name's material side resolves in two tiers. A name naming one of GregTech's own materials
-/// ([MaterialUtils#gregTechMaterial]) resolves to it; any other name is dropped as unknown unless it is a
-/// werkstoff- or gtPlusPlus-reconstructed MaterialLib material ([#reconstructedMaterial]). What the buffered
-/// registration finally carries is decided by [#resolveCensusMaterial]. A lens resolves any MaterialLib material
-/// registered under its name, so every transparent material with a dye joins that dye's `craftingLens` group.
+/// A material-based name resolves its material side through [MaterialUtils#byLegacyName]; a name naming no
+/// material is dropped as unknown. Every transparent material with a dye joins that dye's `craftingLens` group
+/// through its lens.
 public final class OreDictRegistrationHandler {
 
     private OreDictRegistrationHandler() {}
@@ -292,7 +288,7 @@ public final class OreDictRegistrationHandler {
 
         Material material = null;
         if (prefix.isMaterialBased() && !materialName.isEmpty() && !NAME_ONLY_MATERIALS.contains(materialName)) {
-            material = MaterialUtils.gregTechMaterial(materialName);
+            material = materialNamed(materialName);
         }
 
         OreDictAliases.registerAliases(oreName, stack);
@@ -308,7 +304,7 @@ public final class OreDictRegistrationHandler {
 
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
 
-        Material censusMaterial = resolveCensusMaterial(materialName, material);
+        Material registeredMaterial = material == null ? Materials.NULL : material;
 
         // GT++ registers cells for these materials that contain different fluids from their BartWorks counterparts.
         // They share OreDict names but must not unify. Remove this once the duplicate cells are removed.
@@ -318,10 +314,10 @@ public final class OreDictRegistrationHandler {
                 || oreName.equals("cellXenon"));
 
         if (prefix.isUnifiable() && !excludeGtppCells) {
-            MaterialData.addAssociation(prefix, censusMaterial, stack);
+            MaterialData.addAssociation(prefix, registeredMaterial, stack);
         }
 
-        OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, censusMaterial, modId);
+        OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, registeredMaterial, modId);
 
         if (bufferRegistrationProcessing) {
             registrations.add(registration);
@@ -333,8 +329,6 @@ public final class OreDictRegistrationHandler {
     private static void handleSpecialRegistration(ItemStack stack, OrePrefixes prefix, @Nullable Material material,
         String materialName) {
 
-        if (prefix == OrePrefixes.gearGt && material == null) material = reconstructedMaterial(materialName);
-        if (prefix == OrePrefixes.lens && material == null) material = MaterialUtils.byLegacyName(materialName);
         if (prefix.isMaterialBased() && material == null) {
             return;
         }
@@ -373,8 +367,7 @@ public final class OreDictRegistrationHandler {
         }
     }
 
-    /// Returns true when the registration stops here: an unknown material name (unless it is a reconstructed
-    /// MaterialLib material) or a material that never unifies.
+    /// Returns true when the registration stops here: an unknown material name or a material that never unifies.
     private static boolean processMaterialRegistration(String oreName, ItemStack stack, OrePrefixes prefix,
         @Nullable Material material, String materialName) {
 
@@ -382,7 +375,7 @@ public final class OreDictRegistrationHandler {
             if (NAME_ONLY_MATERIALS.contains(materialName)) {
                 MaterialData.addAssociation(prefix, materialName, stack);
             }
-            return reconstructedMaterial(materialName) == null;
+            return true;
         }
 
         for (Material reRegisteredMaterial : MaterialFacades.oreReRegistrationsOf(material)) {
@@ -409,36 +402,10 @@ public final class OreDictRegistrationHandler {
         return prefix.isUnifiable() && !MaterialUtils.unifiable(material);
     }
 
-    /// The MaterialLib material an ore-dictionary registration carries downstream: GregTech's own `material`
-    /// when there is one, else the shaped reconstructed or foreign MaterialLib material registered under
-    /// `materialName`, else the `NULL` placeholder. A name naming one of GregTech's own materials under a prefix
-    /// that is not material-based (`plankWood`, `plateAlloyIridium`) carries `NULL`, and a shapeless registry hit
-    /// is a wildcard backing that does the same.
-    private static Material resolveCensusMaterial(@Nullable String materialName, @Nullable Material material) {
-        if (material != null) return material;
-        Material ml = registryMaterial(materialName);
-        return ml != null && !MaterialUtils.isGregTechMaterial(ml)
-            && !ml.getShapes()
-                .isEmpty() ? ml : Materials.NULL;
-    }
-
-    /// The reconstructed (werkstoff- or gtpp-owned) MaterialLib material registered under `materialName`, or
-    /// null when the name is dropped as unknown. A werkstoff-origin material qualifies once
-    /// [MaterialUtils#hasBridgeRegistration] records it; an event processed before that record exists resolves
-    /// to null. A gtPlusPlus-originated material never gets that record and qualifies instead on
-    /// [GTMaterialProperties#GTPP_STATE] plus a shaped registry hit.
-    private static @Nullable Material reconstructedMaterial(@Nullable String materialName) {
-        Material ml = registryMaterial(materialName);
-        if (ml == null || MaterialUtils.isGregTechMaterial(ml)) return null;
-        if (MaterialUtils.hasBridgeRegistration(ml)) return ml;
-        if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) return null;
-        return ml.getShapes()
-            .isEmpty() ? null : ml;
-    }
-
-    private static @Nullable Material registryMaterial(@Nullable String materialName) {
-        if (materialName == null || materialName.isEmpty()) return null;
-        return MaterialLibAPI.getMaterial("gregtech", materialName);
+    /// The material `materialName` names, or null when it names none.
+    private static @Nullable Material materialNamed(String materialName) {
+        Material material = MaterialUtils.byLegacyName(materialName);
+        return material == Materials.NULL ? null : material;
     }
 
     @SuppressWarnings("deprecation")

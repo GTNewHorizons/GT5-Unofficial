@@ -5,11 +5,9 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -636,19 +634,6 @@ public class MaterialUtils {
     /// Records the tool-handle material override `material` carries for [#handleMaterial(Material)].
     public static void recordHandleMaterial(Material material, Material handle) {
         reconstructedHandles.put(material, handle);
-    }
-
-    private static final Set<Material> reconstructedBridgeRegistrations = new HashSet<>();
-
-    /// Records that a reconstructed bartworks-origin `material` has finished its per-material registration
-    /// steps; read back through [#hasBridgeRegistration].
-    public static void recordBridgeRegistration(Material material) {
-        reconstructedBridgeRegistrations.add(material);
-    }
-
-    /// Whether [#recordBridgeRegistration] has run for `material`.
-    public static boolean hasBridgeRegistration(@Nullable Material material) {
-        return material != null && reconstructedBridgeRegistrations.contains(material);
     }
 
     private static @Nullable Material chaseRef(@Nullable Material material,

@@ -219,7 +219,6 @@ public final class MainMod {
         PlatinumSludgeRecipes.register();
 
         runOnServerStarted();
-        StaticRecipeChangeLoaders.unificationRecipeEnforcer();
         VoidMinerUtility.generateDropMaps();
     }
 

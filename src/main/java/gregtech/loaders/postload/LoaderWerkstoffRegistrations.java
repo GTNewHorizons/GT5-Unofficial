@@ -40,7 +40,6 @@ public class LoaderWerkstoffRegistrations {
             registerAssociations(material);
             registerLegacyCasings(material, LegacyWerkstoffIndex.idOf(material));
             registerAdditionalOreDict(material);
-            MaterialUtils.recordBridgeRegistration(material);
         }
         OreDictUtils.registerOre(
             "craftingIndustrialDiamond",

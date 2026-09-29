@@ -13,37 +13,9 @@
 
 package bartworks.common.loaders;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-
-import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
-
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
-import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialData;
-import gregtech.api.material.MaterialUtils;
-
 public class StaticRecipeChangeLoaders {
 
     private StaticRecipeChangeLoaders() {}
-
-    public static void unificationRecipeEnforcer() {
-        for (Material material : MaterialLibAPI.getMaterials()) {
-            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
-            StaticRecipeChangeLoaders.runMaterialLinker(material);
-        }
-    }
-
-    private static void runMaterialLinker(Material material) {
-        String internalName = MaterialUtils.internalName(material);
-        for (OrePrefixes prefixes : OrePrefixes.VALUES) if (LegacyWerkstoffIndex.generatesPrefix(material, prefixes)) {
-            for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
-                MaterialData.addAssociation(prefixes, material, stack);
-            }
-        }
-    }
 
     public static void addElectricImplosionCompressorRecipes() {
         // Custom EIC recipes.

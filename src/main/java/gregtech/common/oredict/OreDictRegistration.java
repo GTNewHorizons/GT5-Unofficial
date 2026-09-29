@@ -15,9 +15,8 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OreDictUtils;
 
-/// One buffered ore-dictionary registration: the stack, the prefix its name resolved to, and the material the
-/// census resolved it to -- the `NULL` placeholder when the name carries none, which for a material-based
-/// prefix means [#registerRecipes] registers nothing (see [OreDictRegistrationHandler#resolveCensusMaterial]).
+/// One buffered ore-dictionary registration: the stack, the prefix its name resolved to, and the material its
+/// name names -- the `NULL` placeholder under a prefix that is not material-based.
 final class OreDictRegistration {
 
     @NotNull
