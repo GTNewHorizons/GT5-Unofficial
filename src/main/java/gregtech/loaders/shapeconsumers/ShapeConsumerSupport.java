@@ -50,9 +50,8 @@ final class ShapeConsumerSupport {
         delegate(shape, prefix, material -> true, registrator);
     }
 
-    /// [#delegate(Shape, OrePrefixes, Supplier)] restricted to materials passing `filter` -- for a shape
-    /// whose membership is wider than the set of materials the legacy oredict path ever dispatched for
-    /// (see `ConsumerWire`'s superconductor markers).
+    /// [#delegate(Shape, OrePrefixes, Supplier)] restricted to materials passing `filter`, which runs before the
+    /// material's stack is resolved.
     static void delegate(Shape shape, OrePrefixes prefix, Predicate<Material> filter,
         Supplier<IOreRecipeRegistrator> registrator) {
         if (shape == null) return;
