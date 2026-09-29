@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE;
@@ -31,14 +30,12 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.ITexture;
@@ -463,15 +460,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         }
     }
 
-    private static final int[][] WERKSTOFF_LENS_COLORS = { { 1, Colors.Yellow.ordinal() },
-        { 4, Colors.White.ordinal() }, { 5, Colors.Black.ordinal() }, { 7, Colors.Green.ordinal() },
-        { 8, Colors.Green.ordinal() }, { 9, Colors.White.ordinal() }, { 19, Colors.Red.ordinal() },
-        { 20, Colors.White.ordinal() }, { 21, Colors.Brown.ordinal() }, { 22, Colors.Orange.ordinal() },
-        { 23, Colors.Black.ordinal() }, { 24, Colors.White.ordinal() }, { 25, Colors.Green.ordinal() },
-        { 35, Colors.Yellow.ordinal() }, { 36, Colors.Purple.ordinal() }, { 43, Colors.Green.ordinal() },
-        { 89, Colors.Green.ordinal() }, { 91, Colors.Purple.ordinal() }, { 10023, Colors.Red.ordinal() },
-        { 11499, Colors.Green.ordinal() }, { 11358, Colors.Red.ordinal() } };
-
     private static final Map<String, Colors> lensColors;
     static {
         lensColors = new HashMap<>();
@@ -535,18 +523,46 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         lensColors.put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Topaz, Shapes.lens, 1)), Colors.Orange);
         lensColors.put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Amber, Shapes.lens, 1)), Colors.Orange);
 
-        // Time to manually define a bunch of lenses based on id
-
-        // Lenses of werkstoff-origin materials, keyed by the legacy werkstoff id their colour was chosen for.
-        for (int[] row : WERKSTOFF_LENS_COLORS) {
-            Material material = LegacyWerkstoffIndex.get(row[0]);
-            if (material == null || !material.hasShape(Shapes.lens)) {
-                GT_FML_LOGGER.error("MTEIndustrialLaserEngraver: werkstoff {} no longer carries a lens", row[0]);
-                continue;
-            }
-            lensColors
-                .put(getUniqueIdentifier(MaterialLibAPI.getStack(material, Shapes.lens, 1)), Colors.values()[row[1]]);
-        }
+        lensColors
+            .put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Bismutite, Shapes.lens, 1)), Colors.Yellow);
+        lensColors
+            .put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.CubicZirconia, Shapes.lens, 1)), Colors.White);
+        lensColors
+            .put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.FluorBuergerite, Shapes.lens, 1)), Colors.Black);
+        lensColors.put(
+            getUniqueIdentifier(MaterialLibAPI.getStack(Materials.ChromoAluminoPovondraite, Shapes.lens, 1)),
+            Colors.Green);
+        lensColors.put(
+            getUniqueIdentifier(MaterialLibAPI.getStack(Materials.VanadioOxyDravite, Shapes.lens, 1)),
+            Colors.Green);
+        lensColors.put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Olenite, Shapes.lens, 1)), Colors.White);
+        lensColors.put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.RedZircon, Shapes.lens, 1)), Colors.Red);
+        lensColors.put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Salt, Shapes.lens, 1)), Colors.White);
+        lensColors.put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Spodumene, Shapes.lens, 1)), Colors.Brown);
+        lensColors.put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.RockSalt, Shapes.lens, 1)), Colors.Orange);
+        lensColors.put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Fayalite, Shapes.lens, 1)), Colors.Black);
+        lensColors
+            .put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Forsterite, Shapes.lens, 1)), Colors.White);
+        lensColors
+            .put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Hedenbergite, Shapes.lens, 1)), Colors.Green);
+        lensColors
+            .put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Prasiolite, Shapes.lens, 1)), Colors.Yellow);
+        lensColors.put(
+            getUniqueIdentifier(MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 1)),
+            Colors.Purple);
+        lensColors
+            .put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.BArTiMaEuSNeK, Shapes.lens, 1)), Colors.Green);
+        lensColors.put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Tiberium, Shapes.lens, 1)), Colors.Green);
+        lensColors
+            .put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Fluorspar, Shapes.lens, 1)), Colors.Purple);
+        lensColors.put(getUniqueIdentifier(MaterialLibAPI.getStack(Materials.Orundum, Shapes.lens, 1)), Colors.Red);
+        lensColors.put(
+            getUniqueIdentifier(
+                MaterialLibAPI.getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.lens, 1)),
+            Colors.Green);
+        lensColors.put(
+            getUniqueIdentifier(MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Shapes.lens, 1)),
+            Colors.Red);
         lensColors.put("MU-metaitem.0132140", Colors.Purple);
 
         //
