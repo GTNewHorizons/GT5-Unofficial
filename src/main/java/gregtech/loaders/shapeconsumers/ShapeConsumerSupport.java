@@ -22,7 +22,7 @@ import gregtech.common.ores.GTOreAdapter;
 /// Shared dispatch glue for the `Consumer*` classes in this package: each targets one [Shape] and delegates to
 /// the same [IOreRecipeRegistrator] its `gregtech.loaders.oreprocessing.Processing*` counterpart already
 /// implements, resolving stacks through [MaterialLibAPI] instead of an oredict event. Most shapes map onto a
-/// single legacy `OrePrefixes`; the two ore shapes map onto one prefix per stone variant, through
+/// single legacy `OrePrefixes`; the ore shape maps onto one prefix per stone variant, through
 /// [#delegateOreVariants].
 ///
 /// A `Processing*` class that also generates recipes for other mods' items attaches to its prefix through
@@ -62,10 +62,9 @@ final class ShapeConsumerSupport {
         });
     }
 
-    /// [#delegate(Shape, OrePrefixes, Supplier)] for the two variant-carrying ore shapes: one of GregTech's own
-    /// materials ([MaterialUtils#isGregTechMaterial]) dispatches once per [StoneType] it generates a block on, under
-    /// that stone's own
-    /// [StoneType#getPrefix] (or [OrePrefixes#oreSmall] for small ore) and that stone's block. gtPlusPlus' and
+    /// [#delegate(Shape, OrePrefixes, Supplier)] for the variant-carrying ore shape: one of GregTech's own materials
+    /// ([MaterialUtils#isGregTechMaterial]) dispatches once per [StoneType] it generates a block on, under that
+    /// stone's own [StoneType#getPrefix] and that stone's block. gtPlusPlus' and
     /// bartworks' materials, which own no stone variants, dispatch once under `fallbackPrefix` with the
     /// shape's canonical stack.
     ///
@@ -74,7 +73,7 @@ final class ShapeConsumerSupport {
     ///
     /// [StoneType] and [GTOreAdapter] are touched only from inside the postInit callback:
     /// see the class-init trap [gregtech.api.enums.materials.OreShapes]'s javadoc describes.
-    static void delegateOreVariants(Shape shape, OrePrefixes fallbackPrefix, boolean small,
+    static void delegateOreVariants(Shape shape, OrePrefixes fallbackPrefix,
         Supplier<IOreRecipeRegistrator> registrator) {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
@@ -91,10 +90,10 @@ final class ShapeConsumerSupport {
             String group = fallbackPrefix.getName() + ":" + MaterialUtils.internalName(material);
 
             for (StoneType stoneType : StoneType.VALUES) {
-                ItemStack stack = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, small);
+                ItemStack stack = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, false);
                 if (stack == null) continue;
-                OrePrefixes prefix = small ? OrePrefixes.oreSmall : stoneType.getPrefix();
-                GTRecipeBuilder.withVariantGroup(group, () -> dispatch(registrator, prefix, material, stack));
+                GTRecipeBuilder
+                    .withVariantGroup(group, () -> dispatch(registrator, stoneType.getPrefix(), material, stack));
             }
         });
     }

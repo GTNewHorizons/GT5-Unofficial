@@ -23,7 +23,6 @@ import gregtech.loaders.oreprocessing.ProcessingLens;
 import gregtech.loaders.oreprocessing.ProcessingLog;
 import gregtech.loaders.oreprocessing.ProcessingNugget;
 import gregtech.loaders.oreprocessing.ProcessingOre;
-import gregtech.loaders.oreprocessing.ProcessingOrePoor;
 import gregtech.loaders.oreprocessing.ProcessingOreSmelting;
 import gregtech.loaders.oreprocessing.ProcessingPipe;
 import gregtech.loaders.oreprocessing.ProcessingPlank;
@@ -70,7 +69,6 @@ public class LoaderOreProcessing implements Runnable {
         new ProcessingTransforming();
         new ProcessingNugget();
         new ProcessingOre();
-        new ProcessingOrePoor();
         new ProcessingOreSmelting();
         new ProcessingRawOre();
         new ProcessingIceOre();

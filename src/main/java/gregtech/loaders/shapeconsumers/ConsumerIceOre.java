@@ -14,8 +14,7 @@ public final class ConsumerIceOre {
     private ConsumerIceOre() {}
 
     static void register() {
-        ShapeConsumerSupport
-            .delegateOreVariants(OreShapes.ore, OrePrefixes.ore, false, () -> ProcessingIceOre.INSTANCE);
+        ShapeConsumerSupport.delegateOreVariants(OreShapes.ore, OrePrefixes.ore, () -> ProcessingIceOre.INSTANCE);
         ShapeConsumerSupport.delegate(Shapes.rawOre, OrePrefixes.rawOre, () -> ProcessingIceOre.INSTANCE);
     }
 }

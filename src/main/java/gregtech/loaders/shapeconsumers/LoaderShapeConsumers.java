@@ -16,7 +16,6 @@ public final class LoaderShapeConsumers {
         ConsumerOre.register();
         ConsumerRawOre.register();
         ConsumerIceOre.register();
-        ConsumerOrePoor.register();
         ConsumerCrushedOre.register();
         ConsumerPure.register();
         ConsumerDirty.register();
