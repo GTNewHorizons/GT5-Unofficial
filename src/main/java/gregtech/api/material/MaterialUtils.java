@@ -617,23 +617,13 @@ public class MaterialUtils {
         return chaseRef(material, GTMaterialProperties.DIRECT_SMELTING);
     }
 
-    /// The tool-handle material a material's part recipes pair it with, defaulting to the material itself. A
-    /// reconstructed material resolves its [#recordHandleMaterial] override;
-    /// [GTMaterialProperties#HANDLE_MATERIAL] is the fallback, resolved one hop only.
+    /// The tool-handle material a material's part recipes pair it with: its
+    /// [GTMaterialProperties#HANDLE_MATERIAL], resolved one hop only, defaulting to the material itself.
     public static @Nullable Material handleMaterial(@Nullable Material material) {
         if (material == null) return null;
-        Material override = reconstructedHandles.get(material);
-        if (override != null) return override;
         MaterialRef ref = material.getProperty(GTMaterialProperties.HANDLE_MATERIAL);
         if (ref == null) return material;
         return ref.resolve();
-    }
-
-    private static final Map<Material, Material> reconstructedHandles = new HashMap<>();
-
-    /// Records the tool-handle material override `material` carries for [#handleMaterial(Material)].
-    public static void recordHandleMaterial(Material material, Material handle) {
-        reconstructedHandles.put(material, handle);
     }
 
     private static @Nullable Material chaseRef(@Nullable Material material,

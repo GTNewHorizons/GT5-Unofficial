@@ -31,12 +31,15 @@ import bartworks.system.material.BWMetaGeneratedOres;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -203,9 +206,29 @@ public final class BWOreAdapter implements IOreAdapter {
         }
     }
 
+    /// Registers the legacy ore blocks under their ore-dictionary names and associates each werkstoff-origin
+    /// material's ore and small ore with its MaterialLib stack, or else the stack [#getStack] resolves for it.
     public void registerOredict() {
         legacyOres.values()
             .forEach(Ores::registerOredict);
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
+            if (prefixes == null) continue;
+            if (prefixes.contains(OrePrefixes.ore.name())) associate(material, OrePrefixes.ore, false);
+            if (prefixes.contains(OrePrefixes.oreSmall.name())) associate(material, OrePrefixes.oreSmall, true);
+        }
+    }
+
+    private void associate(Material material, OrePrefixes prefix, boolean small) {
+        ItemStack stack = MaterialParts.stack(prefix, material, 1);
+        if (stack == null) {
+            try (OreInfo info = OreInfo.getNewInfo()) {
+                info.material = material;
+                info.isSmall = small;
+                if (supports(info)) stack = getStack(info, 1);
+            }
+        }
+        if (stack != null && stack.getItem() != null) MaterialData.addAssociation(prefix, material, stack);
     }
 
     /// Hides from NEI every legacy `bw.blockores*` slot whose (material, stone, small-ore) combination resolves

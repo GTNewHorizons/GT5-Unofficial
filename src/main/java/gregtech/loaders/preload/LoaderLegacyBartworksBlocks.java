@@ -16,6 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.common.ores.BWOreAdapter;
 
@@ -58,6 +59,20 @@ public class LoaderLegacyBartworksBlocks {
             BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
             "bw.werkstoffblockscasingadvanced",
             OrePrefixes.blockCasingAdvanced);
+        registerCasingAssociations();
+    }
+
+    /// Keeps each legacy casing slot associated with its material, so a recipe naming one resolves to the
+    /// MaterialLib casing that supersedes it, and a material with no MaterialLib casing shape keeps resolving to
+    /// the legacy block it still uses.
+    private static void registerCasingAssociations() {
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            int id = LegacyWerkstoffIndex.idOf(material);
+            if (id < 0) continue;
+            MaterialData.addAssociation(OrePrefixes.blockCasing, material, new ItemStack(casings, 1, id));
+            MaterialData
+                .addAssociation(OrePrefixes.blockCasingAdvanced, material, new ItemStack(casingsAdvanced, 1, id));
+        }
     }
 
     /// Hides the legacy slot of any material whose MaterialLib block resolves, so only the replacement lists.

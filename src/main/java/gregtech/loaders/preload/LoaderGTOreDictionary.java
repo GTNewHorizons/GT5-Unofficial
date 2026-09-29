@@ -12,6 +12,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
@@ -19,6 +21,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.OreDictUtils;
 
@@ -67,6 +70,9 @@ public class LoaderGTOreDictionary implements Runnable {
         ItemStack industrialDiamond = ItemList.IC2_Industrial_Diamond.get(1);
         OreDictUtils.addToBlacklist(industrialDiamond);
         OreDictUtils.registerOre(OreDictNames.craftingIndustrialDiamond, industrialDiamond);
+        OreDictUtils.registerOre(
+            OreDictNames.craftingIndustrialDiamond,
+            MaterialLibAPI.getStack(Materials.CubicZirconia, Shapes.gemExquisite, 1));
 
         OreDictUtils
             .registerOre(OrePrefixes.stone, Materials.Basalt, GTModHandler.getModItem(Railcraft.ID, "cube", 1L, 6));

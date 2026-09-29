@@ -36,7 +36,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
@@ -117,12 +116,9 @@ public class GTPreLoad {
         }
         GTLanguageManager.sEnglishFile.load();
 
-        // LoaderWerkstoffRegistrations localizes the materials carried over from Werkstoff.
         MaterialLibAPI.getMaterials()
             .parallelStream()
-            .filter(
-                material -> MaterialUtils.isGregTechMaterial(material)
-                    || material.getProperty(GTMaterialProperties.GTPP_STATE) != null)
+            .filter(material -> "gregtech".equals(material.getModId()))
             .forEach(
                 material -> GTLanguageManager.addStringLocalization(
                     MaterialUtils.localizedNameKey(material),

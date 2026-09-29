@@ -72,7 +72,7 @@ import gregtech.api.util.CasingTier;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GlassTier;
 import gregtech.common.MaterialHazardHandler;
-import gregtech.loaders.postload.LoaderWerkstoffRegistrations;
+import gregtech.common.ores.BWOreAdapter;
 import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import tectech.loader.recipe.Godforge;
 
@@ -178,7 +178,7 @@ public final class MainMod {
         BioLabLoader.run(event);
 
         LoaderLegacyBartworksBlocks.register();
-        LoaderWerkstoffRegistrations.run();
+        BWOreAdapter.INSTANCE.registerOredict();
 
         ItemRegistry.run();
         GlassTier.RegisterGlassTiers.run();
