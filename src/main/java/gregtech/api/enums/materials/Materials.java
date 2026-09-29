@@ -2035,7 +2035,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(40))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
-            .setProperty(GTMaterialProperties.SUB_TAGS, List.of("AnaerobeSmelting"))
             .setProperty(GTMaterialProperties.FORMULA, "Ca")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.TIER, 1)
