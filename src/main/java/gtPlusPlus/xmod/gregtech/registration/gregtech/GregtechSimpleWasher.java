@@ -21,12 +21,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
@@ -111,116 +108,36 @@ public class GregtechSimpleWasher {
                 .getStackForm(1L));
     }
 
-    /// Washes each impure and purified dust back to its clean dust, across three material domains: the
-    /// gregtech-named materials other than the [MaterialFacades] wildcards, the werkstoff part set through
-    /// [#werkstoffStack], and the gtPlusPlus materials through their MaterialLib shapes.
-    private static boolean generateDirtyDustRecipes() {
-        int mRecipeCount = 0;
-        // Generate Recipe Map for the Dust Washer.
-        ItemStack dustClean;
-        ItemStack dustDirty;
-        ItemStack dustPure;
+    /// Washes each impure and purified dust back to its clean dust, for every material with ore processing other
+    /// than the [MaterialFacades] wildcards and the platinum group metals, whose dusts leave through the platinum
+    /// sludge line.
+    private static void generateDirtyDustRecipes() {
         for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (!MaterialUtils.isGregTechMaterial(ml)) {
-                continue;
-            }
-            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
+            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING) || MaterialFacades.isWildcard(ml)) {
                 continue;
             }
             if (ml == Materials.Platinum || ml == Materials.Osmium
                 || ml == Materials.Iridium
-                || ml == Materials.Palladium
-                || MaterialFacades.isWildcard(ml)) {
+                || ml == Materials.Palladium) {
                 continue;
             }
-
-            dustClean = convertDecomposition(MaterialParts.stack(OrePrefixes.dust, ml, 1L))[0];
-            dustDirty = MaterialParts.stack(OrePrefixes.dustImpure, ml, 1L);
-            dustPure = MaterialParts.stack(OrePrefixes.dustPure, ml, 1L);
-            addSimpleWashRecipe(dustDirty, dustClean);
-            addSimpleWashRecipe(dustPure, dustClean);
+            ItemStack dustClean = convertDecomposition(MaterialParts.stack(OrePrefixes.dust, ml, 1L))[0];
+            addSimpleWashRecipe(MaterialParts.stack(OrePrefixes.dustImpure, ml, 1L), dustClean);
+            addSimpleWashRecipe(MaterialParts.stack(OrePrefixes.dustPure, ml, 1L), dustClean);
         }
-
-        for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) {
-                continue;
-            }
-            dustClean = convertDecomposition(werkstoffStack(ml, OrePrefixes.dust))[0];
-            dustDirty = werkstoffStack(ml, OrePrefixes.dustImpure);
-            dustPure = werkstoffStack(ml, OrePrefixes.dustPure);
-            addSimpleWashRecipe(dustDirty, dustClean);
-            addSimpleWashRecipe(dustPure, dustClean);
-        }
-
-        for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
-                continue;
-            }
-            if (!ml.hasShape(Shapes.dust)) {
-                continue;
-            }
-            dustClean = convertDecomposition(MaterialLibAPI.getStack(ml, Shapes.dust, 1))[0];
-            if (ml.hasShape(Shapes.dustImpure)) {
-                addSimpleWashRecipe(MaterialLibAPI.getStack(ml, Shapes.dustImpure, 1), dustClean);
-            }
-            if (ml.hasShape(Shapes.dustPure)) {
-                addSimpleWashRecipe(MaterialLibAPI.getStack(ml, Shapes.dustPure, 1), dustClean);
-            }
-        }
-
-        return simpleWasherRecipes.getAllRecipes()
-            .size() > mRecipeCount;
     }
 
-    /// The `prefix` part of `material` when the werkstoff system generated that prefix, otherwise null.
-    private static ItemStack werkstoffStack(Material material, OrePrefixes prefix) {
-        return LegacyWerkstoffIndex.generatesPrefix(material, prefix) ? MaterialParts.stack(prefix, material, 1L)
-            : null;
-    }
-
-    /// Washes each crushed ore to its purified form, across the same three material domains
-    /// [#generateDirtyDustRecipes] covers.
-    private static boolean generateDirtyCrushedRecipes() {
-        int mRecipeCount = simpleWasherRecipes.getAllRecipes()
-            .size();
-        // Generate Recipe Map for the Dust Washer.
-        ItemStack crushedClean;
-        ItemStack crushedDirty;
+    /// Washes each crushed ore to its purified form, for every material with ore processing other than the
+    /// [MaterialFacades] wildcards.
+    private static void generateDirtyCrushedRecipes() {
         for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (!MaterialUtils.isGregTechMaterial(ml)) {
-                continue;
-            }
             if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING) || MaterialFacades.isWildcard(ml)) {
                 continue;
             }
-            crushedClean = MaterialParts.stack(OrePrefixes.crushedPurified, ml, 1L);
-            crushedDirty = MaterialParts.stack(OrePrefixes.crushed, ml, 1L);
-            addSimpleWashRecipe(crushedDirty, crushedClean);
-        }
-
-        for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) {
-                continue;
-            }
-            crushedClean = werkstoffStack(ml, OrePrefixes.crushedPurified);
-            crushedDirty = werkstoffStack(ml, OrePrefixes.crushed);
-            addSimpleWashRecipe(crushedDirty, crushedClean);
-        }
-
-        for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
-                continue;
-            }
-            if (!ml.hasShape(Shapes.crushed) || !ml.hasShape(Shapes.crushedPurified)) {
-                continue;
-            }
             addSimpleWashRecipe(
-                MaterialLibAPI.getStack(ml, Shapes.crushed, 1),
-                MaterialLibAPI.getStack(ml, Shapes.crushedPurified, 1));
+                MaterialParts.stack(OrePrefixes.crushed, ml, 1L),
+                MaterialParts.stack(OrePrefixes.crushedPurified, ml, 1L));
         }
-
-        return simpleWasherRecipes.getAllRecipes()
-            .size() > mRecipeCount;
     }
 
     private static void addSimpleWashRecipe(ItemStack aInput, ItemStack aOutput) {
