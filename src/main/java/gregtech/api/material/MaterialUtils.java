@@ -735,6 +735,26 @@ public class MaterialUtils {
         return formula;
     }
 
+    /// A material's [GTMaterialProperties#COMPOSITION] with every amount divided by their greatest common divisor,
+    /// the smallest whole batch of its components; empty when it carries none.
+    public static List<MaterialRefStack> reducedComposition(@Nullable Material material) {
+        if (material == null) return Collections.emptyList();
+        List<MaterialRefStack> composition = material.getProperty(GTMaterialProperties.COMPOSITION);
+        if (composition == null || composition.isEmpty()) return Collections.emptyList();
+        long divisor = 0;
+        for (MaterialRefStack entry : composition) divisor = gcd(divisor, entry.amount());
+        if (divisor <= 1) return composition;
+        List<MaterialRefStack> reduced = new ArrayList<>(composition.size());
+        for (MaterialRefStack entry : composition) {
+            reduced.add(new MaterialRefStack(entry.material(), entry.amount() / divisor));
+        }
+        return reduced;
+    }
+
+    private static long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
     /// The composition of a MaterialLib material as [MaterialStack]s, resolved from
     /// [GTMaterialProperties#COMPOSITION]; empty when it carries none.
     public static List<MaterialStack> materialList(@Nullable Material material) {

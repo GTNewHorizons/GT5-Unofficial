@@ -19,8 +19,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials.LegacyGTPPComposites;
-import gregtech.api.enums.materials.LegacyGTPPComposites.Component;
+import gregtech.api.material.MaterialRefStack;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
@@ -34,15 +33,14 @@ import gregtech.common.items.ItemIntegratedCircuit;
 
 /// Alloy blast smelter recipes that turn a solid material into its molten fluid, in two shapes:
 ///
-/// - [#generateComposites] combines a [LegacyGTPPComposites] entry's component dusts (or, for a non-solid
-/// component, its fluid) into the output's molten fluid at that table's ratio -- see [LegacyGTPPComposites]'s
-/// class javadoc for how [#COMPOSITE]'s eligibility differs from the mixer's own over the same table.
+/// - [#generateComposites] combines a material's [MaterialUtils#reducedComposition] component dusts (or, for a
+/// component without a dust, its fluid) into the output's molten fluid at that ratio.
 /// - [#generateSingleDust] blasts a material's own dust directly into its own molten fluid, independent of
 /// composite status.
 ///
-/// Both shapes resolve the molten fluid through [MaterialUtils#anyFluid]'s name-priority lookup, which reaches
-/// a gtPlusPlus-only material's fluid where the state-specific accessors cannot. A material whose fluid does
-/// not resolve registers nothing.
+/// Both shapes resolve the molten fluid through [MaterialUtils#anyFluid]'s state-priority lookup, which also
+/// reaches a material whose melt is declared as its liquid. A material whose fluid does not resolve registers
+/// nothing.
 ///
 /// [#generateFromExistingBlastFurnaceRecipes] is a separate, non-per-material pass: it mirrors every
 /// already-registered blast furnace recipe that resolves a molten fluid, deduping against a snapshot of
@@ -52,8 +50,7 @@ public class ProcessingAlloyBlastSmelter {
 
     private ProcessingAlloyBlastSmelter() {}
 
-    /// The frozen set of materials that get a composite recipe. See [LegacyGTPPComposites]'s class javadoc for
-    /// how this differs from the mixer's own eligibility over the same table.
+    /// The frozen set of materials that get a composite recipe.
     // spotless:off
     private static final Set<Material> COMPOSITE = Set.of(
         Materials.AbyssalAlloy, Materials.AncientGranite, Materials.Arcanite,
@@ -79,10 +76,10 @@ public class ProcessingAlloyBlastSmelter {
     /// dedup check must see these).
     public static void generateComposites() {
         for (Material material : COMPOSITE) {
-            List<Component> composites = LegacyGTPPComposites.composites(material);
+            List<MaterialRefStack> composites = MaterialUtils.reducedComposition(material);
             if (composites.isEmpty()) continue;
-            int totalParts = composites.stream()
-                .mapToInt(Component::parts)
+            int totalParts = (int) composites.stream()
+                .mapToLong(MaterialRefStack::amount)
                 .sum();
             int tier = Math.max(1, MaterialUtils.tier(material));
             int duration = tier <= 4 ? 20 * tier * 10 : 120 * tier * 10;
@@ -124,9 +121,9 @@ public class ProcessingAlloyBlastSmelter {
 
             int tier = Math.max(1, MaterialUtils.tier(material));
             int duration = tier <= 4 ? 20 * tier * 10 : 120 * tier * 10;
-            int totalParts = LegacyGTPPComposites.composites(material)
+            int totalParts = (int) MaterialUtils.reducedComposition(material)
                 .stream()
-                .mapToInt(Component::parts)
+                .mapToLong(MaterialRefStack::amount)
                 .sum();
             GTValues.RA.stdBuilder()
                 .itemInputs(dust)
@@ -139,23 +136,21 @@ public class ProcessingAlloyBlastSmelter {
         }
     }
 
-    private static void composite(Material material, List<Component> composites, int totalParts, long voltage,
-        int duration) {
+    private static void composite(Material material, List<MaterialRefStack> composites, int totalParts,
+        long voltage, int duration) {
         int count = composites.size();
         ItemStack[] items = new ItemStack[count];
         FluidStack componentFluid = null;
         for (int i = 0; i < count; i++) {
-            Component component = composites.get(i);
-            int parts = component.parts();
-            boolean solid = "SOLID".equals(
-                component.material()
-                    .getProperty(GTMaterialProperties.GTPP_STATE))
-                && component.material()
-                    .hasShape(Shapes.dust);
-            if (solid) {
-                items[i] = MaterialLibAPI.getStack(component.material(), Shapes.dust, parts);
+            Material component = composites.get(i)
+                .material()
+                .resolve();
+            int parts = (int) composites.get(i)
+                .amount();
+            if (component.hasShape(Shapes.dust)) {
+                items[i] = MaterialLibAPI.getStack(component, Shapes.dust, parts);
             } else if (parts > 0 && parts <= 100) {
-                componentFluid = MaterialUtils.anyFluid(component.material(), parts * 1000L);
+                componentFluid = MaterialUtils.anyFluid(component, parts * 1000L);
             }
         }
 

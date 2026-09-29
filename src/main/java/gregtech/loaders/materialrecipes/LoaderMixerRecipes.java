@@ -24,13 +24,12 @@ import gregtech.api.util.GTUtility;
 /// Generates the Mixer recipe (composition -> dust) for MaterialLib materials -- the canonical reader of
 /// [GTMaterialProperties#HAS_MIXER_RECIPE].
 ///
-/// Each carrier's [GTMaterialProperties#COMPOSITION], reduced by the greatest common divisor of its amounts, mixes
-/// into the smallest whole batch. Each entry resolves to a dust input ([MaterialUtils#compositionDust]), except a
-/// single gas-only entry (e.g. Hydrogen, Oxygen), which resolves to a fluid input ([MaterialUtils#compositionGas]).
-/// [#CARRIERS] never declares more than one such entry, so this carries no cell-item byproduct accounting. [GTMaterialProperties#MIX_CIRCUIT] adds an
-/// integrated-circuit input when set to 1 or higher. Duration and EU scale off the carrier's own
-/// [MaterialAtomics#mass] and [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], divided/multiplied by its
-/// composition's entry count.
+/// Each carrier's [MaterialUtils#reducedComposition] mixes into the smallest whole batch. Each entry resolves to a
+/// dust input ([MaterialUtils#compositionDust]), except a single gas-only entry (e.g. Hydrogen, Oxygen), which
+/// resolves to a fluid input ([MaterialUtils#compositionGas]). [#CARRIERS] never declares more than one such entry,
+/// so this carries no cell-item byproduct accounting. [GTMaterialProperties#MIX_CIRCUIT] adds an integrated-circuit
+/// input when set to 1 or higher. Duration and EU scale off the carrier's own [MaterialAtomics#mass] and
+/// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], divided/multiplied by its composition's entry count.
 public final class LoaderMixerRecipes {
 
     private static final Material[] CARRIERS = { Materials.CircuitCompoundMK3, Materials.MagnetoResonatic,
@@ -69,21 +68,18 @@ public final class LoaderMixerRecipes {
     }
 
     private static void registerMixer(Material material) {
-        List<MaterialRefStack> composition = material.getProperty(GTMaterialProperties.COMPOSITION);
-        if (composition == null || composition.isEmpty()) {
+        List<MaterialRefStack> composition = MaterialUtils.reducedComposition(material);
+        if (composition.isEmpty()) {
             GT_FML_LOGGER.error("LoaderMixerRecipes: {} has no composition to mix from", material.getName());
             return;
         }
-        long divisor = 0;
-        for (MaterialRefStack entry : composition) divisor = gcd(divisor, entry.amount());
         long totalAmount = 0;
-        for (MaterialRefStack entry : composition) totalAmount += entry.amount() / divisor;
+        for (MaterialRefStack entry : composition) totalAmount += entry.amount();
         ItemStack output = MaterialLibAPI.getStack(material, Shapes.dust, (int) totalAmount);
 
         List<ItemStack> itemInputs = new ArrayList<>();
         FluidStack fluidInput = null;
-        for (MaterialRefStack original : composition) {
-            MaterialRefStack entry = new MaterialRefStack(original.material(), original.amount() / divisor);
+        for (MaterialRefStack entry : composition) {
             ItemStack dustInput = MaterialUtils.compositionDust(entry);
             if (dustInput != null) {
                 itemInputs.add(dustInput);
@@ -113,9 +109,5 @@ public final class LoaderMixerRecipes {
             .duration((int) Math.max(1L, Math.abs(MaterialAtomics.mass(material) / componentCount)))
             .eut(GTUtility.calculateRecipeEU(material, Math.min(4, componentCount) * 5))
             .addTo(mixerRecipes);
-    }
-
-    private static long gcd(long a, long b) {
-        return b == 0 ? a : gcd(b, a % b);
     }
 }
