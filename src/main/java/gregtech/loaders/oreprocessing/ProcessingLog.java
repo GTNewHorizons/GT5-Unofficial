@@ -32,8 +32,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (!MaterialUtils.isGregTechMaterial(material)) return;
-
         short meta = (short) stack.getItemDamage();
 
         if (meta == Short.MAX_VALUE) {

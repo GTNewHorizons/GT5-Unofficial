@@ -1894,7 +1894,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(MaterialParts.requireCell(Materials.Ammonia, 1), ItemList.Cell_Empty.get(1L));
 
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MaterialUtils.isGregTechMaterial(material) && MaterialUtils.canBeCracked(material)) {
+            if (MaterialUtils.canBeCracked(material)) {
                 GTMod.proxy.addHydroCrackingRecipes(material);
                 GTMod.proxy.addSteamCrackingRecipes(material);
             }
