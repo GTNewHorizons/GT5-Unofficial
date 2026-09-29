@@ -411,7 +411,7 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUIV, 4),
                 ItemList.Circuit_Chip_APIC.get(4), ItemList.MetaMaterial_SensorArray1.get(2),
                 ItemList.MetaMaterial_ResonanceChamber1.get(2), ItemList.MetaMaterial_FieldManipulator1.get(2) },
-            nanites(3, 1, 2, 1, 3, 3, 4),
+            nanites(2, 1, 2, 1, 3, 3, 4),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
                 CondensateType.Infinity.getEntangled(8 * INGOTS),
                 CondensateType.CelestialTungsten.getEntangled(8 * INGOTS) },
