@@ -73,7 +73,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, ISmart
             1,
             new String[] { StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
                 StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"),
-                BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get(), });
+                BWTooltipReference.BARTWORKS_TOOLTIP.get(), });
     }
 
     public MTERadioHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

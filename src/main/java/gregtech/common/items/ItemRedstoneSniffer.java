@@ -30,9 +30,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     }
 
     @Override
-    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        aList.add("Author: §9Frosty§4Fire1");
-    }
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {}
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {

@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorJulia;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
@@ -93,7 +92,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             .addStructureInfo("")
             .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
             .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
-            .toolTipFinisher(AuthorJulia);
+            .toolTipFinisher();
     }
 
     // spotless:off

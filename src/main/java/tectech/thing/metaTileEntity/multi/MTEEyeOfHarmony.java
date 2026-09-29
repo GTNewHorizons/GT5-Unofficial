@@ -56,7 +56,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -985,7 +984,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             .addSubChannel(GTStructureChannels.EOH_STABILISATION)
             .addSubChannel(GTStructureChannels.EOH_DILATION)
             .addSubChannel(GTStructureChannels.EOH_COMPRESSION)
-            .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTAuthors.AuthorColen);
+            .toolTipFinisher(EnumChatFormatting.GOLD, 87);
         // spotless:on
         return tt;
     }

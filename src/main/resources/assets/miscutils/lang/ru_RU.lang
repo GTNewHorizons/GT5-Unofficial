@@ -57,7 +57,7 @@ item.itemSandstoneHammer.name=Разрушитель булыжника
 # Tooltips
 GTPP.machines.chisel_slot.tooltip=Слот для образца
 GTPP.machines.chisel_slot.tooltip.1=7Поместите сюда §6Chisel§7еный блок для выбора выходного продукта
-GTPP.core.GT_Tooltip=Добавлено: §2Alkalus §7- §c[GT++]
+GTPP.core.GT_Tooltip=§c[GT++]
 GTPP.core.GT_Tooltip_Builder=§2Alkalus §7- §c[GT++]
 GTPP.core.GT_Tooltip_Radioactive=§7Внимание: §aРадиоактивно! §6Избегайте прямого контакта без средств защиты.
 

@@ -121,12 +121,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInputHatch("1+", "Any bottom casing", 1)
             .addOutputBus("0+", "Any bottom casing", 1)
             .addOutputHatch("1+", "Any bottom casing", 1)
-            .toolTipFinisher(
-                EnumChatFormatting.GREEN + "bartimaeusnek"
-                    + EnumChatFormatting.GRAY
-                    + " via "
-                    + EnumChatFormatting.DARK_GREEN
-                    + "BartWorks");
+            .toolTipFinisher();
         return tt;
     }
 

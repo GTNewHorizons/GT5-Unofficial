@@ -293,7 +293,7 @@ public class MTEBioLab extends MTEBasicMachine {
     @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("tooltip.tile.biolab.0.name"),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+            BWTooltipReference.BARTWORKS_TOOLTIP.get() };
     }
 
     @Override
