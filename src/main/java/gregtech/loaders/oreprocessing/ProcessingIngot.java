@@ -20,6 +20,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
@@ -195,7 +196,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
             case "ingotHot" -> {
-                if (MaterialUtils.autoGenerateVacuumFreezerRecipes(material)
+                if (MaterialUtils.autoGenerateVacuumFreezerRecipes(material) && producesHotIngot(material)
                     && MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null) {
                     // Vacuum freezer recipes
                     GTValues.RA.stdBuilder()
@@ -208,5 +209,13 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
             }
             default -> {}
         }
+    }
+
+    /// Whether `material`'s hot ingot gets a vacuum freezer recipe. Former Werkstoff materials carry the shape
+    /// whether or not anything makes it, so theirs is frozen only when they blast-smelt above 1750 K, the
+    /// threshold for a hot ingot output.
+    private static boolean producesHotIngot(Material material) {
+        if (!LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ingotHot)) return true;
+        return MaterialUtils.blastFurnaceRequired(material) && MaterialUtils.blastFurnaceTemp(material) > 1750;
     }
 }
