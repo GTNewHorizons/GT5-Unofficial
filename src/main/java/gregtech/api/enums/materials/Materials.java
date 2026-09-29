@@ -6967,7 +6967,6 @@ public class Materials {
             .addToFamily(Families.liquids)
             .addToFamily(Families.moltens)
             .generateShape(BlockShapes.block)
-            .removeShape(CellShapes.cell)
             .removeShape(Shapes.ingotHot)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Fiery Steel")
             .setProperty(GTMaterialProperties.MELTING_POINT, 1811)

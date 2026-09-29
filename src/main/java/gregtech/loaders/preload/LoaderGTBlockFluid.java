@@ -1710,7 +1710,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.FierySteel)
             .addLocalizedName(Materials.FierySteel)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials.FierySteel, CellShapes.cellMolten, 1),
+                MaterialLibAPI.getStack(Materials.FierySteel, CellShapes.cell, 1),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("holywater")
