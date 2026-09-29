@@ -955,7 +955,7 @@ gt.blockmachines.basicmachine.microtransmitter.05.name=IV Передатчик �
 gt.blockmachines.basicmachine.microtransmitter.06.name=LuV Передатчик микроволновой энергии
 gt.blockmachines.basicmachine.microtransmitter.07.name=ZPM Передатчик микроволновой энергии
 gt.blockmachines.basicmachine.microtransmitter.08.name=UV Передатчик микроволновой энергии
-gt.blockmachines.basicmachine.microtransmitter.tooltip=Передает энергию по беспроводной сети\nИспользует азотную плазму\nдля межпространственной передачи\n0,004EU потерь на 100 блоков
+gt.blockmachines.basicmachine.microtransmitter.tooltip=Передает энергию по беспроводной сети\nТребуется сигнал красного камня для активации\n0,004EU потерь на 100 блоков\nПри межмерной передаче\nИспользуется азотная плазма, и требуется яйцо дракона рядом\nТакже потерь умножаются на 100
 gt.blockmachines.basicmachine.microwave.tier.01.name=Базовая микроволновая печь
 gt.blockmachines.basicmachine.microwave.tier.02.name=Продвинутая микроволновая печь
 gt.blockmachines.basicmachine.microwave.tier.03.name=Продвинутая микроволновая печь II
@@ -9585,7 +9585,6 @@ gt.metatool.01.file.name=Напильник (%s)
 gt.metatool.01.file.tooltip=Ручной электрический напильник
 
 # Side names
-gt.lang.face.any=Любая сторона
 gt.lang.face.back=Задняя сторона
 gt.lang.face.bottom=Нижняя сторона
 gt.lang.face.front=Передняя сторона

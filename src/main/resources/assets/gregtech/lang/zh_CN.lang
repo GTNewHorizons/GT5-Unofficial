@@ -1789,7 +1789,6 @@ gt.metatool.01.file.name=锉（%s）
 gt.metatool.01.file.tooltip=手持式电动锉
 
 # Side names
-gt.lang.face.any=任意面
 gt.lang.face.back=背面
 gt.lang.face.bottom=底面
 gt.lang.face.front=正面
