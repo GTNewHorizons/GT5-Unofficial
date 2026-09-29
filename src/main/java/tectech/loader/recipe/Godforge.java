@@ -38,7 +38,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -1017,11 +1016,9 @@ public class Godforge implements Runnable {
     }
 
     private static FluidStack convertToMolten(ItemStack stack) {
-        // gtPlusPlus materials fall through to the ore-name lookup below
         ItemData data = MaterialData.getAssociation(stack);
         Material mat = data != null ? data.mMaterial.mMaterial : null;
-        if (mat != null
-            && (MaterialUtils.isGregTechMaterial(mat) || mat.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null)) {
+        if (mat != null) {
             if (MaterialUtils.hasMolten(mat)) {
                 return MaterialUtils.molten(mat, INGOTS * data.mMaterial.mAmount / GTValues.M);
             } else if (MaterialUtils.fluidOf(mat) != null) {
