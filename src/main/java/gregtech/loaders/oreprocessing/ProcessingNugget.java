@@ -73,7 +73,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         GTRecipeRegistrator.registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, true);
-        GTRecipeRegistrator
+        if (!ProcessingRecyclingGtpp.owns(material)) GTRecipeRegistrator
             .registerReverseMacerating(stack, material, prefix.getMaterialAmount(), null, null, null, false, true);
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)
             && MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null) {
