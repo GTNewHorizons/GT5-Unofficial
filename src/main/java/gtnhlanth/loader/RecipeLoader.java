@@ -35,7 +35,7 @@ import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.api.util.GTRecipeConstants.WaferEngravingRecipes;
-import static gregtech.common.items.MetaGeneratedItem01.registerCauldronCleaningFor;
+import static gregtech.common.items.CauldronWashing.registerCleaningFor;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 
@@ -3728,8 +3728,8 @@ public class RecipeLoader {
     public static void registerCauldronRemaps() {
         GT_FML_LOGGER
             .debug(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes to replace cerium sources");
-        registerCauldronCleaningFor(Materials.Cerium, Materials.CeriumRichMixture);
-        registerCauldronCleaningFor(Materials.Samarium, Materials.SamariumOreConcentrate);
+        registerCleaningFor(Materials.Cerium, Materials.CeriumRichMixture);
+        registerCleaningFor(Materials.Samarium, Materials.SamariumOreConcentrate);
         GT_FML_LOGGER.debug(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes done!");
     }
 

@@ -98,6 +98,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
+import gregtech.common.items.CauldronWashing;
 import gregtech.common.misc.GTDebugCommand;
 import gregtech.common.misc.GTMiscCommand;
 import gregtech.common.misc.GTPowerfailCommand;
@@ -323,6 +324,7 @@ public class GTMod {
         MaterialSystem.init();
         OrePrefixes.copyDataFromShapes();
         LoaderShapeConsumers.register();
+        CauldronWashing.register();
     }
 
     @Mod.EventHandler

@@ -61,7 +61,7 @@ import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
-import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.items.CauldronWashing;
 import gregtech.common.oredict.OreDictRegistrationHandler;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
@@ -480,7 +480,7 @@ public class GTPostLoad {
             if (MaterialFacades.isWildcard(material)) continue;
             for (OrePrefixes prefix : washablePrefixes) {
                 ItemStack input = MaterialParts.stack(prefix, material, 1);
-                ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);
+                ItemStack output = CauldronWashing.result(prefix, material, 1);
 
                 if (input == null || output == null) {
                     continue;

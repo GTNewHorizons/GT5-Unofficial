@@ -469,11 +469,8 @@ import static gregtech.common.items.IDMetaItem01.ZPM4;
 import static gregtech.common.items.IDMetaItem01.ZPM5;
 import static gregtech.common.items.IDMetaItem01.ZPM6;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -482,7 +479,6 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -515,7 +511,6 @@ import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.MaterialData;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
@@ -3955,135 +3950,29 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         craftingShapelessRecipes();
     }
 
-    private static final Map<Material, Material> cauldronRemap = new HashMap<>();
-
-    /// Registers `out` as the cauldron-washing replacement dust for `in`'s `dustImpure`/`dustPure` items.
-    public static void registerCauldronCleaningFor(Material in, Material out) {
-        cauldronRemap.put(in, out);
-    }
-
     @Override
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
-        int aDamage = aItemEntity.getEntityItem()
+        int damage = aItemEntity.getEntityItem()
             .getItemDamage();
-        if (isMaterialItem(aDamage) && (!aItemEntity.worldObj.isRemote)) {
-            Material aMaterial = LegacyMaterialIDIndex.get(aDamage % 1000);
-            if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials.NULL)) {
-                int tX = MathHelper.floor_double(aItemEntity.posX);
-                int tY = MathHelper.floor_double(aItemEntity.posY);
-                int tZ = MathHelper.floor_double(aItemEntity.posZ);
-                OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
-                if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
-                    Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
-                    if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-
-                        aItemEntity.setEntityItemStack(
-                            MaterialParts.stack(
-                                OrePrefixes.dust,
-                                cauldronRemap.getOrDefault(aMaterial, aMaterial),
-                                aItemEntity.getEntityItem().stackSize));
-                        aItemEntity.delayBeforeCanPickup = 0;
-                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
-                        aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
-                        return true;
-                    }
-                } else if (aPrefix == OrePrefixes.crushed) {
-                    Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
-                    if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-                        aItemEntity.setEntityItemStack(
-                            MaterialParts
-                                .stack(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
-                        aItemEntity.delayBeforeCanPickup = 0;
-                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
-                        aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
-                        return true;
-                    }
-                } else if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
-                    Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
-                    if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
-                        aItemEntity.setEntityItemStack(ItemList.Food_Dough.get(aItemEntity.getEntityItem().stackSize));
-                        aItemEntity.delayBeforeCanPickup = 0;
-                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
-                        aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        if (!isMaterialItem(damage)) return false;
+        return CauldronWashing
+            .washDropped(mGeneratedPrefixList[damage / 1000], LegacyMaterialIDIndex.get(damage % 1000), aItemEntity);
     }
 
     @Override
     public boolean onItemUse(final ItemStack oldItemStack, final EntityPlayer player, final World world, final int x,
         final int y, final int z, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
-        final Block blockClicked = world.getBlock(x, y, z);
-        final int metadata = world.getBlockMetadata(x, y, z);
-
-        if (blockClicked == Blocks.cauldron && metadata > 0) {
-            final int damage = oldItemStack.getItemDamage();
-
-            if (isMaterialItem(damage)) {
-                final Material oldMaterial = LegacyMaterialIDIndex.get(damage % 1000);
-                final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
-                final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
-
-                if (newItemStack != null) {
-                    world.setBlockMetadataWithNotify(x, y, z, metadata - 1, 3);
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, newItemStack);
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns a function to get a new ItemStack after washing.
-     *
-     * @param oldPrefix   The old prefix of the stack being converted
-     * @param oldMaterial The old material to be converted
-     * @param stackSize   The stack size to be returned
-     * @return the new ItemStack after washing, or null if the material/prefix was invalid
-     */
-    public static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Material oldMaterial,
-        final int stackSize) {
-        if ((oldMaterial != null) && (oldMaterial != Materials.Empty) && (oldMaterial != Materials.NULL)) {
-            switch (oldPrefix.getName()) {
-                case "dustImpure":
-                case "dustPure":
-                    return MaterialParts
-                        .stack(OrePrefixes.dust, cauldronRemap.getOrDefault(oldMaterial, oldMaterial), stackSize);
-                case "crushed":
-                    return MaterialParts.stack(OrePrefixes.crushedPurified, oldMaterial, stackSize);
-                case "dust":
-                    if (oldMaterial == Materials.Wheat) {
-                        return ItemList.Food_Dough.get(stackSize);
-                    }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Cancels the movement of an EntityItem and teleports it above the cauldron.
-     *
-     * @param entityItem The item entity to move
-     * @param x          The X coordinate of the cauldron
-     * @param y          The Y coordinate of the cauldron
-     * @param z          The Z coordinate of the cauldron
-     */
-    static void cancelMovementAndTeleport(EntityItem entityItem, int x, int y, int z) {
-        entityItem.motionX = 0;
-        entityItem.motionY = 0;
-        entityItem.motionZ = 0;
-        entityItem.posX = x + 0.5;
-        entityItem.posY = y + 1.5;
-        entityItem.posZ = z + 0.5;
+        int damage = oldItemStack.getItemDamage();
+        if (!isMaterialItem(damage)) return false;
+        return CauldronWashing.washHeld(
+            mGeneratedPrefixList[damage / 1000],
+            LegacyMaterialIDIndex.get(damage % 1000),
+            oldItemStack,
+            player,
+            world,
+            x,
+            y,
+            z);
     }
 
     @Override
