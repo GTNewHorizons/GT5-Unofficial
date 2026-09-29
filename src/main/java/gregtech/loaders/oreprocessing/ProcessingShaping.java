@@ -50,7 +50,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
             if ((tAmount > 0) && (tAmount <= 64) && (prefix.getMaterialAmount() % 3628800L == 0L)) {
                 int tVoltageMultiplier = MaterialUtils.blastFurnaceTemp(material) >= 2800 ? 60 : 15;
                 int tTrueVoltage = MaterialUtils.processingMaterialTierEU(material);
-                boolean gtppPipes = prefix == OrePrefixes.ingot && RecipesGeneral.PIPE_MATERIALS.contains(material);
+                boolean gtppPipes = prefix == OrePrefixes.ingot
+                    && (RecipesGeneral.PIPE_MATERIALS.contains(material) || material == Materials.Incoloy903);
 
                 if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
                     tVoltageMultiplier /= 4;

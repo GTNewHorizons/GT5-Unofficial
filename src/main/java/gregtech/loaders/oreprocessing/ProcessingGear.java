@@ -76,7 +76,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case "gearGtSmall" -> {
-                if (MaterialUtils.hasMolten(material)) {
+                if (MaterialUtils.hasMolten(material) && !ProcessingFluidSolidifierGtpp.owns(material)) {
                     if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
