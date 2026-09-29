@@ -60,6 +60,12 @@ public class ItemScrapbox extends GTGenericItem {
         private static final List<ScrapDrop> possibleDrops = new ArrayList<>();
 
         public static void addDrop(float weight, ItemStack drop) {
+            for (ScrapDrop itemDrop : possibleDrops) {
+                if (itemDrop.stack()
+                    .isItemEqual(drop)) {
+                    return;
+                }
+            }
             possibleDrops.add(new ScrapDrop(weight, drop));
             weightTotal += weight;
             GTValues.RA.stdBuilder()
