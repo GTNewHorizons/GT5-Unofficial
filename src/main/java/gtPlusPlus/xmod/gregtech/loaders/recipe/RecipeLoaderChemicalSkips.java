@@ -521,7 +521,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Indalloy140, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.EthylCyanoacrylateSuperGlue, CellShapes.cellMolten, 64),
+                MaterialLibAPI.getStack(Materials.EthylCyanoacrylateSuperGlue, CellShapes.cell, 64),
                 MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 64))
             .circuit(10)
             .itemOutputs(GregtechItemList.AdhesionPromoterCatalyst.get(1))

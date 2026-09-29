@@ -1719,7 +1719,7 @@ public class RecipesGregTech {
     private static void centrifugeRecipes() {
         // Solar Salt (Cold) processing
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SolarSaltCold, CellShapes.cellMolten, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SolarSaltCold, CellShapes.cell, 1))
             .circuit(2)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SodiumNitrate, Shapes.dust, 3),
@@ -1737,7 +1737,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.SodiumNitrate, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.PotassiumNitrate, Shapes.dust, 2))
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SolarSaltCold, CellShapes.cellMolten, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SolarSaltCold, CellShapes.cell, 1))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);

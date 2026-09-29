@@ -66,7 +66,7 @@ public class RecipesRareEarthProcessing {
                 MaterialParts.requireCell(Materials.Chlorine, 1),
                 MaterialParts.requireCell(Materials.Hydrogen, 1))
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.HydrogenChlorideMix, CellShapes.cellMolten, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HydrogenChlorideMix, CellShapes.cell, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);

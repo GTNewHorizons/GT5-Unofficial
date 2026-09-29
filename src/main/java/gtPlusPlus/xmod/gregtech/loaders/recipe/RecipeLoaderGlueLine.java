@@ -246,7 +246,7 @@ public class RecipeLoaderGlueLine {
 
     private static void mixerRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.DichloroaceticAcid, CellShapes.cellMolten, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.DichloroaceticAcid, CellShapes.cell, 1))
             .circuit(1)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.TrichloroaceticAcid, 1_000))
