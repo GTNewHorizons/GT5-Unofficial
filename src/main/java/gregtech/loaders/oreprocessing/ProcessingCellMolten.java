@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -67,6 +68,17 @@ public class ProcessingCellMolten implements IOreRecipeRegistrator {
                 extract(MaterialParts.stack(OrePrefixes.plate, material, 1L), material, INGOTS);
                 extract(MaterialParts.stack(OrePrefixes.stick, material, 1L), material, HALF_INGOTS);
             }
+        }
+
+        ItemStack block = MaterialParts.stack(OrePrefixes.block, material, 1L);
+        if (block != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(block)
+                .fluidOutputs(MaterialUtils.molten(material, 9 * INGOTS))
+                .duration(14 * SECONDS + 8 * TICKS)
+                .eut(calculateRecipeEU(material, 8))
+                .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+                .addTo(fluidExtractionRecipes);
         }
 
         FluidContainerRegistry.registerFluidContainer(
