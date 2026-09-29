@@ -653,7 +653,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
             return 0;
         }
         if (hasPlasma(fluidStack, Materials.Plutonium241, PLASMA_PLUTONIUM241_USAGE)) return 5;
-        if (fluidStack.isFluidEqual(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Technetium), 1))
+        if (fluidStack.isFluidEqual(MaterialUtils.plasma(Materials.Technetium, 1))
             && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE) return 4;
         if (hasPlasma(fluidStack, Materials.Radon, PLASMA_RADON_USAGE)) return 3;
         if (hasPlasma(fluidStack, Materials.Bismuth, PLASMA_BISMUTH_USAGE)) return 2;

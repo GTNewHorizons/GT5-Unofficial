@@ -1091,8 +1091,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] {
                 MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 1 * STACKS + 36 * INGOTS),
                 MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 18 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neptunium), 20_000),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium), 20_000) },
+                MaterialUtils.plasma(Materials.Neptunium, 20_000),
+                MaterialUtils.plasma(Materials.Fermium, 20_000) },
             CustomItemList.hatch_CreativeUncertainty.get(1),
             200 * 20,
             (int) TierEU.RECIPE_UIV);
@@ -1134,7 +1134,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.SuperconductorUMVBase, Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials.Shirabon, Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials.FleroviumGT5U, Shapes.plateSuperdense, 16), },
-            new FluidStack[] { new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.ChromaticGlass), 1 * STACKS),
+            new FluidStack[] { MaterialUtils.plasma(Materials.ChromaticGlass, 1 * STACKS),
                 MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 1 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 1 * STACKS) },
             ItemList.PrecisionFieldSyncCasing.get(8),

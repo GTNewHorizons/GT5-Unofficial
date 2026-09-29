@@ -1998,7 +1998,7 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.OMEGA),
                 Particle.getBaseParticle(Particle.HIGGS_BOSON))
             .outputChances(5000, 200, 200, 100, 80, 60, 40, 30)
-            .fluidInputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.CelestialTungsten), 2_500))
+            .fluidInputs(MaterialUtils.plasma(Materials.CelestialTungsten, 2_500))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(cyclotronRecipes);

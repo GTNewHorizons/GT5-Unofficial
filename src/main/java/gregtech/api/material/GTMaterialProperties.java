@@ -87,10 +87,6 @@ public class GTMaterialProperties {
     /// wires unify under, carrying no composition of its own. Set on
     /// [gregtech.api.enums.materials.Families#superconductors].
     public static final Property<Boolean> IS_SUPERCONDUCTOR = Property.of("gregtech", "isSuperconductor", false);
-    /// The `FluidRegistry` name of a gtPlusPlus-originated material's plasma fluid, pinned here because a
-    /// merged material's plasma slot may hold a gregtech-side plasma instead. Backs
-    /// [MaterialUtils#legacyGtppPlasmaOf].
-    public static final Property<String> GTPP_PLASMA_NAME = Property.of("gregtech", "gtppPlasmaName");
     /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...). Like [#WERKSTOFF_IDS], its presence doubles
     /// as the "this material carries gtPlusPlus data" signal, and is permanent for that reason.
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");

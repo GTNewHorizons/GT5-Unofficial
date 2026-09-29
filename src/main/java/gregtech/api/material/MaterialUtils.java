@@ -185,18 +185,14 @@ public class MaterialUtils {
         return null;
     }
 
-    /// A gtPlusPlus-originated material's registered plasma fluid, named by
-    /// [GTMaterialProperties#GTPP_PLASMA_NAME]. Null for a material
-    /// that property does not name.
-    public static @Nullable Fluid legacyGtppPlasmaOf(@Nullable Material material) {
-        if (material == null) return null;
-        String name = material.getProperty(GTMaterialProperties.GTPP_PLASMA_NAME);
-        return name == null ? null : FluidRegistry.getFluid(name);
-    }
-
     /// [#fluidOf]'s raw [Fluid] for the `gas()` slot.
     public static @Nullable Fluid gasOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.GAS, FluidNames::gas);
+    }
+
+    /// [#fluidOf]'s raw [Fluid] for the `plasma()` slot.
+    public static @Nullable Fluid plasmaOf(@Nullable Material material) {
+        return resolveSlotFluid(material, FluidState.PLASMA, FluidNames::plasma);
     }
 
     /// [#fluidOf]'s raw [Fluid] for the `molten()` slot, resolved from the same [MaterialFluidNames] `molten`

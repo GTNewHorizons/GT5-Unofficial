@@ -323,7 +323,7 @@ public class AutoclaveRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Salt, Shapes.gemChipped, 64),
                 MaterialLibAPI.getStack(Materials.Diamond, Shapes.gemChipped, 64),
                 MaterialLibAPI.getStack(Materials.VanadioOxyDravite, Shapes.gemChipped, 64))
-            .fluidInputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.ChromaticGlass), 1_000_000))
+            .fluidInputs(MaterialUtils.plasma(Materials.ChromaticGlass, 1_000_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemExquisite, 1))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_MAX)

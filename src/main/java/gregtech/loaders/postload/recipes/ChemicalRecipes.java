@@ -4020,7 +4020,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
                 .itemOutputs(MaterialLibAPI.getStack(Materials.Americium, Shapes.crushedPurified, 8))
-                .fluidInputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Bromine), 29))
+                .fluidInputs(MaterialUtils.plasma(Materials.Bromine, 29))
                 .duration(3 * SECONDS + 15 * TICKS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(UniversalChemical);
@@ -4062,7 +4062,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
                 .itemOutputs(MaterialLibAPI.getStack(Materials.Europium, Shapes.crushedPurified, 8))
-                .fluidInputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Bromine), 6))
+                .fluidInputs(MaterialUtils.plasma(Materials.Bromine, 6))
                 .duration(1 * SECONDS + 17 * TICKS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(UniversalChemical);

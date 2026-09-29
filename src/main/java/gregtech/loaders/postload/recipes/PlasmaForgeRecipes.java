@@ -39,7 +39,7 @@ public class PlasmaForgeRecipes implements Runnable {
         {
             // Dimensionally Shifted Superfluid
 
-            Fluid celestialTungstenPlasma = MaterialUtils.legacyGtppPlasmaOf(Materials.CelestialTungsten);
+            Fluid celestialTungstenPlasma = MaterialUtils.plasmaOf(Materials.CelestialTungsten);
 
             // Tier 5
             // Best recipe, unlocks with Stellar Catalyst.

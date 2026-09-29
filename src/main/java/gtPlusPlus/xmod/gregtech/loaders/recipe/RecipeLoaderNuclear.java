@@ -441,7 +441,7 @@ public class RecipeLoaderNuclear {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, NUGGETS))
-            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neon), 1_000))
+            .fluidOutputs(MaterialUtils.plasma(Materials.Neon, 1_000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 100_000_000L)
@@ -449,9 +449,9 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neon), 1 * INGOTS),
+                MaterialUtils.plasma(Materials.Neon, 1 * INGOTS),
                 new FluidStack(MaterialUtils.anyFluidOf(Materials.Arcanite), 2))
-            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Force), 1_000))
+            .fluidOutputs(MaterialUtils.plasma(Materials.Force, 1_000))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 100_000_000L)
@@ -462,7 +462,7 @@ public class RecipeLoaderNuclear {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Niobium, FluidShapes.fluidPlasma, INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Zinc, FluidShapes.fluidPlasma, INGOTS))
-            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Krypton), 1 * INGOTS))
+            .fluidOutputs(MaterialUtils.plasma(Materials.Krypton, 1 * INGOTS))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -470,9 +470,9 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Krypton), 1 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Force), 1_000))
-            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.AstralTitanium), 1_000))
+                MaterialUtils.plasma(Materials.Krypton, 1 * INGOTS),
+                MaterialUtils.plasma(Materials.Force, 1_000))
+            .fluidOutputs(MaterialUtils.plasma(Materials.AstralTitanium, 1_000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -480,9 +480,9 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.AstralTitanium), 1 * INGOTS),
+                MaterialUtils.plasma(Materials.AstralTitanium, 1 * INGOTS),
                 new FluidStack(MaterialUtils.anyFluidOf(Materials.Titansteel), 2))
-            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Runite), 1_000))
+            .fluidOutputs(MaterialUtils.plasma(Materials.Runite, 1_000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -493,7 +493,7 @@ public class RecipeLoaderNuclear {
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Curium, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Americium, FluidShapes.fluidPlasma, INGOTS))
-            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Xenon), 1 * INGOTS))
+            .fluidOutputs(MaterialUtils.plasma(Materials.Xenon, 1 * INGOTS))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
@@ -501,9 +501,9 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Xenon), 1 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Runite), 1_000))
-            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.AdvancedNitinol), 1_000))
+                MaterialUtils.plasma(Materials.Xenon, 1 * INGOTS),
+                MaterialUtils.plasma(Materials.Runite, 1_000))
+            .fluidOutputs(MaterialUtils.plasma(Materials.AdvancedNitinol, 1_000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
@@ -511,9 +511,9 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.AdvancedNitinol), 72),
+                MaterialUtils.plasma(Materials.AdvancedNitinol, 72),
                 MaterialLibAPI.getFluidStack(Materials.Tartarite, FluidShapes.fluidMolten, 2))
-            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.CelestialTungsten), 1_000))
+            .fluidOutputs(MaterialUtils.plasma(Materials.CelestialTungsten, 1_000))
             .duration(8 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000L)

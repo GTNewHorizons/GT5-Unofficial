@@ -387,7 +387,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Force), 1_000))
+            .fluidInputs(MaterialUtils.plasma(Materials.Force, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Force, FluidShapes.fluidMolten, 1_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)

@@ -91,8 +91,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     protected int mMaxParallel = 0;
     private boolean mFluidMode = false, doFermium = false, doNeptunium = false;
     private boolean renderDisabled = false;
-    private static final Fluid mNeptunium = MaterialUtils.legacyGtppPlasmaOf(Materials.Neptunium);
-    private static final Fluid mFermium = MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium);
+    private static final Fluid mNeptunium = MaterialUtils.plasmaOf(Materials.Neptunium);
+    private static final Fluid mFermium = MaterialUtils.plasmaOf(Materials.Fermium);
     private static final String MAIN_PIECE = "main";
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHousings = new ArrayList<>();
     // spotless:off

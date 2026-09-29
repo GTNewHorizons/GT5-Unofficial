@@ -226,16 +226,16 @@ public class Godforge implements Runnable {
                     MaterialLibAPI.getFluidStack(Materials.Ytterbium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Yttrium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Chrome, FluidShapes.fluidPlasma, 1 * INGOTS),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Zirconium), 1 * INGOTS),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Thorium232), 1 * INGOTS),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Germanium), 1 * INGOTS),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Thallium), 1 * INGOTS),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Ruthenium), 1 * INGOTS),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Rhenium), 1 * INGOTS),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Rhodium), 1 * INGOTS),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Iodine), 1 * INGOTS),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Hafnium), 1 * INGOTS),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Curium), 1 * INGOTS) };
+                    MaterialUtils.plasma(Materials.Zirconium, 1 * INGOTS),
+                    MaterialUtils.plasma(Materials.Thorium232, 1 * INGOTS),
+                    MaterialUtils.plasma(Materials.Germanium, 1 * INGOTS),
+                    MaterialUtils.plasma(Materials.Thallium, 1 * INGOTS),
+                    MaterialUtils.plasma(Materials.Ruthenium, 1 * INGOTS),
+                    MaterialUtils.plasma(Materials.Rhenium, 1 * INGOTS),
+                    MaterialUtils.plasma(Materials.Rhodium, 1 * INGOTS),
+                    MaterialUtils.plasma(Materials.Iodine, 1 * INGOTS),
+                    MaterialUtils.plasma(Materials.Hafnium, 1 * INGOTS),
+                    MaterialUtils.plasma(Materials.Curium, 1 * INGOTS) };
 
                 for (int i = 0; i < solids_t0_1step.length; i++) {
                     GTValues.RA.stdBuilder()
@@ -278,19 +278,19 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t0_xstep = convertToFluid(solids_t0_xstep);
 
             FluidStack[] solid_plasmas_t0_xstep = {
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Force), 1 * INGOTS),
+                MaterialUtils.plasma(Materials.Force, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, 1 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.AdvancedNitinol), 1 * INGOTS),
+                MaterialUtils.plasma(Materials.AdvancedNitinol, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, 1 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.AstralTitanium), 1 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Runite), 1 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.CelestialTungsten), 1 * INGOTS),
+                MaterialUtils.plasma(Materials.AstralTitanium, 1 * INGOTS),
+                MaterialUtils.plasma(Materials.Runite, 1 * INGOTS),
+                MaterialUtils.plasma(Materials.CelestialTungsten, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Platinum, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Plutonium, FluidShapes.fluidPlasma, 1 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Californium), 1 * INGOTS) };
+                MaterialUtils.plasma(Materials.Californium, 1 * INGOTS) };
 
             for (int i = 0; i < solids_t0_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -364,8 +364,8 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t1_xstep = convertToFluid(solids_t1_xstep);
 
             FluidStack[] solid_plasmas_t1_xstep = {
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neptunium), 1 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium), 1 * INGOTS) };
+                MaterialUtils.plasma(Materials.Neptunium, 1 * INGOTS),
+                MaterialUtils.plasma(Materials.Fermium, 1 * INGOTS) };
 
             for (int i = 0; i < solids_t1_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -404,9 +404,9 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t2_1step = convertToFluid(solids_t2_1step);
 
             FluidStack[] solid_plasmas_t2_1step = {
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Rhugnor), 1 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Dragonblood), 1 * INGOTS),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.ChromaticGlass), 1 * INGOTS),
+                MaterialUtils.plasma(Materials.Rhugnor, 1 * INGOTS),
+                MaterialUtils.plasma(Materials.Dragonblood, 1 * INGOTS),
+                MaterialUtils.plasma(Materials.ChromaticGlass, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Bedrockium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Draconium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidPlasma, 1 * INGOTS),
@@ -446,7 +446,7 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t2_xstep = convertToFluid(solids_t2_xstep);
 
             FluidStack[] solid_plasmas_t2_xstep = {
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Hypogen), 144),
+                MaterialUtils.plasma(Materials.Hypogen, 144),
                 MaterialLibAPI.getFluidStack(Materials.Tritanium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.FleroviumGT5U, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidPlasma, 1 * INGOTS),
@@ -522,10 +522,10 @@ public class Godforge implements Runnable {
                     MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 500),
                     MaterialUtils.anyFluid(Materials.Krypton, 500), MaterialUtils.anyFluid(Materials.Xenon, 500) };
                 FluidStack[] fluid_plasmas_t0_xstep = {
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neon), 500),
+                    MaterialUtils.plasma(Materials.Neon, 500),
                     MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidPlasma, 500),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Krypton), 500),
-                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Xenon), 500) };
+                    MaterialUtils.plasma(Materials.Krypton, 500),
+                    MaterialUtils.plasma(Materials.Xenon, 500) };
 
                 for (int i = 0; i < fluids_t0_xstep.length; i++) {
                     GTValues.RA.stdBuilder()
@@ -543,7 +543,7 @@ public class Godforge implements Runnable {
                 // Single step
                 GTValues.RA.stdBuilder()
                     .fluidInputs(MaterialUtils.anyFluid(Materials.Bromine, 500))
-                    .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Bromine), 500))
+                    .fluidOutputs(MaterialUtils.plasma(Materials.Bromine, 500))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UXV)
                     .metadata(FOG_PLASMA_MULTISTEP, false)

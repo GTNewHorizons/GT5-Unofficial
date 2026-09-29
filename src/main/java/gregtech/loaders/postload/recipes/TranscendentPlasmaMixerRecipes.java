@@ -145,9 +145,9 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(24)
             .fluidInputs(
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium), 1_000),
+                MaterialUtils.plasma(Materials.Fermium, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Thorium, FluidShapes.fluidPlasma, 1_000),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.CelestialTungsten), 1_000),
+                MaterialUtils.plasma(Materials.CelestialTungsten, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI
                     .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 1_000))
@@ -176,13 +176,13 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.FleroviumGT5U, FluidShapes.fluidPlasma, 1_000),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.ChromaticGlass), 1_000),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Hypogen), 1_000),
+                MaterialUtils.plasma(Materials.ChromaticGlass, 1_000),
+                MaterialUtils.plasma(Materials.Hypogen, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Ichorium, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.SixPhasedCopper, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidPlasma, 1_000),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Dragonblood), 1_000),
-                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Rhugnor), 1_000),
+                MaterialUtils.plasma(Materials.Dragonblood, 1_000),
+                MaterialUtils.plasma(Materials.Rhugnor, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Draconium, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Tritanium, FluidShapes.fluidPlasma, 1_000),
