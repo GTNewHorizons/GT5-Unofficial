@@ -429,7 +429,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 }
 
                 if (!(material == Materials.StyreneButadieneRubber || material == Materials.Silicone)) {
-                    if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
+                    if (MaterialUtils.makesSimplePlates(material)) {
                         if (MaterialParts.stack(OrePrefixes.plate, MaterialUtils.smeltInto(material), 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(2, stack), ItemList.Shape_Mold_Plate.get(0L))

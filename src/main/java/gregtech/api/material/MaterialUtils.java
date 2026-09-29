@@ -34,6 +34,7 @@ import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFluidNames;
 import gregtech.api.enums.materials.Materials;
@@ -526,6 +527,13 @@ public class MaterialUtils {
     /// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], or `0` if unset.
     public static int processingMaterialTierEU(@Nullable Material material) {
         return material == null ? 0 : material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+    }
+
+    /// Whether `material` gets GregTech's forge hammer, alloy smelter and cutting saw plates, which GregTech limits
+    /// to materials processed below IV. gtPlusPlus made those plates at every tier, so its materials keep them.
+    public static boolean makesSimplePlates(Material material) {
+        return processingMaterialTierEU(material) < TierEU.IV
+            || material.getProperty(GTMaterialProperties.GTPP_STATE) != null && !isGregTechMaterial(material);
     }
 
     /// The tool durability for a material -- [GTMaterialProperties#DURABILITY], or `0` if unset.
