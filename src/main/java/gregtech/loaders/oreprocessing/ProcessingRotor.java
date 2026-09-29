@@ -71,8 +71,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(extruderRecipes);
             }
             if (MaterialUtils.hasMolten(material)) {
-                if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)
-                    && !ProcessingFluidSolidifierGtpp.owns(material)) {
+                if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Rotor.get(0L))

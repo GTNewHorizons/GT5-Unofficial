@@ -59,8 +59,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         if (MaterialUtils.hasMolten(material)) {
-            if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)
-                && !ProcessingFluidSolidifierGtpp.owns(material)) {
+            if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
                     .itemOutputs(MaterialParts.stack(OrePrefixes.nugget, material, 1L))

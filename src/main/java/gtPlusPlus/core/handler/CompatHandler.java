@@ -10,7 +10,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.OreDictUtils;
 import gregtech.loaders.oreprocessing.ProcessingDustGeneration;
-import gregtech.loaders.oreprocessing.ProcessingFluidSolidifierGtpp;
 import gregtech.loaders.oreprocessing.ProcessingNuclearDehydratorGtpp;
 import gregtech.loaders.oreprocessing.ProcessingOreCrafting;
 import gregtech.loaders.oreprocessing.ProcessingOreMachine;
@@ -214,7 +213,6 @@ public class CompatHandler {
         ProcessingDustGeneration.run();
         ProcessingOreCrafting.run();
         ProcessingOreMachine.run();
-        ProcessingFluidSolidifierGtpp.run();
         ProcessingNuclearDehydratorGtpp.run();
         ProcessingPlasmaGtpp.run();
         ProcessingRecyclingGtpp.run();
