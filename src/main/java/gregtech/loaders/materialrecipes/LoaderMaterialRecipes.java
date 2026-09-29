@@ -15,5 +15,6 @@ public final class LoaderMaterialRecipes {
         LoaderSifterRecipes.run();
         LoaderMixerRecipes.run();
         LoaderChemicalRecipes.run();
+        LoaderWerkstoffDustCrafting.run();
     }
 }
