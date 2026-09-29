@@ -14,24 +14,18 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.util.BWColorUtil;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -99,7 +93,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L));
                 }
 
-                if (noSmashing || isWerkstoffGem(material)) {
+                if (noSmashing) {
                     // Forge hammer recipes
                     {
                         if (MaterialParts.stack(OrePrefixes.gemFlawed, material, 1L) != null) {
@@ -251,7 +245,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 }
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + lensDye(material).mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
                     // Laser engraver recipes
                     {
 
@@ -277,17 +272,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material) / 2)
                         .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
-                }
-
-                // Forge-hammer recipes
-                if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
-                    && MaterialParts.stack(OrePrefixes.dustTiny, material, 1L) != null) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, stack))
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.dustTiny, material, 1L))
-                        .duration(3 * SECONDS + 4 * TICKS)
-                        .eut(TierEU.RECIPE_LV / 2)
-                        .addTo(hammerRecipes);
                 }
 
                 if (!noWorking) {
@@ -337,7 +321,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         }
                     }
                 }
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + lensDye(material).mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
                     is.stackSize = 0;
 
                     GTValues.RA.stdBuilder()
@@ -448,7 +433,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + lensDye(material).mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
 
@@ -529,7 +515,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + lensDye(material).mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
                     GTValues.RA.stdBuilder()
@@ -543,21 +530,4 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             default -> {}
         }
     }
-
-    /// Whether `material` is a gem carried over from bartworks' Werkstoff, whose gems hammer into flawed gems and
-    /// pick their engraving lens by bartworks' colour classification.
-    private static boolean isWerkstoffGem(Material material) {
-        List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
-        return prefixes != null && prefixes.contains("gem");
-    }
-
-    /// The dye naming the `craftingLens` group whose lenses engrave `material`'s gems. Former Werkstoff gems
-    /// classify by [BWColorUtil#getDyeFromColor], matching the lens groups `LoaderWerkstoffRegistrations`
-    /// registers them into.
-    private static Dyes lensDye(Material material) {
-        short[] rgba = MaterialUtils.rgba(material);
-        return isWerkstoffGem(material) && rgba != null ? BWColorUtil.getDyeFromColor(rgba)
-            : MaterialUtils.dye(material);
-    }
-
 }

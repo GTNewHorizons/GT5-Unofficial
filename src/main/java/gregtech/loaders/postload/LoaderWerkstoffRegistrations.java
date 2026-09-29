@@ -4,20 +4,16 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.util.BWColorUtil;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
@@ -52,34 +48,16 @@ public class LoaderWerkstoffRegistrations {
         BWOreAdapter.INSTANCE.registerOredict();
     }
 
-    /// The oredict entries the werkstoff part set carried beyond its own prefix names: a gem material's lens
-    /// joins the dye-keyed `craftingLens` group the laser engraver selects on, and a gem or ingot material's
-    /// storage block joins the name-keyed block group. A merged declaration is excluded where gregtech's own part
-    /// registration covers it: always for blocks, and for lenses when `OreDictRegistrationHandler` gives the lens
-    /// a dye group (a transparent material with a declared dye).
+    /// The oredict entry the werkstoff part set carried beyond its own prefix names: a gem or ingot material's
+    /// storage block joins the name-keyed block group. A merged declaration is excluded, since gregtech's own part
+    /// registration covers it.
     private static void registerAdditionalOreDict(Material material) {
-        if (joinsWerkstoffLensGroup(material) && material.hasShape(Shapes.lens)) {
-            short[] rgba = MaterialUtils.rgba(material);
-            if (rgba != null) {
-                OreDictionary.registerOre(
-                    "craftingLens" + BWColorUtil.getDyeFromColor(rgba).mName.replace(" ", ""),
-                    MaterialLibAPI.getStack(material, Shapes.lens, 1));
-            }
-        }
         if (material.hasShape(BlockShapes.block) && (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
             || LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot))) {
             OreDictUtils.registerOre(
                 OrePrefixes.block + MaterialUtils.internalName(material),
                 MaterialLibAPI.getStack(material, BlockShapes.block, 1));
         }
-    }
-
-    private static boolean joinsWerkstoffLensGroup(Material material) {
-        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)) return true;
-        List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
-        return prefixes != null && prefixes.contains("gem")
-            && !(MaterialUtils.hasFlag(material, GTMaterialFlag.TRANSPARENT)
-                && MaterialUtils.dye(material) != Dyes._NULL);
     }
 
     private static void registerLocalization(Material material) {
