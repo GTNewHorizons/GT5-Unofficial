@@ -10,10 +10,8 @@ import com.ruling_0.materiallib.api.Property;
 /// [MaterialRef] because the target's static field is not assigned until its own registration runs, and
 /// registration order across mods is unspecified.
 ///
-/// The gtPlusPlus-originated (`GTPP_*`) and bartworks-originated (`WERKSTOFF_*`) groups are each decomposed
-/// into individual keys. [#GTPP_STATE] is the "this material carries gtPlusPlus data" signal and
-/// [#WERKSTOFF_IDS] the bartworks equivalent; both are consulted directly by shape gating and the ore
-/// adapters to tell the three material origins apart.
+/// The `WERKSTOFF_*` keys carry the legacy identity saved `bw.*` blocks and items address a material by; only the
+/// code that decodes or migrates those blocks and items reads them.
 public class GTMaterialProperties {
 
     public static final Property<MaterialRef> ARC_SMELT_INTO = Property.of("gregtech", "arcSmeltInto");
@@ -89,8 +87,7 @@ public class GTMaterialProperties {
     /// wires unify under, carrying no composition of its own. Set on
     /// [gregtech.api.enums.materials.Families#superconductors].
     public static final Property<Boolean> IS_SUPERCONDUCTOR = Property.of("gregtech", "isSuperconductor", false);
-    /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...). Like [#WERKSTOFF_IDS], its presence doubles
-    /// as the "this material carries gtPlusPlus data" signal, and is permanent for that reason.
+    /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...). Nothing in GregTech reads it.
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
     /// Whether this material's composition decomposition feeds the lanthanide line, turning its cerium and samarium
     /// outputs into their ore concentrates (see `LanthanidesRecipeOutputs`).
@@ -162,10 +159,7 @@ public class GTMaterialProperties {
     public static final Property<Long> VOLTAGE_MULTIPLIER = Property.of("gregtech", "voltageMultiplier", 16L);
     /// Every legacy werkstoff `mID` this material covers -- more than one when two same-name werkstoffe folded
     /// into one MaterialLib declaration. This property is PERMANENT: saved worlds address bartworks items and
-    /// ore blocks by their legacy `mID`, so [LegacyWerkstoffIndex] must keep
-    /// decoding those ids indefinitely. It doubles as the "this material carries werkstoff data" signal, which
-    /// is how the ore adapters and shape gating distinguish the werkstoff-origin materials from the gregtech
-    /// and gtPlusPlus families.
+    /// ore blocks by their legacy `mID`, so [LegacyWerkstoffIndex] must keep decoding those ids indefinitely.
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
     /// The frozen list of `OrePrefixes` names a werkstoff-backed material's legacy part set covered, elided
     /// when empty. `sheetmetal` and `frameGt` never appear here: their membership is declared as a MaterialLib
