@@ -26329,7 +26329,6 @@ public class Materials {
             .addToFamily(Families.all)
             .addToFamily(Families.gems)
             .addToFamily(Families.gemQualities)
-            .addToFamily(Families.toolParts)
             .generateShape(BlockShapes.block)
             .generateShape(Shapes.foil)
             .removeShape(Shapes.bolt)
