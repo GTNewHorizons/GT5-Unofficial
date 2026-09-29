@@ -74,7 +74,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, false);
-                    if (!ProcessingRecyclingGtpp.owns(material)) GTRecipeRegistrator.registerReverseMacerating(
+                    GTRecipeRegistrator.registerReverseMacerating(
                         stack,
                         material,
                         prefix.getMaterialAmount(),
