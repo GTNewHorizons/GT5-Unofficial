@@ -174,13 +174,14 @@ public class ProcessingPlasmaGtpp {
                 .duration(cooldownDuration)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(vacuumFreezerRecipes);
+        } else {
+            GTValues.RA.stdBuilder()
+                .fluidInputs(new FluidStack(plasma, 1000))
+                .fluidOutputs(new FluidStack(cooled, 1000))
+                .duration(cooldownDuration)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(vacuumFreezerRecipes);
         }
-        GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(plasma, 1000))
-            .fluidOutputs(new FluidStack(cooled, 1000))
-            .duration(cooldownDuration)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(vacuumFreezerRecipes);
     }
 
     private static FluidStack materialPlasma(Material material, long amount) {

@@ -443,7 +443,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
                     }
                     ItemStack cell = MaterialParts.stack(OrePrefixes.cell, material, 1L);
-                    if (cell != null) {
+                    if (cell != null && !ProcessingPlasmaGtpp.owns(material)) {
                         RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(cell)
