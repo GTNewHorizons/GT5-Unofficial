@@ -20,10 +20,9 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
 /// The `frameGt` recipe registrator: a hand-crafting recipe for two frames from sticks below IV processing
-/// tier, and a four-stick assembler recipe when the material has a stick and allows recipes. Each is skipped
-/// for a material whose [ProcessingShapedCraftingGtpp] or [ProcessingAssemblerGtpp] counterpart covers it.
-/// Dispatched once per frame-generating material by [gregtech.loaders.shapeconsumers.ConsumerFrame]. Unlike the
-/// other `Processing*` registrators it is not registered on its prefix.
+/// tier, and a four-stick assembler recipe when the material has a stick and allows recipes. Dispatched once per
+/// frame-generating material by [gregtech.loaders.shapeconsumers.ConsumerFrame]. Unlike the other `Processing*`
+/// registrators it is not registered on its prefix.
 public class ProcessingFrame implements IOreRecipeRegistrator {
 
     public static final ProcessingFrame INSTANCE = new ProcessingFrame();
@@ -33,8 +32,7 @@ public class ProcessingFrame implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-            && !ProcessingShapedCraftingGtpp.owns(material)) {
+        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(2, stack),
                 GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED
@@ -43,8 +41,7 @@ public class ProcessingFrame implements IOreRecipeRegistrator {
         }
 
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)
-            && MaterialParts.stack(OrePrefixes.stick, material, 1) != null
-            && !ProcessingAssemblerGtpp.owns(material)) {
+            && MaterialParts.stack(OrePrefixes.stick, material, 1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialParts.stack(OrePrefixes.stick, material, 4))
                 .circuit(4)

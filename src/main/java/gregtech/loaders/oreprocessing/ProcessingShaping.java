@@ -373,8 +373,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
                         // If material tier < IV then add manual recipe.
                         if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-                            && MaterialParts.stack(OrePrefixes.ring, material, 1L) != null
-                            && !ProcessingShapedCraftingGtpp.owns(material)) {
+                            && MaterialParts.stack(OrePrefixes.ring, material, 1L) != null) {
                             GTModHandler.addCraftingRecipe(
                                 MaterialParts.stack(OrePrefixes.ring, material, 1L),
                                 GTModHandler.RecipeBits.BITS_STD,
@@ -463,8 +462,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 }
 
                 // If tier < IV then add ability to turn ingots into gears via alloy smelter.
-                if (tTrueVoltage < TierEU.IV
-                    && !(prefix == OrePrefixes.ingot && ProcessingAlloySmelterGtpp.owns(material))) {
+                if (tTrueVoltage < TierEU.IV) {
                     if (MaterialParts.stack(OrePrefixes.gearGt, MaterialUtils.smeltInto(material), 1L) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(8, stack), ItemList.Shape_Mold_Gear.get(0L))

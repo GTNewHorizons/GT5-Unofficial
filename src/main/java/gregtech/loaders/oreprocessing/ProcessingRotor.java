@@ -39,8 +39,7 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
             ItemStack tRing = MaterialParts.stack(OrePrefixes.ring, material, 1L);
             if (GTUtility.isStackValid(tPlate) && GTUtility.isStackValid(tRing)) {
 
-                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-                    && !ProcessingShapedCraftingGtpp.owns(material)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.rotor, material, 1L),
@@ -51,16 +50,14 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
                             'R', MaterialParts.craftIngredient(OrePrefixes.ring, material), 'S',
                             MaterialParts.craftIngredient(OrePrefixes.screw, material) });
                 }
-                if (!ProcessingAssemblerGtpp.owns(material)) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(tPlate.copy(), tRing.copy())
-                        .circuit(4)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.rotor, material, 1L))
-                        .fluidInputs(SubstituteFluidStack.soldering(1 * NUGGETS))
-                        .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
-                        .eut(calculateRecipeEU(material, 24))
-                        .addTo(assemblerRecipes);
-                }
+                GTValues.RA.stdBuilder()
+                    .itemInputs(tPlate.copy(), tRing.copy())
+                    .circuit(4)
+                    .itemOutputs(MaterialParts.stack(OrePrefixes.rotor, material, 1L))
+                    .fluidInputs(SubstituteFluidStack.soldering(1 * NUGGETS))
+                    .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 24))
+                    .addTo(assemblerRecipes);
             }
 
             if (MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null) {

@@ -62,8 +62,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             new Object[] { "SPS", "PfP", "SPS", 'P', OrePrefixes.stoneSmooth, 'S',
                                 new ItemStack(Blocks.stone_button, 1, 32767) });
                         default -> {
-                            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-                                && !ProcessingShapedCraftingGtpp.owns(material)) {
+                            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
                                     MaterialParts.stack(OrePrefixes.gearGt, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
