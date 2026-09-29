@@ -24,10 +24,10 @@ import gregtech.api.util.GTUtility;
 /// Generates the Mixer recipe (composition -> dust) for MaterialLib materials -- the canonical reader of
 /// [GTMaterialProperties#HAS_MIXER_RECIPE].
 ///
-/// Each carrier's [GTMaterialProperties#COMPOSITION] entries resolve to a dust input per entry
-/// ([MaterialUtils#compositionDust]), except a single gas-only entry (e.g. Hydrogen, Oxygen), which resolves
-/// to a fluid input ([MaterialUtils#compositionGas]). [#CARRIERS] never declares more than one such entry, so
-/// this carries no cell-item byproduct accounting. [GTMaterialProperties#MIX_CIRCUIT] adds an
+/// Each carrier's [GTMaterialProperties#COMPOSITION], reduced by the greatest common divisor of its amounts, mixes
+/// into the smallest whole batch. Each entry resolves to a dust input ([MaterialUtils#compositionDust]), except a
+/// single gas-only entry (e.g. Hydrogen, Oxygen), which resolves to a fluid input ([MaterialUtils#compositionGas]).
+/// [#CARRIERS] never declares more than one such entry, so this carries no cell-item byproduct accounting. [GTMaterialProperties#MIX_CIRCUIT] adds an
 /// integrated-circuit input when set to 1 or higher. Duration and EU scale off the carrier's own
 /// [MaterialAtomics#mass] and [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], divided/multiplied by its
 /// composition's entry count.
@@ -39,7 +39,15 @@ public final class LoaderMixerRecipes {
         Materials.PlutoniumOxideUraniumMixture, Materials.Zircaloy4, Materials.Zircaloy2, Materials.Incoloy903,
         Materials.AdamantiumAlloy, Materials.MARM200Steel, Materials.ArtheriumSn, Materials.TanmolyiumBetaC,
         Materials.Dalisenite, Materials.Hikarium, Materials.Tairitsu, Materials.PreciousMetalsAlloy,
-        Materials.EnrichedNaquadahAlloy, Materials.Permalloy };
+        Materials.EnrichedNaquadahAlloy, Materials.Permalloy, Materials.Arcanite, Materials.BabbitAlloy,
+        Materials.BlackMetal, Materials.BloodSteel, Materials.Botmium, Materials.EglinSteel,
+        Materials.EglinSteelBaseCompound, Materials.EnergyCrystal, Materials.Incoloy020, Materials.IncoloyDS,
+        Materials.IncoloyMA956, Materials.Inconel690, Materials.Inconel792, Materials.NiobiumCarbide,
+        Materials.Nitinol60, Materials.Potin, Materials.SiliconCarbide, Materials.Staballoy, Materials.Stellite,
+        Materials.Talonite, Materials.Tantalloy60, Materials.Tantalloy61, Materials.TantalumCarbide,
+        Materials.Titansteel, Materials.TriniumNaquadahAlloy, Materials.TriniumNaquadahCarbonite,
+        Materials.TriniumTitaniumAlloy, Materials.Tumbaga, Materials.TungstenTitaniumCarbide, Materials.WoodsGlass,
+        Materials.ZirconiumCarbide };
 
     private LoaderMixerRecipes() {}
 
@@ -66,13 +74,16 @@ public final class LoaderMixerRecipes {
             GT_FML_LOGGER.error("LoaderMixerRecipes: {} has no composition to mix from", material.getName());
             return;
         }
+        long divisor = 0;
+        for (MaterialRefStack entry : composition) divisor = gcd(divisor, entry.amount());
         long totalAmount = 0;
-        for (MaterialRefStack entry : composition) totalAmount += entry.amount();
+        for (MaterialRefStack entry : composition) totalAmount += entry.amount() / divisor;
         ItemStack output = MaterialLibAPI.getStack(material, Shapes.dust, (int) totalAmount);
 
         List<ItemStack> itemInputs = new ArrayList<>();
         FluidStack fluidInput = null;
-        for (MaterialRefStack entry : composition) {
+        for (MaterialRefStack original : composition) {
+            MaterialRefStack entry = new MaterialRefStack(original.material(), original.amount() / divisor);
             ItemStack dustInput = MaterialUtils.compositionDust(entry);
             if (dustInput != null) {
                 itemInputs.add(dustInput);
@@ -102,5 +113,9 @@ public final class LoaderMixerRecipes {
             .duration((int) Math.max(1L, Math.abs(MaterialAtomics.mass(material) / componentCount)))
             .eut(GTUtility.calculateRecipeEU(material, Math.min(4, componentCount) * 5))
             .addTo(mixerRecipes);
+    }
+
+    private static long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
     }
 }

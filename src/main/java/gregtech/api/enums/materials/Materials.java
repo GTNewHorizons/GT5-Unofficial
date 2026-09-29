@@ -27001,6 +27001,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.ArceusAlloy2B = MaterialLibAPI.newMaterial("gregtech", "ArceusAlloy2B", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFCDC517)
@@ -27093,6 +27094,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.BariteRa = MaterialLibAPI.newMaterial("gregtech", "BariteRa", TextureSet.of("gregtech", "FLINT"))
             .setTint(0xFF9BB49B)
@@ -27165,6 +27167,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 13)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.BlackTitanium = MaterialLibAPI.newMaterial("gregtech", "BlackTitanium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF97AB91)
@@ -27227,6 +27231,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Botmium = MaterialLibAPI.newMaterial("gregtech", "Botmium", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFF50A050)
@@ -27255,6 +27261,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Brine = MaterialLibAPI.newMaterial("gregtech", "Brine", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF3F58D7)
@@ -27672,6 +27679,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.EglinSteelBaseCompound = MaterialLibAPI.newMaterial("gregtech", "EglinSteelBaseCompound", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFBFC4B5)
@@ -27686,6 +27694,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Fe₄(FeAlCr)(Fe₂Ni)₅")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 20)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.EnergyCrystal = MaterialLibAPI.newMaterial("gregtech", "EnergyCrystal", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFFE4FF00)
@@ -27716,6 +27726,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.EthylCyanoacetate = MaterialLibAPI.newMaterial("gregtech", "EthylCyanoacetate", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF004BA0)
@@ -28324,6 +28335,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.IncoloyDS = MaterialLibAPI.newMaterial("gregtech", "IncoloyDS", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB7B1E8)
@@ -28354,6 +28366,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.IncoloyMA956 = MaterialLibAPI.newMaterial("gregtech", "IncoloyMA956", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC8DCDE)
@@ -28384,6 +28397,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Inconel625 = MaterialLibAPI.newMaterial("gregtech", "Inconel625", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF80C880)
@@ -28444,6 +28458,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Inconel792 = MaterialLibAPI.newMaterial("gregtech", "Inconel792", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF6CF076)
@@ -28474,6 +28489,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Indalloy140 = MaterialLibAPI.newMaterial("gregtech", "Indalloy140", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF726A8D)
@@ -29041,6 +29057,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Nitinol60 = MaterialLibAPI.newMaterial("gregtech", "Nitinol60", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD2B4F5)
@@ -29069,6 +29087,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Octiron = MaterialLibAPI.newMaterial("gregtech", "Octiron", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF7C7880)
@@ -29270,6 +29290,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 13)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Protactinium = MaterialLibAPI.newMaterial("gregtech", "Protactinium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFBE96AA)
@@ -29681,6 +29703,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.SodiumChloride = MaterialLibAPI.newMaterial("gregtech", "SodiumChloride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF7F7FCA)
@@ -29793,6 +29817,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.StableMoltenSaltBase = MaterialLibAPI.newMaterial("gregtech", "StableMoltenSaltBase", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC1DACB)
@@ -29836,6 +29862,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.StrontiumHydroxide = MaterialLibAPI.newMaterial("gregtech", "StrontiumHydroxide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF4C67BC)
@@ -29901,6 +29928,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Tantalloy60 = MaterialLibAPI.newMaterial("gregtech", "Tantalloy60", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD5E7ED)
@@ -29931,6 +29959,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Tantalloy61 = MaterialLibAPI.newMaterial("gregtech", "Tantalloy61", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC1D3D9)
@@ -29961,6 +29991,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 13)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.TantalumCarbide = MaterialLibAPI.newMaterial("gregtech", "TantalumCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF8B8878)
@@ -29991,6 +30023,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Technetium = MaterialLibAPI.newMaterial("gregtech", "Technetium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFDCDCDC)
@@ -30158,6 +30192,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.TrichloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "TrichloroaceticAcid", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF78641E)
@@ -30204,6 +30239,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.TriniumNaquadahCarbonite = MaterialLibAPI.newMaterial("gregtech", "TriniumNaquadahCarbonite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF5A5A5D)
@@ -30234,6 +30271,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.TriniumTitaniumAlloy = MaterialLibAPI.newMaterial("gregtech", "TriniumTitaniumAlloy", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD2B4E1)
@@ -30264,6 +30303,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Tumbaga = MaterialLibAPI.newMaterial("gregtech", "Tumbaga", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFB20F)
@@ -30294,6 +30335,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.TungstenTitaniumCarbide = MaterialLibAPI.newMaterial("gregtech", "TungstenTitaniumCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF8750AB)
@@ -30324,6 +30367,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Uranium232 = MaterialLibAPI.newMaterial("gregtech", "Uranium232", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF58DC67)
@@ -30486,6 +30531,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Si4Ba3Na2Ni")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.Xenotime = MaterialLibAPI.newMaterial("gregtech", "Xenotime", TextureSet.of("gregtech", "OPAL"))
             .setTint(0xFF9CBD8B)
@@ -30630,6 +30676,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
+            .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .build();
         Materials.ZirconiumTetrafluoride = MaterialLibAPI.newMaterial("gregtech", "ZirconiumTetrafluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFFCE6)

@@ -46,7 +46,6 @@ public final class LoaderShapeConsumers {
         ConsumerPipe.register();
         ConsumerFrame.register();
         ConsumerSheetmetal.register();
-        ConsumerMixerGtpp.register();
         ConsumerShaping.register();
         ConsumerTransforming.register();
         ConsumerRecycling.register();
