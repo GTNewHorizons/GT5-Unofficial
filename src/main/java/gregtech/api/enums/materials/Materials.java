@@ -18122,6 +18122,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "Bi₂O₂(CO₂)₂")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Bismuthinite = MaterialLibAPI.newMaterial("gregtech", "Bismuthinite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFC0C0C0)
@@ -18186,6 +18187,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1938)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.CubicZirconia = MaterialLibAPI.newMaterial("gregtech", "CubicZirconia", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFFFFFFFF)
@@ -18217,6 +18219,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "ZrO₂")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.FluorBuergerite = MaterialLibAPI.newMaterial("gregtech", "Fluor-Buergerite", TextureSet.of("gregtech", "RUBY"))
             .setTint(0xFF202020)
@@ -18246,6 +18249,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "NaFe₃Al₆(Si₆O₁₈)(BO₃)₃O₃F")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.YttriumOxide = MaterialLibAPI.newMaterial("gregtech", "YttriumOxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
@@ -18296,6 +18300,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "NaCr₃(Al₄Mg₂)(Si₆O₁₈)(BO₃)₃(OH)₃O")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.VanadioOxyDravite = MaterialLibAPI.newMaterial("gregtech", "Vanadio-Oxy-Dravite", TextureSet.of("gregtech", "RUBY"))
             .setTint(0xFF60A0A0)
@@ -18325,6 +18330,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "NaV₃(Al₄Mg₂)(Si₆O₁₈)(BO₃)₃(OH)₃O")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Olenite = MaterialLibAPI.newMaterial("gregtech", "Olenite", TextureSet.of("gregtech", "RUBY"))
             .setTint(0xFFD2D2D2)
@@ -18354,6 +18360,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "NaAl₃Al₆(Si₆O₁₈)(BO₃)₃O₃OH")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Arsenopyrite = MaterialLibAPI.newMaterial("gregtech", "Arsenopyrite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB0B0B0)
@@ -18574,6 +18581,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "ZrSiO₄")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Fayalite = MaterialLibAPI.newMaterial("gregtech", "Fayalite", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFF323232)
@@ -18603,6 +18611,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "Fe₂SiO₄")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Forsterite = MaterialLibAPI.newMaterial("gregtech", "Forsterite", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFFFFFFFF)
@@ -18632,6 +18641,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "Mg₂SiO₄")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Hedenbergite = MaterialLibAPI.newMaterial("gregtech", "Hedenbergite", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFF649664)
@@ -18661,6 +18671,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "CaFeSi₂O₆")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.RedDescloizite = MaterialLibAPI.newMaterial("gregtech", "RedDescloizite", TextureSet.of("gregtech", "QUARTZ"))
             .setTint(0xFFBF180F)
@@ -18791,6 +18802,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 1)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.BismuthTelluride = MaterialLibAPI.newMaterial("gregtech", "BismuthTelluride", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF204820)
@@ -18886,6 +18898,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "ELECTROMAGNETIC_SEPERATION_IRON"))
             .setProperty(GTMaterialProperties.FORMULA, "Si₅O₁Fe")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.MagnetoResonatic = MaterialLibAPI.newMaterial("gregtech", "MagnetoResonatic", TextureSet.of("gregtech", "MAGNETIC"))
             .setTint(0xFFDD77DD)
@@ -18917,6 +18930,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "NoBlast"))
             .setProperty(GTMaterialProperties.FORMULA, "(Si₅O₁Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅C")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Xenon = MaterialLibAPI.newMaterial("gregtech", "Xenon", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF14397F)
@@ -19018,6 +19032,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 4)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         // spotless:on
     }
@@ -19130,6 +19145,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Are you serious?")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.PlatinumConcentrate = MaterialLibAPI.newMaterial("gregtech", "PlatinumConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFC8)
@@ -19555,6 +19571,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.SodiumRuthenate = MaterialLibAPI.newMaterial("gregtech", "SodiumRuthenate", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF3A40CB)
@@ -19857,6 +19874,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.CrudeRhodiumMetal = MaterialLibAPI.newMaterial("gregtech", "CrudeRhodiumMetal", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF666666)
@@ -20075,6 +20093,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Tiberium = MaterialLibAPI.newMaterial("gregtech", "Tiberium", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFF22EE22)
@@ -20117,6 +20136,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Ruridit = MaterialLibAPI.newMaterial("gregtech", "Ruridit", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFA4A4A4)
@@ -20154,6 +20174,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Fluorspar = MaterialLibAPI.newMaterial("gregtech", "Fluorspar", TextureSet.of("gregtech", "GEM_VERTICAL"))
             .setTint(0xFFB945FB)
@@ -20184,6 +20205,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE"))
             .setProperty(GTMaterialProperties.FORMULA, "CaF₂")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.HighDurabilityCompoundSteel = MaterialLibAPI.newMaterial("gregtech", "HighDurabilityCompoundSteel", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF334433)
@@ -20220,6 +20242,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Atheneite = MaterialLibAPI.newMaterial("gregtech", "Atheneite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFAFAFAF)
@@ -20321,6 +20344,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.RawAdemicSteel = MaterialLibAPI.newMaterial("gregtech", "RawAdemicSteel", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFFEDEDED)
@@ -20571,6 +20595,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ta₄HfC₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.GraphiteUraniumMixture = MaterialLibAPI.newMaterial("gregtech", "Graphite-UraniumMixture", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF3A773D)
@@ -21064,6 +21089,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Or")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.AtomicSeparationCatalyst = MaterialLibAPI.newMaterial("gregtech", "AtomicSeparationCatalyst", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE85E0C)
@@ -21098,6 +21124,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.ExtremelyUnstableNaquadah = MaterialLibAPI.newMaterial("gregtech", "ExtremelyUnstableNaquadah", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF062605)
@@ -21137,6 +21164,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         // spotless:on
     }
@@ -21801,6 +21829,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "ZnTh")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.NaquadahOxideMixture = MaterialLibAPI.newMaterial("gregtech", "NaquadahOxideMixture", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF4C4C4C)
@@ -22447,6 +22476,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Zircaloy2 = MaterialLibAPI.newMaterial("gregtech", "Zircaloy-2", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFA48F8B)
@@ -22485,6 +22515,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Incoloy903 = MaterialLibAPI.newMaterial("gregtech", "Incoloy-903", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFA48F8B)
@@ -22523,6 +22554,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.AdamantiumAlloy = MaterialLibAPI.newMaterial("gregtech", "AdamantiumAlloy", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA0A0A0)
@@ -22560,6 +22592,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.EthanolGasoline = MaterialLibAPI.newMaterial("gregtech", "EthanolGasoline", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE4C661)
@@ -22788,6 +22821,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.MARCeM200Steel = MaterialLibAPI.newMaterial("gregtech", "MAR-Ce-M200Steel", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF383030)
@@ -22821,6 +22855,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.LithiumChloride = MaterialLibAPI.newMaterial("gregtech", "LithiumChloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFB7E2CE)
@@ -22857,6 +22892,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lithium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "LiCl")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Signalium = MaterialLibAPI.newMaterial("gregtech", "Signalium", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD44000)
@@ -22890,6 +22926,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Lumiinessence = MaterialLibAPI.newMaterial("gregtech", "Lumiinessence", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFE8F224)
@@ -22941,6 +22978,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.ArtheriumSn = MaterialLibAPI.newMaterial("gregtech", "Artherium-Sn", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF6036F7)
@@ -22977,6 +23015,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.TanmolyiumBetaC = MaterialLibAPI.newMaterial("gregtech", "TanmolyiumBeta-C", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFC72FCC)
@@ -23013,6 +23052,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Dalisenite = MaterialLibAPI.newMaterial("gregtech", "Dalisenite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFB0B812)
@@ -23049,6 +23089,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Hikarium = MaterialLibAPI.newMaterial("gregtech", "Hikarium", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFD6FB)
@@ -23085,6 +23126,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Tairitsu = MaterialLibAPI.newMaterial("gregtech", "Tairitsu", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF363636)
@@ -23121,6 +23163,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.AntimonyPentafluorideSolution = MaterialLibAPI.newMaterial("gregtech", "AntimonyPentafluorideSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF16D5E2)
@@ -23198,6 +23241,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.EnrichedNaquadahAlloy = MaterialLibAPI.newMaterial("gregtech", "EnrichedNaquadahAlloy", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF160740)
@@ -23234,6 +23278,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.MetastableOganesson = MaterialLibAPI.newMaterial("gregtech", "MetastableOganesson", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF14397F)
@@ -23267,6 +23312,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Shirabon = MaterialLibAPI.newMaterial("gregtech", "Shirabon", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE0156D)
@@ -23302,6 +23348,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.InertNaquadah = MaterialLibAPI.newMaterial("gregtech", "InertNaquadah", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF3B3B3B)
@@ -26391,6 +26438,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ni₄FeMo")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Mumetal = MaterialLibAPI.newMaterial("gregtech", "Mu-metal", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFD2E6E1)
@@ -26425,6 +26473,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.Thorium234 = MaterialLibAPI.newMaterial("gregtech", "Thorium234", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF002800)
@@ -26597,6 +26646,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "LaB₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
         Materials.LanthanumOxide = MaterialLibAPI.newMaterial("gregtech", "LanthanumOxide", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF69D1B4)
