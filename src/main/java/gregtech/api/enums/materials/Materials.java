@@ -15558,6 +15558,8 @@ public class Materials {
             .addToFamily(Families.ores)
             .generateShape(Shapes.gem)
             .addShapeOverride(Shapes.gem, Mods.BiomesOPlenty.ID, "gems", 5)
+            .generateShape(BlockShapes.block)
+            .addShapeOverride(BlockShapes.block, Mods.BiomesOPlenty.ID, "gemOre", 11)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Malachite")
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 1)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 871)
@@ -15703,6 +15705,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL, 2)
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("MOTUS", 2)))
             .setProperty(GTMaterialProperties.FORMULA, "C₅H₈")
+            .generateShape(BlockShapes.block)
+            .addShapeOverride(BlockShapes.block, Mods.TinkerConstruct.ID, "GlueBlock", 0)
             .generateShape(TEBlockShapes.frameGt)
             .build();
         Materials.Wheat = MaterialLibAPI.newMaterial("gregtech", "Wheat", TextureSet.of("gregtech", "POWDER"))
