@@ -9686,7 +9686,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER, 1920L)
             .setProperty(GTMaterialProperties.MELTING_POINT, 4823)
             .setProperty(GTMaterialProperties.BOILING_POINT, 7103)
-            .setProperty(GTMaterialProperties.BLAST_REQUIRED, true)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.force")
             .setProperty(GTMaterialProperties.FORMULA, "Fc⚙")
