@@ -2,6 +2,8 @@ package gregtech.loaders.materialrecipes;
 
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -15,7 +17,8 @@ import gregtech.api.util.GTModHandler;
 /// Crafting-grid dust recipes for the materials carried over from bartworks' Werkstoff: the dust / small dust /
 /// tiny dust size conversions for materials below IV processing tier, and hammering crushed, purified and
 /// centrifuged ore into dust for materials with an ore. `GTProxy`'s tool-usage loop generates the equivalents for
-/// GregTech's own materials only.
+/// GregTech's own materials only. Also smelts tiny dust into a nugget for materials that smelt without a blast
+/// furnace.
 public final class LoaderWerkstoffDustCrafting {
 
     private static final long BITS = GTModHandler.RecipeBits.BUFFERED
@@ -29,7 +32,15 @@ public final class LoaderWerkstoffDustCrafting {
             if (prefixes == null || !prefixes.contains("dust") || MaterialUtils.isGregTechMaterial(material)) continue;
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) addSizeConversions(material);
             if (prefixes.contains("ore")) addHammering(material);
+            if (!MaterialUtils.blastFurnaceRequired(material)) addNuggetSmelting(material);
         }
+    }
+
+    private static void addNuggetSmelting(Material material) {
+        if (MaterialParts.stack(OrePrefixes.ingot, material, 1) == null) return;
+        ItemStack tinyDust = MaterialParts.stack(OrePrefixes.dustTiny, material, 1);
+        ItemStack nugget = MaterialParts.stack(OrePrefixes.nugget, material, 1);
+        if (tinyDust != null && nugget != null) GTModHandler.addSmeltingRecipe(tinyDust, nugget);
     }
 
     private static void addSizeConversions(Material material) {
