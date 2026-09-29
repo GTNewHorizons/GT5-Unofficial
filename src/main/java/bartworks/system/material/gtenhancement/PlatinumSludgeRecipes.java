@@ -38,13 +38,17 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTUtility;
 
 public final class PlatinumSludgeRecipes {
+
+    /// The copper and nickel sulfide ores whose purified crushed ore dissolves in aqua regia into platinum
+    /// concentrate.
+    private static final Material[] CONCENTRATE_FEEDS = { Materials.Cooperite, Materials.Tetrahedrite,
+        Materials.Chalcopyrite, Materials.Pentlandite, Materials.Roquesite, Materials.Bornite, Materials.Wittichenite,
+        Materials.Djurleite };
 
     private PlatinumSludgeRecipes() {}
 
@@ -208,46 +212,7 @@ public final class PlatinumSludgeRecipes {
     }
 
     private static void registerConcentrateFeedRecipes() {
-        // base solution
-        for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
-            if (ml.hasShape(Shapes.crushedPurified) && materialsContains(ml, Materials.Sulfur)
-                && (materialsContains(ml, Materials.Copper) || materialsContains(ml, Materials.Nickel))) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(ml, Shapes.crushedPurified, 1))
-                    .circuit(1)
-                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AquaRegia, FluidShapes.fluidLiquid, 300))
-                    .fluidOutputs(
-                        MaterialLibAPI.getFluidStack(Materials.PlatinumConcentrate, FluidShapes.fluidLiquid, 300))
-                    .duration(12 * SECONDS + 10 * TICKS)
-                    .eut(TierEU.RECIPE_LV)
-                    .addTo(UniversalChemical);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(ml, Shapes.crushedPurified, 9))
-                    .circuit(9)
-                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AquaRegia, FluidShapes.fluidLiquid, 2_700))
-                    .fluidOutputs(
-                        MaterialLibAPI.getFluidStack(Materials.PlatinumConcentrate, FluidShapes.fluidLiquid, 2_700))
-                    .duration(11 * SECONDS + 5 * TICKS)
-                    .eut(TierEU.RECIPE_LV)
-                    .addTo(UniversalChemical);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        MaterialLibAPI.getStack(ml, Shapes.crushedPurified, 9),
-                        MaterialLibAPI.getStack(Materials.PlatinumMetallicPowder, Shapes.dust, 9))
-                    .itemOutputs(MaterialLibAPI.getStack(Materials.PlatinumResidue, Shapes.dust, 1))
-                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AquaRegia, FluidShapes.fluidLiquid, 20_700))
-                    .fluidOutputs(
-                        MaterialLibAPI.getFluidStack(Materials.PlatinumConcentrate, FluidShapes.fluidLiquid, 20_700))
-                    .duration(1 * MINUTES + 52 * SECONDS + 10 * TICKS)
-                    .eut(TierEU.RECIPE_LV)
-                    .addTo(UniversalChemical);
-            }
-        }
-        registerConcentrateFeedRecipes(Materials.Cooperite);
-        registerConcentrateFeedRecipes(Materials.Tetrahedrite);
-        registerConcentrateFeedRecipes(Materials.Chalcopyrite);
-        registerConcentrateFeedRecipes(Materials.Pentlandite);
+        for (Material material : CONCENTRATE_FEEDS) registerConcentrateFeedRecipes(material);
     }
 
     private static void registerConcentrateFeedRecipes(Material material) {
@@ -748,11 +713,5 @@ public final class PlatinumSludgeRecipes {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
-    }
-
-    private static boolean materialsContains(Material one, Material other) {
-        if (one == null) return false;
-        for (MaterialStack stack : MaterialUtils.materialList(one)) if (stack.mMaterial == other) return true;
-        return false;
     }
 }
