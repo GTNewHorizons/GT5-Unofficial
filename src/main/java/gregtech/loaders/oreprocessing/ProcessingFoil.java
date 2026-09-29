@@ -10,6 +10,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialTextures;
@@ -28,7 +29,8 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        registerBenderRecipe(material);
+        // NewHorizonsCoreMod bends Fluorophlogopite plates on the same circuit into Mica Insulator Foil
+        if (material != Materials.Fluorophlogopite) registerBenderRecipe(material);
         registerCover(stack, material);
     }
 
