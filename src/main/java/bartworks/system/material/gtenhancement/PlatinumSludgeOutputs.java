@@ -112,6 +112,9 @@ public final class PlatinumSludgeOutputs {
             || material == Materials.TPVAlloy
             || material == Materials.Uraniumtriplatinid
             || material == Materials.Tetranaquadahdiindiumhexaplatiumosminid
-            || material == Materials.Longasssuperconductornameforuvwire;
+            || material == Materials.Longasssuperconductornameforuvwire
+            || material == Materials.PreciousMetalsAlloy
+            || material == Materials.RhodiumPlatedPalladium
+            || material == Materials.Ruridit;
     }
 }
