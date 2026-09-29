@@ -9,5 +9,4 @@
 - Supports {white:Crafting Input Buffer/Bus} and allows input separation
 {gray:{hr}}
 Right-click the controller with a {white:Screwdriver} to change mode
-{gray:{hr}}
 {light_purple:Performs 4/4 Perfect Overclock}

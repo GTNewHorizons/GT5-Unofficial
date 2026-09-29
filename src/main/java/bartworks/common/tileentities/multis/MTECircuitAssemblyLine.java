@@ -178,7 +178,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 ImmutableMap.<String, Object>builder()
                     .put("min_length", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
                     .build())
-            .addSeparator()
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
             .addController("First slice, 3rd layer")
             .addEnergyHatch("1", "Any layer 3 casing", 3)
