@@ -51,5 +51,6 @@ public final class LoaderShapeConsumers {
         ConsumerShaping.register();
         ConsumerTransforming.register();
         ConsumerRecycling.register();
+        ConsumerShapeRegistrators.register();
     }
 }

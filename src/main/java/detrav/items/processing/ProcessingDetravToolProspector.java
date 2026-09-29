@@ -30,7 +30,7 @@ import gregtech.api.util.GTModHandler;
 public class ProcessingDetravToolProspector implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingDetravToolProspector() {
-        OrePrefixes.toolHeadDrill.add(this);
+        OrePrefixes.toolHeadDrill.addShapeRegistrator(this);
     }
 
     @Override

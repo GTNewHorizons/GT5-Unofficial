@@ -24,9 +24,9 @@ import gregtech.common.ores.GTOreAdapter;
 /// single legacy `OrePrefixes`; the two ore shapes map onto one prefix per stone variant, through
 /// [#delegateOreVariants].
 ///
-/// Each `Processing*` class also runs through the oredict-event path (`gregtech.common.OreDictEventContainer`)
-/// for foreign mods' items of the same prefix. A prefix with no MaterialLib shape gets no consumer here and
-/// keeps serving foreign mods through that path alone.
+/// A `Processing*` class that also generates recipes for other mods' items attaches to its prefix through
+/// [OrePrefixes#add], which the ore-dictionary registration path dispatches. A prefix with no MaterialLib shape
+/// gets no consumer here and serves those items through that path alone.
 ///
 /// Dispatch is postInit, not init: several `Processing*` bodies transitively class-load
 /// [gregtech.api.util.GTRecipeConstants], whose static initializer reads material data that
