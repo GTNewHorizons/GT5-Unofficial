@@ -158,14 +158,24 @@ public class ProcessingPlasmaGtpp {
                 .addTo(GTRecipeConstants.Fuel);
         }
 
-        if (cell != null) {
+        FluidStack cooled = cell == null ? null : GTUtility.getFluidForFilledItem(cell, true);
+        FluidStack plasma = GTUtility.getFluidForFilledItem(plasmaCell, true);
+        if (cooled == null || plasma == null) return;
+        int cooldownDuration = (int) Math.max(MaterialUtils.mass(material) * 2L, 1L);
+        if (cooled.amount == plasma.amount) {
             GTValues.RA.stdBuilder()
                 .itemInputs(plasmaCell)
                 .itemOutputs(cell)
-                .duration((int) Math.max(MaterialUtils.mass(material) * 2L, 1L))
+                .duration(cooldownDuration)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(vacuumFreezerRecipes);
         }
+        GTValues.RA.stdBuilder()
+            .fluidInputs(new FluidStack(plasma, 1000))
+            .fluidOutputs(new FluidStack(cooled, 1000))
+            .duration(cooldownDuration)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(vacuumFreezerRecipes);
     }
 
     private static FluidStack materialPlasma(Material material, long amount) {
