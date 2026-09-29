@@ -9340,12 +9340,14 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "vacuum.hatch.input",
                 "Vacuum Conveyor Input",
                 9).getStackForm(1L));
+        API.setAliases(ItemList.Hatch_VacuumConveyor_Input.get(1L), "gt.alias.vci");
         ItemList.Hatch_VacuumConveyor_Output.set(
             new MTEHatchVacuumConveyorOutput(
                 HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
                 "vacuum.hatch.output",
                 "Vacuum Conveyor Output",
                 9).getStackForm(1L));
+        API.setAliases(ItemList.Hatch_VacuumConveyor_Output.get(1L), "gt.alias.vco");
         ItemList.Hatch_Splitter_Level.set(
             new MTEHatchSplitterRedstone(
                 HATCH_SPLITTER_LEVEL.ID,
