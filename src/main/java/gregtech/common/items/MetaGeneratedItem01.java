@@ -3944,7 +3944,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 32L)));
 
         removeRecipes();
-        setBurnValues();
         registerCovers();
         registerBehaviors();
         setAllFluidContainerStats();
@@ -4158,10 +4157,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         return super.getContainerItem(aStack);
     }
 
-    private void setBurnValues() {
-        setBurnValue(17000 + MaterialUtils.oldSubId(Materials.Wood), 1600);
-    }
-
     private void setAllFluidContainerStats() {
         setFluidContainerStats(32000 + Large_Fluid_Cell_Steel.ID, 8_000L, 64L);
         setFluidContainerStats(32000 + Large_Fluid_Cell_TungstenSteel.ID, 512_000L, 32L);
@@ -4201,7 +4196,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 .build());
 
         CoverRegistry.registerDecorativeCover(
-            new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials.Wood)),
+            MaterialLibAPI.getStack(Materials.Wood, Shapes.plate, 1),
             TextureFactory.of(COVER_WOOD_PLATE));
 
         CoverRegistry.registerCover(
@@ -4639,7 +4634,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void craftingShapedRecipes() {
-        ItemStack tStack = new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials.Wood));
+        ItemStack tStack = MaterialLibAPI.getStack(Materials.Wood, Shapes.plate, 1);
         tStack.setStackDisplayName(StatCollector.translateToLocal("gt.item.sengir_planks.name"));
         GTUtility.ItemNBT.addEnchantment(tStack, Enchantment.smite, 10);
         GTModHandler.addCraftingRecipe(
