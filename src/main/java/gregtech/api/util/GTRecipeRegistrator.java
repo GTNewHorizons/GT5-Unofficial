@@ -305,8 +305,7 @@ public class GTRecipeRegistrator {
         if (!data.hasValidMaterialData()) return;
 
         Material primary = data.mMaterial.mMaterial;
-        if ((MaterialUtils.isGregTechMaterial(primary) || !primary.getShapes()
-            .isEmpty()) && MaterialUtils.hasFlag(primary, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
+        if (MaterialUtils.hasFlag(primary, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
 
         boolean isRecycle = true;
 
@@ -341,12 +340,6 @@ public class GTRecipeRegistrator {
                 continue;
             }
             if (MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)) {
-
-                tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
-                continue;
-            }
-            if (!MaterialUtils.isGregTechMaterial(tMaterial.mMaterial)
-                && MaterialParts.stack(OrePrefixes.ingot, tMaterial.mMaterial, 1) != null) {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
@@ -465,8 +458,7 @@ public class GTRecipeRegistrator {
         if (!data.hasValidMaterialData()) return;
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks())
-            if (MaterialUtils.isGregTechMaterial(tMaterial.mMaterial))
-                tMaterial.mMaterial = MaterialUtils.macerateInto(tMaterial.mMaterial);
+            tMaterial.mMaterial = MaterialUtils.macerateInto(tMaterial.mMaterial);
 
         data = new ItemData(data);
 
@@ -505,8 +497,7 @@ public class GTRecipeRegistrator {
         }
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (MaterialUtils.isGregTechMaterial(tMaterial.mMaterial)
-                && MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
+            if (MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
                 && !MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)
                 && tMaterial.mMaterial != Materials.Glass
                 && MaterialParts.dustOf(tMaterial) != null) {
