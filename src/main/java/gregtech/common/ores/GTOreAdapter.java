@@ -314,12 +314,21 @@ public final class GTOreAdapter implements IOreAdapter {
         return mlMat.hasShape(info.isSmall ? OreShapes.oreSmall : OreShapes.ore);
     }
 
-    /// The MaterialLib [Material] backing an [OreInfo], or null when `material` is not one of GregTech's own
-    /// (see [MaterialUtils#isGregTechMaterial]). Broader than [#isGtFamily]: a material carrying both
+    /// The MaterialLib [Material] backing an [OreInfo], or null when `material` is not a GregTech ore material
+    /// (see [#isGtOreMaterial]). Broader than [#isGtFamily]: a material carrying both
     /// [GTMaterialProperties#WERKSTOFF_IDS] and a live legacy id (such as Salt) passes here, while
     /// [#getOreInfo] defers it to [BWOreAdapter].
     private static @Nullable Material gtFamilyOf(@Nullable Material material) {
-        return MaterialUtils.isGregTechMaterial(material) ? material : null;
+        return isGtOreMaterial(material) ? material : null;
+    }
+
+    /// Whether a material places GregTech's stone-variant ore rather than the werkstoff or gtPlusPlus ore family's:
+    /// either it has a live legacy id, or it carries neither family's origin data.
+    public static boolean isGtOreMaterial(@Nullable Material material) {
+        if (material == null || !"gregtech".equals(material.getModId())) return false;
+        if (MaterialUtils.oldSubId(material) >= 0) return true;
+        return material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null
+            && material.getProperty(GTMaterialProperties.GTPP_STATE) == null;
     }
 
     /// Whether a MaterialLib material belongs to GT's own ore family: it carries no

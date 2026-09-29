@@ -554,7 +554,7 @@ public class EyeOfHarmonyRecipe {
         if (material == null) return;
         if (GTOreAdapter.isGtppFamily(material)) {
             processHelperGTpp(outputMap, material, mainMultiplier, probability);
-        } else if (MaterialUtils.isGregTechMaterial(material)
+        } else if (GTOreAdapter.isGtOreMaterial(material)
             || material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
                 processHelper(outputMap, material, mainMultiplier, probability);
             }

@@ -33,7 +33,6 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFluidNames;
-import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
@@ -51,20 +50,6 @@ import gregtech.common.config.Client;
 public class MaterialUtils {
 
     private MaterialUtils() {}
-
-    /// Whether `material` is one of GregTech's own materials, as opposed to another mod's or one
-    /// [GTMaterialProperties#RECONSTRUCTED] from bartworks' Werkstoff or gtPlusPlus. The distinction keeps behavior
-    /// those systems implemented separately, such as their own ore, recycling and radiation handling.
-    public static boolean isGregTechMaterial(@Nullable Material material) {
-        return material != null && "gregtech".equals(material.getModId())
-            && !material.getProperty(GTMaterialProperties.RECONSTRUCTED);
-    }
-
-    /// GregTech's own material (see [#isGregTechMaterial]) whose [#internalName] is `name`, or null.
-    public static @Nullable Material gregTechMaterial(@Nullable String name) {
-        Material material = byLegacyName(name);
-        return material != Materials.NULL && isGregTechMaterial(material) ? material : null;
-    }
 
     /// The MaterialLib material whose [#internalName] is `name`, or null on a miss.
     public static @Nullable Material byLegacyName(@Nullable String name) {

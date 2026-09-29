@@ -131,9 +131,6 @@ public class GTMaterialProperties {
     /// `Material.vRadiationLevel` with bartworks' equivalent (which carried no scalar level of its own -- see
     /// [#IS_RADIOACTIVE]). Elided when `0`.
     public static final Property<Integer> RADIATION_LEVEL = Property.of("gregtech", "radiationLevel");
-    /// Set on the materials carried over from bartworks' Werkstoff and gtPlusPlus rather than declared as
-    /// GregTech's own; see [MaterialUtils#isGregTechMaterial].
-    public static final Property<Boolean> RECONSTRUCTED = Property.of("gregtech", "reconstructed", false);
     public static final Property<List<String>> REMOVED_PREFIXES = Property.of("gregtech", "removedPrefixes");
     public static final Property<MaterialRef> SMELT_INTO = Property.of("gregtech", "smeltInto");
     public static final Property<Integer> SMELTING_MULTIPLIER = Property.of("gregtech", "smeltingMultiplier", 1);

@@ -34,7 +34,7 @@ public class VoidMinerLoader {
         var weights = parseWeights(Gregtech.voidMiners.gregtechWeightsDD);
 
         for (Material mat : MaterialLibAPI.getMaterials()) {
-            if (!MaterialUtils.isGregTechMaterial(mat)) continue;
+            if (!GTOreAdapter.isGtOreMaterial(mat)) continue;
 
             info.material = mat;
 

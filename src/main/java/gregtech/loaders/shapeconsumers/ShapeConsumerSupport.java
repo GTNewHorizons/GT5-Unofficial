@@ -63,8 +63,8 @@ final class ShapeConsumerSupport {
         });
     }
 
-    /// [#delegate(Shape, OrePrefixes, Supplier)] for the variant-carrying ore shape: one of GregTech's own materials
-    /// ([MaterialUtils#isGregTechMaterial]) dispatches once per [StoneType] it generates a block on, under that
+    /// [#delegate(Shape, OrePrefixes, Supplier)] for the variant-carrying ore shape: a GregTech ore material
+    /// ([GTOreAdapter#isGtOreMaterial]) dispatches once per [StoneType] it generates a block on, under that
     /// stone's own [StoneType#getPrefix] and that stone's block. gtPlusPlus' and
     /// bartworks' materials, which own no stone variants, dispatch once under `fallbackPrefix` with the
     /// shape's canonical stack.
@@ -78,7 +78,7 @@ final class ShapeConsumerSupport {
         Supplier<IOreRecipeRegistrator> registrator) {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
-            if (!MaterialUtils.isGregTechMaterial(material)) {
+            if (!GTOreAdapter.isGtOreMaterial(material)) {
                 dispatch(registrator, fallbackPrefix, material, MaterialLibAPI.getStack(material, s, 1));
                 return;
             }
