@@ -62,13 +62,6 @@ public class GTLanguageManager {
      */
     private static boolean hasUnsavedEntry = false;
 
-    // TODO: convert to enum
-    public static String FACE_ANY = "gt.lang.face.any", FACE_BOTTOM = "gt.lang.face.bottom",
-        FACE_TOP = "gt.lang.face.top", FACE_LEFT = "gt.lang.face.left", FACE_FRONT = "gt.lang.face.front",
-        FACE_RIGHT = "gt.lang.face.right", FACE_BACK = "gt.lang.face.back", FACE_NONE = "gt.lang.face.none";
-
-    public static String[] FACES = { FACE_BOTTOM, FACE_TOP, FACE_LEFT, FACE_FRONT, FACE_RIGHT, FACE_BACK, FACE_NONE };
-
     /**
      * Map referencing private field of StringTranslate, used by StatCollector. Used to inject lang entries there.
      */
@@ -364,15 +357,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
         // 756 moved to lang files
         addStringLocalization("Interaction_DESCRIPTION_Index_ANY", "Any");
-
-        addStringLocalization(FACE_ANY, "Any Side");
-        addStringLocalization(FACE_BOTTOM, "Bottom");
-        addStringLocalization(FACE_TOP, "Top");
-        addStringLocalization(FACE_LEFT, "Left");
-        addStringLocalization(FACE_FRONT, "Front");
-        addStringLocalization(FACE_RIGHT, "Right");
-        addStringLocalization(FACE_BACK, "Back");
-        addStringLocalization(FACE_NONE, "None");
     }
 
     private static void addToMCLangList(String aKey, String translation) {
