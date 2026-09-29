@@ -23,7 +23,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.Constants.NBT;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,6 +35,7 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
@@ -280,8 +280,7 @@ public class ArmorState {
                 .forEach(addBehavior);
         }
 
-        // noinspection unchecked, rawtypes
-        for (NBTTagString str : (List<NBTTagString>) (List) tag.getTagList("active", NBT.TAG_STRING).tagList) {
+        for (NBTTagString str : GTUtility.getStringTagList(tag, "active")) {
             try {
                 BehaviorName name = BehaviorName.valueOf(str.func_150285_a_());
                 if (state.behaviors.containsKey(name)) {
