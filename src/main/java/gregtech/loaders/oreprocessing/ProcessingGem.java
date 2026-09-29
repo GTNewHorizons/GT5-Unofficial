@@ -471,8 +471,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 }
 
                 if (!noWorking) {
-                    // Lathe recipes
-                    if (MaterialParts.stack(OrePrefixes.stickLong, material, 1L) != null
+                    // Lathe recipes; LatheRecipes turns Lanthanum Hexaboride on its own, slower recipe
+                    if (material != Materials.LanthanumHexaboride
+                        && MaterialParts.stack(OrePrefixes.stickLong, material, 1L) != null
                         && MaterialParts.stack(OrePrefixes.dust, material, 1L) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
