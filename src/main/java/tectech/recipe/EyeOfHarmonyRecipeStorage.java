@@ -5,6 +5,7 @@ import static tectech.recipe.EyeOfHarmonyRecipe.processHelperGTpp;
 import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -139,6 +140,11 @@ public class EyeOfHarmonyRecipeStorage {
         }
     }
 
+    /// Materials whose ores exist only as other mods' blocks (HEE's endium ore, Twilight Forest's shard clusters,
+    /// AmunRa's concrete ores), which the GregTech and bartworks ore adapters do not report.
+    private static final Material[] FOREIGN_ORE_MATERIALS = { Materials.HeeEndium, Materials.Knightmetal,
+        Materials.Steel, Materials.Thaumium };
+
     private void specialDeepDarkRecipe(final HashMap<String, EyeOfHarmonyRecipe> hashMap,
         final BlockDimensionDisplay planetItem) {
 
@@ -172,6 +178,7 @@ public class EyeOfHarmonyRecipeStorage {
             if (BWOreAdapter.INSTANCE.supports(infoWerkstoff)) validMaterialSet.add(mat);
         }
         infoWerkstoff.release();
+        validMaterialSet.addAll(Arrays.asList(FOREIGN_ORE_MATERIALS));
 
         final HashSet<Material> validGTPPMaterialSet = new HashSet<>();
         OreInfo infoGTPP = OreInfo.getNewInfo();
