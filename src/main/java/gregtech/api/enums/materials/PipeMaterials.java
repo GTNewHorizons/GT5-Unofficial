@@ -145,7 +145,7 @@ public class PipeMaterials {
                 .generateShapes(cableShapes());
         }
         // These wires break the twice-cable-loss default: the two redstone alloys pair lossless cables with
-        // lossy wires, and CrackRecipeAdder.registerWire derives cable loss as a quarter of wire loss.
+        // lossy wires, and the rest carry at least four times their cable loss.
         edit(Materials.RedAlloy).setProperty(PipeProperties.WIRE_LOSS, 1);
         edit(Materials.RedstoneAlloy).setProperty(PipeProperties.WIRE_LOSS, 2);
         edit(Materials.Signalium).setProperty(PipeProperties.WIRE_LOSS, 32);

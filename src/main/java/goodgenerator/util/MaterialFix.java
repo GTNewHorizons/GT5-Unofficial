@@ -12,7 +12,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -123,35 +122,10 @@ public class MaterialFix {
         for (Material ml : MaterialLibAPI.getMaterials()) {
             if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
             if (generatesAll(ml, OrePrefixes.plateDouble, OrePrefixes.plate)) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(ml, Shapes.plate, 2))
-                    .circuit(2)
-                    .itemOutputs(MaterialLibAPI.getStack(ml, Shapes.plateDouble, 1))
-                    .duration(Math.max(MaterialUtils.mass(ml) * 2, 1L) * TICKS)
-                    .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
-                    .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     MaterialLibAPI.getStack(ml, Shapes.plateDouble, 1),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "P", "P", "h", 'P', MaterialLibAPI.getStack(ml, Shapes.plate, 1) });
-            }
-            if (generatesAll(ml, OrePrefixes.plateTriple, OrePrefixes.plate)) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(ml, Shapes.plate, 3))
-                    .circuit(3)
-                    .itemOutputs(MaterialLibAPI.getStack(ml, Shapes.plateTriple, 1))
-                    .duration(Math.max(MaterialUtils.mass(ml) * 3, 1L) * TICKS)
-                    .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
-                    .addTo(benderRecipes);
-            }
-            if (generatesAll(ml, OrePrefixes.plateTriple, OrePrefixes.ingot)) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(ml, Shapes.ingot, 3))
-                    .circuit(3)
-                    .itemOutputs(MaterialLibAPI.getStack(ml, Shapes.plateTriple, 1))
-                    .duration(Math.max(MaterialUtils.mass(ml) * 3, 1L) * TICKS)
-                    .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
-                    .addTo(benderRecipes);
             }
             if (generatesAll(ml, OrePrefixes.plateTriple, OrePrefixes.plate, OrePrefixes.plateDouble)) {
                 GTModHandler.addCraftingRecipe(
@@ -159,33 +133,6 @@ public class MaterialFix {
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "B", "P", "h", 'P', MaterialLibAPI.getStack(ml, Shapes.plate, 1), 'B',
                         MaterialLibAPI.getStack(ml, Shapes.plateDouble, 1) });
-            }
-            if (generatesAll(ml, OrePrefixes.plateDense, OrePrefixes.plate)) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(ml, Shapes.plate, 9))
-                    .circuit(9)
-                    .itemOutputs(MaterialLibAPI.getStack(ml, Shapes.plateDense, 1))
-                    .duration(Math.max(MaterialUtils.mass(ml) * 9, 1L) * TICKS)
-                    .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
-                    .addTo(benderRecipes);
-            }
-            if (generatesAll(ml, OrePrefixes.plateDense, OrePrefixes.ingot)) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(ml, Shapes.ingot, 9))
-                    .circuit(9)
-                    .itemOutputs(MaterialLibAPI.getStack(ml, Shapes.plateDense, 1))
-                    .duration(Math.max(MaterialUtils.mass(ml) * 9, 1L) * TICKS)
-                    .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
-                    .addTo(benderRecipes);
-            }
-            if (generatesAll(ml, OrePrefixes.plateDense, OrePrefixes.plateTriple)) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(ml, Shapes.plateTriple, 3))
-                    .circuit(3)
-                    .itemOutputs(MaterialLibAPI.getStack(ml, Shapes.plateDense, 1))
-                    .duration(Math.max(MaterialUtils.mass(ml) * 3, 1L) * TICKS)
-                    .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
-                    .addTo(benderRecipes);
             }
             if (generatesAll(ml, OrePrefixes.stickLong, OrePrefixes.stick)) {
                 GTModHandler.addCraftingRecipe(

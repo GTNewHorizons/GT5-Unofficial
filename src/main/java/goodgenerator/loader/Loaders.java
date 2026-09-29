@@ -371,8 +371,6 @@ public class Loaders {
             "ComponentAssemblyLine",
             "Component Assembly Line").getStackForm(1L);
         CrackRecipeAdder.registerPipe(Materials.Incoloy903);
-        CrackRecipeAdder.registerWire(Materials.Signalium);
-        CrackRecipeAdder.registerWire(Materials.Lumiium);
         Loaders.AMForge = new AntimatterForge(
             MetaTileEntityIDs.AntimatterForge.ID,
             "AntimatterForge",

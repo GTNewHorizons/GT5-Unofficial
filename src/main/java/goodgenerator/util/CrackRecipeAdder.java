@@ -6,10 +6,8 @@ import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
@@ -261,86 +259,5 @@ public class CrackRecipeAdder {
             .duration(MaterialUtils.mass(material) * 24 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
-    }
-
-    /// `material` must carry `ingot`, `stick` and the `wireGt01`..`wireGt16` ladder.
-    public static void registerWire(Material material) {
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1))
-            .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 2))
-            .duration(5 * SECONDS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1))
-            .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt02, 1))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 2))
-            .circuit(4)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt04, 1))
-            .duration(10 * SECONDS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 4))
-            .circuit(8)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt08, 1))
-            .duration(12 * SECONDS + 10 * TICKS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 6))
-            .circuit(12)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt12, 1))
-            .duration(15 * SECONDS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 8))
-            .circuit(16)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt16, 1))
-            .duration(17 * SECONDS + 10 * TICKS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 1))
-            .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 1))
-            .duration(2 * SECONDS + 10 * TICKS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 2))
-            .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt02, 1))
-            .duration(5 * SECONDS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 4))
-            .circuit(4)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt04, 1))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 8))
-            .circuit(8)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt08, 1))
-            .duration(10 * SECONDS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 12))
-            .circuit(12)
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt12, 1))
-            .duration(12 * SECONDS + 10 * TICKS)
-            .eut(4)
-            .addTo(wiremillRecipes);
     }
 }
