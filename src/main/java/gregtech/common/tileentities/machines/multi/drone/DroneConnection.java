@@ -86,7 +86,10 @@ public class DroneConnection {
         this.unlocalizedName = aNBT.getString("unlocalizedName");
         this.uuid = UUID.fromString(aNBT.getString("uuid"));
         this.machineStatus = aNBT.getBoolean("machineStatus");
-        this.shutdownReason = ShutDownReasonRegistry.NONE;
+        // The reason travels as its id plus its own data, so the client can localize it itself
+        this.shutdownReason = ShutDownReasonRegistry.getSampleFromRegistry(aNBT.getString("shutdownReasonId"))
+            .newInstance();
+        this.shutdownReason.readFromNBT(aNBT.getCompoundTag("shutdownReason"));
         this.isSelected = aNBT.getBoolean("isSelected");
         this.groupMask = aNBT.getLong("groupMask");
         if (!NetworkUtils.isClient()) {
@@ -166,6 +169,8 @@ public class DroneConnection {
         aNBT.setString("unlocalizedName", unlocalizedName);
         aNBT.setString("uuid", this.uuid.toString());
         aNBT.setBoolean("machineStatus", machineStatus);
+        aNBT.setString("shutdownReasonId", shutdownReason.getID());
+        aNBT.setTag("shutdownReason", shutdownReason.writeToNBT(new NBTTagCompound()));
         aNBT.setBoolean("isSelected", isSelected);
         aNBT.setLong("groupMask", groupMask);
         return aNBT;
@@ -197,18 +202,11 @@ public class DroneConnection {
     public static DroneConnection deserialize(PacketBuffer buf) throws IOException {
         NBTTagCompound tag = buf.readNBTTagCompoundFromBuffer();
         if (tag == null) return null;
-        DroneConnection connection = new DroneConnection(tag);
-        // The reason is sent as its id plus its own data, so the client can localize it itself
-        connection.shutdownReason = ShutDownReasonRegistry.getSampleFromRegistry(buf.readStringFromBuffer(32767))
-            .newInstance();
-        connection.shutdownReason.decode(buf);
-        return connection;
+        return new DroneConnection(tag);
     }
 
     public static void serialize(PacketBuffer buf, DroneConnection connection) throws IOException {
         buf.writeNBTTagCompoundToBuffer(connection.writeToNBT());
-        buf.writeStringToBuffer(connection.shutdownReason.getID());
-        connection.shutdownReason.encode(buf);
     }
 
     /**
