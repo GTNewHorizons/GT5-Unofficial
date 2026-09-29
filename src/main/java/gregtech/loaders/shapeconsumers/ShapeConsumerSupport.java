@@ -14,6 +14,7 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.ores.GTOreAdapter;
@@ -100,6 +101,7 @@ final class ShapeConsumerSupport {
 
     private static void dispatch(Supplier<IOreRecipeRegistrator> registrator, OrePrefixes prefix, Material material,
         ItemStack stack) {
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
         registrator.get()
             .registerOre(
                 prefix,
