@@ -51,9 +51,9 @@ public class MaterialsInjector {
                 continue;
             }
             if (MaterialUtils.durability(material) == 0) continue;
-            // Hafnium and Zirconium pass the durability gate only on the default their gtPlusPlus declaration
-            // carries, not on a bartworks-declared tool stat.
-            if (material == Materials.Hafnium || material == Materials.Zirconium) continue;
+            // Hafnium passes the durability gate only on the default its gtPlusPlus declaration carries, not on a
+            // bartworks-declared tool stat.
+            if (material == Materials.Hafnium) continue;
             registerParts(material);
         }
 
