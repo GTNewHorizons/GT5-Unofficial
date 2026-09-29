@@ -68,9 +68,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         "EnderIO:blockIngotStorageEndergy@5",
         "EnderIO:blockIngotStorageEndergy@6",
         "ForbiddenMagic:StarBlock@0",
-        "gregtech:gt.blockgem2@4",
-        "gregtech:gt.blockmetal4@2",
-        "gregtech:gt.blockmetal6@10",
         "harvestcraft:spamcompressedsaltBlockalt@0",
         "minecraft:coal_block@0",
         "minecraft:diamond_block@0",
@@ -98,6 +95,10 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         "Thaumcraft:blockCosmeticOpaque@0",
         "Thaumcraft:blockCosmeticSolid@4",
         "thaumicbases:voidBlock@0");
+
+    // Materials whose own storage block had a previous recipe
+    private static final Set<Material> OWN_BLOCK_RECIPE_REMOVALS = Set
+        .of(Materials.Lead, Materials.Olivine, Materials.Silver);
 
     // Map that tells which item recipe to remove. If not in this map, no previous recipes exist so skipping
     private static final ImmutableMap<Material, Integer> PACKING_RECIPE_REMOVALS = ImmutableMap
@@ -308,7 +309,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack dust = MaterialParts.stack(OrePrefixes.dust, material, 1L);
         ItemStack block = MaterialParts.stack(OrePrefixes.block, material, 1L);
 
-        if (BLOCK_RECIPE_REMOVALS.contains(itemStackKey(stack))) {
+        if (BLOCK_RECIPE_REMOVALS.contains(itemStackKey(stack))
+            || OWN_BLOCK_RECIPE_REMOVALS.contains(material) && GTUtility.areStacksEqual(stack, block)) {
             GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, stack));
         }
 
