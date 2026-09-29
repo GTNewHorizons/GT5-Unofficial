@@ -346,7 +346,8 @@ public class GTRecipeRegistrator {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
-            if (MaterialParts.stack(OrePrefixes.ingot, tMaterial.mMaterial, 1) != null) {
+            if (!MaterialUtils.isGregTechMaterial(tMaterial.mMaterial)
+                && MaterialParts.stack(OrePrefixes.ingot, tMaterial.mMaterial, 1) != null) {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
