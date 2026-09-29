@@ -291,6 +291,12 @@ public final class OreDictRegistrationHandler {
         switch (prefix.getName()) {
             case "dye" -> GTOreDictUnificator.registerOre(OrePrefixes.dye, stack);
             case "gearGt" -> GTOreDictUnificator.registerOre(OrePrefixes.gear, material, stack);
+            case "ingotHot" -> {
+                if (material == Materials.BrickNether) {
+                    // Allow type filtering without enabling unification for nether bricks.
+                    prefix.add(GTUtility.copyAmount(1, stack));
+                }
+            }
             case "lens" -> {
                 if (material.contains(SubTag.TRANSPARENT) && material.mColor != Dyes._NULL) {
                     String color = material.mColor.name();
