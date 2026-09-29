@@ -87,8 +87,6 @@ public class GTMaterialProperties {
     /// wires unify under, carrying no composition of its own. Set on
     /// [gregtech.api.enums.materials.Families#superconductors].
     public static final Property<Boolean> IS_SUPERCONDUCTOR = Property.of("gregtech", "isSuperconductor", false);
-    /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...). Nothing in GregTech reads it.
-    public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
     /// Whether this material's composition decomposition feeds the lanthanide line, turning its cerium and samarium
     /// outputs into their ore concentrates (see `LanthanidesRecipeOutputs`).
     public static final Property<Boolean> LANTHANIDE_DECOMPOSITION = Property
