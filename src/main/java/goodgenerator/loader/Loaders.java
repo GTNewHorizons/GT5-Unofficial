@@ -46,7 +46,6 @@ import goodgenerator.items.GGItemBlocks;
 import goodgenerator.items.RadioactiveItem;
 import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CrackRecipeAdder;
-import goodgenerator.util.MaterialFix;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
@@ -541,10 +540,8 @@ public class Loaders {
 
     public static void postInitLoad() {
         RecipeLoader.RecipeLoad();
-        RecipeLoader.Fixer();
         RecipeLoader2.RecipeLoad();
         NeutronActivatorLoader.NARecipeLoad();
-        MaterialFix.addRecipeForMultiItems();
         ComponentAssemblyLineLoader.run();
     }
 

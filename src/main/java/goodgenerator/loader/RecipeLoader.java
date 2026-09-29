@@ -43,7 +43,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
-import goodgenerator.util.MaterialFix;
 import gregtech.api.enums.CircuitComponents;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
@@ -1679,12 +1678,5 @@ public class RecipeLoader {
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
-    }
-
-    public static void Fixer() {
-        MaterialFix.MaterialFluidExtractionFix(Materials.AtomicSeparationCatalyst);
-        MaterialFix.MaterialFluidExtractionFix(Materials.ExtremelyUnstableNaquadah);
-        MaterialFix.MaterialFluidExtractionFix(Materials.MetastableOganesson);
-        MaterialFix.MaterialFluidExtractionFix(Materials.Shirabon);
     }
 }
