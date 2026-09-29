@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeConstants.MASS;
 import static gregtech.api.util.GTRecipeConstants.SIEVERT;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -15,9 +16,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -77,71 +76,21 @@ public class RadioHatchMaterialLoader {
     }
 
     public static void addRadioHatchMaterials() {
-        /*
-         * Todo: map statically all the materials used instead of iterating on the pools of materials.
-         * List of Werstoff materials processed dynamically as of this commit: Thorium232, UraniumBasedLiquidFuel,
-         * UraniumBasedLiquidFuel(ExcitedState), ThoriumBasedLiquidFuel, ThoriumBasedLiquidFuel(ExcitedState),
-         * PlutoniumBasedLiquidFuel, PlutoniumBasedLiquidFuel(ExcitedState), ExtremelyUnstableNaquadah,
-         * LightNaquadahFuel,
-         * HeavyNaquadahFuel, NaquadahGas, NaquadahAsphalt, RadioactiveSludge, AcidNaquadahEmulsion, NaquadahEmulsion,
-         * NaquadahSolution, NaquadahBasedLiquidFuelMkI, NaquadahBasedLiquidFuelMkII, NaquadahBasedLiquidFuelMkIII,
-         * NaquadahBasedLiquidFuelMkIV, NaquadahBasedLiquidFuelMkV, NaquadahBasedLiquidFuelMkVI,
-         * Enriched-NaquadahOxideMixture, Enriched-Naquadah-RichSolution, ConcentratedEnriched-NaquadahSludge,
-         * Enriched-NaquadahSulphate, NaquadriaOxideMixture, LowQualityNaquadriaPhosphate, Naquadria-RichSolution,
-         * LowQualityNaquadriaSulphate, LowQualityNaquadriaSulphate, NaquadriaSulphate, EnrichedNaquadahGoo,
-         * NaquadriaGoo, InertEnrichedNaquadah, InertNaquadria, Thorium234
-         * List of GT materials processed dynamically as of this commit: Americium, Bismuth, Flerovium_GT5U, Plutonium,
-         * Radon, Thorium, Uranium, Plutonium241, Uranium235, Oganesson, Californium, Tiberium
-         */
-
-        for (Material material : MaterialLibAPI.getMaterials()) {
-            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null
-                || !Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.IS_RADIOACTIVE))
-                || material == Materials.Tiberium) {
-                continue;
-            }
-
-            int level = (int) MaterialUtils.protons(material);
-            if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.stick)) {
-                radioHatchMaterialAdder(MaterialLibAPI.getStack(material, Shapes.stick, 1), level, 1);
-            }
-            if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.stickLong)) {
-                radioHatchMaterialAdder(MaterialLibAPI.getStack(material, Shapes.stickLong, 1), level, 2);
-            }
-        }
-
-        for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!MaterialUtils.isGregTechMaterial(material) || MaterialUtils.element(material) == null) continue;
-
-            // Naquadah is handled below with a special value.
-            boolean validProton = MaterialUtils.protons(material) >= 83 && material != Materials.Tritanium
-                && material != Materials.Naquadah;
-            if (validProton) {
-                int level = (int) MaterialUtils.protons(material);
-                ItemStack stick = MaterialParts.stack(OrePrefixes.stick, material, 1);
-                if (stick != null) {
-                    radioHatchMaterialAdder(stick, level, 1);
-                }
-                ItemStack stickLong = MaterialParts.stack(OrePrefixes.stickLong, material, 1);
-                if (stickLong != null) {
-                    radioHatchMaterialAdder(stickLong, level, 2);
-                }
-            }
-        }
-
         Material[] specialMaterial = { Materials.Naquadah, Materials.NaquadahEnriched, Materials.Naquadria };
         int[] specialValue = { 130, 140, 150 };
 
-        for (int i = 0; i < specialMaterial.length; i++) {
-            ItemStack stick = MaterialParts.stack(OrePrefixes.stick, specialMaterial[i], 1);
-            if (stick != null) {
-                radioHatchMaterialAdder(stick, specialValue[i], 1);
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            if (!isRadioactive(material) || material == Materials.Tiberium
+                || material == Materials.Tritanium
+                || Arrays.asList(specialMaterial)
+                    .contains(material)) {
+                continue;
             }
+            addRods(material, (int) MaterialUtils.protons(material));
+        }
 
-            ItemStack stickLong = MaterialParts.stack(OrePrefixes.stickLong, specialMaterial[i], 1);
-            if (stickLong != null) {
-                radioHatchMaterialAdder(stickLong, specialValue[i], 2);
-            }
+        for (int i = 0; i < specialMaterial.length; i++) {
+            addRods(specialMaterial[i], specialValue[i]);
         }
 
         radioHatchMaterialAdder(ItemList.RodThorium.get(1), MaterialUtils.protons(Materials.Thorium), 3);
@@ -188,6 +137,20 @@ public class RadioHatchMaterialLoader {
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadria.get(1), 15, 3);
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadria2.get(1), 15, 6);
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadria4.get(1), 15, 12);
+    }
+
+    /// Whether `material`'s rods are radio hatch fuel: it is declared radioactive, or it is an element at or above
+    /// bismuth.
+    private static boolean isRadioactive(Material material) {
+        return Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.IS_RADIOACTIVE))
+            || MaterialUtils.element(material) != null && MaterialUtils.protons(material) >= 83;
+    }
+
+    private static void addRods(Material material, int level) {
+        ItemStack stick = MaterialParts.stack(OrePrefixes.stick, material, 1);
+        if (stick != null) radioHatchMaterialAdder(stick, level, 1);
+        ItemStack stickLong = MaterialParts.stack(OrePrefixes.stickLong, material, 1);
+        if (stickLong != null) radioHatchMaterialAdder(stickLong, level, 2);
     }
 
     public static void loadRadioHatchNEI() {
