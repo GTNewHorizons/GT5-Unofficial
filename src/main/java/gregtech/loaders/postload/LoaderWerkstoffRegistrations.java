@@ -91,10 +91,11 @@ public class LoaderWerkstoffRegistrations {
     }
 
     /// Pairs a werkstoff-origin material with its tool handle: a burning or magical material takes its themed
-    /// handle, otherwise durability picks the metal. GregTech's own materials are skipped -- their
-    /// declaration owns the handle, through [GTMaterialProperties#HANDLE_MATERIAL].
+    /// handle, otherwise durability picks the metal. GregTech's own materials and materials declaring
+    /// [GTMaterialProperties#HANDLE_MATERIAL] are skipped -- their declaration owns the handle.
     private static void registerHandleMaterial(Material material) {
-        if (MaterialUtils.isGregTechMaterial(material)) return;
+        if (MaterialUtils.isGregTechMaterial(material)
+            || material.getProperty(GTMaterialProperties.HANDLE_MATERIAL) != null) return;
         Material handle;
         if (MaterialUtils.hasSubTag(material, SubTag.BURNING.mName)) handle = Materials.Blaze;
         else if (MaterialUtils.hasSubTag(material, SubTag.MAGICAL.mName)) handle = Materials.Thaumium;
