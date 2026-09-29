@@ -19,6 +19,8 @@ public final class ConsumerRecycling {
     static void register() {
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
             if (!prefix.isMaterialBased() || prefix.getMaterialAmount() <= 0 || !prefix.isContainer()) continue;
+            // Bolted casings are marked as containers but hold no fluid to empty
+            if (prefix == OrePrefixes.blockCasing || prefix == OrePrefixes.blockCasingAdvanced) continue;
             ShapeConsumerSupport.delegate(MaterialParts.shape(prefix), prefix, () -> ProcessingRecycling.INSTANCE);
         }
         ShapeConsumerSupport
