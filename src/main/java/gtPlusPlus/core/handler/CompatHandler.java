@@ -13,7 +13,6 @@ import gregtech.loaders.oreprocessing.ProcessingDustGeneration;
 import gregtech.loaders.oreprocessing.ProcessingNuclearDehydratorGtpp;
 import gregtech.loaders.oreprocessing.ProcessingOreCrafting;
 import gregtech.loaders.oreprocessing.ProcessingOreMachine;
-import gregtech.loaders.oreprocessing.ProcessingPlasmaGtpp;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.Particle;
@@ -213,6 +212,5 @@ public class CompatHandler {
         ProcessingOreCrafting.run();
         ProcessingOreMachine.run();
         ProcessingNuclearDehydratorGtpp.run();
-        ProcessingPlasmaGtpp.run();
     }
 }
