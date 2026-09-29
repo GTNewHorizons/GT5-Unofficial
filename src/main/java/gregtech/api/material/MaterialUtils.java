@@ -771,24 +771,15 @@ public class MaterialUtils {
         return material == null ? null : StatCollector.translateToLocal(localizedNameKey(material));
     }
 
-    /// The stone types a [Material]'s ore can generate in -- its declared [GTMaterialProperties#ORE_STONE_TYPES],
-    /// otherwise [StoneType#ICES] when it carries [GTMaterialFlag#ICE_ORE] and [StoneType#STONES] when it does not.
-    /// Empty for a null material.
+    /// The stone types a [Material]'s ore can generate in: the ice stones for an [GTMaterialFlag#ICE_ORE]
+    /// material, every other stone otherwise.
     public static List<IStoneType> validStones(@Nullable Material material) {
         if (material == null) return Collections.emptyList();
-        List<String> declared = material.getProperty(GTMaterialProperties.ORE_STONE_TYPES);
-        if (declared != null) {
-            List<IStoneType> stones = new ArrayList<>(declared.size());
-            for (String name : declared) stones.add(StoneType.valueOf(name));
-            return stones;
-        }
         return hasFlag(material, GTMaterialFlag.ICE_ORE) ? StoneType.ICES : StoneType.STONES;
     }
 
     /// Whether a [Material]'s ore can generate in `stoneType`, per [#validStones].
     public static boolean isValidStone(Material material, StoneType stoneType) {
-        List<String> declared = material.getProperty(GTMaterialProperties.ORE_STONE_TYPES);
-        if (declared != null) return declared.contains(stoneType.name());
         StoneCategory category = hasFlag(material, GTMaterialFlag.ICE_ORE) ? StoneCategory.Ice : StoneCategory.Stone;
         return stoneType.getCategory() == category;
     }
