@@ -473,8 +473,7 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (MaterialUtils.isGregTechMaterial(tMaterial.mMaterial))
-                tAmount += tMaterial.mAmount * MaterialUtils.mass(tMaterial.mMaterial);
+            tAmount += tMaterial.mAmount * MaterialUtils.mass(tMaterial.mMaterial);
         }
 
         {
