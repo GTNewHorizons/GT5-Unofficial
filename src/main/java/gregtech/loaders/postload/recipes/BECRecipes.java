@@ -356,13 +356,13 @@ public class BECRecipes implements Runnable {
 
         // Coherence-preserving Plasma Conduit
         addBec(
-            ItemList.CoherencePreservingPlasmaConduit.get(12),
-            new ItemStack[] { ItemList.BlockQuarkPipe.get(1), ItemList.PeaceEnforcementCasing.get(12),
+            ItemList.CoherencePreservingPlasmaConduit.get(8),
+            new ItemStack[] { ItemList.BlockQuarkPipe.get(1), ItemList.PeaceEnforcementCasing.get(8),
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.TranscendentMetal, 4),
                 ItemList.Electromagnet_Tengam.get(1), ItemList.MetaMaterial_EnergyConduit1.get(4),
                 ItemList.Electric_Pump_UIV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.SixPhasedCopper, 1),
-                MaterialsElements.STANDALONE.HYPOGEN.getRotor(1) },
+                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.SixPhasedCopper, 4),
+                MaterialsElements.STANDALONE.HYPOGEN.getRotor(4) },
             nanites(4, 1, 1, 2, 1, 3, 1, 1),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
                 CondensateType.Infinity.getEntangled(32 * INGOTS),
