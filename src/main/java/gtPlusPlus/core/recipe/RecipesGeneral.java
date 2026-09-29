@@ -50,8 +50,6 @@ import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompress
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedObsidian;
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedSugarCharcoal;
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedSugarCoke;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
 import java.util.List;
 
@@ -81,31 +79,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 
 public class RecipesGeneral {
-
-    /// The materials this class generates wire recipes for.
-    public static final List<Material> WIRE_MATERIALS = List.of(
-        Materials.Zirconium,
-        Materials.HG1223,
-        Materials.Grisium,
-        Materials.TriniumTitaniumAlloy,
-        Materials.Hypogen,
-        Materials.ChromaticGlass,
-        Materials.Dragonblood,
-        Materials.CelestialTungsten,
-        Materials.Rhugnor);
-
-    /// The materials this class generates pipe recipes for.
-    public static final List<Material> PIPE_MATERIALS = List.of(
-        Materials.Staballoy,
-        Materials.Tantalloy60,
-        Materials.Tantalloy61,
-        Materials.Potin,
-        Materials.MaragingSteel300,
-        Materials.MaragingSteel350,
-        Materials.Inconel690,
-        Materials.Inconel792,
-        Materials.HastelloyX,
-        Materials.TriniumNaquadahCarbonite);
 
     public static void loadRecipes() {
 
@@ -220,7 +193,6 @@ public class RecipesGeneral {
         addCompressedGlowstone();
 
         migratedRecipes();
-        addPipesAndWires();
     }
 
     private static void addCompressedCactusCharcoal() {
@@ -341,16 +313,6 @@ public class RecipesGeneral {
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(hammerRecipes);
-    }
-
-    private static void addPipesAndWires() {
-        for (Material material : WIRE_MATERIALS) {
-            generateWireRecipes(material);
-        }
-        for (Material material : PIPE_MATERIALS) {
-            generatePipeRecipes(material);
-        }
-        generatePipeRecipes(null, MaterialUtils.localName(Materials.Clay), 15);
     }
 
     private static void migratedRecipes() {

@@ -11,7 +11,6 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.recipe.RecipesGeneral;
 
 public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -24,7 +23,6 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (RecipesGeneral.WIRE_MATERIALS.contains(material)) return;
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
             GTRecipeRegistrator.registerWiremillRecipes(material, 100, 4);
         }

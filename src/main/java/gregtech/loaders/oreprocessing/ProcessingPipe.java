@@ -21,7 +21,6 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.recipe.RecipesGeneral;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -72,8 +71,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
 
         switch (prefix.getName()) {
             case "pipeHuge" -> {
-                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-                    && !RecipesGeneral.PIPE_MATERIALS.contains(material)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.pipeHuge, material, 1L),
                         bits,
@@ -82,8 +80,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case "pipeLarge" -> {
-                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-                    && !RecipesGeneral.PIPE_MATERIALS.contains(material)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.pipeLarge, material, 1L),
                         bits,
@@ -98,8 +95,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case "pipeMedium" -> {
-                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-                    && !RecipesGeneral.PIPE_MATERIALS.contains(material)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.pipeMedium, material, 2L),
                         bits,
@@ -114,8 +110,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case "pipeSmall" -> {
-                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-                    && !RecipesGeneral.PIPE_MATERIALS.contains(material)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.pipeSmall, material, 6L),
                         bits,
@@ -130,8 +125,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case "pipeTiny" -> {
-                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-                    && !RecipesGeneral.PIPE_MATERIALS.contains(material)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.pipeTiny, material, 8L),
                         bits,
