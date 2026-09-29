@@ -6,7 +6,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTUtility.getPlasmaFuelValueInEUPerLiterFromFluid;
 import static java.lang.Math.min;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -27,17 +25,13 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
-import gregtech.common.ores.GTOreAdapter;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
@@ -443,123 +437,6 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
-    private static final double GTPP_PRIMARY_MULTIPLIER = (2.0 / 9.0 + 0.1);
-    private static final double GTPP_SECONDARY_MULTIPLIER = (1.0 / 9.0);
-
-    /// Whether `material` carries every shape a gtpp bonus byproduct needs.
-    private static boolean hasSolidForm(Material material) {
-        return material.hasShape(Shapes.dust) && material.hasShape(BlockShapes.block)
-            && material.hasShape(Shapes.dustTiny)
-            && material.hasShape(Shapes.dustSmall);
-    }
-
-    /// A breadth-first walk of `material`'s [GTMaterialProperties#COMPOSITION] tree, collecting every leaf
-    /// (a material with no composition of its own).
-    private static ArrayList<Material> compoundMaterialsRecursively(Material material) {
-        ArrayList<Material> resultList = new ArrayList<>();
-        ArrayDeque<Material> toCheck = new ArrayDeque<>();
-        toCheck.add(material);
-
-        final int HARD_LIMIT = 1000;
-        int processed = 0;
-        while (!toCheck.isEmpty() && processed < HARD_LIMIT) {
-            Material current = toCheck.remove();
-            List<MaterialRefStack> composition = current.getProperty(GTMaterialProperties.COMPOSITION);
-            if (composition == null || composition.isEmpty()) {
-                resultList.add(current);
-            } else {
-                for (MaterialRefStack entry : composition) {
-                    toCheck.add(
-                        entry.material()
-                            .resolve());
-                }
-            }
-            processed++;
-        }
-        return resultList;
-    }
-
-    public static void processHelperGTpp(HashMapHelper outputMap, Material material, double mainMultiplier,
-        double probability) {
-        if (material == null) return;
-        outputMap.add(material, 2 * mainMultiplier * probability);
-
-        Material bonusA = null; // Ni
-        Material bonusB = null; // Tin
-
-        // Setup Bonuses
-        ArrayList<Material> aMatComp = compoundMaterialsRecursively(material);
-
-        if (aMatComp.size() < 3) {
-            while (aMatComp.size() < 3) {
-                aMatComp.add(material);
-            }
-        }
-
-        final ArrayList<Material> amJ = new ArrayList<>(2);
-        for (Material g : aMatComp) {
-            if (hasSolidForm(g)) {
-                amJ.add(g);
-                if (amJ.size() >= 2) break;
-            }
-        }
-
-        boolean allFailed = false;
-        List<MaterialRefStack> composites = material.getProperty(GTMaterialProperties.COMPOSITION);
-        if (composites == null) composites = Collections.emptyList();
-
-        if (amJ.size() < 2) {
-            allFailed = true;
-            bonusA = composites.isEmpty() ? material
-                : composites.get(0)
-                    .material()
-                    .resolve();
-
-            // If Secondary Output has no solid output, try the third (If it exists), then the fourth/fifth
-            for (int i = 1; i < Math.min(composites.size(), 5); i++) {
-                bonusB = composites.get(i)
-                    .material()
-                    .resolve();
-                if (hasSolidForm(bonusB)) {
-                    allFailed = false;
-                    break;
-                }
-            }
-            // If Fifth Output has no solid output, default {see if(allFailed...)}
-        } else {
-            bonusA = amJ.get(0);
-            bonusB = amJ.get(1);
-        }
-
-        int materialTier = MaterialUtils.tier(material);
-
-        // Default out if it's made of fluids or some stuff.
-        if ((allFailed || bonusB == null) && materialTier >= 2) {
-            bonusB = material;
-        }
-
-        // Need two valid outputs
-        if (hasSolidForm(bonusA)) {
-            outputMap.add(bonusA, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
-        } else outputMap.add(Materials.Stone, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
-        if (bonusB != null && hasSolidForm(bonusB)) {
-            outputMap.add(bonusB, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
-        } else outputMap.add(Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
-    }
-
-    /// Accumulates a vein material's dust yield: gtPlusPlus ore materials through [#processHelperGTpp], every
-    /// other gregtech-declared or werkstoff-origin material through [#processHelper].
-    public static void processHelperIfPossible(HashMapHelper outputMap, @Nullable Material material,
-        double mainMultiplier, double probability) {
-        if (material == null) return;
-        if (GTOreAdapter.isGtppFamily(material)) {
-            processHelperGTpp(outputMap, material, mainMultiplier, probability);
-        } else if (GTOreAdapter.isGtOreMaterial(material)
-            || material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
-                processHelper(outputMap, material, mainMultiplier, probability);
-            }
-    }
-
     private static ArrayList<Pair<Object, Long>> processDimension(
         GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimWrapper,
         GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimWrapper, long timeInSeconds) {
@@ -569,11 +446,11 @@ public class EyeOfHarmonyRecipe {
 
         if (normalOreDimWrapper != null) {
             normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
-                processHelperIfPossible(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
-                processHelperIfPossible(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
+                processHelper(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
+                processHelper(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
                 // 8.0 to replicate void miner getDropsVanillaVeins method yields.
-                processHelperIfPossible(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
-                processHelperIfPossible(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
+                processHelper(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
+                processHelper(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
             });
         }
 
@@ -581,7 +458,7 @@ public class EyeOfHarmonyRecipe {
         if (smallOreDimWrapper != null) {
             smallOreDimWrapper.oreVeinProbabilities.forEach(
                 (veinInfo, probability) -> {
-                    processHelperIfPossible(outputMap, veinInfo.material, mainMultiplier, probability);
+                    processHelper(outputMap, veinInfo.material, mainMultiplier, probability);
                 });
         }
 

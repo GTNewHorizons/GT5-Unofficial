@@ -484,8 +484,8 @@ public class PosteaTransformers implements Runnable {
     /// werkstoff id) into the equivalent MaterialLib stack, resolved through [LegacyWerkstoffIndex] exactly
     /// like the live item path ([MaterialParts#stack]). Damages of werkstoffe unknown to MaterialLib (a
     /// third-party mod's own werkstoff ids) pass through unchanged. Ore and small ore migrate through
-    /// [BWOreAdapter] instead (block-kind, with no `bw.bwMetaGenerated<prefix>` item); storage blocks and the
-    /// two casing slots (`blockCasing`/`blockCasingAdvanced`) migrate through
+    /// [gregtech.common.ores.BWOreAdapter] instead (block-kind, with no `bw.bwMetaGenerated<prefix>`
+    /// item); storage blocks and the two casing slots (`blockCasing`/`blockCasingAdvanced`) migrate through
     /// [#registerWerkstoffBlockCutoverTransformer].
     private static void registerWerkstoffItemCutoverTransformers() {
         for (OrePrefixes prefix : LEGACY_WERKSTOFF_ITEM_PREFIXES) {

@@ -1,7 +1,5 @@
 package gregtech.loaders.shapeconsumers;
 
-import static gregtech.GTLoggers.GT_FML_LOGGER;
-
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -63,32 +61,19 @@ final class ShapeConsumerSupport {
         });
     }
 
-    /// [#delegate(Shape, OrePrefixes, Supplier)] for the variant-carrying ore shape: a GregTech ore material
-    /// ([GTOreAdapter#isGtOreMaterial]) dispatches once per [StoneType] it generates a block on, under that
-    /// stone's own [StoneType#getPrefix] and that stone's block. gtPlusPlus' and
-    /// bartworks' materials, which own no stone variants, dispatch once under `fallbackPrefix` with the
-    /// shape's canonical stack.
+    /// [#delegate(Shape, OrePrefixes, Supplier)] for the variant-carrying ore shape: every material dispatches
+    /// once per [StoneType] it has an ore block on ([GTOreAdapter#getVariantStack]), under that stone's own
+    /// [StoneType#getPrefix] and that stone's block. `groupPrefix` names the variant group.
     ///
     /// Every variant of one material shares a [GTRecipeBuilder#withVariantGroup] tag, so NEI shows the fan-out
     /// as a single cycling entry per action instead of one entry per stone.
     ///
     /// [StoneType] and [GTOreAdapter] are touched only from inside the postInit callback:
     /// see the class-init trap [gregtech.api.enums.materials.OreShapes]'s javadoc describes.
-    static void delegateOreVariants(Shape shape, OrePrefixes fallbackPrefix,
-        Supplier<IOreRecipeRegistrator> registrator) {
+    static void delegateOreVariants(Shape shape, OrePrefixes groupPrefix, Supplier<IOreRecipeRegistrator> registrator) {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
-            if (!GTOreAdapter.isGtOreMaterial(material)) {
-                dispatch(registrator, fallbackPrefix, material, MaterialLibAPI.getStack(material, s, 1));
-                return;
-            }
-
-            if (MaterialUtils.oldSubId(material) < 0) {
-                GT_FML_LOGGER
-                    .warn("GregTech ore material {} carries no legacy sub id", MaterialUtils.internalName(material));
-            }
-
-            String group = fallbackPrefix.getName() + ":" + MaterialUtils.internalName(material);
+            String group = groupPrefix.getName() + ":" + MaterialUtils.internalName(material);
 
             for (StoneType stoneType : StoneType.VALUES) {
                 ItemStack stack = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, false);

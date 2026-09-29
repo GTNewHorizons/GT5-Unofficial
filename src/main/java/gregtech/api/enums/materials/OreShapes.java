@@ -7,13 +7,10 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.StoneType;
-import gregtech.api.material.GTMaterialProperties;
-import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 
 /// Block [Shape] declarations for GT's ores. Unlike `block`, `ore` and `oreSmall` carry a real
@@ -122,17 +119,12 @@ public class OreShapes {
             .displayName("%s Ore")
             .oreDict("ore")
             .variants(oreVariants)
-            .drops((material, variant, fortune, isSilkTouch) -> {
-                if (isWerkstoff(material))
-                    return BWOreAdapter.INSTANCE.shapeDrops(material, variant, fortune, isSilkTouch, false);
-                return GTOreAdapter.INSTANCE.shapeDrops(material, variant, fortune, isSilkTouch, false);
-            })
+            .drops(
+                (material, variant, fortune, isSilkTouch) -> GTOreAdapter.INSTANCE
+                    .shapeDrops(material, variant, fortune, isSilkTouch, false))
             .hardness((material, variant) -> stoneBlock(variant).blockHardness)
             .resistance((material, variant) -> stoneBlock(variant).getExplosionResistance(null))
-            .harvestLevel((material, variant) -> {
-                if (isWerkstoff(material)) return BWOreAdapter.INSTANCE.harvestLevel(material, 0);
-                return GTOreAdapter.INSTANCE.harvestLevel(material, 0);
-            });
+            .harvestLevel((material, variant) -> GTOreAdapter.INSTANCE.harvestLevel(material, 0));
         for (var entry : KNOWN_VARIANT_BASES.entrySet()) {
             oreBuilder.variantBase(variantOf(entry.getKey()), entry.getValue());
         }
@@ -143,14 +135,11 @@ public class OreShapes {
             .oreDict("oreSmall")
             .variants(smallOreVariants)
             .drops(
-                (material, variant, fortune, isSilkTouch) -> isWerkstoff(material)
-                    ? BWOreAdapter.INSTANCE.shapeDrops(material, variant, fortune, isSilkTouch, true)
-                    : GTOreAdapter.INSTANCE.shapeDrops(material, variant, fortune, isSilkTouch, true))
+                (material, variant, fortune, isSilkTouch) -> GTOreAdapter.INSTANCE
+                    .shapeDrops(material, variant, fortune, isSilkTouch, true))
             .hardness((material, variant) -> stoneBlock(variant).blockHardness)
             .resistance((material, variant) -> stoneBlock(variant).getExplosionResistance(null))
-            .harvestLevel(
-                (material, variant) -> isWerkstoff(material) ? BWOreAdapter.INSTANCE.harvestLevel(material, -1)
-                    : GTOreAdapter.INSTANCE.harvestLevel(material, -1));
+            .harvestLevel((material, variant) -> GTOreAdapter.INSTANCE.harvestLevel(material, -1));
         for (var entry : KNOWN_VARIANT_BASES.entrySet()) {
             if (!isSmallOreExcluded(entry.getKey())) {
                 oreSmallBuilder.variantBase(variantOf(entry.getKey()), entry.getValue());
@@ -164,12 +153,6 @@ public class OreShapes {
             if (excluded.equals(stoneTypeName)) return true;
         }
         return false;
-    }
-
-    /// Whether `material` originates from a bartworks material, and so takes [BWOreAdapter]'s ore behavior
-    /// rather than [GTOreAdapter]'s.
-    private static boolean isWerkstoff(Material material) {
-        return material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null;
     }
 
     private static Block stoneBlock(String variant) {

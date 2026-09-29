@@ -9,16 +9,13 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTUtility;
-import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
-import gregtech.common.ores.OreInfo;
 
 public class AsteroidData {
 
@@ -82,18 +79,11 @@ public class AsteroidData {
     }
 
     /// The stack a space mining recipe yields of `material`: its ore block in `stoneType`, or its dust when
-    /// `stoneType` is null. A werkstoff-origin material's ore comes from [BWOreAdapter]. Null when the material
-    /// has no such stack.
+    /// `stoneType` is null. Null when the material has no such stack.
     public static @Nullable ItemStack oreStack(Material material, @Nullable StoneType stoneType, int amount) {
         if (stoneType == null) return MaterialParts.stack(OrePrefixes.dust, material, amount);
         ItemStack ore = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, false);
-        if (ore != null) return GTUtility.copyAmount(amount, ore);
-        try (OreInfo info = OreInfo.getNewInfo()) {
-            info.material = material;
-            info.stoneType = stoneType;
-            ImmutableBlockMeta block = BWOreAdapter.INSTANCE.getBlock(info);
-            return block == null ? null : new ItemStack(block.getBlock(), amount, block.getBlockMeta());
-        }
+        return ore == null ? null : GTUtility.copyAmount(amount, ore);
     }
 
     /// The stack of this asteroid's `index`th output: the declared item, or else [#oreStack] of its material.

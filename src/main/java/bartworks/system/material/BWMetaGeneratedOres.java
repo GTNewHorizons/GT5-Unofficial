@@ -51,6 +51,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OreDictUtils;
 import gregtech.common.ores.BWOreAdapter;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 
@@ -128,7 +129,6 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         if (!isNatural) {
             for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
-                if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
                 if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ore)) {
                     aList.add(new ItemStack(aItem, 1, LegacyWerkstoffIndex.idOf(material)));
                 }
@@ -151,8 +151,8 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         try (OreInfo info = BWOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             if (info == null) return new ArrayList<>();
 
-            return BWOreAdapter.INSTANCE
-                .getOreDrops(ThreadLocalRandom.current(), info, doSilktouch, doFortune ? fortune : 0);
+            return GTOreAdapter.INSTANCE
+                .getOreDrops(ThreadLocalRandom.current(), info, doSilktouch, doFortune && isNatural ? fortune : 0);
         }
     }
 

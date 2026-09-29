@@ -1,7 +1,6 @@
 package tectech.recipe;
 
 import static tectech.recipe.EyeOfHarmonyRecipe.processHelper;
-import static tectech.recipe.EyeOfHarmonyRecipe.processHelperGTpp;
 import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
 import java.util.ArrayList;
@@ -24,12 +23,9 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTUtility;
-import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
-import gregtech.common.ores.OreInfo;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.DimensionHelper;
@@ -141,7 +137,7 @@ public class EyeOfHarmonyRecipeStorage {
     }
 
     /// Materials whose ores exist only as other mods' blocks (HEE's endium ore, Twilight Forest's shard clusters,
-    /// AmunRa's concrete ores), which the GregTech and bartworks ore adapters do not report.
+    /// AmunRa's concrete ores), which [GTOreAdapter] does not report.
     private static final Material[] FOREIGN_ORE_MATERIALS = { Materials.HeeEndium, Materials.Knightmetal,
         Materials.Steel, Materials.Thaumium };
 
@@ -149,60 +145,22 @@ public class EyeOfHarmonyRecipeStorage {
         final BlockDimensionDisplay planetItem) {
 
         final HashSet<Material> validMaterialSet = new HashSet<>();
-        for (int id = 0; id < 1000; id++) {
-            Material material = LegacyMaterialIDIndex.get(id);
-            if (material == null) continue;
-
-            ItemStack normalOre = GTOreAdapter.INSTANCE.getVariantStack(material, StoneType.Stone, false);
-
-            if ((normalOre != null)) {
-                validMaterialSet.add(material);
-            }
-
-            ItemStack smallOre = GTOreAdapter.INSTANCE.getVariantStack(material, StoneType.Stone, true);
-
-            if ((smallOre != null)) {
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            if (GTOreAdapter.INSTANCE.getVariantStack(material, StoneType.Stone, false) != null
+                || GTOreAdapter.INSTANCE.getVariantStack(material, StoneType.Stone, true) != null) {
                 validMaterialSet.add(material);
             }
         }
-
-        OreInfo infoWerkstoff = OreInfo.getNewInfo();
-        infoWerkstoff.stoneType = StoneType.Stone;
-        for (Material mat : MaterialLibAPI.getMaterials()) {
-            infoWerkstoff.material = mat;
-
-            infoWerkstoff.isSmall = false;
-            if (BWOreAdapter.INSTANCE.supports(infoWerkstoff)) validMaterialSet.add(mat);
-
-            infoWerkstoff.isSmall = true;
-            if (BWOreAdapter.INSTANCE.supports(infoWerkstoff)) validMaterialSet.add(mat);
-        }
-        infoWerkstoff.release();
         validMaterialSet.addAll(Arrays.asList(FOREIGN_ORE_MATERIALS));
 
-        final HashSet<Material> validGTPPMaterialSet = new HashSet<>();
-        OreInfo infoGTPP = OreInfo.getNewInfo();
-        infoGTPP.stoneType = StoneType.Stone;
-        for (Material mat : MaterialLibAPI.getMaterials()) {
-            infoGTPP.material = mat;
-
-            infoGTPP.isSmall = false;
-            if (GTOreAdapter.INSTANCE.supportsGtpp(infoGTPP)) validGTPPMaterialSet.add(mat);
-
-            infoGTPP.isSmall = true;
-            if (GTOreAdapter.INSTANCE.supportsGtpp(infoGTPP)) validGTPPMaterialSet.add(mat);
-        }
-        infoGTPP.release();
-
         ArrayList<Material> validMaterialList = new ArrayList<>(validMaterialSet);
-        ArrayList<Material> validGTPPMaterialList = new ArrayList<>(validGTPPMaterialSet);
 
         long rocketTier = 9;
 
         hashMap.put(
             "DD",
             new EyeOfHarmonyRecipe(
-                processDD(validMaterialList, validGTPPMaterialList),
+                processDD(validMaterialList),
                 planetItem,
                 0.6 + rocketTier / 10.0,
                 BILLION * (rocketTier + 1),
@@ -216,8 +174,7 @@ public class EyeOfHarmonyRecipeStorage {
         return (long) (18_000L * GTUtility.powInt(1.4, rocketTier));
     }
 
-    private ArrayList<Pair<Object, Long>> processDD(final ArrayList<Material> validMaterialList,
-        ArrayList<Material> validGTPPMaterialList) {
+    private ArrayList<Pair<Object, Long>> processDD(final ArrayList<Material> validMaterialList) {
         EyeOfHarmonyRecipe.HashMapHelper outputMap = new EyeOfHarmonyRecipe.HashMapHelper();
 
         // 10 from rocketTier + 1, 6 * 64 = VM3 + Og, 1.4 = time increase per tier.
@@ -225,8 +182,6 @@ public class EyeOfHarmonyRecipeStorage {
         double probability = 1.0 / validMaterialList.size();
 
         validMaterialList.forEach((material) -> processHelper(outputMap, material, mainMultiplier, probability));
-        validGTPPMaterialList
-            .forEach((material) -> processHelperGTpp(outputMap, material, mainMultiplier, probability));
 
         ArrayList<Pair<Object, Long>> outputList = new ArrayList<>();
 
