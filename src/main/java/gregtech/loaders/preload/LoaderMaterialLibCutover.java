@@ -12,7 +12,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
@@ -33,10 +32,11 @@ import gregtech.api.util.OreDictUtils;
 /// Each `set` call makes the shape stack the prefix's unification target and adds the material association
 /// that drives the auto-generated recycling recipes.
 ///
-/// A material whose legacy name MaterialLib cannot accept as a registration name carries it as
-/// [GTMaterialProperties#LEGACY_NAME] and registers its stacks under the sanitized name instead, so its
-/// legacy-named entries get a pass of their own. [OrePrefixes#oreDictName] builds the legacy name, so that is
-/// the name every [OreDictUtils] lookup asks for.
+/// Every material's minted parts then get a pass of their own, since the ore-dictionary event cannot parse every
+/// name back to its pair: a legacy name MaterialLib cannot accept as a registration name is carried as
+/// [GTMaterialProperties#LEGACY_NAME] while the stacks register under the sanitized name, a name holding a `.` reads
+/// as a private one, and `blockCasing` names parse as `block`. [OrePrefixes#oreDictName] builds the legacy name, so
+/// that is the name every [OreDictUtils] lookup asks for.
 ///
 /// The High Pressure fluid pipes [TieredItems#ZPM] declares additionally register under its tier-keyed
 /// `pipeSmallUltimate`..`pipeLargeUltimate` ingredient names, the identity every crafting recipe referencing
@@ -64,7 +64,7 @@ public class LoaderMaterialLibCutover implements Runnable {
         }
 
         unifyMembershipDriven();
-        registerLegacyNamedMaterials();
+        unifyMintedParts();
         registerHighPressureNames();
     }
 
@@ -88,9 +88,9 @@ public class LoaderMaterialLibCutover implements Runnable {
         }
     }
 
-    private static void registerLegacyNamedMaterials() {
+    private static void unifyMintedParts() {
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (material.getProperty(GTMaterialProperties.LEGACY_NAME) == null) continue;
+            if (!"gregtech".equals(material.getModId())) continue;
             for (OrePrefixes prefix : OrePrefixes.VALUES) {
                 if (!MaterialParts.isMinted(prefix, material)) continue;
                 ItemStack stack = MaterialParts.stack(prefix, material, 1);
@@ -103,7 +103,6 @@ public class LoaderMaterialLibCutover implements Runnable {
     private static void unify(OrePrefixes prefix, Material material, ItemStack stack) {
         if (prefix.isUnifiable()) {
             OreDictUtils.registerOre(prefix, material, stack);
-            // The ore-dictionary event cannot parse legacy names holding spaces or colons back to a material.
             MaterialData.addAssociation(prefix, material, stack);
         } else {
             OreDictUtils.registerOre(prefix.oreDictName(material), stack);
