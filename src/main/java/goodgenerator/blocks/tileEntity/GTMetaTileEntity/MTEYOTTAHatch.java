@@ -507,6 +507,11 @@ public class MTEYOTTAHatch extends MTEHatch
     }
 
     @Override
+    public AccessRestriction getReshuffleAccess() {
+        return IMEInventoryHandler.super.getReshuffleAccess();
+    }
+
+    @Override
     public boolean isPrioritized(IAEFluidStack input) {
         return true;
     }
