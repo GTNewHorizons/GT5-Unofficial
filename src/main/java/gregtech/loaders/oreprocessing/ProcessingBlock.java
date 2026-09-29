@@ -169,7 +169,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             return;
         }
 
-        if (MaterialUtils.makesSimplePlates(material) && MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
+        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
+            && MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
 
             if (material == Materials.Livingrock || material == Materials.Livingwood
                 || material == Materials.Dreamwood) {

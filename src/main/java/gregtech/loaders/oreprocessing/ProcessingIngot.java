@@ -108,7 +108,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
                 if (!noSmashing) {
                     // Forge hammer recipes
-                    if (MaterialUtils.makesSimplePlates(material)
+                    if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
                         && MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(3, stack))
