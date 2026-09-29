@@ -24,7 +24,6 @@ import com.ruling_0.materiallib.api.ShapeItem;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.GTShapeStore;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTUtility;
@@ -230,14 +229,6 @@ public class MaterialParts {
     /// the ore-dictionary entry, so a reversible recipe derives no recycling output from this ingredient.
     public static @Nullable ItemData namedIngredient(OrePrefixes prefix, @Nullable Material material) {
         return prefix == null || material == null ? null : new ItemData(prefix, MaterialUtils.internalName(material));
-    }
-
-    /// Whether a [Material] generates `prefix` -- either through gregtech's own part autogen (see
-    /// [OrePrefixes#doGenerateItem(Material)]) or the werkstoff part set (see
-    /// [LegacyWerkstoffIndex#generatesPrefix]). False for a null material.
-    public static boolean generatesPrefix(@Nullable Material material, OrePrefixes prefix) {
-        if (material == null) return false;
-        return prefix.doGenerateItem(material) || LegacyWerkstoffIndex.generatesPrefix(material, prefix);
     }
 
     /// The shapes serving each ore-dictionary prefix, keyed by the prefix strings the shapes themselves
