@@ -121,6 +121,11 @@ public class GTMaterialProperties {
     public static final Property<Integer> OLD_SUB_ID = Property.of("gregtech", "oldSubId");
     public static final Property<Integer> ORE_MULTIPLIER = Property.of("gregtech", "oreMultiplier", 1);
     public static final Property<List<MaterialRefStack>> ORE_BYPRODUCTS = Property.of("gregtech", "oreByProducts");
+    /// The harvest level of this material's ore, in place of its [#TOOL_QUALITY]; its small ore takes one less.
+    public static final Property<Integer> ORE_HARVEST_LEVEL = Property.of("gregtech", "oreHarvestLevel");
+    /// The `StoneType` names this material's ore and small ore exist on, in place of every stone of the ore's
+    /// category (see [MaterialUtils#validStones]).
+    public static final Property<List<String>> ORE_STONE_TYPES = Property.of("gregtech", "oreStoneTypes");
     public static final Property<Float> PLASMA_MULTIPLIER = Property.of("gregtech", "plasmaMultiplier");
     public static final Property<Integer> PROCESSING_MATERIAL_TIER_EU = Property
         .of("gregtech", "processingMaterialTierEU", 0);
