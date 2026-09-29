@@ -26,6 +26,7 @@ public class ProcessingIceOre implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oredictName, String modName,
         ItemStack stack) {
+        if (prefix != OrePrefixes.ore && prefix != OrePrefixes.rawOre) return;
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.ICE_ORE)) return;
 
         int oreMultiplier = MaterialUtils.oreMultiplier(material);
