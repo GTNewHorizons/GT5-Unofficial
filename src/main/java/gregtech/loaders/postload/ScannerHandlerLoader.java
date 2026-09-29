@@ -156,8 +156,9 @@ public class ScannerHandlerLoader {
         return getElementScanResult(tData.mMaterial.mMaterial);
     }
 
-    /// The elemental-scanner result for a MaterialLib material, keyed on [GTMaterialProperties#ELEMENT]. Magic
-    /// carries a real element but is excluded from scanning.
+    /// The elemental-scanner result for a MaterialLib material, keyed on
+    /// [gregtech.api.material.GTMaterialProperties#ELEMENT]. Magic carries a real element but is excluded from
+    /// scanning.
     public static @Nullable GTScannerResult getElementScanResult(Material material) {
         if (material == Materials.Magic) return null;
         Element element = MaterialUtils.element(material);
