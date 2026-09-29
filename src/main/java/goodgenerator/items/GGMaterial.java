@@ -296,7 +296,7 @@ public class GGMaterial implements Runnable {
         TextureSet.SET_SHINY,
         Pair.of(GGMaterial.orundum, 2),
         Pair.of(Plutonium, 1),
-        Pair.of(Naquadah, 2));
+        Pair.of(Naquadah, 2)).setTranslatableTooltip();
 
     // Naquadah Fuel Rework
     public static final Werkstoff extremelyUnstableNaquadah = new Werkstoff(
@@ -336,7 +336,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 24,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff heavyNaquadahFuel = new Werkstoff(
         new short[] { 54, 255, 54 },
@@ -348,7 +348,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 25,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahGas = new Werkstoff(
         new short[] { 93, 219, 0 },
@@ -361,7 +361,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 26,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahAsphalt = new Werkstoff(
         new short[] { 5, 37, 5 },
@@ -373,7 +373,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 27,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff ether = new Werkstoff(
         new short[] { 0xeb, 0xbc, 0x2f },
@@ -453,7 +453,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust(),
         OffsetID + 34,
-        TextureSet.SET_DULL);
+        TextureSet.SET_DULL).setTranslatableTooltip();
 
     public static final Werkstoff acidNaquadahEmulsion = new Werkstoff(
         new short[] { 0x25, 0x22, 0x22 },
@@ -497,7 +497,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 38,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahBasedFuelMkIDepleted = new Werkstoff(
         new short[] { 0xcb, 0xc3, 0xc1 },
@@ -508,7 +508,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 39,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahBasedFuelMkII = new Werkstoff(
         new short[] { 0x52, 0x4e, 0x4d },
@@ -519,7 +519,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 40,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahBasedFuelMkIIDepleted = new Werkstoff(
         new short[] { 0xb5, 0xb0, 0xae },
@@ -530,7 +530,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 41,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
     /* These materials will be enable when they are removed in GregTech */
     /*
      * public static final Werkstoff praseodymium = new Werkstoff( new short[]{0xff,0xff,0xff}, "praseodymium", "Pr",
@@ -553,7 +553,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 45,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahBasedFuelMkIIIDepleted = new Werkstoff(
         new short[] { 0x66, 0x40, 0x38 },
@@ -564,7 +564,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 46,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahBasedFuelMkIV = new Werkstoff(
         new short[] { 0x0e, 0x0c, 0x0c },
@@ -575,7 +575,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 47,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahBasedFuelMkIVDepleted = new Werkstoff(
         new short[] { 0x8e, 0x34, 0x22 },
@@ -586,7 +586,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 48,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahBasedFuelMkV = new Werkstoff(
         new short[] { 0x00, 0x00, 0x00 },
@@ -597,7 +597,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 49,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahBasedFuelMkVDepleted = new Werkstoff(
         new short[] { 0xff, 0xff, 0xff },
@@ -608,7 +608,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 50,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahBasedFuelMkVI = new Werkstoff(
         new short[] { 0x30, 0x00, 0x00 },
@@ -619,7 +619,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 115,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff naquadahBasedFuelMkVIDepleted = new Werkstoff(
         new short[] { 0x99, 0x33, 0x33 },
@@ -630,7 +630,7 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         OffsetID + 116,
-        TextureSet.SET_FLUID);
+        TextureSet.SET_FLUID).setTranslatableTooltip();
 
     public static final Werkstoff zincChloride = new Werkstoff(
         new short[] { 0x73, 0xa5, 0xfc },

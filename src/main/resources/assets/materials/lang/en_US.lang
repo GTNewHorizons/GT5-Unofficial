@@ -1515,3 +1515,34 @@ Material.zirconia=Zirconia
 Material.zirconiumtetrachloride=Zirconium Tetrachloride
 Material.zirconiumtetrachloridesolution=Zirconium Tetrachloride Solution
 Material.zn-thalloy=Zn-Th Alloy
+
+# Material formula text
+Material.advancedglue.ChemicalFormula=A chemically approved glue!
+Material.dimensionallytranscendentstellarcatalyst.ChemicalFormula=Stellar
+Material.electrumflux.ChemicalFormula=The formula is too long...
+Material.exciteddtsc.ChemicalFormula=[-Stellar-Stellar-]
+Material.glue.ChemicalFormula=No Horses were harmed in the making of this substance
+Material.uuamplifier.ChemicalFormula=Mass Fabricator Eff/Speed Bonus: x%s
+
+# BartWorks material formula text
+Material._null.ChemicalFormula=Default null Werkstoff
+Material.ademicsteel.ChemicalFormula=The break in the line
+Material.atomicseparationcatalyst.ChemicalFormula=The melting core...
+Material.bartimaeusnek.ChemicalFormula=Are you serious?
+Material.heavynaquadahfuel.ChemicalFormula=Still needs processing
+Material.lightnaquadahfuel.ChemicalFormula=Far from enough
+Material.naquadahasphalt.ChemicalFormula=Atomic runoff
+Material.naquadahbasedliquidfuelmki.ChemicalFormula=THE FIRST STEP
+Material.naquadahbasedliquidfuelmki(depleted).ChemicalFormula=THE FIRST STEP (taken)
+Material.naquadahbasedliquidfuelmkii.ChemicalFormula=SIXTY BILLION KILOWATT-HOURS
+Material.naquadahbasedliquidfuelmkii(depleted).ChemicalFormula=SIXTY BILLION KILOWATT-HOURS (spent)
+Material.naquadahbasedliquidfuelmkiii.ChemicalFormula=POWER OVERWHELMING
+Material.naquadahbasedliquidfuelmkiii(depleted).ChemicalFormula=POWER OVERWHELMING (no longer)
+Material.naquadahbasedliquidfuelmkiv.ChemicalFormula=STRIKE DOWN THE SUN
+Material.naquadahbasedliquidfuelmkiv(depleted).ChemicalFormula=STRIKE DOWN THE SUN (done)
+Material.naquadahbasedliquidfuelmkv.ChemicalFormula=THE END
+Material.naquadahbasedliquidfuelmkv(depleted).ChemicalFormula=THE END (literally)
+Material.naquadahbasedliquidfuelmkvi.ChemicalFormula=THE FUTURE
+Material.naquadahbasedliquidfuelmkvi(depleted).ChemicalFormula=THE FUTURE (achieved)
+Material.naquadahgas.ChemicalFormula=Who needs it?
+Material.radioactivesludge.ChemicalFormula=>>> DANGER <<<

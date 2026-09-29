@@ -134,7 +134,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             Werkstoff.Types.UNDEFINED,
             Werkstoff.DEFAULT_NULL_GENERATION_FEATURES,
             -1,
-            TextureSet.SET_NONE);
+            TextureSet.SET_NONE).setTranslatableTooltip();
     }
 
     /**
@@ -332,8 +332,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             }
         } else {
             this.toolTip = toolTip;
-            this.isFormulaNeededLocalized = true;
-            GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", this.toolTip);
         }
 
         if (this.stats.protons == 0) {
@@ -742,6 +740,15 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
     public boolean isFormulaNeededLocalized() {
         return isFormulaNeededLocalized;
+    }
+
+    /**
+     * Marks the tooltip passed to the constructor as translatable text rather than a chemical formula. The text is
+     * looked up under {@code Material.<name>.ChemicalFormula}.
+     */
+    public Werkstoff setTranslatableTooltip() {
+        this.isFormulaNeededLocalized = true;
+        return this;
     }
 
     public enum Types {

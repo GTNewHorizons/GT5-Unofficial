@@ -152,7 +152,8 @@ public class MTEMassfabricator extends MTEBasicMachine {
         sUUAperUUM = MachineStats.massFabricator.UUAPerUUM;
         sUUASpeedBonus = MachineStats.massFabricator.UUASpeedBonus;
         sRequiresUUA = MachineStats.massFabricator.requiresUUA;
-        Materials.UUAmplifier.setChemicalFormula("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus, true);
+        Materials.UUAmplifier.setChemicalFormula(
+            StatCollector.translateToLocalFormatted("Material.uuamplifier.ChemicalFormula", sUUASpeedBonus));
     }
 
     @Override

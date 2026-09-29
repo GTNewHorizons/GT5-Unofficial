@@ -1503,3 +1503,33 @@ Material.zirconia=Диоксид циркония
 Material.zirconiumtetrachloride=Тетрахлорид циркония
 Material.zirconiumtetrachloridesolution=Раствор тетрахлорида циркония
 Material.zn-thalloy=Zn-Th cплав
+
+# Material formula text
+Material.advancedglue.ChemicalFormula=Клей, прошедший химическую сертификацию!
+Material.dimensionallytranscendentstellarcatalyst.ChemicalFormula=Звёздный
+Material.electrumflux.ChemicalFormula=Формула слишком длинная...
+Material.exciteddtsc.ChemicalFormula=[-Звёздный-Звёздный-]
+Material.glue.ChemicalFormula=При создании этого материала ни одна лошадь не пострадала
+Material.uuamplifier.ChemicalFormula=Бонус эффективности/скорости генератора материи: x%s
+
+# BartWorks material formula text
+Material._null.ChemicalFormula=По умолчанию null Werkstoff
+Material.ademicsteel.ChemicalFormula=Разрыв в линии
+Material.atomicseparationcatalyst.ChemicalFormula=Ядро плавки…
+Material.bartimaeusnek.ChemicalFormula=Ты серьезно?
+Material.heavynaquadahfuel.ChemicalFormula=Всё ещё требует переработки
+Material.lightnaquadahfuel.ChemicalFormula=Этого явно мало
+Material.naquadahasphalt.ChemicalFormula=Атомные отходы
+Material.naquadahbasedliquidfuelmki.ChemicalFormula=ПЕРВЫЙ ШАГ
+Material.naquadahbasedliquidfuelmki(depleted).ChemicalFormula=ПЕРВЫЙ ШАГ (сделан)
+Material.naquadahbasedliquidfuelmkii.ChemicalFormula=ШЕСТЬДЕСЯТ МИЛЛИАРДОВ кВт-ч
+Material.naquadahbasedliquidfuelmkii(depleted).ChemicalFormula=ШЕСТЬДЕСЯТ МИЛЛИАРДОВ кВт-ч (отработано)
+Material.naquadahbasedliquidfuelmkiii.ChemicalFormula=ПЕРЕПОЛНЯЮЩАЯ МОЩЬ
+Material.naquadahbasedliquidfuelmkiii(depleted).ChemicalFormula=ПЕРЕПОЛНЯЮЩАЯ МОЩЬ (иссякла)
+Material.naquadahbasedliquidfuelmkiv.ChemicalFormula=УДАР ПО СОЛНЦУ
+Material.naquadahbasedliquidfuelmkiv(depleted).ChemicalFormula=УДАР ПО СОЛНЦУ (нанесён)
+Material.naquadahbasedliquidfuelmkv(depleted).ChemicalFormula=КОНЕЦ (буквально)
+Material.naquadahbasedliquidfuelmkvi.ChemicalFormula=БУДУЩЕЕ
+Material.naquadahbasedliquidfuelmkvi(depleted).ChemicalFormula=БУДУЩЕЕ (достигнуто)
+Material.naquadahgas.ChemicalFormula=Кому он нужен?
+Material.radioactivesludge.ChemicalFormula=>>> ОПАСНОСТЬ <<<

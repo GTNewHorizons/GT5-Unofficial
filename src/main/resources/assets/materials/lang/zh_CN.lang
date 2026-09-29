@@ -1504,3 +1504,34 @@ Material.zirconia=氧化锆
 Material.zirconiumtetrachloride=四氯化锆
 Material.zirconiumtetrachloridesolution=四氯化锆溶液
 Material.zn-thalloy=锌钍合金
+
+# Material formula text
+Material.advancedglue.ChemicalFormula=一种已认证的化学胶水！
+Material.dimensionallytranscendentstellarcatalyst.ChemicalFormula=恒星
+Material.electrumflux.ChemicalFormula=化学式太长了……
+Material.exciteddtsc.ChemicalFormula=[-恒星-恒星-]
+Material.glue.ChemicalFormula=制作过程中没有马匹被杀害
+Material.uuamplifier.ChemicalFormula=质量发生器效率/速度加成：x%s
+
+# BartWorks material formula text
+Material._null.ChemicalFormula=默认空BW材料
+Material.ademicsteel.ChemicalFormula=诗行间的休止
+Material.atomicseparationcatalyst.ChemicalFormula=融化的核心……
+Material.bartimaeusnek.ChemicalFormula=你是认真的吗？
+Material.heavynaquadahfuel.ChemicalFormula=仍需处理
+Material.lightnaquadahfuel.ChemicalFormula=还远远不够
+Material.naquadahasphalt.ChemicalFormula=原子级淘汰赛
+Material.naquadahbasedliquidfuelmki.ChemicalFormula=第一步
+Material.naquadahbasedliquidfuelmki(depleted).ChemicalFormula=第一步（已踏出）
+Material.naquadahbasedliquidfuelmkii.ChemicalFormula=六百亿千瓦时
+Material.naquadahbasedliquidfuelmkii(depleted).ChemicalFormula=六百亿千瓦时（已消耗）
+Material.naquadahbasedliquidfuelmkiii.ChemicalFormula=能量过载
+Material.naquadahbasedliquidfuelmkiii(depleted).ChemicalFormula=能量过载（已结束）
+Material.naquadahbasedliquidfuelmkiv.ChemicalFormula=射落金乌
+Material.naquadahbasedliquidfuelmkiv(depleted).ChemicalFormula=射落金乌（已完成）
+Material.naquadahbasedliquidfuelmkv.ChemicalFormula=终结
+Material.naquadahbasedliquidfuelmkv(depleted).ChemicalFormula=终结（诚然）
+Material.naquadahbasedliquidfuelmkvi.ChemicalFormula=未来
+Material.naquadahbasedliquidfuelmkvi(depleted).ChemicalFormula=未来（已至）
+Material.naquadahgas.ChemicalFormula=谁会需要这东西？
+Material.radioactivesludge.ChemicalFormula=>>> 危险 <<<
