@@ -420,7 +420,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         if (item == null) continue;
                         ItemData data = getAssociation(item);
                         Material mat = data != null ? data.mMaterial.mMaterial : null;
-                        if (mat != null && MaterialUtils.isGregTechMaterial(mat)) {
+                        if (mat != null) {
                             if (MaterialUtils.moltenOf(mat) != null) {
                                 fluidModeItems[i] = MaterialUtils.molten(mat, 1 * INGOTS);
                             } else if (MaterialUtils.fluidOf(mat) != null) {
