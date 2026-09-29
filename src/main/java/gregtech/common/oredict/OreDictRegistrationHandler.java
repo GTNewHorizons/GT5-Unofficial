@@ -53,7 +53,8 @@ import gregtech.common.config.OPStuff;
 /// A name's material side resolves in two tiers. A name naming one of GregTech's own materials
 /// ([MaterialUtils#gregTechMaterial]) resolves to it; any other name is dropped as unknown unless it is a
 /// werkstoff- or gtPlusPlus-reconstructed MaterialLib material ([#reconstructedMaterial]). What the buffered
-/// registration finally carries is decided by [#resolveCensusMaterial].
+/// registration finally carries is decided by [#resolveCensusMaterial]. A lens resolves any MaterialLib material
+/// registered under its name, so every transparent material with a dye joins that dye's `craftingLens` group.
 public final class OreDictRegistrationHandler {
 
     private OreDictRegistrationHandler() {}
@@ -333,6 +334,7 @@ public final class OreDictRegistrationHandler {
         String materialName) {
 
         if (prefix == OrePrefixes.gearGt && material == null) material = reconstructedMaterial(materialName);
+        if (prefix == OrePrefixes.lens && material == null) material = MaterialUtils.byLegacyName(materialName);
         if (prefix.isMaterialBased() && material == null) {
             return;
         }
