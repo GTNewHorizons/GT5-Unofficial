@@ -62,7 +62,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.mixin.interfaces.accessors.ShapedOreRecipeAccessor;
-import gtPlusPlus.core.recipe.RecipesGeneral;
 import ic2.api.reactor.IReactorComponent;
 
 /**
@@ -869,8 +868,7 @@ public class GTRecipeRegistrator {
                 .eut(eut)
                 .addTo(wiremillRecipes);
         }
-        boolean gtppFineWire = RecipesGeneral.WIRE_MATERIALS.contains(material);
-        if (!gtppFineWire && MaterialParts.stack(prefix1, material, 1L) != null
+        if (MaterialParts.stack(prefix1, material, 1L) != null
             && MaterialParts.stack(OrePrefixes.wireFine, material, 1L) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialParts.stack(prefix1, material, 1L))
@@ -881,7 +879,7 @@ public class GTRecipeRegistrator {
                 .eut(eut)
                 .addTo(wiremillRecipes);
         }
-        if (!gtppFineWire && MaterialParts.stack(prefix2, material, 1L) != null
+        if (MaterialParts.stack(prefix2, material, 1L) != null
             && MaterialParts.stack(OrePrefixes.wireFine, material, 1L) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialParts.stack(prefix2, material, 1L))

@@ -56,6 +56,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
+        if (RecipesGeneral.WIRE_MATERIALS.contains(material)) return;
         if (tt == TunnelType.ME) {
             try {
                 tt = TunnelType.valueOf("GT_POWER");
@@ -111,43 +112,41 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
 
                 // Assembler recipes
-                if (!RecipesGeneral.WIRE_MATERIALS.contains(material)) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(2, stack))
-                        .circuit(2)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.wireGt02, material, 1L))
-                        .duration(7 * SECONDS + 10 * TICKS)
-                        .eut(calculateRecipeEU(material, 8))
-                        .addTo(assemblerRecipes);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(4, stack))
-                        .circuit(4)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.wireGt04, material, 1L))
-                        .duration(10 * SECONDS)
-                        .eut(calculateRecipeEU(material, 8))
-                        .addTo(assemblerRecipes);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(8, stack))
-                        .circuit(8)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.wireGt08, material, 1L))
-                        .duration(15 * SECONDS)
-                        .eut(calculateRecipeEU(material, 8))
-                        .addTo(assemblerRecipes);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(12, stack))
-                        .circuit(12)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.wireGt12, material, 1L))
-                        .duration(20 * SECONDS)
-                        .eut(calculateRecipeEU(material, 8))
-                        .addTo(assemblerRecipes);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(16, stack))
-                        .circuit(16)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.wireGt16, material, 1L))
-                        .duration(25 * SECONDS)
-                        .eut(calculateRecipeEU(material, 8))
-                        .addTo(assemblerRecipes);
-                }
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(2, stack))
+                    .circuit(2)
+                    .itemOutputs(MaterialParts.stack(OrePrefixes.wireGt02, material, 1L))
+                    .duration(7 * SECONDS + 10 * TICKS)
+                    .eut(calculateRecipeEU(material, 8))
+                    .addTo(assemblerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(4, stack))
+                    .circuit(4)
+                    .itemOutputs(MaterialParts.stack(OrePrefixes.wireGt04, material, 1L))
+                    .duration(10 * SECONDS)
+                    .eut(calculateRecipeEU(material, 8))
+                    .addTo(assemblerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(8, stack))
+                    .circuit(8)
+                    .itemOutputs(MaterialParts.stack(OrePrefixes.wireGt08, material, 1L))
+                    .duration(15 * SECONDS)
+                    .eut(calculateRecipeEU(material, 8))
+                    .addTo(assemblerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(12, stack))
+                    .circuit(12)
+                    .itemOutputs(MaterialParts.stack(OrePrefixes.wireGt12, material, 1L))
+                    .duration(20 * SECONDS)
+                    .eut(calculateRecipeEU(material, 8))
+                    .addTo(assemblerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(16, stack))
+                    .circuit(16)
+                    .itemOutputs(MaterialParts.stack(OrePrefixes.wireGt16, material, 1L))
+                    .duration(25 * SECONDS)
+                    .eut(calculateRecipeEU(material, 8))
+                    .addTo(assemblerRecipes);
             }
             case "wireGt02" -> {
                 cableWidth = 2;
