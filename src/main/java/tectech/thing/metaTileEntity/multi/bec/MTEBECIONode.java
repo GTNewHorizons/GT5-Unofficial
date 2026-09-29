@@ -32,7 +32,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -928,14 +927,13 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         if (aNBT.hasKey("steps")) {
-            NBTTagList steps = aNBT.getTagList("steps", NBT.TAG_COMPOUND);
+            List<NBTTagCompound> steps = GTUtility.getCompoundTagList(aNBT, "steps");
 
             recipeSteps = new ArrayList<>();
 
             List<NaniteTier> tiers = new ArrayList<>();
 
-            // noinspection unchecked
-            for (NBTTagCompound tag : (List<NBTTagCompound>) steps.tagList) {
+            for (NBTTagCompound tag : steps) {
                 tiers.add(loadNanite(tag.getInteger("nanite")));
             }
 
