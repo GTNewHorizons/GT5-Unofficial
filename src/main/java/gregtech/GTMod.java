@@ -123,7 +123,6 @@ import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.postload.BlockResistanceLoader;
 import gregtech.loaders.postload.BookAndLootLoader;
 import gregtech.loaders.postload.CraftingRecipeLoader;
-import gregtech.loaders.postload.FluidNameMigration;
 import gregtech.loaders.postload.GTPostLoad;
 import gregtech.loaders.postload.GTWorldgenloader;
 import gregtech.loaders.postload.ItemMaxStacksizeLoader;
@@ -599,7 +598,6 @@ public class GTMod {
 
         // Register postea transformers
         new PosteaTransformers().run();
-        FluidNameMigration.register();
 
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered. Go through, execute the
