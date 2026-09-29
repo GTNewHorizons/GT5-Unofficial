@@ -18256,7 +18256,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.TIER, 2)
             .setProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER, 120L)
             .setProperty(GTMaterialProperties.BOILING_POINT, 4650)
-            .setProperty(GTMaterialProperties.DURABILITY, 51200)
+            .setProperty(GTMaterialProperties.DURABILITY, 1938)
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.GTPP_PLASMA_NAME, "plasma.zirconium")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
