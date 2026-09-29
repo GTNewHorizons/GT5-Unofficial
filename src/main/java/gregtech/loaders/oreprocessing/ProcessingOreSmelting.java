@@ -51,7 +51,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             || MaterialUtils.blastFurnaceRequired(MaterialUtils.directSmelting(material))) {
             if (MaterialUtils.blastFurnaceTemp(material) >= 1000) return;
             if (MaterialUtils.blastFurnaceTemp(MaterialUtils.directSmelting(material)) >= 1000) return;
-            if (!MaterialUtils.autoGenerateBlastFurnaceRecipes(material)) return;
+            if (!MaterialUtils.autoGenerateBlastFurnaceRecipes(material)
+                || MaterialUtils.blastFurnaceTemp(material) <= 0) return;
 
             final ItemStack output = MaterialParts.stack(OrePrefixes.ingot, material, 1L);
 

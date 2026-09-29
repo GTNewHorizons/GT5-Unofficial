@@ -150,19 +150,16 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     && (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {
                     if (MaterialUtils.blastFurnaceRequired(material)) {
                         GTModHandler.removeFurnaceSmelting(stack);
-                        if (MaterialUtils.autoGenerateBlastFurnaceRecipes(material)) {
+                        if (MaterialUtils.autoGenerateBlastFurnaceRecipes(material)
+                            && MaterialUtils.blastFurnaceTemp(material) > 0) {
                             // A material carrying the AnaerobeSmelting/NobleGasSmelting SubTag blast-smelts under
                             // a gas: BlastFurnaceWithGas fans one recipe out into a gas-input variant per
                             // BlastFurnaceGasStat, keyed on circuit 11 and the base gas amount in ADDITIVE_AMOUNT.
-                            // A gas-tagged material declared by gregtech itself also keeps the plain gasless
-                            // recipe -- only the materials the werkstoff system introduced are gas-only.
-                            boolean gasSmelting = MaterialUtils.hasSubTag(material, "AnaerobeSmelting")
-                                || MaterialUtils.hasSubTag(material, "NobleGasSmelting");
-                            if (gasSmelting) {
+                            if (MaterialUtils.hasSubTag(material, "AnaerobeSmelting")
+                                || MaterialUtils.hasSubTag(material, "NobleGasSmelting")) {
                                 blastFurnaceBuilder(material, stack, tDustStack, 11).metadata(ADDITIVE_AMOUNT, 1000)
                                     .addTo(BlastFurnaceWithGas);
-                            }
-                            if (!gasSmelting || MaterialUtils.isGregTechMaterial(material)) {
+                            } else {
                                 blastFurnaceBuilder(material, stack, tDustStack, 1).addTo(blastFurnaceRecipes);
                             }
                             // Californium is the sole blast-required material melting low enough for the
