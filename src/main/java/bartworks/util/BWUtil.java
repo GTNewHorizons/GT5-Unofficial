@@ -67,8 +67,7 @@ public class BWUtil {
         if (!ret.contains("%material")) return ret;
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack)) {
-            Material material = MaterialData.getAssociation(itemStack).mMaterial.mMaterial;
-            if (MaterialUtils.isGregTechMaterial(material)) matname = MaterialUtils.localName(material);
+            matname = MaterialUtils.localName(MaterialData.getAssociation(itemStack).mMaterial.mMaterial);
         }
         return ret.replace("%material", matname);
     }

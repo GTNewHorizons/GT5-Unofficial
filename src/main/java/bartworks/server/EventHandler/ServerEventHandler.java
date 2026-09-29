@@ -58,7 +58,6 @@ public class ServerEventHandler {
                 loop: for (int oreID : oreIDs) {
                     String oreDictName = OreDictionary.getOreName(oreID);
                     for (Material e : MaterialLibAPI.getMaterials()) {
-                        if (e.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
                         replace = Boolean.TRUE.equals(e.getProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION));
                         if (replace) {
                             String internalName = MaterialUtils.internalName(e);
