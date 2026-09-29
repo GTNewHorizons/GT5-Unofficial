@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -229,6 +230,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         final short aDamage = (short) getDamage(aStack);
+        if (aDamage == WILDCARD) return translateToLocal("gt.block.any_sub_block");
         if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length) {
             final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
             if (metaTE != null) {
