@@ -19,12 +19,9 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.util.GTUtility;
 
-/// Generates the sifter (crushed ore -> gem grade) recipe and the compressor (gem -> block) recipe for
-/// MaterialLib's gem materials -- the canonical reader of [GTMaterialProperties#HAS_SIFTER_RECIPE].
-///
-/// The compressor recipe is registered for every carrier uniformly, so for [#CARRIERS] other than RockSalt it
-/// duplicates the one [gregtech.loaders.oreprocessing.ProcessingGem] already generates. Recipe maps tolerate
-/// the duplicate entry.
+/// Generates the sifter (crushed ore -> gem grade) recipe for MaterialLib's gem materials -- the canonical reader
+/// of [GTMaterialProperties#HAS_SIFTER_RECIPE] -- and RockSalt's compressor (gem -> block) recipe, which
+/// [gregtech.loaders.oreprocessing.ProcessingGem] generates for the other carriers.
 ///
 /// [#CARRIERS] covers RockSalt, gated by [GTMaterialProperties#HAS_SIFTER_RECIPE] alone, plus the materials
 /// whose [GTMaterialProperties#WERKSTOFF_PREFIXES] list both `ore` and `dust`. Salt and Spodumene declare
@@ -61,7 +58,7 @@ public final class LoaderSifterRecipes {
                     material.getName());
                 continue;
             }
-            if (declares(material, COMPRESSOR_SHAPES)) registerCompressor(material);
+            if (material == Materials.RockSalt && declares(material, COMPRESSOR_SHAPES)) registerCompressor(material);
             if (declares(material, SIFTER_SHAPES)) registerSifter(material);
         }
     }
