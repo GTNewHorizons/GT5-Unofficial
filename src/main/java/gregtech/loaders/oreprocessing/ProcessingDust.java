@@ -42,7 +42,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
@@ -483,20 +482,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .addTo(implosionRecipes);
                     }
                         break;
-                    default: {
-                        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
-                            && !MaterialUtils.hasSubTag(material, "NoBlast")) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(4, stack))
-                                .itemOutputs(
-                                    MaterialParts.stack(OrePrefixes.gem, material, 3L),
-                                    MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 8))
-                                .duration(20 * TICKS)
-                                .eut(TierEU.RECIPE_LV)
-                                .metadata(ADDITIVE_AMOUNT, 24)
-                                .addTo(implosionRecipes);
-                        }
-                    }
                 }
             }
             case "dustPure", "dustImpure", "dustRefined" -> {

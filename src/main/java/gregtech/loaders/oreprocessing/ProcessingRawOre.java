@@ -10,8 +10,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -25,7 +23,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
@@ -211,11 +208,6 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 1L,
                 MaterialParts.stack(OrePrefixes.gem, tPrimaryByMaterial, 1),
                 GTUtility.copyAmount(1, tPrimaryByProduct));
-            if (isWerkstoffCrystal(material)) {
-                List<?> byProducts = material.getProperty(GTMaterialProperties.ORE_BYPRODUCTS);
-                secondary = MaterialParts.stack(OrePrefixes.gem, material, 1);
-                chanceOre2 = byProducts == null || byProducts.isEmpty() ? 1000 : 500;
-            }
             GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)
                 .itemOutputs(
@@ -230,15 +222,6 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .addTo(maceratorRecipes);
         }
         return true;
-    }
-
-    /// A crystal material carried over from bartworks' Werkstoff, whose raw ore macerates into its own gem as the
-    /// second output.
-    private static boolean isWerkstoffCrystal(Material material) {
-        return material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null
-            && !MaterialUtils.isGregTechMaterial(material)
-            && MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTAL)
-            && MaterialParts.stack(OrePrefixes.gem, material, 1) != null;
     }
 
 }
