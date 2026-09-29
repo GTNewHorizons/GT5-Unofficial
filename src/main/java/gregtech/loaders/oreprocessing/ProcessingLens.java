@@ -14,7 +14,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialParts;
@@ -34,8 +33,6 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (material == Materials.Salt || material == Materials.RockSalt || material == Materials.Spodumene) return;
-
         AEApi.instance()
             .registries()
             .blockingModeIgnoreItem()
