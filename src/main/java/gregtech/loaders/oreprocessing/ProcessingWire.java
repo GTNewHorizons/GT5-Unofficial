@@ -38,6 +38,7 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.recipe.RecipesGeneral;
 
 public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -110,7 +111,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
 
                 // Assembler recipes
-                {
+                if (!RecipesGeneral.WIRE_MATERIALS.contains(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(2, stack))
                         .circuit(2)

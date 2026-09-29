@@ -67,6 +67,11 @@ public class ProcessingFluidSolidifierGtpp {
         Materials.LFTRFuel3, Materials.EglinSteelBaseCompound);
     // spotless:on
 
+    /// Whether this pass generates `material`'s mold solidifier recipes.
+    public static boolean owns(Material material) {
+        return ELIGIBLE.contains(material);
+    }
+
     public static void run() {
         for (Material material : ELIGIBLE) {
             generate(material);

@@ -55,6 +55,11 @@ public class ProcessingAssemblerGtpp {
         Materials.AncientGranite, Materials.Runite);
     // spotless:on
 
+    /// Whether this pass generates `material`'s frame and rotor assembler recipes.
+    public static boolean owns(Material material) {
+        return ELIGIBLE.contains(material);
+    }
+
     public static void run() {
         for (Material material : ELIGIBLE) {
             generate(material);

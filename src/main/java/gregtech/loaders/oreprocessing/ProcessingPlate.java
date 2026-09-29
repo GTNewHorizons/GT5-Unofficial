@@ -136,7 +136,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (MaterialUtils.hasMolten(material)
-            && !(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
+            && !(material == Materials.AnnealedCopper || material == Materials.CastIron)
+            && !ProcessingFluidSolidifierGtpp.owns(material)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
                 .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
@@ -147,10 +148,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
-            GTModHandler.addCraftingRecipe(
-                MaterialParts.stack(OrePrefixes.foil, material, 2L),
-                BITS_STD,
-                new Object[] { "hX", 'X', MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+            if (!ProcessingShapedCraftingGtpp.owns(material)) {
+                GTModHandler.addCraftingRecipe(
+                    MaterialParts.stack(OrePrefixes.foil, material, 2L),
+                    BITS_STD,
+                    new Object[] { "hX", 'X', MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+            }
 
             if (material == Materials.Paper) {
                 GTModHandler.addCraftingRecipe(
@@ -167,11 +170,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             if (!noSmashing) {
 
                 if (belowTierIV) {
-                    GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.plate, material, 1L),
-                        BITS_STD,
-                        new Object[] { "h", // craftingToolHardHammer
-                            "X", "X", 'X', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
+                    if (!ProcessingShapedCraftingGtpp.owns(material)) {
+                        GTModHandler.addCraftingRecipe(
+                            MaterialParts.stack(OrePrefixes.plate, material, 1L),
+                            BITS_STD,
+                            new Object[] { "h", // craftingToolHardHammer
+                                "X", "X", 'X', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
+                    }
 
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.plate, material, 1L),
@@ -233,7 +238,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (!noSmashing) {
             Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
-            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
+            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
+                && !ProcessingShapedCraftingGtpp.owns(material)) {
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,

@@ -58,7 +58,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .addTo(GTRecipeConstants.Fuel);
                 }
                 if (MaterialUtils.hasMolten(material)
-                    && !(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
+                    && !(material == Materials.AnnealedCopper || material == Materials.CastIron)
+                    && !ProcessingFluidSolidifierGtpp.owns(material)) {
                     // Fluid solidifier recipes
 
                     GTValues.RA.stdBuilder()

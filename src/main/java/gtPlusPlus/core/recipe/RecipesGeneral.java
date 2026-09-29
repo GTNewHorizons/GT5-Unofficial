@@ -53,12 +53,15 @@ import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompress
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
+import java.util.List;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
@@ -78,6 +81,31 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 
 public class RecipesGeneral {
+
+    /// The materials this class generates wire recipes for.
+    public static final List<Material> WIRE_MATERIALS = List.of(
+        Materials.Zirconium,
+        Materials.HG1223,
+        Materials.Grisium,
+        Materials.TriniumTitaniumAlloy,
+        Materials.Hypogen,
+        Materials.ChromaticGlass,
+        Materials.Dragonblood,
+        Materials.CelestialTungsten,
+        Materials.Rhugnor);
+
+    /// The materials this class generates pipe recipes for.
+    public static final List<Material> PIPE_MATERIALS = List.of(
+        Materials.Staballoy,
+        Materials.Tantalloy60,
+        Materials.Tantalloy61,
+        Materials.Potin,
+        Materials.MaragingSteel300,
+        Materials.MaragingSteel350,
+        Materials.Inconel690,
+        Materials.Inconel792,
+        Materials.HastelloyX,
+        Materials.TriniumNaquadahCarbonite);
 
     public static void loadRecipes() {
 
@@ -316,26 +344,12 @@ public class RecipesGeneral {
     }
 
     private static void addPipesAndWires() {
-        generateWireRecipes(Materials.Zirconium);
-        generateWireRecipes(Materials.HG1223);
-        generateWireRecipes(Materials.Grisium);
-        generateWireRecipes(Materials.TriniumTitaniumAlloy);
-        generateWireRecipes(Materials.Hypogen);
-        generateWireRecipes(Materials.ChromaticGlass);
-        generateWireRecipes(Materials.Dragonblood);
-        generateWireRecipes(Materials.CelestialTungsten);
-        generateWireRecipes(Materials.Rhugnor);
-
-        generatePipeRecipes(Materials.Staballoy);
-        generatePipeRecipes(Materials.Tantalloy60);
-        generatePipeRecipes(Materials.Tantalloy61);
-        generatePipeRecipes(Materials.Potin);
-        generatePipeRecipes(Materials.MaragingSteel300);
-        generatePipeRecipes(Materials.MaragingSteel350);
-        generatePipeRecipes(Materials.Inconel690);
-        generatePipeRecipes(Materials.Inconel792);
-        generatePipeRecipes(Materials.HastelloyX);
-        generatePipeRecipes(Materials.TriniumNaquadahCarbonite);
+        for (Material material : WIRE_MATERIALS) {
+            generateWireRecipes(material);
+        }
+        for (Material material : PIPE_MATERIALS) {
+            generatePipeRecipes(material);
+        }
         generatePipeRecipes(null, MaterialUtils.localName(Materials.Clay), 15);
     }
 

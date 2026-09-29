@@ -134,7 +134,8 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
             }
 
             if (MaterialUtils.unifiable(material)) {
-                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
+                    && !ProcessingShapedCraftingGtpp.owns(material)) {
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.stick, material, 2L),
                         GTModHandler.RecipeBits.BITS_STD,

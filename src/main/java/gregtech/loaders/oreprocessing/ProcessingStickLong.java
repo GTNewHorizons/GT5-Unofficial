@@ -138,7 +138,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
             }
 
             if (MaterialUtils.unifiable(material)) {
-                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
+                    && !ProcessingShapedCraftingGtpp.owns(material)) {
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.stickLong, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,

@@ -54,6 +54,11 @@ public class ProcessingShapedCraftingGtpp {
         Materials.AncientGranite, Materials.Runite);
     // spotless:on
 
+    /// Whether this pass generates `material`'s crafting-table shape conversions.
+    public static boolean owns(Material material) {
+        return ELIGIBLE.contains(material);
+    }
+
     public static void run() {
         for (Material material : ELIGIBLE) {
             generate(material);

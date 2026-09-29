@@ -320,7 +320,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (MaterialUtils.hasMolten(material) && block != null) {
             if (!(material == Materials.AnnealedCopper || material == Materials.CastIron
                 || material == Materials.Obsidian)) {
-                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
+                    && !ProcessingFluidSolidifierGtpp.owns(material)) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Block.get(0L))

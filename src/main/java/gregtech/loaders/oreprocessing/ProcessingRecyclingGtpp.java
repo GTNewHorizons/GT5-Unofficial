@@ -9,6 +9,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.RECYCLE;
 import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 
+import java.util.List;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -80,7 +81,7 @@ public class ProcessingRecyclingGtpp {
 
     /// The frozen prefix scan order. `ingotHot` is deliberately absent.
     // spotless:off
-    private static final OrePrefixes[] PREFIXES = { OrePrefixes.ingot, OrePrefixes.nugget, OrePrefixes.plate,
+    public static final List<OrePrefixes> PREFIXES = List.of(OrePrefixes.ingot, OrePrefixes.nugget, OrePrefixes.plate,
         OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple,
         OrePrefixes.plateQuintuple, OrePrefixes.stick, OrePrefixes.stickLong, OrePrefixes.bolt, OrePrefixes.screw,
         OrePrefixes.ring, OrePrefixes.rotor, OrePrefixes.gearGt, OrePrefixes.gearGtSmall, OrePrefixes.block,
@@ -88,8 +89,13 @@ public class ProcessingRecyclingGtpp {
         OrePrefixes.cableGt12, OrePrefixes.wireFine, OrePrefixes.wireGt01, OrePrefixes.wireGt02,
         OrePrefixes.wireGt04, OrePrefixes.wireGt08, OrePrefixes.wireGt12, OrePrefixes.wireGt16, OrePrefixes.foil,
         OrePrefixes.frameGt, OrePrefixes.pipeHuge, OrePrefixes.pipeLarge, OrePrefixes.pipeMedium,
-        OrePrefixes.pipeSmall, OrePrefixes.pipeTiny, OrePrefixes.dust };
+        OrePrefixes.pipeSmall, OrePrefixes.pipeTiny, OrePrefixes.dust);
     // spotless:on
+
+    /// Whether this pass generates recycling recipes for `material`'s [#PREFIXES] shapes.
+    public static boolean owns(Material material) {
+        return ELIGIBLE.contains(material);
+    }
 
     public static void run() {
         for (Material material : ELIGIBLE) {

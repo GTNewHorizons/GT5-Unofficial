@@ -37,7 +37,8 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
             case "gearGt" -> {
                 GTModHandler.removeRecipeByOutputDelayed(stack);
                 if (MaterialUtils.hasMolten(material)) {
-                    if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
+                    if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)
+                        && !ProcessingFluidSolidifierGtpp.owns(material)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(MaterialParts.stack(prefix, material, 1L))
@@ -61,7 +62,8 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             new Object[] { "SPS", "PfP", "SPS", 'P', OrePrefixes.stoneSmooth, 'S',
                                 new ItemStack(Blocks.stone_button, 1, 32767) });
                         default -> {
-                            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
+                            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
+                                && !ProcessingShapedCraftingGtpp.owns(material)) {
                                 GTModHandler.addCraftingRecipe(
                                     MaterialParts.stack(OrePrefixes.gearGt, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,

@@ -48,7 +48,8 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
 
         if ((!MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM))
             && MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L) != null
-            && material != Materials.Aluminium) {
+            && material != Materials.Aluminium
+            && !ProcessingAlloySmelterGtpp.owns(material)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ingot.get(0L))
                 .itemOutputs(MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L))
@@ -59,7 +60,8 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         if (MaterialUtils.hasMolten(material)) {
-            if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
+            if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)
+                && !ProcessingFluidSolidifierGtpp.owns(material)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
                     .itemOutputs(MaterialParts.stack(OrePrefixes.nugget, material, 1L))
@@ -75,13 +77,17 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
             .registerReverseMacerating(stack, material, prefix.getMaterialAmount(), null, null, null, false, true);
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)
             && MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.ingot, material, 1L), ItemList.Shape_Mold_Nugget.get(0L))
-                .itemOutputs(GTUtility.copyAmount(9, stack))
-                .duration(5 * SECONDS)
-                .eut(calculateRecipeEU(material, 1))
-                .recipeCategory(RecipeCategories.alloySmelterMolding)
-                .addTo(alloySmelterRecipes);
+            if (!ProcessingAlloySmelterGtpp.owns(material)) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        MaterialParts.stack(OrePrefixes.ingot, material, 1L),
+                        ItemList.Shape_Mold_Nugget.get(0L))
+                    .itemOutputs(GTUtility.copyAmount(9, stack))
+                    .duration(5 * SECONDS)
+                    .eut(calculateRecipeEU(material, 1))
+                    .recipeCategory(RecipeCategories.alloySmelterMolding)
+                    .addTo(alloySmelterRecipes);
+            }
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV && material != Materials.Unstable) {
                 GTModHandler.addCraftingRecipe(
                     MaterialParts.stack(OrePrefixes.nugget, material, 8L),

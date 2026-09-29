@@ -26,6 +26,7 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OreDictUtils;
+import gregtech.loaders.oreprocessing.ProcessingRecyclingGtpp;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 
 /// What each item stack is made of ([ItemData]), keyed by item and damage.
@@ -194,6 +195,8 @@ public final class MaterialData {
     }
 
     private static void registerMaterialRecycling(ItemStack stack, ItemData data) {
+        if (data.hasValidPrefixMaterialData() && ProcessingRecyclingGtpp.owns(data.mMaterial.mMaterial)
+            && ProcessingRecyclingGtpp.PREFIXES.contains(data.mPrefix)) return;
         if (OreDictUtils.isInterchangeableWithTarget(stack)) {
             GTRecipeBuilder
                 .withoutRecipesTaking(stack, () -> GTRecipeRegistrator.registerMaterialRecycling(stack, data));

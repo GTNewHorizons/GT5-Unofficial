@@ -18,6 +18,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
+import gregtech.common.ores.GTOreAdapter;
 
 /// Crafting-table dust-size conversions, the four packager dust/dustSmall/dustTiny conversions, and the
 /// dust -> ingot furnace/alloy-smelter/blast-furnace recipe, for every material in [#ELIGIBLE].
@@ -78,6 +79,11 @@ public class ProcessingDustGeneration {
         // gtPlusPlus special-use dusts
         Materials.AmmoniumNitrate);
     // spotless:on
+
+    /// Whether this pass generates `material`'s dust-size conversions.
+    public static boolean owns(Material material) {
+        return ELIGIBLE.contains(material) && GTOreAdapter.isGtppFamily(material);
+    }
 
     public static void run() {
         for (Material material : ELIGIBLE) {

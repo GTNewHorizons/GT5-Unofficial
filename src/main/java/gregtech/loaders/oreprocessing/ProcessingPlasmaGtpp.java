@@ -78,6 +78,11 @@ public class ProcessingPlasmaGtpp {
         Materials.LFTRFuel3);
     // spotless:on
 
+    /// Whether this pass generates `material`'s plasma fuel and cooldown recipes.
+    public static boolean owns(Material material) {
+        return ELIGIBLE.contains(material);
+    }
+
     public static void run() {
         for (Material material : ELIGIBLE) {
             generate(material);

@@ -106,7 +106,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         ItemStack stack) {
         switch (prefix.getName()) {
             case "dust" -> {
-                if (MaterialParts.stack(OrePrefixes.dustSmall, material, 1L) != null) {
+                if (MaterialParts.stack(OrePrefixes.dustSmall, material, 1L) != null
+                    && !ProcessingDustGeneration.owns(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Schematic_Dust_Small.get(0L))
                         .itemOutputs(MaterialParts.stack(OrePrefixes.dustSmall, material, 4L))
@@ -670,7 +671,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case "dustSmall" -> {
-                if (hasDust(material)) {
+                if (hasDust(material) && !ProcessingDustGeneration.owns(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(4, stack), ItemList.Schematic_Dust.get(0L))
                         .itemOutputs(MaterialParts.stack(OrePrefixes.dust, material, 1L))
@@ -693,7 +694,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case "dustTiny" -> {
-                if (hasDust(material)) {
+                if (hasDust(material) && !ProcessingDustGeneration.owns(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Schematic_Dust.get(0L))
                         .itemOutputs(MaterialParts.stack(OrePrefixes.dust, material, 1L))

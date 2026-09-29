@@ -35,6 +35,10 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
             return;
         }
 
+        if (ProcessingShapedCraftingGtpp.owns(material)) {
+            return;
+        }
+
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(2, stack),
             GTModHandler.RecipeBits.BITS_STD,
