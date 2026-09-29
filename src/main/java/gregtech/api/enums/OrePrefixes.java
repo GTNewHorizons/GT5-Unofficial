@@ -2330,18 +2330,6 @@ public class OrePrefixes {
         return replacement;
     }
 
-    public static Material getMaterial(String oreName) {
-        return MaterialUtils.gregTechMaterial(stripPrefix(oreName));
-    }
-
-    public static Material getMaterial(String oreName, OrePrefixes prefix) {
-        return MaterialUtils.gregTechMaterial(oreName.replaceFirst(prefix.toString(), ""));
-    }
-
-    public static Material getRealMaterial(String oreName, OrePrefixes prefix) {
-        return MaterialUtils.gregTechMaterial(oreName.replaceFirst(prefix.toString(), ""));
-    }
-
     /// Removes a [Material] from [#mDisabledItems] if present.
     public void enableComponent(Material material) {
         this.mDisabledItems.remove(material);

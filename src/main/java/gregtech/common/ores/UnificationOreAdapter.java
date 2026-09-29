@@ -100,7 +100,7 @@ public class UnificationOreAdapter implements IOreAdapter {
                 ore.getName()
                     .length());
 
-            Material ml = MaterialUtils.gregTechMaterial(matName);
+            Material ml = MaterialUtils.byLegacyName(matName);
 
             if (ml == null) continue;
 
@@ -126,7 +126,7 @@ public class UnificationOreAdapter implements IOreAdapter {
                     prefix.getName()
                         .length());
 
-                Material ml = MaterialUtils.gregTechMaterial(matName);
+                Material ml = MaterialUtils.byLegacyName(matName);
 
                 if (ml == null) continue;
 

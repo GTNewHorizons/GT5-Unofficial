@@ -75,7 +75,7 @@ public class DetravOreMarkerRenderer {
     @Nullable
     private static IIconContainer resolveIcon(String materialName) {
         if (materialName == null || materialName.isEmpty()) return null;
-        Material mat = MaterialUtils.gregTechMaterial(materialName);
+        Material mat = MaterialUtils.byLegacyName(materialName);
         if (mat == null) return null;
         return GTMaterialIcons.oreBlock("ore", mat);
     }

@@ -60,7 +60,7 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
         for (ParsedOreDictName oredict : OrePrefixes.detectPrefix(stack)) {
             if (!PluginGT5VeinStat.PREFIX_WHITELIST.contains(oredict.prefix)) continue;
 
-            Material legacyMat = MaterialUtils.gregTechMaterial(oredict.material);
+            Material legacyMat = MaterialUtils.byLegacyName(oredict.material);
 
             if (legacyMat != null) {
                 isMatItem |= loadSmallOre(legacyMat);

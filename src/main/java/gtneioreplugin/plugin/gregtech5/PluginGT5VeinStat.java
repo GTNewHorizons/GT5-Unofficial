@@ -63,7 +63,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
         for (ParsedOreDictName oredict : OrePrefixes.detectPrefix(stack)) {
             if (!PREFIX_WHITELIST.contains(oredict.prefix)) continue;
 
-            Material legacyMat = MaterialUtils.gregTechMaterial(oredict.material);
+            Material legacyMat = MaterialUtils.byLegacyName(oredict.material);
 
             if (legacyMat != null) {
                 isMatItem |= loadMatchingVeins(legacyMat);

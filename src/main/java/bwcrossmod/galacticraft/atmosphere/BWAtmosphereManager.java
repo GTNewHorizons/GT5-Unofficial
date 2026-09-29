@@ -21,12 +21,10 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
@@ -94,14 +92,8 @@ public final class BWAtmosphereManager {
         String name = gas.toString();
         name = name.charAt(0) + name.substring(1)
             .toLowerCase(Locale.US);
-        Material mat = MaterialUtils.gregTechMaterial(name);
-        if (mat == null) {
-            Material bwMaterial = MaterialLibAPI.getMaterial("gregtech", name);
-            if (bwMaterial == null || bwMaterial.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) {
-                return false;
-            }
-            mat = bwMaterial;
-        }
+        Material mat = MaterialUtils.byLegacyName(name);
+        if (mat == null) return false;
         BWAtmosphereManager.addGasToWorld(worldID, mat, BWAtmosphereManager.COEFFICIENT_ARRAY[aMaxNumber - 1][aNumber]);
         return true;
     }
