@@ -1,7 +1,7 @@
 package tectech.thing.casing;
 
 import static gregtech.api.enums.GTAuthors.AuthorColen;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
@@ -24,7 +24,7 @@ public class ItemCasingsTimeAcceleration extends ItemCasings {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        if (aStack.getItemDamage() == W) return super.getItemStackDisplayName(aStack);
+        if (aStack.getItemDamage() == WILDCARD) return super.getItemStackDisplayName(aStack);
         return StatCollector.translateToLocalFormatted(
             "tt.eoh.time_dilation.name",
             WHITE + CommonValues.getLocalizedEohTierFancyNames(aStack.getItemDamage()) + RESET);
