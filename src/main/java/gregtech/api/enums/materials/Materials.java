@@ -24637,7 +24637,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .build();
         Materials.LanthanumChloride = MaterialLibAPI.newMaterial("gregtech", "LanthanumChloride", TextureSet.of("gregtech", "DULL"))
-            .addFormerName("LanthaniumChloride")
             .setTint(0xFF527066)
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
