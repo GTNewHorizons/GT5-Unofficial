@@ -48,8 +48,8 @@ public class LoaderWerkstoffRegistrations {
         BWOreAdapter.INSTANCE.registerOredict();
     }
 
-    /// The oredict entry the werkstoff part set carried beyond its own prefix names: a gem or ingot material's
-    /// storage block joins the name-keyed block group. A merged declaration is excluded, since gregtech's own part
+    /// Joins a gem or ingot material's storage block to the name-keyed block group, an entry its legacy part set
+    /// carried beyond its own prefix names. A merged declaration is excluded, since gregtech's own part
     /// registration covers it.
     private static void registerAdditionalOreDict(Material material) {
         if (material.hasShape(BlockShapes.block) && (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
