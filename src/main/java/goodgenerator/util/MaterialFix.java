@@ -1,6 +1,5 @@
 package goodgenerator.util;
 
-import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -19,7 +18,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 
 public class MaterialFix {
@@ -145,26 +143,12 @@ public class MaterialFix {
                     MaterialLibAPI.getStack(ml, Shapes.spring, 1),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { " s ", "fPx", " P ", 'P', MaterialLibAPI.getStack(ml, Shapes.stickLong, 1) });
-                GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(ml, Shapes.stickLong, 1))
-                    .circuit(1)
-                    .itemOutputs(MaterialLibAPI.getStack(ml, Shapes.spring, 1))
-                    .duration(Math.max(MaterialUtils.mass(ml) * 2, 1L) * TICKS)
-                    .eut(TierEU.RECIPE_LV / 2)
-                    .addTo(benderRecipes);
             }
             if (generatesAll(ml, OrePrefixes.springSmall, OrePrefixes.stick)) {
                 GTModHandler.addCraftingRecipe(
                     MaterialLibAPI.getStack(ml, Shapes.springSmall, 1),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { " s ", "fPx", 'P', MaterialLibAPI.getStack(ml, Shapes.stick, 1) });
-                GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(ml, Shapes.stick, 1))
-                    .circuit(1)
-                    .itemOutputs(MaterialLibAPI.getStack(ml, Shapes.springSmall, 1))
-                    .duration(Math.max(MaterialUtils.mass(ml), 1L) * TICKS)
-                    .eut(TierEU.RECIPE_LV / 2)
-                    .addTo(benderRecipes);
             }
         }
     }
