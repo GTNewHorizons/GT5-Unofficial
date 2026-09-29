@@ -28940,7 +28940,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MELTING_POINT, 725)
             .setProperty(GTMaterialProperties.BOILING_POINT, 2090)
             .setProperty(GTMaterialProperties.DURABILITY, 51200)
-            .setProperty(GTMaterialProperties.ELEMENT, "Li")
+            .setProperty(GTMaterialProperties.ELEMENT, "Li_7")
             .setProperty(GTMaterialProperties.FORMULA, "Li")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)

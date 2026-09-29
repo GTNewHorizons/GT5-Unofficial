@@ -15,7 +15,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -50,7 +49,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
@@ -260,22 +258,6 @@ public class GTPostLoad {
             }
         }
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!MaterialUtils.isGregTechMaterial(material)) continue;
-            GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(material);
-            if (scannerResult == null || scannerResult.isNotMet()) continue;
-
-            addElementScannerAndReplicatorRecipes(
-                scannerResult,
-                material,
-                MaterialParts.stack(OrePrefixes.dust, material, 1L),
-                MaterialParts.stack(OrePrefixes.cell, material, 1L));
-        }
-
-        for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MaterialUtils.isGregTechMaterial(material)) continue;
-            List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
-            if (werkstoffPrefixes == null || !werkstoffPrefixes.contains(OrePrefixes.cell.name())) continue;
-
             GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(material);
             if (scannerResult == null || scannerResult.isNotMet()) continue;
 

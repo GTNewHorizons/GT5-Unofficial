@@ -17,6 +17,7 @@ public enum Element {
     He(2, 2, 0, "Helium", false),
     He_3(2, 1, 0, "Helium-3", true),
     Li(3, 4, 0, "Lithium", false),
+    Li_7(3, 4, 0, "Lithium-7", true),
     Be(4, 5, 0, "Beryllium", false),
     B(5, 5, 0, "Boron", false),
     C(6, 6, 0, "Carbon", false),

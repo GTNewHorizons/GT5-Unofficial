@@ -6,8 +6,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -27,7 +25,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -156,14 +153,7 @@ public class ScannerHandlerLoader {
         if (tData == null) return null;
         // must be a dust or a cell
         if (tData.mPrefix != OrePrefixes.dust && tData.mPrefix != OrePrefixes.cell) return null;
-        // must be a scannable element
-        Material material = tData.mMaterial.mMaterial;
-        if (MaterialUtils.isGregTechMaterial(material)) return getElementScanResult(material);
-        // A reconstructed werkstoff element has no legacy counterpart left; the cell-bearing ones are exactly
-        // the population carrying an element.
-        List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
-        if (werkstoffPrefixes == null || !werkstoffPrefixes.contains(OrePrefixes.cell.name())) return null;
-        return getElementScanResult(material);
+        return getElementScanResult(tData.mMaterial.mMaterial);
     }
 
     /// The elemental-scanner result for a MaterialLib material, keyed on [GTMaterialProperties#ELEMENT]. Magic
