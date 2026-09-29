@@ -17,6 +17,7 @@ import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
+import gregtech.common.oredict.OreDictRegistrationHandler;
 import gregtech.common.ores.GTOreAdapter;
 
 /// Shared dispatch glue for the `Consumer*` classes in this package: each targets one [Shape] and delegates to
@@ -100,13 +101,10 @@ final class ShapeConsumerSupport {
 
     private static void dispatch(Supplier<IOreRecipeRegistrator> registrator, OrePrefixes prefix, Material material,
         ItemStack stack) {
-        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES) || prefix.isIgnored(material)) return;
+        String oreName = prefix.getName() + MaterialUtils.internalName(material);
+        if (OreDictRegistrationHandler.isIgnoredName(oreName)) return;
         registrator.get()
-            .registerOre(
-                prefix,
-                material,
-                prefix.getName() + MaterialUtils.internalName(material),
-                "materiallib",
-                stack);
+            .registerOre(prefix, material, oreName, "materiallib", stack);
     }
 }

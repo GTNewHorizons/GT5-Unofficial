@@ -215,6 +215,11 @@ public final class OreDictRegistrationHandler {
         }
     }
 
+    /// Whether GregTech generates no recipes for items under `oreName`.
+    public static boolean isIgnoredName(String oreName) {
+        return IGNORED_NAMES.contains(oreName);
+    }
+
     private static boolean handleSpecialOreRegistration(String oreName, ItemStack stack, String oreOriginPath) {
         if (IGNORED_NAMES.contains(oreName)) {
             GTLoggers.GT_ORE_DICT_LOGGER.info("{} is getting ignored via hardcode.", oreOriginPath);
