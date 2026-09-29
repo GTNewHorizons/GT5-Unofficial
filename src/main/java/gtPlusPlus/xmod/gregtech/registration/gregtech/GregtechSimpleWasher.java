@@ -22,7 +22,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.MaterialFacades;
-import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -109,16 +108,10 @@ public class GregtechSimpleWasher {
     }
 
     /// Washes each impure and purified dust back to its clean dust, for every material with ore processing other
-    /// than the [MaterialFacades] wildcards and the platinum group metals, whose dusts leave through the platinum
-    /// sludge line.
+    /// than the [MaterialFacades] wildcards.
     private static void generateDirtyDustRecipes() {
         for (Material ml : MaterialLibAPI.getMaterials()) {
             if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING) || MaterialFacades.isWildcard(ml)) {
-                continue;
-            }
-            if (ml == Materials.Platinum || ml == Materials.Osmium
-                || ml == Materials.Iridium
-                || ml == Materials.Palladium) {
                 continue;
             }
             ItemStack dustClean = convertDecomposition(MaterialParts.stack(OrePrefixes.dust, ml, 1L))[0];
