@@ -44,7 +44,8 @@ public class GTMaterialProperties {
     public static final Property<Integer> DENSITY_MULTIPLIER = Property.of("gregtech", "densityMultiplier");
     public static final Property<MaterialRef> DIRECT_SMELTING = Property.of("gregtech", "directSmelting");
     public static final Property<Integer> DURABILITY = Property.of("gregtech", "durability", 0);
-    /// The litres of this material's liquid or gas fluid one dust extracts into and solidifies from.
+    /// The litres of this material's liquid or gas form one dust extracts into and solidifies from -- see
+    /// [#HAS_CORRESPONDING_FLUID].
     public static final Property<Integer> DUST_FLUID_AMOUNT = Property.of("gregtech", "dustFluidAmount", 1000);
     public static final Property<String> DYE = Property.of("gregtech", "dye");
     public static final Property<String> ELEMENT = Property.of("gregtech", "element");
@@ -66,8 +67,11 @@ public class GTMaterialProperties {
     /// Whether a chemical-reactor recipe assembles this material's dust from its [#COMPOSITION].
     public static final Property<Boolean> HAS_CHEMICAL_RECIPE = Property.of("gregtech", "hasChemicalRecipe");
     public static final Property<Boolean> HAS_CENTRIFUGE_RECIPE = Property.of("gregtech", "hasCentrifugeRecipe", false);
+    /// Whether this material's dust extracts into and solidifies from its liquid form, [#DUST_FLUID_AMOUNT] litres
+    /// per dust.
     public static final Property<Boolean> HAS_CORRESPONDING_FLUID = Property
         .of("gregtech", "hasCorrespondingFluid", false);
+    /// [#HAS_CORRESPONDING_FLUID], for its gas form, which takes precedence over the liquid form.
     public static final Property<Boolean> HAS_CORRESPONDING_GAS = Property.of("gregtech", "hasCorrespondingGas", false);
     public static final Property<Boolean> HAS_ELECTROLYZER_RECIPE = Property
         .of("gregtech", "hasElectrolyzerRecipe", false);

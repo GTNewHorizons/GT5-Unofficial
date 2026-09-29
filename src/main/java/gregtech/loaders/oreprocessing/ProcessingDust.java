@@ -65,12 +65,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         INSTANCE = this;
     }
 
-    /// A material's own non-molten fluid: its gas form when it declares a corresponding gas, else its liquid form,
-    /// else its gas form.
-    private static FluidStack fluidFor(Material material, int amount) {
+    /// The gas or liquid form a material's dust converts to and from, [GTMaterialProperties#DUST_FLUID_AMOUNT] litres
+    /// of it, or null when the material declares no corresponding gas or fluid.
+    private static FluidStack dustFluid(Material material) {
+        int amount = material.getProperty(GTMaterialProperties.DUST_FLUID_AMOUNT);
         if (MaterialUtils.hasCorrespondingGas(material)) return MaterialUtils.gas(material, amount);
-        FluidStack liquid = MaterialUtils.fluid(material, amount);
-        return liquid != null ? liquid : MaterialUtils.gas(material, amount);
+        return MaterialUtils.hasCorrespondingFluid(material) ? MaterialUtils.fluid(material, amount) : null;
     }
 
     /// Whether a dust resolves for `material`. An ore material need not have one (ChargedCertusQuartz removes
@@ -226,7 +226,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
                 // GT's other fluid-extractor and fluid-solidifier autogen only handles the molten fluid, so a
                 // material's own liquid/gas form gets its dust extraction and solidification here.
-                FluidStack dustFluid = fluidFor(material, material.getProperty(GTMaterialProperties.DUST_FLUID_AMOUNT));
+                FluidStack dustFluid = dustFluid(material);
                 if (dustFluid != null) {
                     long fluidEut = calculateRecipeEU(material, MaterialUtils.mass(material) > 128 ? 64 : 30);
                     GTValues.RA.stdBuilder()

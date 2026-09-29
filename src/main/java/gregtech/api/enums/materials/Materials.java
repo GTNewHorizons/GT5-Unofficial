@@ -10759,6 +10759,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "∅")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(Shapes.nanite)
+            .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
             .build();
         Materials.BlackDwarfMatter = MaterialLibAPI.newMaterial("gregtech", "BlackDwarfMatter", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF000000)
@@ -10788,6 +10789,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .generateShape(Shapes.nanite)
+            .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
             .build();
         Materials.temporalFluid = MaterialLibAPI.newMaterial("gregtech", "temporalFluid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6401FF)
@@ -26921,6 +26923,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.AmmoniumTetrafluoroberyllate = MaterialLibAPI.newMaterial("gregtech", "AmmoniumTetrafluoroberyllate", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF5892CA)
@@ -27134,6 +27137,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.BerylliumHydroxide = MaterialLibAPI.newMaterial("gregtech", "BerylliumHydroxide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF215DB9)
@@ -27149,6 +27153,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "PURE_LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.BlackMetal = MaterialLibAPI.newMaterial("gregtech", "BlackMetal", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF050505)
@@ -28674,6 +28679,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.LFTRFuel2 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel2", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFB5E1B3)
@@ -28692,6 +28698,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.LFTRFuel3 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel3", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF85BB8D)
@@ -28710,6 +28717,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.LFTRFuelBase = MaterialLibAPI.newMaterial("gregtech", "LFTRFuelBase", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA3DAAD)
@@ -28927,6 +28935,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.LithiumTetrafluoroberyllateLFTB = MaterialLibAPI.newMaterial("gregtech", "LithiumTetrafluoroberyllateLFTB", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFC1DACB)
@@ -29126,6 +29135,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "GAS")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .build();
         Materials.Nichromite = MaterialLibAPI.newMaterial("gregtech", "Nichromite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF8FA8E4)
@@ -29812,6 +29822,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "GAS")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .build();
         Materials.SiliconCarbide = MaterialLibAPI.newMaterial("gregtech", "SiliconCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF283024)
@@ -30230,6 +30241,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "GAS")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .build();
         Materials.Thallium = MaterialLibAPI.newMaterial("gregtech", "Thallium", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFFAFAFAF)
@@ -30300,6 +30312,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.Titanite = MaterialLibAPI.newMaterial("gregtech", "Titanite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF6B7799)
@@ -30630,6 +30643,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.UraniumTetrafluoride = MaterialLibAPI.newMaterial("gregtech", "UraniumTetrafluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA4EDA9)
@@ -30648,6 +30662,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.WatertightSteel = MaterialLibAPI.newMaterial("gregtech", "WatertightSteel", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF7878B4)
@@ -30871,6 +30886,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.Zirconolite = MaterialLibAPI.newMaterial("gregtech", "Zirconolite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFFAAC1CE)
