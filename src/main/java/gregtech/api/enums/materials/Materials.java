@@ -12738,6 +12738,7 @@ public class Materials {
         Materials.Steam = MaterialLibAPI.newMaterial("gregtech", "Steam", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
+            .setProperty(GTMaterialProperties.MELTING_POINT, 27)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Steam")
             .build();
         Materials.Water = MaterialLibAPI.newMaterial("gregtech", "Water", TextureSet.of("gregtech", "FLUID"))
