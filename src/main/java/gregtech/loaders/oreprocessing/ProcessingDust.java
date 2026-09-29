@@ -41,6 +41,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
@@ -476,7 +477,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                         break;
                     default: {
-                        if (MaterialParts.stack(OrePrefixes.gem, material, 1L) != null
+                        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
                             && !MaterialUtils.hasSubTag(material, "NoBlast")) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(4, stack))

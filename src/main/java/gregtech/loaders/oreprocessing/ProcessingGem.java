@@ -61,6 +61,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean specialRecipeReq = MaterialUtils.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE);
         boolean fuelPower = MaterialUtils.fuelPower(material) > 0;
         boolean unifiable = MaterialUtils.unifiable(material);
+        boolean implodable = !MaterialUtils.hasSubTag(material, "NoBlast");
 
         // Nether quartz is skipped due to its 4:1 ratio.
         if (material == Materials.NetherQuartz) return;
@@ -211,7 +212,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 } else {
                     if (unifiable) {
                         // Implosion compressor recipes
-                        if (MaterialParts.stack(OrePrefixes.gemFlawless, material, 1) != null) {
+                        if (implodable && MaterialParts.stack(OrePrefixes.gemFlawless, material, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(3, stack))
                                 .itemOutputs(
@@ -304,7 +305,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (unifiable) {
                         // Implosion compressor recipes
                         {
-                            if (MaterialParts.stack(OrePrefixes.gemFlawed, material, 1) != null) {
+                            if (implodable && MaterialParts.stack(OrePrefixes.gemFlawed, material, 1) != null) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(3, stack))
                                     .itemOutputs(
@@ -408,7 +409,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (unifiable) {
                         // Implosion compressor recipes
                         {
-                            if (MaterialParts.stack(OrePrefixes.gem, material, 1) != null) {
+                            if (implodable && MaterialParts.stack(OrePrefixes.gem, material, 1) != null) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(3, stack))
                                     .itemOutputs(
@@ -488,7 +489,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (unifiable) {
                         // Implosion compressor recipes
                         {
-                            if (MaterialParts.stack(OrePrefixes.gemExquisite, material, 1) != null) {
+                            if (implodable && MaterialParts.stack(OrePrefixes.gemExquisite, material, 1) != null) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(3, stack))
                                     .itemOutputs(
