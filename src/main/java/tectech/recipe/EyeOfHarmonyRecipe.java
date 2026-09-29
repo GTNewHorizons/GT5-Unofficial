@@ -37,6 +37,7 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ores.GTOreAdapter;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
@@ -546,15 +547,17 @@ public class EyeOfHarmonyRecipe {
         } else outputMap.add(Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
     }
 
-    /// Accumulates a vein material's dust yield. Only a gregtech-declared or werkstoff-origin material
-    /// contributes.
+    /// Accumulates a vein material's dust yield: gtPlusPlus ore materials through [#processHelperGTpp], every
+    /// other gregtech-declared or werkstoff-origin material through [#processHelper].
     public static void processHelperIfPossible(HashMapHelper outputMap, @Nullable Material material,
         double mainMultiplier, double probability) {
         if (material == null) return;
-        if (MaterialUtils.isGregTechMaterial(material)
+        if (GTOreAdapter.isGtppFamily(material)) {
+            processHelperGTpp(outputMap, material, mainMultiplier, probability);
+        } else if (MaterialUtils.isGregTechMaterial(material)
             || material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
-            processHelper(outputMap, material, mainMultiplier, probability);
-        }
+                processHelper(outputMap, material, mainMultiplier, probability);
+            }
     }
 
     private static ArrayList<Pair<Object, Long>> processDimension(
