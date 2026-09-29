@@ -278,6 +278,15 @@ public class AdditionalRecipes {
                 .metadata(FUEL_VALUE, otherFuel.getRight())
                 .addTo(BartWorksRecipeMaps.acidGenFuels);
         }
+        List<Pair<Fluid, Integer>> fluidOnlyFuels = Arrays.asList(
+            ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 320),
+            ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrogenChloride, 224));
+        for (Pair<Fluid, Integer> fuel : fluidOnlyFuels) {
+            GTValues.RA.stdBuilder()
+                .fluidInputs(new FluidStack(fuel.getLeft(), 1000))
+                .metadata(FUEL_VALUE, fuel.getRight())
+                .addTo(BartWorksRecipeMaps.acidGenFuels);
+        }
     }
 
     public static void run() {
