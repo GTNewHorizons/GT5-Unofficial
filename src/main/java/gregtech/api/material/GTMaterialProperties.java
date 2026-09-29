@@ -81,8 +81,6 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_GLOWING_ORE = Property.of("gregtech", "hasGlowingOre");
     /// Whether the auto-generated Mixer recipe (from [#COMPOSITION] plus [#MIX_CIRCUIT]) should be built.
     public static final Property<Boolean> HAS_MIXER_RECIPE = Property.of("gregtech", "hasMixerRecipe");
-    /// Whether the auto-generated Sifter recipe (crushed ore -> gem grades) should be built.
-    public static final Property<Boolean> HAS_SIFTER_RECIPE = Property.of("gregtech", "hasSifterRecipe");
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage", 0f);
     /// Whether the material is radioactive, unifying the legacy bartworks material's own radioactivity flag and
     /// `Material.isRadioactive`.

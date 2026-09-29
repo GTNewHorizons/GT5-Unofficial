@@ -21,7 +21,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
-import gregtech.loaders.materialrecipes.LoaderSifterRecipes;
 
 public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -97,11 +96,8 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     break;
                 }
 
-                // Coal has an override elsewhere, LoaderSifterRecipes owns its carriers' sifter recipe, and
-                // Salt and Spodumene deliberately have none.
-                if (material == Materials.Coal || material == Materials.Salt
-                    || material == Materials.Spodumene
-                    || LoaderSifterRecipes.ownsSifterRecipe(material)) return;
+                // Coal has an override elsewhere, and Salt and Spodumene deliberately have none.
+                if (material == Materials.Coal || material == Materials.Salt || material == Materials.Spodumene) return;
 
                 switch (MaterialUtils.internalName(material)) {
                     case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" -> GTValues.RA
