@@ -327,6 +327,7 @@ public final class OreDictRegistrationHandler {
     private static void handleSpecialRegistration(ItemStack stack, OrePrefixes prefix, @Nullable Material material,
         String materialName) {
 
+        if (prefix == OrePrefixes.gearGt && material == null) material = reconstructedMaterial(materialName);
         if (prefix.isMaterialBased() && material == null) {
             return;
         }
