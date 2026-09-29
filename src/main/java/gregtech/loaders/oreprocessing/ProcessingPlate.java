@@ -52,6 +52,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -431,6 +432,18 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         final long materialMass) {
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
+        if (isGtppMaterial(material)) {
+            int compressionTier = GTValues.VP[Math.max(1, MaterialUtils.tier(material))] >= TierEU.RECIPE_UEV ? 2 : 1;
+            GTValues.RA.stdBuilder()
+                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 64))
+                .itemOutputs(GTUtility.copyAmount(1, stack))
+                .duration(Math.max(materialMass * 4L, 1L))
+                .eut(MaterialUtils.voltageMultiplier(material))
+                .metadata(COMPRESSION_TIER, compressionTier)
+                .addTo(compressorRecipes);
+            return;
+        }
+
         if (!noSmashing || MaterialUtils.hasFlag(material, GTMaterialFlag.STRETCHY)) {
             int compression_tier = (MaterialUtils.processingMaterialTierEU(material) >= TierEU.RECIPE_UEV
                 || MaterialUtils.hasFlag(material, GTMaterialFlag.BLACK_HOLE)) ? 2 : 1;
@@ -626,4 +639,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 // or copy Block texture
                 TextureFactory.of(Block.getBlockFromItem(tStack.getItem()), tStack.getItemDamage()));
     }
+
+    /// A material carried over from gtPlusPlus, whose superdense plate compresses at its own voltage tier and
+    /// voltage multiplier.
+    private static boolean isGtppMaterial(Material material) {
+        return material.getProperty(GTMaterialProperties.GTPP_STATE) != null
+            && material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null
+            && !MaterialUtils.isGregTechMaterial(material);
+    }
+
 }
