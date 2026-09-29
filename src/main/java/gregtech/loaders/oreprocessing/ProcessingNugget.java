@@ -76,9 +76,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)
             && MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialParts.stack(OrePrefixes.ingot, material, 1L),
-                    ItemList.Shape_Mold_Nugget.get(0L))
+                .itemInputs(MaterialParts.stack(OrePrefixes.ingot, material, 1L), ItemList.Shape_Mold_Nugget.get(0L))
                 .itemOutputs(GTUtility.copyAmount(9, stack))
                 .duration(5 * SECONDS)
                 .eut(calculateRecipeEU(material, 1))

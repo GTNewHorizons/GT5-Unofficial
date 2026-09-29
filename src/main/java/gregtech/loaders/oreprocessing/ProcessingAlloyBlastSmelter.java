@@ -19,10 +19,10 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.material.MaterialRefStack;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
@@ -136,8 +136,8 @@ public class ProcessingAlloyBlastSmelter {
         }
     }
 
-    private static void composite(Material material, List<MaterialRefStack> composites, int totalParts,
-        long voltage, int duration) {
+    private static void composite(Material material, List<MaterialRefStack> composites, int totalParts, long voltage,
+        int duration) {
         int count = composites.size();
         ItemStack[] items = new ItemStack[count];
         FluidStack componentFluid = null;

@@ -689,8 +689,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 2) },
             new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, 144 * 10),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTCC, FluidShapes.fluidLiquid, 5_000),
-                MaterialUtils.plasma(Materials.Neptunium, 500),
-                MaterialUtils.plasma(Materials.Fermium, 500) },
+                MaterialUtils.plasma(Materials.Neptunium, 500), MaterialUtils.plasma(Materials.Fermium, 500) },
             GregtechItemList.NeutronPulseManipulator.get(1),
             60 * 20,
             (int) TierEU.RECIPE_UEV);
@@ -708,8 +707,7 @@ public class RecipeLoaderChemicalSkips {
                 ItemList.StableAdhesive.get(4) },
             new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, 144 * 12),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTPC, FluidShapes.fluidLiquid, 5_000),
-                MaterialUtils.plasma(Materials.Neptunium, 2_500),
-                MaterialUtils.plasma(Materials.Fermium, 2_500) },
+                MaterialUtils.plasma(Materials.Neptunium, 2_500), MaterialUtils.plasma(Materials.Fermium, 2_500) },
             GregtechItemList.CosmicFabricManipulator.get(1),
             75 * 20,
             (int) TierEU.RECIPE_UIV);
@@ -727,8 +725,7 @@ public class RecipeLoaderChemicalSkips {
                 ItemList.SuperconductorComposite.get(4) },
             new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, 144 * 15),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, 5_000),
-                MaterialUtils.plasma(Materials.Neptunium, 10_000),
-                MaterialUtils.plasma(Materials.Fermium, 10_000) },
+                MaterialUtils.plasma(Materials.Neptunium, 10_000), MaterialUtils.plasma(Materials.Fermium, 10_000) },
             GregtechItemList.InfinityInfusedManipulator.get(1),
             90 * 20,
             (int) TierEU.RECIPE_UMV);
@@ -745,8 +742,7 @@ public class RecipeLoaderChemicalSkips {
                 ItemList.NaquadriaSupersolid.get(4) },
             new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, 5_000),
-                MaterialUtils.plasma(Materials.Neptunium, 20_000),
-                MaterialUtils.plasma(Materials.Fermium, 20_000) },
+                MaterialUtils.plasma(Materials.Neptunium, 20_000), MaterialUtils.plasma(Materials.Fermium, 20_000) },
             GregtechItemList.SpaceTimeContinuumRipper.get(1),
             60 * 20,
             (int) TierEU.RECIPE_UXV);

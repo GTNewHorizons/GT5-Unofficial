@@ -253,10 +253,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     long tDensityMultiplier = MaterialUtils.density(material) > 3628800L
                         ? MaterialUtils.density(material) / 3628800L
                         : 1L;
-                    int outputSlots = MaterialUtils.hasElectrolyzerRecipe(material)
-                        && tMaterialList.stream()
-                            .filter(tMat -> tMat.mAmount > 0L)
-                            .count() > 6 ? 9 : 6;
+                    long tEntryCount = tMaterialList.stream()
+                        .filter(tMat -> tMat.mAmount > 0L)
+                        .count();
+                    int outputSlots = MaterialUtils.hasElectrolyzerRecipe(material) && tEntryCount > 6 ? 9 : 6;
                     ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : tMaterialList) if (tMat.mAmount > 0L) {
                         tDustStack = GTUtility
