@@ -22,7 +22,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -245,11 +244,6 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     @Override
     public int getDamageToComponent(ItemStack itemStack) {
         return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
     }
 
     @Override
@@ -529,7 +523,15 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         storedIsotope = aNBT.getDouble("storedIsotope");
         storedProduct = aNBT.getDouble("storedProduct");
 
-        pendingInputs.addAll(GTUtility.loadItemList(aNBT.getTagList("pendingInputs", Constants.NBT.TAG_COMPOUND)));
+        List<NBTTagCompound> list = GTUtility.getCompoundTagList(aNBT, "pendingInputs");
+
+        for (NBTTagCompound tag : list) {
+            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+
+            if (GTUtility.isStackInvalid(stack)) continue;
+
+            pendingInputs.add(stack);
+        }
 
         GTRecipe recipe = getRecipeMap().findRecipeQuery()
             .caching(false)
