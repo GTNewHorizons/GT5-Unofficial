@@ -1,13 +1,24 @@
 # Creative ItemGroup Tab
+itemGroup.GregTech.Casings=Корпуса
 itemGroup.GregTech.GTPP_BLOCKS=GT++: Блоки
 itemGroup.GregTech.GTPP_MACHINES=GT++: Механизмы
 itemGroup.GregTech.GTPP_MISC=GT++: Разное
 itemGroup.GregTech.GTPP_OTHER=GT++: Другое
 itemGroup.GregTech.GTPP_OTHER_2=GT++: Другое II
 itemGroup.GregTech.GTPP_TOOLS=GT++: Инструменты
+itemGroup.GregTech.GT_DETRAV_TAB=Detrav сканер
 itemGroup.GregTech.Main=Основное
 itemGroup.GregTech.Materials=Материалы
 itemGroup.GregTech.Ores=Руды
+
+# Enchantments
+enchantment.damage.endermen=Разъединение
+enchantment.damage.radioactivity=Радиоактивность
+enchantment.protection.hazmat=Защита от опасных веществ
+
+# GT++ bee combs
+gtplusplus.comb.dragonblood=Соты драконьей крови
+gtplusplus.comb.force=Форсовые соты
 
 # Components
 gt.oreprefix.block_of_material=%s [Блок]
@@ -1167,6 +1178,7 @@ gt.behaviour.lighter.uses=Осталось использований: %s
 gt.behaviour.cover_copy_paste=Может копировать и вставлять данные модулей.
 gt.behaviour.cover_copy_paste.store=Сохранённые данные модуля:
 gt.runfastertooltip=Вы можете идти быстрее по этому блоку
+gt.laserplate.name=Лазероустойчивая пластина
 gt.laserplatingtooltip=Разработан для работы в экстремальных температурах
 
 # Tooltip info of tile-entities
@@ -7008,6 +7020,8 @@ entity.gregtech.GT_Entity_Arrow.name= стрела GregTech
 
 # Fluids
 fluid.aniline=Анилин
+fluid.barnadafisarboriatorisfluid=Колония Barnadafis Arboriatoris
+fluid.binnibacteriafluid=Колония Binni Bacteria
 fluid.bioethanol=Биоэтанол
 fluid.biomass=Биомасса
 fluid.boricacid=Борная кислота
@@ -7078,6 +7092,7 @@ fluid.fluid.hydrogenperoxide=Перекись водорода
 fluid.fluid.impurelifbef2=Нечистая расплавленная солевая основа
 fluid.fluid.kerosene=Керосин
 fluid.fluid.liquidhydrogen=Жидкий водород
+fluid.fluid.lithiumperoxide=Пероксид лития
 fluid.fluid.monomethylhydrazine=Монометилгидразин
 fluid.fluid.naphthalene=Нафталин
 fluid.fluid.nitrogentetroxide=Тетраоксид азота
@@ -7113,6 +7128,7 @@ fluid.leadzincsolution=Свинцово-цинковый раствор
 fluid.liquid_drillingfluid=Буровой раствор
 fluid.liquid_sodium=Жидкий натрий
 fluid.liquidresin=Жидкая смола
+fluid.lithiumhydroxide=Гидроксид лития
 fluid.mobessence=Моб эссенция
 fluid.mud.red.slurry=Жидкий красный шлам
 fluid.nitrobenzene=Нитробензол
@@ -7245,6 +7261,7 @@ fluid.steam=Пар
 fluid.sulfuricapatite=Апатит-сульфатная смесь
 fluid.sulfuriclithium=Литий-сульфатная смесь
 fluid.sulfurousacid=Сернистая кислота
+fluid.tcetieisfucusserratusfluid=Колония TCetiEis Fucus Serratus
 fluid.ureamix=Смесь мочевины
 fluid.uuamplifier=Катализатор материи
 fluid.wet.concrete=Жидкий бетон
