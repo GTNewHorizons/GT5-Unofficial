@@ -20210,6 +20210,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.TungstenSteel), 12L), new MaterialRefStack(MaterialRef.of(() -> Materials.HSSE), 9L), new MaterialRefStack(MaterialRef.of(() -> Materials.HSSG), 6L), new MaterialRefStack(MaterialRef.of(() -> Materials.Ruridit), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.MagnetoResonatic), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Plutonium), 1L)))
+            .setProperty(GTMaterialProperties.SUB_TAGS, List.of("NobleGasSmelting"))
             .setProperty(GTMaterialProperties.FORMULA, "((Fe₅C)W)₁₂((((Fe₅C)W)₅CrMo₂V)₆CoMnSi)₉(((Fe₅C)W)₅CrMo₂V)₆(Ru₂Ir)₃((Si₅O₁Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅C)₂Pu")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
