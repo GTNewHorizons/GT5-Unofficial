@@ -28,7 +28,7 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (material == null) return;
+        if (material == null || !ProcessingToolHead.generatesTools(material)) return;
 
         if ((material == Materials.Stone) || (material == Materials.Flint)) {
             return;

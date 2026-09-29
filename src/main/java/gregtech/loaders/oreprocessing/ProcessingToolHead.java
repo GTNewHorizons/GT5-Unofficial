@@ -21,6 +21,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -39,6 +40,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
+        if (!generatesTools(material)) return;
         boolean unifiable = MaterialUtils.unifiable(material);
         boolean specialRecipeReq1 = unifiable && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean specialRecipeReq2 = unifiable && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);
@@ -1212,13 +1214,15 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
 
                 // Wrench Special Condition
+                Material tipFittings = isWerkstoffMaterial(material) ? MaterialUtils.handleMaterial(material)
+                    : Materials.Steel;
                 if (specialRecipeReq2) GTModHandler.addCraftingRecipe(
                     MaterialParts.stack(OrePrefixes.toolHeadWrench, material, 1L),
                     GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "hXW", "XRX", "WXd", 'X', MaterialParts.craftIngredient(OrePrefixes.plate, material),
-                        'S', MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Steel), 'R',
-                        MaterialParts.craftIngredient(OrePrefixes.ring, Materials.Steel), 'W',
-                        MaterialParts.craftIngredient(OrePrefixes.screw, Materials.Steel) });
+                        'S', MaterialParts.craftIngredient(OrePrefixes.plate, tipFittings), 'R',
+                        MaterialParts.craftIngredient(OrePrefixes.ring, tipFittings), 'W',
+                        MaterialParts.craftIngredient(OrePrefixes.screw, tipFittings) });
             }
             case "toolHeadHammer", "toolHeadMallet" -> {
                 if (MaterialParts.stack(OrePrefixes.stick, MaterialUtils.handleMaterial(material), 1L) != null) {
@@ -1345,5 +1349,17 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
             }
             default -> {}
         }
+    }
+
+    /// Whether tool recipes are generated for `material`: not for a material carried over from bartworks' Werkstoff
+    /// that declares no tool stats, which includes Hafnium, whose durability is its gtPlusPlus declaration's default.
+    static boolean generatesTools(Material material) {
+        if (!isWerkstoffMaterial(material)) return true;
+        return MaterialUtils.durability(material) > 0 && material != Materials.Hafnium;
+    }
+
+    private static boolean isWerkstoffMaterial(Material material) {
+        return material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null
+            && !MaterialUtils.isGregTechMaterial(material);
     }
 }
