@@ -32,9 +32,6 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
-        if (ProcessingOreMachine.owns(material)) {
-            return;
-        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))

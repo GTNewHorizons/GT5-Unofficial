@@ -16022,6 +16022,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.DUST, GTMaterialGenerationFlag.ORE))
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.FORMULA, "CeCFO₃")
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.Garnierite = MaterialLibAPI.newMaterial("gregtech", "Garnierite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF32C846)
@@ -26854,6 +26855,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "CdCaCu₇As₄O₂₁H₁₁")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.AgarditeLa = MaterialLibAPI.newMaterial("gregtech", "AgarditeLa", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF968BB6)
@@ -26868,6 +26871,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "LaCaCu₅As₂O₁₉H₁")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lanthanum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.AgarditeNd = MaterialLibAPI.newMaterial("gregtech", "AgarditeNd", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF9085AF)
@@ -26882,6 +26887,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "NdCaCu₆As₆O₂₁H₁₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Neodymium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.AgarditeY = MaterialLibAPI.newMaterial("gregtech", "AgarditeY", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFA49EC3)
@@ -26896,6 +26903,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "YCaCu₅As₆O₂₁H₁₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Yttrium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Alburnite = MaterialLibAPI.newMaterial("gregtech", "Alburnite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFD8D86E)
@@ -26910,6 +26919,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Au₈GeTe₂S₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Gold), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Germanium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.AmmoniumBifluoride = MaterialLibAPI.newMaterial("gregtech", "AmmoniumBifluoride", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF5587EC)
@@ -26976,6 +26987,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L)))
             .build();
         Materials.Arcanite = MaterialLibAPI.newMaterial("gregtech", "Arcanite", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFF798A6E)
@@ -27121,6 +27133,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ba₃₂RaS₁₆O₁₅")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Radium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.BerylliumFluoride = MaterialLibAPI.newMaterial("gregtech", "BerylliumFluoride", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFB1D9B1)
@@ -27384,6 +27398,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ce₉La₉Ca₉Mg₃Fe₃Si₇O₂H₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Lanthanum), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.ChloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "ChloroaceticAcid", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFE6C85A)
@@ -27487,6 +27504,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Hg₁₃N₇H₃O₂Cl₈Br₈")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.CopperIISulfate = MaterialLibAPI.newMaterial("gregtech", "CopperIISulfate", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFC8C8C8)
@@ -27531,6 +27550,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Pb₂Cr₂O₃Cs")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lead), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chrome), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.CryoliteF = MaterialLibAPI.newMaterial("gregtech", "CryoliteF", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF7F97D7)
@@ -27545,6 +27566,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Na₃AlF₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Aluminium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Curium = MaterialLibAPI.newMaterial("gregtech", "Curium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFAF556E)
@@ -27626,6 +27649,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Bi₁₃S₁₁Br")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.DichloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "DichloroaceticAcid", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFBEA03C)
@@ -27830,6 +27855,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "SmAl₃PO₁H₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Samarium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Aluminium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.Fluorcaphite = MaterialLibAPI.newMaterial("gregtech", "Fluorcaphite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF9FB69D)
@@ -27844,6 +27872,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ca₅(SrO)₅Ce₅Na₅P₃O₁₂F₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.FluorinatedUraniumHexafluorideFUF6 = MaterialLibAPI.newMaterial("gregtech", "FluorinatedUraniumHexafluorideFUF6", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA4EDA9)
@@ -27899,6 +27930,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ca₈F₁₆Fe₂C")
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L)))
             .build();
         // spotless:on
     }
@@ -27918,6 +27950,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ce₄Er₂La₂Nd₂Y₂GdBe₂Si₇O₁₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Erbium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.GadoliniteY = MaterialLibAPI.newMaterial("gregtech", "GadoliniteY", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF6C9979)
@@ -27932,6 +27967,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ce₂Er₂La₂Nd₂Y₄Gd₂Be₃Si₄O₉")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Erbium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.Geikielite = MaterialLibAPI.newMaterial("gregtech", "Geikielite", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFF9E99D5)
@@ -27946,6 +27984,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "MgTiO₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Magnesium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Titanium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Germanium = MaterialLibAPI.newMaterial("gregtech", "Germanium", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFFC8C8C8)
@@ -27994,6 +28034,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "CdS")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Grisium = MaterialLibAPI.newMaterial("gregtech", "Grisium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF355D6A)
@@ -28274,6 +28316,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "CaCeAl₁₂Ti₁₂Mg₁₂O₁₉")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.Honeaite = MaterialLibAPI.newMaterial("gregtech", "Honeaite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFFD5D58A)
@@ -28288,6 +28333,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Au₃TlTe₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Gold), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Thallium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.HydrogenChlorideMix = MaterialLibAPI.newMaterial("gregtech", "HydrogenChlorideMix", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF7F7FFF)
@@ -28591,6 +28638,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "IrRuRhPtAsSO")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iridium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Ruthenium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Kashinite = MaterialLibAPI.newMaterial("gregtech", "Kashinite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFDCDC9B)
@@ -28605,6 +28654,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ir₂Rh₂S₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iridium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Rhodium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Koboldite = MaterialLibAPI.newMaterial("gregtech", "Koboldite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF50D2FF)
@@ -28627,6 +28678,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.GTPP_STATE, "SOLID")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 1450)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Nickel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Thaumium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.LFTRFuel1 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel1", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFB5E7B1)
@@ -28739,6 +28792,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "ClBrTl")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Thallium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.LanthaniteCe = MaterialLibAPI.newMaterial("gregtech", "LanthaniteCe", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF5E8BD3)
@@ -28753,6 +28808,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ce₂C₃O₁₇H₁₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.LanthaniteLa = MaterialLibAPI.newMaterial("gregtech", "LanthaniteLa", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF6278D1)
@@ -28767,6 +28825,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "La₂C₃O₁₇H₁₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lanthanum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.LanthaniteNd = MaterialLibAPI.newMaterial("gregtech", "LanthaniteNd", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF586FC8)
@@ -28781,6 +28841,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Nd₂C₃O₁₇H₁₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Neodymium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Laurenium = MaterialLibAPI.newMaterial("gregtech", "Laurenium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFF4A8FF)
@@ -28825,6 +28887,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "CaI₂O₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iodine), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Lepersonnite = MaterialLibAPI.newMaterial("gregtech", "Lepersonnite", TextureSet.of("gregtech", "EMERALD"))
             .setTint(0xFF56A597)
@@ -28839,6 +28903,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "CaYb₃Gd₂Dy₂(U₂₃₅)₂O₂₉H₂₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Ytterbium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Lithium7 = MaterialLibAPI.newMaterial("gregtech", "Lithium7", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE1DCFF)
@@ -29017,6 +29083,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Pd₁₁Te₂Se₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Palladium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tellurium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.MutatedLivingSolder = MaterialLibAPI.newMaterial("gregtech", "MutatedLivingSolder", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF936D9B)
@@ -29097,6 +29165,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "NiCoFe₃Al₂Cr₂O₈")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Nickel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Cobalt), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.NiobiumCarbide = MaterialLibAPI.newMaterial("gregtech", "NiobiumCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFCDC5BF)
@@ -29209,6 +29279,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "S₅Ag₄I₂Hg₅Br₂Cl₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silver), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.PhosphorousUraniumHexafluoridePUF6 = MaterialLibAPI.newMaterial("gregtech", "PhosphorousUraniumHexafluoridePUF6", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC2F370)
@@ -29338,6 +29410,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "YCaCe(U₂₃₅)ThTi₂Nb₂Ta₂O₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Yttrium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.Potin = MaterialLibAPI.newMaterial("gregtech", "Potin", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFC99781)
@@ -29456,6 +29531,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Rn₂Ra(U₂₃₅)U₁Th₂₅(Th)₄(Ca₅(SrO)₅Ce₅Na₅P₃O₁₂F₆)₆(Y₂Fe₁(U₂₃₅)₂Th₃Nb₂Ta₃)₈(Ca₂Ti₂Si₂ThO₁)₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Radium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Uranium235), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Radium = MaterialLibAPI.newMaterial("gregtech", "Radium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFA5A5A5)
@@ -29509,6 +29586,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "??????")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NetherQuartz), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Yttrium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.RareEarthII = MaterialLibAPI.newMaterial("gregtech", "RareEarthII", TextureSet.of("gregtech", "FIERY"))
             .setTint(0xFF92A4BD)
@@ -29526,6 +29605,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "??????")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Runite), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Neodymium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.RareEarthIII = MaterialLibAPI.newMaterial("gregtech", "RareEarthIII", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF94A788)
@@ -29543,6 +29624,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "??????")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Erbium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Rhenium = MaterialLibAPI.newMaterial("gregtech", "Rhenium", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFF969696)
@@ -29672,6 +29755,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Y₂Fe₁(U₂₃₅)₂Th₃Nb₂Ta₃")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Yttrium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.SamarskiteYb = MaterialLibAPI.newMaterial("gregtech", "SamarskiteYb", TextureSet.of("gregtech", "FIERY"))
             .setTint(0xFF65AD86)
@@ -29686,6 +29771,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Yb₂Fe₉(U₂₃₅)₃Th₂Nb₃Ta₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Ytterbium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.SeleniousAcid = MaterialLibAPI.newMaterial("gregtech", "SeleniousAcid", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF3F60D7)
@@ -30262,6 +30349,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ca₂Ti₂Si₂ThO₁")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Titanium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Titansteel = MaterialLibAPI.newMaterial("gregtech", "Titansteel", TextureSet.of("gregtech", "GEM_HORIZONTAL"))
             .setTint(0xFF7A5D5C)
@@ -30657,6 +30746,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Y₂Yb₂Er₂EuP₂O₈")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Yttrium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Ytterbium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Yttriaite = MaterialLibAPI.newMaterial("gregtech", "Yttriaite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF80B8D0)
@@ -30671,6 +30762,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "YO₃Fe₄SnN₂")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Yttrium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Yttrialite = MaterialLibAPI.newMaterial("gregtech", "Yttrialite", TextureSet.of("gregtech", "RUBY"))
             .setTint(0xFF466E7D)
@@ -30685,6 +30778,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Y₂Th₂Si₂O₇")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Yttrium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Yttrocerite = MaterialLibAPI.newMaterial("gregtech", "Yttrocerite", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFFD5F0D8)
@@ -30699,6 +30794,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "CeCaF₅Y")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.Zeron100 = MaterialLibAPI.newMaterial("gregtech", "Zeron100", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB4B414)
@@ -30745,6 +30843,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ca₂K₂PbAs₄Nb₄Ta₄Ti₄O₁₈")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Lead), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Zircon = MaterialLibAPI.newMaterial("gregtech", "Zircon", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFF6988A1)
@@ -30759,6 +30859,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "ZrSiO₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.ZirconiumCarbide = MaterialLibAPI.newMaterial("gregtech", "ZirconiumCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFDECAB4)
@@ -30820,6 +30922,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ca₂Zr₂Ti₄CeO₁₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         Materials.Zircophyllite = MaterialLibAPI.newMaterial("gregtech", "Zircophyllite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF9EA2C8)
@@ -30834,6 +30939,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "K₃Na₃Mn₇Fe₇Zr₂Ti₂Nb₂Si₈O₁₃F₇")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Manganese), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .build();
         Materials.Zirkelite = MaterialLibAPI.newMaterial("gregtech", "Zirkelite", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFF95A8B0)
@@ -30848,6 +30955,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "CaThCeZrTi₂Nb₂O₇")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
             .setProperty(GTMaterialProperties.RECONSTRUCTED, true)
+            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium), 1L)))
+            .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
+            .setProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION, true)
             .build();
         // spotless:on
     }

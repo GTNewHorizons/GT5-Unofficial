@@ -50,9 +50,6 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
-        if (ProcessingOreMachine.owns(material)) {
-            return;
-        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))

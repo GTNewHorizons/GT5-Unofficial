@@ -6,6 +6,7 @@ import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
@@ -252,6 +253,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     long tDensityMultiplier = MaterialUtils.density(material) > 3628800L
                         ? MaterialUtils.density(material) / 3628800L
                         : 1L;
+                    int outputSlots = MaterialUtils.hasElectrolyzerRecipe(material)
+                        && tMaterialList.stream()
+                            .filter(tMat -> tMat.mAmount > 0L)
+                            .count() > 6 ? 9 : 6;
                     ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : tMaterialList) if (tMat.mAmount > 0L) {
                         tDustStack = GTUtility
@@ -263,14 +268,14 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             tItemAmount += tMat.mAmount * 3628800L;
                             if (tDustStack != null) {
                                 tDustStack.stackSize = ((int) (tDustStack.stackSize * tDensityMultiplier));
-                                while ((tDustStack.stackSize > 64) && (tList.size() < 6)
+                                while ((tDustStack.stackSize > 64) && (tList.size() < outputSlots)
                                     && (tCapsuleCount + GTModHandler.getCapsuleCellContainerCount(tDustStack) * 64L
                                         <= 64L)) {
                                     tCapsuleCount += GTModHandler.getCapsuleCellContainerCount(tDustStack) * 64L;
                                     tList.add(GTUtility.copyAmount(64, tDustStack));
                                     tDustStack.stackSize -= 64;
                                 }
-                                if ((tDustStack.stackSize > 0) && (tList.size() < 6)
+                                if ((tDustStack.stackSize > 0) && (tList.size() < outputSlots)
                                     && (tCapsuleCount
                                         + GTModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tDustStack)
                                         <= 64L)) {
@@ -306,8 +311,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                     recipeBuilder.itemInputs(GTUtility.copyAmount(tItemAmount, stack));
                                 }
                                 if (!tList.isEmpty()) {
-                                    ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
-                                    if (material == Materials.Bastnasite) {
+                                    ItemStack[] outputsArray = tList.toArray(new ItemStack[0]);
+                                    if (material.getProperty(GTMaterialProperties.LANTHANIDE_DECOMPOSITION)) {
                                         outputsArray = convertDecomposition(material, outputsArray);
                                     } else {
                                         outputsArray = convert(material, outputsArray);
@@ -321,7 +326,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                     .duration(
                                         Math.max(1L, Math.abs(MaterialUtils.protons(material) * 2L * tItemAmount)))
                                     .eut(Math.min(4, tList.size()) * 30)
-                                    .addTo(electrolyzerRecipes);
+                                    .addTo(tList.size() > 6 ? chemicalDehydratorRecipes : electrolyzerRecipes);
                             }
                         }
                         if (MaterialUtils.hasCentrifugeRecipe(material)) {
@@ -496,9 +501,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "dustPure", "dustImpure", "dustRefined" -> {
                 if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
-                    return;
-                }
-                if (ProcessingOreMachine.owns(material)) {
                     return;
                 }
 

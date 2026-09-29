@@ -94,6 +94,10 @@ public class GTMaterialProperties {
     /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...). Like [#WERKSTOFF_IDS], its presence doubles
     /// as the "this material carries gtPlusPlus data" signal, and is permanent for that reason.
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
+    /// Whether this material's composition decomposition feeds the lanthanide line, turning its cerium and samarium
+    /// outputs into their ore concentrates (see `LanthanidesRecipeOutputs`).
+    public static final Property<Boolean> LANTHANIDE_DECOMPOSITION = Property
+        .of("gregtech", "lanthanideDecomposition", false);
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
     public static final Property<MaterialRef> MACERATE_INTO = Property.of("gregtech", "macerateInto");
     /// A declared atomic mass that replaces the [MaterialAtomics] composition formula for this material, the

@@ -61,9 +61,6 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
-        if (ProcessingOreMachine.owns(material)) {
-            return;
-        }
 
         boolean tIsRich = false;
 

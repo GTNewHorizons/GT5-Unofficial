@@ -37,9 +37,6 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
-        if (ProcessingOreMachine.owns(material)) {
-            return;
-        }
 
         switch (prefix.getName()) {
             case "crushedCentrifuged" -> {
