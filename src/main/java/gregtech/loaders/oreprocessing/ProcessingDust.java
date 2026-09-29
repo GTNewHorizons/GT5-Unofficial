@@ -223,8 +223,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 // GT's other fluid-extractor and fluid-solidifier autogen only handles the molten fluid, so a
-                // material's own liquid/gas form gets its dust extraction and solidification here.
-                if (MaterialUtils.hasCorrespondingGas(material) || MaterialUtils.hasCorrespondingFluid(material)) {
+                // former Werkstoff material's own liquid/gas form gets its dust extraction and solidification here.
+                if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.cell)
+                    && (MaterialUtils.hasCorrespondingGas(material) || MaterialUtils.hasCorrespondingFluid(material))) {
                     long fluidEut = calculateRecipeEU(material, MaterialUtils.mass(material) > 128 ? 64 : 30);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
