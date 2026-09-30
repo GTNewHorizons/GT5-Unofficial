@@ -631,9 +631,7 @@ public class GTClient extends GTProxy {
             || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
             || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
             || CoverRegistry.isCover(stack)
-            || (stack.getItem() instanceof ItemMachines
-                && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
-                && player.isSneaking());
+            || (ItemMachines.getMetaTileEntity(stack) instanceof MetaPipeEntity && player.isSneaking());
     }
 
     public void processChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {

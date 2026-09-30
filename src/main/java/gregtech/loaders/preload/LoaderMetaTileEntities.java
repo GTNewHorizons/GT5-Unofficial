@@ -1713,7 +1713,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTESteamAlloySmelterSteel(
                 HP_STEAM_ALLOY_SMELTER.ID,
                 "hpmachine.alloysmelter",
-                "High Pressure Alloy Smelter").getStackForm(1L));
+                "High Pressure Steam Alloy Smelter").getStackForm(1L));
     }
 
     private static void registerLocker() {
