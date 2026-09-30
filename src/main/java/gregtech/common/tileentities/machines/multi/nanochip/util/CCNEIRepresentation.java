@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.objects.GTItemStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
-import org.lwjgl.Sys;
 
 public class CCNEIRepresentation {
 
@@ -24,7 +23,7 @@ public class CCNEIRepresentation {
             if (cc.circuitType != CircuitCalibration.NONE) {
                 ItemStack ccItem = cc.getFakeStack(1);
                 // for circuit type ccs that can NOT be taken out of the NAC e.g Primed Unattuned Circuitry
-                if(cc.realComponent == null) continue;
+                if (cc.realComponent == null) continue;
 
                 ItemStack realItem = cc.realComponent.get();
 
@@ -44,10 +43,10 @@ public class CCNEIRepresentation {
                 if (ccRepresentation == null) continue; // No CC representation for this PC, don't do anything special
 
                 // for pcs who's ccs real item suppliers are null. e.g cleansed pico/quantum/planck boards
-                if(ccRepresentation.get().realComponent == null) continue;
+                if (ccRepresentation.get().realComponent == null) continue;
 
                 // for pcs who's ccs aren't registered. e.g dev env inf wire
-                if(ccRepresentation.get().realComponent.get() == null) continue;
+                if (ccRepresentation.get().realComponent.get() == null) continue;
 
                 ItemStack realItem = ccRepresentation.get().realComponent.get();
 
