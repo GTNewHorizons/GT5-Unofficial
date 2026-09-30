@@ -60,6 +60,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyModuleBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchNanochipRedstone;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
@@ -95,6 +96,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     private boolean isConnected = false;
 
     private long availableEUt = 0;
+    public final ArrayList<MTEHatchNanochipRedstone> redstoneHatches = new ArrayList<>();
 
     protected final ArrayList<ItemStack> inputFakeItems = new ArrayList<>();
     protected FluidStack[] fluidInputs = null;
@@ -138,7 +140,12 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .addElement(
                 'V',
                 HatchElementBuilder.<B>builder()
-                    .atLeast(ModuleHatchElement.VacuumConveyorHatch, InputBus, InputHatch, OutputHatch)
+                    .atLeast(
+                        ModuleHatchElement.VacuumConveyorHatch,
+                        InputBus,
+                        InputHatch,
+                        OutputHatch,
+                        ModuleHatchElement.RedstoneHatch)
                     .casingIndex(CASING_INDEX_WHITE)
                     .hint(3)
                     .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
@@ -161,6 +168,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             @Override
             public long count(MTENanochipAssemblyModuleBase<?> tileEntity) {
                 return tileEntity.vacuumConveyorInputs.size() + tileEntity.vacuumConveyorOutputs.size();
+            }
+        },
+
+        RedstoneHatch(MTENanochipAssemblyModuleBase::addRedstoneHatchToMachineList, MTEHatchNanochipRedstone.class) {
+
+            @Override
+            public long count(MTENanochipAssemblyModuleBase<?> module) {
+                return module.redstoneHatches.size();
             }
         };
 
@@ -212,6 +227,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
         this.vacuumConveyorInputs.clear();
         this.vacuumConveyorOutputs.clear();
+        this.redstoneHatches.clear();
         fixAllIssues();
         // Base structure
         if (!checkPiece(
@@ -296,6 +312,16 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             }
         }
 
+        return false;
+    }
+
+    private boolean addRedstoneHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof MTEHatchNanochipRedstone redstoneHatch) {
+            redstoneHatch.updateTexture(aBaseCasingIndex);
+            return this.redstoneHatches.add(redstoneHatch);
+        }
         return false;
     }
 
