@@ -101,10 +101,15 @@ public class Families {
                 OreShapes.oreSmall)
             .build();
         toolParts = MaterialLibAPI.newFamily("gregtech", "ToolParts")
-            .generateShapes(Shapes.toolHeadHammer, Shapes.toolHeadSaw, Shapes.toolHeadWrench, Shapes.turbineBlade)
+            .generateShapes(
+                Shapes.toolHeadFile,
+                Shapes.toolHeadHammer,
+                Shapes.toolHeadSaw,
+                Shapes.toolHeadWrench,
+                Shapes.turbineBlade)
             .build();
         poweredToolParts = MaterialLibAPI.newFamily("gregtech", "PoweredToolParts")
-            .generateShapes(Shapes.toolHeadBuzzSaw, Shapes.toolHeadChainsaw, Shapes.toolHeadDrill, Shapes.toolHeadFile)
+            .generateShapes(Shapes.toolHeadBuzzSaw, Shapes.toolHeadChainsaw, Shapes.toolHeadDrill)
             .build();
         gears = MaterialLibAPI.newFamily("gregtech", "Gears")
             .generateShapes(Shapes.gearGt, Shapes.gearGtSmall, Shapes.rotor)
