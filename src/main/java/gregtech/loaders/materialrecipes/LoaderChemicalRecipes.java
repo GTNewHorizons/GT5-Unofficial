@@ -29,9 +29,9 @@ import gregtech.api.util.GTUtility;
 /// Each carrier's [GTMaterialProperties#COMPOSITION] entries resolve to a dust input per entry
 /// ([MaterialUtils#compositionDust]), except a single gas-only entry (e.g. Oxygen), which resolves to a fluid
 /// input ([MaterialUtils#compositionGas]). [#CARRIERS] never declares more than one such entry, so this
-/// carries no cell-item byproduct accounting. Duration and EU scale off the carrier's own
-/// [MaterialAtomics#protons] and [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], divided/multiplied by its
-/// composition's entry count.
+/// carries no cell-item byproduct accounting. Duration is the composition's total proton count (each entry's
+/// [MaterialAtomics#protons] times its amount) divided by its entry count; EU scales off the carrier's
+/// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU] and its entry count.
 public final class LoaderChemicalRecipes {
 
     private static final Material[] CARRIERS = { Materials.BismuthTelluride, Materials.Dibismuthhydroborat,
@@ -63,7 +63,13 @@ public final class LoaderChemicalRecipes {
             return;
         }
         long totalAmount = 0;
-        for (MaterialRefStack entry : composition) totalAmount += entry.amount();
+        long totalProtons = 0;
+        for (MaterialRefStack entry : composition) {
+            totalAmount += entry.amount();
+            totalProtons += entry.amount() * MaterialAtomics.protons(
+                entry.material()
+                    .resolve());
+        }
         ItemStack output = MaterialLibAPI.getStack(material, Shapes.dust, (int) totalAmount);
 
         List<ItemStack> itemInputs = new ArrayList<>();
@@ -92,7 +98,7 @@ public final class LoaderChemicalRecipes {
             .itemInputs(itemInputs.toArray(new ItemStack[0]))
             .itemOutputs(output)
             .fluidInputs(fluidInput == null ? new FluidStack[0] : new FluidStack[] { fluidInput })
-            .duration((int) Math.max(1L, Math.abs(MaterialAtomics.protons(material) / componentCount)))
+            .duration((int) Math.max(1L, totalProtons / componentCount))
             .eut(GTUtility.calculateRecipeEU(material, Math.min(4, componentCount) * 30))
             .addTo(GTRecipeConstants.UniversalChemical);
     }
