@@ -474,8 +474,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         CheckRecipeResult result = simulatedParallelHelper.getResult();
         if (result.wasSuccessful()) {
 
-            // consume the inputs. note that the input itemstack is null as it is ignored.
-            CCInputConsumer inputConsumer = new CCInputConsumer(this.vacuumConveyorInputs, this);
+            CCInputConsumer inputConsumer;
+            if (isInputSeparationEnabled()) {
+                // Ensure we only consume from the allowed color when separation is enabled
+                inputConsumer = new CCInputConsumer(this.vacuumConveyorInputs, this.outputColor);
+            } else {
+                // Otherwise, try to consume from any VCI
+                inputConsumer = new CCInputConsumer(this.vacuumConveyorInputs);
+            }
             inputConsumer.consume(properRecipe, simulatedParallelHelper.getCurrentParallel(), this.fluidInputs, null);
 
             // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to
