@@ -763,102 +763,94 @@ public class RecipeLoader {
             .duration(25 * SECONDS)
             .addTo(AssemblyLine);
 
-        if (NewHorizonsCoreMod.isModLoaded()) {
+        // Field Restriction Coil
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Shapes.ingot, 1))
+            .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_ZPM))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.Osmium, TEBlockShapes.frameGt, 1),
+                ItemList.Field_Generator_UV.get(2),
+                ItemList.Electric_Pump_UV.get(8),
+                MaterialLibAPI.getStack(Materials.SuperconductorZPM, TEBlockShapes.wireGt02, 64),
+                MaterialLibAPI.getStack(Materials.Americium, Shapes.plateDense, 8),
+                MaterialLibAPI.getStack(Materials.BlackPlutonium, TEBlockShapes.itemPipeMedium, 16),
+                ItemList.Circuit_Wafer_PPIC.get(32),
+                new Object[] { Circuits.UHV.getIngredient(), 1L })
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.ElectrumFlux, FluidShapes.fluidMolten, 1 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 128_000))
+            .itemOutputs(ItemRefer.Field_Restriction_Coil_T1.get(1))
+            .eut(TierEU.RECIPE_ZPM)
+            .duration(60 * SECONDS)
+            .addTo(AssemblyLine);
 
-            // Field Restriction Coil
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Shapes.ingot, 1))
-                .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_ZPM))
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Osmium, TEBlockShapes.frameGt, 1),
-                    ItemList.Field_Generator_UV.get(2),
-                    ItemList.Electric_Pump_UV.get(8),
-                    MaterialLibAPI.getStack(Materials.SuperconductorZPM, TEBlockShapes.wireGt01, 64),
-                    MaterialLibAPI.getStack(Materials.SuperconductorZPM, TEBlockShapes.wireGt01, 64),
-                    MaterialLibAPI.getStack(Materials.Americium, Shapes.plateDense, 8),
-                    MaterialLibAPI.getStack(Materials.BlackPlutonium, TEBlockShapes.itemPipeMedium, 16),
-                    ItemList.Circuit_Wafer_PPIC.get(32),
-                    new Object[] { Circuits.UHV.getIngredient(), 1L })
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 1_000),
-                    MaterialLibAPI.getFluidStack(Materials.ElectrumFlux, FluidShapes.fluidMolten, 1 * STACKS),
-                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 128_000))
-                .itemOutputs(ItemRefer.Field_Restriction_Coil_T1.get(1))
-                .eut(TierEU.RECIPE_ZPM)
-                .duration(60 * SECONDS)
-                .addTo(AssemblyLine);
+        // Advanced Field Restriction Coil
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T1.get(1))
+            .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_UV))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, TEBlockShapes.frameGt, 1),
+                ItemList.Field_Generator_UHV.get(2),
+                ItemList.Electric_Pump_UHV.get(8),
+                MaterialLibAPI.getStack(Materials.SuperconductorUV, TEBlockShapes.wireGt04, 64),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateDense, 8),
+                MaterialLibAPI.getStack(Materials.Neutronium, TEBlockShapes.pipeMedium, 16),
+                ItemList.Circuit_Wafer_QPIC.get(32),
+                new Object[] { Circuits.UEV.getIngredient(), 1L })
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 1 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 128_000))
+            .itemOutputs(ItemRefer.Field_Restriction_Coil_T2.get(1))
+            .eut(TierEU.RECIPE_UV)
+            .duration(60 * SECONDS)
+            .addTo(AssemblyLine);
 
-            // Advanced Field Restriction Coil
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T1.get(1))
-                .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_UV))
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials.CosmicNeutronium, TEBlockShapes.frameGt, 1),
-                    ItemList.Field_Generator_UHV.get(2),
-                    ItemList.Electric_Pump_UHV.get(8),
-                    MaterialLibAPI.getStack(Materials.SuperconductorUV, TEBlockShapes.wireGt02, 64),
-                    MaterialLibAPI.getStack(Materials.SuperconductorUV, TEBlockShapes.wireGt02, 64),
-                    MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateDense, 8),
-                    MaterialLibAPI.getStack(Materials.Neutronium, TEBlockShapes.pipeMedium, 16),
-                    ItemList.Circuit_Wafer_PPIC.get(48),
-                    new Object[] { Circuits.UEV.getIngredient(), 1L })
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, 1_000),
-                    MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 1 * STACKS),
-                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 128_000))
-                .itemOutputs(ItemRefer.Field_Restriction_Coil_T2.get(1))
-                .eut(TierEU.RECIPE_UV)
-                .duration(60 * SECONDS)
-                .addTo(AssemblyLine);
+        // Ultimate Field Restriction Coil
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T2.get(1))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UHV))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 1),
+                ItemList.Field_Generator_UEV.get(2),
+                ItemList.Electric_Pump_UEV.get(8),
+                MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt08, 64),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateDense, 8),
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.pipeMedium, 16),
+                ItemList.Circuit_Wafer_FPIC.get(32),
+                new Object[] { Circuits.UIV.getIngredient(), 1L })
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 1 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 64_000))
+            .itemOutputs(ItemRefer.Field_Restriction_Coil_T3.get(1))
+            .eut(TierEU.RECIPE_UHV)
+            .duration(60 * SECONDS)
+            .addTo(AssemblyLine);
 
-            // Ultimate Field Restriction Coil
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T2.get(1))
-                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UHV))
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 1),
-                    ItemList.Field_Generator_UEV.get(2),
-                    ItemList.Electric_Pump_UEV.get(8),
-                    MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt04, 64),
-                    MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt04, 64),
-                    MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateDense, 8),
-                    MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.pipeMedium, 16),
-                    ItemList.Circuit_Wafer_PPIC.get(64),
-                    new Object[] { Circuits.UIV.getIngredient(), 1L })
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, 1_000),
-                    MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 1 * STACKS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 64_000))
-                .itemOutputs(ItemRefer.Field_Restriction_Coil_T3.get(1))
-                .eut(TierEU.RECIPE_UHV)
-                .duration(60 * SECONDS)
-                .addTo(AssemblyLine);
-
-            // Temporal Field Restriction Coil
-            GTValues.RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T3.get(1))
-                .metadata(SCANNING, new Scanning(1 * MINUTES + 10 * SECONDS, TierEU.RECIPE_UEV))
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.frameGt, 1),
-                    ItemList.Field_Generator_UIV.get(2),
-                    ItemList.Electric_Pump_UIV.get(8),
-                    MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt04, 64),
-                    MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt04, 64),
-                    MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plateDense, 8),
-                    MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.pipeMedium, 16),
-                    ItemList.Circuit_Wafer_PPIC.get(64),
-                    new Object[] { Circuits.UXV.getIngredient(), 1L })
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 1_000),
-                    MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 1 * STACKS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 64_000))
-                .itemOutputs(ItemRefer.Field_Restriction_Coil_T4.get(1))
-                .eut(TierEU.RECIPE_UEV)
-                .duration(60 * SECONDS)
-                .addTo(AssemblyLine);
-        }
+        // Temporal Field Restriction Coil
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T3.get(1))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 10 * SECONDS, TierEU.RECIPE_UEV))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.frameGt, 1),
+                ItemList.Field_Generator_UIV.get(2),
+                ItemList.Electric_Pump_UIV.get(8),
+                MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt04, 64),
+                MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt04, 64),
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plateDense, 8),
+                MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.pipeMedium, 16),
+                ItemList.Circuit_Wafer_PPIC.get(64),
+                new Object[] { Circuits.UXV.getIngredient(), 1L })
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 1 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 64_000))
+            .itemOutputs(ItemRefer.Field_Restriction_Coil_T4.get(1))
+            .eut(TierEU.RECIPE_UEV)
+            .duration(60 * SECONDS)
+            .addTo(AssemblyLine);
 
         // Ca + O = CaO
         GTValues.RA.stdBuilder()

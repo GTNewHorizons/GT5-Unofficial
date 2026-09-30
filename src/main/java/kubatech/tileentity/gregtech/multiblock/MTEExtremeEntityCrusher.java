@@ -523,7 +523,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     int y = event.mrs.getYCoord();
                     int z = event.mrs.getZCoord();
 
-                    if (world.getWorldTime() % RitualEffectWellOfSuffering.timeDelay != 0) return;
+                    if (world.getTotalWorldTime() % RitualEffectWellOfSuffering.timeDelay != 0) return;
 
                     if (tileAltar == null || tileAltar.isInvalid()) {
                         tileAltar = null;

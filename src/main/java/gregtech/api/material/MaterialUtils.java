@@ -679,6 +679,16 @@ public class MaterialUtils {
         return name == null ? null : "Material." + name.toLowerCase();
     }
 
+    /// A material's flavor line: the translation of its `<localizedNameKey>.flavorText` key when the lang files
+    /// carry one, else the English [GTMaterialProperties#FLAVOR_TEXT] it declares; null when it has neither.
+    public static @Nullable String flavorText(@Nullable Material material) {
+        String nameKey = localizedNameKey(material);
+        if (nameKey == null) return null;
+        String key = nameKey + ".flavorText";
+        if (StatCollector.canTranslate(key)) return StatCollector.translateToLocal(key);
+        return material.getProperty(GTMaterialProperties.FLAVOR_TEXT);
+    }
+
     public static String chemicalTooltip(@Nullable Material material, boolean showQuestionMarks) {
         return chemicalTooltip(material, 1, showQuestionMarks);
     }

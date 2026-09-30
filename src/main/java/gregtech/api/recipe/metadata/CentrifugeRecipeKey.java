@@ -16,6 +16,6 @@ public class CentrifugeRecipeKey extends RecipeMetadataKey<Boolean> {
     @Override
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         boolean required = cast(value, false);
-        recipeInfo.drawText("Heavy Mode Required");
+        recipeInfo.drawText("Requires Heavy Mode");
     }
 }

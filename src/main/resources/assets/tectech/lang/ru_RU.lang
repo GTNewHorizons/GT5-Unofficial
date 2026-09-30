@@ -1681,7 +1681,7 @@ tt.spaceminer.calculator.asteroidChance=%s шанс для:
 tt.eoh.fancy_names.crude=Грубый
 tt.eoh.fancy_names.primitive=Примитивный
 tt.eoh.fancy_names.stable=Стабильный
-tt.eoh.fancy_names.Advanced=Продвинутый
+tt.eoh.fancy_names.advanced=Продвинутый
 tt.eoh.fancy_names.superb=Превосходный
 tt.eoh.fancy_names.exotic=Экзотический
 tt.eoh.fancy_names.perfect=Идеальный
@@ -1710,11 +1710,14 @@ tt.godforge.casings.8.Tooltip.0=Переносит и сохраняет огр�
 tt.godforge.casings.8.Tooltip.1=<<<Thermal<<<
 tt.godforge.casings.8.Tooltip.2=>>>Wave>>>
 
-tt.eoh.stability.tooltip=§b§lIncreases stability of spacetime field.
-tt.eoh.time_dilation.standard.tooltip=§b§lTime dilation in a box.
-tt.eoh.time_dilation.error.tooltip=§c§lError, report to GTNH team
+tt.eoh.stability.tooltip=§b§lУвеличивает устойчивость поля пространства-времени.
+tt.eoh.time_dilation.standard.tooltip=§b§lЗамедление времени в коробке.
+tt.eoh.time_dilation.error.tooltip=§c§lОшибка, сообщите команде GTNH
 tt.eoh.spacetime.standard.tooltip.0=Поддерживает внутренний пространственно-временной объем до %d km³.
 tt.eoh.spacetime.standard.tooltip.1=§b§lВозможность запуска рецептов вплоть до %d тира
+tt.eoh.spacetime.name=%s генератор поля пространственно-временного сжатия
+tt.eoh.stabilisation.name=%s генератор поля стабилизации
+tt.eoh.time_dilation.name=%s генератор поля замедления времени
 
 # Info data
 

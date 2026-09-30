@@ -15,7 +15,6 @@ import com.ruling_0.materiallib.api.ShapeItem;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialFormulas;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Client;
@@ -44,7 +43,7 @@ public class MaterialFormulaTooltip {
             if (line != null) tooltip.add(insertAt++, line);
         }
         if (Client.tooltip.showFlavorText) {
-            String flavor = material.getProperty(GTMaterialProperties.FLAVOR_TEXT);
+            String flavor = MaterialUtils.flavorText(material);
             if (flavor != null) {
                 tooltip.add(
                     Math.min(insertAt, tooltip.size()),
