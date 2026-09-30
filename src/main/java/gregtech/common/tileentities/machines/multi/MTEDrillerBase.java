@@ -31,6 +31,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -589,7 +590,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         }
 
         if (!shutdownReason.isEmpty()) {
-            return Optional.of(shutdownReason);
+            return Optional.of(StatCollector.translateToLocal(shutdownReason));
         }
 
         return Optional.ofNullable(lastRuntimeFailure)
@@ -600,7 +601,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
      * Sets a line in the UI to explain why the drill shut down. E.g.: operation finished. Should be used when the
      * machine has been turned off due to an operating issue or completion.
      *
-     * @param newReason The reason for the machine shutdown
+     * @param newReason Translation key of the reason for the machine shutdown, localized when it is displayed
      */
     public void setShutdownReason(@NotNull String newReason) {
         shutdownReason = newReason;
