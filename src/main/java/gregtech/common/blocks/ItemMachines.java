@@ -80,7 +80,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     public static IMetaTileEntity getMetaTileEntity(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return null;
         if (!(aStack.getItem() instanceof ItemMachines)) return null;
-        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() > GregTechAPI.METATILEENTITIES.length) return null;
+        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= GregTechAPI.METATILEENTITIES.length) return null;
         return GregTechAPI.METATILEENTITIES[aStack.getItemDamage()];
     }
 
@@ -346,6 +346,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     public void onUpdate(ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand) {
         super.onUpdate(aStack, aWorld, aPlayer, aTimer, aIsInHand);
         final short tDamage = (short) getDamage(aStack);
+        if (tDamage < 0 || tDamage >= GregTechAPI.METATILEENTITIES.length) return;
         final EntityLivingBase tPlayer = (EntityPlayer) aPlayer;
         if (GregTechAPI.METATILEENTITIES[tDamage] instanceof MTESuperChest
             || GregTechAPI.METATILEENTITIES[tDamage] instanceof MTESuperTank) {
