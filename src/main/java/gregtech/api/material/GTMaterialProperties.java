@@ -155,6 +155,11 @@ public class GTMaterialProperties {
     /// [#UNIFIABLE]: that key opts a material out of unification, this one makes it win the ore-dict slot.
     public static final Property<Boolean> ENFORCE_ORE_DICT_UNIFICATION = Property
         .of("gregtech", "enforceOreDictUnification");
+    /// The duration in ticks of the vacuum freezer recipe cooling this material's hot ingot, in place of three ticks
+    /// per unit of mass.
+    public static final Property<Integer> VACUUM_FREEZER_DURATION = Property.of("gregtech", "vacuumFreezerDuration");
+    /// The EU/t of the vacuum freezer recipe cooling this material's hot ingot, in place of MV.
+    public static final Property<Integer> VACUUM_FREEZER_VOLTAGE = Property.of("gregtech", "vacuumFreezerVoltage");
     /// The legacy `Material.vVoltageMultiplier`; no gregtech equivalent. Elided when `16` (the value every
     /// tier-0 material carries).
     public static final Property<Long> VOLTAGE_MULTIPLIER = Property.of("gregtech", "voltageMultiplier", 16L);

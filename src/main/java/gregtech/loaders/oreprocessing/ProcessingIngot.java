@@ -22,6 +22,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -196,12 +197,13 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
             case "ingotHot" -> {
                 if (MaterialUtils.autoGenerateVacuumFreezerRecipes(material)
                     && MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null) {
-                    // Vacuum freezer recipes
+                    Integer duration = material.getProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION);
+                    Integer voltage = material.getProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(MaterialParts.stack(OrePrefixes.ingot, material, 1L))
-                        .duration(((int) Math.max(materialMass * 3L, 1L)) * TICKS)
-                        .eut(TierEU.RECIPE_MV)
+                        .duration(duration != null ? duration : Math.max(materialMass * 3L, 1L) * TICKS)
+                        .eut(voltage != null ? voltage : TierEU.RECIPE_MV)
                         .addTo(vacuumFreezerRecipes);
                 }
             }

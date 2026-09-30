@@ -19415,6 +19415,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.SodiumRuthenate = MaterialLibAPI.newMaterial("gregtech", "SodiumRuthenate", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF3A40CB)
@@ -19706,6 +19707,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.CrudeRhodiumMetal = MaterialLibAPI.newMaterial("gregtech", "CrudeRhodiumMetal", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF666666)
@@ -19916,6 +19918,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.Tiberium = MaterialLibAPI.newMaterial("gregtech", "Tiberium", TextureSet.of("gregtech", "DIAMOND"))
             .setTint(0xFF22EE22)
@@ -19997,6 +20000,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.Fluorspar = MaterialLibAPI.newMaterial("gregtech", "Fluorspar", TextureSet.of("gregtech", "GEM_VERTICAL"))
             .setTint(0xFFB945FB)
@@ -20065,6 +20069,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 30720)
             .build();
         Materials.Atheneite = MaterialLibAPI.newMaterial("gregtech", "Atheneite", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFAFAFAF)
@@ -20167,6 +20172,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 7680)
             .build();
         Materials.RawAdemicSteel = MaterialLibAPI.newMaterial("gregtech", "RawAdemicSteel", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFFEDEDED)
@@ -22335,6 +22341,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 122880)
             .build();
         Materials.EthanolGasoline = MaterialLibAPI.newMaterial("gregtech", "EthanolGasoline", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE4C661)
@@ -22554,6 +22561,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.MARCeM200Steel = MaterialLibAPI.newMaterial("gregtech", "MAR-Ce-M200Steel", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF383030)
@@ -22589,6 +22597,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 1176)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 7680)
             .build();
         Materials.LithiumChloride = MaterialLibAPI.newMaterial("gregtech", "LithiumChloride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFB7E2CE)
@@ -22896,6 +22906,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 122880)
             .build();
         Materials.AntimonyPentafluorideSolution = MaterialLibAPI.newMaterial("gregtech", "AntimonyPentafluorideSolution", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF16D5E2)
@@ -22972,6 +22983,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1966080)
             .build();
         Materials.EnrichedNaquadahAlloy = MaterialLibAPI.newMaterial("gregtech", "EnrichedNaquadahAlloy", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF160740)
@@ -23009,6 +23021,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 122880)
             .build();
         Materials.MetastableOganesson = MaterialLibAPI.newMaterial("gregtech", "MetastableOganesson", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF14397F)
@@ -23043,6 +23056,8 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 882)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 7864320)
             .build();
         Materials.Shirabon = MaterialLibAPI.newMaterial("gregtech", "Shirabon", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE0156D)
@@ -26411,6 +26426,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 9925)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 11250)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1966080)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 117)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1966080)
             .build();
         Materials.AceticAnhydride = MaterialLibAPI.newMaterial("gregtech", "AceticAnhydride", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFFAF06E)
@@ -26632,6 +26649,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 5940)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 6250)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7680)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 195)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 7680)
             .build();
         Materials.ArceusAlloy2B = MaterialLibAPI.newMaterial("gregtech", "ArceusAlloy2B", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFCDC517)
@@ -26663,6 +26682,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 7830)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 8750)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 122880)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 135)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 122880)
             .build();
         Materials.AstralTitanium = MaterialLibAPI.newMaterial("gregtech", "AstralTitanium", TextureSet.of("gregtech", "CUSTOM/astraltitanium"))
             .setTint(0xFFFFFFFF)
@@ -26697,6 +26718,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 9715)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 11250)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1966080)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1966080)
             .build();
         Materials.BabbitAlloy = MaterialLibAPI.newMaterial("gregtech", "BabbitAlloy", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFD0C6D5)
@@ -26901,6 +26923,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 8495)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 10000)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 491520)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 165)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 491520)
             .build();
         Materials.Brine = MaterialLibAPI.newMaterial("gregtech", "Brine", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF3F58D7)
@@ -26981,6 +27005,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 9170)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 11250)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1966080)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1966080)
             .build();
         Materials.Cerite = MaterialLibAPI.newMaterial("gregtech", "Cerite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF8090B6)
@@ -27080,6 +27105,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 7625)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 8750)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 122880)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 141)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 122880)
             .build();
         Materials.Comancheite = MaterialLibAPI.newMaterial("gregtech", "Comancheite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF767DC0)
@@ -27272,6 +27299,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 10435)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 12500)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7864320)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 7864320)
             .build();
         Materials.EglinSteel = MaterialLibAPI.newMaterial("gregtech", "EglinSteel", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF8B4513)
@@ -27348,6 +27376,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4935)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 1000)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 390)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.EthylCyanoacetate = MaterialLibAPI.newMaterial("gregtech", "EthylCyanoacetate", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF004BA0)
@@ -27617,6 +27647,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4125)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 1000)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 672)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.HG1223 = MaterialLibAPI.newMaterial("gregtech", "HG1223", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF27559F)
@@ -27679,6 +27711,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 5145)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 6250)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7680)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 117)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 7680)
             .build();
         Materials.HastelloyC276 = MaterialLibAPI.newMaterial("gregtech", "HastelloyC276", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFAA8CA6)
@@ -27711,6 +27745,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4625)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 1000)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 108)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.HastelloyN = MaterialLibAPI.newMaterial("gregtech", "HastelloyN", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD7CCE8)
@@ -27743,6 +27779,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4625)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 1000)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 90)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.HastelloyW = MaterialLibAPI.newMaterial("gregtech", "HastelloyW", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFB7B2E6)
@@ -27839,6 +27877,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 6035)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 7500)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 30720)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 102)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 30720)
             .build();
         Materials.HeliumSpargedUSalt = MaterialLibAPI.newMaterial("gregtech", "HeliumSpargedUSalt", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA8CDAC)
@@ -27935,6 +27975,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 10530)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 12500)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7864320)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 7864320)
             .build();
         Materials.Incoloy020 = MaterialLibAPI.newMaterial("gregtech", "Incoloy020", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE3B6AA)
@@ -28034,6 +28075,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4700)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 1000)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 72)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.Inconel625 = MaterialLibAPI.newMaterial("gregtech", "Inconel625", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF80C880)
@@ -28317,6 +28360,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 6625)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 7500)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 30720)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 132)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 30720)
             .build();
         Materials.Lafossaite = MaterialLibAPI.newMaterial("gregtech", "Lafossaite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFFD29797)
@@ -28408,6 +28453,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 7100)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 8750)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 122880)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 132)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 122880)
             .build();
         Materials.Lautarite = MaterialLibAPI.newMaterial("gregtech", "Lautarite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF7593B4)
@@ -28759,6 +28806,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 5925)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 6250)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7680)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 72)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 7680)
             .build();
         Materials.Octiron = MaterialLibAPI.newMaterial("gregtech", "Octiron", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF7C7880)
@@ -28791,6 +28840,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 9395)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 11250)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1966080)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 147)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1966080)
             .build();
         Materials.Perroudite = MaterialLibAPI.newMaterial("gregtech", "Perroudite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFCCA98D)
@@ -28848,6 +28899,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 7125)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 8750)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 122880)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 144)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 122880)
             .build();
         Materials.Plutonium238 = MaterialLibAPI.newMaterial("gregtech", "Plutonium238", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFFA4646)
@@ -29028,6 +29081,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 10775)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 12500)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7864320)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 1050)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 7864320)
             .build();
         Materials.RadioactiveMineralMix = MaterialLibAPI.newMaterial("gregtech", "RadioactiveMineralMix", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF8CA096)
@@ -29521,6 +29576,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4585)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 1000)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 69)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.StrontiumHydroxide = MaterialLibAPI.newMaterial("gregtech", "StrontiumHydroxide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF4C67BC)
@@ -29854,6 +29911,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 8525)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 10000)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 491520)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 117)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 491520)
             .build();
         Materials.TrichloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "TrichloroaceticAcid", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF78641E)
@@ -29933,6 +29992,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 6775)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 7500)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 30720)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 135)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 30720)
             .build();
         Materials.TriniumTitaniumAlloy = MaterialLibAPI.newMaterial("gregtech", "TriniumTitaniumAlloy", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD2B4E1)
@@ -29967,6 +30028,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4025)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 1000)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 93)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.Tumbaga = MaterialLibAPI.newMaterial("gregtech", "Tumbaga", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFB20F)
@@ -30032,6 +30095,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4695)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 1000)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 216)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 1920)
             .build();
         Materials.Uranium232 = MaterialLibAPI.newMaterial("gregtech", "Uranium232", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF58DC67)
@@ -30285,6 +30350,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 6375)
             .setProperty(GTMaterialProperties.BLAST_DURATION, 7500)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 30720)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 108)
+            .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 30720)
             .build();
         Materials.Zimbabweite = MaterialLibAPI.newMaterial("gregtech", "Zimbabweite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFFA4AEDB)
