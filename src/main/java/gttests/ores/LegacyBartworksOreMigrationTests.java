@@ -1,9 +1,7 @@
 package gttests.ores;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -19,17 +17,17 @@ import com.gtnewhorizons.horizonqa.api.GameTestHelper;
 import com.gtnewhorizons.horizonqa.api.annotation.GameTest;
 import com.gtnewhorizons.horizonqa.api.annotation.GameTestHolder;
 import com.gtnewhorizons.postea.utility.ChunkFixerUtility;
-import com.gtnewhorizons.postea.utility.TransformerRegistry;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.common.ores.GTOreAdapter;
+import gttests.PosteaTestSupport;
 
 /// Pins that the legacy `bw.blockores*` ore blocks a saved world holds, placed or in inventories, load as the
-/// MaterialLib ore of the same material, stone and size. Postea resolves its id-keyed transformers only when it loads
-/// a saved world, so both tests are skipped in a world's first session.
+/// MaterialLib ore of the same material, stone and size. Both skip in a world's first session; see
+/// [PosteaTestSupport].
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class LegacyBartworksOreMigrationTests {
 
@@ -46,7 +44,7 @@ public class LegacyBartworksOreMigrationTests {
 
     @GameTest(timeoutTicks = 20, batch = "gt5.ores")
     public static void placedLegacyOresLoadAsMaterialLibOres(GameTestHelper helper) {
-        assumeSavedWorld(helper);
+        PosteaTestSupport.assumeSavedWorld(helper);
         World world = helper.getWorld();
         int legacyId = LegacyWerkstoffIndex.idOf(Materials.Bismutite);
         helper.assertTrue(legacyId >= 0, "Bismutite has no legacy werkstoff id");
@@ -82,7 +80,7 @@ public class LegacyBartworksOreMigrationTests {
 
     @GameTest(timeoutTicks = 20, batch = "gt5.ores")
     public static void savedLegacyOreItemsLoadAsMaterialLibOres(GameTestHelper helper) {
-        assumeSavedWorld(helper);
+        PosteaTestSupport.assumeSavedWorld(helper);
         int legacyId = LegacyWerkstoffIndex.idOf(Materials.Bismutite);
         List<String> mismatches = new ArrayList<>();
         for (Legacy legacy : LEGACY_BLOCKS) {
@@ -99,18 +97,6 @@ public class LegacyBartworksOreMigrationTests {
         }
         helper.assertTrue(mismatches.isEmpty(), "Saved legacy ore items did not migrate: " + mismatches);
         helper.succeed();
-    }
-
-    private static void assumeSavedWorld(GameTestHelper helper) {
-        boolean active;
-        try {
-            Field field = TransformerRegistry.class.getDeclaredField("RUNTIME_BLOCK_REPLACEMENT_MAP");
-            field.setAccessible(true);
-            active = !((Map<?, ?>) field.get(null)).isEmpty();
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException("Postea's runtime transformer table is unreadable", e);
-        }
-        helper.assumeTrue(active, "Postea's id-keyed transformers are inactive in a world's first session");
     }
 
     private static Block legacyBlock(GameTestHelper helper, String registryName) {

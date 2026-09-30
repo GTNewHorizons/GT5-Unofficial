@@ -15,13 +15,16 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.material.MaterialParts;
 import gregtech.loaders.postload.ForeignPartTable;
+import gttests.PosteaTestSupport;
 
-/// Pins that a saved stack of another mod's unified part loads as the MaterialLib pair it stands for.
+/// Pins that a saved stack of another mod's unified part loads as the MaterialLib pair it stands for. Skips in a
+/// world's first session; see [PosteaTestSupport].
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class ForeignPartMigrationTests {
 
     @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
     public static void savedForeignPartsLoadAsTheirPair(GameTestHelper helper) {
+        PosteaTestSupport.assumeSavedWorld(helper);
         List<String> mismatches = new ArrayList<>();
         int checked = 0;
         for (ForeignPartTable.Entry entry : ForeignPartTable.ENTRIES) {
