@@ -1017,6 +1017,8 @@ public class Godforge implements Runnable {
     }
 
     private static FluidStack convertToMolten(ItemStack stack) {
+        FluidStack contained = GTUtility.getFluidForFilledItem(stack, true);
+        if (contained != null) return contained;
         ItemData data = MaterialData.getAssociation(stack);
         Material mat = data != null ? data.mMaterial.mMaterial : null;
         if (mat != null) {
