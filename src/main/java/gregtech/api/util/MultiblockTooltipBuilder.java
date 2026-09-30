@@ -397,9 +397,8 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addPollutionAmount(int pollution) {
         if (pollution == 0) return this;
         iLines.add(
-            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                "GT5U.MBTT.PPS",
-                EnumChatFormatting.DARK_PURPLE + formatNumber(pollution) + EnumChatFormatting.GRAY));
+            EnumChatFormatting.GRAY
+                + StatCollector.translateToLocalFormatted("GT5U.MBTT.PPS", formatNumber(pollution)));
         return this;
     }
 

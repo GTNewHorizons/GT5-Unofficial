@@ -231,7 +231,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                     + EnumChatFormatting.ITALIC
                     + StatCollector.translateToLocalFormatted(
                         "tooltip.detrav.scanner.success.chance",
-                        EnumChatFormatting.RESET + formatNumber(Math.min(((1 + meta) * 8), 100))));
+                        formatNumber(Math.min(((1 + meta) * 8), 100))));
             aList.add(
                 tOffset + 6,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.0"));

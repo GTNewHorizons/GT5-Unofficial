@@ -196,12 +196,6 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     }
 
     @Override
-    public int getMaxRecipeDuration() {
-        // Splitter holds no power
-        return 0;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTESplitterModule(this.mName);
     }

@@ -994,9 +994,9 @@ public class RecipesMachinesTiered {
         for (int i = 0; i < ItemList.MACHINE_CASINGS.length; i++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.MACHINE_CASINGS[i].get(1))
-                .circuit(i)
+                .circuit(i + 1)
                 .itemOutputs(new ItemStack(CoverManager.Cover_Gt_Machine_Casing, 7, i))
-                .duration(i * 5 * SECONDS)
+                .duration((i + 1) * 5 * SECONDS)
                 .eut(GTValues.VP[i])
                 .addTo(cutterRecipes);
         }

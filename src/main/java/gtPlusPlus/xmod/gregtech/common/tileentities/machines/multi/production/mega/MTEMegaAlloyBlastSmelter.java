@@ -52,7 +52,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -226,7 +226,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         if (glassTier < VoltageIndex.UV) {
             for (MTEHatch hatchEnergy : getExoticEnergyHatches()) {
                 if (hatchEnergy.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
                     break;
                 }
             }

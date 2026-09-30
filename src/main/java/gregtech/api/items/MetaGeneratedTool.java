@@ -481,25 +481,22 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.GRAY
                         + translateToLocalFormatted(
                             "gt.item.desc.durability",
-                            EnumChatFormatting.GREEN + formatNumber(turbine.getCurrentDurability()) + " ",
-                            " " + formatNumber(turbine.getMaxDurability()))
+                            formatNumber(turbine.getCurrentDurability()),
+                            formatNumber(turbine.getMaxDurability()))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.GRAY
                         + translateToLocalFormatted(
                             "gt.item.desc.tier",
-                            tMaterial.getLocalizedName() + ":" + EnumChatFormatting.YELLOW,
-                            "" + getHarvestLevel(aStack, ""))
+                            tMaterial.getLocalizedName(),
+                            getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE
-                        + translateToLocalFormatted(
-                            "gt.item.desc.base_eff",
-                            "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getBaseEfficiency() * 100))
-                        + "%"
-                        + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.WHITE + translateToLocalFormatted(
+                        "gt.item.desc.base_eff",
+                        (int) Math.ceil(turbine.getBaseEfficiency() * 100)) + "%" + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 3, EnumChatFormatting.GRAY + translateToLocal("gt.item.desc.fuel_eff"));
                 aList.add(
                     tOffset + 4,
@@ -614,39 +611,36 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 11,
-                    EnumChatFormatting.LIGHT_PURPLE + translateToLocalFormatted(
-                        "gt.item.desc.eff_tier",
-                        "" + EnumChatFormatting.GOLD + turbine.getOverflowEfficiency() + EnumChatFormatting.GRAY));
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + translateToLocalFormatted("gt.item.desc.eff_tier", turbine.getOverflowEfficiency()));
             } else {
                 aList.add(
                     tOffset,
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.durability",
-                            EnumChatFormatting.GREEN + formatNumber(tMaxDamage - getToolDamage(aStack)) + " ",
-                            " " + formatNumber(tMaxDamage))
+                            formatNumber(tMaxDamage - getToolDamage(aStack)),
+                            formatNumber(tMaxDamage))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.level",
-                            tMaterial.getLocalizedName() + EnumChatFormatting.YELLOW,
-                            "" + getHarvestLevel(aStack, ""))
+                            tMaterial.getLocalizedName(),
+                            getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
                     EnumChatFormatting.WHITE
-                        + translateToLocalFormatted(
-                            "gt.item.desc.damage",
-                            EnumChatFormatting.BLUE + formatNumber(getToolCombatDamage(aStack)))
+                        + translateToLocalFormatted("gt.item.desc.damage", formatNumber(getToolCombatDamage(aStack)))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.mine_speed",
-                            EnumChatFormatting.GOLD + formatNumber(
+                            formatNumber(
                                 Math.max(
                                     Float.MIN_NORMAL,
                                     tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)))

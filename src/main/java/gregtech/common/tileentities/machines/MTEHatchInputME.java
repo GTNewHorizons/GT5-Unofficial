@@ -23,7 +23,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -67,6 +66,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -568,26 +568,32 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         return getProxy().isActive();
     }
 
+    @OCMethod
     public int getMinAutoPullAmount() {
         return minAutoPullAmount;
     }
 
+    @OCMethod
     public void setMinAutoPullAmount(int minAutoPullAmount) {
         this.minAutoPullAmount = minAutoPullAmount;
     }
 
+    @OCMethod
     public int getAutoPullRefreshTime() {
         return autoPullRefreshTime;
     }
 
+    @OCMethod
     public void setAutoPullRefreshTime(int autoPullRefreshTime) {
         this.autoPullRefreshTime = autoPullRefreshTime;
     }
 
+    @OCMethod
     public boolean isAutoPullFluidList() {
         return autoPullFluidList;
     }
 
+    @OCMethod
     public void setAutoPullFluidList(boolean pullFluidList) {
         if (!autoPullAvailable) {
             return;
@@ -624,6 +630,28 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         // Keep the AE stack watcher in sync, or a hatch configured after joining the grid never gets onStackChange for
         // the new fluid and a machine idling on it never wakes when the network restocks.
         configureWatchers();
+    }
+
+    @OCMethod
+    public FluidStack getSlotConfig(int index) {
+        Slot slot = GTDataUtils.getIndexSafe(slots, index);
+
+        return slot == null || slot.config == null ? null : slot.config.copy();
+    }
+
+    @OCMethod
+    public boolean setSlotConfigAndUpdate(int index, FluidStack config) {
+        if (index < 0 || index >= slots.length) return false;
+
+        setSlotConfig(index, config);
+
+        try {
+            updateInformationSlot(index);
+        } catch (GridAccessException e) {
+            // :)
+        }
+
+        return true;
     }
 
     /**
@@ -813,10 +841,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 }
             }
             case 1 -> {
-                NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
+                List<NBTTagCompound> slotList = GTUtility.getCompoundTagList(aNBT, "slots");
 
-                // noinspection unchecked
-                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
+                for (NBTTagCompound tag : slotList) {
                     Slot slot = Slot.readFromNBT(tag);
 
                     if (slot != null) slots[tag.getInteger("index")] = slot;

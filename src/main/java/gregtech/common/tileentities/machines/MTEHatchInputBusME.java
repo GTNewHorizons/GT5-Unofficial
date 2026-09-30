@@ -67,6 +67,7 @@ import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -319,26 +320,32 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
     }
 
+    @OCMethod
     public int getMinAutoPullStackSize() {
         return minAutoPullStackSize;
     }
 
+    @OCMethod
     public void setMinAutoPullStackSize(int minAutoPullStackSize) {
         this.minAutoPullStackSize = minAutoPullStackSize;
     }
 
+    @OCMethod
     public int getAutoPullRefreshTime() {
         return autoPullRefreshTime;
     }
 
+    @OCMethod
     public void setAutoPullRefreshTime(int autoPullRefreshTime) {
         this.autoPullRefreshTime = autoPullRefreshTime;
     }
 
+    @OCMethod
     public boolean isAutoPullItemList() {
         return autoPullItemList;
     }
 
+    @OCMethod
     public void setAutoPullItemList(boolean pullItemList) {
         if (!autoPullAvailable) {
             return;
@@ -377,14 +384,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             case 0 -> {
                 int[] sizes = aNBT.hasKey("sizes") ? aNBT.getIntArray("sizes") : new int[0];
 
-                final NBTTagList inventory = aNBT.getTagList("Inventory", Constants.NBT.TAG_COMPOUND);
+                final List<NBTTagCompound> inventory = GTUtility.getCompoundTagList(aNBT, "Inventory");
 
                 ItemStack[] oldInventory = new ItemStack[SLOT_COUNT * 2 + 2];
 
                 // Copy of the current mInventory loading code, because otherwise the upper stacks are discarded due to
                 // the reduced mInventory size.
                 // noinspection unchecked
-                for (NBTTagCompound tag : (List<NBTTagCompound>) inventory.tagList) {
+                for (NBTTagCompound tag : (List<NBTTagCompound>) inventory) {
                     oldInventory[tag.getInteger("IntSlot")] = GTUtility.loadItem(tag);
                 }
 
@@ -407,10 +414,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                 }
             }
             case 1 -> {
-                NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
+                List<NBTTagCompound> slotList = GTUtility.getCompoundTagList(aNBT, "slots");
 
                 // noinspection unchecked
-                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
+                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList) {
                     Slot slot = Slot.readFromNBT(tag);
 
                     if (slot != null) {
@@ -612,6 +619,15 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     }
 
     @Override
+    public List<ItemStack> getItemsForHoloGlasses() {
+        List<ItemStack> result = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot != null && slot.extracted != null) result.add(slot.extracted);
+        }
+        return result;
+    }
+
+    @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
         if (processingRecipe) {
             return true;
@@ -804,6 +820,28 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     public void setSlotConfig(int index, ItemStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
         configureWatchers();
+    }
+
+    @OCMethod
+    public ItemStack getSlotConfig(int index) {
+        Slot slot = GTDataUtils.getIndexSafe(slots, index);
+
+        return slot == null || slot.config == null ? null : slot.config.copy();
+    }
+
+    @OCMethod
+    public boolean setSlotConfigAndUpdate(int index, ItemStack config) {
+        if (index < 0 || index >= slots.length) return false;
+
+        setSlotConfig(index, config);
+
+        try {
+            updateInformationSlot(index);
+        } catch (GridAccessException e) {
+            // :)
+        }
+
+        return true;
     }
 
     /**
