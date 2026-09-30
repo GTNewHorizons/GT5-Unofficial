@@ -6,6 +6,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 
 /// The pipe-family stat tables: one declared row per material carrying wires/cables, fluid pipes, or item
@@ -15,6 +16,8 @@ import gregtech.api.enums.TierEU;
 /// The wooden and High Pressure fluid pipes exist in three sizes whose capacities follow no base-value
 /// formula, so they carry per-size capacity constants here instead of a [PipeProperties#BASE_PIPE_FLOW]
 /// value.
+/// The High Pressure pipes occupy Redstone's pipe shapes but are made from steel pipes and pumps, so they hold no
+/// Redstone and are never recycled ([#isHighPressurePipe]).
 ///
 /// Rows reference [Materials] fields, so [#init] must run after those are assigned.
 public class PipeMaterials {
@@ -27,6 +30,12 @@ public class PipeMaterials {
     public static final int[] HIGH_PRESSURE_FLUID_PIPE_CAPACITY = { 4800, 7200, 9600 };
     /// Maximum fluid temperature of the High Pressure (Redstone) fluid pipes.
     public static final int HIGH_PRESSURE_FLUID_PIPE_HEAT_RESISTANCE = 1500;
+
+    /// Whether the (`prefix`, `material`) pair is one of the High Pressure fluid pipes.
+    public static boolean isHighPressurePipe(OrePrefixes prefix, Material material) {
+        return material == Materials.Redstone
+            && (prefix == OrePrefixes.pipeSmall || prefix == OrePrefixes.pipeMedium || prefix == OrePrefixes.pipeLarge);
+    }
 
     private record WireCable(Material material, int cableLoss, int amperage, long voltage) {}
 
