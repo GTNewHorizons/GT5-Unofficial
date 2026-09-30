@@ -396,7 +396,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                 impurityFluidStack.getFluid(),
                 impurityFluidStack.getFluid() == Materials.PrismaticGas.mFluid ? impurityFluidAmount / 4
                     : impurityFluidAmount);
-            addOutputPartial(toFlush);
+            addPendingOutput(toFlush);
             storedFluidStack = null;
             impurityFluidStack = null;
             fluidAmount = 0;

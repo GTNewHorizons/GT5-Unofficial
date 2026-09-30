@@ -9,6 +9,8 @@ import java.util.PriorityQueue;
 
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
 
@@ -76,6 +78,10 @@ public class ItemEjectionHelper {
         return ejected;
     }
 
+    public int ejectItems(List<ItemStack> outputs, int startingParallels) {
+        return ejectItems(outputs, startingParallels, null);
+    }
+
     /**
      * Ejects items into the contained output bus transactions, and calculates the number of parallels that were
      * successfully ran.
@@ -83,9 +89,11 @@ public class ItemEjectionHelper {
      * @param outputs           The items to eject per parallel. Each stack is multiplied by startingParallels to
      *                          determine the total number of items to eject. This param is not modified.
      * @param startingParallels The number of parallels to calculate. Must be an integer >= 0.
+     * @param remaining         A list to collect the remaining output stacks that couldn't be ejected, can be null if
+     *                          not need.
      * @return The number of parallels that can be safely ran without voiding items.
      */
-    public int ejectItems(List<ItemStack> outputs, int startingParallels) {
+    public int ejectItems(List<ItemStack> outputs, int startingParallels, @Nullable List<ItemStack> remaining) {
         if (outputs == null || outputs.isEmpty()) return 0;
         if (!active)
             throw new IllegalStateException("Cannot eject additional items after committing an ItemEjectionHelper");
@@ -164,15 +172,19 @@ public class ItemEjectionHelper {
             }
         }
 
-        if (itemProtectionEnabled) {
+        if (itemProtectionEnabled || remaining != null) {
             // If we care about protecting the items, reduce the starting parallels by however many batches of items
             // were ejected.
             // Otherwise, we can just tell the multi to run the full amount and it'll void everything that doesn't fit.
 
             for (ItemParallelData parallelData : outputParallels) {
-                int ejected = parallelData.initialAmount - parallelData.remaining.stackSize;
-
-                startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
+                if (itemProtectionEnabled) {
+                    int ejected = parallelData.initialAmount - parallelData.remaining.stackSize;
+                    startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
+                }
+                if (remaining != null && parallelData.remaining.stackSize > 0) {
+                    remaining.add(parallelData.remaining);
+                }
             }
         }
 
