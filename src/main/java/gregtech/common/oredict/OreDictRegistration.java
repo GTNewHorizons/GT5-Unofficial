@@ -40,6 +40,10 @@ final class OreDictRegistration {
         this.modId = modId == null || modId.equals("UNKNOWN") ? null : modId;
     }
 
+    /// Runs the prefix's registrators for this registration. A MaterialLib item is skipped unless its ore name is
+    /// the target of an [OreDictAliases] prefix alias (`crystalCertusQuartz`, `plankWood`, ...): the shape consumers
+    /// in `gregtech.loaders.shapeconsumers` process every MaterialLib item once per (shape, material), but not
+    /// under an alias prefix.
     void registerRecipes() {
         if (stack.getItem() == null || prefix.isIgnored(material)
             || isMaterialLibItem(stack) && !OreDictAliases.isPrefixAlias(oreName)
@@ -68,11 +72,8 @@ final class OreDictRegistration {
         return GTUtility.areStacksEqual(MaterialParts.stack(prefix, material, 1), stack);
     }
 
-    /// Whether `stack`'s item belongs to MaterialLib. Such stacks are processed by `gregtech.loaders.shapeconsumers`
-    /// instead, once per (shape, material), except under a prefix alias declared in [OreDictAliases] (a gem
-    /// registered as `crystal`), which no shape consumer covers. The test is the item's own
-    /// registered domain, not [#modId], which names whichever mod's code was active when the underlying
-    /// `OreDictionary.OreRegisterEvent` fired.
+    /// Whether `stack`'s item belongs to MaterialLib. The test is the item's own registered domain, not [#modId],
+    /// which names whichever mod's code was active when the underlying `OreDictionary.OreRegisterEvent` fired.
     private static boolean isMaterialLibItem(ItemStack stack) {
         GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
         return id != null && MaterialLib.MODID.equals(id.modId);
