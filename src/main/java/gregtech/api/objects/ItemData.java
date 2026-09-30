@@ -35,13 +35,7 @@ public class ItemData {
     private final String oreDictName;
 
     public ItemData(OrePrefixes prefix, Material material) {
-        mPrefix = prefix;
-        mMaterial = material == null ? null : new MaterialStack(material, prefix.getMaterialAmount());
-        mByProducts = prefix.mSecondaryMaterial == null || prefix.mSecondaryMaterial.mMaterial == null
-            ? EMPTY_MATERIALSTACK_ARRAY
-            : new MaterialStack[] { prefix.mSecondaryMaterial.clone() };
-        hasExplicitComposition = false;
-        oreDictName = null;
+        this(prefix, material, null);
     }
 
     /// An ingredient that names an ore-dictionary entry and carries no composition, for the entries whose
@@ -54,11 +48,11 @@ public class ItemData {
         oreDictName = prefix.oreDictName(materialName);
     }
 
-    /// An ingredient that names `oreDictName` while counting as `prefix` of `material`, for a
-    /// [gregtech.api.enums.materials.Wildcard] entry whose name belongs to no single material.
+    /// An ingredient that names `oreDictName`, or the pair's own name when null, while counting as `prefix` of
+    /// `material`. A [gregtech.api.enums.materials.Wildcard] entry's name belongs to no single material.
     public ItemData(OrePrefixes prefix, Material material, String oreDictName) {
         mPrefix = prefix;
-        mMaterial = new MaterialStack(material, prefix.getMaterialAmount());
+        mMaterial = material == null ? null : new MaterialStack(material, prefix.getMaterialAmount());
         mByProducts = prefix.mSecondaryMaterial == null || prefix.mSecondaryMaterial.mMaterial == null
             ? EMPTY_MATERIALSTACK_ARRAY
             : new MaterialStack[] { prefix.mSecondaryMaterial.clone() };
