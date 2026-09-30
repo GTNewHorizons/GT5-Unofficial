@@ -30299,6 +30299,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_DURATION, 500)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 120)
             .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 45)
+            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 120)
             .build();
         Materials.WoodsGlass = MaterialLibAPI.newMaterial("gregtech", "Wood'sGlass", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFFDC3CFF)
