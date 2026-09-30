@@ -955,7 +955,7 @@ gt.blockmachines.basicmachine.microtransmitter.05.name=IV Передатчик �
 gt.blockmachines.basicmachine.microtransmitter.06.name=LuV Передатчик микроволновой энергии
 gt.blockmachines.basicmachine.microtransmitter.07.name=ZPM Передатчик микроволновой энергии
 gt.blockmachines.basicmachine.microtransmitter.08.name=UV Передатчик микроволновой энергии
-gt.blockmachines.basicmachine.microtransmitter.tooltip=Передает энергию по беспроводной сети\nИспользует азотную плазму\nдля межпространственной передачи\n0,004EU потерь на 100 блоков
+gt.blockmachines.basicmachine.microtransmitter.tooltip=Передает энергию по беспроводной сети\nТребуется сигнал красного камня для активации\n0,004EU потерь на 100 блоков\nПри межмерной передаче\nИспользуется азотная плазма, и требуется яйцо дракона рядом\nТакже потерь умножаются на 100
 gt.blockmachines.basicmachine.microwave.tier.01.name=Базовая микроволновая печь
 gt.blockmachines.basicmachine.microwave.tier.02.name=Продвинутая микроволновая печь
 gt.blockmachines.basicmachine.microwave.tier.03.name=Продвинутая микроволновая печь II
@@ -3080,6 +3080,7 @@ GT5U.gui.text.structure_error.missing_data_hatch=Нет шлюза для вво
 GT5U.gui.text.structure_error.dt_missing_output_hatch=Missing Output Hatch on Layer %s
 GT5U.gui.text.structure_error.dt_missing_output_hatches=Нет выходных шлюзов на слоях %s
 GT5U.gui.text.structure_error.coil_level_not_enough=Уровень катушек недостаточен
+GT5U.gui.text.structure_error.exotic_hatch_insufficient_coil_tier=Coil tier too low for Multi-Amp Hatch
 GT5U.gui.text.structure_error.missing_top=Верхний слой неверен
 GT5U.gui.text.structure_error.dangote_missing_top=Верхний слой неверен или выхлопная система стоит не на верхнем слое
 GT5U.gui.text.structure_error.spelv_module_exceed=Превышен лимит модулей
@@ -9584,7 +9585,6 @@ gt.metatool.01.file.name=Напильник (%s)
 gt.metatool.01.file.tooltip=Ручной электрический напильник
 
 # Side names
-gt.lang.face.any=Любая сторона
 gt.lang.face.back=Задняя сторона
 gt.lang.face.bottom=Нижняя сторона
 gt.lang.face.front=Передняя сторона
@@ -9646,3 +9646,38 @@ GT5U.nei.solar_factory.tier_required=Требуется тир мульти: %s
 
 # Item tooltips
 GT5U.tooltip.switch_metadata.sneak_right_click=Shift+ПКМ, чтобы изменить режим
+
+# Material flavor text
+Material.amalgatite.flavorText=Всё могло бы быть замечательно!
+Material.antimatter.flavorText=Ошибка Дирака
+Material.bedrockium.flavorText=Слой осадочных пород, скрывающий мучительную бездну
+Material.blackdwarfmatter.flavorText=Тень мёртвой звезды
+Material.dimensionallyshiftedsuperfluid.flavorText=Гиперболическое усердие
+Material.dimensionallytranscendentresidue.flavorText=Липкий
+Material.hexanite.flavorText=Безумие и воля, обретшие форму
+Material.ichorium.flavorText=Ткань планарного слияния
+Material.infinity.flavorText=Вся мощь вселенной в твоей руке.
+Material.magmatter.flavorText=Материя магнитных монополей
+Material.magnetohydrodynamicallyconstrainedstarmatter.flavorText=Стабилизированная барионная материя
+Material.prismaticnaquadah.flavorText=Поглощает любое излучение
+Material.protohalkonite.flavorText=Создан, чтобы быть неразрушимым... ну, наверное
+Material.protomatter.flavorText=Вот из чего делают куриные наггетсы
+Material.quarkgluonplasma.flavorText=Материя вне структуры
+Material.rawstarmatter.flavorText=Плоть звезды главной последовательности
+Material.sixphasedcopper.flavorText=Смесь вариантов меди из архаичных FTB модов
+Material.spacetime.flavorText=Сама реальность, воплощённая в физической форме
+Material.spatialfluid.flavorText=Расширяется и сужается одновременно
+Material.temporalfluid.flavorText=Вечный и вездесущий
+Material.transcendentmetal.flavorText=Пространственно непостижимо
+Material.universium.flavorText=Разрыв в измерение за пределами нашей реальности
+Material.uuamplifier.flavorText=Ускоряет генератор материи
+Material.uumatter.flavorText=Универсальная материя
+Material.whitedwarfmatter.flavorText=Сердце мёртвой звезды
+
+# Material pipe names
+Material.plastic.fluidpipe.newname=Полиэтилен
+Material.polybenzimidazole.fluidpipe.newname=ПБИ
+Material.polytetrafluoroethylene.fluidpipe.newname=ПТФЭ
+Material.polyvinylchloride.itempipe.newname=ПВХ
+Material.redstone.fluidpipe.newname=Высокое давление
+Material.wood.fluidpipe.newname=Деревянная
