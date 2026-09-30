@@ -98,8 +98,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
             .duration(
                 (Math.max(MaterialUtils.mass(material) / 40L, 1L) * MaterialUtils.blastFurnaceTemp(material)) * TICKS)
             .eut(
-                material.getProperty(GTMaterialProperties.MELTING_VOLTAGE) != null
-                    ? material.getProperty(GTMaterialProperties.MELTING_VOLTAGE)
+                material.getProperty(GTMaterialProperties.BLAST_VOLTAGE) != null
+                    ? material.getProperty(GTMaterialProperties.BLAST_VOLTAGE)
                     : TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, MaterialUtils.blastFurnaceTemp(material));
     }

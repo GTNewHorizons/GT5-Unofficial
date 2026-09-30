@@ -18048,7 +18048,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR, GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(3))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Zr")
@@ -18989,7 +18989,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeGreen")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(43))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "ingotHot", "ingot", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "nugget", "plate", "foil", "stickLong", "stick", "lens", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Argon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Titanium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Magic), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Europium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Neon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 1L)))
@@ -19893,7 +19893,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU, 1920)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(88))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 1)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
@@ -19973,7 +19973,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU, 1920)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(90))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 1)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
@@ -20041,7 +20041,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU, 30720)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(92))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 7680)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7680)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
@@ -20142,7 +20142,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU, 7680)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(96))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Steel), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.VanadiumSteel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.DamascusSteel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 4L)))
@@ -26363,7 +26363,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 9925)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1966080)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1966080)
             .build();
         Materials.AceticAnhydride = MaterialLibAPI.newMaterial("gregtech", "AceticAnhydride", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFFAF06E)
@@ -26409,7 +26409,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MASS, 91L)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 8675)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 491520)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 491520)
             .build();
         Materials.AgarditeCd = MaterialLibAPI.newMaterial("gregtech", "AgarditeCd", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF877DA9)
@@ -26578,7 +26578,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 5940)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 7680)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7680)
             .build();
         Materials.ArceusAlloy2B = MaterialLibAPI.newMaterial("gregtech", "ArceusAlloy2B", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFCDC517)
@@ -26607,7 +26607,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 7830)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 122880)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 122880)
             .build();
         Materials.AstralTitanium = MaterialLibAPI.newMaterial("gregtech", "AstralTitanium", TextureSet.of("gregtech", "CUSTOM/astraltitanium"))
             .setTint(0xFFFFFFFF)
@@ -26639,7 +26639,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 9715)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1966080)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1966080)
             .build();
         Materials.BabbitAlloy = MaterialLibAPI.newMaterial("gregtech", "BabbitAlloy", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFD0C6D5)
@@ -26774,7 +26774,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ti₅₅La₁₂W₈Co₆Mn₄P₄Pd₄Nb₂Ar₅")
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 8035)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 491520)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 491520)
             .build();
         Materials.BloodSteel = MaterialLibAPI.newMaterial("gregtech", "BloodSteel", TextureSet.of("gregtech", "GEM_VERTICAL"))
             .setTint(0xFF8E1C00)
@@ -26833,7 +26833,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 8495)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 491520)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 491520)
             .build();
         Materials.Brine = MaterialLibAPI.newMaterial("gregtech", "Brine", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF3F58D7)
@@ -26911,7 +26911,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 9170)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1966080)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1966080)
             .build();
         Materials.Cerite = MaterialLibAPI.newMaterial("gregtech", "Cerite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF8090B6)
@@ -27007,7 +27007,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 7625)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 122880)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 122880)
             .build();
         Materials.Comancheite = MaterialLibAPI.newMaterial("gregtech", "Comancheite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFF767DC0)
@@ -27196,7 +27196,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 10435)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 7864320)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7864320)
             .build();
         Materials.EglinSteel = MaterialLibAPI.newMaterial("gregtech", "EglinSteel", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF8B4513)
@@ -27269,7 +27269,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4935)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .build();
         Materials.EthylCyanoacetate = MaterialLibAPI.newMaterial("gregtech", "EthylCyanoacetate", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF004BA0)
@@ -27534,7 +27534,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4125)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .build();
         Materials.HG1223 = MaterialLibAPI.newMaterial("gregtech", "HG1223", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF27559F)
@@ -27593,7 +27593,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 5145)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 7680)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7680)
             .build();
         Materials.HastelloyC276 = MaterialLibAPI.newMaterial("gregtech", "HastelloyC276", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFAA8CA6)
@@ -27623,7 +27623,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4625)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .build();
         Materials.HastelloyN = MaterialLibAPI.newMaterial("gregtech", "HastelloyN", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD7CCE8)
@@ -27653,7 +27653,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4625)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .build();
         Materials.HastelloyW = MaterialLibAPI.newMaterial("gregtech", "HastelloyW", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFB7B2E6)
@@ -27683,7 +27683,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3625)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.HastelloyX = MaterialLibAPI.newMaterial("gregtech", "HastelloyX", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFBEBACD)
@@ -27713,7 +27713,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3625)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.HeLiCoPtEr = MaterialLibAPI.newMaterial("gregtech", "HeLiCoPtEr", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC6C09D)
@@ -27743,7 +27743,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 6035)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 30720)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 30720)
             .build();
         Materials.HeliumSpargedUSalt = MaterialLibAPI.newMaterial("gregtech", "HeliumSpargedUSalt", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFA8CDAC)
@@ -27837,7 +27837,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 10530)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 7864320)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7864320)
             .build();
         Materials.Incoloy020 = MaterialLibAPI.newMaterial("gregtech", "Incoloy020", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE3B6AA)
@@ -27868,7 +27868,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3700)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.IncoloyDS = MaterialLibAPI.newMaterial("gregtech", "IncoloyDS", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFB7B1E8)
@@ -27899,7 +27899,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3700)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.IncoloyMA956 = MaterialLibAPI.newMaterial("gregtech", "IncoloyMA956", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC8DCDE)
@@ -27930,7 +27930,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4700)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .build();
         Materials.Inconel625 = MaterialLibAPI.newMaterial("gregtech", "Inconel625", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF80C880)
@@ -27960,7 +27960,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 2700)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 120)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 120)
             .build();
         Materials.Inconel690 = MaterialLibAPI.newMaterial("gregtech", "Inconel690", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF76DC8A)
@@ -27991,7 +27991,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3700)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.Inconel792 = MaterialLibAPI.newMaterial("gregtech", "Inconel792", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF6CF076)
@@ -28022,7 +28022,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3700)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.Indalloy140 = MaterialLibAPI.newMaterial("gregtech", "Indalloy140", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF726A8D)
@@ -28198,7 +28198,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 6625)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 30720)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 30720)
             .build();
         Materials.Lafossaite = MaterialLibAPI.newMaterial("gregtech", "Lafossaite", TextureSet.of("gregtech", "REFINED"))
             .setTint(0xFFD29797)
@@ -28287,7 +28287,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 7100)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 122880)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 122880)
             .build();
         Materials.Lautarite = MaterialLibAPI.newMaterial("gregtech", "Lautarite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF7593B4)
@@ -28405,7 +28405,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 2685)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 120)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 120)
             .build();
         // spotless:on
     }
@@ -28440,7 +28440,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 2685)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 120)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 120)
             .build();
         Materials.MaragingSteel350 = MaterialLibAPI.newMaterial("gregtech", "MaragingSteel350", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF8F9DD9)
@@ -28470,7 +28470,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 2685)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 120)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 120)
             .build();
         Materials.Miessiite = MaterialLibAPI.newMaterial("gregtech", "Miessiite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFFC0C0C0)
@@ -28592,7 +28592,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 2750)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 120)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 120)
             .build();
         Materials.Nitinol60 = MaterialLibAPI.newMaterial("gregtech", "Nitinol60", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD2B4F5)
@@ -28622,7 +28622,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 5925)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 7680)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7680)
             .build();
         Materials.Octiron = MaterialLibAPI.newMaterial("gregtech", "Octiron", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF7C7880)
@@ -28652,7 +28652,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 9395)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1966080)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1966080)
             .build();
         Materials.Perroudite = MaterialLibAPI.newMaterial("gregtech", "Perroudite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFFCCA98D)
@@ -28707,7 +28707,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 7125)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 122880)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 122880)
             .build();
         Materials.Plutonium238 = MaterialLibAPI.newMaterial("gregtech", "Plutonium238", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFFA4646)
@@ -28881,7 +28881,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 10775)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 7864320)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7864320)
             .build();
         Materials.RadioactiveMineralMix = MaterialLibAPI.newMaterial("gregtech", "RadioactiveMineralMix", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF8CA096)
@@ -29054,7 +29054,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MASS, 326L)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 9025)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1966080)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1966080)
             .build();
         Materials.Runite = MaterialLibAPI.newMaterial("gregtech", "Runite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFF3CC8BE)
@@ -29093,7 +29093,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MASS, 160L)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 7025)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 122880)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 122880)
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 6)
             .build();
         Materials.SamarskiteY = MaterialLibAPI.newMaterial("gregtech", "SamarskiteY", TextureSet.of("gregtech", "FIERY"))
@@ -29320,7 +29320,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3725)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.StableMoltenSaltBase = MaterialLibAPI.newMaterial("gregtech", "StableMoltenSaltBase", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC1DACB)
@@ -29362,7 +29362,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4585)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .build();
         Materials.StrontiumHydroxide = MaterialLibAPI.newMaterial("gregtech", "StrontiumHydroxide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF4C67BC)
@@ -29424,7 +29424,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3725)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.Tantalloy60 = MaterialLibAPI.newMaterial("gregtech", "Tantalloy60", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD5E7ED)
@@ -29456,7 +29456,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3300)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.Tantalloy61 = MaterialLibAPI.newMaterial("gregtech", "Tantalloy61", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC1D3D9)
@@ -29488,7 +29488,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 13)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3305)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.TantalumCarbide = MaterialLibAPI.newMaterial("gregtech", "TantalumCarbide", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF8B8878)
@@ -29520,7 +29520,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 3255)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 480)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .build();
         Materials.Technetium = MaterialLibAPI.newMaterial("gregtech", "Technetium", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFFDCDCDC)
@@ -29679,7 +29679,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 8525)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 491520)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 491520)
             .build();
         Materials.TrichloroaceticAcid = MaterialLibAPI.newMaterial("gregtech", "TrichloroaceticAcid", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF78641E)
@@ -29755,7 +29755,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 6775)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 30720)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 30720)
             .build();
         Materials.TriniumTitaniumAlloy = MaterialLibAPI.newMaterial("gregtech", "TriniumTitaniumAlloy", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFD2B4E1)
@@ -29787,7 +29787,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4025)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .build();
         Materials.Tumbaga = MaterialLibAPI.newMaterial("gregtech", "Tumbaga", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFFFB20F)
@@ -29849,7 +29849,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 12)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.BLAST_TEMP, 4695)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 1920)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .build();
         Materials.Uranium232 = MaterialLibAPI.newMaterial("gregtech", "Uranium232", TextureSet.of("gregtech", "NUCLEAR"))
             .setTint(0xFF58DC67)
@@ -29988,7 +29988,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 2945)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 120)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 120)
             .build();
         Materials.WoodsGlass = MaterialLibAPI.newMaterial("gregtech", "Wood'sGlass", TextureSet.of("gregtech", "GEM_A"))
             .setTint(0xFFDC3CFF)
@@ -30093,7 +30093,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.BLAST_TEMP, 6375)
-            .setProperty(GTMaterialProperties.MELTING_VOLTAGE, 30720)
+            .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 30720)
             .build();
         Materials.Zimbabweite = MaterialLibAPI.newMaterial("gregtech", "Zimbabweite", TextureSet.of("gregtech", "FINE"))
             .setTint(0xFFA4AEDB)

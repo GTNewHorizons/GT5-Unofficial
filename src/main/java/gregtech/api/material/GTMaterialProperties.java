@@ -26,6 +26,8 @@ public class GTMaterialProperties {
         .of("gregtech", "autoVacuumFreezerRecipes", true);
     public static final Property<Boolean> BLAST_REQUIRED = Property.of("gregtech", "blastRequired", false);
     public static final Property<Integer> BLAST_TEMP = Property.of("gregtech", "blastTemp", 0);
+    /// The EU/t of the blast furnace recipe smelting this material's dust, in place of MV.
+    public static final Property<Integer> BLAST_VOLTAGE = Property.of("gregtech", "blastVoltage");
     /// The Kelvin boiling point, carried only by the gtPlusPlus-originated materials: unlike
     /// [#MELTING_POINT], no gregtech-originated material declares one.
     public static final Property<Integer> BOILING_POINT = Property.of("gregtech", "boilingPoint");
@@ -106,8 +108,6 @@ public class GTMaterialProperties {
     /// default: it pins the material's fluids to 0 K, where an undeclared point is filled in from
     /// [#COMPOSITION] and otherwise falls back to room temperature (see [MaterialUtils#meltingPoint]).
     public static final Property<Integer> MELTING_POINT = Property.of("gregtech", "meltingPoint", -1);
-    /// The EU/t voltage tier the auto-generated blast furnace recipe should require, elided when unset.
-    public static final Property<Integer> MELTING_VOLTAGE = Property.of("gregtech", "meltingVoltage");
     /// The exact ARGB color declared for a material's molten-state tint. Absent when it would equal the
     /// material's [com.ruling_0.materiallib.api.StandardProperties#TINT], i.e. no separate molten tint was
     /// declared for the material. [MaterialUtils#moltenRgba] resolves the declared value through the lang key
