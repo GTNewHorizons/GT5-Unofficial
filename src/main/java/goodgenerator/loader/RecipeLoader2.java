@@ -20,7 +20,6 @@ import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -125,19 +124,6 @@ public class RecipeLoader2 {
         CrackRecipeAdder.reAddBlastRecipe(Materials.AtomicSeparationCatalyst, 35000, 120, 5000, false);
 
         GTModHandler.removeFurnaceSmelting(MaterialLibAPI.getStack(Materials.Dalisenite, Shapes.dust, 1)); // :doom:
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Dalisenite, Shapes.ingotHot, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Dalisenite, Shapes.ingot, 1))
-            .duration(16 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(vacuumFreezerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Shirabon, Shapes.ingotHot, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Shirabon, Shapes.ingot, 1))
-            .duration(2 * MINUTES)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(

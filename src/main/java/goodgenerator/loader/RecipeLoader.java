@@ -13,7 +13,6 @@ import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -455,13 +454,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 5000)
             .addTo(blastFurnaceRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.AtomicSeparationCatalyst, Shapes.ingotHot, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.AtomicSeparationCatalyst, Shapes.ingot, 1))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(vacuumFreezerRecipes);
 
         CrackRecipeAdder.crackerAdder(
             MaterialLibAPI.getFluidStack(Materials.NaquadahGas, FluidShapes.fluidLiquid, 1_000),
@@ -1479,13 +1471,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 4600)
             .addTo(blastFurnaceRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Shapes.ingotHot, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Shapes.ingot, 1))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
             .circuit(1)

@@ -11,7 +11,6 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.quantumForceTransformerRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -569,12 +568,5 @@ public class NaquadahRecipeLoader {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.ingotHot, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.ingot, 1))
-            .duration(16 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(vacuumFreezerRecipes);
     }
 }
