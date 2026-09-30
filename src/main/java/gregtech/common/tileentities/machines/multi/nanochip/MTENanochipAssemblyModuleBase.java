@@ -326,7 +326,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      * @return Info about which hatches contained the items, and a full list of item inputs indexed by id to make
      *         parallel calculation easier
      */
-    protected Map<Byte, List<ItemStack>> getInputItemsByColor() {
+    private ItemInputInformation getInputItemsByColor() {
         if (!isInputSeparationEnabled()) {
             List<ItemStack> inputs = new ArrayList<>();
             byte color = -1;
@@ -342,10 +342,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                     inputs.addAll(itemsInHatch);
                 }
             }
-            return ImmutableMap.of(color, inputs);
+            return new ItemInputInformation(color, inputs);
         }
 
         Map<Byte, List<ItemStack>> inputs = new HashMap<>();
+        Map<GTUtility.ItemId, Byte> markerItems = new HashMap<>();
         for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
             for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
                 // Get the contents of this hatch as fake items.
@@ -357,11 +358,12 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 for (ItemStack stack : itemsInHatch) {
                     List<ItemStack> colorList = inputs.computeIfAbsent(conveyorColor, _ -> new ArrayList<>());
                     colorList.add(stack);
+                    markerItems.put(GTUtility.ItemId.createWithoutNBT(stack), conveyorColor);
                 }
             }
         }
 
-        return inputs;
+        return new ItemInputInformation(inputs, markerItems);
     }
 
     /**
@@ -425,12 +427,12 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         // First step in recipe checking is finding all inputs we have to deal with.
         // As a result of this process, we also get the colors of the hatch each item is found in, which
         // we will use for routing the outputs
-        Map<Byte, List<ItemStack>> allInputs = getInputItemsByColor();
+        ItemInputInformation allInputs = getInputItemsByColor();
 
         // Now find a recipe with the fake inputs, checking over each color until one is found
         GTRecipe recipe = null;
         List<ItemStack> inputs = null;
-        var itr = allInputs.entrySet()
+        var itr = allInputs.inputs.entrySet()
             .iterator();
         while (itr.hasNext() && recipe == null) {
             var entry = itr.next();
@@ -440,6 +442,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
 
         if (recipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
+        // Refresh the output color if needed
+        this.outputColor = allInputs.getPrimaryColor(recipe, this.outputColor);
 
         // Validate it with custom logic, by default does nothing but can be overridden
         // by the module
@@ -810,6 +814,32 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 list.add(translateToLocal("GT5U.tooltip.nac.interface.disconnected"));
             }
 
+        }
+    }
+
+    class ItemInputInformation {
+
+        public final Map<Byte, List<ItemStack>> inputs;
+        private final Map<GTUtility.ItemId, Byte> markerItems;
+
+        ItemInputInformation(Map<Byte, List<ItemStack>> separatedInputs, Map<GTUtility.ItemId, Byte> markerItems) {
+            this.inputs = separatedInputs;
+            this.markerItems = markerItems;
+        }
+
+        ItemInputInformation(byte color, List<ItemStack> items) {
+            this.inputs = ImmutableMap.of(color, items);
+            this.markerItems = null;
+        }
+
+        // Set the output color to the recipe's first input's color if input separation is disabled.
+        // Fallback just in case here if markerItems is null, but this shouldn't happen
+        public byte getPrimaryColor(GTRecipe recipe, byte matchedColor) {
+            if (MTENanochipAssemblyModuleBase.this.isInputSeparationEnabled() || markerItems == null) {
+                return matchedColor;
+            }
+            GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(recipe.mInputs[0]);
+            return markerItems.get(id);
         }
     }
 }
