@@ -2,6 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
 import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convertSmelting;
+import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
@@ -33,6 +34,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.math.LongMath;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -79,6 +81,21 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     /// the dust shape).
     private static boolean hasDust(Material material) {
         return MaterialParts.stack(OrePrefixes.dust, material, 1L) != null;
+    }
+
+    /// `composition` with every amount divided by their greatest common divisor when the whole composition exceeds
+    /// the `capacity` (in material units) of one decomposition batch, so every component fits the recipe.
+    private static List<MaterialStack> decompositionBatch(List<MaterialStack> composition, long capacity) {
+        long total = 0L;
+        long divisor = 0L;
+        for (MaterialStack component : composition) {
+            if (component.mAmount <= 0L) continue;
+            total += component.mAmount;
+            divisor = LongMath.gcd(divisor, component.mAmount);
+        }
+        if (total * M <= capacity || divisor <= 1L) return composition;
+        for (MaterialStack component : composition) component.mAmount /= divisor;
+        return composition;
     }
 
     /// A blast furnace recipe smelting one `stack` into `material`'s smelt-into ingot, keyed on `circuit`.
@@ -247,7 +264,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .addTo(fluidSolidifierRecipes);
                 }
 
-                List<MaterialStack> tMaterialList = MaterialUtils.materialList(material);
+                List<MaterialStack> tMaterialList = decompositionBatch(
+                    MaterialUtils.materialList(material),
+                    stack.getMaxStackSize() * MaterialUtils.density(material));
                 if ((!tMaterialList.isEmpty())
                     && (MaterialUtils.hasElectrolyzerRecipe(material) || MaterialUtils.hasCentrifugeRecipe(material))) {
                     long tItemAmount = 0L;
