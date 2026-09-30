@@ -288,7 +288,7 @@ public final class OreDictRegistrationHandler {
 
         Material material = null;
         if (prefix.isMaterialBased() && !materialName.isEmpty() && !NAME_ONLY_MATERIALS.contains(materialName)) {
-            material = materialNamed(materialName);
+            material = MaterialUtils.byLegacyName(materialName);
         }
 
         OreDictAliases.registerAliases(oreName, stack);
@@ -400,12 +400,6 @@ public final class OreDictRegistrationHandler {
         }
 
         return prefix.isUnifiable() && !MaterialUtils.unifiable(material);
-    }
-
-    /// The material `materialName` names, or null when it names none.
-    private static @Nullable Material materialNamed(String materialName) {
-        Material material = MaterialUtils.byLegacyName(materialName);
-        return material == Materials.NULL ? null : material;
     }
 
     @SuppressWarnings("deprecation")

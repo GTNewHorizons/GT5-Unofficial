@@ -34,6 +34,7 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFluidNames;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
@@ -52,7 +53,7 @@ public class MaterialUtils {
 
     private MaterialUtils() {}
 
-    /// The MaterialLib material whose [#internalName] is `name`, or null on a miss.
+    /// The MaterialLib material whose [#internalName] is `name`, or null on a miss and for the `NULL` placeholder.
     public static @Nullable Material byLegacyName(@Nullable String name) {
         if (name == null) return null;
         if (legacyNameToMaterial == null) {
@@ -63,7 +64,8 @@ public class MaterialUtils {
             legacyNameToMaterial = map;
         }
         Material found = legacyNameToMaterial.get(name);
-        return found != null ? found : MaterialLibAPI.getMaterial("gregtech", name);
+        if (found == null) found = MaterialLibAPI.getMaterial("gregtech", name);
+        return found == Materials.NULL ? null : found;
     }
 
     private static Map<String, Material> legacyNameToMaterial;
