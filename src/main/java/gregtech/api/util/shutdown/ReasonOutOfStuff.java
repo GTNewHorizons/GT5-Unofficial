@@ -43,7 +43,7 @@ public class ReasonOutOfStuff implements ShutDownReason {
     @Override
     public void readFromNBT(@NotNull NBTTagCompound tag) {
         required = tag.getString("required");
-        tag.setInteger("amount", amount);
+        amount = tag.getInteger("amount");
     }
 
     @NotNull
