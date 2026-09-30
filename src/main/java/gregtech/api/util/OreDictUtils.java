@@ -117,16 +117,16 @@ public class OreDictUtils {
     /// Lets every MaterialLib pair decide its names from here on, including those a foreign item stands in for.
     /// Called at the start of GregTech's init: during preInit another mod's overriding item may not be registered
     /// yet.
-    /// A foreign item standing in for a pair is associated with it here, since the ore-dictionary event that
-    /// would do so may never be processed for it (`stickObsidian` is an ignored name).
+    /// A foreign item standing in for a pair is associated with it and added to its prefix here, since the
+    /// ore-dictionary event that would do so may never be processed for it (`stickObsidian` is an ignored name).
     public static void useMaterialLibTargets() {
         materialLibTargetsLive = true;
         for (MaterialLibPair pair : materialLibPairs().values()) {
             if (!MaterialParts.isMinted(pair.prefix(), pair.material())) {
-                MaterialData.addAssociation(
-                    pair.prefix(),
-                    pair.material(),
-                    MaterialParts.stack(pair.prefix(), pair.material(), 1));
+                ItemStack stack = MaterialParts.stack(pair.prefix(), pair.material(), 1);
+                MaterialData.addAssociation(pair.prefix(), pair.material(), stack);
+                pair.prefix()
+                    .add(stack);
             }
         }
     }

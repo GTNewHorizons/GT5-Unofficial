@@ -47,7 +47,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTShapeProperties;
-import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialSubTagView;
 import gregtech.api.material.MaterialUtils;
@@ -2338,7 +2337,7 @@ public class OrePrefixes {
 
     public boolean add(ItemStack stack) {
         if (stack == null) return false;
-        if (!mContainsTestCache.contains(stack)) {
+        if (!contains(stack)) {
             mPrefixedItems.add(stack);
             // It's now in there... so update the cache
             mContainsTestCache.add(stack);
@@ -2346,12 +2345,8 @@ public class OrePrefixes {
         return true;
     }
 
-    /// Whether `stack` is registered under this prefix or associated with it.
     public boolean contains(ItemStack stack) {
-        if (GTUtility.isStackInvalid(stack)) return false;
-        if (mContainsTestCache.contains(stack)) return true;
-        ItemData association = MaterialData.getAssociation(stack);
-        return association != null && association.mPrefix == this;
+        return !GTUtility.isStackInvalid(stack) && mContainsTestCache.contains(stack);
     }
 
     public boolean containsUnCached(ItemStack stack) {
