@@ -40,11 +40,10 @@ import com.google.gson.JsonSerializer;
 public class NBTPersist {
 
     /**
-     * Converts an nbt tag to json.
+     * Converts a NBT tag to JSON.
      * Does not preserve the specific types of the tags, but the returned data will be sane and generally correct.
      * Compatible with Gson.
      */
-    @SuppressWarnings("unchecked")
     public static JsonElement toJsonObject(NBTBase nbt) {
         switch (nbt) {
             case null -> {
@@ -52,11 +51,9 @@ public class NBTPersist {
             }
             case NBTTagCompound compound -> {
                 // NBTTagCompound
-                final Map<String, NBTBase> tagMap = (Map<String, NBTBase>) compound.tagMap;
-
                 JsonObject root = new JsonObject();
 
-                for (Map.Entry<String, NBTBase> nbtEntry : tagMap.entrySet()) {
+                for (Map.Entry<String, NBTBase> nbtEntry : compound.tagMap.entrySet()) {
                     root.add(nbtEntry.getKey(), toJsonObject(nbtEntry.getValue()));
                 }
 
@@ -106,7 +103,7 @@ public class NBTPersist {
                 // Tag List
 
                 JsonArray arr = new JsonArray();
-                list.tagList.forEach(c -> arr.add(toJsonObject((NBTBase) c)));
+                list.tagList.forEach(c -> arr.add(toJsonObject(c)));
                 return arr;
             }
             case NBTTagIntArray list -> {

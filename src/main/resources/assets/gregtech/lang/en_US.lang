@@ -434,7 +434,7 @@ gt.blockmachines.hatch.void_bus.tier.00.name=Void Bus
 gt.blockmachines.hatch.water.intake.tier.00.name=Reservoir Hatch
 gt.blockmachines.hatch.wireless.transmitter.energized.tier.12.name=Energized Wireless Dynamo Hatch
 
-gt.blockmachines.hpmachine.alloysmelter.name=High Pressure Alloy Smelter
+gt.blockmachines.hpmachine.alloysmelter.name=High Pressure Steam Alloy Smelter
 gt.blockmachines.hpmachine.alloysmelter.tooltip=Combination Smelter\nMachine Type: §eAlloy Smelter§r
 gt.blockmachines.hpmachine.compressor.name=High Pressure Steam Compressor
 gt.blockmachines.hpmachine.compressor.tooltip=Compressing Items\nMachine Type: §eCompressor§r
@@ -6050,6 +6050,7 @@ gt.Item_Redstone_Sniffer.tooltip=What are these frequencies?!
 gt.Item_Drone_Remote_Interface.name=Drone Remote Interface
 gt.Item_Drone_Remote_Interface.tooltip=Built-in super powerful navigation beacon!!
 gt.item.vajra_core.name=Vajra Core
+gt.Tool_Vajra.name=Vajra
 gt.item.magnetron.name=Magnetron
 gt.Item_Chaos_Locator.name=Chaos Locator
 gt.Item_Chaos_Locator.tooltip=Warps to areas with extreme entropy
@@ -10301,3 +10302,41 @@ GT5U.nei.solar_factory.tier_required=Multi Tier required: %s
 
 # Item tooltips
 GT5U.tooltip.switch_metadata.sneak_right_click=Sneak right-click to switch mode
+
+# Material flavor text
+Material.amalgatite.flavorText=It could have been great!
+Material.antimatter.flavorText=Dirac's mistake
+Material.bedrockium.flavorText=Layer of sediment shielding a painful abyss
+Material.blackdwarfmatter.flavorText=Shadow of a dead star
+Material.computation base.flavorText=01000011 01101111 01101101 01110000 01110101 01110100 01100101
+Material.dimensionallyshiftedsuperfluid.flavorText=Hyperbolic elbow grease
+Material.dimensionallytranscendentresidue.flavorText=Sticky
+Material.eternity.flavorText=無極
+Material.hexanite.flavorText=Insanity and willpower, given form
+Material.ichorium.flavorText=Fabric of planar coalescence
+Material.infinity.flavorText=The fury of the universe in the palm of your hand
+Material.magmatter.flavorText=Magnetic monopole matter
+Material.magnetohydrodynamicallyconstrainedstarmatter.flavorText=Stabilised core of a dead star
+Material.primordialmatter.flavorText=ΩK = 0.0007 ± 0.0019
+Material.prismaticnaquadah.flavorText=Absorbs all radiation
+Material.protohalkonite.flavorText=Forged to be indestructible, probably
+Material.protomatter.flavorText=This is what they make chicken nuggets out of
+Material.quarkgluonplasma.flavorText=Matter beyond structure
+Material.rawstarmatter.flavorText=Flesh of a main-sequence star
+Material.sixphasedcopper.flavorText=Mixture of copper variants from archaic FTB mods
+Material.spacetime.flavorText=Reality itself distilled into physical form
+Material.spatialfluid.flavorText=Expands and attenuates simultaneously
+Material.temporalfluid.flavorText=Everlasting and everpresent
+Material.transcendentmetal.flavorText=Spatially incomprehensible
+Material.universium.flavorText=A tear into the space beyond space
+Material.uuamplifier.flavorText=Accelerates the Mass Fabricator
+Material.uumatter.flavorText=Universally usable matter
+Material.whitedwarfmatter.flavorText=Heart of a dead star
+
+# Material pipe names
+Material.plastic.fluidpipe.newname=Plastic
+Material.polybenzimidazole.fluidpipe.newname=PBI
+Material.polytetrafluoroethylene.fluidpipe.newname=PTFE
+Material.polyvinylchloride.itempipe.newname=PVC
+Material.redstone.fluidpipe.newname=High Pressure
+Material.wood.fluidpipe.newname=Wooden

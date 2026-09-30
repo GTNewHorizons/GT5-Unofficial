@@ -1676,7 +1676,7 @@ GT5U.gui.config.general.visual=Visual
 tt.eoh.fancy_names.crude=Crude
 tt.eoh.fancy_names.primitive=Primitive
 tt.eoh.fancy_names.stable=Stable
-tt.eoh.fancy_names.Advanced=Advanced
+tt.eoh.fancy_names.advanced=Advanced
 tt.eoh.fancy_names.superb=Superb
 tt.eoh.fancy_names.exotic=Exotic
 tt.eoh.fancy_names.perfect=Perfect
@@ -1715,6 +1715,9 @@ tt.eoh.time_dilation.standard.tooltip=§b§lTime dilation in a box.
 tt.eoh.time_dilation.error.tooltip=§c§lError, report to GTNH team
 tt.eoh.spacetime.standard.tooltip.0=Supports an internal spacetime volume of up to %d km³.
 tt.eoh.spacetime.standard.tooltip.1=§b§lCapable of running recipes up to tier %d
+tt.eoh.spacetime.name=%s Spacetime Compression Field Generator
+tt.eoh.stabilisation.name=%s Stabilisation Field Generator
+tt.eoh.time_dilation.name=%s Time Dilation Field Generator
 
 # Info data
 
