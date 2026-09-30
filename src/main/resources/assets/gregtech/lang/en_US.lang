@@ -434,7 +434,7 @@ gt.blockmachines.hatch.void_bus.tier.00.name=Void Bus
 gt.blockmachines.hatch.water.intake.tier.00.name=Reservoir Hatch
 gt.blockmachines.hatch.wireless.transmitter.energized.tier.12.name=Energized Wireless Dynamo Hatch
 
-gt.blockmachines.hpmachine.alloysmelter.name=High Pressure Alloy Smelter
+gt.blockmachines.hpmachine.alloysmelter.name=High Pressure Steam Alloy Smelter
 gt.blockmachines.hpmachine.alloysmelter.tooltip=Combination Smelter\nMachine Type: §eAlloy Smelter§r
 gt.blockmachines.hpmachine.compressor.name=High Pressure Steam Compressor
 gt.blockmachines.hpmachine.compressor.tooltip=Compressing Items\nMachine Type: §eCompressor§r
@@ -6052,6 +6052,7 @@ gt.Item_Redstone_Sniffer.tooltip=What are these frequencies?!
 gt.Item_Drone_Remote_Interface.name=Drone Remote Interface
 gt.Item_Drone_Remote_Interface.tooltip=Built-in super powerful navigation beacon!!
 gt.item.vajra_core.name=Vajra Core
+gt.Tool_Vajra.name=Vajra
 gt.item.magnetron.name=Magnetron
 gt.Item_Chaos_Locator.name=Chaos Locator
 gt.Item_Chaos_Locator.tooltip=Warps to areas with extreme entropy
