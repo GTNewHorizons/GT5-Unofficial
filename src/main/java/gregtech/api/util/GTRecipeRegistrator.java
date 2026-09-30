@@ -197,10 +197,9 @@ public class GTRecipeRegistrator {
      */
     public static void registerReverseFluidSmelting(ItemStack stack, Material material, long materialAmount,
         MaterialStack byproduct, boolean isRecycling) {
-        if (stack == null || material == null) return;
-        Material smeltTarget = MaterialUtils.smeltInto(material);
-        if (!MaterialUtils.hasMolten(smeltTarget) || !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
+        if (stack == null || !hasReverseFluidSmeltingRecipe(material)
             || (materialAmount * INGOTS) / (M * stack.stackSize) <= 0) return;
+        Material smeltTarget = MaterialUtils.smeltInto(material);
 
         Material byproductMaterial = byproduct == null ? null : byproduct.mMaterial;
         ItemStack recipeOutput = byproductMaterial == null ? null
@@ -224,6 +223,13 @@ public class GTRecipeRegistrator {
             .eut(meltingVoltage(smeltTarget, moltenFluid));
         if (isRecycling) builder.recipeCategory(RecipeCategories.fluidExtractorRecycling);
         builder.addTo(fluidExtractionRecipes);
+    }
+
+    /// Whether [#registerReverseFluidSmelting] melts parts of `material` into its smelt-into material's molten
+    /// fluid.
+    public static boolean hasReverseFluidSmeltingRecipe(Material material) {
+        return material != null && MaterialUtils.hasMolten(MaterialUtils.smeltInto(material))
+            && MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID);
     }
 
     /// The EU/t of melting into `material`'s molten `fluid`: the material's declared

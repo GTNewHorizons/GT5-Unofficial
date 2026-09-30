@@ -64,8 +64,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     /// The gas or liquid form a material's dust converts to and from, [GTMaterialProperties#DUST_FLUID_AMOUNT] litres
-    /// of it, or null when the material declares no corresponding gas or fluid.
+    /// of it, or null when the material declares no corresponding gas or fluid or its dust melts into a molten fluid.
     private static FluidStack dustFluid(Material material) {
+        if (!MaterialUtils.blastFurnaceRequired(material)
+            && GTRecipeRegistrator.hasReverseFluidSmeltingRecipe(material)) {
+            return null;
+        }
         int amount = material.getProperty(GTMaterialProperties.DUST_FLUID_AMOUNT);
         if (MaterialUtils.hasCorrespondingGas(material)) return MaterialUtils.gas(material, amount);
         return MaterialUtils.hasCorrespondingFluid(material) ? MaterialUtils.fluid(material, amount) : null;
