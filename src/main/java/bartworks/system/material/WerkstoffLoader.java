@@ -768,7 +768,7 @@ public class WerkstoffLoader {
         Pair.of(Materials.Europium, 1),
         Pair.of(Materials.Sulfur, 1),
         Pair.of(WerkstoffLoader.Neon, 1),
-        Pair.of(Materials.Potassium, 1));
+        Pair.of(Materials.Potassium, 1)).setTranslatableTooltip();
     public static final Werkstoff PTConcentrate = new Werkstoff(
         Materials.Platinum.getRGBA(),
         "Platinum Concentrate",
@@ -1468,7 +1468,7 @@ public class WerkstoffLoader {
         Pair.of(Materials.Steel, 2),
         Pair.of(Materials.VanadiumSteel, 1),
         Pair.of(Materials.DamascusSteel, 1),
-        Pair.of(Materials.Carbon, 4));
+        Pair.of(Materials.Carbon, 4)).setTranslatableTooltip();
     public static final Werkstoff RawAdemicSteel = new Werkstoff(
         new short[] { 0xed, 0xed, 0xed },
         "Raw Ademic Steel",
