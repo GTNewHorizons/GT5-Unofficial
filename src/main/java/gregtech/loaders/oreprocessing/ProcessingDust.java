@@ -18,7 +18,6 @@ import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
@@ -94,13 +93,13 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         } else {
             recipeBuilder.itemOutputs(GTUtility.copyAmount(1, ingotStack));
         }
+        Integer duration = material.getProperty(GTMaterialProperties.BLAST_DURATION);
+        Integer voltage = material.getProperty(GTMaterialProperties.BLAST_VOLTAGE);
         return recipeBuilder
             .duration(
-                (Math.max(MaterialUtils.mass(material) / 40L, 1L) * MaterialUtils.blastFurnaceTemp(material)) * TICKS)
-            .eut(
-                material.getProperty(GTMaterialProperties.BLAST_VOLTAGE) != null
-                    ? material.getProperty(GTMaterialProperties.BLAST_VOLTAGE)
-                    : TierEU.RECIPE_MV)
+                duration != null ? duration
+                    : Math.max(MaterialUtils.mass(material) / 40L, 1L) * MaterialUtils.blastFurnaceTemp(material))
+            .eut(voltage != null ? voltage : TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, MaterialUtils.blastFurnaceTemp(material));
     }
 

@@ -24,6 +24,9 @@ public class GTMaterialProperties {
     public static final Property<Boolean> AUTO_RECYCLE_RECIPES = Property.of("gregtech", "autoRecycleRecipes", true);
     public static final Property<Boolean> AUTO_VACUUM_FREEZER_RECIPES = Property
         .of("gregtech", "autoVacuumFreezerRecipes", true);
+    /// The duration in ticks of the blast furnace recipe smelting this material's dust, in place of the formula
+    /// derived from its mass and [#BLAST_TEMP].
+    public static final Property<Integer> BLAST_DURATION = Property.of("gregtech", "blastDuration");
     public static final Property<Boolean> BLAST_REQUIRED = Property.of("gregtech", "blastRequired", false);
     public static final Property<Integer> BLAST_TEMP = Property.of("gregtech", "blastTemp", 0);
     /// The EU/t of the blast furnace recipe smelting this material's dust, in place of MV.
