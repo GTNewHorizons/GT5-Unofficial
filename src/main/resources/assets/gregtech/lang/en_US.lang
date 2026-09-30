@@ -423,7 +423,7 @@ gt.blockmachines.hatch.output_bus.me.name=Output Bus (ME)
 gt.blockmachines.hatch.output_bus.tier.steam.name=Output Bus (Steam)
 gt.blockmachines.hatch.phsensor.name=pH Sensor Hatch
 gt.blockmachines.hatch.phsensor.tooltip=Can be installed in the pH Neutralization Purification Unit.\nOutputs Redstone Signal according to the current pH value.\nRight click to open the GUI and change settings.
-gt.blockmachines.hatch.splitter.redstone.name=Splitter Redstone Input
+gt.blockmachines.hatch.nanochip.redstone.name=Nanochip Redstone Input Hatch
 gt.blockmachines.hatch.toxicresiduesensor.name=Toxic Residue Sensor Hatch
 gt.blockmachines.hatch.toxicresiduesensor.tooltip=Reads Toxic Residue of the Large Neutralization Engine\nRight click to open the GUI and change settings.
 gt.blockmachines.hatch.turbine.name=Rotor Assembly
@@ -434,7 +434,7 @@ gt.blockmachines.hatch.void_bus.tier.00.name=Void Bus
 gt.blockmachines.hatch.water.intake.tier.00.name=Reservoir Hatch
 gt.blockmachines.hatch.wireless.transmitter.energized.tier.12.name=Energized Wireless Dynamo Hatch
 
-gt.blockmachines.hpmachine.alloysmelter.name=High Pressure Alloy Smelter
+gt.blockmachines.hpmachine.alloysmelter.name=High Pressure Steam Alloy Smelter
 gt.blockmachines.hpmachine.alloysmelter.tooltip=Combination Smelter\nMachine Type: §eAlloy Smelter§r
 gt.blockmachines.hpmachine.compressor.name=High Pressure Steam Compressor
 gt.blockmachines.hpmachine.compressor.tooltip=Compressing Items\nMachine Type: §eCompressor§r
@@ -3471,11 +3471,12 @@ GT5U.tooltip.nac.module.board_processor.body.1=Will try to fill its internal tan
 GT5U.tooltip.nac.module.board_processor.body.2=The internal tank has a capacity of §31,000,000L§7 and must be at least half full for the machine to work
 GT5U.tooltip.nac.module.board_processor.body.3=Running recipes gradually increases fluid impurity, with bigger amounts of fluid taking longer to become impure
 GT5U.tooltip.nac.module.board_processor.body.4=Set an ejection threshold in the GUI to automatically flush the fluid out to be processed, which is §b100%%§7 by default
+GT5U.tooltip.nac.module.board_processor.body.5=Supplying a redstone signal to a Nanochip Redstone Input Hatch will automatically flush the fluid tank
 GT5U.tooltip.nac.module.board_processor.body.output_hatch=Manual and automatic flushing require an Output Hatch
-GT5U.tooltip.nac.module.board_processor.body.5=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
-GT5U.tooltip.nac.module.board_processor.body.6=§b0%%-15%%§r - §aEU Discount = 30%% - 2 * y%%
-GT5U.tooltip.nac.module.board_processor.body.7=§b15%%-65%%§r - Default behaviour
-GT5U.tooltip.nac.module.board_processor.body.8=§b65%%-100%%§r - §4Extra EU cost = 2%% * y%%
+GT5U.tooltip.nac.module.board_processor.body.6=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
+GT5U.tooltip.nac.module.board_processor.body.7=§b0%%-15%%§r - §aEU Discount = 30%% - 2 * y%%
+GT5U.tooltip.nac.module.board_processor.body.8=§b15%%-65%%§r - Default behaviour
+GT5U.tooltip.nac.module.board_processor.body.9=§b65%%-100%%§r - §4Extra EU cost = 2%% * y%%
 GT5U.tooltip.nac.module.cutting_chamber.name=Cutting Chamber
 GT5U.tooltip.nac.module.cutting_chamber.flavor.1=Measure once, cut twice.
 GT5U.tooltip.nac.module.cutting_chamber.action=Cuts your Wafer %s
@@ -3527,10 +3528,10 @@ GT5U.tooltip.nac.module.boardprocessor.impurity=Impurity
 GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank (requires an Output Hatch)
 GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank=Edit auto-flush settings
 
-GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex
-GT5U.tooltip.nac.hatch.splitter.body.2=Allows for Redstone Input for rule control
-GT5U.tooltip.nac.hatch.splitter.body.3=Set the channel and redstone threshold in the GUI
-GT5U.tooltip.nac.hatch.splitter.body.4=A redstone rule is active if the supplied redstone signal is >= the threshold on that channel
+GT5U.tooltip.nac.hatch.redstone.body.1=Can be installed in certain §eNAC§7 modules
+GT5U.tooltip.nac.hatch.redstone.body.2=Allows for Redstone Input for rule control
+GT5U.tooltip.nac.hatch.redstone.body.3=Set the channel and redstone threshold in the GUI
+GT5U.tooltip.nac.hatch.redstone.body.4=A redstone rule in the Splitter is active if the supplied redstone signal is >= the threshold on that channel
 GT5U.tooltip.nac.hatch.splitter.rules_manager=Open Rules manager
 GT5U.tooltip.nac.hatch.splitter.add_rule=Add new Rule
 GT5U.tooltip.nac.hatch.splitter.rule.Color=Color
@@ -6050,6 +6051,7 @@ gt.Item_Redstone_Sniffer.tooltip=What are these frequencies?!
 gt.Item_Drone_Remote_Interface.name=Drone Remote Interface
 gt.Item_Drone_Remote_Interface.tooltip=Built-in super powerful navigation beacon!!
 gt.item.vajra_core.name=Vajra Core
+gt.Tool_Vajra.name=Vajra
 gt.item.magnetron.name=Magnetron
 gt.Item_Chaos_Locator.name=Chaos Locator
 gt.Item_Chaos_Locator.tooltip=Warps to areas with extreme entropy
