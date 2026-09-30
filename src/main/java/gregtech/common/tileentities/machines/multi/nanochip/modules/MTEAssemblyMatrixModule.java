@@ -290,8 +290,8 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
-    protected boolean shouldMergeColorInputs() {
-        return true;
+    public boolean getDefaultInputSeparationMode() {
+        return false;
     }
 
     @Override

@@ -327,7 +327,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      *         parallel calculation easier
      */
     protected Map<Byte, List<ItemStack>> getInputItemsByColor() {
-        if (shouldMergeColorInputs()) {
+        if (!isInputSeparationEnabled()) {
             List<ItemStack> inputs = new ArrayList<>();
             byte color = -1;
             for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
@@ -522,8 +522,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return false;
     }
 
-    protected boolean shouldMergeColorInputs() {
-        return false;
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean getDefaultInputSeparationMode() {
+        return true;
     }
 
     /**
