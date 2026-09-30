@@ -10268,8 +10268,6 @@ gt.metaitem.01.32708.with.WithPunchCardData.name=With Punch Card Data
 gt.metaitem.01.32708.with.WithScannedBookData.name=With Scanned Book Data
 gt.metaitem.01.32708.with.WithScannedMapData.name=With Scanned Map Data
 gt.metaitem.01.32708.with.WritesResearchResult.name=Writes Research result
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=IT'S FREE! Place Lava on Side
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=IT'S FREE! Place Lava on Top
 
 # Chat messages
 GT5U.chat.cover.connectable=Connectable: %s
