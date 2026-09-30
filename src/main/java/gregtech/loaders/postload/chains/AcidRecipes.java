@@ -89,7 +89,7 @@ public class AcidRecipes {
         // Chlorosulfonic Acid Line
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.PhosphorousPentoxide, Shapes.dust, 7))
-            .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 4000))
+            .fluidInputs(MaterialUtils.fluid(Materials.IndustrialStrengthHydrogenChloride, 4000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.PhosphorusChlorineMixture, FluidShapes.fluidLiquid, 2000),
                 GTUtility.getWater(5000L))

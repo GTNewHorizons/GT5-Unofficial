@@ -271,20 +271,15 @@ public class PosteaTransformers implements Runnable {
         addItemReplacement("IC2:itemCellEmpty", meta, cutover.getItem(), cutover.getItemDamage());
     }
 
-    /// Migrates the filled cells gtpp minted onto IC2's cell item, which no longer register: the hydrofluoric
-    /// acid cell (meta 15) becomes the MaterialLib hydrofluoric acid cell -- half the contained acid, since the
-    /// gtpp cell held the double-density industrial fluid -- and the five acid cells no recipe ever consumed
-    /// (metas 16-20) revert to empty cells.
+    /// Migrates the filled cells gtpp minted onto IC2's cell item, which no longer register, onto the MaterialLib
+    /// cells of the same acids.
     private static void registerGtppIC2CellCutoverTransformers() {
-        ItemStack hydrofluoric = MaterialParts.cell(Materials.HydrofluoricAcidGT5U, 1);
-        if (hydrofluoric == null) {
-            throw new IllegalStateException("No MaterialLib cell stack for the gtpp hydrofluoric acid cutover");
-        }
-        addItemReplacement("IC2:itemCellEmpty", 15, hydrofluoric.getItem(), hydrofluoric.getItemDamage());
-        ItemStack empty = ItemList.Cell_Empty.get(1);
-        for (int meta = 16; meta <= 20; meta++) {
-            addItemReplacement("IC2:itemCellEmpty", meta, empty.getItem(), empty.getItemDamage());
-        }
+        remapIC2Cell(15, Materials.IndustrialStrengthHydrofluoricAcid);
+        remapIC2Cell(16, Materials.SulfurousAcid);
+        remapIC2Cell(17, Materials.SulfuricApatiteMix);
+        remapIC2Cell(18, Materials.IndustrialStrengthHydrogenChloride);
+        remapIC2Cell(19, Materials.SulfuricLithiumMix);
+        remapIC2Cell(20, Materials.LithiumHydroxide);
     }
 
     /// Migrates saved legacy pipe-family instances (per-material wire/cable/fluid-pipe/item-pipe MTE ids,

@@ -219,14 +219,12 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         // UF6 -> UF4 reduction
         // UF6 + LiFBeF2 + H2 -> LiFBeF2UF4 + HF
-        // 2 industrial strength hydrofluoric acid at twice regular density, so 4 cells of the regular acid
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.UraniumHexafluoride, CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.StableMoltenSaltBase, CellShapes.cell, 1),
-                ItemList.Cell_Empty.get(2))
+                MaterialLibAPI.getStack(Materials.StableMoltenSaltBase, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.HydrofluoricAcidGT5U, CellShapes.cell, 4))
+            .itemOutputs(MaterialParts.requireCell(Materials.IndustrialStrengthHydrofluoricAcid, 2))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.LFTRFuelBase, 3000))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -241,7 +239,7 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialUtils.anyFluid(Materials.Hydrogen, 2000))
             .fluidOutputs(
                 MaterialUtils.anyFluid(Materials.LFTRFuelBase, 3000),
-                new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 2000))
+                MaterialUtils.fluid(Materials.IndustrialStrengthHydrofluoricAcid, 2000))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(CHEMPLANT_CASING_TIER, 4)

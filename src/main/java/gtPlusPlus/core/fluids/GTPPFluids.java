@@ -91,13 +91,7 @@ public class GTPPFluids {
     public static Fluid GeneticMutagen;
     public static Fluid Cryotheum;
     public static Fluid Pyrotheum;
-    public static Fluid IndustrialStrengthHydrofluoricAcid;
     public static Fluid HighQualitySulfurDioxide;
-    public static Fluid SulfurousAcid;
-    public static Fluid SulfuricApatiteMix;
-    public static Fluid IndustrialStrengthHydrogenChloride;
-    public static Fluid SulfuricLithiumMix;
-    public static Fluid LithiumHydroxide;
     public static Fluid RaisinJuice;
     public static Fluid MobEssence;
 
@@ -467,77 +461,11 @@ public class GTPPFluids {
             true,
             true);
 
-        IndustrialStrengthHydrofluoricAcid = FluidUtils.addGtFluid(
-            "hydrofluoricAcid",
-            "Industrial Strength Hydrofluoric Acid",
-            new short[] { 200, 200, 200, 0 },
-            1,
-            120,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-
         HighQualitySulfurDioxide = FluidUtils.generateFluidNoPrefix(
             "SulfurDioxide",
             "High Quality Sulfur Dioxide",
             263,
             new short[] { 150, 200, 50, 0 });
-
-        SulfurousAcid = FluidUtils.addGtFluid(
-            "sulfurousAcid",
-            "Sulfurous Acid",
-            new short[] { 110, 220, 30, 0 },
-            4,
-            75,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-
-        SulfuricApatiteMix = FluidUtils.addGtFluid(
-            "sulfuricApatite",
-            "Sulfuric Apatite Mix",
-            new short[] { 0, 105, 105, 0 },
-            4,
-            500,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-
-        IndustrialStrengthHydrogenChloride = FluidUtils.addGtFluid(
-            "hydrogenChloride",
-            "Industrial Strength Hydrogen Chloride",
-            new short[] { 150, 240, 90, 0 },
-            4,
-            75,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-
-        SulfuricLithiumMix = FluidUtils.addGtFluid(
-            "sulfuricLithium",
-            "Sulfuric Lithium Mix",
-            new short[] { 0, 105, 105, 0 },
-            4,
-            280,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-
-        LithiumHydroxide = FluidUtils.addGtFluid(
-            "lithiumHydroxide",
-            "Lithium Hydroxide",
-            new short[] { 0, 105, 105, 0 },
-            4,
-            500,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
 
         RaisinJuice = FluidUtils.generateFluidNonMolten(
             "RaisinJuice",

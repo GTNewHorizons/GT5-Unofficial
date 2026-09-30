@@ -25,7 +25,6 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
-import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipesRareEarthProcessing {
@@ -74,7 +73,7 @@ public class RecipesRareEarthProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.Laser_Lens_WoodsGlass.get(0))
             .fluidInputs(MaterialUtils.anyFluid(Materials.HydrogenChlorideMix, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 4_000))
+            .fluidOutputs(MaterialUtils.fluid(Materials.IndustrialStrengthHydrogenChloride, 4_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(laserEngraverRecipes);
@@ -99,7 +98,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.RareEarthII, Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials.RareEarthII, Shapes.crushed, 2))
             .outputChances(10000, 9000, 8000)
-            .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 1_000))
+            .fluidInputs(MaterialUtils.fluid(Materials.IndustrialStrengthHydrogenChloride, 1_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalBathRecipes);
@@ -124,7 +123,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.RareEarthIII, Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials.RareEarthIII, Shapes.crushed, 2))
             .outputChances(10000, 9000, 8000)
-            .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 1_000))
+            .fluidInputs(MaterialUtils.fluid(Materials.IndustrialStrengthHydrofluoricAcid, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);

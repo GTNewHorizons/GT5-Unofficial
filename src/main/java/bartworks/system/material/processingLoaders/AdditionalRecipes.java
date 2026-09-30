@@ -245,6 +245,8 @@ public class AdditionalRecipes {
             ImmutablePair.of(Materials.HypochlorousAcid, 56),
             ImmutablePair.of(Materials.HydrofluoricAcidGT5U, 60),
             ImmutablePair.of(Materials.HydrochloricAcidGT5U, 52),
+            ImmutablePair.of(Materials.IndustrialStrengthHydrofluoricAcid, 320),
+            ImmutablePair.of(Materials.IndustrialStrengthHydrogenChloride, 224),
             ImmutablePair.of(Materials.NitricAcid, 72),
             ImmutablePair.of(Materials.Mercury, 32),
             ImmutablePair.of(Materials.DilutedSulfuricAcid, 14),
@@ -276,15 +278,6 @@ public class AdditionalRecipes {
                         .fillFluidContainer(new FluidStack(otherFuel.getLeft(), 1000), ItemList.Cell_Empty.get(1L)))
                 .itemOutputs(GTUtility.getEmptyCell(1))
                 .metadata(FUEL_VALUE, otherFuel.getRight())
-                .addTo(BartWorksRecipeMaps.acidGenFuels);
-        }
-        List<Pair<Fluid, Integer>> fluidOnlyFuels = Arrays.asList(
-            ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 320),
-            ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrogenChloride, 224));
-        for (Pair<Fluid, Integer> fuel : fluidOnlyFuels) {
-            GTValues.RA.stdBuilder()
-                .fluidInputs(new FluidStack(fuel.getLeft(), 1000))
-                .metadata(FUEL_VALUE, fuel.getRight())
                 .addTo(BartWorksRecipeMaps.acidGenFuels);
         }
     }

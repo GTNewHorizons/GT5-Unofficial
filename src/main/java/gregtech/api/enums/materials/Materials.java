@@ -492,6 +492,12 @@ public class Materials {
     public static Material PhosphorousPentoxide;
     public static Material Tetrafluoroethylene;
     public static Material HydrofluoricAcidGT5U;
+    public static Material IndustrialStrengthHydrofluoricAcid;
+    public static Material IndustrialStrengthHydrogenChloride;
+    public static Material SulfurousAcid;
+    public static Material SulfuricApatiteMix;
+    public static Material SulfuricLithiumMix;
+    public static Material LithiumHydroxide;
     public static Material Chloroform;
     public static Material BisphenolA;
     public static Material AceticAcid;
@@ -12075,6 +12081,60 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.DYE, "dyeLightBlue")
             .setProperty(GTMaterialProperties.FORMULA, "HF")
+            .build();
+        Materials.IndustrialStrengthHydrofluoricAcid = MaterialLibAPI.newMaterial("gregtech", "HydrofluoricAcid", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFFC8C8C8)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Industrial Strength Hydrofluoric Acid")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
+            .build();
+        Materials.IndustrialStrengthHydrogenChloride = MaterialLibAPI.newMaterial("gregtech", "HydrogenChloride", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF96F05A)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Industrial Strength Hydrogen Chloride")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
+            .build();
+        Materials.SulfurousAcid = MaterialLibAPI.newMaterial("gregtech", "SulfurousAcid", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF6EDC1E)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Sulfurous Acid")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
+            .build();
+        Materials.SulfuricApatiteMix = MaterialLibAPI.newMaterial("gregtech", "SulfuricApatite", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF006969)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Sulfuric Apatite Mix")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
+            .build();
+        Materials.SulfuricLithiumMix = MaterialLibAPI.newMaterial("gregtech", "SulfuricLithium", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF006969)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Sulfuric Lithium Mix")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
+            .build();
+        Materials.LithiumHydroxide = MaterialLibAPI.newMaterial("gregtech", "LithiumHydroxide", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF006969)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Lithium Hydroxide")
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
         Materials.Chloroform = MaterialLibAPI.newMaterial("gregtech", "Chloroform", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF892CA0)

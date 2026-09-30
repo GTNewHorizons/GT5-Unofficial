@@ -289,9 +289,9 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .circuit(22)
             .fluidInputs(
-                new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 2_000),
+                MaterialUtils.fluid(Materials.IndustrialStrengthHydrofluoricAcid, 2_000),
                 MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 5_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 4_500))
+            .fluidOutputs(MaterialUtils.fluid(Materials.IndustrialStrengthHydrofluoricAcid, 4_500))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -1561,17 +1561,17 @@ public class RecipesGregTech {
 
         // Apatite Distillation
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.SulfuricApatiteMix, 5_200))
+            .fluidInputs(MaterialUtils.fluid(Materials.SulfuricApatiteMix, 5_200))
             .fluidOutputs(
-                new FluidStack(GTPPFluids.SulfurousAcid, 3_800),
-                new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 1_000),
-                new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 400))
+                MaterialUtils.fluid(Materials.SulfurousAcid, 3_800),
+                MaterialUtils.fluid(Materials.IndustrialStrengthHydrogenChloride, 1_000),
+                MaterialUtils.fluid(Materials.IndustrialStrengthHydrofluoricAcid, 400))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.SulfurousAcid, 1_000))
+            .fluidInputs(MaterialUtils.fluid(Materials.SulfurousAcid, 1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, 500),
                 GTUtility.getWater(500))
@@ -1776,7 +1776,7 @@ public class RecipesGregTech {
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 4_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.SulfuricApatiteMix, 8_000))
+            .fluidOutputs(MaterialUtils.fluid(Materials.SulfuricApatiteMix, 8_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
