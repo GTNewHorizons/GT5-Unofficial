@@ -902,7 +902,7 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.LowPurityHafnium, Shapes.dust, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.HafniumIodide, Shapes.dust, 5))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iodine, FluidShapes.fluidLiquid, 4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iodine, FluidShapes.fluidMolten, 4_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -924,7 +924,7 @@ public class RecipeLoader {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Hafnium, Shapes.ingotHot, 1),
                 MaterialLibAPI.getStack(Materials.HafniumRunoff, Shapes.dustTiny, 1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Iodine, FluidShapes.fluidLiquid, 4_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Iodine, FluidShapes.fluidMolten, 4_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 3400)
@@ -937,7 +937,7 @@ public class RecipeLoader {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Hafnium, Shapes.ingotHot, 9),
                 MaterialLibAPI.getStack(Materials.HafniumRunoff, Shapes.dust, 1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Iodine, FluidShapes.fluidLiquid, 36_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Iodine, FluidShapes.fluidMolten, 36_000))
             .duration(4 * MINUTES + 30 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 3400)
