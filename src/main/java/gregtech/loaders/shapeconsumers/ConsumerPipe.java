@@ -3,7 +3,7 @@ package gregtech.loaders.shapeconsumers;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.PipeMaterials;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.loaders.oreprocessing.ProcessingPipe;
 
@@ -58,7 +58,10 @@ public final class ConsumerPipe {
     }
 
     private static void fluid(Shape shape, OrePrefixes prefix) {
-        ShapeConsumerSupport
-            .delegate(shape, prefix, material -> material != Materials.Redstone, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(
+            shape,
+            prefix,
+            material -> !PipeMaterials.isHighPressurePipe(prefix, material),
+            () -> ProcessingPipe.INSTANCE);
     }
 }
