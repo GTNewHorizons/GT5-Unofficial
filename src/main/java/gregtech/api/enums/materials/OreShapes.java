@@ -11,6 +11,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.StoneType;
+import gregtech.api.util.GTUtility;
 import gregtech.common.ores.GTOreAdapter;
 
 /// Block [Shape] declarations for GT's ores. Unlike `block`, `ore` and `oreSmall` carry a real
@@ -120,8 +121,8 @@ public class OreShapes {
             .oreDict("ore")
             .variants(oreVariants)
             .drops(
-                (material, variant, fortune, isSilkTouch) -> GTOreAdapter.INSTANCE
-                    .shapeDrops(material, variant, fortune, isSilkTouch, false))
+                (material, variant, fortune, isSilkTouch, harvester) -> GTOreAdapter.INSTANCE
+                    .shapeDrops(material, variant, GTUtility.isRealPlayer(harvester) ? fortune : 0, isSilkTouch, false))
             .hardness((material, variant) -> stoneBlock(variant).blockHardness)
             .resistance((material, variant) -> stoneBlock(variant).getExplosionResistance(null))
             .harvestLevel((material, variant) -> GTOreAdapter.INSTANCE.harvestLevel(material, 0));
@@ -135,8 +136,8 @@ public class OreShapes {
             .oreDict("oreSmall")
             .variants(smallOreVariants)
             .drops(
-                (material, variant, fortune, isSilkTouch) -> GTOreAdapter.INSTANCE
-                    .shapeDrops(material, variant, fortune, isSilkTouch, true))
+                (material, variant, fortune, isSilkTouch, harvester) -> GTOreAdapter.INSTANCE
+                    .shapeDrops(material, variant, GTUtility.isRealPlayer(harvester) ? fortune : 0, isSilkTouch, true))
             .hardness((material, variant) -> stoneBlock(variant).blockHardness)
             .resistance((material, variant) -> stoneBlock(variant).getExplosionResistance(null))
             .harvestLevel((material, variant) -> GTOreAdapter.INSTANCE.harvestLevel(material, -1));

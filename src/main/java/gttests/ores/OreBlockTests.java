@@ -99,8 +99,7 @@ public class OreBlockTests {
         helper.succeed();
     }
 
-    /// Fails on the current MaterialLib ore blocks, which apply any harvester's fortune.
-    @GameTest(timeoutTicks = 20, batch = "gt5.ores", required = false)
+    @GameTest(timeoutTicks = 20, batch = "gt5.ores")
     public static void fortuneFromAFakePlayerLeavesTheYieldUnchanged(GameTestHelper helper) {
         assumeFortuneItemDrops(helper);
         EntityPlayer fakePlayer = helper.spawnFakePlayer("OreBreaker");
@@ -139,8 +138,7 @@ public class OreBlockTests {
         helper.succeed();
     }
 
-    /// Fails on the current MaterialLib ore blocks, whose silk-touch break keeps only the first drop.
-    @GameTest(timeoutTicks = 20, batch = "gt5.ores", required = false)
+    @GameTest(timeoutTicks = 20, batch = "gt5.ores")
     public static void silkTouchOnASmallOreKeepsItsFullYield(GameTestHelper helper) {
         EntityPlayer miner = miner(helper, enchanted(Enchantment.silkTouch, 1));
         int multiplier = MaterialUtils.oreMultiplier(Materials.Redstone);
