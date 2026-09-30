@@ -108,6 +108,12 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
     private CircuitBatch currentBlock;
 
+    // Store a small buffer in the main NAC to prevent issues where the energy hatch cannot
+    // buffer 20 ticks worth of power itself, which the NAC needs for routing to modules
+    // (for example, with non-wireless standard or multi-amp energy hatches).
+    private long euBuffer = 0;
+    private long euBufferMax = 0;
+
     // 1 to 99, representing 1 to 99% power portioned to matrix
     private int matrixPowerPortion = 25;
 
@@ -226,6 +232,13 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         checkHasOutputBus(errors);
         if (!errors.isEmpty()) return;
 
+        long maxInputEU = getMaxInputEu();
+        // Check in double-precision to avoid long overflow
+        if (maxInputEU * 5.0D * SECONDS >= Long.MAX_VALUE) {
+            this.euBufferMax = Long.MAX_VALUE;
+        } else {
+            this.euBufferMax = maxInputEU * 5 * SECONDS;
+        }
         updateModuleEU(this.matrixPowerPortion, true);
     }
 
@@ -639,12 +652,24 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             if (isAllowedToWork()) {
+                // Fill internal buffer every tick
+                if (this.euBuffer < this.euBufferMax) {
+                    long hatchVar = getHatchVar();
+                    long maxToFill = Math.min(getMaxInputEu(), hatchVar);
+                    long toFill = Math.min(maxToFill, this.euBufferMax - this.euBuffer);
+                    if (toFill > 0) {
+                        setHatchVar(hatchVar - toFill);
+                        this.euBuffer += toFill;
+                    }
+                }
+
                 // If the complex is turned on, periodically reconnect modules.
+                // Fill module buffers every connection interval
                 if (aTick % MODULE_CONNECT_INTERVAL == 0) {
                     if (!modules.isEmpty()) {
                         // Calculate the max power to be shared to the modules
                         BigInteger availableEnergy = BigInteger
-                            .valueOf(Math.min(this.getHatchVar(), this.getMaxInputEu() * MODULE_CONNECT_INTERVAL));
+                            .valueOf(Math.min(this.euBuffer, this.getMaxInputEu() * MODULE_CONNECT_INTERVAL));
                         if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) return;
                         BigInteger drainedEnergy = BigInteger.ZERO;
                         // iterate over the modules, sending EU to fill their internal buffers
@@ -665,7 +690,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                             drainedEnergy = drainedEnergy.add(sentEnergy);
                             if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) break;
                         }
-                        setHatchVar(getHatchVar() - drainedEnergy.longValue());
+                        this.euBuffer -= drainedEnergy.longValue();
                     }
                 }
             } else {
@@ -723,6 +748,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         }
         aNBT.setInteger("matrixPortion", matrixPowerPortion);
         aNBT.setBoolean("allModuleToggle", allModuleToggle);
+        aNBT.setLong("euBuffer", euBuffer);
+        aNBT.setLong("euBufferMax", euBufferMax);
     }
 
     @Override
@@ -738,6 +765,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (aNBT.hasKey("currentBlock")) currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
         if (aNBT.hasKey("matrixPortion")) matrixPowerPortion = aNBT.getInteger("matrixPortion");
         if (aNBT.hasKey("allModuleToggle")) allModuleToggle = aNBT.getBoolean("allModuleToggle");
+        if (aNBT.hasKey("euBuffer")) euBuffer = aNBT.getLong("euBuffer");
+        if (aNBT.hasKey("euBufferMax")) euBufferMax = aNBT.getLong("euBufferMax");
     }
 
     public List<MTENanochipAssemblyModuleBase<?>> getModules() {
