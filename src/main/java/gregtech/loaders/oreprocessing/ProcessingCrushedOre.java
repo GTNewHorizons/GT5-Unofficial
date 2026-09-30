@@ -96,8 +96,8 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     break;
                 }
 
-                // Coal has an override elsewhere, and Salt and Spodumene deliberately have none.
-                if (material == Materials.Coal || material == Materials.Salt || material == Materials.Spodumene) return;
+                // Coal's purified ore is not sifted into gems.
+                if (material == Materials.Coal) return;
 
                 switch (MaterialUtils.internalName(material)) {
                     case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" -> GTValues.RA
