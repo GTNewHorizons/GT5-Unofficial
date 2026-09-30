@@ -1620,7 +1620,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.Infinity)
             .addLocalizedName(Materials.Infinity)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials.Infinity, CellShapes.cellPlasma, 1),
+                MaterialLibAPI.getStack(Materials.Infinity, CellShapes.cellPlasmaLight, 1),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.bedrockium")
@@ -1630,7 +1630,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.Bedrockium)
             .addLocalizedName(Materials.Bedrockium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials.Bedrockium, CellShapes.cellPlasma, 1),
+                MaterialLibAPI.getStack(Materials.Bedrockium, CellShapes.cellPlasmaLight, 1),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.cosmicneutronium")
@@ -1640,7 +1640,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.CosmicNeutronium)
             .addLocalizedName(Materials.CosmicNeutronium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, CellShapes.cellPlasma, 1),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, CellShapes.cellPlasmaLight, 1),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("molten.cosmicneutronium")
@@ -1660,7 +1660,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.Ichorium)
             .addLocalizedName(Materials.Ichorium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials.Ichorium, CellShapes.cellPlasma, 1),
+                MaterialLibAPI.getStack(Materials.Ichorium, CellShapes.cellPlasmaLight, 1),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("molten.ichorium")

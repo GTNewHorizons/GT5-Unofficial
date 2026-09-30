@@ -12,10 +12,11 @@ import gregtech.common.items.GTSolidCellShapeItem;
 /// Cell [Shape] declarations. Every cell shape drains to [#emptyCell], a gregtech-owned standalone empty container
 /// item registered through MaterialLib alongside the shapes themselves.
 ///
-/// `cellPlasma` needs two shapes sharing one oredict prefix: legacy plasma cells hold [GTRecipeBuilder#INGOTS] (144 mB)
-/// when the material also has a molten fluid (metal plasmas), or 1000 mB otherwise (gas/element plasmas) -- a
-/// per-material volume MaterialLib's container shape does not support directly. [MaterialParts] resolves the two back
-/// to one prefix.
+/// `cellPlasma` needs two shapes sharing one oredict prefix: a plasma cell holds [GTRecipeBuilder#INGOTS] (144 mB)
+/// for most materials that also have a molten fluid (metal plasmas), and 1000 mB for gas and element plasmas and for
+/// the materials whose plasma fluid registers its own 1000 mB cell -- a per-material volume MaterialLib's container
+/// shape does not support directly. A material declares [#cellPlasmaLight] for the 1000 mB cell. [MaterialParts]
+/// resolves the two back to one prefix.
 ///
 /// `cell`, `cellGas` and `cellSolid` share the `cell` prefix the same way. A MaterialLib container binds one fluid
 /// shape, and the liquid and gas fluid names are frozen in world NBT. Gas materials therefore fill [#cellGas], and a

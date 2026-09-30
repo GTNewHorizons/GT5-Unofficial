@@ -7,8 +7,8 @@ import gregtech.loaders.oreprocessing.ProcessingRecycling;
 
 /// Dispatches [ProcessingRecycling]'s recipe generation (emptying a fluid-filled container to its dust) for
 /// every material-based container prefix that carries material, scoped to prefixes with a MaterialLib shape via
-/// [MaterialParts#shape]. `cellPlasma` additionally generates [CellShapes#cellPlasmaLight] for materials with no
-/// molten fluid (see [MaterialParts]'s javadoc on its ordered-candidate-list exception) and `cell` additionally
+/// [MaterialParts#shape]. `cellPlasma` additionally generates [CellShapes#cellPlasmaLight] for materials whose plasma
+/// cell holds 1000 mB (see [MaterialParts]'s javadoc on its ordered-candidate-list exception) and `cell` additionally
 /// generates [CellShapes#cellGas] for gas materials and [CellShapes#cellSolid] for materials with no fluid, so
 /// each is registered as a further target explicitly; every other matching prefix has exactly one candidate
 /// shape.
