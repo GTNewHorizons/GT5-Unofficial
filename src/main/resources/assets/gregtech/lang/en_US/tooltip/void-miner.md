@@ -4,8 +4,8 @@ Can be supplied with {aqua:{var:gas_rate} L/s} of {gold:Noble Gases} to boost ou
 {aqua:Krypton} : {green:{var:krypton_boost}x}
 {dark_aqua:Xenon} : {green:{var:xenon_boost}x}
 {blue:Oganesson} : {green:{var:oganesson_boost}x}
-Produces {gold:{var:ores_per_second} Ores} per Second, depending on the Dimension
+Produces {gold:{var:ores_per_second} Ores} per Second, drawn from the Dimension's Ore pool
 {gold:Ores} from the Controller UI or an {gold:Input Bus} are added to the {light_purple:Whitelist/Blacklist}
-Toggle {light_purple:Whitelist/Blacklist} in the Controller UI or with a {white:Screwdriver}
+Toggle {light_purple:Whitelist/Blacklist} in the Controller UI
 Copy/paste the Ore filter with a {white:Data Stick}
 {dark_red:Blacklisted or non Whitelisted Ore will be VOIDED}
