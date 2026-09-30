@@ -20,7 +20,6 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.util.GTUtility;
 import tectech.Reference;
 import tectech.TecTech;
 
@@ -76,7 +75,7 @@ public class EnderWorldSavedData extends WorldSavedData {
                 break;
             }
             case 1: {
-                List<NBTTagCompound> tags = GTUtility.getCompoundTagList(nbtTagCompound, ENDER_LIQUID_TAG_LINK);
+                List<NBTTagCompound> tags = ((NBTTagList) nbtTagCompound.getTag(ENDER_LIQUID_TAG_LINK)).tagList;
 
                 EnderLiquidTagLink = new HashMap<>();
 
@@ -86,7 +85,7 @@ public class EnderWorldSavedData extends WorldSavedData {
                     EnderLiquidTagLink.put(tag, container);
                 }
 
-                List<NBTTagCompound> tanks = GTUtility.getCompoundTagList(nbtTagCompound, ENDER_LIQUID_TANK_LINK);
+                List<NBTTagCompound> tanks = ((NBTTagList) nbtTagCompound.getTag(ENDER_LIQUID_TANK_LINK)).tagList;
 
                 EnderLiquidTankLink = new HashMap<>();
 

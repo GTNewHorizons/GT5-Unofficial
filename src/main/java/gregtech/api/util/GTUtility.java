@@ -1375,14 +1375,8 @@ public class GTUtility {
         return histogram;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static List<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
-        return (List<NBTTagCompound>) (List) tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static List<NBTTagString> getStringTagList(NBTTagCompound tag, String name) {
-        return (List<NBTTagString>) (List) tag.getTagList(name, NBT.TAG_STRING).tagList;
+    public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
+        return tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
     }
 
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
@@ -2278,6 +2272,21 @@ public class GTUtility {
         }
 
         return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ArrayList<ItemStack> loadItemList(NBTTagList list) {
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+
+        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
+            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+
+            if (isStackInvalid(stack)) continue;
+
+            stacks.add(stack);
+        }
+
+        return stacks;
     }
 
     /**
