@@ -7539,8 +7539,6 @@ entity.gregtech.GTDrone.name=Drone
 
 # Fluids
 fluid.aniline=Aniline
-fluid.barnadafisarboriatorisfluid=Barnadric Tree Cutter Fluid
-fluid.binnibacteriafluid=Binni bacteria Fluid
 fluid.bioethanol=Ethanol
 fluid.biomass=Biomass
 fluid.boricacid=Boric Acid
@@ -7780,7 +7778,6 @@ fluid.steam=Steam
 fluid.sulfuricapatite=Sulfuric Apatite Mix
 fluid.sulfuriclithium=Sulfuric Lithium Mix
 fluid.sulfurousacid=Sulfurous Acid
-fluid.tcetieisfucusserratusfluid=TCetie's serrated tang Fluid
 fluid.ureamix=Urea Mix
 fluid.uuamplifier=UU Amplifier
 fluid.wet.concrete=Wet Concrete

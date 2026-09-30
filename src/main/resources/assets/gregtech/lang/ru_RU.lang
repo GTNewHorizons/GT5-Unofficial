@@ -7020,8 +7020,6 @@ entity.gregtech.GT_Entity_Arrow.name= стрела GregTech
 
 # Fluids
 fluid.aniline=Анилин
-fluid.barnadafisarboriatorisfluid=Колония Barnadafis Arboriatoris
-fluid.binnibacteriafluid=Колония Binni Bacteria
 fluid.bioethanol=Биоэтанол
 fluid.biomass=Биомасса
 fluid.boricacid=Борная кислота
@@ -7261,7 +7259,6 @@ fluid.steam=Пар
 fluid.sulfuricapatite=Апатит-сульфатная смесь
 fluid.sulfuriclithium=Литий-сульфатная смесь
 fluid.sulfurousacid=Сернистая кислота
-fluid.tcetieisfucusserratusfluid=Колония TCetiEis Fucus Serratus
 fluid.ureamix=Смесь мочевины
 fluid.uuamplifier=Катализатор материи
 fluid.wet.concrete=Жидкий бетон
