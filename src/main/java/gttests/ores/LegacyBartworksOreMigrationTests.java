@@ -44,7 +44,7 @@ public class LegacyBartworksOreMigrationTests {
 
     @GameTest(timeoutTicks = 20, batch = "gt5.ores")
     public static void placedLegacyOresLoadAsMaterialLibOres(GameTestHelper helper) {
-        PosteaTestSupport.assumeSavedWorld(helper);
+        PosteaTestSupport.assumeBlockTransformers(helper);
         World world = helper.getWorld();
         int legacyId = LegacyWerkstoffIndex.idOf(Materials.Bismutite);
         helper.assertTrue(legacyId >= 0, "Bismutite has no legacy werkstoff id");
@@ -80,7 +80,7 @@ public class LegacyBartworksOreMigrationTests {
 
     @GameTest(timeoutTicks = 20, batch = "gt5.ores")
     public static void savedLegacyOreItemsLoadAsMaterialLibOres(GameTestHelper helper) {
-        PosteaTestSupport.assumeSavedWorld(helper);
+        PosteaTestSupport.assumeItemTransformers(helper);
         int legacyId = LegacyWerkstoffIndex.idOf(Materials.Bismutite);
         List<String> mismatches = new ArrayList<>();
         for (Legacy legacy : LEGACY_BLOCKS) {

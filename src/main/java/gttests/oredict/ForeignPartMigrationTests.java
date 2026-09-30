@@ -24,7 +24,7 @@ public class ForeignPartMigrationTests {
 
     @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
     public static void savedForeignPartsLoadAsTheirPair(GameTestHelper helper) {
-        PosteaTestSupport.assumeSavedWorld(helper);
+        PosteaTestSupport.assumeItemTransformers(helper);
         List<String> mismatches = new ArrayList<>();
         int checked = 0;
         for (ForeignPartTable.Entry entry : ForeignPartTable.ENTRIES) {
