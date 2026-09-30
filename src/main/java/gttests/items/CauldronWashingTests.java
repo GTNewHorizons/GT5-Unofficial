@@ -59,6 +59,43 @@ public class CauldronWashingTests {
         helper.succeed();
     }
 
+    @GameTest(timeoutTicks = 20, batch = "gt5.cauldron")
+    public static void registeredCleaningTargetReplacesTheWashedDust(GameTestHelper helper) {
+        helper.setBlock(CAULDRON, Blocks.cauldron, 3);
+        EntityPlayer player = helper.spawnFakePlayer("CauldronWasher");
+        ItemStack held = MaterialLibAPI.getStack(Materials.Cerium, Shapes.dustImpure, 1);
+        player.inventory.currentItem = 0;
+        player.inventory.setInventorySlotContents(0, held);
+        TestPos cauldron = helper.absolute(CAULDRON);
+
+        held.getItem()
+            .onItemUse(held, player, helper.getWorld(), cauldron.x(), cauldron.y(), cauldron.z(), 1, 0.5F, 1F, 0.5F);
+
+        ItemStack result = player.inventory.getStackInSlot(0);
+        if (!GTUtility.areStacksEqual(result, MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 1))) {
+            helper.fail("Impure cerium dust did not wash into cerium-rich mixture; slot holds " + result);
+        }
+        helper.succeed();
+    }
+
+    @GameTest(timeoutTicks = 20, batch = "gt5.cauldron")
+    public static void plainDustNeitherWashesNorDrainsTheCauldron(GameTestHelper helper) {
+        helper.setBlock(CAULDRON, Blocks.cauldron, 3);
+        EntityPlayer player = helper.spawnFakePlayer("CauldronWasher");
+        ItemStack held = MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 2);
+        player.inventory.currentItem = 0;
+        player.inventory.setInventorySlotContents(0, held);
+        TestPos cauldron = helper.absolute(CAULDRON);
+
+        boolean used = held.getItem()
+            .onItemUse(held, player, helper.getWorld(), cauldron.x(), cauldron.y(), cauldron.z(), 1, 0.5F, 1F, 0.5F);
+
+        if (used || player.inventory.getStackInSlot(0) != held || waterLevel(helper) != 3) {
+            helper.fail("Iron dust was washed or drained the cauldron");
+        }
+        helper.succeed();
+    }
+
     private static int waterLevel(GameTestHelper helper) {
         TestPos cauldron = helper.absolute(CAULDRON);
         return helper.getWorld()
