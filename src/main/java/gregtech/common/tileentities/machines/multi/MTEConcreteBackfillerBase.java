@@ -14,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.IFluidBlock;
 
 import org.jetbrains.annotations.NotNull;
@@ -175,7 +174,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
         } else {
             workState = WorkState.DOWNWARD;
             stopMachine(ShutDownReasonRegistry.NONE);
-            setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.backfiller_finished"));
+            setShutdownReason("GT5U.gui.text.backfiller_finished");
             return false;
         }
     }

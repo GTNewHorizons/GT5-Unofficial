@@ -15,11 +15,11 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchNanochipRedstone;
 
-public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitterRedstone> {
+public class MTEHatchNanochipRedstoneGui extends MTEHatchBaseGui<MTEHatchNanochipRedstone> {
 
-    public MTEHatchSplitterRedstoneGui(MTEHatchSplitterRedstone hatch) {
+    public MTEHatchNanochipRedstoneGui(MTEHatchNanochipRedstone hatch) {
         super(hatch);
     }
 

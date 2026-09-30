@@ -341,7 +341,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         }
 
         if (!result) {
-            setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
+            setShutdownReason("GT5U.gui.text.drill_exhausted");
         }
 
         return result;
