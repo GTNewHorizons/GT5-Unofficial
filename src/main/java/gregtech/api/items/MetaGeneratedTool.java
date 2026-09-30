@@ -57,6 +57,7 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.material.GTMaterialProperties;
@@ -134,7 +135,9 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
             if (aNBT != null) {
-                com.ruling_0.materiallib.api.Material material = MaterialUtils.byLegacyName(aNBT.getString(aKey));
+                String name = aNBT.getString(aKey);
+                com.ruling_0.materiallib.api.Material material = MaterialUtils.byLegacyName(name);
+                if (material == null) material = Wildcard.representativeNamed(name);
                 if (material != null) return material;
             }
         }
