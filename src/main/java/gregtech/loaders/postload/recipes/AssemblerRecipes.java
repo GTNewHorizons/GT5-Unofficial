@@ -45,12 +45,14 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
@@ -2361,7 +2363,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, 1))
+            .itemInputs(Wildcard.AnyIron.input(OrePrefixes.stick, 1))
             .circuit(1)
             .itemOutputs(ItemList.FenceIron.get(1L))
             .duration(5 * SECONDS)
@@ -2373,14 +2375,6 @@ public class AssemblerRecipes implements Runnable {
             .circuit(3)
             .itemOutputs(new ItemStack(Blocks.iron_bars, 4))
             .duration(15 * SECONDS)
-            .eut(4)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.stick, 1))
-            .circuit(1)
-            .itemOutputs(ItemList.FenceIron.get(1L))
-            .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
 

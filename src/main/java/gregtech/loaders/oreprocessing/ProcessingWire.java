@@ -32,6 +32,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -44,7 +45,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
     public static ProcessingWire INSTANCE;
 
     private final Material[] dielectrics = { Materials.PolyvinylChloride, Materials.Polydimethylsiloxane };
-    private final Material[] syntheticRubbers = { Materials.StyreneButadieneRubber, Materials.Silicone };
 
     private static Object tt;
 
@@ -310,15 +310,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(stack)
                             .circuit(24)
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
-                            .fluidInputs(MaterialUtils.molten(Materials.Silicone, (long) costMultiplier * HALF_INGOTS))
-                            .duration(5 * SECONDS)
-                            .eut(TierEU.RECIPE_ULV)
-                            .addTo(cableRecipes);
-
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(stack)
-                            .circuit(24)
-                            .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.Rubber,
@@ -348,17 +339,8 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(assemblerRecipes);
 
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(stack)
-                            .circuit(24)
-                            .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
-                            .fluidInputs(MaterialUtils.molten(Materials.Silicone, (long) costMultiplier * HALF_INGOTS))
-                            .duration(5 * SECONDS)
-                            .eut(TierEU.RECIPE_ULV)
-                            .addTo(assemblerRecipes);
-
                         for (Material dielectric : dielectrics) {
-                            for (Material syntheticRubber : syntheticRubbers) {
+                            for (Material syntheticRubber : Wildcard.AnySyntheticRubber.members()) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(
                                         GTUtility.copyAmount(4, stack),
@@ -516,7 +498,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .addTo(assemblerRecipes);
 
                 for (Material dielectric : dielectrics) {
-                    for (Material syntheticRubber : syntheticRubbers) {
+                    for (Material syntheticRubber : Wildcard.AnySyntheticRubber.members()) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
                                 GTUtility.copyAmount(4, stack),
@@ -596,7 +578,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .addTo(assemblerRecipes);
 
                 for (Material dielectric : dielectrics) {
-                    for (Material syntheticRubber : syntheticRubbers) {
+                    for (Material syntheticRubber : Wildcard.AnySyntheticRubber.members()) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
                                 GTUtility.copyAmount(4, stack),
