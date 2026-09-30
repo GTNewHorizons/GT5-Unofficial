@@ -38,10 +38,10 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -2626,8 +2626,8 @@ public class MTERecipeLoader implements Runnable {
         MaterialData.addFromInputs(
             ItemList.Hull_MV.get(1L),
             ItemList.Casing_MV.get(1),
-            OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper),
-            OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper));
+            Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01),
+            Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01));
         MaterialData.addFromInputs(
             ItemList.Hull_HV.get(1L),
             ItemList.Casing_HV.get(1),
@@ -2674,14 +2674,14 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Transformer_MV_LV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " BB", "CM ", " BB", 'M', ItemList.Hull_LV, 'C',
-                OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'B',
+                Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01), 'B',
                 MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Transformer_HV_MV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Hull_MV, 'C',
                 MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Gold), 'B',
-                OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'K',
+                Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01), 'K',
                 CircuitComponents.INDUCTOR.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Transformer_EV_HV.get(1L),
@@ -2976,7 +2976,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_1by1_MV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MV, 'W',
-                OrePrefixes.wireGt01.ingredient(MaterialFacades.AnyCopper), 'T', OreDictNames.craftingChest });
+                Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt01), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_1by1_HV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3033,7 +3033,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_2by2_MV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MV, 'W',
-                OrePrefixes.wireGt04.ingredient(MaterialFacades.AnyCopper), 'T', OreDictNames.craftingChest });
+                Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt04), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_2by2_HV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3090,7 +3090,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_3by3_MV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MV, 'W',
-                OrePrefixes.wireGt08.ingredient(MaterialFacades.AnyCopper), 'T', OreDictNames.craftingChest });
+                Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt08), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_3by3_HV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3147,7 +3147,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_4by4_MV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MV, 'W',
-                OrePrefixes.wireGt16.ingredient(MaterialFacades.AnyCopper), 'T', OreDictNames.craftingChest });
+                Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt16), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_4by4_HV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3206,7 +3206,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Charger_4by4_MV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_MV, 'W',
-                OrePrefixes.wireGt16.ingredient(MaterialFacades.AnyCopper), 'T', OreDictNames.craftingChest, 'B',
+                Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt16), 'T', OreDictNames.craftingChest, 'B',
                 ItemList.Battery_RE_MV_Lithium, 'C', Circuits.MV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_HV.get(1L),
@@ -3307,7 +3307,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CTC", aTextWireHull, "CRC", 'M', ItemList.Hull_MV, 'T', ItemList.Emitter_MV, 'R',
                 ItemList.Sensor_MV, 'C', Circuits.HV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper) });
+                Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_HV_Scanner.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3338,7 +3338,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "BCB", "RMV", aTextWireCoil, 'M', ItemList.Hull_MV, 'R', ItemList.Robot_Arm_MV, 'V',
                 ItemList.Conveyor_Module_MV, 'C', Circuits.MV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'B', OreDictNames.craftingChest });
+                Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01), 'B', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_HV_Boxinator.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3394,7 +3394,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PED", aTextWireHull, "GGG", 'M', ItemList.Hull_MV, 'D', OreDictNames.craftingGrinder, 'E',
                 ItemList.Electric_Motor_MV, 'P', ItemList.Electric_Piston_MV, 'C', Circuits.MV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'G', new ItemStack(Blocks.glass, 1) });
+                Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01), 'G', new ItemStack(Blocks.glass, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_HV_RockBreaker.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3427,7 +3427,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_MV_Massfab.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CFC", aTextWireHull, "CFC", 'M', ItemList.Hull_MV, 'F', ItemList.Field_Generator_MV, 'C',
-                Circuits.HV.getIngredient(), 'W', OrePrefixes.cableGt04.ingredient(MaterialFacades.AnyCopper) });
+                Circuits.HV.getIngredient(), 'W', Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt04) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_HV_Massfab.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3458,7 +3458,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "EFE", aTextCableHull, aTextMotorWire, 'M', ItemList.Hull_MV, 'F',
                 ItemList.Field_Generator_MV, 'E', ItemList.Emitter_MV, 'C', Circuits.HV.getIngredient(), 'W',
-                OrePrefixes.cableGt04.ingredient(MaterialFacades.AnyCopper) });
+                Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt04) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_HV_Replicator.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3490,7 +3490,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "GPG", aTextWireHull, "CBC", 'M', ItemList.Hull_MV, 'P', ItemList.Electric_Pump_MV, 'B',
                 new ItemStack(Items.brewing_stand, 0), 'C', Circuits.MV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'G', new ItemStack(Blocks.glass, 1) });
+                Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01), 'G', new ItemStack(Blocks.glass, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_HV_Brewery.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3567,7 +3567,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.SteelBoilerLarge.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireCoil, aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_Firebox_Steel, 'C',
-                Circuits.HV.getIngredient(), 'W', OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper) });
+                Circuits.HV.getIngredient(), 'W', Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01) });
         GTModHandler.addCraftingRecipe(
             ItemList.TitaniumBoilerLarge.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3593,7 +3593,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_MV, 'P', ItemList.Electric_Piston_MV, 'E',
                 ItemList.Electric_Motor_MV, 'C', Circuits.MV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'G',
+                Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01), 'G',
                 MaterialParts.craftIngredient(OrePrefixes.gearGt, Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
             ItemList.Generator_Diesel_HV.get(1L),
@@ -3614,7 +3614,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CRC", "RMR", aTextMotorWire, 'M', ItemList.Hull_MV, 'E', ItemList.Electric_Motor_MV, 'R',
                 MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Bronze), 'C', Circuits.MV.getIngredient(),
-                'W', OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper) });
+                'W', Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01) });
         GTModHandler.addCraftingRecipe(
             ItemList.Generator_Gas_Turbine_HV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -3647,7 +3647,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "RMR", aTextMotorWire, 'M', ItemList.Hull_MV, 'E', ItemList.Electric_Motor_MV, 'R',
                 MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Bronze), 'C', Circuits.MV.getIngredient(),
-                'W', OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'P',
+                'W', Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01), 'P',
                 MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Generator_Steam_Turbine_HV.get(1L),

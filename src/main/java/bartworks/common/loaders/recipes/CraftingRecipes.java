@@ -39,10 +39,10 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -545,7 +545,7 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "MPM", "LSL", "PRP", 'M', ItemList.Cover_Screen.get(1), 'P',
                 MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plate, 1), 'L',
                 MaterialLibAPI.getStack(Materials.GarnetYellow, Shapes.lens, 1), 'S', ItemList.Sensor_IV.get(1), 'R',
-                OrePrefixes.foil.ingredient(MaterialFacades.AnySyntheticRubber) });
+                Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.foil) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Item_Redstone_Sniffer.get(1L),

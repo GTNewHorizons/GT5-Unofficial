@@ -24,6 +24,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
@@ -169,10 +170,11 @@ public class GTRecipeBuilder {
     // region helper methods
 
     /// Moves the item a recipe should store for an ore-dictionary input to the front of its alternatives, since a
-    /// recipe stores and shows the first alternative: the item the name unifies to, or for a name without one, such
-    /// as `plateAnyIron`, the first alternative that is not another mod's unified copy.
+    /// recipe stores and shows the first alternative: the item the name unifies to, a wildcard's representative part
+    /// for a name such as `plateAnyIron`, or else the first alternative that is not another mod's unified copy.
     private static void putCanonicalFirst(ArrayList<ItemStack> alternatives, String oreName) {
         ItemStack canonical = OreDictUtils.unificationTarget(oreName);
+        if (canonical == null) canonical = Wildcard.representativeStack(oreName);
         for (int j = 0; j < alternatives.size(); j++) {
             ItemStack alternative = alternatives.get(j);
             boolean chosen = canonical != null

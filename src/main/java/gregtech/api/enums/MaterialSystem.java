@@ -4,13 +4,13 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.Families;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.PipeMaterials;
 import gregtech.api.enums.materials.ShapeData;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.enums.materials.XModMaterials;
 
 public class MaterialSystem {
@@ -27,7 +27,7 @@ public class MaterialSystem {
         Families.init();
         Materials.init();
         XModMaterials.init();
-        MaterialFacades.registerBackingMaterials();
+        Wildcard.registerFamilies();
         PipeMaterials.init();
         ShapeData.init();
     }

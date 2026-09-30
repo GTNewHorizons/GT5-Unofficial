@@ -44,7 +44,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
@@ -477,7 +476,6 @@ public class GTPostLoad {
             OrePrefixes.dust };
 
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MaterialFacades.isWildcard(material)) continue;
             for (OrePrefixes prefix : washablePrefixes) {
                 ItemStack input = MaterialParts.stack(prefix, material, 1);
                 ItemStack output = CauldronWashing.result(prefix, material, 1);

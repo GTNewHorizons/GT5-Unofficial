@@ -13,8 +13,8 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.OreDictUtils;
@@ -66,9 +66,9 @@ final class OreDictAliases {
         aliasToOreDict(OrePrefixes.gem, Materials.Quartzite, OreDictNames.craftingQuartz.name());
 
         aliasToOreDict(OrePrefixes.cableGt01, Materials.Tin, OreDictNames.craftingWireTin.name());
-        aliasToOreDict(OrePrefixes.cableGt01, MaterialFacades.AnyCopper, OreDictNames.craftingWireCopper.name());
+        aliasToOreDict(Wildcard.AnyCopper.oreDictName(OrePrefixes.cableGt01), OreDictNames.craftingWireCopper.name());
         aliasToOreDict(OrePrefixes.cableGt01, Materials.Gold, OreDictNames.craftingWireGold.name());
-        aliasToOreDict(OrePrefixes.cableGt01, MaterialFacades.AnyIron, OreDictNames.craftingWireIron.name());
+        aliasToOreDict(Wildcard.AnyIron.oreDictName(OrePrefixes.cableGt01), OreDictNames.craftingWireIron.name());
 
         aliasToPrefix(OrePrefixes.plate, Materials.Plastic, OrePrefixes.sheet);
         aliasToPrefix(OrePrefixes.plate, Materials.Rubber, OrePrefixes.sheet);

@@ -21,7 +21,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -107,26 +106,20 @@ public class GregtechSimpleWasher {
                 .getStackForm(1L));
     }
 
-    /// Washes each impure and purified dust back to its clean dust, for every material with ore processing other
-    /// than the [MaterialFacades] wildcards.
+    /// Washes each impure and purified dust back to its clean dust, for every material with ore processing.
     private static void generateDirtyDustRecipes() {
         for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING) || MaterialFacades.isWildcard(ml)) {
-                continue;
-            }
+            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) continue;
             ItemStack dustClean = convertDecomposition(MaterialParts.stack(OrePrefixes.dust, ml, 1L))[0];
             addSimpleWashRecipe(MaterialParts.stack(OrePrefixes.dustImpure, ml, 1L), dustClean);
             addSimpleWashRecipe(MaterialParts.stack(OrePrefixes.dustPure, ml, 1L), dustClean);
         }
     }
 
-    /// Washes each crushed ore to its purified form, for every material with ore processing other than the
-    /// [MaterialFacades] wildcards.
+    /// Washes each crushed ore to its purified form, for every material with ore processing.
     private static void generateDirtyCrushedRecipes() {
         for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING) || MaterialFacades.isWildcard(ml)) {
-                continue;
-            }
+            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) continue;
             addSimpleWashRecipe(
                 MaterialParts.stack(OrePrefixes.crushed, ml, 1L),
                 MaterialParts.stack(OrePrefixes.crushedPurified, ml, 1L));

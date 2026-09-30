@@ -42,10 +42,10 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -447,7 +447,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt01, 8),
                     MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt01, 4),
                     MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt01, 2) },
-                new Object[] { OrePrefixes.foil.ingredient(MaterialFacades.AnySyntheticRubber), 64L }, },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.foil), 64L }, },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.Indalloy140, 20 * INGOTS),
                 GTModHandler.getIC2Coolant(10_000),
                 MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidGas, 2_500), },
@@ -472,7 +472,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new ItemStack[] { ItemList.Circuit_Parts_DiodeASMD.get(16L), ItemList.Circuit_Parts_DiodeXSMD.get(4L) },
                 ItemList.Circuit_Chip_NOR.get(32L), ItemList.Circuit_Chip_Ram.get(64L),
                 MaterialLibAPI.getStack(Materials.NiobiumTitanium, Shapes.wireFine, 32),
-                new Object[] { OrePrefixes.foil.ingredient(MaterialFacades.AnySyntheticRubber), 64L }, },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.foil), 64L }, },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 10_000), },
@@ -503,7 +503,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt01, 32),
                     MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt01, 16),
                     MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt01, 8) },
-                new Object[] { OrePrefixes.foil.ingredient(MaterialFacades.AnySyntheticRubber), 64L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.foil), 64L },
                 MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.foil, 64) },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, 20 * INGOTS),
@@ -525,7 +525,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Circuit_Chip_Ram.get(64L), MaterialLibAPI.getStack(Materials.Lumiium, Shapes.wireFine, 24), // Fine
                 // Lumiium
                 // Wire
-                new Object[] { OrePrefixes.foil.ingredient(MaterialFacades.AnySyntheticRubber), 64L }, },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.foil), 64L }, },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 10_000),
@@ -548,7 +548,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Lumiium, Shapes.wireFine, 32), // Fine
                 // Lumiium
                 // Wire
-                new Object[] { OrePrefixes.foil.ingredient(MaterialFacades.AnySyntheticRubber), 64L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.foil), 64L },
                 MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.foil, 64), },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, 20 * INGOTS),
@@ -573,8 +573,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt01, 64),
                     MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt01, 32),
                     MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt01, 16) },
-                new Object[] { OrePrefixes.foil.ingredient(MaterialFacades.AnySyntheticRubber), 64L },
-                new Object[] { OrePrefixes.foil.ingredient(MaterialFacades.AnySyntheticRubber), 64L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.foil), 64L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.foil), 64L },
                 MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.foil, 64),
                 MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.foil, 64) },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 40 * INGOTS),
@@ -1201,7 +1201,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Neutronium, TEBlockShapes.pipeLarge, 2),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.screw, 16),
-                new Object[] { OrePrefixes.ring.ingredient(MaterialFacades.AnySyntheticRubber), 32L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.ring), 32L },
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.rotor, 4),
                 MaterialLibAPI.getStack(Materials.Bedrockium, TEBlockShapes.cableGt04, 2) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
@@ -1224,7 +1224,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.round, 64),
                 MaterialLibAPI.getStack(Materials.Bedrockium, TEBlockShapes.cableGt04, 2),
-                new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 40L } },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 40L } },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
             ItemList.Conveyor_Module_UHV.get(1),
             crafting_time_in_ticks,
@@ -1410,7 +1410,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.pipeLarge, 2),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.screw, 16),
-                new Object[] { OrePrefixes.ring.ingredient(MaterialFacades.AnySyntheticRubber), 64L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.ring), 64L },
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.rotor, 4),
                 MaterialLibAPI.getStack(Materials.Draconium, TEBlockShapes.cableGt04, 2) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
@@ -1433,8 +1433,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.round, 64),
                 MaterialLibAPI.getStack(Materials.Draconium, TEBlockShapes.cableGt04, 2),
-                new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 64L },
-                new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 16L } },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 64L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 16L } },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
             ItemList.Conveyor_Module_UEV.get(1),
             crafting_time_in_ticks,
@@ -1618,7 +1618,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, TEBlockShapes.pipeLarge, 2),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.screw, 16),
-                new Object[] { OrePrefixes.ring.ingredient(MaterialFacades.AnySyntheticRubber), 64L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.ring), 64L },
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.rotor, 4),
                 MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.cableGt04, 2) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
@@ -1641,8 +1641,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.round, 64),
                 MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.cableGt04, 2),
-                new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 64L },
-                new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 16L } },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 64L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 16L } },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
             ItemList.Conveyor_Module_UIV.get(1),
             crafting_time_in_ticks,
@@ -1834,7 +1834,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.pipeLarge, 2),
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.screw, 16),
-                new Object[] { OrePrefixes.ring.ingredient(MaterialFacades.AnySyntheticRubber), 64L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.ring), 64L },
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.rotor, 4),
                 MaterialLibAPI.getStack(Materials.Quantium, TEBlockShapes.cableGt04, 2) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
@@ -1857,8 +1857,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.round, 64),
                 MaterialLibAPI.getStack(Materials.Quantium, TEBlockShapes.cableGt04, 2),
-                new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 64L },
-                new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 16L } },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 64L },
+                new Object[] { Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 16L } },
             new FluidStack[] { fluid_0, fluid_1, fluid_2, fluid_3 },
             ItemList.Conveyor_Module_UMV.get(1),
             crafting_time_in_ticks,

@@ -73,8 +73,8 @@ import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
@@ -730,7 +730,7 @@ public class GTModHandler {
                 case WIRE -> switch (machineTier) {
                     case  0 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Lead);
                     case  1 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin);
-                    case  2 -> OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper);
+                    case  2 -> Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01);
                     case  3 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Gold);
                     case  4 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Aluminium);
                     case  5 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Platinum);
@@ -743,7 +743,7 @@ public class GTModHandler {
                 case WIRE4 -> switch (machineTier) {
                     case  0 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Lead);
                     case  1 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Tin);
-                    case  2 -> OrePrefixes.cableGt04.ingredient(MaterialFacades.AnyCopper);
+                    case  2 -> Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt04);
                     case  3 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Gold);
                     case  4 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Aluminium);
                     case  5 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Platinum);
@@ -785,7 +785,7 @@ public class GTModHandler {
                 };
 
                 case COIL_HEATING -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.wireGt02.ingredient(MaterialFacades.AnyCopper);
+                    case 0, 1 -> Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt02);
                     case 2    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.Cupronickel);
                     case 3    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.Kanthal);
                     case 4    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.Nichrome);
@@ -798,7 +798,7 @@ public class GTModHandler {
                 };
 
                 case COIL_HEATING_DOUBLE -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.wireGt04.ingredient(MaterialFacades.AnyCopper);
+                    case 0, 1 -> Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt04);
                     case 2    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Cupronickel);
                     case 3    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Kanthal);
                     case 4    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Nichrome);
@@ -819,7 +819,7 @@ public class GTModHandler {
                 };
 
                 case STICK_ELECTROMAGNETIC -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.stick.ingredient(MaterialFacades.AnyIron);
+                    case 0, 1 -> Wildcard.AnyIron.ingredient(OrePrefixes.stick);
                     case 2, 3 -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Steel);
                     case 4    -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Neodymium);
                     default   -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.VanadiumGallium);
@@ -828,8 +828,8 @@ public class GTModHandler {
                 case COIL_ELECTRIC -> switch (machineTier) {
                     case 0  -> MaterialParts.craftIngredient(OrePrefixes.wireGt01, Materials.Lead);
                     case 1  -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.Tin);
-                    case 2  -> OrePrefixes.wireGt02.ingredient(MaterialFacades.AnyCopper);
-                    case 3  -> OrePrefixes.wireGt04.ingredient(MaterialFacades.AnyCopper);
+                    case 2  -> Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt02);
+                    case 3  -> Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt04);
                     case 4  -> MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.AnnealedCopper);
                     case 5  -> MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.AnnealedCopper);
                     case 6  -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.YttriumBariumCuprate);

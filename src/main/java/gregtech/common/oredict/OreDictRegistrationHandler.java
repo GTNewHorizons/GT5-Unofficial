@@ -32,8 +32,8 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialData;
@@ -335,7 +335,12 @@ public final class OreDictRegistrationHandler {
 
         switch (prefix.getName()) {
             case "dye" -> OreDictUtils.registerOre(OrePrefixes.dye, stack);
-            case "gearGt" -> OreDictUtils.registerOre(OrePrefixes.gear, material, stack);
+            case "gearGt" -> {
+                OreDictUtils.registerOre(OrePrefixes.gear, material, stack);
+                for (Wildcard wildcard : Wildcard.containing(material)) {
+                    OreDictUtils.registerOre(wildcard.oreDictName(OrePrefixes.gear), stack);
+                }
+            }
             case "lens" -> {
                 if (MaterialUtils.hasFlag(material, GTMaterialFlag.TRANSPARENT)
                     && MaterialUtils.dye(material) != Dyes._NULL) {
@@ -378,8 +383,8 @@ public final class OreDictRegistrationHandler {
             return true;
         }
 
-        for (Material reRegisteredMaterial : MaterialFacades.oreReRegistrationsOf(material)) {
-            OreDictUtils.registerOre(prefix, reRegisteredMaterial, stack);
+        for (Wildcard wildcard : Wildcard.containing(material)) {
+            OreDictUtils.registerOre(wildcard.oreDictName(prefix), stack);
         }
 
         if (GregTechAPI.sThaumcraftCompat != null && prefix.doGenerateItem(material) && !prefix.isIgnored(material)) {
