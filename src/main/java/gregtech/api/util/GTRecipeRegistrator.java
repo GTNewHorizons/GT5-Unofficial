@@ -54,6 +54,7 @@ import gregtech.api.enums.materials.MaterialArcSmeltHelper;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -218,21 +219,29 @@ public class GTRecipeRegistrator {
             builder.itemOutputs(recipeOutput);
         }
         FluidStack moltenFluid = MaterialUtils.molten(smeltTarget, (materialAmount * INGOTS) / (M * stack.stackSize));
+        builder.fluidOutputs(moltenFluid)
+            .duration((int) Math.max(1, (24 * materialAmount) / M))
+            .eut(meltingVoltage(smeltTarget, moltenFluid));
+        if (isRecycling) builder.recipeCategory(RecipeCategories.fluidExtractorRecycling);
+        builder.addTo(fluidExtractionRecipes);
+    }
+
+    /// The EU/t of melting into `material`'s molten `fluid`: the material's declared
+    /// [GTMaterialProperties#MELTING_VOLTAGE], else `sqrt(2 * temperature)`, at least 8 and capped to the practical
+    /// voltage of its tier.
+    private static long meltingVoltage(Material material, FluidStack fluid) {
+        Integer declared = material.getProperty(GTMaterialProperties.MELTING_VOLTAGE);
+        if (declared != null) return declared;
         long powerUsage = Math.max(
             8,
             (long) Math.sqrt(
-                2 * moltenFluid.getFluid()
+                2 * fluid.getFluid()
                     .getTemperature()));
-        // avoid full amp recipes
         int powerTier = getTier(powerUsage);
         if (powerTier > 0 && powerTier < VP.length && powerUsage > VP[powerTier]) {
             powerUsage = VP[powerTier];
         }
-        builder.fluidOutputs(moltenFluid)
-            .duration((int) Math.max(1, (24 * materialAmount) / M))
-            .eut(powerUsage);
-        if (isRecycling) builder.recipeCategory(RecipeCategories.fluidExtractorRecycling);
-        builder.addTo(fluidExtractionRecipes);
+        return powerUsage;
     }
 
     /**

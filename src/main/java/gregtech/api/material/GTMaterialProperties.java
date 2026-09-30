@@ -111,6 +111,9 @@ public class GTMaterialProperties {
     /// default: it pins the material's fluids to 0 K, where an undeclared point is filled in from
     /// [#COMPOSITION] and otherwise falls back to room temperature (see [MaterialUtils#meltingPoint]).
     public static final Property<Integer> MELTING_POINT = Property.of("gregtech", "meltingPoint", -1);
+    /// The EU/t of every fluid extractor recipe melting a part into this material's molten fluid, in place of the
+    /// formula derived from the fluid's temperature.
+    public static final Property<Integer> MELTING_VOLTAGE = Property.of("gregtech", "meltingVoltage");
     /// The exact ARGB color declared for a material's molten-state tint. Absent when it would equal the
     /// material's [com.ruling_0.materiallib.api.StandardProperties#TINT], i.e. no separate molten tint was
     /// declared for the material. [MaterialUtils#moltenRgba] resolves the declared value through the lang key
