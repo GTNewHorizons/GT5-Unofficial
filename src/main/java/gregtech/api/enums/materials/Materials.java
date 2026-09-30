@@ -12822,6 +12822,8 @@ public class Materials {
             .addToFamily(Families.all)
             .addToFamily(Families.gases)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Biogas")
+            .setProperty(GTMaterialProperties.FUEL_POWER, 40)
+            .setProperty(GTMaterialProperties.FUEL_TYPE, 1)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
             .build();
@@ -12830,6 +12832,8 @@ public class Materials {
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Pahoehoe Lava")
+            .setProperty(GTMaterialProperties.FUEL_POWER, 24)
+            .setProperty(GTMaterialProperties.FUEL_TYPE, 2)
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.CELL))
             .build();
