@@ -508,7 +508,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         int recipeRelativeMouseY = mousePos.y - gui.guiTop - recipePos.y;
 
         if (stacktraceHoverArea.contains(recipeRelativeMouseX, recipeRelativeMouseY)) {
-            currentTip.addAll(cachedRecipe.mRecipe.stackTraces.getFirst());
+            currentTip.addAll(cachedRecipe.mRecipe.stackTraces.get(0));
         }
 
         return currentTip;
