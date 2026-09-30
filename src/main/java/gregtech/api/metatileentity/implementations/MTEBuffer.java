@@ -500,10 +500,12 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
 
         if (existing == null) {
             return maxSlotCap;
-        } else
-            if (existing.isItemEqual(stackToTransfer) && ItemStack.areItemStackTagsEqual(existing, stackToTransfer)) {
-                return Math.max(0, maxSlotCap - existing.stackSize);
-            }
+        }
+
+        if (existing.isItemEqual(stackToTransfer) && ItemStack.areItemStackTagsEqual(existing, stackToTransfer)) {
+            return Math.max(0, maxSlotCap - existing.stackSize);
+        }
+
         return 0;
     }
 
