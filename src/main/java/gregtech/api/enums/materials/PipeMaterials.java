@@ -203,8 +203,8 @@ public class PipeMaterials {
             new FluidPipe(Materials.SpaceTime, 250000, Integer.MAX_VALUE),
             new FluidPipe(Materials.TranscendentMetal, 220000, Integer.MAX_VALUE),
             new FluidPipe(Materials.RadoxPoly, 5000, 1500),
-            // The gtPlusPlus/goodgenerator pipes were declared as per-second throughputs; these rows store
-            // the medium pipe's per-tick capacity, 12 * (declared / 20) with truncating division.
+            // These capacities are the medium pipe's per-tick share of a per-second throughput,
+            // 12 * (throughput / 20) with truncating division.
             new FluidPipe(Materials.Staballoy, 7500, 7500),
             new FluidPipe(Materials.Tantalloy60, 6000, 4250),
             new FluidPipe(Materials.Tantalloy61, 7200, 5800),

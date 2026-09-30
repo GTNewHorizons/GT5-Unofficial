@@ -10,8 +10,8 @@ import com.ruling_0.materiallib.api.Property;
 /// [MaterialRef] because the target's static field is not assigned until its own registration runs, and
 /// registration order across mods is unspecified.
 ///
-/// The `WERKSTOFF_*` keys carry the legacy identity saved `bw.*` blocks and items address a material by; only the
-/// code that decodes or migrates those blocks and items reads them.
+/// The `WERKSTOFF_*` keys carry the legacy identity saved `bw.*` blocks and items address a material by. They
+/// describe no behaviour of the material itself.
 public class GTMaterialProperties {
 
     public static final Property<MaterialRef> ARC_SMELT_INTO = Property.of("gregtech", "arcSmeltInto");
@@ -160,7 +160,7 @@ public class GTMaterialProperties {
     public static final Property<Long> VOLTAGE_MULTIPLIER = Property.of("gregtech", "voltageMultiplier", 16L);
     /// Every legacy werkstoff `mID` this material covers -- more than one when two same-name werkstoffe folded
     /// into one MaterialLib declaration. This property is PERMANENT: saved worlds address bartworks items and
-    /// ore blocks by their legacy `mID`, so [LegacyWerkstoffIndex] must keep decoding those ids indefinitely.
+    /// ore blocks by their legacy `mID` indefinitely.
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
     /// The frozen list of `OrePrefixes` names a werkstoff-backed material's legacy part set covered, elided
     /// when empty. `sheetmetal` and `frameGt` never appear here: their membership is declared as a MaterialLib

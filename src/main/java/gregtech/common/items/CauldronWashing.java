@@ -30,7 +30,7 @@ public final class CauldronWashing {
 
     private CauldronWashing() {}
 
-    /// Attaches washing to the washable item shapes. Called from GregTech's `MaterialRegistrationEvent` handler.
+    /// Attaches washing to the dropped-item and item-use callbacks of the washable item shapes.
     public static void register() {
         attach(Shapes.dustImpure, OrePrefixes.dustImpure);
         attach(Shapes.dustPure, OrePrefixes.dustPure);

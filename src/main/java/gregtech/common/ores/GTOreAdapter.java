@@ -370,9 +370,8 @@ public final class GTOreAdapter implements IOreAdapter {
         return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
     }
 
-    /// The ore stack a (material, stone type, small-ore) triple resolves to, or null when the triple names no
-    /// block. Unlike [#getStack], never falls back to another stone type, so a caller fanning out over
-    /// [StoneType#VALUES] visits exactly the pairs that carry a block.
+    /// The ore stack a (material, stone type, small-ore) triple resolves to, or null when that stone type carries no
+    /// such block for the material. Unlike [#getStack], never falls back to another stone type.
     public @Nullable ItemStack getVariantStack(@Nullable Material material, StoneType stoneType, boolean small) {
         if (!hasOre(material, stoneType, small)) return null;
 

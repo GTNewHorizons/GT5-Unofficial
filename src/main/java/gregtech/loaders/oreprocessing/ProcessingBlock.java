@@ -96,7 +96,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         "Thaumcraft:blockCosmeticSolid@4",
         "thaumicbases:voidBlock@0");
 
-    // Materials whose own storage block had a previous recipe
+    // Materials whose own storage block has another mod's crafting recipe, which is removed
     private static final Set<Material> OWN_BLOCK_RECIPE_REMOVALS = Set
         .of(Materials.Lead, Materials.Olivine, Materials.Silver);
 

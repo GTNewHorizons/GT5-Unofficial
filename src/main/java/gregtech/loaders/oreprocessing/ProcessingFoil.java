@@ -29,7 +29,7 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        // NewHorizonsCoreMod bends Fluorophlogopite plates on the same circuit into Mica Insulator Foil
+        // ArtificialMicaLine bends Fluorophlogopite plates on the same circuit into Mica Insulator Foil
         if (material != Materials.Fluorophlogopite) registerBenderRecipe(material);
         registerCover(stack, material);
     }
