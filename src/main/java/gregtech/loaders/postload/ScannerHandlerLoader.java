@@ -14,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.ruling_0.materiallib.api.Material;
 
@@ -156,11 +158,24 @@ public class ScannerHandlerLoader {
         return getElementScanResult(tData.mMaterial.mMaterial);
     }
 
+    private static Material[] unscannableElements;
+
+    /// The materials that carry an element yet can be neither scanned nor replicated.
+    private static Material[] unscannableElements() {
+        if (unscannableElements == null) {
+            unscannableElements = new Material[] { Materials.Bromine, Materials.Californium, Materials.Curium,
+                Materials.Fermium, Materials.Germanium, Materials.Hafnium, Materials.Magic, Materials.Neptunium,
+                Materials.Polonium, Materials.Protactinium, Materials.Radium, Materials.Rhenium, Materials.Rhodium,
+                Materials.Ruthenium, Materials.Selenium, Materials.Technetium, Materials.Thallium, Materials.Tiberium,
+                Materials.Zirconium };
+        }
+        return unscannableElements;
+    }
+
     /// The elemental-scanner result for a MaterialLib material, keyed on
-    /// [gregtech.api.material.GTMaterialProperties#ELEMENT]. Magic carries a real element but is excluded from
-    /// scanning.
+    /// [gregtech.api.material.GTMaterialProperties#ELEMENT], or null for the materials excluded from scanning.
     public static @Nullable GTScannerResult getElementScanResult(Material material) {
-        if (material == Materials.Magic) return null;
+        if (ArrayUtils.contains(unscannableElements(), material)) return null;
         Element element = MaterialUtils.element(material);
         if (element == null || element == Element._NULL) return null;
         if (element.mIsIsotope) return null;
