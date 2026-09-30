@@ -17,6 +17,10 @@ import gregtech.api.util.OreDictUtils;
 
 /// One buffered ore-dictionary registration: the stack, the prefix its name resolved to, and the material its
 /// name names -- the `NULL` placeholder under a prefix that is not material-based.
+///
+/// A MaterialLib item runs no prefix registrators unless its ore name is the target of an [OreDictAliases] prefix
+/// alias (`crystalCertusQuartz`, `plankWood`, ...): the shape consumers in `gregtech.loaders.shapeconsumers`
+/// process every MaterialLib item once per (shape, material), but not under an alias prefix.
 final class OreDictRegistration {
 
     @NotNull
@@ -40,10 +44,8 @@ final class OreDictRegistration {
         this.modId = modId == null || modId.equals("UNKNOWN") ? null : modId;
     }
 
-    /// Runs the prefix's registrators for this registration. A MaterialLib item is skipped unless its ore name is
-    /// the target of an [OreDictAliases] prefix alias (`crystalCertusQuartz`, `plankWood`, ...): the shape consumers
-    /// in `gregtech.loaders.shapeconsumers` process every MaterialLib item once per (shape, material), but not
-    /// under an alias prefix.
+    /// Runs the prefix's registrators for this registration, unless the stack has no item, the prefix ignores the
+    /// material, the stack is a MaterialLib item outside an alias prefix, a shape override, or a unified copy.
     void registerRecipes() {
         if (stack.getItem() == null || prefix.isIgnored(material)
             || isMaterialLibItem(stack) && !OreDictAliases.isPrefixAlias(oreName)

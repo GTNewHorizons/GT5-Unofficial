@@ -80,7 +80,7 @@ public enum Wildcard {
     }
 
     /// The representative of the wildcard named `name`, such as `AnySyntheticRubber`, or null when no wildcard has
-    /// that name. A saved tool may name a wildcard as its handle material.
+    /// that name. A saved tool may name a wildcard as one of its materials.
     public static @Nullable Material representativeNamed(String name) {
         for (Wildcard wildcard : values()) {
             if (wildcard.name()
