@@ -1264,15 +1264,13 @@ public class GTUtility {
     }
 
     public static FluidStack getFluidFromDisplayStack(ItemStack aDisplayStack) {
-        if (!isStackValid(aDisplayStack) || aDisplayStack.getItem() != ItemList.Display_Fluid.getItem()
-            || !aDisplayStack.hasTagCompound()) return null;
-        Fluid tFluid = FluidRegistry.getFluid(
+        if (!isStackValid(aDisplayStack) || aDisplayStack.getItem() != ItemList.Display_Fluid.getItem()) return null;
+        final NBTTagCompound tNBT = aDisplayStack.getTagCompound();
+        final Fluid tFluid = FluidRegistry.getFluid(
             ItemList.Display_Fluid.getItem()
                 .getDamage(aDisplayStack));
-        return new FluidStack(
-            tFluid,
-            (int) aDisplayStack.getTagCompound()
-                .getLong("mFluidDisplayAmount"));
+
+        return new FluidStack(tFluid, tNBT != null ? (int) tNBT.getLong("mFluidDisplayAmount") : 0);
     }
 
     public static FluidStack getFluidForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {
@@ -1375,14 +1373,8 @@ public class GTUtility {
         return histogram;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static List<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
-        return (List<NBTTagCompound>) (List) tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static List<NBTTagString> getStringTagList(NBTTagCompound tag, String name) {
-        return (List<NBTTagString>) (List) tag.getTagList(name, NBT.TAG_STRING).tagList;
+    public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
+        return tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
     }
 
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
@@ -2278,6 +2270,21 @@ public class GTUtility {
         }
 
         return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ArrayList<ItemStack> loadItemList(NBTTagList list) {
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+
+        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
+            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+
+            if (isStackInvalid(stack)) continue;
+
+            stacks.add(stack);
+        }
+
+        return stacks;
     }
 
     /**

@@ -9644,3 +9644,38 @@ GT5U.nei.solar_factory.tier_required=Требуется тир мульти: %s
 
 # Item tooltips
 GT5U.tooltip.switch_metadata.sneak_right_click=Shift+ПКМ, чтобы изменить режим
+
+# Material flavor text
+Material.amalgatite.flavorText=Всё могло бы быть замечательно!
+Material.antimatter.flavorText=Ошибка Дирака
+Material.bedrockium.flavorText=Слой осадочных пород, скрывающий мучительную бездну
+Material.blackdwarfmatter.flavorText=Тень мёртвой звезды
+Material.dimensionallyshiftedsuperfluid.flavorText=Гиперболическое усердие
+Material.dimensionallytranscendentresidue.flavorText=Липкий
+Material.hexanite.flavorText=Безумие и воля, обретшие форму
+Material.ichorium.flavorText=Ткань планарного слияния
+Material.infinity.flavorText=Вся мощь вселенной в твоей руке.
+Material.magmatter.flavorText=Материя магнитных монополей
+Material.magnetohydrodynamicallyconstrainedstarmatter.flavorText=Стабилизированная барионная материя
+Material.prismaticnaquadah.flavorText=Поглощает любое излучение
+Material.protohalkonite.flavorText=Создан, чтобы быть неразрушимым... ну, наверное
+Material.protomatter.flavorText=Вот из чего делают куриные наггетсы
+Material.quarkgluonplasma.flavorText=Материя вне структуры
+Material.rawstarmatter.flavorText=Плоть звезды главной последовательности
+Material.sixphasedcopper.flavorText=Смесь вариантов меди из архаичных FTB модов
+Material.spacetime.flavorText=Сама реальность, воплощённая в физической форме
+Material.spatialfluid.flavorText=Расширяется и сужается одновременно
+Material.temporalfluid.flavorText=Вечный и вездесущий
+Material.transcendentmetal.flavorText=Пространственно непостижимо
+Material.universium.flavorText=Разрыв в измерение за пределами нашей реальности
+Material.uuamplifier.flavorText=Ускоряет генератор материи
+Material.uumatter.flavorText=Универсальная материя
+Material.whitedwarfmatter.flavorText=Сердце мёртвой звезды
+
+# Material pipe names
+Material.plastic.fluidpipe.newname=Полиэтилен
+Material.polybenzimidazole.fluidpipe.newname=ПБИ
+Material.polytetrafluoroethylene.fluidpipe.newname=ПТФЭ
+Material.polyvinylchloride.itempipe.newname=ПВХ
+Material.redstone.fluidpipe.newname=Высокое давление
+Material.wood.fluidpipe.newname=Деревянная

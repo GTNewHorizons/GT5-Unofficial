@@ -50,8 +50,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
             .coverChildrenHeight(0)
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
-        // noinspection unchecked,rawtypes
-        for (NBTTagCompound tag : (List<NBTTagCompound>) (List) list.tagList) {
+        for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
             ItemStack stack = new ItemStack(
                 Item.getItemById(tag.getInteger("casingId")),
                 1,
