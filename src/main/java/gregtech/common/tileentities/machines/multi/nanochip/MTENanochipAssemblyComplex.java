@@ -729,6 +729,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         for (CircuitBatch batch : circuitHistory) {
             history.appendTag(new NBTTagIntArray(batch.writeToIntArray()));
         }
+        nbt.setTag("history", history);
         if (currentBlock != null) {
             nbt.setIntArray("currentBlock", currentBlock.writeToIntArray());
         }
