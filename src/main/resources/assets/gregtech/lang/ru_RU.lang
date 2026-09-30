@@ -200,7 +200,7 @@ gt.oreprefix.huge_restrictive_material_item_pipe=%s [Огромная огран
 
 gt.oreprefix.material_frame_box_tileentity=%s (TileEntity)
 
-gt.block.any_sub_block=Это любой заменяющий блок
+gt.block.any_sub_block=Любой подблок этого блока
 
 gt.author=Автор: %s
 gt.authors=Авторы: %s
@@ -9625,8 +9625,6 @@ gt.metaitem.01.32708.with.WithPunchCardData.name=С данными перфок�
 gt.metaitem.01.32708.with.WithScannedBookData.name=С отсканированными данными книги
 gt.metaitem.01.32708.with.WithScannedMapData.name=С отсканированными данными карты
 gt.metaitem.01.32708.with.WritesResearchResult.name=Записывает результат исследования
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=ЭТО БЕСПЛАТНО! Поместите лаву сбоку
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=ЭТО БЕСПЛАТНО! Поместите лаву сверху
 
 # Chat messages
 GT5U.chat.cover.connectable=Соединяемый: %s
