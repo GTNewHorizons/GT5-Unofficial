@@ -2661,8 +2661,8 @@ public class MTERecipeLoader implements Runnable {
         MaterialData.addFromInputs(
             ItemList.Hull_MAX.get(1L),
             ItemList.Casing_MAX.get(1),
-            MaterialParts.namedIngredient(OrePrefixes.cableGt04, Materials.SuperconductorUV),
-            MaterialParts.namedIngredient(OrePrefixes.cableGt04, Materials.SuperconductorUV));
+            MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.SuperconductorUV),
+            MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.SuperconductorUV));
 
         GTModHandler.addCraftingRecipe(
             ItemList.Transformer_LV_ULV.get(1L),
@@ -3016,7 +3016,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_1by1_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
-                MaterialParts.namedIngredient(OrePrefixes.wireGt01, Materials.SuperconductorUHV), 'T',
+                MaterialParts.craftIngredient(OrePrefixes.wireGt01, Materials.SuperconductorUHV), 'T',
                 OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
@@ -3073,7 +3073,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_2by2_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
-                MaterialParts.namedIngredient(OrePrefixes.wireGt04, Materials.SuperconductorUHV), 'T',
+                MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.SuperconductorUHV), 'T',
                 OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
@@ -3130,7 +3130,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_3by3_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
-                MaterialParts.namedIngredient(OrePrefixes.wireGt08, Materials.SuperconductorUHV), 'T',
+                MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.SuperconductorUHV), 'T',
                 OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
@@ -3187,7 +3187,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_4by4_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
-                MaterialParts.namedIngredient(OrePrefixes.wireGt16, Materials.SuperconductorUHV), 'T',
+                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.SuperconductorUHV), 'T',
                 OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
@@ -3252,7 +3252,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Charger_4by4_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_MAX, 'W',
-                MaterialParts.namedIngredient(OrePrefixes.wireGt16, Materials.SuperconductorUHV), 'T',
+                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.SuperconductorUHV), 'T',
                 OreDictNames.craftingChest, 'B', ItemList.ZPM2, 'C', Circuits.UHV.getIngredient() });
 
         GTModHandler.addCraftingRecipe(
