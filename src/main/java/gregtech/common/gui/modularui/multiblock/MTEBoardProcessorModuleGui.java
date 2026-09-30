@@ -82,7 +82,8 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                 new FluidSlotSyncHandler(impurityFluidTank).canFillSlot(false)
                     .controlsAmount(false))
             .alwaysShowFull(false)
-            .size(36, 94)
+            .heightRel(1f)
+            .width(36)
             .tooltipBuilder(t -> {
                 t.clearText();
                 if (fluidTank.getFluid() != null) {
@@ -93,15 +94,16 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                             + EnumChatFormatting.GRAY
                             + fluidTank.getFluid()
                                 .getLocalizedName());
+                    t.addLine(
+                        EnumChatFormatting.GREEN + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.impurity")
+                            + ": "
+                            + numberFormat.format(impurity.getDoubleValue() * 100)
+                            + "%");
                 } else {
                     t.addLine(
                         EnumChatFormatting.BLUE + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.empty"));
                 }
-                t.addLine(
-                    EnumChatFormatting.GREEN + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.impurity")
-                        + ": "
-                        + numberFormat.format(impurity.getDoubleValue() * 100)
-                        + "%");
+
             })
             .background(IDrawable.EMPTY)
             .pos(151, 0);

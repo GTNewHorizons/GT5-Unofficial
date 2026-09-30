@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.nanochipBoardProcessorRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -16,14 +17,18 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -43,6 +48,169 @@ public class AssemblyLineRecipes implements Runnable {
 
     @Override
     public void run() {
+        for (CircuitComponent cc : CircuitComponent.VALUES) {
+            if (cc.isProcessed) continue;
+            if (cc.realComponent == null) throw new IllegalStateException("CC must define its representative item!");
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(cc.realComponent.get())
+                .itemOutputs(cc.getFakeStack(1))
+                .duration(5 * SECONDS)
+                .eut(0)
+                .addTo(RecipeMaps.nanochipConversionRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(cc.getFakeStack(1))
+                .itemOutputs(cc.realComponent.get())
+                .duration(5 * SECONDS)
+                .eut(0)
+                .addTo(RecipeMaps.nanochipConversionRecipes);
+        }
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 1)
+            .itemInputs(CircuitComponent.BoardMultifiberglassElite.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedBoardMultifiberglassElite.getFakeStack(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Elite Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardMultifiberglassElite.getFakeStack(1))
+            .fluidInputs(Materials.IronIIIChloride.getFluid(0))
+            .fluidOutputs(GGMaterial.ferrousChloride.getFluidOrGas(0))
+            .itemOutputs(CircuitComponent.ProcessedBoardMultifiberglassElite.getFakeStack(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Wetware Board
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 2)
+            .itemInputs(CircuitComponent.BoardWetwareLifesupport.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedBoardWetwareLifesupport.getFakeStack(1))
+            .duration(16 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Wetware Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardWetwareLifesupport.getFakeStack(1))
+            .fluidInputs(Materials.GrowthMediumSterilized.getFluid(0))
+            .fluidOutputs(Materials.GrowthMediumRaw.getFluid(0))
+            .itemOutputs(CircuitComponent.ProcessedBoardWetwareLifesupport.getFakeStack(1))
+            .duration(16 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Bio Board
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 3)
+            .itemInputs(CircuitComponent.BoardBioMutated.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedBoardBioMutated.getFakeStack(1))
+            .duration(16 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Bio Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardBioMutated.getFakeStack(1))
+            .fluidInputs(Materials.BioMediumSterilized.getFluid(0))
+            .fluidOutputs(Materials.BioMediumRaw.getFluid(0))
+            .itemOutputs(CircuitComponent.ProcessedBoardBioMutated.getFakeStack(1))
+            .duration(16 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Optical Board
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 4)
+            .itemInputs(CircuitComponent.BoardOptical.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedBoardOptical.getFakeStack(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Optical Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardOptical.getFakeStack(1))
+            .fluidInputs(Materials.PrismaticAcid.getFluid(0))
+            .fluidOutputs(Materials.PrismaticGas.getFluid(0))
+            .itemOutputs(CircuitComponent.ProcessedBoardOptical.getFakeStack(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Pico Board
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 5)
+            .itemInputs(CircuitComponent.BoardPico.getFakeStack(1))
+            .itemOutputs(CircuitComponent.CleansedBoardPico.getFakeStack(1))
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(nanochipBoardProcessorRecipes);
+
+        // Pico Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardPico.getFakeStack(1))
+            .fluidInputs(Materials.UUMatter.getFluid(0))
+            .fluidOutputs(Materials.UUAmplifier.getFluid(0))
+            .itemOutputs(CircuitComponent.CleansedBoardPico.getFakeStack(1))
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(nanochipBoardProcessorRecipes);
+
+        // Quantum Board
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 5)
+            .itemInputs(CircuitComponent.BoardQuantum.getFakeStack(1))
+            .itemOutputs(CircuitComponent.CleansedBoardQuantum.getFakeStack(1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(nanochipBoardProcessorRecipes);
+
+        // Quantum Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardQuantum.getFakeStack(1))
+            .fluidInputs(Materials.UUMatter.getFluid(0))
+            .fluidOutputs(Materials.UUAmplifier.getFluid(0))
+            .itemOutputs(CircuitComponent.CleansedBoardQuantum.getFakeStack(1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(nanochipBoardProcessorRecipes);
+
+        // Plank Board
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 5)
+            .itemInputs(CircuitComponent.BoardPlanck.getFakeStack(1))
+            .itemOutputs(CircuitComponent.CleansedBoardPlanck.getFakeStack(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(nanochipBoardProcessorRecipes);
+
+        // Planck Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardPlanck.getFakeStack(1))
+            .fluidInputs(Materials.UUMatter.getFluid(0))
+            .fluidOutputs(Materials.UUAmplifier.getFluid(0))
+            .itemOutputs(CircuitComponent.CleansedBoardPlanck.getFakeStack(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(nanochipBoardProcessorRecipes);
         // recipe len:
         // LUV 6 72000 600 32k
         // ZPM 9 144000 1200 125k
