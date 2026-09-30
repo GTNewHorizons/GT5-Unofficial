@@ -39,11 +39,16 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
         INSTANCE = this;
     }
 
+    /// Whether this pass shapes `material`'s parts from its ingots, or from its dust for Glass.
+    static boolean shapesFromIngots(Material material) {
+        return (material == Materials.Glass || MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null)
+            && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING);
+    }
+
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (((material == Materials.Glass) || (MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null))
-            && (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {
+        if (shapesFromIngots(material)) {
             long materialMass = MaterialUtils.mass(material);
             int tAmount = (int) (prefix.getMaterialAmount() / 3628800L);
             if ((tAmount > 0) && (tAmount <= 64) && (prefix.getMaterialAmount() % 3628800L == 0L)) {

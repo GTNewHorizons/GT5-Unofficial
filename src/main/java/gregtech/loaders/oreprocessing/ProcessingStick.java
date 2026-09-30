@@ -1,19 +1,24 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
@@ -33,9 +38,34 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
         OrePrefixes.stick.add(this);
     }
 
+    /// Molds `stack`, `material`'s `prefix` part, when [ProcessingShaping] does not shape that material from
+    /// ingots: from its molten fluid, or else from the liquid or gas its dust converts to, taking the part's share
+    /// of the fluid a whole ingot or dust holds. Skipped for any stack other than the material's own part.
+    static void addMeltMoldRecipe(OrePrefixes prefix, Material material, ItemStack stack, ItemList mold, int duration) {
+        if (ProcessingShaping.shapesFromIngots(material)) return;
+        ItemStack part = MaterialParts.stack(prefix, material, 1L);
+        if (part == null || !GTUtility.areStacksEqual(part, stack)) return;
+        FluidStack fluid;
+        if (MaterialUtils.hasMolten(material)) {
+            fluid = MaterialUtils.molten(material, INGOTS * prefix.getMaterialAmount() / M);
+        } else {
+            fluid = ProcessingDust.dustFluid(material);
+            if (fluid == null) return;
+            fluid.amount = (int) (fluid.amount * prefix.getMaterialAmount() / M);
+        }
+        GTValues.RA.stdBuilder()
+            .itemInputs(mold.get(0L))
+            .itemOutputs(part)
+            .fluidInputs(fluid)
+            .duration(duration)
+            .eut(calculateRecipeEU(material, 16))
+            .addTo(fluidSolidifierRecipes);
+    }
+
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
+        addMeltMoldRecipe(OrePrefixes.stick, material, stack, ItemList.Shape_Mold_Rod, 7 * SECONDS + 10 * TICKS);
         {
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(

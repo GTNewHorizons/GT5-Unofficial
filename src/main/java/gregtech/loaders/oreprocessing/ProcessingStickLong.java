@@ -12,6 +12,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
@@ -33,6 +34,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
+        ProcessingStick
+            .addMeltMoldRecipe(OrePrefixes.stickLong, material, stack, ItemList.Shape_Mold_Rod_Long, 15 * SECONDS);
         if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 MaterialParts.stack(OrePrefixes.spring, material, 1L),
