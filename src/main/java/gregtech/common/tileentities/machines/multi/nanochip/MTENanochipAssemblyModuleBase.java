@@ -346,50 +346,38 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     /**
      * Find all inputs stored in the vacuum conveyor inputs.
-     * Clears inputFakeItems and then adds all fake items to this hatch. Note that different stacks with the same id
-     * are merged into one entry in this list, which makes lookup and parallel calculation a bit easier.
-     *
-     * @return Info about which hatches contained the items, and a full list of item inputs indexed by id to make
-     *         parallel calculation easier
+     * If input separation is disabled, will merge all items into one list for combined lookup, while also tracking
+     * 'marker items' to determine VCO color based on the recipe's first input slot.
+     * If input separation is enabled, will separate items into different lists depending on their VCI color.
      */
     private ItemInputInformation getInputItemsByColor() {
         if (!isInputSeparationEnabled()) {
             List<ItemStack> inputs = new ArrayList<>();
-            byte color = -1;
+            Map<GTUtility.ItemId, Byte> markerItems = new HashMap<>();
             for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
                 for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
-                    // Get the contents of this hatch as fake items.
+                    // Add all inputs into one list. Also save marker items for color lookup for outputting.
                     if (conveyor.contents == null) continue;
-                    List<ItemStack> itemsInHatch = conveyor.contents.getItemRepresentations();
-
-                    // Store the color of the first hatch for all itemstacks, for when inputs are merged
-                    if (color == -1) color = conveyor.getColorization();
-
-                    inputs.addAll(itemsInHatch);
+                    for (ItemStack stack : conveyor.contents.getItemRepresentations()) {
+                        inputs.add(stack);
+                        markerItems.put(GTUtility.ItemId.createWithoutNBT(stack), conveyor.getColorization());
+                    }
                 }
             }
-            return new ItemInputInformation(color, inputs);
+            return new ItemInputInformation(inputs, markerItems);
         }
 
         Map<Byte, List<ItemStack>> inputs = new HashMap<>();
-        Map<GTUtility.ItemId, Byte> markerItems = new HashMap<>();
         for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
             for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
-                // Get the contents of this hatch as fake items.
+                // Add all inputs into separate lists, separated by color.
                 if (conveyor.contents == null) continue;
-                List<ItemStack> itemsInHatch = conveyor.contents.getItemRepresentations();
-
-                // Store the color of this hatch for each ItemStack
-                byte conveyorColor = conveyor.getColorization();
-                for (ItemStack stack : itemsInHatch) {
-                    List<ItemStack> colorList = inputs.computeIfAbsent(conveyorColor, _ -> new ArrayList<>());
-                    colorList.add(stack);
-                    markerItems.put(GTUtility.ItemId.createWithoutNBT(stack), conveyorColor);
-                }
+                List<ItemStack> colorList = inputs.computeIfAbsent(conveyor.getColorization(), _ -> new ArrayList<>());
+                colorList.addAll(conveyor.contents.getItemRepresentations());
             }
         }
 
-        return new ItemInputInformation(inputs, markerItems);
+        return new ItemInputInformation(inputs);
     }
 
     /**
@@ -854,14 +842,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         public final Map<Byte, List<ItemStack>> inputs;
         private final Map<GTUtility.ItemId, Byte> markerItems;
 
-        ItemInputInformation(Map<Byte, List<ItemStack>> separatedInputs, Map<GTUtility.ItemId, Byte> markerItems) {
+        ItemInputInformation(Map<Byte, List<ItemStack>> separatedInputs) {
             this.inputs = separatedInputs;
-            this.markerItems = markerItems;
+            this.markerItems = null;
         }
 
-        ItemInputInformation(byte color, List<ItemStack> items) {
-            this.inputs = ImmutableMap.of(color, items);
-            this.markerItems = null;
+        ItemInputInformation(List<ItemStack> items, Map<GTUtility.ItemId, Byte> markerItems) {
+            this.inputs = ImmutableMap.of((byte) -1, items);
+            this.markerItems = markerItems;
         }
 
         // Set the output color to the recipe's first input's color if input separation is disabled.
