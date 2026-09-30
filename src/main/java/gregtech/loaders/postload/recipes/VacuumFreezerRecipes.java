@@ -231,8 +231,17 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Cell_Air.get(1))
-                .itemOutputs(MaterialLibAPI.getStack(Materials.LiquidAir, CellShapes.cell, 1))
+                .itemInputs(ItemList.Cell_Air.get(2))
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials.LiquidAir, CellShapes.cell, 1),
+                    ItemList.Cell_Empty.get(1))
+                .duration(1 * SECONDS + 8 * TICKS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(vacuumFreezerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .fluidInputs(MaterialUtils.gas(Materials.Air, 2_000))
+                .fluidOutputs(MaterialUtils.fluid(Materials.LiquidAir, 1_000))
                 .duration(1 * SECONDS + 8 * TICKS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(vacuumFreezerRecipes);

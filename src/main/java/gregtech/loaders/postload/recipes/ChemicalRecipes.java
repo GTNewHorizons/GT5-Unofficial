@@ -4721,10 +4721,10 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Styrene, CellShapes.cell, 1), ItemList.Cell_Air.get(15))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Styrene, CellShapes.cell, 1), ItemList.Cell_Air.get(30))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.RawStyreneButadieneRubber, Shapes.dust, 27),
-                GTUtility.getEmptyCell(16))
+                GTUtility.getEmptyCell(31))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Butadiene, FluidShapes.fluidGas, 3_000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_MV)
