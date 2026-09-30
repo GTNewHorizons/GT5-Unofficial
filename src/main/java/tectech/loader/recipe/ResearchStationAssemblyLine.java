@@ -77,6 +77,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         addWirelessEnergyRecipes();
         addGodforgeRecipes();
         addBeamcraftingRecipes();
+        addCompressedQuantumBusRecipes();
 
         if (NewHorizonsCoreMod.isModLoaded() && Railcraft.isModLoaded()) {
             // Here instead of CoreMod to coincide with the non-AAL BEC Recipes
@@ -3072,7 +3073,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { ItemList.Hull_UXV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 3, 0),
                     ItemList.Electric_Piston_UXV.get(2), ItemList.Quantum_Chest_IV.get(3),
                     new Object[] { OrePrefixes.circuit.get(Materials.MAX), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 1) },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.WhiteDwarfMatter, 16),
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MHDCSM, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.BlackDwarfMatter, 16) },
                 new FluidStack[] { Materials.RadoxPolymer.getMolten(256 * INGOTS) },
                 ItemList.CompressedInputBusUXV.get(1),
                 25 * SECONDS,
@@ -3155,7 +3158,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { ItemList.Hull_UXV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 3, 0),
                     ItemList.Electric_Piston_UXV.get(2), ItemList.Quantum_Chest_IV.get(3),
                     new Object[] { OrePrefixes.circuit.get(Materials.MAX), 1 },
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 1) },
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.WhiteDwarfMatter, 16),
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MHDCSM, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.BlackDwarfMatter, 16) },
                 new FluidStack[] { Materials.RadoxPolymer.getMolten(256 * INGOTS) },
                 ItemList.CompressedOutputBusUXV.get(1),
                 25 * SECONDS,
