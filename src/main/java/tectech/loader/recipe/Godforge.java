@@ -38,6 +38,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -1022,7 +1023,9 @@ public class Godforge implements Runnable {
             if (MaterialUtils.hasMolten(mat)) {
                 return MaterialUtils.molten(mat, INGOTS * data.mMaterial.mAmount / GTValues.M);
             } else if (MaterialUtils.fluidOf(mat) != null) {
-                return MaterialUtils.fluid(mat, 1_000);
+                return MaterialUtils.fluid(
+                    mat,
+                    mat.getProperty(GTMaterialProperties.DUST_FLUID_AMOUNT) * data.mMaterial.mAmount / GTValues.M);
             }
         }
         int[] oreIDs = OreDictionary.getOreIDs(stack);
