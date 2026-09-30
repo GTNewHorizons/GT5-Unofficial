@@ -505,7 +505,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         final CachedDefaultRecipe cachedRecipe = (CachedDefaultRecipe) this.arecipes.get(aRecipeIndex);
 
         drawDescription(cachedRecipe);
-        frontend.drawNEIOverlays(cachedRecipe);
+        frontend.drawNEIOverlays(cachedRecipe, cycleticks);
     }
 
     private void drawDescription(CachedDefaultRecipe cachedRecipe) {
