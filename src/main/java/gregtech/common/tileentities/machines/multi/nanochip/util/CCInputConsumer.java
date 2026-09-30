@@ -55,8 +55,6 @@ public class CCInputConsumer implements ParallelHelper.InputConsumer {
             int consumed = conveyor.tryConsume(toConsumeStack, false);
             toConsumeStack.stackSize -= consumed;
             if (toConsumeStack.stackSize <= 0) {
-                // Break out of both loops... I hate this
-                // Labeled loops when!
                 return true;
             }
         }
