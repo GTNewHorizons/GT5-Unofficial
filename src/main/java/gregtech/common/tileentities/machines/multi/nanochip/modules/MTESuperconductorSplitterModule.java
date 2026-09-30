@@ -9,7 +9,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -180,7 +179,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
      * @return A recipe if one was found, null otherwise
      */
     @Override
-    protected GTRecipe findRecipe(ArrayList<ItemStack> inputs) {
+    protected GTRecipe findRecipe(List<ItemStack> inputs) {
         RecipeMap<?> recipeMap = this.getRecipeMap();
         return recipeMap.findRecipeQuery()
             .items(inputs.toArray(new ItemStack[] {}))
