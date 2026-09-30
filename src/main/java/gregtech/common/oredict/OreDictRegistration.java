@@ -42,7 +42,7 @@ final class OreDictRegistration {
 
     void registerRecipes() {
         if (stack.getItem() == null || prefix.isIgnored(material)
-            || isMaterialLibItem(stack) && MaterialParts.isCutOver(prefix, material)
+            || isMaterialLibItem(stack) && !OreDictAliases.isPrefixAlias(oreName)
             || isShapeOverride()
             || OreDictUtils.isUnifiedCopy(stack)) {
             return;
@@ -68,9 +68,9 @@ final class OreDictRegistration {
         return GTUtility.areStacksEqual(MaterialParts.stack(prefix, material, 1), stack);
     }
 
-    /// Whether `stack`'s item belongs to MaterialLib. Under a prefix with a MaterialLib shape such stacks are
-    /// processed by `gregtech.loaders.shapeconsumers` instead, once per (shape, material); under an alias prefix
-    /// without one (a gem registered as `crystal`) they are processed here. The test is the item's own
+    /// Whether `stack`'s item belongs to MaterialLib. Such stacks are processed by `gregtech.loaders.shapeconsumers`
+    /// instead, once per (shape, material), except under a prefix alias declared in [OreDictAliases] (a gem
+    /// registered as `crystal`), which no shape consumer covers. The test is the item's own
     /// registered domain, not [#modId], which names whichever mod's code was active when the underlying
     /// `OreDictionary.OreRegisterEvent` fired.
     private static boolean isMaterialLibItem(ItemStack stack) {

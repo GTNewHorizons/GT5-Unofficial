@@ -2,6 +2,7 @@ package gregtech.common.oredict;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -29,6 +30,7 @@ import gregtech.api.util.OreDictUtils;
 final class OreDictAliases {
 
     private static final HashMap<String, List<Consumer<ItemStack>>> ALIASES = new HashMap<>();
+    private static final HashSet<String> PREFIX_ALIASES = new HashSet<>();
 
     static {
         aliasToPrefix(OrePrefixes.crystal, Materials.CertusQuartz, OrePrefixes.gem);
@@ -108,8 +110,14 @@ final class OreDictAliases {
         }
     }
 
+    /// Whether `oreName` is the target of an alias declared with `aliasToPrefix`.
+    static boolean isPrefixAlias(String oreName) {
+        return PREFIX_ALIASES.contains(oreName);
+    }
+
     private static void aliasToPrefix(OrePrefixes sourcePrefix, Material material, OrePrefixes targetPrefix) {
         String oreName = sourcePrefix.getName() + MaterialUtils.internalName(material);
+        PREFIX_ALIASES.add(targetPrefix.getName() + MaterialUtils.internalName(material));
         addAlias(oreName, stack -> OreDictUtils.registerOre(targetPrefix, material, stack));
     }
 
