@@ -82,8 +82,7 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                 new FluidSlotSyncHandler(impurityFluidTank).canFillSlot(false)
                     .controlsAmount(false))
             .alwaysShowFull(false)
-            .heightRel(1f)
-            .width(36)
+            .size(36, 94)
             .tooltipBuilder(t -> {
                 t.clearText();
                 if (fluidTank.getFluid() != null) {
@@ -110,8 +109,6 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
 
         return Flow.row()
             .size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
-            .paddingTop(4)
-            .paddingBottom(4)
             .paddingLeft(4)
             .paddingRight(0)
             .childPadding(3)
