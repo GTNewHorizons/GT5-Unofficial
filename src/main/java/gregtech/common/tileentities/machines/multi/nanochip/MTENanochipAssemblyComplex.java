@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -554,6 +555,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     public void addToHistory(CircuitCalibration circuitType, int amount) {
+        if (circuitType == CircuitCalibration.NONE) return;
+
         amount = Math.min(amount, CALIBRATION_MAX);
         if (currentBlock == null) currentBlock = new CircuitBatch();
 
@@ -616,6 +619,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     public int getTotalCircuit(CircuitCalibration circuitType) {
+        if (circuitType == CircuitCalibration.NONE) return 0;
+
         int total = 0;
         for (CircuitBatch batch : circuitHistory) {
             switch (circuitType) {
@@ -756,7 +761,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        NBTTagList history = aNBT.getTagList("history", 11);
+        NBTTagList history = aNBT.getTagList("history", Constants.NBT.TAG_INT_ARRAY);
         for (Object rawTag : history.tagList) {
             if (rawTag instanceof NBTTagIntArray batch) {
                 circuitHistory.add(new CircuitBatch(batch.func_150302_c()));
