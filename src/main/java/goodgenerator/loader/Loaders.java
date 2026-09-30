@@ -45,7 +45,6 @@ import goodgenerator.items.GGItem;
 import goodgenerator.items.GGItemBlocks;
 import goodgenerator.items.RadioactiveItem;
 import goodgenerator.main.GoodGenerator;
-import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
@@ -53,7 +52,6 @@ import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.OreDictUtils;
@@ -369,7 +367,6 @@ public class Loaders {
             MetaTileEntityIDs.ComponentAssemblyLine.ID,
             "ComponentAssemblyLine",
             "Component Assembly Line").getStackForm(1L);
-        CrackRecipeAdder.registerPipe(Materials.Incoloy903);
         Loaders.AMForge = new AntimatterForge(
             MetaTileEntityIDs.AntimatterForge.ID,
             "AntimatterForge",

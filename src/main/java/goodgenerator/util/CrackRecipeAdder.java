@@ -4,10 +4,6 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
-import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
@@ -22,12 +18,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 
 public class CrackRecipeAdder {
@@ -190,74 +181,5 @@ public class CrackRecipeAdder {
     public static FluidStack copyFluidWithAmount(FluidStack fluid, int amount) {
         if (fluid == null || amount <= 0) return null;
         return new FluidStack(fluid.getFluid(), amount);
-    }
-
-    /// `material` must carry `ingot` and the `pipeTiny`..`pipeHuge` ladder.
-    public static void registerPipe(Material material) {
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1), ItemList.Shape_Extruder_Pipe_Tiny.get(0))
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeTiny, 2))
-            .duration(MaterialUtils.mass(material) * TICKS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1), ItemList.Shape_Extruder_Pipe_Small.get(0))
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeSmall, 1))
-            .duration(MaterialUtils.mass(material) * 2 * TICKS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 3), ItemList.Shape_Extruder_Pipe_Medium.get(0))
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeMedium, 1))
-            .duration(MaterialUtils.mass(material) * 6 * TICKS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 6), ItemList.Shape_Extruder_Pipe_Large.get(0))
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeLarge, 1))
-            .duration(MaterialUtils.mass(material) * 12 * TICKS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 12), ItemList.Shape_Extruder_Pipe_Huge.get(0))
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeHuge, 1))
-            .duration(MaterialUtils.mass(material) * 24 * TICKS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(extruderRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, HALF_INGOTS))
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeTiny, 1))
-            .duration(MaterialUtils.mass(material) * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(fluidSolidifierRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, INGOTS))
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeSmall, 1))
-            .duration(MaterialUtils.mass(material) * 2 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(fluidSolidifierRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, 3 * INGOTS))
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeMedium, 1))
-            .duration(MaterialUtils.mass(material) * 6 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(fluidSolidifierRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, 6 * INGOTS))
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeLarge, 1))
-            .duration(MaterialUtils.mass(material) * 12 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(fluidSolidifierRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, 1728))
-            .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeHuge, 1))
-            .duration(MaterialUtils.mass(material) * 24 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(fluidSolidifierRecipes);
     }
 }
