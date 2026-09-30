@@ -15,7 +15,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
-import gregtech.api.util.GTUtility;
+import codechicken.nei.recipe.StackInfo;
 import gtneioreplugin.plugin.PluginBase;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.GT5UndergroundFluidHelper;
@@ -47,17 +47,10 @@ public class PluginGT5UndergroundFluid extends PluginBase {
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        Fluid fluid = null;
-        FluidStack containerFluid = GTUtility.getFluidForFilledItem(result, true);
-        if (containerFluid != null) {
-            fluid = containerFluid.getFluid();
-        }
-        if (fluid == null) {
-            FluidStack displayFluid = GTUtility.getFluidFromDisplayStack(result);
-            if (displayFluid != null) {
-                fluid = displayFluid.getFluid();
-            }
-        }
+        FluidStack fluidStack = StackInfo.getFluid(result);
+        if (fluidStack == null) return;
+
+        Fluid fluid = fluidStack.getFluid();
         if (fluid == null) return;
 
         List<UndergroundFluidWrapper> wrappers = GT5UndergroundFluidHelper.getEntry(fluid.getName());
@@ -172,7 +165,7 @@ public class PluginGT5UndergroundFluid extends PluginBase {
             titleHeight = title.size() * 10 + 1;
 
             targetFluidDisplay = new PositionedStack(
-                GTUtility.getFluidDisplayStack(fluid),
+                new FluidStack(fluid, 0),
                 getGuiWidth() / 2 - halfItemLength,
                 3 + titleHeight);
             int y = ROW_START_Y - halfItemLength + titleHeight;
