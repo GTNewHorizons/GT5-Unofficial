@@ -43,21 +43,24 @@ public enum BioCultureEnum {
         BioDataEnum.TcetieisFucusSerratus, new Color(27, 153, 94), ItemList.CultureTcetieisFucusSerratus),
     XenoxeneXenoxsis("Xenoxene Xenoxsis", 10, EnumRarity.epic, false, BioDataEnum.TcetieisFucusSerratus,
         BioDataEnum.BarnadafisArboriatoris, new Color(54, 119, 181), ItemList.CultureXenoxeneXenoxsis),
-    OvaEvolutionis("Ova Evolutionis", 11, EnumRarity.rare, false, BioDataEnum.Ovumbac, BioDataEnum.Ovumbac,
-        new Color(223, 206, 155), ItemList.CultureOvaEvolutionis),
-    DerivanturCellulaEvolutionis("Derivantur Cellula Evolutionis", 12, EnumRarity.rare, false, BioDataEnum.Stemcellbac,
+    DerivanturCellulaEvolutionis("Derivantur Cellula Evolutionis", 11, EnumRarity.rare, false, BioDataEnum.Stemcellbac,
         BioDataEnum.Stemcellbac, new Color(26, 59, 137), ItemList.CultureDerivanturCellulaEvolutionis),
-    CellulaBiologicumEvolutione("Cellula Biologicum Evolutione", 13, EnumRarity.epic, false, BioDataEnum.Biocellbac,
+    CellulaBiologicumEvolutione("Cellula Biologicum Evolutione", 12, EnumRarity.epic, false, BioDataEnum.Biocellbac,
         BioDataEnum.Biocellbac, new Color(91, 255, 41), ItemList.CultureCellulaBiologicumEvolutione),
-    BinniGrowthMedium("Binni Growth Medium", 14, EnumRarity.common, false, BioDataEnum.Binnigrowthmedium,
+    BinniGrowthMedium("Binni Growth Medium", 13, EnumRarity.common, false, BioDataEnum.Binnigrowthmedium,
         BioDataEnum.Binnigrowthmedium, new Color(219, 223, 138), ItemList.CultureBinniGrowthMedium),
-    BinniBacteria("Binni Bacteria", 15, EnumRarity.common, true, BioDataEnum.Binnibacteria, BioDataEnum.Binnibacteria,
+    BinniBacteria("Binni Bacteria", 14, EnumRarity.common, true, BioDataEnum.Binnibacteria, BioDataEnum.Binnibacteria,
         new Color(209, 181, 129), ItemList.CultureBinniBacteria),
-    CorynebacteriumSludgeMarsensis("Corynebacterium Sludge Marsensis", 16, EnumRarity.uncommon, false,
+    CorynebacteriumSludgeMarsensis("Corynebacterium Sludge Marsensis", 15, EnumRarity.uncommon, false,
         BioDataEnum.Bacterialsludgebac, BioDataEnum.Bacterialsludgebac, new Color(10, 62, 13),
         ItemList.CultureCorynebacteriumSludgeMarsensis),
-    MutagenBacteriaASpatio("Mutagen Bacteria a Spatio", 17, EnumRarity.rare, false, BioDataEnum.Mutagen,
-        BioDataEnum.Mutagen, new Color(29, 149, 50), ItemList.CultureMutagenBacteriaASpatio),;
+    MutagenBacteriaASpatio("Mutagen Bacteria a Spatio", 16, EnumRarity.rare, false, BioDataEnum.Mutagen,
+        BioDataEnum.Mutagen, new Color(29, 149, 50), ItemList.CultureMutagenBacteriaASpatio),
+    PenicilliumChrysogenum("Penicillium chrysogenum", 17, EnumRarity.uncommon, true, BioDataEnum.PenicilliumChrysogenum,
+        BioDataEnum.PenicilliumChrysogenum, new Color(200, 230, 200), ItemList.CulturePenicilliumChrysogenum),
+    SaccharomycesCerevisiaeVarPenicillium("Saccharomyces cerevisiae var Penicillium", 18, EnumRarity.epic, true,
+        BioDataEnum.SaccharomycesCerevisiae, BioDataEnum.PenicilliumChrysogenum, new Color(120, 160, 120),
+        ItemList.CultureSaccharomycesCerevisiaeVarPenicillium),;
 
     public static final List<BioCulture> BIO_CULTURES = new ArrayList<>();
     public static final List<ItemStack> BIO_CULTURE_STACKS = new ArrayList<>();

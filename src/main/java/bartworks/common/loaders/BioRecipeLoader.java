@@ -118,6 +118,15 @@ public class BioRecipeLoader {
                 .duration(1 * MINUTES + 15 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(bioLabRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.EmptyPetriDish.get(1), ItemList.Food_Sliced_Bread.get(1L))
+                .itemOutputs(BioCultureEnum.getPetriDish(BioCultureLoader.Penicillium))
+                .outputChances(75_00)
+                .fluidInputs(fluidStack)
+                .duration(25 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(bioLabRecipes);
         }
     }
 

@@ -289,6 +289,7 @@ public enum IDMetaItem03 {
     Circuit_Board_Exotic(729),
     Circuit_Board_Cosmic(730),
     Circuit_Board_Transcendent(731),
+    Pancrea(756),
     Timepiece(757),
     Transdimensional_Alignment_Matrix(758),
     Thermal_Superconductor(759),

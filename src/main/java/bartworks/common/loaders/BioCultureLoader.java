@@ -25,6 +25,8 @@ public class BioCultureLoader {
     public static BioCulture eColi;
     public static BioCulture anaerobicOil;
     public static BioCulture generalPurposeFermentingBacteria;
+    public static BioCulture Penicillium;
+    public static BioCulture PenicilliumYeast;
 
     public static void run() {
         BioCultureLoader.CommonYeast = BioCultureEnum.SaccharomycesCerevisiae.bioCulture;
@@ -34,5 +36,7 @@ public class BioCultureLoader {
         BioCultureLoader.eColi = BioCultureEnum.EscherichiaKoli.bioCulture;
         BioCultureLoader.anaerobicOil = BioCultureEnum.PseudomonasVeronii.bioCulture;
         BioCultureLoader.generalPurposeFermentingBacteria = BioCultureEnum.SaccharomycesEscherichia.bioCulture;
+        BioCultureLoader.Penicillium = BioCultureEnum.PenicilliumChrysogenum.bioCulture;
+        BioCultureLoader.PenicilliumYeast = BioCultureEnum.SaccharomycesCerevisiaeVarPenicillium.bioCulture;
     }
 }
