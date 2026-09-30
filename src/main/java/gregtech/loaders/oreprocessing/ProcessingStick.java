@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
@@ -26,7 +27,9 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -40,8 +43,9 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
 
     /// Molds `stack`, `material`'s `prefix` part, when [ProcessingShaping] does not shape that material from
     /// ingots: from its molten fluid, or else from the liquid or gas its dust converts to, taking the part's share
-    /// of the fluid a whole ingot or dust holds. Skipped for any stack other than the material's own part, and for a
-    /// part another mod's item stands in for, whose material amount need not match its own recipes.
+    /// of the fluid a whole ingot or dust holds, and melts the part back into the same fluid unless
+    /// [GTRecipeRegistrator] recycling already melts it. Skipped for any stack other than the material's own part,
+    /// and for a part another mod's item stands in for, whose material amount need not match its own recipes.
     static void addMeltMoldRecipe(OrePrefixes prefix, Material material, ItemStack stack, ItemList mold, int duration) {
         if (ProcessingShaping.shapesFromIngots(material) || !MaterialParts.isMinted(prefix, material)) return;
         ItemStack part = MaterialParts.stack(prefix, material, 1L);
@@ -61,6 +65,14 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
             .duration(duration)
             .eut(calculateRecipeEU(material, 16))
             .addTo(fluidSolidifierRecipes);
+        if (GTRecipeRegistrator.hasReverseFluidSmeltingRecipe(material)) return;
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, part))
+            .fluidOutputs(fluid.copy())
+            .duration((int) Math.max(1, 24 * prefix.getMaterialAmount() / M))
+            .eut(calculateRecipeEU(material, 16))
+            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .addTo(fluidExtractionRecipes);
     }
 
     @Override

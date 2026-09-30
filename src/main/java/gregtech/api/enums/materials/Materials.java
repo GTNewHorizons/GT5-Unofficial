@@ -11268,7 +11268,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Magnesium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 1L)))
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Magnesia), 1L)))
-            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.DUST))
             .setProperty(GTMaterialProperties.DYE, "dyeWhite")
             .setProperty(GTMaterialProperties.FORMULA, "MgO")
@@ -28360,7 +28360,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_TEMP, 1450)
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Nickel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Thaumium), 1L)))
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL))
+            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 1)
             .build();
         Materials.LFTRFuel1 = MaterialLibAPI.newMaterial("gregtech", "LFTRFuel1", TextureSet.of("gregtech", "NUCLEAR"))
