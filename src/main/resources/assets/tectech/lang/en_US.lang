@@ -162,8 +162,8 @@ gt.blockmachines.hatch.emmuffler.desc.3=DO NOT OBSTRUCT THE OUTPUT!
 gt.blockmachines.hatch.energymulti.name=%1$s %2$sA Energy Hatch
 gt.blockmachines.hatch.energywirelessmulti.name=%1$s %2$sA Wireless Energy Hatch
 gt.blockmachines.hatch.dynamomulti.name=%1$s %2$sA Dynamo Hatch
-gt.blockmachines.hatch.energytunnel.name=%1$s %2$sA/t Laser Target Hatch
-gt.blockmachines.hatch.dynamotunnel.name=%1$s %2$sA/t Laser Source Hatch
+gt.blockmachines.hatch.energytunnel.name=%1$s %2$sA Laser Target Hatch
+gt.blockmachines.hatch.dynamotunnel.name=%1$s %2$sA Laser Source Hatch
 gt.blockmachines.hatch.energymulti.desc=Multiple Ampere Energy Injector for Multiblocks\nAccepts up to %d Amps from energy network\nProvides up to %d Amps to the multiblock
 achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.04=EV 4A Wireless Energy Hatch
 achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.04=EV 16A Wireless Energy Hatch
@@ -1676,7 +1676,7 @@ GT5U.gui.config.general.visual=Visual
 tt.eoh.fancy_names.crude=Crude
 tt.eoh.fancy_names.primitive=Primitive
 tt.eoh.fancy_names.stable=Stable
-tt.eoh.fancy_names.Advanced=Advanced
+tt.eoh.fancy_names.advanced=Advanced
 tt.eoh.fancy_names.superb=Superb
 tt.eoh.fancy_names.exotic=Exotic
 tt.eoh.fancy_names.perfect=Perfect
@@ -1715,6 +1715,9 @@ tt.eoh.time_dilation.standard.tooltip=§b§lTime dilation in a box.
 tt.eoh.time_dilation.error.tooltip=§c§lError, report to GTNH team
 tt.eoh.spacetime.standard.tooltip.0=Supports an internal spacetime volume of up to %d km³.
 tt.eoh.spacetime.standard.tooltip.1=§b§lCapable of running recipes up to tier %d
+tt.eoh.spacetime.name=%s Spacetime Compression Field Generator
+tt.eoh.stabilisation.name=%s Stabilisation Field Generator
+tt.eoh.time_dilation.name=%s Time Dilation Field Generator
 
 # Info data
 
