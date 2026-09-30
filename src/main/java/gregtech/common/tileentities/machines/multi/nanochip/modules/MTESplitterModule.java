@@ -222,10 +222,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         // in VacuumConveyorHatch.onColorChange
         this.vacuumConveyorInputs.fixConsistency();
         this.vacuumConveyorOutputs.fixConsistency();
-        // Splitter logic needs to carefully separate input colors so we can't just use refreshInputItems, we have to do
-        // it manually
-        // Some day I'll refactor this, maybe.
-        this.inputFakeItems.clear();
+
         for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
             for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
                 // Get the contents of this hatch as fake items.
@@ -235,9 +232,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
                 byte currentDye = conveyor.getColorization();
                 if (currentDye == -1) continue;
                 for (ItemStack stack : itemsInHatch) {
-                    // Add it to the internal module fake item list
-                    this.inputFakeItems.add(stack);
-                    // Now process routing for this stack
+                    // Process routing for this stack
                     List<Byte> outputDyes = getGetOutputColors(currentDye, stack);
                     if (outputDyes == null) continue;
 

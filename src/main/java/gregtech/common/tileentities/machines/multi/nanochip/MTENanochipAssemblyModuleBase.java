@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -96,10 +97,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     private long availableEUt = 0;
 
-    protected final ArrayList<ItemStack> inputFakeItems = new ArrayList<>();
     protected FluidStack[] fluidInputs = null;
     private byte outputColor = -1;
-    private int currentParallel;
     public static final XSTR random = XSTR.XSTR_INSTANCE;
 
     protected MTENanochipAssemblyComplex baseMulti;
@@ -319,74 +318,50 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return new MTENanochipAssemblyModuleBaseGui<>(this);
     }
 
-    protected static class ItemInputInformation {
-
-        /**
-         * A map containing one entry per unique item, with in each entry the color of the last hatch it was seen in.
-         * This can be used to determine the output color
-         */
-        public final Map<GTUtility.ItemId, Byte> colors;
-        public final Map<GTUtility.ItemId, ItemStack> inputs;
-
-        public ItemInputInformation(Map<GTUtility.ItemId, Byte> colors, Map<GTUtility.ItemId, ItemStack> inputs) {
-            this.colors = colors;
-            this.inputs = inputs;
-        }
-    }
-
     /**
      * Find all inputs stored in the vacuum conveyor inputs.
      * Clears inputFakeItems and then adds all fake items to this hatch. Note that different stacks with the same id
      * are merged into one entry in this list, which makes lookup and parallel calculation a bit easier.
      *
      * @return Info about which hatches contained the items, and a full list of item inputs indexed by id to make
-     *         parallel
-     *         calculation easier
+     *         parallel calculation easier
      */
-    protected ItemInputInformation refreshInputItems() {
-        Map<GTUtility.ItemId, Byte> itemColorMap = new HashMap<>();
-        Map<GTUtility.ItemId, ItemStack> inputs = new HashMap<>();
-        // Clear input items before processing
-        this.inputFakeItems.clear();
-        // Refresh fake stacks represented by items in the conveyor hatches.
-        // Note that we only take the first hatch with items and process it
+    protected Map<Byte, List<ItemStack>> getInputItemsByColor() {
+        if (shouldMergeColorInputs()) {
+            List<ItemStack> inputs = new ArrayList<>();
+            byte color = -1;
+            for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
+                for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
+                    // Get the contents of this hatch as fake items.
+                    if (conveyor.contents == null) continue;
+                    List<ItemStack> itemsInHatch = conveyor.contents.getItemRepresentations();
+
+                    // Store the color of the first hatch for all itemstacks, for when inputs are merged
+                    if (color == -1) color = conveyor.getColorization();
+
+                    inputs.addAll(itemsInHatch);
+                }
+            }
+            return ImmutableMap.of(color, inputs);
+        }
+
+        Map<Byte, List<ItemStack>> inputs = new HashMap<>();
         for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
             for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
                 // Get the contents of this hatch as fake items.
                 if (conveyor.contents == null) continue;
                 List<ItemStack> itemsInHatch = conveyor.contents.getItemRepresentations();
+
                 // Store the color of this hatch for each ItemStack
                 byte conveyorColor = conveyor.getColorization();
                 for (ItemStack stack : itemsInHatch) {
-                    GTUtility.ItemId id = GTUtility.ItemId.createWithoutNBT(stack);
-                    // Merge stack into the input map, so we have a list of entries that are all unique.
-                    inputs.merge(
-                        id,
-                        stack,
-                        (a, b) -> new ItemStack(a.getItem(), a.stackSize + b.stackSize, a.getItemDamage()));
-                    // Also register its color
-                    itemColorMap.put(id, conveyorColor);
-                    // Also add the item to the list of individual input items for recipe checking
-                    this.inputFakeItems.add(stack);
+                    List<ItemStack> colorList = inputs.computeIfAbsent(conveyorColor, _ -> new ArrayList<>());
+                    colorList.add(stack);
                 }
             }
         }
-        return new ItemInputInformation(itemColorMap, inputs);
-    }
 
-    /**
-     * Find the color hatch that we want to use for output of the given recipe.
-     *
-     * @param recipe     The recipe that we are going to run
-     * @param itemColors The colors the hatch each ItemStack in the recipe input can be found in
-     * @return The color that the output needs to end up in. If no hatch with this color exists, the module will report
-     *         that no output space is available.
-     */
-    protected byte findOutputColor(GTRecipe recipe, Map<GTUtility.ItemId, Byte> itemColors) {
-        ItemStack firstInput = recipe.mInputs[0];
-        GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(firstInput);
-        // If this recipe was valid and found, this should never not exist, or we have a bug
-        return itemColors.get(id);
+        return inputs;
     }
 
     /**
@@ -394,28 +369,13 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      *
      * @return A recipe if one was found, null otherwise
      */
-    protected GTRecipe findRecipe(ArrayList<ItemStack> inputs) {
+    protected GTRecipe findRecipe(List<ItemStack> inputs) {
         RecipeMap<?> recipeMap = this.getRecipeMap();
-        this.fluidInputs = getStoredFluids().toArray(new FluidStack[] {});
+        this.fluidInputs = getStoredFluids().toArray(new FluidStack[0]);
         return recipeMap.findRecipeQuery()
-            .items(inputs.toArray(new ItemStack[] {}))
+            .items(inputs.toArray(new ItemStack[0]))
             .fluids(fluidInputs)
             .find();
-    }
-
-    /**
-     * Return a parallel helper, but this should not yet be built, since we will append the item consumer to it first
-     */
-    protected ParallelHelper createParallelHelper(GTRecipe recipe, ItemInputInformation info) {
-        return new ParallelHelper().setItemInputs(this.inputFakeItems.toArray(new ItemStack[] {}))
-            .setFluidInputs(fluidInputs)
-            .setAvailableEUt(this.availableEUt)
-            .enableBatchMode(0)
-            .setRecipe(recipe)
-            .setMachine(this, false, false)
-            .setMaxParallel(this.getMaximumParallel())
-            .setOutputCalculation(true)
-            .setCalculator(OverclockCalculator.ofNoOverclock(recipe));
     }
 
     /**
@@ -456,7 +416,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public CheckRecipeResult checkProcessing() {
         // Reset output color
         outputColor = -1;
-        currentParallel = 0;
         this.lEUt = 0;
 
         if (!isConnected || baseMulti == null) {
@@ -466,18 +425,27 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         // First step in recipe checking is finding all inputs we have to deal with.
         // As a result of this process, we also get the colors of the hatch each item is found in, which
         // we will use for routing the outputs
-        ItemInputInformation inputInfo = refreshInputItems();
+        Map<Byte, List<ItemStack>> allInputs = getInputItemsByColor();
 
-        // Now find a recipe with the fake inputs
-        GTRecipe recipe = findRecipe(this.inputFakeItems);
+        // Now find a recipe with the fake inputs, checking over each color until one is found
+        GTRecipe recipe = null;
+        List<ItemStack> inputs = null;
+        var itr = allInputs.entrySet()
+            .iterator();
+        while (itr.hasNext() && recipe == null) {
+            var entry = itr.next();
+            this.outputColor = entry.getKey();
+            inputs = entry.getValue();
+            recipe = findRecipe(inputs);
+        }
+
         if (recipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
         // Validate it with custom logic, by default does nothing but can be overridden
         // by the module
         CheckRecipeResult validationResult = validateRecipe(recipe);
         if (!validationResult.wasSuccessful()) return validationResult;
 
-        // Now that we know the recipe, we can figure out the color the output hatch should have
-        outputColor = findOutputColor(recipe, inputInfo.colors);
         // Try to find a valid output hatch to see if we have output space available, and error if we don't.
         MTEHatchVacuumConveyorOutput outputHatch = this.vacuumConveyorOutputs.findAnyColoredHatch(this.outputColor);
         if (outputHatch == null) {
@@ -486,9 +454,17 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
         GTRecipe properRecipe = this.transformRecipe(recipe);
 
-        ParallelHelper simulatedParallelHelper = createParallelHelper(properRecipe, inputInfo);
         // Do an initial calculation for parallels without consuming items, to determine power needed.
-        simulatedParallelHelper.setConsumption(false)
+        ParallelHelper simulatedParallelHelper = new ParallelHelper().setItemInputs(inputs.toArray(new ItemStack[0]))
+            .setFluidInputs(fluidInputs)
+            .setAvailableEUt(this.availableEUt)
+            .enableBatchMode(0)
+            .setRecipe(recipe)
+            .setMachine(this, false, false)
+            .setMaxParallel(this.getMaximumParallel())
+            .setOutputCalculation(true)
+            .setCalculator(OverclockCalculator.ofNoOverclock(recipe))
+            .setConsumption(false)
             .build();
 
         CheckRecipeResult result = simulatedParallelHelper.getResult();
@@ -499,9 +475,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             inputConsumer.consume(properRecipe, simulatedParallelHelper.getCurrentParallel(), this.fluidInputs, null);
 
             // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to
-            // not output to normal busses
+            // not output to normal buses
             // Then use addVCOutput to convert these back into CCs in the right hatch
-            this.currentParallel = simulatedParallelHelper.getCurrentParallel();
+            int currentParallel = simulatedParallelHelper.getCurrentParallel();
 
             // Check for any XOR outputs to determine what to output
             ItemStack[] originalOutputs = simulatedParallelHelper.getItemOutputs();
@@ -526,7 +502,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             // apply 2/4 overclock with any excess power
             // this still keeps the >= 5 seconds rule so we don't have to think about sub-ticking
             int recipeDuration = properRecipe.mDuration;
-            long recipeEUT = (long) properRecipe.mEUt * this.currentParallel;
+            long recipeEUT = (long) properRecipe.mEUt * currentParallel;
             while (recipeDuration / 2 >= 5 * SECONDS && recipeEUT * 4 <= this.availableEUt) {
                 recipeDuration /= 2;
                 recipeEUT *= 4;
@@ -543,6 +519,10 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     protected boolean supportsXOROutput() {
+        return false;
+    }
+
+    protected boolean shouldMergeColorInputs() {
         return false;
     }
 
