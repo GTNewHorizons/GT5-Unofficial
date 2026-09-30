@@ -18,6 +18,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
@@ -203,7 +204,16 @@ public final class MaterialData {
     }
 
     private static boolean shouldRegisterMaterialRecycling(ItemData data) {
-        if (data == null) return false;
+        if (data == null || isHighPressurePipe(data)) return false;
         return data.hasExplicitComposition || !data.hasValidPrefixData() || data.mPrefix.isRecyclable();
+    }
+
+    /// Whether `data` names a High Pressure fluid pipe. These pipes occupy the Redstone pipe shapes but are
+    /// crafted from steel pipes and pumps, so they hold no Redstone (see `ConsumerPipe`).
+    private static boolean isHighPressurePipe(ItemData data) {
+        return !data.hasExplicitComposition && data.hasValidPrefixMaterialData()
+            && data.mMaterial.mMaterial == Materials.Redstone
+            && data.mPrefix.name()
+                .startsWith("pipe");
     }
 }
