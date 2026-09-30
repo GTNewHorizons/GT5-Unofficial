@@ -594,43 +594,5 @@ public class MachineRecipes implements Runnable {
             1 * MINUTE,
             (int) TierEU.RECIPE_UIV);
 
-        // UMV
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.MiningDroneUIV.get(1),
-            250000,
-            512,
-            (int) TierEU.RECIPE_UEV,
-            8,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.SpaceTime, 8),
-                ItemList.Robot_Arm_UMV.get(8), ItemList.Field_Generator_UMV.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 }, GTUtility.copyAmount(64, t9Plate),
-                GTUtility.copyAmount(64, t9Plate),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 32),
-                ItemList.Sensor_UMV.get(8) },
-            new FluidStack[] { new FluidStack(hypogenFluid, 4 * INGOTS),
-                new FluidStack(celestialTungstenFluid, 4 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512_000) },
-            ItemList.MiningDroneUMV.get(1),
-            1 * MINUTE,
-            (int) TierEU.RECIPE_UMV);
-
-        // UXV
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.MiningDroneUMV.get(1),
-            275000,
-            512,
-            16000000,
-            4,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Eternity, 8),
-                ItemList.Robot_Arm_UXV.get(8), ItemList.Field_Generator_UXV.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4 }, GTUtility.copyAmount(64, t9Plate),
-                GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 64),
-                ItemList.Sensor_UXV.get(8) },
-            new FluidStack[] { Materials.Space.getMolten(4 * INGOTS), Materials.Universium.getMolten(4 * INGOTS),
-                new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512_000) },
-            ItemList.MiningDroneUXV.get(1),
-            1 * MINUTE,
-            (int) TierEU.RECIPE_UXV);
     }
 }
