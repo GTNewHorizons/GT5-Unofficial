@@ -9,7 +9,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -295,9 +294,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
             Collections.addAll(additionalTooltips, suffixTooltip);
         }
         additionalTooltips.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.tileentity.throughput",
-                EnumChatFormatting.YELLOW + formatNumber(amp * GTValues.V[tier]) + EnumChatFormatting.RESET + " EU/t"));
+            StatCollector.translateToLocalFormatted("gt.tileentity.throughput", formatNumber(amp * GTValues.V[tier])));
         additionalTooltips.add(
             StatCollector.translateToLocalFormatted(
                 isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",

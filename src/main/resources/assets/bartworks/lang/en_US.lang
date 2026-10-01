@@ -292,7 +292,7 @@ BW.NEI.display.radhatch.0=Sievert: %s Sv
 BW.NEI.display.radhatch.1=Mass: %s kg
 BW.NEI.display.radhatch.2=Time: %s s
 
-tooltip.cal.imprintedWith=Imprinted with: %s
+tooltip.cal.imprintedWith=Imprinted with: §e%s
 chat.cal.mode.0=Circuit Assembly Line Mode
 chat.cal.mode.1=Circuit Assembler Mode
 
@@ -317,7 +317,7 @@ BW.chat.thtr.running_in.normal=THTR is now running in normal Operation.
 BW.chat.diode.max_amps=Max Amps: %s
 
 # bio name
-bw.bioname.latin.format=%s (%s)
+bw.bioname.latin.format=%s (§o%s§r§7)
 bw.bioname.saccharomyces_cerevisiae.latin=Saccharomyces cerevisiae
 bw.bioname.saccharomyces_cerevisiae=Common Yeast
 bw.bioname.saccharomyces_cerevisiae_var_bayanus.latin=Saccharomyces cerevisiae var bayanus

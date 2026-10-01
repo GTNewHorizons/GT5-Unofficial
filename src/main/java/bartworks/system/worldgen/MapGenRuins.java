@@ -85,7 +85,7 @@ public abstract class MapGenRuins extends WorldGenerator {
 
     protected void setRandomBlockWAirChance(World worldObj, int x, int y, int z, Random rand, int airchance,
         Pair<Block, Integer>... blocks) {
-        if (rand.nextInt(100) > airchance) this.setRandomBlock(worldObj, x, y, z, rand, blocks);
+        if (rand.nextInt(100) >= airchance) this.setRandomBlock(worldObj, x, y, z, rand, blocks);
         else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
 

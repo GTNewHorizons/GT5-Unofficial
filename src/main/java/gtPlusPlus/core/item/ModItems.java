@@ -3,6 +3,7 @@ package gtPlusPlus.core.item;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
+import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.BOLT;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
@@ -149,12 +150,11 @@ public final class ModItems {
         GregtechItemList.ExpandableHandPump.set(new ItemStack(toolHandPump, 1, 1004));
 
         // Volumetric Flasks
-        GregtechItemList.VOLUMETRIC_FLASK_8k
-            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 16000));
+        GregtechItemList.VOLUMETRIC_FLASK_8k.set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", 16000));
         GregtechItemList.VOLUMETRIC_FLASK_32k
-            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 256000));
-        GregtechItemList.KLEIN_BOTTLE.set(
-            VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_Infinite", "Klein Bottle", Integer.MAX_VALUE));
+            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_32k", 256000));
+        GregtechItemList.KLEIN_BOTTLE
+            .set(VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_Infinite", Integer.MAX_VALUE));
 
         Item boilerChassis = new ItemBoilerChassis();
         GregtechItemList.BoilerChassis_Tier0.set(new ItemStack(boilerChassis, 1, 0));
@@ -421,6 +421,9 @@ public final class ModItems {
 
         // Small Gear
         MaterialUtils.generateComponentAndAssignToAMaterial(SMALLGEAR, MaterialsElements.STANDALONE.HYPOGEN);
+
+        // Bolt
+        MaterialUtils.generateComponentAndAssignToAMaterial(BOLT, MaterialsElements.STANDALONE.RHUGNOR);
 
         // Special Sillyness
         new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
