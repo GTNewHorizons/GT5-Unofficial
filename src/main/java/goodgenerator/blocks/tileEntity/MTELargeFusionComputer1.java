@@ -58,7 +58,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
                 ImmutableMap.<String, Object>builder()
                     .put("power", formatNumber(getSingleHatchPower()))
                     .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
-                    .put("tier", GTValues.VN[tier()])
+                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
                     .put("base_para", formatNumber(getMaxPara()))
                     .put("per_tier_para", formatNumber(getMaxPara()))
                     .build())

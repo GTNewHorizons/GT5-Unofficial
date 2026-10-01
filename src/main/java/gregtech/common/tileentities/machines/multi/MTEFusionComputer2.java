@@ -93,7 +93,7 @@ public class MTEFusionComputer2 extends MTEFusionComputer {
                 ImmutableMap.<String, Object>builder()
                     .put("power", formatNumber(GTValues.V[tier()] / HATCH_POWER_DIVISOR))
                     .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
-                    .put("tier", GTValues.VN[tier()])
+                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
                     .build())
             .addSupportAny()
             .beginStructureBlock(15, 3, 15, false)
