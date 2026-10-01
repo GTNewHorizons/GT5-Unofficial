@@ -23,6 +23,7 @@ import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -30,6 +31,9 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GTModHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -209,6 +213,58 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
 
     private int getItemPipeTier() {
         return itemPipeTier;
+    }
+
+
+    private static final int RECIPE_EU = 30;
+    private static final int RECIPE_TIME = 100; // flat recipe time
+    private static final FluidStack SR = Materials.RubberSilicone.getMolten(1);
+    private static final FluidStack SBR = Materials.StyreneButadieneRubber.getMolten(1);
+    private static final FluidStack PVC = Materials.PolyvinylChloride.getMolten(1);
+    private static final FluidStack PDMS = Materials.Polydimethylsiloxane.getMolten(1);
+    private static final FluidStack PPS = Materials.PolyphenyleneSulfide.getMolten(1);
+
+    /*
+        Notes on cable cost:
+            Every cable costs 1 PPS foil
+            Base cost is 72L rubber per cable
+            Instead costs 36L rubber per cable per 36L of PVC or PDMS
+
+            1x  costs   X L
+            2x  costs   X L
+            4x  costs  2X L
+            8x  costs  3X L
+            12x costs  4X L
+            16x costs  5X L
+     */
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+
+        ArrayList<ItemStack> items = getStoredInputs();
+        ArrayList<FluidStack> fluids = getStoredFluids();
+        if(items.isEmpty() || fluids.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        int tier = this.itemPipeTier;
+        boolean singularityPresent = this.hasSingularity();
+        final int MAX_PARALLELS = (int) (32 * GTUtility.powInt(singularityPresent ? 4 : 2,tier));
+        final int parallelsFromPower = GTUtility.safeInt(this.getMaxInputEu() / RECIPE_EU);
+
+        // determine what fluids are stored for parallel calculation reasons
+        long rubberAmount = 0;
+        long dielectricAmount = 0;
+        long ppsAmount = 0;
+        for (FluidStack fluid : fluids) {
+            if (fluid == null) continue;
+            if(fluid.equals(SR) || fluid.equals(SBR)) rubberAmount += fluid.amount;
+            else if (fluid.equals(PVC) || fluid.equals(PDMS)) dielectricAmount += fluid.amount;
+            else if (fluid.equals(PPS)) ppsAmount+= fluid.amount;
+        }
+
+        for(ItemStack stack : items) {
+
+        }
+
+        return super.checkProcessing();
     }
 
     protected GTRecipe recipeAfterAdjustments(@Nonnull GTRecipe recipe) {
