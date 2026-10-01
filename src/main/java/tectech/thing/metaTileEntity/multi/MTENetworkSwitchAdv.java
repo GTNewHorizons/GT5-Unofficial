@@ -48,6 +48,7 @@ import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.Pair;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
@@ -286,8 +287,8 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             .beginVariableStructureBlock(3, 3, 3, 3, 3, 18, false)
             .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"), 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
-            .addEnergyHatch("1+", translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), TooltipHelper.anyCasingText(), 1, 2)
+            .addEnergyHatch("1+", TooltipHelper.anyCasingText(), 1, 2)
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing("0-18", translateToLocal("gt.blockcasingsTT.1.name"), false)

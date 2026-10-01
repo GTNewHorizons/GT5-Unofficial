@@ -35,6 +35,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.TileEntityModulePumpGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
@@ -521,7 +522,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addOutputHatch("1+", TooltipHelper.anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
@@ -609,7 +610,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addOutputHatch("1+", TooltipHelper.anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
@@ -697,7 +698,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addOutputHatch("1+", TooltipHelper.anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();

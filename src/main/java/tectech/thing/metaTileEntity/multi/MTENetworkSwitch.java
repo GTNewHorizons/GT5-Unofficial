@@ -39,6 +39,7 @@ import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
@@ -173,9 +174,9 @@ public class MTENetworkSwitch extends TTMultiblockBase
             .addCasing("0-17", translateToLocal("gt.blockcasingsTT.1.name"), false)
             .addCasing("0-5", translateToLocal("gt.blockcasingsTT.3.name"), false)
             .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"), 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
-            .addEnergyHatch("1+", translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
-            .addMaintenanceHatch("1", translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), TooltipHelper.anyCasingText(), 1, 2)
+            .addEnergyHatch("1+", TooltipHelper.anyCasingText(), 1, 2)
+            .addMaintenanceHatch("1", TooltipHelper.anyCasingText(), 1, 2)
             .toolTipFinisher();
         // spotless:on
         return tt;

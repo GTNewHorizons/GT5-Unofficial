@@ -35,6 +35,16 @@ public class TooltipHelper {
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
 
     /**
+     * The "Any casing" hatch location used by structure tooltips. Translated on every call, so it follows an in-game
+     * language change; do not cache it in a static field.
+     *
+     * @return Localized "Any casing"
+     */
+    public static String anyCasingText() {
+        return StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+    }
+
+    /**
      * Wraps input string in parallel colors
      *
      * @param parallels Amount of parallels turned into {@link TooltipHelper#PARALLEL_COLOR}

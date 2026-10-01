@@ -67,6 +67,7 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
@@ -351,8 +352,8 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
             .addMarkdown(new ResourceLocation("gregtech", "tfft-fluid-tank"))
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 15, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
-            .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addEnergyHatch("0+", TooltipHelper.anyCasingText(), 1, 2)
+            .addMaintenanceHatch("1", TooltipHelper.anyCasingText(), 1, 2)
             .addMiscHatch(
                 "0-1",
                 StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.multi_io_hatch"),

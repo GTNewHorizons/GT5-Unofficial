@@ -15,6 +15,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.ResultNoSpaceProject;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
@@ -71,8 +72,8 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
             .beginStructureBlock(1, 5, 2, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("0-9", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-            .addInputAny("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addOutputAny("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("0+", TooltipHelper.anyCasingText(), 1)
+            .addOutputAny("0+", TooltipHelper.anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
             .toolTipFinisher();

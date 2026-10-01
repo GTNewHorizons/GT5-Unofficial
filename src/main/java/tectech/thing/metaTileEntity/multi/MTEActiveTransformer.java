@@ -39,6 +39,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTEActiveTransformerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -184,8 +185,8 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("5-24", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
             .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
-            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addDynamoHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch("1+", TooltipHelper.anyCasingText(), 1)
+            .addDynamoHatch("0+", TooltipHelper.anyCasingText(), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;

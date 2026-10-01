@@ -68,6 +68,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
@@ -219,10 +220,10 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             .addCasing("48-52", "Radiation Proof Machine Casing", false)
             .addCasing("17", "Water", false)
             .addCasing("1", "Super/Quantum Chest", true)
-            .addEnergyHatch("1", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("1", "Any casing", 1)
-            .addOutputBus("1", "Any casing", 1)
+            .addEnergyHatch("1", TooltipHelper.anyCasingText(), 1)
+            .addMaintenanceHatch("1", TooltipHelper.anyCasingText(), 1)
+            .addInputBus("1", TooltipHelper.anyCasingText(), 1)
+            .addOutputBus("1", TooltipHelper.anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter("The water is a one-time-cost to prime the machine, place manually")
             .addStructureFooter("Do not insert isotopes into the super/quantum chest")

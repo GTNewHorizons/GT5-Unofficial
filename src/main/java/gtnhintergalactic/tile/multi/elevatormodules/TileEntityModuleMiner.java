@@ -51,6 +51,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.TileEntityModuleMinerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
@@ -1021,10 +1022,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addMiscHatch("0+", StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-                .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-                .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addMiscHatch("0+", StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"), TooltipHelper.anyCasingText(), 1)
+                .addInputBus("1+", TooltipHelper.anyCasingText(), 1)
+                .addInputHatch("0+", TooltipHelper.anyCasingText(), 1)
+                .addOutputBus("1+", TooltipHelper.anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
                 .toolTipFinisher();
@@ -1108,11 +1109,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .addMiscHatch(
                     "0+",
                     StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                    StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
+                    TooltipHelper.anyCasingText(),
                     1)
-                .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-                .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addInputBus("1+", TooltipHelper.anyCasingText(), 1)
+                .addInputHatch("0+", TooltipHelper.anyCasingText(), 1)
+                .addOutputBus("1+", TooltipHelper.anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
                 .toolTipFinisher();
@@ -1196,11 +1197,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .addMiscHatch(
                     "0+",
                     StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                    StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
+                    TooltipHelper.anyCasingText(),
                     1)
-                .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-                .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addInputBus("1+", TooltipHelper.anyCasingText(), 1)
+                .addInputHatch("0+", TooltipHelper.anyCasingText(), 1)
+                .addOutputBus("1+", TooltipHelper.anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
                 .toolTipFinisher();

@@ -49,6 +49,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import kekztech.common.Blocks;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -126,9 +127,9 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             .addCasing("6", Casings.ReinforcedGlass.getLocalizedName(), false)
             .addCasing("3", StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK1.electrolyte_unit"), false)
             .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", TooltipHelper.anyCasingText(), 1)
+            .addInputHatch("1+", TooltipHelper.anyCasingText(), 1)
+            .addOutputHatch("1+", TooltipHelper.anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();

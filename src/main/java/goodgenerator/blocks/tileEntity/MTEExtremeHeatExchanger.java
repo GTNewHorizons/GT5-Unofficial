@@ -54,6 +54,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
@@ -234,7 +235,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
             .addCasing("72", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]), false)
             .addCasing("60", StatCollector.translateToLocal("gt.blockcasings2.15.name"), false)
             .addCasing("48", StatCollector.translateToLocal("pressureResistantWalls.name"), false)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2, 5)
+            .addMaintenanceHatch("1", TooltipHelper.anyCasingText(), 1, 2, 5)
             .addInputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.front_center_casing_or_any_bottom_casing"), 1, 3)
             .addOutputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing_or_any_top_casing"), 2, 4)
             .addStructureInfo("")
