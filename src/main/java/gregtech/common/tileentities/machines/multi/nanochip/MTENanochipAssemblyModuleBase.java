@@ -97,6 +97,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     private boolean isConnected = false;
 
     private long availableEUt = 0;
+    private int runningCooldown = 0;
     public final ArrayList<MTEHatchNanochipRedstone> redstoneHatches = new ArrayList<>();
 
     protected FluidStack[] fluidInputs = null;
@@ -434,7 +435,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         outputColor = -1;
         this.lEUt = 0;
 
-        if (!isConnected || baseMulti == null) {
+        if (!isConnected || baseMulti == null || runningCooldown > 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -647,6 +648,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && isConnected) {
             super.onPostTick(aBaseMetaTileEntity, aTick);
+            if (runningCooldown > 0) runningCooldown--;
             if (mEfficiency < 0) mEfficiency = 0;
             if (currentEU.compareTo(BigInteger.ZERO) <= 0 && mMaxProgresstime > 0) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
@@ -743,6 +745,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     public void setAvailableEUt(long eut) {
+        // If the available EU/t increases, add a brief running cooldown to avoid a potential power-fail
+        // by allowing enough time for the module to get a new batch of EU to its buffer with updated values.
+        if (this.availableEUt < eut) {
+            this.runningCooldown = 20;
+        }
         this.availableEUt = eut;
     }
 
