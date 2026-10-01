@@ -1,6 +1,7 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +32,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.ResultNoSpaceProject;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
@@ -334,8 +334,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", TooltipHelper.anyCasingText(), 1)
-                .addOutputBus("1+", TooltipHelper.anyCasingText(), 1)
+                .addInputAny("1+", anyCasingText(), 1)
+                .addOutputBus("1+", anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
@@ -416,8 +416,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", TooltipHelper.anyCasingText(), 1)
-                .addOutputBus("1+", TooltipHelper.anyCasingText(), 1)
+                .addInputAny("1+", anyCasingText(), 1)
+                .addOutputBus("1+", anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
@@ -498,8 +498,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", TooltipHelper.anyCasingText(), 1)
-                .addOutputBus("1+", TooltipHelper.anyCasingText(), 1)
+                .addInputAny("1+", anyCasingText(), 1)
+                .addOutputBus("1+", anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
