@@ -422,10 +422,10 @@ public enum CircuitComponent {
     ProcessedQuantumCircuitCasing(1803, "gt.circuitcomponent.casing.processed.quantum", null, true),
     ProcessedPlanckCircuitCasing(1804, "gt.circuitcomponent.casing.processed.planck", null, true),
     ProcessedCoiledThermalSuperconductor(1805, "gt.circuitcomponent.planck.processed.coiledthermalsuperconductor", null, true),
-    ProcessedCircuitOpticalProcessor(1806,"gt.circuitcomponent.circuit.processed.opticalprocessor", null, true),
-    ProcessedCircuitOpticalAssembly(1807,"gt.circuitcomponent.circuit.processed.opticalassembly", null, true),
-    ProcessedCircuitOpticalComputer(1808,"gt.circuitcomponent.circuit.processed.opticalcomputer", null, true),
-    ProcessedCircuitOpticalMainframe(1809,"gt.circuitcomponent.circuit.processed.opticalmainframe", null, true),
+    ProcessedCircuitOpticalProcessor(1806,"gt.circuitcomponent.circuit.processed.opticalprocessor", CircuitCalibration.OPTICAL, 0.125f),
+    ProcessedCircuitOpticalAssembly(1807,"gt.circuitcomponent.circuit.processed.opticalassembly", CircuitCalibration.OPTICAL, 0.25f),
+    ProcessedCircuitOpticalComputer(1808,"gt.circuitcomponent.circuit.processed.opticalcomputer", CircuitCalibration.OPTICAL, 0.5f),
+    ProcessedCircuitOpticalMainframe(1809,"gt.circuitcomponent.circuit.processed.opticalmainframe", CircuitCalibration.OPTICAL, 1.0f),
 
     // Pico Chain
     OpticalMainframeRack(1810,"gt.circuitcomponent.pico.processed.opticalmainframerack",null,true),
