@@ -1,13 +1,24 @@
 # Creative ItemGroup Tab
+itemGroup.GregTech.Casings=Casings
 itemGroup.GregTech.GTPP_BLOCKS=GT++ Blocks
 itemGroup.GregTech.GTPP_MACHINES=GT++ Machines
 itemGroup.GregTech.GTPP_MISC=GT++ Misc
 itemGroup.GregTech.GTPP_OTHER=GT++ Other
 itemGroup.GregTech.GTPP_OTHER_2=GT++ Other II
 itemGroup.GregTech.GTPP_TOOLS=GT++ Tools
+itemGroup.GregTech.GT_DETRAV_TAB=Detrav Scanner
 itemGroup.GregTech.Main=Main
 itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
+
+# Enchantments
+enchantment.damage.endermen=Disjunction
+enchantment.damage.radioactivity=Radioactivity
+enchantment.protection.hazmat=Hazmat
+
+# GT++ bee combs
+gtplusplus.comb.dragonblood=Dragonblood Comb
+gtplusplus.comb.force=Force Comb
 
 # Components
 gt.oreprefix.block_of_material=Block of %s
@@ -1165,6 +1176,7 @@ gt.behaviour.lighter.uses=Remaining Uses: %s
 gt.behaviour.cover_copy_paste=Can copy/paste cover data.
 gt.behaviour.cover_copy_paste.store=Stored Cover Data:
 gt.runfastertooltip=You can walk faster on this Block
+gt.laserplate.name=Laser Resistant Plate
 gt.laserplatingtooltip=Engineered to withstand extreme temperatures
 
 # Tooltip info of tile-entities
@@ -2882,6 +2894,11 @@ channels.gregtech.gt_hatch=Enables automatic hatch placement
 channels.gregtech.field=Decides the tier of TFFT Storage Field.
 channels.gregtech.component_casing=Decides the tier of Component Assembly Line Casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
 channels.gregtech.super_chest=Decides the tier of Super/Quantum Chest. Starts at §6Super Chest I§r at value 1 and ends at §6Quantum Chest V§r at value 10.
+channels.gregtech.chassis=Decides the tier of Magnetic Chassis.
+channels.gregtech.coke_oven_casing=Decides the tier of Coke Oven Casing.
+channels.gregtech.construct=Decides the tier of Alchemical Construct.
+channels.gregtech.essentia_cell=Decides the tier of Essentia Diffusion Cell.
+channels.gregtech.piston_block=Decides the tier of Containment Block.
 
 channels.gregtech.master.structuretier=Structure Tier
 channels.gregtech.master.casingtier=Casing Tier
@@ -2892,6 +2909,36 @@ channels.gregtech.master.length=Length
 channels.gregtech.master.height=Height
 channels.gregtech.master.modules=Number of Modules
 channels.gregtech.master.rings=Number of Rings
+channels.gregtech.subchannel.qft_manipulator=Manipulator Tier
+channels.gregtech.subchannel.qft_shielding=Shielding Tier
+channels.gregtech.subchannel.heating_coil=Heating Coil Tier
+channels.gregtech.subchannel.boroglass=Glass Tier
+channels.gregtech.subchannel.prass_unit_casing=Precise Electronic Unit Casing Tier
+channels.gregtech.subchannel.metal_machine_casing=Metal Machine Casing Tier
+channels.gregtech.subchannel.tier_machine_casing=Machine Casing Tier
+channels.gregtech.subchannel.tier_casing=Machine Casing Tier
+channels.gregtech.subchannel.solenoid=Solenoid Tier
+channels.gregtech.subchannel.lsc_capacitor=Capacitor Tier
+channels.gregtech.subchannel.structure_height=Structure Height
+channels.gregtech.subchannel.structure_length=Structure Length
+channels.gregtech.subchannel.pipe_casing=Pipe Casing Tier
+channels.gregtech.subchannel.item_pipe_casing=Item Pipe Casing Tier
+channels.gregtech.subchannel.pss_cell=Vanadium Redox Power Cell Tier
+channels.gregtech.subchannel.synchrotron_antenna=Antenna Casing Tier
+channels.gregtech.subchannel.se_motor=Space Elevator Motor Tier
+channels.gregtech.subchannel.eoh_compression=Spacetime Compression Field Generator Tier
+channels.gregtech.subchannel.eoh_stabilisation=Stabilisation Field Generator Tier
+channels.gregtech.subchannel.eoh_dilation=Time Dilation Field Generator Tier
+channels.gregtech.subchannel.hatch=Hatch placement
+channels.gregtech.subchannel.tfft_field=Storage Field Tier
+channels.gregtech.subchannel.eic_piston=Containment Block Tier
+channels.gregtech.subchannel.alchemical_casing=Alchemical Casing Tier
+channels.gregtech.subchannel.alchemical_construct=Alchemical Construct Tier
+channels.gregtech.subchannel.super_chest=Super Chest Tier
+channels.gregtech.subchannel.magnetic_chassis=Magnetic Chassis Tier
+channels.gregtech.subchannel.component_assemblyline_casing=Component Assembly Line Casing Tier
+channels.gregtech.subchannel.les_essentia_cell=Essentia Diffusion Cell Tier
+channels.gregtech.subchannel.coke_oven_casing=Coke Oven Casing Tier
 
 GT5U.gui.select.current=§8Current:
 GT5U.gui.button.liquid_filling=Liquid Filling
@@ -4423,6 +4470,8 @@ GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the
 GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.hatch.outputme.toggle_checking=Toggle Checking Mode
 GT5U.hatch.outputme.toggle_caching=Toggle Caching Mode
+GT5U.hatch.outputme.refresh_time=Refresh Time (Seconds)
+GT5U.hatch.outputme.refresh_time.tooltip=How often the cached outputs are pushed to the ME network. Minimum %s seconds.
 GT5U.hatch.chisel.configure.singleton=Configure Template
 GT5U.hatch.chisel.configure.grid=Configure Templates
 
@@ -6709,6 +6758,8 @@ GT5U.waila.hatch.outputme.fluid_cache_capacity=Fluid cache capacity: §e%s L§r
 GT5U.waila.hatch.outputme.item_cache_empty=This bus has no cached stacks
 GT5U.waila.hatch.outputme.item_cache_detail=The bus contains §6%d§r cached stack%s:
 GT5U.waila.hatch.outputme.item_cache_detail.more=§oAnd %d more...
+GT5U.waila.hatch.outputme.flush_interval=§7Flushes to ME every §e%ss§7 (§anext in %ss§7)
+GT5U.waila.hatch.outputme.flush_interval.idle=§7Flushes to ME every §e%ss§7
 GT5U.waila.hatch.outputme.fluid_cache_empty=This hatch has no cached fluids
 GT5U.waila.hatch.outputme.fluid_cache_detail=The hatch contains §6%d§r cached fluid%s:
 GT5U.waila.hatch.outputme.fluid_cache_detail.more=§oAnd %d more...
@@ -7599,6 +7650,7 @@ fluid.fluid.hydrogenperoxide=Hydrogen Peroxide
 fluid.fluid.impurelifbef2=Impure Molten Salt Base
 fluid.fluid.kerosene=Kerosene
 fluid.fluid.liquidhydrogen=Liquid Hydrogen
+fluid.fluid.lithiumperoxide=Lithium Peroxide
 fluid.fluid.monomethylhydrazine=Monomethylhydrazine
 fluid.fluid.naphthalene=Naphthalene
 fluid.fluid.nitrogentetroxide=Nitrogen Tetroxide
@@ -7634,6 +7686,7 @@ fluid.leadzincsolution=Lead-Zinc Solution
 fluid.liquid_drillingfluid=Drilling Fluid
 fluid.liquid_sodium=Liquid Sodium
 fluid.liquidresin=Liquid Resin
+fluid.lithiumhydroxide=Lithium Hydroxide
 fluid.mobessence=Mob Essence
 fluid.mud.red.slurry=Red Mud Slurry
 fluid.nitrobenzene=Nitrobenzene
@@ -10268,8 +10321,6 @@ gt.metaitem.01.32708.with.WithPunchCardData.name=With Punch Card Data
 gt.metaitem.01.32708.with.WithScannedBookData.name=With Scanned Book Data
 gt.metaitem.01.32708.with.WithScannedMapData.name=With Scanned Map Data
 gt.metaitem.01.32708.with.WritesResearchResult.name=Writes Research result
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=IT'S FREE! Place Lava on Side
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=IT'S FREE! Place Lava on Top
 
 # Chat messages
 GT5U.chat.cover.connectable=Connectable: %s
