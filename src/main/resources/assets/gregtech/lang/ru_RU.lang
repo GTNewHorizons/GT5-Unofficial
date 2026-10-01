@@ -1942,6 +1942,8 @@ GT5U.MBTT.Tiers.FluidPipe=Полый корпус
 GT5U.MBTT.Tiers.Solenoid=Соленоид
 GT5U.MBTT.Tiers.Turbine=Сумма турбины
 GT5U.MBTT.Tiers.Glass=Стекло
+GT5U.MBTT.Tiers.One=§bТир 1
+GT5U.MBTT.Tiers.Two=§bТир 2
 GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Корпус компонентной сборочной линии
 GT5U.MBTT.Steam.Speed=На %s быстрее, чем при использовании одноблочных паровых машин того же давления
 GT5U.MBTT.Steam.Eff=Расход пара составляет %s от обычно требуемого расхода
@@ -2019,6 +2021,7 @@ gt.mbtt.machine_type.coolant_tower=Градирня
 gt.mbtt.machine_type.essentia_smeltery_les=Плавильня эссенции, LES
 gt.mbtt.machine_type.breeder_reactor_htgr=Реактор-размножитель, HTGR
 gt.mbtt.machine_type.arc_furnace_iaf=Дуговая печь, IAF
+gt.mbtt.machine_type.macerator_ims=Дробитель, IMS
 
 gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s
@@ -2125,6 +2128,7 @@ gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : �
 gt.multiblock.VacuumFreezer.machine_type=Вакуумный морозильник, VF
 gt.multiblock.VacuumFreezer.desc1=Охлаждает раскалённые слитки и капсулы
 
+GT5U.MBTT.masterchannel=Размер стака проектора определяет §b%s
 GT5U.MBTT.subchannel=Подканал §b%s§7 определяет §b%s
 
 GT5U.MBTT.CokeOvenHatch=Шлюз коксовой печи
@@ -2764,6 +2768,7 @@ channels.gregtech.manipulator=Определяет тир блоков мани�
 channels.gregtech.shielding=Определяет тир блоков защиты QFT. Начинается с §6Нейтронное защитное ядро§r со значением 1 и заканчивается §6Пространственно-временное гибкое ядро§r со значением 4.
 channels.gregtech.coil=Определяет тир нагревательной катушки. Начинается с §6Катушки из мельхиора§r со значением 1 и заканчивается §6Катушки из вечности§r со значением 14.
 channels.gregtech.glass=Определяет тир стекла. У этого есть много тиров и много заменителей для различных тиров. Пожалуйста, обратитесь к tooltip отдельных блоков стекла.
+channels.gregtech.master.structuretier=Тир структуры
 channels.gregtech.casing=Определяет тир металлического корпуса машины.
 channels.gregtech.unit_casing=Определяет тир Корпуса электронного блока. Начинается с §6Грубого корпуса электронного блока§r со значением 1 и заканчивается на §6Mk-IV§r со значением 5.
 channels.gregtech.machine_casing=Определяет тир Обшивки механизма. Начинается с §6ULV Обшивка механизма§r со значением 1 и заканчивается §6UHV Обшивка механизма§r со значением 10.
