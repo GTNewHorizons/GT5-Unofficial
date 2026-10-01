@@ -15,7 +15,7 @@ The ideal home for your bees
 - {light_purple:Swarmer}:
   - {green:1} queen only, slowly produces {white:Ignoble Princesses}
   - {green:{var:swarmer_jelly_cost}} {gold:Royal Jelly} per operation
-  - {green:{var:swarmer_seconds}s} base time, 1 amp {var:voltageTier5}
+  - {green:{var:swarmer_seconds}s} base time, 1 {var:voltageTier5} amp
   - {light_purple:Can overclock}
 {gray:{hr}}
 Right-click the controller with a {white:Screwdriver} to change mode (Input/Output/Operating)
