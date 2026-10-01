@@ -1,13 +1,24 @@
 # Creative ItemGroup Tab
+itemGroup.GregTech.Casings=Casings
 itemGroup.GregTech.GTPP_BLOCKS=GT++ Blocks
 itemGroup.GregTech.GTPP_MACHINES=GT++ Machines
 itemGroup.GregTech.GTPP_MISC=GT++ Misc
 itemGroup.GregTech.GTPP_OTHER=GT++ Other
 itemGroup.GregTech.GTPP_OTHER_2=GT++ Other II
 itemGroup.GregTech.GTPP_TOOLS=GT++ Tools
+itemGroup.GregTech.GT_DETRAV_TAB=Detrav Scanner
 itemGroup.GregTech.Main=Main
 itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
+
+# Enchantments
+enchantment.damage.endermen=Disjunction
+enchantment.damage.radioactivity=Radioactivity
+enchantment.protection.hazmat=Hazmat
+
+# GT++ bee combs
+gtplusplus.comb.dragonblood=Dragonblood Comb
+gtplusplus.comb.force=Force Comb
 
 # Components
 gt.oreprefix.block_of_material=Block of %s
@@ -1165,6 +1176,7 @@ gt.behaviour.lighter.uses=Remaining Uses: %s
 gt.behaviour.cover_copy_paste=Can copy/paste cover data.
 gt.behaviour.cover_copy_paste.store=Stored Cover Data:
 gt.runfastertooltip=You can walk faster on this Block
+gt.laserplate.name=Laser Resistant Plate
 gt.laserplatingtooltip=Engineered to withstand extreme temperatures
 
 # Tooltip info of tile-entities
@@ -7599,6 +7611,7 @@ fluid.fluid.hydrogenperoxide=Hydrogen Peroxide
 fluid.fluid.impurelifbef2=Impure Molten Salt Base
 fluid.fluid.kerosene=Kerosene
 fluid.fluid.liquidhydrogen=Liquid Hydrogen
+fluid.fluid.lithiumperoxide=Lithium Peroxide
 fluid.fluid.monomethylhydrazine=Monomethylhydrazine
 fluid.fluid.naphthalene=Naphthalene
 fluid.fluid.nitrogentetroxide=Nitrogen Tetroxide
@@ -7634,6 +7647,7 @@ fluid.leadzincsolution=Lead-Zinc Solution
 fluid.liquid_drillingfluid=Drilling Fluid
 fluid.liquid_sodium=Liquid Sodium
 fluid.liquidresin=Liquid Resin
+fluid.lithiumhydroxide=Lithium Hydroxide
 fluid.mobessence=Mob Essence
 fluid.mud.red.slurry=Red Mud Slurry
 fluid.nitrobenzene=Nitrobenzene

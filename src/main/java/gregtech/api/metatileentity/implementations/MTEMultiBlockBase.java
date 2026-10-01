@@ -437,7 +437,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 else getBaseMetaTileEntity().disableWorking();
             }
         }
-        batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
+        // Item NBT (e.g. from setItemNBT) may lack this key, keep the configured default then
+        if (aNBT.hasKey(BATCH_MODE_NBT_KEY)) batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
         if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {
             voidingMode = VoidingMode.fromName(aNBT.getString(VOIDING_MODE_NBT_KEY));
