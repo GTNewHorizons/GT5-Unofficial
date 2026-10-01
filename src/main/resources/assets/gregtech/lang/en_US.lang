@@ -2894,6 +2894,11 @@ channels.gregtech.gt_hatch=Enables automatic hatch placement
 channels.gregtech.field=Decides the tier of TFFT Storage Field.
 channels.gregtech.component_casing=Decides the tier of Component Assembly Line Casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
 channels.gregtech.super_chest=Decides the tier of Super/Quantum Chest. Starts at §6Super Chest I§r at value 1 and ends at §6Quantum Chest V§r at value 10.
+channels.gregtech.chassis=Decides the tier of Magnetic Chassis.
+channels.gregtech.coke_oven_casing=Decides the tier of Coke Oven Casing.
+channels.gregtech.construct=Decides the tier of Alchemical Construct.
+channels.gregtech.essentia_cell=Decides the tier of Essentia Diffusion Cell.
+channels.gregtech.piston_block=Decides the tier of Containment Block.
 
 channels.gregtech.master.structuretier=Structure Tier
 channels.gregtech.master.casingtier=Casing Tier
