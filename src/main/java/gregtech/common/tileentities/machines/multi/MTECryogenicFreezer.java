@@ -20,6 +20,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -87,7 +88,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Vacuum Freezer, VF")
+        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.VacuumFreezer.machine_type"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "cryogenic-freezer"),
                 ImmutableMap.<String, Object>builder()
@@ -99,15 +100,15 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 7, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("46-56", "Advanced Cryogenic Casing", false)
-            .addCasing("24", "Grisium Frame Box", false)
-            .addMiscHatch("1", "Cryotheum Cooling Hatch", "Any casing", 1)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputAny("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("46-56", Casings.AdvancedCryogenicCasing.getLocalizedName(), false)
+            .addCasing("24", MaterialsAlloy.LEAGRISIUM.getFrameBox(1).getDisplayName(), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.CryotheumHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "REDR")
             .toolTipFinisher();
         // spotless:on
