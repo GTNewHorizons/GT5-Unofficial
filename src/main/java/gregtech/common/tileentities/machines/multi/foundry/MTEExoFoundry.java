@@ -113,6 +113,8 @@ import tectech.thing.casing.TTCasingsContainer;
 public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer, ICasingTextureProvider, IDataCopyable {
 
+    private static final String COPY_PASTE_IDENTIFIER = "exofoundry";
+
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
         new CoolingFluid(Materials.SpaceTime, 2, 50),
@@ -1071,12 +1073,10 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.saved"));
     }
 
-    private static final String identifier = "exofoundry";
-
     @Override
     public @Nullable NBTTagCompound getCopiedData(EntityPlayer player) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("type", identifier);
+        tag.setString("type", COPY_PASTE_IDENTIFIER);
         tag.setInteger("module1OR", foundryData.modules[0].ordinal());
         tag.setInteger("module2OR", foundryData.modules[1].ordinal());
         tag.setInteger("module3OR", foundryData.modules[2].ordinal());
@@ -1089,7 +1089,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
         if (nbt == null) return false;
         if (!nbt.getString("type")
-            .equals(identifier)) return false;
+            .equals(COPY_PASTE_IDENTIFIER)) return false;
         this.shouldRender = nbt.getBoolean("shouldRender");
         if (this.foundryData.tier == 0) return true; // nothing to paste, but paste is successful
 
@@ -1102,7 +1102,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     @Override
     public String getCopiedDataIdentifier(EntityPlayer player) {
-        return identifier;
+        return COPY_PASTE_IDENTIFIER;
     }
 
     // data class
