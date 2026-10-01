@@ -186,6 +186,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
     }
 
     private void notifySeedInventoryUpdate(int listSize) {
+        // Read directly from the multiblock, not from local sync fields (which are only set on the client)
         boolean hasEmpty = multiblock.getTotalSeedCount() < multiblock.getMaxSeedCount();
         int activeCount = listSize + (hasEmpty ? 1 : 0);
         seedInventoryHandler.notifyUpdate(buf -> buf.writeInt(activeCount));
@@ -355,6 +356,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         EntityPlayer player = mainSyncManager.getPlayer();
         if (!(player instanceof EntityPlayerMP playerMP)) return;
 
+        // Use multiblock.buckets directly since seedSlots is only populated on the client
         if (slotIdx >= 0 && slotIdx < multiblock.buckets.size()) {
             handleOccupiedSeedClick(slotIdx, mouseButton, shift, player, playerMP);
         } else {
@@ -367,6 +369,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         if (slotIdx >= multiblock.buckets.size()) return;
 
         if (mouseButton == 2) {
+            // Creative pick
             if (!player.capabilities.isCreativeMode || player.inventory.getItemStack() != null) return;
             var bucket = multiblock.buckets.get(slotIdx);
             ItemStack stack = bucket.getSeedStack()
@@ -376,6 +379,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
             playerMP.isChangingQuantityOnly = false;
             playerMP.updateHeldItem();
         } else if (shift) {
+            // Extract to inventory
             var bucket = multiblock.buckets.get(slotIdx);
             int maxRemove = bucket.getSeedStack()
                 .getMaxStackSize();
@@ -391,11 +395,13 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         } else {
             ItemStack input = player.inventory.getItemStack();
             if (input != null) {
+                // Try to inject held item
                 multiblock.addCrop(input);
                 if (input.stackSize <= 0) {
                     player.inventory.setItemStack(null);
                 }
             } else {
+                // Extract to cursor
                 var bucket = multiblock.buckets.get(slotIdx);
                 int maxRemove = bucket.getSeedStack()
                     .getMaxStackSize();
@@ -419,6 +425,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         if (input == null) return;
 
         if (mouseButton == 1) {
+            // Inject single
             ItemStack single = input.copy();
             single.stackSize = 1;
             multiblock.addCrop(single);
@@ -429,6 +436,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
                 }
             }
         } else {
+            // Inject entire stack
             multiblock.addCrop(input);
             if (input.stackSize <= 0) {
                 player.inventory.setItemStack(null);
