@@ -786,9 +786,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         int z) {
         tag.setLong("cacheCapacity", getCacheCapacity());
         tag.setInteger("refreshTime", refreshTime);
-        List<T> cached = getCacheList();
         tag.setInteger("ticksToFlush", (int) Math.max(0, lastOutputTick + refreshTime - tickCounter));
-        processWailaNBTData(tag, "stacks", "stackCount", cached);
+        processWailaNBTData(tag, "stacks", "stackCount", getCacheList());
 
         if (cacheMode && cell != null) {
             List<T> cacheList = new ArrayList<>();
