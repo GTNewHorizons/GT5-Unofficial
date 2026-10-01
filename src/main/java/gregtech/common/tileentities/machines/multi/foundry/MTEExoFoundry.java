@@ -1088,8 +1088,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
         if (nbt == null) return false;
-        if (!nbt.getString("type")
-            .equals(COPY_PASTE_IDENTIFIER)) return false;
+        if (!COPY_PASTE_IDENTIFIER.equals(nbt.getString("type"))) return false;
         this.shouldRender = nbt.getBoolean("shouldRender");
         if (this.foundryData.tier == 0) return true; // nothing to paste, but paste is successful
 
