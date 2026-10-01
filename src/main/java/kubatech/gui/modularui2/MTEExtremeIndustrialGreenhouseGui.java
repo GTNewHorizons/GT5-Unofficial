@@ -80,18 +80,15 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         this.mainSyncManager = syncManager;
 
         syncManager.syncValue(
+            "eigActive",
+            new BooleanSyncValue(
+                () -> multiblock.getBaseMetaTileEntity()
+                    .isActive(),
+                val -> machineActive = val));
+
+        syncManager.syncValue(
             "eigSetupPhase",
             new IntSyncValue(() -> multiblock.getSetupPhase(), val -> multiblock.setSetupPhase(val)).allowC2S());
-        syncManager.syncValue(
-            "eigMode",
-            new IntSyncValue(
-                () -> multiblock.getEIGMode()
-                    .getUIIndex(),
-                val -> multiblock.setModeByUIIndex(val)).allowC2S());
-        syncManager.syncValue(
-            "eigNoHumidity",
-            new BooleanSyncValue(() -> multiblock.isInNoHumidityMode(), val -> multiblock.setNoHumidity(val))
-                .allowC2S());
 
         IntSyncValue maxSeedTypesSyncer = new IntSyncValue(
             () -> multiblock.getMaxSeedTypes(),
@@ -115,7 +112,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
 
         syncManager.syncValue(
             "eigActive",
-            new BooleanSyncValue(
+            new com.cleanroommc.modularui.value.sync.BooleanSyncValue(
                 () -> multiblock.getBaseMetaTileEntity()
                     .isActive(),
                 val -> machineActive = val));
@@ -189,7 +186,6 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
     }
 
     private void notifySeedInventoryUpdate(int listSize) {
-        // Read directly from the multiblock, not from local sync fields (which are only set on the client)
         boolean hasEmpty = multiblock.getTotalSeedCount() < multiblock.getMaxSeedCount();
         int activeCount = listSize + (hasEmpty ? 1 : 0);
         seedInventoryHandler.notifyUpdate(buf -> buf.writeInt(activeCount));
@@ -359,7 +355,6 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         EntityPlayer player = mainSyncManager.getPlayer();
         if (!(player instanceof EntityPlayerMP playerMP)) return;
 
-        // Use multiblock.buckets directly since seedSlots is only populated on the client
         if (slotIdx >= 0 && slotIdx < multiblock.buckets.size()) {
             handleOccupiedSeedClick(slotIdx, mouseButton, shift, player, playerMP);
         } else {
@@ -372,7 +367,6 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         if (slotIdx >= multiblock.buckets.size()) return;
 
         if (mouseButton == 2) {
-            // Creative pick
             if (!player.capabilities.isCreativeMode || player.inventory.getItemStack() != null) return;
             var bucket = multiblock.buckets.get(slotIdx);
             ItemStack stack = bucket.getSeedStack()
@@ -382,7 +376,6 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
             playerMP.isChangingQuantityOnly = false;
             playerMP.updateHeldItem();
         } else if (shift) {
-            // Extract to inventory
             var bucket = multiblock.buckets.get(slotIdx);
             int maxRemove = bucket.getSeedStack()
                 .getMaxStackSize();
@@ -398,13 +391,11 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         } else {
             ItemStack input = player.inventory.getItemStack();
             if (input != null) {
-                // Try to inject held item
                 multiblock.addCrop(input);
                 if (input.stackSize <= 0) {
                     player.inventory.setItemStack(null);
                 }
             } else {
-                // Extract to cursor
                 var bucket = multiblock.buckets.get(slotIdx);
                 int maxRemove = bucket.getSeedStack()
                     .getMaxStackSize();
@@ -428,7 +419,6 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
         if (input == null) return;
 
         if (mouseButton == 1) {
-            // Inject single
             ItemStack single = input.copy();
             single.stackSize = 1;
             multiblock.addCrop(single);
@@ -439,7 +429,6 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
                 }
             }
         } else {
-            // Inject entire stack
             multiblock.addCrop(input);
             if (input.stackSize <= 0) {
                 player.inventory.setItemStack(null);
@@ -509,13 +498,11 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
     private ModularPanel createConfigurationPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager mainSyncManager) {
         IntSyncValue setupPhaseSyncer = mainSyncManager.findSyncHandler("eigSetupPhase", IntSyncValue.class);
-        IntSyncValue modeSyncer = mainSyncManager.findSyncHandler("eigMode", IntSyncValue.class);
-        BooleanSyncValue humiditySyncer = mainSyncManager.findSyncHandler("eigNoHumidity", BooleanSyncValue.class);
 
         return new ModularPanel("eigConfigPanel").relative(parent)
             .leftRel(1)
             .topRel(0)
-            .size(110, 100)
+            .size(110, 60)
             .widgetTheme("backgroundPopup")
             .child(
                 Flow.column()
@@ -533,14 +520,7 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
                             setupPhaseSyncer,
                             "kubatech.gui.text.eig.setup_mode",
                             3,
-                            MTEExtremeIndustrialGreenhouseGui::getSetupPhaseText))
-                    .child(
-                        createConfigEntry(
-                            modeSyncer,
-                            "kubatech.gui.text.eig.ic2_mode",
-                            2,
-                            MTEExtremeIndustrialGreenhouseGui::getModeText))
-                    .child(createHumidityEntry(humiditySyncer)));
+                            MTEExtremeIndustrialGreenhouseGui::getSetupPhaseText)));
     }
 
     private Flow createConfigEntry(IntSyncValue syncer, String labelKey, int cycleLength,
@@ -581,57 +561,11 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
                 .marginBottom(1));
     }
 
-    private Flow createHumidityEntry(BooleanSyncValue syncer) {
-        return Flow.column()
-            .widthRel(1)
-            .coverChildrenHeight()
-            .crossAxisAlignment(CrossAxis.START)
-            .marginBottom(1)
-            .child(
-                new TextWidget<>(StatCollector.translateToLocal("kubatech.gui.text.eig.no_humidity_mode")).widthRel(1)
-                    .height(9)
-                    .marginBottom(1))
-            .child(new ButtonWidget<>().overlay(new DynamicDrawable(() -> {
-                String text = syncer.getBoolValue() ? StatCollector.translateToLocal("kubatech.gui.text.eig.enabled")
-                    : StatCollector.translateToLocal("kubatech.gui.text.eig.disabled");
-                IKey key = IKey.str(text)
-                    .alignment(Alignment.Center);
-                return multiblock.mMaxProgresstime > 0 ? key.color(0xFFA0A0A0) : key;
-            }))
-                .onMousePressed(mouseButton -> {
-                    if (multiblock.mMaxProgresstime > 0) return true;
-                    syncer.setBoolValue(!syncer.getBoolValue(), true, true);
-                    return true;
-                })
-                .tooltipBuilder(t -> {
-                    t.setAutoUpdate(true);
-                    t.addLine(
-                        syncer.getBoolValue() ? StatCollector.translateToLocal("kubatech.gui.text.eig.enabled")
-                            : StatCollector.translateToLocal("kubatech.gui.text.eig.disabled"));
-                    if (multiblock.mMaxProgresstime > 0) {
-                        t.addLine(
-                            EnumChatFormatting.RED
-                                + StatCollector.translateToLocal("GT5U.gui.text.cannot_change_when_running"));
-                    }
-                })
-                .width(75)
-                .height(12)
-                .marginBottom(1));
-    }
-
     private static String getSetupPhaseText(int phase) {
         return switch (phase) {
             case 0 -> StatCollector.translateToLocal("kubatech.gui.text.operating");
             case 1 -> StatCollector.translateToLocal("kubatech.gui.text.input");
             case 2 -> StatCollector.translateToLocal("kubatech.gui.text.output");
-            default -> "";
-        };
-    }
-
-    private static String getModeText(int mode) {
-        return switch (mode) {
-            case 0 -> StatCollector.translateToLocal("kubatech.gui.text.eig.disabled");
-            case 1 -> StatCollector.translateToLocal("kubatech.gui.text.eig.enabled");
             default -> "";
         };
     }
