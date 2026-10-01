@@ -105,7 +105,7 @@ public class GeneralInfoPanel {
             textList.child(moduleToC);
             textList.child(upgradeToC);
             textList.child(milestoneToC);
-            textList.childIf(true, () -> inversionToC);
+            textList.childIf(inversionSyncer.getBoolValue(), () -> inversionToC);
 
             textList.child(fuelHeader);
             textList.child(fuelText1);
