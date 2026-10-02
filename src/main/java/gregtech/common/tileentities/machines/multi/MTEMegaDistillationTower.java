@@ -590,7 +590,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addStaticEuEffInfo(DISTILLERY_EU_EFFICIENCY)
             .addSeparator()
             .addInfo(EnumChatFormatting.WHITE + "Distillation Tower Mode")
-            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Fluids are output one per layer based on the slot number in NEI")
             .addInfo("Increase the height to output more fluid types")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addStaticSpeedInfo(TOWER_SPEED)
