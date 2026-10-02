@@ -582,9 +582,4 @@ public class MTEYOTTAHatch extends MTEHatch
         if (this.host == null) return false;
         return tick % this.tickRate == 0;
     }
-
-    @Override
-    public AccessRestriction getReshuffleAccess() {
-        return ICellContainer.super.getReshuffleAccess();
-    }
 }

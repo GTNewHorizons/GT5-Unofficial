@@ -156,7 +156,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
     }
 
     @Override
-    protected GTRecipe findRecipe(ArrayList<ItemStack> inputs) {
+    protected GTRecipe findRecipe(List<ItemStack> inputs) {
         RecipeMap<?> recipeMap = this.getRecipeMap();
         final List<FluidStack> fakeFluids = new ArrayList<>(getStoredFluids());
         if (baseMulti.wetwareT3Active) {
