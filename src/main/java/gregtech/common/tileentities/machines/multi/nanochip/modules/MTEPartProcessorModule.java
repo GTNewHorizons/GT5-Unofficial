@@ -28,7 +28,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
 public class MTEPartProcessorModule extends MTENanochipAssemblyModuleBase<MTEPartProcessorModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int PART_OFFSET_X = 3;
     protected static final int PART_OFFSET_Y = 3;
     protected static final int PART_OFFSET_Z = 0;
