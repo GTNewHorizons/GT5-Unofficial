@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.filterByMTEClass;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
@@ -418,9 +419,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addMinGlassForLaser(VoltageIndex.UV)
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
-            .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addDynamoHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch("0+", anyCasingText(), 1)
+            .addDynamoHatch("0+", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing(
