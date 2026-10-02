@@ -51,8 +51,8 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_LV.get(1),
-                ItemList.Emitter_LV.get(2),
-                ItemList.Sensor_LV.get(2),
+                ItemList.Emitter_LV.get(4),
+                ItemList.Sensor_LV.get(4),
                 MaterialsAlloy.TUMBAGA.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 8))
             .itemOutputs(GregtechItemList.Charger_LV.get(1))
@@ -65,8 +65,8 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_MV.get(1),
-                ItemList.Emitter_MV.get(2),
-                ItemList.Sensor_MV.get(2),
+                ItemList.Emitter_MV.get(4),
+                ItemList.Sensor_MV.get(4),
                 MaterialsAlloy.EGLIN_STEEL.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 8))
             .itemOutputs(GregtechItemList.Charger_MV.get(1))
@@ -79,8 +79,8 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_HV.get(1),
-                ItemList.Emitter_HV.get(2),
-                ItemList.Sensor_HV.get(2),
+                ItemList.Emitter_HV.get(4),
+                ItemList.Sensor_HV.get(4),
                 MaterialsAlloy.TANTALUM_CARBIDE.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 8))
             .itemOutputs(GregtechItemList.Charger_HV.get(1))
@@ -93,8 +93,8 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_EV.get(1),
-                ItemList.Emitter_EV.get(2),
-                ItemList.Sensor_EV.get(2),
+                ItemList.Emitter_EV.get(4),
+                ItemList.Sensor_EV.get(4),
                 MaterialsAlloy.INCOLOY_DS.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 8))
             .itemOutputs(GregtechItemList.Charger_EV.get(1))
@@ -107,8 +107,8 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_IV.get(1),
-                ItemList.Emitter_IV.get(2),
-                ItemList.Sensor_IV.get(2),
+                ItemList.Emitter_IV.get(4),
+                ItemList.Sensor_IV.get(4),
                 MaterialsAlloy.INCONEL_625.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
             .itemOutputs(GregtechItemList.Charger_IV.get(1))
@@ -121,8 +121,8 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                ItemList.Emitter_LuV.get(2),
-                ItemList.Sensor_LuV.get(2),
+                ItemList.Emitter_LuV.get(4),
+                ItemList.Sensor_LuV.get(4),
                 MaterialsAlloy.ZERON_100.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8))
             .itemOutputs(GregtechItemList.Charger_LuV.get(1))
@@ -135,8 +135,8 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_ZPM.get(1),
-                ItemList.Emitter_ZPM.get(2),
-                ItemList.Sensor_ZPM.get(2),
+                ItemList.Emitter_ZPM.get(4),
+                ItemList.Sensor_ZPM.get(4),
                 MaterialsAlloy.PIKYONIUM.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8))
             .itemOutputs(GregtechItemList.Charger_ZPM.get(1))
@@ -149,8 +149,8 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_UV.get(1),
-                ItemList.Emitter_UV.get(2),
-                ItemList.Sensor_UV.get(2),
+                ItemList.Emitter_UV.get(4),
+                ItemList.Sensor_UV.get(4),
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8))
             .itemOutputs(GregtechItemList.Charger_UV.get(1))
@@ -163,8 +163,8 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_MAX.get(1),
-                ItemList.Emitter_UHV.get(2),
-                ItemList.Sensor_UHV.get(2),
+                ItemList.Emitter_UHV.get(4),
+                ItemList.Sensor_UHV.get(4),
                 MaterialsAlloy.ABYSSAL.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8))
             .itemOutputs(GregtechItemList.Charger_UHV.get(1))
