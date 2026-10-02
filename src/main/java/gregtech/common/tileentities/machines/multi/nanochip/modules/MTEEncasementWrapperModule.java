@@ -145,4 +145,8 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
         return RecipeMaps.nanochipEncasementWrapper;
     }
 
+    @Override
+    public boolean getDefaultInputSeparationMode() {
+        return false;
+    }
 }
