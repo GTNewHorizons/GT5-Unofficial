@@ -240,8 +240,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         } else {
             this.euBufferMax = maxInputEU * 5 * SECONDS;
         }
-
-        System.out.println("NAC debug (checkMachine): modules: " + modules.size());
         updateModuleEU(this.matrixPowerPortion, true);
     }
 
@@ -792,14 +790,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     private boolean updateModuleEU(long newPortion, boolean force) {
-        System.out.println("NAC debug (updateModuleEU): portion: " + newPortion + ", force: " + force);
         if (modules.isEmpty()) {
-            System.out.println("NAC debug (updateModuleEU): no modules");
             return false;
         }
         List<MTEHatch> energyHatches = getExoticAndNormalEnergyHatchList();
         if (energyHatches.isEmpty()) {
-            System.out.println("NAC debug (updateModuleEU): no energy hatches");
             return false;
         }
 
@@ -820,12 +815,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         }
 
         if (matrix + nonMatrix == 0) {
-            System.out.println("NAC debug (updateModuleEU): no non-splitter modules");
             return false;
         }
         long totalEUt = ExoticEnergyInputHelper.getTotalEuMulti(energyHatches);
         if (totalEUt == 0) {
-            System.out.println("NAC debug (updateModuleEU): no EU/t on installed energy hatches");
             for (MTENanochipAssemblyModuleBase<?> module : modules) {
                 module.setAvailableEUt(0);
                 module.setBufferSize(BigInteger.ZERO);
@@ -843,9 +836,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .multiply(MODULE_BUFFER_SECONDS);
         BigInteger nonMatrixBufferSize = BigInteger.valueOf(perNonMatrixPortion)
             .multiply(MODULE_BUFFER_SECONDS);
-
-        System.out.println("NAC debug (updateModuleEU): setting matrix(s) to " + perMatrixPortion + " EU/t");
-        System.out.println("NAC debug (updateModuleEU): setting non-matrix(s) to " + perNonMatrixPortion + " EU/t");
 
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
             ModuleTypes type = module.getModuleType();
