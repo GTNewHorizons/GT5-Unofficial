@@ -14,6 +14,7 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.List;
 
@@ -103,12 +104,12 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("46-56", Casings.AdvancedCryogenicCasing.getLocalizedName(), false)
             .addCasing("24", MaterialsAlloy.LEAGRISIUM.getFrameBox(1).getDisplayName(), false)
-            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.CryotheumHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.CryotheumHatch"), anyCasingText(), 1)
+            .addEnergyHatch("1+", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addMufflerHatch("1", anyCasingText(), 1)
+            .addInputAny("1+", anyCasingText(), 1)
+            .addOutputAny("1+", anyCasingText(), 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "REDR")
             .toolTipFinisher();
         // spotless:on
