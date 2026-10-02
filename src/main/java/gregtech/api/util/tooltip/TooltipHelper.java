@@ -35,12 +35,10 @@ public class TooltipHelper {
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
 
     /**
-     * The "Any casing" hatch location used by structure tooltips. Translated on every call, so it follows an in-game
-     * language change; do not cache it in a static field.
-     *
-     * @return Localized "Any casing"
+     * Get the "Any casing" text for structure tooltips.
      */
     public static String anyCasingText() {
+        // Translated on every call so it follows an in-game language change
         return StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
     }
 
