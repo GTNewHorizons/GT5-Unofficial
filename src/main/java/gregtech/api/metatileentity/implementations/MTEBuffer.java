@@ -448,7 +448,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
             } else {
                 transfer.setFilter(
                     stack -> stack.getStackSize() >= mTargetStackSize
-                        && hasTargetRoomForTransfer(igte, stack.toStack()));
+                        && hasTargetRoomForTransfer(igte, stack.toStackFast()));
                 transfer.setMaxItemsPerTransfer(mTargetStackSize);
             }
         }
