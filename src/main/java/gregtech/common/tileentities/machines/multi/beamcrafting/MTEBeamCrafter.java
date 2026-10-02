@@ -353,7 +353,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     @Override
     protected void incrementProgressTime() {
-        absorbInputParticles();
         contributeToProgress();
         if (mProgresstime >= mMaxProgresstime) {
             currentRecipeCurrentAmountA = 0;
@@ -361,7 +360,13 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         }
     }
 
-    private void absorbInputParticles(){
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        absorbInputParticles();
+        super.runMachine(aBaseMetaTileEntity, aTick);
+    }
+
+    private void absorbInputParticles() {
         for (int n = 0; n < this.mInputBeamline.size(); n++) {
             BeamInformation inputParticle = this.getNthInputParticle(n);
             int id = inputParticle.getParticleId();
