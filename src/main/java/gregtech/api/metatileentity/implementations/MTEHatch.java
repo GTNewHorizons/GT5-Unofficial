@@ -218,7 +218,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
      * Sets the icon for the owning multiblock used for AE2 crafting display of attached interfaces, called on add to
      * machine list, and with null when the hatch leaves a structure.
      */
-    public void updateCraftingIcon(ItemStack icon) {
+    public final void updateCraftingIcon(ItemStack icon) {
         this.ae2CraftingIcon = icon;
     }
 
