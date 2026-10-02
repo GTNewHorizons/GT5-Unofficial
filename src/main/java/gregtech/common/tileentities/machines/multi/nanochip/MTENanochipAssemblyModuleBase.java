@@ -271,7 +271,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             env,
             false,
             true);
-        if(built >= 0) return built;
+        if (built >= 0) return built;
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
