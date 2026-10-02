@@ -236,6 +236,10 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
             8x  costs  3X L
             12x costs  4X L
             16x costs  5X L
+
+        when dielectric is present, every 72L of dielectric becomes 72L of rubber.
+        parallels are still capped by dielectric amount
+        however, rubber must still be present to run the recipe.
      */
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
@@ -247,7 +251,6 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         int tier = this.itemPipeTier;
         boolean singularityPresent = this.hasSingularity();
         final int MAX_PARALLELS = (int) (32 * GTUtility.powInt(singularityPresent ? 4 : 2,tier));
-        final int parallelsFromPower = GTUtility.safeInt(this.getMaxInputEu() / RECIPE_EU);
 
         // determine what fluids are stored for parallel calculation reasons
         long rubberAmount = 0;
@@ -260,6 +263,19 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
             else if (fluid.equals(PPS)) ppsAmount+= fluid.amount;
         }
 
+        final int parallelsFromPower = GTUtility.safeInt(this.getMaxInputEu() / RECIPE_EU);
+        long parallelFromPPS = ppsAmount / 36;
+
+        boolean dielectricPresent = dielectricAmount>0;
+        long parallelsFromDielectric = dielectricAmount / 72;
+
+        long baseParallelsFromRubber = rubberAmount / 72;
+        long maxParallelsFromRubber = baseParallelsFromRubber;
+
+        if (dielectricPresent) {
+            maxParallelsFromRubber += parallelsFromDielectric;
+
+        }
         for(ItemStack stack : items) {
 
         }
