@@ -91,12 +91,12 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
     @Override
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         ModularPanel panel = super.build(guiData, syncManager, uiSettings);
-        syncManager.registerSyncedAction("refresh_dynamic", Side.SERVER, $ -> {
-            DynamicSyncedWidget<?> dynamic = WidgetTree.findFirst(subPanel, DynamicSyncedWidget.class, $$ -> true);
+        syncManager.registerSyncedAction("refresh_dynamic", Side.SERVER, _ -> {
+            DynamicSyncedWidget<?> dynamic = WidgetTree.findFirst(subPanel, DynamicSyncedWidget.class, _ -> true);
             if (dynamic == null) return;
             DynamicSyncHandler dynamicHandler = (DynamicSyncHandler) dynamic.getSyncHandler();
             if (!dynamicHandler.isValid()) return;
-            dynamicHandler.notifyUpdate($$ -> {});
+            dynamicHandler.notifyUpdate(_ -> {});
         });
         return panel;
     }
@@ -104,13 +104,13 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         IPanelHandler rulesPopup = syncManager
-            .syncedPanel("popup", true, (m, h) -> createRuleManagerPanel(syncManager));
+            .syncedPanel("popup", true, (_, _) -> createRuleManagerPanel(syncManager));
         return super.createRightPanelGapRow(parent, syncManager)
-            .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+            .child(new ButtonWidget<>().onMousePressed(_ -> {
                 if (!rulesPopup.isPanelOpen()) {
                     rulesPopup.openPanel();
 
-                    syncManager.callSyncedAction("refresh_dynamic", $ -> {});
+                    syncManager.callSyncedAction("refresh_dynamic", _ -> {});
                 } else {
                     rulesPopup.closePanel();
                 }
@@ -266,13 +266,13 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
 
                     // X button
                     .child(new ButtonWidget<>()
-                        .onMousePressed(a -> {
+                        .onMousePressed(_ -> {
                             multiblock.rules.remove(index);
                             rulesSyncer.notifyUpdate();
                             syncManager
                                 .getModularSyncManager()
                                 .getMainPSM()
-                                .callSyncedAction("refresh_dynamic", $ -> {});
+                                .callSyncedAction("refresh_dynamic", _ -> {});
                             return true;
                         })
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
@@ -350,7 +350,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         })
             .setInitialSelected(input ? rule.inputColors : rule.outputColors)
             .build()
-            .setEnabledIf(f -> !input || rule.enabledWidget == COLOR);
+            .setEnabledIf(_ -> !input || rule.enabledWidget == COLOR);
     }
 
     private Widget<?> createRedstoneSelector(GenericListSyncHandler<SplitterRule> syncer, int index) {
@@ -379,7 +379,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                 .numbersInt(0, 15)
                 .formatAsInteger(true)
                 .size(52, 12))
-            .setEnabledIf(f -> rule.enabledWidget == REDSTONE)
+            .setEnabledIf(_ -> rule.enabledWidget == REDSTONE)
             .coverChildren();
         // spotless:on
     }
@@ -422,13 +422,13 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                     () -> new PhantomItemSlotSH(
                         new ModularSlot(rule.filterStacks, i).accessibility(true, false)
                             .changeListener(
-                                (newItem, onlyAmountChanged, client, init) -> {
+                                (_, _, client, _) -> {
                                     if (client) rulesSyncer.notifyUpdate();
                                 }))))
                 .addTooltipLine(
                     EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.text.nac.splitter.custom_name_desc")))
             .build()
-            .setEnabledIf(f -> rule.enabledWidget == ITEM);
+            .setEnabledIf(_ -> rule.enabledWidget == ITEM);
     }
 
     private ModularPanel createRenamePopup(PanelSyncManager syncManager) {
@@ -511,7 +511,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                                 new ButtonWidget<>().size(45, 16)
                                     .marginRight(1)
                                     .overlay(IKey.lang("GT5U.gui.text.nac.splitter.custom_name_confirm"))
-                                    .onMousePressed(mouse -> {
+                                    .onMousePressed(_ -> {
                                         // Leave the text field text as the current name for next time
                                         dialog.closeWith(textField.getText());
                                         return true;
@@ -522,7 +522,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                                     .anchorLeft(1.0F)
                                     .marginLeft(1)
                                     .overlay(IKey.lang("GT5U.gui.text.nac.splitter.custom_name_cancel"))
-                                    .onMousePressed(mouse -> {
+                                    .onMousePressed(_ -> {
                                         // Clear the text field text since there is no longer a custom name
                                         textField.setText("");
                                         dialog.closeWith(null);
@@ -545,7 +545,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         @Override
         public void postResize() {
             super.postResize();
-            // This check exists so that if the widget is resized again, such as when the panel is moved, we dont set
+            // This check exists so that if the widget is resized again, such as when the panel is moved, we don't set
             // the scroll back to the original value
             if (shouldScroll) {
                 getScrollData().scrollTo(getScrollArea(), scrollValue);
