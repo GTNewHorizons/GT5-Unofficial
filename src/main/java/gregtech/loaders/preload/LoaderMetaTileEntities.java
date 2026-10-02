@@ -263,7 +263,7 @@ import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchNanochipRedstone;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEAssemblyMatrixModule;
@@ -273,7 +273,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingCh
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEncasementWrapperModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEOpticalOrganizerModule;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESMDProcessorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEPartProcessorModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESuperconductorSplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEWireTracerModule;
@@ -752,13 +752,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         addItemTooltip(
             ItemList.NanoChipModule_AssemblyMatrix.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
-        ItemList.NanoChipModule_SMDProcessor.set(
-            new MTESMDProcessorModule(
-                NANOCHIP_MODULE_SMD_PROCESSOR.ID,
+        ItemList.NanoChipModule_PartProcessor.set(
+            new MTEPartProcessorModule(
+                NANOCHIP_MODULE_PART_PROCESSOR.ID,
                 "multimachine.nanochipmodule.smdprocessor",
                 "Part Preparation Apparatus").getStackForm(1));
         addItemTooltip(
-            ItemList.NanoChipModule_SMDProcessor.get(1),
+            ItemList.NanoChipModule_PartProcessor.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_BoardProcessor.set(
             new MTEBoardProcessorModule(
@@ -1713,7 +1713,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTESteamAlloySmelterSteel(
                 HP_STEAM_ALLOY_SMELTER.ID,
                 "hpmachine.alloysmelter",
-                "High Pressure Alloy Smelter").getStackForm(1L));
+                "High Pressure Steam Alloy Smelter").getStackForm(1L));
     }
 
     private static void registerLocker() {
@@ -9340,17 +9340,19 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "vacuum.hatch.input",
                 "Vacuum Conveyor Input",
                 9).getStackForm(1L));
+        API.setAliases(ItemList.Hatch_VacuumConveyor_Input.get(1L), "gt.alias.vci");
         ItemList.Hatch_VacuumConveyor_Output.set(
             new MTEHatchVacuumConveyorOutput(
                 HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
                 "vacuum.hatch.output",
                 "Vacuum Conveyor Output",
                 9).getStackForm(1L));
+        API.setAliases(ItemList.Hatch_VacuumConveyor_Output.get(1L), "gt.alias.vco");
         ItemList.Hatch_Splitter_Level.set(
-            new MTEHatchSplitterRedstone(
+            new MTEHatchNanochipRedstone(
                 HATCH_SPLITTER_LEVEL.ID,
-                "hatch.splitter.redstone",
-                "Splitter Redstone Input",
+                "hatch.nanochip.redstone",
+                "Nanochip Redstone Input Hatch",
                 10).getStackForm(1));
 
         ItemList.VacuumConveyorPipe
@@ -9492,6 +9494,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_DroneDownLink.set(
             new MTEHatchDroneDownLink(DroneDownLink.ID, "hatch.dronedownlink", "Drone DownLink Module", 5)
                 .getStackForm(1));
+        API.setAliases(ItemList.Hatch_DroneDownLink.get(1L), "gt.blockmachines.hatch.maintenance.name");
         ItemList.Hatch_DataAccess_EV.set(
             new MTEHatchDataAccess(DATA_ACCESS_HATCH.ID, "hatch.dataaccess", "Data Access Hatch", 4).getStackForm(1L));
         ItemList.Hatch_DataAccess_LuV.set(

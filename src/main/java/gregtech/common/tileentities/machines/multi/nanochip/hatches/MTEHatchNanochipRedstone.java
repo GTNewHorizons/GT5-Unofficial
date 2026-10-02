@@ -1,0 +1,146 @@
+package gregtech.common.tileentities.machines.multi.nanochip.hatches;
+
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_SPLITTER_REDSTONE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_SPLITTER_REDSTONE_GLOW;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.MetaTileEntityGuiHandler;
+import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTEHatchNanochipRedstoneGui;
+
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchNanochipRedstone extends MTEHatch {
+
+    private byte redstoneInput = 0;
+    private int channel = 1;
+    public int MAX_CHANNEL = 20;
+
+    public MTEHatchNanochipRedstone(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 0, "Allows Redstone Control for certain NAC Modules");
+    }
+
+    public MTEHatchNanochipRedstone(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, 0, aDescription, aTextures);
+    }
+
+    @Override
+    public boolean isFacingValid(ForgeDirection facing) {
+        return true;
+    }
+
+    @Override
+    public void initDefaultModes(NBTTagCompound aNBT) {
+        getBaseMetaTileEntity().setActive(true);
+    }
+
+    @Override
+    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_HATCH_SPLITTER_REDSTONE),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_HATCH_SPLITTER_REDSTONE_GLOW)
+                .glow()
+                .build() };
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!NetworkUtils.isClient(aPlayer)) {
+            MetaTileEntityGuiHandler.open(aPlayer, this);
+        }
+        return true;
+    }
+
+    @Override
+    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_HATCH_SPLITTER_REDSTONE) };
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEHatchNanochipRedstone(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        channel = aNBT.getInteger("mChannel");
+        super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setInteger("mChannel", channel);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.1"),
+            translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.2"),
+            translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.3"),
+            translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.4") };
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        this.setChannel((channel + 1) % MAX_CHANNEL);
+        aPlayer.addChatComponentMessage(new ChatComponentText(channel + ""));
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        this.setRedstoneInput(baseMetaTileEntity.getStrongestRedstone());
+        super.onPostTick(baseMetaTileEntity, tick);
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchNanochipRedstoneGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.NANOCHIP;
+    }
+
+    public byte getRedstoneInput() {
+        return redstoneInput;
+    }
+
+    public void setRedstoneInput(byte redstoneInput) {
+        this.redstoneInput = redstoneInput;
+    }
+
+    public int getChannel() {
+        return channel;
+    }
+
+    public void setChannel(int channel) {
+        this.channel = channel;
+    }
+
+}

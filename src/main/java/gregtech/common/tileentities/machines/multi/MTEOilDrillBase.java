@@ -258,7 +258,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
         GTChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
         workState = WorkState.UPWARD;
-        setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
+        setShutdownReason("GT5U.gui.text.drill_exhausted");
         return true;
     }
 
@@ -366,7 +366,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                 builder.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.pump_rate.1",
-                        EnumChatFormatting.AQUA + numberFormat.format(getFlowRatePerTick()))
+                        numberFormat.format(getFlowRatePerTick()))
                         + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
                     mOilFlow + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
             } else {

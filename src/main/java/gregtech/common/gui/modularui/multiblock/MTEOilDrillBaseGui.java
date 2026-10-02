@@ -65,7 +65,7 @@ public class MTEOilDrillBaseGui extends MTEDrillerBaseGui<MTEOilDrillBase> {
                     () -> EnumChatFormatting.GRAY
                         + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.pump_rate.1",
-                            EnumChatFormatting.AQUA + formatNumber(flowPerTickSync.getValue()))
+                            formatNumber(flowPerTickSync.getValue()))
                         + EnumChatFormatting.GRAY
                         + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
                     .asWidget()
@@ -78,7 +78,7 @@ public class MTEOilDrillBaseGui extends MTEDrillerBaseGui<MTEOilDrillBase> {
                     () -> EnumChatFormatting.GRAY
                         + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.pump_recovery.1",
-                            EnumChatFormatting.AQUA + formatNumber(flowPerOpSync.getValue()))
+                            formatNumber(flowPerOpSync.getValue()))
                         + EnumChatFormatting.GRAY
                         + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
                     .asWidget()

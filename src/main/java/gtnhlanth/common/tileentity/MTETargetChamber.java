@@ -389,7 +389,7 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
 
         this.mMaxProgresstime = (int) progressTime;
 
-        if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
+        if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.lEUt == Integer.MAX_VALUE - 1)
             return CheckRecipeResultRegistry.NO_RECIPE;
 
         double maxParallel = tRecipe
@@ -408,8 +408,8 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        mEUt = (int) -tVoltageActual;
-        if (this.mEUt > 0) this.mEUt = (-this.mEUt);
+        lEUt = (int) -tVoltageActual;
+        if (this.lEUt > 0) this.lEUt = (-this.lEUt);
 
         this.updateSlots();
 

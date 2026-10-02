@@ -12,9 +12,9 @@ public enum CircuitCalibration {
     NONE(CalibrationThreshold.EMPTY, CalibrationThreshold.EMPTY, CalibrationThreshold.EMPTY),
 
     PRIMITIVE(
-        new CalibrationThreshold("Crude", 0.4, nac -> {}),
-        new CalibrationThreshold("Robust", 0.8, nac -> {}),
-        new CalibrationThreshold("Archaic", 1, nac -> {})
+        new CalibrationThreshold("Crude", 0.4, nac -> {nac.primitiveT1Active = true;}),
+        new CalibrationThreshold("Robust", 0.8, nac -> {nac.primitiveT2Active = true;}),
+        new CalibrationThreshold("Archaic", 1, nac -> {nac.primitiveT3Active = true;})
     ),
     CRYSTAL(
         new CalibrationThreshold("Shiny", 0.3, nac -> {nac.globalEUMultiplier = 0.8f;}),
