@@ -520,6 +520,10 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
     @Override
     public void clearHatches() {
         super.clearHatches();
+        // Mask busses register outside addIfSmartInput, so they need their crafting icon dropped here.
+        for (MTEHatchInputBus bus : validMTEList(mMaskInputBusses)) {
+            bus.updateCraftingIcon(null);
+        }
         mMaskInputBusses.clear();
     }
 
