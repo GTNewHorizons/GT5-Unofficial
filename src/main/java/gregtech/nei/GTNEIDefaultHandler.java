@@ -1,5 +1,6 @@
 package gregtech.nei;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumberCompact;
 import static gregtech.api.enums.GTValues.V;
 
 import java.awt.Point;
@@ -22,6 +23,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.CompactOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -41,7 +43,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import appeng.util.ReadableNumberConverter;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.item.ItemFluidDisplay;
@@ -91,6 +92,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     private static final ConcurrentMap<RecipeCategory, SortedRecipeListCache> CACHE = new ConcurrentHashMap<>();
 
     private static final int RECIPE_NAME_WIDTH = 140;
+    private static final CompactOptions customFluidFormatter = new CompactOptions().setCompactThreshold(10_000);
 
     /**
      * Always updated, even while holding shift
@@ -670,22 +672,40 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             return StackInfo.isFluidDisplayItem(item);
         }
 
+        /**
+         * NEI's FluidDisplayRenderer draws its own amount text on its fluid display item. Render a zero-amount copy so
+         * only our formatted amount is shown.
+         */
+        private void drawFluidIconOnly(int mousex, int mousey) {
+            if (!(item.getItem() instanceof ItemFluidDisplay)) {
+                super.draw(mousex, mousey);
+                return;
+            }
+
+            ItemStack original = item;
+            ItemStack iconOnly = original.copy();
+            iconOnly.getTagCompound()
+                .setLong("neiFluidDisplayAmount", 0L);
+            item = iconOnly;
+            try {
+                super.draw(mousex, mousey);
+            } finally {
+                item = original;
+            }
+        }
+
         @Override
         public void draw(int mousex, int mousey) {
-            super.draw(mousex, mousey);
-
-            if (!isFluid()) return;
+            if (!isFluid()) {
+                super.draw(mousex, mousey);
+                return;
+            }
 
             FluidStack fluidStack = StackInfo.getFluid(item);
+            drawFluidIconOnly(mousex, mousey);
             if (fluidStack == null || fluidStack.amount <= 0) return;
 
-            // L is used intentionally, because it takes less space than mB
-            String amountString;
-            if (fluidStack.amount < 10_000) {
-                amountString = fluidStack.amount + "L";
-            } else {
-                amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidStack.amount) + "L";
-            }
+            String amountString = formatNumberCompact(fluidStack.amount, customFluidFormatter);
 
             FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
             float scale = fontRenderer.getUnicodeFlag() ? 3F / 4F : 1F / 2F;
