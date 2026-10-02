@@ -70,8 +70,10 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
     @Override
     public ItemStack getMachineCraftingIcon() {
+        // Copied on the way out because AE2 renames the stack it gets when the interface carries a custom name, and
+        // that stack is the one the other busses of the channel read.
         final ItemStack own = super.getMachineCraftingIcon();
-        if (own != null) return own;
+        if (own != null) return own.copy();
         if (mRealInventory == null) return null;
         // A bus outside of a structure has no icon of its own, so it borrows the one of a bus that stands in a
         // multiblock on the same channel. Interfaces then name it after the multiblock the channel feeds.
@@ -82,7 +84,6 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             // comes first would let the name flip between them and resend the terminal entry every time.
             if (source == null || comparePosition(bus, source) < 0) source = bus;
         }
-        // Copied because AE2 renames the stack it gets when the interface carries a custom name.
         return source == null ? null
             : source.getMachineCraftingIconDirectly()
                 .copy();
