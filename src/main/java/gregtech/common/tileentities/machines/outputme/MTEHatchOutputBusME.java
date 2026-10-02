@@ -546,6 +546,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             translateToLocalFormatted(
                 "GT5U.waila.hatch.outputme.item_cache_capacity",
                 formatNumber(tag.getLong("cacheCapacity"))));
+        MTEHatchOutputMEBase.WailaHelper.getWailaCacheBody("item", ss, accessor);
     }
 
     @Override
