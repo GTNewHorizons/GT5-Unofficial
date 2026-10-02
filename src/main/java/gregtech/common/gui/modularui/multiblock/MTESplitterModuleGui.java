@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -28,6 +31,10 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.item.EmptyHandler;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.utils.item.INBTSerializable;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.BoolValue;
 import com.cleanroommc.modularui.value.IntValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
@@ -106,11 +113,11 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         IPanelHandler rulesPopup = syncManager
             .syncedPanel("popup", true, (_, _) -> createRuleManagerPanel(syncManager));
         return super.createRightPanelGapRow(parent, syncManager)
-            .child(new ButtonWidget<>().onMousePressed(_ -> {
+            .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
                 if (!rulesPopup.isPanelOpen()) {
                     rulesPopup.openPanel();
 
-                    syncManager.callSyncedAction("refresh_dynamic", _ -> {});
+                    syncManager.callSyncedAction("refresh_dynamic");
                 } else {
                     rulesPopup.closePanel();
                 }
@@ -176,7 +183,6 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
 
     public IWidget createRuleManagerList(GenericListSyncHandler<SplitterRule> rulesSyncer,
         PanelSyncManager syncManager) {
-        registerRuleSyncAction(syncManager);
 
         return new WorkaroundListWidget()
             .children(multiblock.rules.size(), i -> createRuleManagerRow(rulesSyncer, syncManager, i))
@@ -186,7 +192,6 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
 
     public IWidget createRuleManagerGrid(GenericListSyncHandler<SplitterRule> rulesSyncer,
         PanelSyncManager syncManager) {
-        registerRuleSyncAction(syncManager);
 
         int total = multiblock.rules.size();
         List<Widget<?>> widgets = new ArrayList<>();
@@ -272,7 +277,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                             syncManager
                                 .getModularSyncManager()
                                 .getMainPSM()
-                                .callSyncedAction("refresh_dynamic", _ -> {});
+                                .callSyncedAction("refresh_dynamic");
                             return true;
                         })
                         .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
@@ -393,6 +398,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
             .syncedPanel("rename_popup", true, (_, _) -> createRenamePopup(syncManager));
 
         SplitterRule rule = multiblock.rules.get(index);
+        RuleItemStackHandler handler = new RuleItemStackHandler(index);
 
         return SlotGroupWidget.builder()
             .matrix("IIII", "IIII", "IIII", "IIII")
@@ -401,7 +407,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                 @Override
                 public @NotNull Result onMousePressed(int mouseButton) {
                     // Middle-mouse click
-                    if (mouseButton == 2 && rule.filterStacks.getStackInSlot(i) != null) {
+                    if (mouseButton == 2 && handler.getStackInSlot(i) != null) {
                         ruleIdx.setValue(index);
                         slotIdx.setValue(i);
                         renamePopup.openPanel();
@@ -420,11 +426,8 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                     (index * 16) + i,
                     PhantomItemSlotSH.class,
                     () -> new PhantomItemSlotSH(
-                        new ModularSlot(rule.filterStacks, i).accessibility(true, false)
-                            .changeListener(
-                                (_, _, client, _) -> {
-                                    if (client) rulesSyncer.notifyUpdate();
-                                }))))
+                        new ModularSlot(handler, i).accessibility(true, false)
+                            .changeListener((_, _, client, _) -> { if (client) rulesSyncer.notifyUpdate(); }))))
                 .addTooltipLine(
                     EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.text.nac.splitter.custom_name_desc")))
             .build()
@@ -557,6 +560,89 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
         public void dispose() {
             super.dispose();
             scrollValue = getScrollData().getScroll();
+        }
+    }
+
+    private class RuleItemStackHandler implements IItemHandlerModifiable, INBTSerializable<NBTTagCompound> {
+
+        private final int ruleIndex;
+
+        public RuleItemStackHandler(int ruleIndex) {
+            this.ruleIndex = ruleIndex;
+        }
+
+        private IItemHandlerModifiable getBaseHandler() {
+            if (ruleIndex < 0 || ruleIndex >= multiblock.rules.size()) {
+                return EmptyHandler.INSTANCE;
+            }
+            return multiblock.rules.get(ruleIndex).filterStacks;
+        }
+
+        @Override
+        public void setStackInSlot(int slot, ItemStack stack) {
+            getBaseHandler().setStackInSlot(slot, stack);
+        }
+
+        @Override
+        public int getSlots() {
+            return getBaseHandler().getSlots();
+        }
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            return getBaseHandler().getStackInSlot(slot);
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            return getBaseHandler().insertItem(slot, stack, simulate);
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            return getBaseHandler().extractItem(slot, amount, simulate);
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return getBaseHandler().getSlotLimit(slot);
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return getBaseHandler().isItemValid(slot, stack);
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT() {
+            IItemHandlerModifiable base = getBaseHandler();
+            if (base instanceof ItemStackHandler serializable) {
+                return serializable.serializeNBT();
+            }
+            return null;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt) {
+            IItemHandlerModifiable base = getBaseHandler();
+            if (base instanceof ItemStackHandler serializable) {
+                serializable.deserializeNBT(nbt);
+            }
+        }
+
+        @Override
+        public List<ItemStack> getStacks() {
+            return getBaseHandler().getStacks();
+        }
+
+        @Override
+        public boolean isSlotFromInventory(int index, IInventory inventory, int invIndex) {
+            return getBaseHandler().isSlotFromInventory(index, inventory, invIndex);
+        }
+
+        @Override
+        public @Nullable IInventory getSourceInventory() {
+            return getBaseHandler().getSourceInventory();
         }
     }
 }
