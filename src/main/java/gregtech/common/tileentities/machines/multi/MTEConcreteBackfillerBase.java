@@ -6,8 +6,6 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import net.minecraft.util.ResourceLocation;
-import com.google.common.collect.ImmutableMap;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import java.util.List;
@@ -16,11 +14,13 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.IFluidBlock;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -92,7 +92,8 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     }
 
     protected MultiblockTooltipBuilder createTooltip(String aStructureName) {
-        String casings = getCasingBlockItem().get(0).getDisplayName();
+        String casings = getCasingBlockItem().get(0)
+            .getDisplayName();
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
