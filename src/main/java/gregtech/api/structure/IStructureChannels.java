@@ -25,7 +25,11 @@ public interface IStructureChannels {
      * @return fitted channel data
      */
     default int getValueClamped(ItemStack trigger, int min, int max) {
-        return Math.min(max, ChannelDataAccessor.getChannelData(trigger, get()) + min - 1);
+        return (int) Math.min(max, (long) ChannelDataAccessor.getChannelData(trigger, get()) + min - 1);
+    }
+
+    default int getValueLimited(ItemStack trigger, int min, int max) {
+        return Math.clamp(getValue(trigger), min, max);
     }
 
     default int getValue(ItemStack trigger) {

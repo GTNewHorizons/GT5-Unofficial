@@ -231,6 +231,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
                 .addShape(NA_TOP, transpose(new String[][] { { "CCCCC", "CDDDC", "CDDDC", "CDDDC", "CCCCC" } }))
                 .addShape(NA_MID, transpose(new String[][] { { "F   F", " GGG ", " GPG ", " GGG ", "F   F" } }))
                 .addShape(NA_BOTTOM, transpose(new String[][] { { "XX~XX", "XDDDX", "XDDDX", "XDDDX", "XXXXX" } }))
+                .addChannel(GTStructureChannels.STRUCTURE_HEIGHT.get(), 4, 256)
                 .addElement(
                     'C',
                     ofChain(
@@ -410,7 +411,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(NA_BOTTOM, stackSize, hintsOnly, 2, 0, 0);
-        int heights = stackSize.stackSize + 3;
+        int heights = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 4, Integer.MAX_VALUE);
         buildPiece(NA_TOP, stackSize, hintsOnly, 2, heights + 1, 0);
         while (heights > 0) {
             buildPiece(NA_MID, stackSize, hintsOnly, 2, heights, 0);
@@ -467,7 +468,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
 
         int built = survivalBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int heights = stackSize.stackSize + 3;
+        int heights = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 4, Integer.MAX_VALUE);
         for (int i = 1; i <= heights; i++) {
             built = survivalBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
