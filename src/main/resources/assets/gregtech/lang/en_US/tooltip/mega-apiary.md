@@ -4,6 +4,7 @@ The ideal home for your bees
 {gray:{hr}}
 {gold:Output Mode}:
 - Does not take power, returns bees to the {green:Output Bus}
+- {yellow:Careful, you can easily void your bees}
 {gray:{hr}}
 {gold:Operating Mode}:
 - {light_purple:Normal}:
