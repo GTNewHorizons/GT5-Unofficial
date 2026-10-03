@@ -4319,7 +4319,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Acetone.getCells(1), Materials.Phenol.getCells(2))
-            .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(2))
+            .itemOutputs(Materials.DilutedHydrochloricAcid.getCells(2), Materials.Empty.getCells(1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
             .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
             .duration(8 * SECONDS)
@@ -4328,7 +4328,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.HydrochloricAcid.getCells(1), Materials.Acetone.getCells(1))
-            .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(1))
+            .itemOutputs(Materials.DilutedHydrochloricAcid.getCells(2))
             .fluidInputs(Materials.Phenol.getFluid(2_000))
             .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
             .duration(8 * SECONDS)
@@ -4337,7 +4337,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Phenol.getCells(2), Materials.HydrochloricAcid.getCells(1))
-            .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(2))
+            .itemOutputs(Materials.DilutedHydrochloricAcid.getCells(2), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Acetone.getFluid(1_000))
             .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
             .duration(8 * SECONDS)
@@ -5319,7 +5319,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Acetone.getFluid(1_000),
                 Materials.Phenol.getFluid(2_000),
                 Materials.HydrochloricAcid.getFluid(1_000))
-            .fluidOutputs(Materials.BisphenolA.getFluid(1_000), Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.BisphenolA.getFluid(1_000), Materials.DilutedHydrochloricAcid.getFluid(2_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
