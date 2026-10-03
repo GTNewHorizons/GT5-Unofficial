@@ -235,14 +235,14 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
         return true;
     }
 
-    public float getSpeedBonus() {
-        return (float) 1 / (1 + 0.05f * mLevel);
+    public double getSpeedBonus() {
+        return 1.0D / (1.0D + 0.05D * mLevel);
     }
 
     @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        tag.setFloat("speedBonus", getSpeedBonus());
+        tag.setDouble("speedBonus", getSpeedBonus());
     }
 
     private static final DecimalFormat dfNone = new DecimalFormat("#");
