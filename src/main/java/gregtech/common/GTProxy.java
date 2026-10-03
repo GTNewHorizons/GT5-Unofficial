@@ -130,7 +130,6 @@ import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTClientPreference;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTOreDictUnificator;
@@ -734,7 +733,6 @@ public class GTProxy implements IFuelHandler {
                 break;
             }
         }
-        GTLanguageManager.writePlaceholderStrings();
     }
 
     public void onPostInitialization(FMLPostInitializationEvent event) {
