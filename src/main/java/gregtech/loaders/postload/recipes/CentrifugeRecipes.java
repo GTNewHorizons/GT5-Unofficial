@@ -19,6 +19,7 @@ import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
@@ -928,6 +929,23 @@ public class CentrifugeRecipes implements Runnable {
             .metadata(CentrifugeRecipeKey.INSTANCE, true)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
+            .addTo(centrifugeNonCellRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.ElectrumFlux, 1),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 1) },
+                new int[] { 10000, 8000 })
+            .fluidInputs(Materials.CollisionResidue.getFluid(20), Materials.Orikalkum.getMolten(4 * INGOTS))
+            .fluidOutputs(
+                new FluidStack[] { Materials.OrikalkicReagent.getFluid(500),
+                    MaterialsElements.STANDALONE.FORCE.getFluidStack(50),
+                    MaterialsElements.STANDALONE.RUNITE.getFluidStack(50),
+                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(50) },
+                new int[] { 10000, 5000, 5000, 5000 })
+            .metadata(CentrifugeRecipeKey.INSTANCE, true)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(centrifugeNonCellRecipes);
 
         // From ProcessingSand

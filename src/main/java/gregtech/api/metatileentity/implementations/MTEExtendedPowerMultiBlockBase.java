@@ -136,5 +136,6 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
     public void clearHatches() {
         super.clearHatches();
         mExoticEnergyHatches.clear();
+        mExoticDynamoHatches.clear();
     }
 }
