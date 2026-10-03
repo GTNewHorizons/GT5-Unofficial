@@ -138,6 +138,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 }))
             // spotless:on
             // base structure blocks / elements
+            .addChannel(GTStructureChannels.STRUCTURE_HEIGHT.get(), 1, 5)
             .addElement(
                 'A',
                 onElementPass(
