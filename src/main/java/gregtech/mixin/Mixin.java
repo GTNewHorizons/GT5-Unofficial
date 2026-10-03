@@ -23,13 +23,8 @@ public enum Mixin implements IMixins {
     WorldMixin(new MixinBuilder("Block update detection")
         .addCommonMixins("minecraft.WorldMixin")
         .setPhase(Phase.EARLY)),
-    StringTranslateMixin(new MixinBuilder("Keep track of currently translating mods")
-        .addCommonMixins(
-            "minecraft.StringTranslateMixin",
-            "minecraft.LanguageRegistryMixin")
-        .setPhase(Phase.EARLY)),
-    LocaleMixin(new MixinBuilder("Keep track of currently translating client mods")
-        .addClientMixins("minecraft.LocaleMixin")
+    LanguageRegistryMixin(new MixinBuilder()
+        .addCommonMixins("minecraft.LanguageRegistryMixin")
         .setPhase(Phase.EARLY)),
     VANILLA_ACCESSORS(new MixinBuilder()
         .addCommonMixins(
@@ -111,6 +106,10 @@ public enum Mixin implements IMixins {
     VANILLA_TRADING(new MixinBuilder()
         .setPhase(Phase.EARLY)
         .addCommonMixins("minecraft.VanillaTradingMixin")),
+
+    PORTAL_PIGMAN_SPAWN(new MixinBuilder("Suppresses Mob spawning from portals via monster repellents")
+        .addCommonMixins("minecraft.PortalSpawnCheckMixin")
+        .setPhase(Phase.EARLY)),
 
     // Pollution
     POLLUTION_RENDER_BLOCKS(new MixinBuilder()

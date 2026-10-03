@@ -9,7 +9,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -40,6 +40,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     private int textureIndex = 0;
 
     private ItemStack ae2CraftingIcon;
+    private ChunkCoordinates ae2CraftingIconOwner;
 
     /**
      * Controllers watching this hatch for new ingredients (see {@link ISmartInputHatch}). When this hatch's contents
@@ -216,9 +217,25 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
 
     /**
      * Sets the icon for the owning multiblock used for AE2 crafting display of attached interfaces, called on add to
-     * machine list
+     * machine list.
      */
     public final void updateCraftingIcon(ItemStack icon) {
+        updateCraftingIcon(icon, null);
+    }
+
+    /**
+     * Sets the icon of the multiblock at {@code owner}, or clears it when {@code icon} is null.
+     */
+    public final void updateCraftingIcon(ItemStack icon, IGregTechTileEntity owner) {
+        final ChunkCoordinates ownerCoords = owner == null ? null : owner.getCoords();
+        if (icon == null) {
+            // A hatch can belong to two multiblocks at once, and the one that set the icon is the only one that
+            // knows whether it is still valid. Anything else leaves it alone.
+            if (ae2CraftingIconOwner == null || !ae2CraftingIconOwner.equals(ownerCoords)) return;
+            this.ae2CraftingIconOwner = null;
+        } else {
+            this.ae2CraftingIconOwner = ownerCoords;
+        }
         this.ae2CraftingIcon = icon;
     }
 
@@ -295,9 +312,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
             Collections.addAll(additionalTooltips, suffixTooltip);
         }
         additionalTooltips.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.tileentity.throughput",
-                EnumChatFormatting.YELLOW + formatNumber(amp * GTValues.V[tier]) + EnumChatFormatting.RESET + " EU/t"));
+            StatCollector.translateToLocalFormatted("gt.tileentity.throughput", formatNumber(amp * GTValues.V[tier])));
         additionalTooltips.add(
             StatCollector.translateToLocalFormatted(
                 isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
