@@ -66,6 +66,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -795,8 +796,18 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     private boolean updateModuleEU(long newPortion, boolean force) {
+        if (modules.isEmpty()) {
+            return false;
+        }
+        List<MTEHatch> energyHatches = getExoticAndNormalEnergyHatchList();
+        if (energyHatches.isEmpty()) {
+            return false;
+        }
+
         int matrix = 0;
         int nonMatrix = 0;
+        var modules = new ArrayList<>(this.modules);
+
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
             ModuleTypes type = module.getModuleType();
             if (type == ModuleTypes.Splitter) continue;
@@ -809,7 +820,17 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             else nonMatrix++;
         }
 
-        long totalEUt = this.getMaxInputEu();
+        if (matrix + nonMatrix == 0) {
+            return false;
+        }
+        long totalEUt = ExoticEnergyInputHelper.getTotalEuMulti(energyHatches);
+        if (totalEUt == 0) {
+            for (MTENanochipAssemblyModuleBase<?> module : modules) {
+                module.setAvailableEUt(0);
+                module.setBufferSize(BigInteger.ZERO);
+            }
+            return true;
+        }
 
         long matrixFullPortion = (long) ((newPortion / 100.0f) * totalEUt);
         long nonMatrixFullPortion = totalEUt - matrixFullPortion;
