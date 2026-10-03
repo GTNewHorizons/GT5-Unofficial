@@ -6264,7 +6264,7 @@ gt.item.circuit.integrated_processor.tooltip=A Good Circuit
 
 ## Good Integrated Circuit
 gt.item.circuit.good_integrated.name=Good Integrated Circuit
-gt.item.circuit.good_integrated.tooltip=Good Circuit
+gt.item.circuit.good_integrated.tooltip=A Good Circuit
 
 ## Advanced Integrated Circuit
 gt.item.circuit.advanced_integrated.name=Advanced Integrated Circuit
@@ -6346,41 +6346,41 @@ gt.item.circuit_board.transcendent.tooltip=Temporally Warped Board
 
 ## Optical Circuits
 gt.item.circuit.optical_processor.name=Optical Processor
-gt.item.circuit.optical_processor.tooltip=An Optical Circuit
+gt.item.circuit.optical_processor.tooltip=A Super Circuit
 gt.item.circuit.optical_assembly.name=Optical Assembly
-gt.item.circuit.optical_assembly.tooltip=An Optical Circuit
+gt.item.circuit.optical_assembly.tooltip=An Infinite Circuit
 gt.item.circuit.optical_computer.name=Optical Supercomputer
-gt.item.circuit.optical_computer.tooltip=An Optical Circuit
+gt.item.circuit.optical_computer.tooltip=A Bio Circuit
 gt.item.circuit.optical_mainframe.name=Optical Mainframe
 gt.item.circuit.optical_mainframe.tooltip=An Optical Circuit
 
 ## Exotic Circuits
 gt.item.circuit.exotic_processor.name=Exotic Processor
-gt.item.circuit.exotic_processor.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_processor.tooltip=An Infinite Circuit
 gt.item.circuit.exotic_assembly.name=Exotic Assembly
-gt.item.circuit.exotic_assembly.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_assembly.tooltip=A Bio Circuit
 gt.item.circuit.exotic_computer.name=Exotic Supercomputer
-gt.item.circuit.exotic_computer.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_computer.tooltip=An Optical Circuit
 gt.item.circuit.exotic_mainframe.name=Exotic Mainframe
 gt.item.circuit.exotic_mainframe.tooltip=An Exotic Circuit
 
 ## Cosmic Circuits
 gt.item.circuit.cosmic_processor.name=Cosmic Processor
-gt.item.circuit.cosmic_processor.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_processor.tooltip=A Bio Circuit
 gt.item.circuit.cosmic_assembly.name=Cosmic Assembly
-gt.item.circuit.cosmic_assembly.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_assembly.tooltip=An Optical Circuit
 gt.item.circuit.cosmic_computer.name=Cosmic Supercomputer
-gt.item.circuit.cosmic_computer.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_computer.tooltip=An Exotic Circuit
 gt.item.circuit.cosmic_mainframe.name=Cosmic Mainframe
 gt.item.circuit.cosmic_mainframe.tooltip=A Cosmic Circuit
 
 ## Transcendent Circuits
 gt.item.circuit.transcendent_processor.name=Temporally Transcendent Processor
-gt.item.circuit.transcendent_processor.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_processor.tooltip=An Optical Circuit
 gt.item.circuit.transcendent_assembly.name=Temporally Transcendent Assembly
-gt.item.circuit.transcendent_assembly.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_assembly.tooltip=An Exotic Circuit
 gt.item.circuit.transcendent_computer.name=Temporally Transcendent Supercomputer
-gt.item.circuit.transcendent_computer.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_computer.tooltip=A Cosmic Circuit
 gt.item.circuit.transcendent_mainframe.name=Temporally Transcendent Mainframe
 gt.item.circuit.transcendent_mainframe.tooltip=A circuit operating outside of known spacetime
 
