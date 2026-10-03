@@ -33,6 +33,9 @@ public class MachineStats {
     @Config.Comment("Cleanroom section")
     public static Cleanroom cleanroom = new Cleanroom();
 
+    @Config.Comment("Kinetics section")
+    public static Kinetics kinetics = new Kinetics();
+
     @Config.LangKey("GT5U.gui.config.machine_stats.bronze_solar_boiler")
     public static class BronzeSolarBoiler {
 
@@ -210,5 +213,33 @@ public class MachineStats {
         })
         @Config.RequiresMcRestart
         public String[] allowedBlocks;
+    }
+
+    @Config.LangKey("GT5U.gui.config.machine_stats.kinetics")
+    public static class Kinetics {
+
+        @Config.Comment("Multiplier to KU output of kinetic energy producers.")
+        @Config.RangeFloat(min = 0f, max = 10f)
+        @Config.DefaultFloat(1f)
+        @Config.RequiresMcRestart
+        public float kuOutputMultiplier;
+
+        @Config.Comment("Multiplier to KU output of water kinetic dynamos, this compounds with kuOutputMultiplier")
+        @Config.RangeFloat(min = 0f, max = 10f)
+        @Config.DefaultFloat(1f)
+        @Config.RequiresMcRestart()
+        public float waterKUMultiplier;
+
+        @Config.Comment("If true, renders a rotating rotor model for kinetic producers.")
+        @Config.DefaultBoolean(true)
+        @Config.RequiresMcRestart
+        public boolean doClientRender;
+
+        @Config.Comment({ "How often kinetic producers check a rotor's working space in ticks.",
+            "Lower is better but may reduce performance when many producers are present." })
+        @Config.RangeInt(min = 10, max = 600)
+        @Config.DefaultInt(80)
+        @Config.RequiresMcRestart
+        public int spaceCheckTickInterval;
     }
 }
