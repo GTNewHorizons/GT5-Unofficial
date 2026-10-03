@@ -51,7 +51,6 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBoardProcessorModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int BOARD_OFFSET_X = 3;
     protected static final int BOARD_OFFSET_Y = 4;
     protected static final int BOARD_OFFSET_Z = 0;
