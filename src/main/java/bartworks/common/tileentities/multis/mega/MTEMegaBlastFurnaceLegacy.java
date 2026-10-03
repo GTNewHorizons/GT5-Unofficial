@@ -36,11 +36,12 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -51,6 +52,8 @@ import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoltageIndex;
@@ -71,9 +74,9 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
+import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -167,30 +170,17 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, MEBF, MBF")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace_mebf"))
             .addStructureDeprecatedLine()
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(
-                TooltipHelper.effText("-5%") + " EU Usage per "
-                    + TooltipHelper.coloredText("900K", EnumChatFormatting.RED)
-                    + " above the recipe requirement")
-            .addSeparator()
-            .addInfo(
-                "Increases Heat by " + EnumChatFormatting.RED
-                    + "100K"
-                    + EnumChatFormatting.GRAY
-                    + " for every "
-                    + TooltipHelper.tierText("Voltage")
-                    + " tier past "
-                    + EnumChatFormatting.AQUA
-                    + "MV")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "1800K"
-                    + EnumChatFormatting.GRAY
-                    + " over the recipe requirement grants 1 "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Perfect Overclock")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mega-blast-furnace"),
+                ImmutableMap.of(
+                    "discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
+                    "heat_per_tier", formatNumber(MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER),
+                    "start_tier", GTValues.VN[MTEElectricBlastFurnace.HEAT_BONUS_START_TIER],
+                    "perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
             .addSeparator()
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
@@ -198,22 +188,23 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
-            .addController("Front center, 3rd layer")
-            .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
-            .addCasingInfoExactly("Heating Coil", 864, true)
-            .addCasingInfoExactly("Any Tiered Glass", 1007, true)
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addEnergyHatch("Any bottom layer Casing")
-            .addMaintenanceHatch("Any bottom layer Casing")
-            .addMufflerHatch("Top middle")
-            .addInputBus("Any bottom layer Casing")
-            .addInputHatch("Any bottom layer Casing")
-            .addOutputBus("Any bottom layer Casing")
-            .addOutputHatch("Any Heat Proof Machine Casing")
-            .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasingInfoRange(Casings.HeatProofMachineCasing.getLocalizedName(), 0, 447, false)
+            .addCasingInfoExactly(StatCollector.translateToLocal("GT5U.structure.heating_coil"), 864, true)
+            .addCasingInfoExactly(StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), 1007, true)
+            .addStructureInfo(StatCollector.translateToLocal("gt.mbtt.structure.glass_tier_limits_energy_input"))
+            .addEnergyHatch(StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"))
+            .addMaintenanceHatch(StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"))
+            .addMufflerHatch(StatCollector.translateToLocal("gt.mbtt.structure.top_center_casing"))
+            .addInputBus(StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"))
+            .addInputHatch(StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"))
+            .addOutputBus(StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"))
+            .addOutputHatch(StatCollector.translateToLocal("gt.mbtt.structure.any_heat_proof_machine_casing"))
+            .addStructureHint("gt.mbtt.structure.mega_hologram_too_big")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -368,7 +359,9 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
         }
         if (errors.isEmpty()) {
             this.mHeatingCapacity = (int) this.getCoilLevel()
-                .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
+                .getHeat()
+                + MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER
+                    * (BWUtil.getTier(this.getMaxInputEu()) - MTEElectricBlastFurnace.HEAT_BONUS_START_TIER);
         }
     }
 

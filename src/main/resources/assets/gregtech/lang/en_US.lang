@@ -2051,6 +2051,12 @@ gt.mbtt.structure.top_of_reactor_triso=Top of reactor (TRISO Balls)
 gt.mbtt.structure.bottom_of_reactor_burned_triso=Bottom of reactor (Burned Out TRISO Balls)
 gt.mbtt.structure.htgr_input_hatches=Any top pump casing (helium), bottom of tall tower (coolant), top of short tower (distilled water)
 gt.mbtt.structure.htgr_output_hatches=Top of tall tower (hot coolant), bottom of short tower (steam)
+gt.mbtt.structure.top_center_casing=Top center casing
+gt.mbtt.structure.any_bottom_casing_or_top_for_fluid_output=Any bottom casing, or any top casing for fluid output
+gt.mbtt.structure.any_hearth_casing=Any hearth casing
+gt.mbtt.structure.any_heat_proof_machine_casing=Any Heat Proof Machine Casing
+gt.mbtt.structure.glass_tier_limits_energy_input=The glass tier limits the Energy Input tier
+gt.mbtt.structure.mega_hologram_too_big=This multiblock is too big to have its structure hologram displayed fully.
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -2074,6 +2080,15 @@ gt.mbtt.machine_type.breeder_reactor_htgr=Breeder Reactor, HTGR
 gt.mbtt.machine_type.arc_furnace_iaf=Arc Furnace, IAF
 gt.mbtt.machine_type.solar_tower=Solar Tower
 gt.mbtt.machine_type.macerator_ims=Macerator, IMS
+gt.mbtt.machine_type.blast_furnace_ebf=Blast Furnace, EBF
+gt.mbtt.machine_type.blast_furnace_exh=Blast Furnace, ExH, MEBF, MBF
+gt.mbtt.machine_type.blast_furnace_mebf=Blast Furnace, MEBF, MBF
+gt.mbtt.machine_type.blast_furnace_volcanus=Blast Furnace
+gt.mbtt.machine_type.vacuum_furnace_dehydrator=Vacuum Furnace, Dehydrator
+gt.mbtt.machine_type.alloy_smelter=Alloy Smelter
+
+# Tooltip flavor text
+gt.mbtt.flavor.exothermic_hearth=§4§oNever one...
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
