@@ -163,6 +163,13 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     }
 
     /**
+     * @return if multi should display machine running mode text in gui
+     */
+    default boolean supportsMachineModeTextDisplay() {
+        return supportsMachineModeSwitch();
+    }
+
+    /**
      * @return the current mode number. This is a getter is used for displaying the icon in the GUI
      */
     default int getMachineMode() {

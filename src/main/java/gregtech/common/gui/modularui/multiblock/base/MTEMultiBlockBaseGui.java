@@ -282,7 +282,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return new ListWidget<>().fullWidth()
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .childIf(
-                multiblock.supportsMachineModeSwitch(),
+                multiblock.supportsMachineModeTextDisplay(),
                 () -> IKey
                     .dynamic(
                         () -> StatCollector

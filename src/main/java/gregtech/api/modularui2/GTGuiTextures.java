@@ -1757,6 +1757,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_OVERDRIVE_ON = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/mebf_overdrive_on")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
     public static final UITexture OVERLAY_BUTTON_CRYOTHEUM_OFF = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/mvf_cryo_off")
         .fullImage()
