@@ -35,6 +35,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.GlobalMetricsCoverDatabase.State;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
@@ -54,11 +55,10 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
     private static final String SELF_DESTRUCTED_OUTPUT = EnumChatFormatting.OBFUSCATED + "critical error"
         + EnumChatFormatting.RESET;
 
-    private static final ImmutableList<String> DECONSTRUCTED_OUTPUT = ImmutableList.of(
-        StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.1"),
-        StatCollector.translateToLocal("gt.item.adv_sensor_card.error.deconstructed.2"));
+    private static final ImmutableList<String> DECONSTRUCTED_OUTPUT = ImmutableList
+        .of("gt.item.adv_sensor_card.error.deconstructed.1", "gt.item.adv_sensor_card.error.deconstructed.2");
 
-    private static final String NO_DATA_FOUND = StatCollector.translateToLocal("gt.item.adv_sensor_card.error.no_data");
+    private static final String NO_DATA_FOUND = "gt.item.adv_sensor_card.error.no_data";
 
     private static final String MACHINE_NAME_KEY = "client_machine_name";
     private static final String OUTPUT_ENTRY_KEY = "client_entry_%d";
@@ -160,12 +160,10 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
                     data.getCoordinates()
                         .ifPresent(
                             coordinates -> builder.add(
-                                StatCollector.translateToLocalFormatted(
-                                    "gt.item.adv_sensor_card.dimension",
-                                    coordinates.getDimension()),
-                                StatCollector.translateToLocalFormatted(
-                                    "gt.item.adv_sensor_card.coords",
-                                    coordinates.getLocalizedCoordinates())));
+                                IGregTechDeviceInformation
+                                    .encode("gt.item.adv_sensor_card.dimension", coordinates.getDimension()),
+                                IGregTechDeviceInformation
+                                    .encode("gt.item.adv_sensor_card.coords", coordinates.getLocalizedCoordinates())));
 
                     data.getPayload()
                         .ifPresent(builder::addAll);
@@ -207,7 +205,9 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
         IntStream.range(0, card.getInt(OUTPUT_ENTRY_LENGTH_KEY))
             .forEach(i -> {
                 if ((displaySettings & 1 << (i + bitmaskOffset)) != 0) {
-                    returned.add(panelString(card.getString(String.format(OUTPUT_ENTRY_KEY, i))));
+                    returned.add(
+                        panelString(
+                            IGregTechDeviceInformation.decode(card.getString(String.format(OUTPUT_ENTRY_KEY, i)))));
                 }
             });
 
