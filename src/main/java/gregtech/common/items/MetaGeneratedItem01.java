@@ -317,6 +317,7 @@ import static gregtech.common.items.IDMetaItem01.Schematic_3by3;
 import static gregtech.common.items.IDMetaItem01.Schematic_Crafting;
 import static gregtech.common.items.IDMetaItem01.Schematic_Dust;
 import static gregtech.common.items.IDMetaItem01.Schematic_Dust_Small;
+import static gregtech.common.items.IDMetaItem01.Scrap;
 import static gregtech.common.items.IDMetaItem01.Sensor_EV;
 import static gregtech.common.items.IDMetaItem01.Sensor_HV;
 import static gregtech.common.items.IDMetaItem01.Sensor_IV;
@@ -485,6 +486,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import com.google.common.collect.ImmutableList;
 
 import codechicken.enderstorage.api.EnderStorageDyeTool;
 import cpw.mods.fml.common.Optional;
@@ -773,6 +776,25 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Firebrick
             .set(addItemWithLocalizationKeys(Firebrick.ID, "gt.item.firebrick.name", "gt.item.firebrick.tooltip"));
         GTOreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
+
+        ItemList.Scrap.set(
+            addItemWithLocalizationKeys(
+                Scrap.ID,
+                "gt.item.scrap.name",
+                "gt.item.scrap.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 2L)));
+        ItemList.Scrapbox.set(
+            new ItemScrapbox(
+                "Item_Scrapbox",
+                StatCollector.translateToLocal("gt.Item_Scrapbox.name"),
+                StatCollector.translateToLocal("gt.Item_Scrapboxtooltip")));
+
+        if (GregTechAPI.sThaumcraftCompat != null) {
+            GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(
+                ItemList.Scrapbox.get(1),
+                ImmutableList.of(new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 4)),
+                false);
+        }
 
         ItemList.Shape_Empty.set(
             addItemWithLocalizationKeys(

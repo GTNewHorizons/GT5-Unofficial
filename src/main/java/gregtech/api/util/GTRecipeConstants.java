@@ -289,6 +289,9 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<CircuitCalibration> CIRCUIT_CALIBRATION_TYPE = SimpleRecipeMetadataKey
         .create(CircuitCalibration.class, "circuit-calibration");
 
+    public static final RecipeMetadataKey<Float> SCRAPBOX_DROP_WEIGHT = SimpleRecipeMetadataKey
+        .create(Float.class, "scrapbox_drop_weight");
+
     /**
      * Just some trivia to show in the decay recipes, since they don't have a lot of relevant info. Maybe this will come
      * in handy some day.

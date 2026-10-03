@@ -16,8 +16,9 @@ public class ScrapboxDropLoader implements Runnable {
 
     @Override
     public void run() {
-        GT_FML_LOGGER.debug("GTMod: (re-)adding Scrapbox Drops.");
+        GT_FML_LOGGER.debug("GTMod: adding Scrapbox Drops.");
 
+        GTModHandler.addScrapboxDrop(200.0F, ItemList.Scrap.get(1L));
         GTModHandler.addScrapboxDrop(9.5F, new ItemStack(Items.wooden_hoe));
         GTModHandler.addScrapboxDrop(2.0F, new ItemStack(Items.wooden_axe));
         GTModHandler.addScrapboxDrop(2.0F, new ItemStack(Items.wooden_sword));
