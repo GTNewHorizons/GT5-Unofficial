@@ -150,6 +150,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
                     TOOLTIP_COLORED,
                     TOOLTIP_VCOs,
                     TOOLTIP_CCs))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.splitter.body.6"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.splitter.flavor.1")))
             .beginStructureBlock(7, 5, 7, false)
