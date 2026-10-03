@@ -51,10 +51,10 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_LV.get(1),
-                GregtechItemList.TransmissionComponent_LV.get(2),
-                ItemList.Field_Generator_LV.get(1),
-                MaterialsAlloy.EGLIN_STEEL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2))
+                ItemList.Emitter_LV.get(4),
+                ItemList.Sensor_LV.get(4),
+                MaterialsAlloy.TUMBAGA.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 8))
             .itemOutputs(GregtechItemList.Charger_LV.get(1))
             .fluidInputs(MaterialsAlloy.SILICON_CARBIDE.getFluidStack(4 * INGOTS))
             .duration(45 * SECONDS)
@@ -65,12 +65,12 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_MV.get(1),
-                GregtechItemList.TransmissionComponent_MV.get(2),
-                ItemList.Field_Generator_MV.get(1),
-                MaterialsAlloy.TANTALUM_CARBIDE.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2))
+                ItemList.Emitter_MV.get(4),
+                ItemList.Sensor_MV.get(4),
+                MaterialsAlloy.EGLIN_STEEL.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 8))
             .itemOutputs(GregtechItemList.Charger_MV.get(1))
-            .fluidInputs(MaterialsAlloy.BLOODSTEEL.getFluidStack(6 * INGOTS))
+            .fluidInputs(MaterialsElements.STANDALONE.BLACK_METAL.getFluidStack(6 * INGOTS))
             .duration(67 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -79,12 +79,12 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_HV.get(1),
-                GregtechItemList.TransmissionComponent_HV.get(2),
-                ItemList.Field_Generator_HV.get(1),
-                MaterialsAlloy.INCOLOY_DS.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2))
+                ItemList.Emitter_HV.get(4),
+                ItemList.Sensor_HV.get(4),
+                MaterialsAlloy.TANTALUM_CARBIDE.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 8))
             .itemOutputs(GregtechItemList.Charger_HV.get(1))
-            .fluidInputs(MaterialsAlloy.TANTALUM_CARBIDE.getFluidStack(8 * INGOTS))
+            .fluidInputs(MaterialsAlloy.BLOODSTEEL.getFluidStack(8 * INGOTS))
             .duration(90 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -93,10 +93,10 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_EV.get(1),
-                GregtechItemList.TransmissionComponent_EV.get(2),
-                ItemList.Field_Generator_EV.get(1),
-                MaterialsAlloy.INCONEL_625.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2))
+                ItemList.Emitter_EV.get(4),
+                ItemList.Sensor_EV.get(4),
+                MaterialsAlloy.INCOLOY_DS.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 8))
             .itemOutputs(GregtechItemList.Charger_EV.get(1))
             .fluidInputs(MaterialsAlloy.INCONEL_792.getFluidStack(10 * INGOTS))
             .duration(112 * SECONDS + 10 * TICKS)
@@ -107,10 +107,10 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_IV.get(1),
-                GregtechItemList.TransmissionComponent_IV.get(2),
-                ItemList.Field_Generator_IV.get(1),
-                MaterialsAlloy.ZERON_100.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 2))
+                ItemList.Emitter_IV.get(4),
+                ItemList.Sensor_IV.get(4),
+                MaterialsAlloy.INCONEL_625.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
             .itemOutputs(GregtechItemList.Charger_IV.get(1))
             .fluidInputs(MaterialsAlloy.ARCANITE.getFluidStack(12 * INGOTS))
             .duration(135 * SECONDS)
@@ -121,10 +121,10 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                GregtechItemList.TransmissionComponent_LuV.get(2),
-                ItemList.Field_Generator_LuV.get(1),
-                MaterialsAlloy.PIKYONIUM.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 2))
+                ItemList.Emitter_LuV.get(4),
+                ItemList.Sensor_LuV.get(4),
+                MaterialsAlloy.ZERON_100.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8))
             .itemOutputs(GregtechItemList.Charger_LuV.get(1))
             .fluidInputs(MaterialsAlloy.LAFIUM.getFluidStack(14 * INGOTS))
             .duration(157 * SECONDS + 10 * TICKS)
@@ -135,10 +135,10 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_ZPM.get(1),
-                GregtechItemList.TransmissionComponent_ZPM.get(2),
-                ItemList.Field_Generator_ZPM.get(1),
-                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2))
+                ItemList.Emitter_ZPM.get(4),
+                ItemList.Sensor_ZPM.get(4),
+                MaterialsAlloy.PIKYONIUM.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8))
             .itemOutputs(GregtechItemList.Charger_ZPM.get(1))
             .fluidInputs(MaterialsAlloy.CINOBITE.getFluidStack(16 * INGOTS))
             .duration(180 * SECONDS)
@@ -149,10 +149,10 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_UV.get(1),
-                GregtechItemList.TransmissionComponent_UV.get(2),
-                ItemList.Field_Generator_UV.get(1),
-                MaterialsAlloy.ABYSSAL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 2))
+                ItemList.Emitter_UV.get(4),
+                ItemList.Sensor_UV.get(4),
+                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8))
             .itemOutputs(GregtechItemList.Charger_UV.get(1))
             .fluidInputs(MaterialsAlloy.TITANSTEEL.getFluidStack(18 * INGOTS))
             .duration(202 * SECONDS + 10 * TICKS)
@@ -163,10 +163,10 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_MAX.get(1),
-                GregtechItemList.TransmissionComponent_UHV.get(2),
-                ItemList.Field_Generator_UHV.get(1),
-                MaterialsAlloy.QUANTUM.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 2))
+                ItemList.Emitter_UHV.get(4),
+                ItemList.Sensor_UHV.get(4),
+                MaterialsAlloy.ABYSSAL.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8))
             .itemOutputs(GregtechItemList.Charger_UHV.get(1))
             .fluidInputs(MaterialsAlloy.OCTIRON.getFluidStack(20 * INGOTS))
             .duration(225 * SECONDS)
