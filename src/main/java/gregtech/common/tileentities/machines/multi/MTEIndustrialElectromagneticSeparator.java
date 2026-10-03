@@ -69,20 +69,20 @@ public class MTEIndustrialElectromagneticSeparator
 
     public enum MagnetTiers {
 
-        Iron(8, 0.8F, 1.1F, false),
-        Steel(24, 0.75F, 1.25F, false),
-        Neodymium(48, 0.7F, 1.5F, false),
-        Samarium(96, 0.6F, 2F, false),
-        Tengam(256, 0.5F, 2.5F, true);
+        Iron(8, 0.8D, 1.1D, false),
+        Steel(24, 0.75D, 1.25D, false),
+        Neodymium(48, 0.7D, 1.5D, false),
+        Samarium(96, 0.6D, 2.0D, false),
+        Tengam(256, 0.5D, 2.5D, true);
 
         final int maxParallel;
-        final float euModifier, speedBoost;
+        final double euModifier, speedBoost;
         final boolean supportsExotic;
 
-        MagnetTiers(int maxParallel, float euModifier, float speedBoost, boolean supportsExotic) {
+        MagnetTiers(int maxParallel, double euModifier, double speedBoost, boolean supportsExotic) {
             this.maxParallel = maxParallel;
             this.euModifier = euModifier;
-            this.speedBoost = 1F / speedBoost;
+            this.speedBoost = 1.0D / speedBoost;
             this.supportsExotic = supportsExotic;
         }
 
