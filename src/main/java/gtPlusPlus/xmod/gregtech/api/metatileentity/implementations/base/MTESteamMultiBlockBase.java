@@ -261,7 +261,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
         if (aTileEntity instanceof MTEHatch mteHatch) {
             mteHatch.updateTexture(aBaseCasingIndex);
-            mteHatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            mteHatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
 
         // Set recipe map for input hatches.

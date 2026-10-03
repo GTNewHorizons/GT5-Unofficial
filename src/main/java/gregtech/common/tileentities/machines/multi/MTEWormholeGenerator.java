@@ -295,13 +295,13 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     }
                     case MTEHatchEnergyMulti input -> {
                         input.updateTexture(aBaseCasingIndex);
-                        input.updateCraftingIcon(tile.getMachineCraftingIcon());
+                        input.updateCraftingIcon(tile.getMachineCraftingIcon(), tile.getBaseMetaTileEntity());
                         tile.mSendHatches[mIndex] = input;
                         return true;
                     }
                     case MTEHatchDynamoMulti output -> {
                         output.updateTexture(aBaseCasingIndex);
-                        output.updateCraftingIcon(tile.getMachineCraftingIcon());
+                        output.updateCraftingIcon(tile.getMachineCraftingIcon(), tile.getBaseMetaTileEntity());
                         tile.mReceiveHatches[mIndex] = output;
                         return true;
                     }

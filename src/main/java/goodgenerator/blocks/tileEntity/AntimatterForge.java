@@ -479,6 +479,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     @Override
     public void clearHatches() {
         super.clearHatches();
+        // Antimatter output hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(amOutputHatches);
         amOutputHatches.clear();
     }
 
@@ -501,7 +503,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch && ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mExoticEnergyHatches.add(hatch);
         }
         return false;
@@ -512,7 +514,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
         addIfSmartInput(aMetaTileEntity);
         switch (aMetaTileEntity) {
@@ -527,7 +529,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 return mOutputHatches.add(tOutput);
             }
             case IDualInputHatch tInput -> {
-                tInput.updateCraftingIcon(this.getMachineCraftingIcon());
+                tInput.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return mDualInputHatches.add(tInput);
             }
             default -> {
@@ -541,7 +543,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
         addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
