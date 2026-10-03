@@ -40,6 +40,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
 import java.util.ArrayList;
@@ -374,10 +375,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 "3",
                 StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp"),
                 false)
-            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch("1+", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addInputAny("1+", anyCasingText(), 1)
+            .addOutputBus("1+", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(
                 StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.footer"))

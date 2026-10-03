@@ -40,6 +40,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofOreDictBlockMap;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
@@ -410,9 +411,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 "1+",
                 StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.any_casing_luv"),
                 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addInputBus("0+", anyCasingText(), 1)
+            .addOutputBus("1+", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.footer"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
