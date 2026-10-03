@@ -6,6 +6,6 @@ The drain rate of {gold:Cryotheum} will increase linearly with the speed modifie
 {gray:{hr}}
 Upgrade to {light_purple:Tier {var:subspace_tier}} to unlock {blue:Subspace Cooling}
 {light_purple:Performs Perfect Overclocks} by consuming {gold:Exotic Coolants}:
-{gold:{var:booster_drain} {var:fluid_unit}/s} : {green:1} boost : {light_purple:Molten Infinity}
-{gold:{var:booster_drain} {var:fluid_unit}/s} : {green:2} boost : {light_purple:Molten Spacetime}
-{gold:{var:booster_drain} {var:fluid_unit}/s} : {green:3} boost : {light_purple:Molten Eternity}
+{gold:{var:booster_drain} {var:fluid_unit}/s} : {green:1} : {light_purple:Molten Infinity}
+{gold:{var:booster_drain} {var:fluid_unit}/s} : {green:2} : {light_purple:Molten Spacetime}
+{gold:{var:booster_drain} {var:fluid_unit}/s} : {green:3} : {light_purple:Molten Eternity}
