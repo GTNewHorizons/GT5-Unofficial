@@ -251,20 +251,22 @@ public class RedstoneSnifferGui {
                         .heightRel(0.1f)
                         .marginBottom(10)
                         .child(
-                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).widthRel(0.25f)
-                                .color(textColor)
-                                .textAlign(Alignment.Center))
+                            // labels are as wide as their text (a fixed share wrapped "Frequency:" at small sizes),
+                            // the fields share the rest
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).color(textColor)
+                                .marginLeft(4)
+                                .marginRight(4))
                         .child(
-                            new TextFieldWidget().widthRel(0.25f)
+                            new TextFieldWidget().expanded()
                                 .heightRelOffset(0.5f, 4)
                                 .setTextColor(textColor)
                                 .value(new StringValue.Dynamic(() -> freqFilter, filter -> freqFilter = filter)))
                         .child(
-                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.owner_filter")).widthRel(0.25f)
-                                .color(textColor)
-                                .textAlign(Alignment.Center))
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.owner_filter")).color(textColor)
+                                .marginLeft(8)
+                                .marginRight(4))
                         .child(
-                            new TextFieldWidget().widthRel(0.25f)
+                            new TextFieldWidget().expanded()
                                 .heightRelOffset(0.5f, 4)
                                 .setTextColor(textColor)
                                 .value(new StringValue.Dynamic(() -> ownerFilter, filter -> ownerFilter = filter))))
