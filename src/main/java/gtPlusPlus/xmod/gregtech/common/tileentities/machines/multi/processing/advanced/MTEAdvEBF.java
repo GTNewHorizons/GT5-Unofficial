@@ -267,8 +267,8 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat((int) getCoilLevel().getHeat());
             }
-        }.setSpeedBonus(1F / 2.2F)
-            .setEuModifier(0.9F)
+        }.setSpeedBonus(1.0D / 2.2D)
+            .setEuModifier(0.9D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

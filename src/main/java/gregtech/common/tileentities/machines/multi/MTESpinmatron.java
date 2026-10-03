@@ -96,9 +96,9 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     private static final int TURBINE_SLOTS_PER_TIER = 2;
     private static final int PARALLELS_PER_ROTOR_LEVEL = 4;
-    private static final float BASE_SPEED = 3F;
-    private static final float LIGHT_MODE_SPEED = 4.0F;
-    private static final double BASE_EU_MODIFIER = 0.7;
+    private static final double BASE_SPEED = 3.0D;
+    private static final double LIGHT_MODE_SPEED = 4.0D;
+    private static final double BASE_EU_MODIFIER = 0.7D;
     private static final int FLUID_PER_RECIPE_TIER = 10;
     private static final double TIER2_FLUID_PARALLEL_MULTIPLIER = 1.25;
     private static final int LIGHT_MODE_TIER_OFFSET = 3;
@@ -108,8 +108,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     public boolean tier2Fluid = false;
     public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
-    public float speed = BASE_SPEED;
-    public float euMultiplier = 1;
+    public double speed = BASE_SPEED;
+    public double euMultiplier = 1.0D;
     private final int horizontalOffset = 8; // base offset for tier 1
     private final int verticalOffset = 8; // base offset for tier 2
     private final int depthOffset = 2;
@@ -590,7 +590,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                     return CheckRecipeResultRegistry.NO_RECIPE;
 
                 getSpeed();
-                setSpeedBonus(1F / speed);
+                setSpeedBonus(1.0D / speed);
                 setEuModifier(BASE_EU_MODIFIER * euMultiplier);
                 return super.validateRecipe(recipe);
             }
@@ -743,7 +743,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         return RP;
     }
 
-    public float getSpeed() {
+    public double getSpeed() {
         speed = BASE_SPEED;
         if (mode == 0.0) {
             speed = LIGHT_MODE_SPEED;
