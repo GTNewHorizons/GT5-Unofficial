@@ -392,7 +392,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                 ImmutableMap.<String, Object>builder()
                     .put("slots_per_tier", TURBINE_SLOTS_PER_TIER)
                     .put("parallels", PARALLELS_PER_ROTOR_LEVEL)
-                    .put("speed", Math.round((float) BASE_SPEED * 100))
+                    .put("speed", Math.round(BASE_SPEED * 100))
                     .put("eu_eff", Math.round(BASE_EU_MODIFIER * 100))
                     .put("fluid_per_tier", FLUID_PER_RECIPE_TIER)
                     .put("tier2_mult", TIER2_FLUID_PARALLEL_MULTIPLIER)
