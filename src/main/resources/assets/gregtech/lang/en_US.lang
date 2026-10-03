@@ -2548,7 +2548,7 @@ gt.nei.solar_tower.3=Input Amount = 1000 x T
 gt.nei.tgs.1=The sapling is not consumed.
 gt.nei.tgs.2=If %s is provided,
 gt.nei.tgs.3=Saplings are made instead.
-gt.nei.tgs.sapling=Outputted if %s is provided
+gt.nei.tgs.sapling=Output if %s is provided
 gt.nei.tgs.tooltip.sapling=Place in machine controller slot
 gt.nei.tgs.tooltip.saw=Place in an input bus to harvest logs
 gt.nei.tgs.tooltip.needsSaw=Requires a Saw to harvest
@@ -3430,7 +3430,7 @@ GT5U.gui.text.nac.info.line_specifics.wetware.power_distribution=Suggested Power
 GT5U.gui.text.nac.info.line_specifics.wetware.module_count=Suggested Additional Modules:§a 1 Biological Coordinator
 GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect1=§3Tier 1§r - §230%% Threshold§r - 0.8x EU Multiplier to all Modules
 GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect2=§3Tier 2§r - §260%% Threshold§r - 0.8x Recipe Time on Wetware Circuits in the Assembly Matrix
-GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect3=§3Tier 3§r - §290%% Threshold§r - -50% Catalyst Medium consumed in the Biological Coordinator
+GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect3=§3Tier 3§r - §290%% Threshold§r - -50%% Catalyst Medium consumed in the Biological Coordinator
 GT5U.gui.text.nac.info.line_specifics.bioware.header=Bioware Circuits
 GT5U.gui.text.nac.info.line_specifics.bioware.power_distribution=Suggested Power Distribution: §d50%% Matrix§r / §350%% Non-Matrix
 GT5U.gui.text.nac.info.line_specifics.bioware.module_count1=Suggested Additional Modules:§a 1 Biological Coordinator and 1 Strand Splitter
