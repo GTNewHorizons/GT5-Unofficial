@@ -8813,7 +8813,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_LuV_CircuitAssembler.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_LuV.ID)
-                .setName("basicmachine.circuitassembler.tier.06", "Advanced Circuit Assembler V")
+                .setName("basicmachine.circuitassembler.tier.06", "Elite Circuit Assembler")
                 .setTier(6)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8826,7 +8826,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_ZPM_CircuitAssembler.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_ZPM.ID)
-                .setName("basicmachine.circuitassembler.tier.07", "Advanced Circuit Assembler VI")
+                .setName("basicmachine.circuitassembler.tier.07", "Elite Circuit Assembler II")
                 .setTier(7)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8839,7 +8839,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_UV_CircuitAssembler.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UV.ID)
-                .setName("basicmachine.circuitassembler.tier.08", "Advanced Circuit Assembler VII")
+                .setName("basicmachine.circuitassembler.tier.08", "Ultimate Circuit Architect")
                 .setTier(8)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8852,7 +8852,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUHV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UHV.ID)
-                .setName("basicmachine.circuitassembler.tier.09", "Ultimate Circuit Assembling Machine")
+                .setName("basicmachine.circuitassembler.tier.09", "Epic Circuit Architect")
                 .setTier(9)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8865,7 +8865,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUEV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UEV.ID)
-                .setName("basicmachine.circuitassembler.tier.10", "Ultimate Circuit Assembling Machine II")
+                .setName("basicmachine.circuitassembler.tier.10", "Epic Circuit Architect II")
                 .setTier(10)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8878,7 +8878,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUIV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UIV.ID)
-                .setName("basicmachine.circuitassembler.tier.11", "Ultimate Circuit Assembling Machine III")
+                .setName("basicmachine.circuitassembler.tier.11", "Epic Circuit Architect III")
                 .setTier(11)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8891,7 +8891,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUMV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UMV.ID)
-                .setName("basicmachine.circuitassembler.tier.12", "Ultimate Circuit Assembling Machine IV")
+                .setName("basicmachine.circuitassembler.tier.12", "Epic Circuit Architect IV")
                 .setTier(12)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8904,7 +8904,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUXV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UXV.ID)
-                .setName("basicmachine.circuitassembler.tier.13", "Ultimate Circuit Assembling Machine V")
+                .setName("basicmachine.circuitassembler.tier.13", "Epic Circuit Architect V")
                 .setTier(13)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8917,7 +8917,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerMAX.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_MAX.ID)
-                .setName("basicmachine.circuitassembler.tier.14", "MAX Circuit Assembling Machine")
+                .setName("basicmachine.circuitassembler.tier.14", "Legendary Circuit Architect")
                 .setTier(14)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)

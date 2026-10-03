@@ -141,7 +141,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("DT")
-            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Fluids are output one per layer based on the slot number in NEI")
             .addInfo("Increase the height to output more fluid types")
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom center")
