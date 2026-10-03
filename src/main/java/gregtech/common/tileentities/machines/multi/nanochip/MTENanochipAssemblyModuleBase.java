@@ -271,7 +271,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             env,
             false,
             true);
-        built += survivalBuildPiece(
+        if (built >= 0) return built;
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             structureOffsetX(),
@@ -281,7 +282,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             env,
             false,
             true);
-        return built;
     }
 
     public boolean addConveyorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
