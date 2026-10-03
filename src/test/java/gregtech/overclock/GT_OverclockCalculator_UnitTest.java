@@ -243,6 +243,7 @@ class GT_OverclockCalculator_UnitTest {
             .setEUtDiscount(0.9)
             .setAmperageOC(true)
             .calculate();
+        assertEquals(300 / GTUtility.powInt(2, 7), calculator.getDuration(), messageDuration);
         assertEquals(530842, calculator.getConsumption(), messageEUt);
     }
 
