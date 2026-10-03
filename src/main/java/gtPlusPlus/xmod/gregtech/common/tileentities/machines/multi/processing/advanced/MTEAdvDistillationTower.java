@@ -197,7 +197,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addStaticEuEffInfo(0.15f)
             .addSeparator()
             .addInfo(EnumChatFormatting.WHITE + "Distillation Tower Mode")
-            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Fluids are output one per layer based on the slot number in NEI")
             .addInfo("Increase the height to output more fluid types")
             .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)
             .addStaticSpeedInfo(3f)
