@@ -258,7 +258,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
         GTChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
         workState = WorkState.UPWARD;
-        setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
+        setShutdownReason("GT5U.gui.text.drill_exhausted");
         return true;
     }
 
