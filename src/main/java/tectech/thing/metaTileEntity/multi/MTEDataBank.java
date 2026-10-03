@@ -301,9 +301,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
             @Override
             public long count(MTEDataBank t) {
-                return t.eDataAccessHatches.stream()
-                    .filter(hatch -> !(hatch instanceof MTEHatchDataItemsInput))
-                    .count();
+                return t.eDataAccessHatches.size();
             }
         },
         OutboundConnector("GT5U.MBTT.DataBankTransmission", MTEHatchDataItemsOutput.class) {
@@ -317,9 +315,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
             @Override
             public long count(MTEDataBank t) {
-                return t.eDataAccessHatches.stream()
-                    .filter(MTEHatchDataItemsInput.class::isInstance)
-                    .count();
+                return t.eDataAccessHatches.size();
             }
         },
         WirelessOutboundConnector("GT5U.MBTT.WirelessDataBankOutput", MTEHatchWirelessDataItemsOutput.class) {
