@@ -28,12 +28,14 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -71,8 +73,6 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
@@ -82,7 +82,15 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchCatalysts;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> implements ISurvivalConstructable {
+
+    private static final int PARALLELS_PER_PIPE_TIER = 2;
+    private static final double CATALYST_SAVE_PER_PIPE_TIER = 0.2D;
+    private static final float SPEED_BONUS_PER_COIL_TIER = 0.5f;
+    private static final int UNBREAKABLE_COIL_TIER = 10;
+    private static final int UNBREAKABLE_PIPE_TIER = 4;
+    private static final int MAX_CATALYST_DURABILITY = 50;
 
     private int mSolidCasingTier = 0;
     private int mMachineCasingTier = 0;
@@ -142,16 +150,16 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(getMachineType())
-            .addInfo("Heavy Industry, now right at your doorstep!")
-            .addInfo("Plant tier is determined by casing tier")
-            .addInfo("Hatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers")
-            .addDynamicParallelInfo(2, TooltipTier.PIPE_CASING)
-            .addInfo(
-                "+20% chance of not damaging catalyst per " + TooltipHelper.tierText(TooltipTier.PIPE_CASING) + " Tier")
-            .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addInfo("Any catalyst must be placed in the catalyst housing")
-            .addInfo("Awakened Draconium Coils combined with Tungstensteel Pipe Casings makes catalyst unbreakable")
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(getMachineType())
+            .addMarkdown(
+                new ResourceLocation("gregtech", "chemical-plant"),
+                ImmutableMap.<String, Object>builder()
+                    .put("parallels", PARALLELS_PER_PIPE_TIER)
+                    .put("speed", Math.round(SPEED_BONUS_PER_COIL_TIER * 100))
+                    .put("catalyst_save", Math.round(CATALYST_SAVE_PER_PIPE_TIER * 100))
+                    .build())
             .beginStructureBlock(7, 7, 7, false)
             .addController("Front bottom center")
             .addCasing("70-91", "Metal Machine Casing", true)
@@ -174,6 +182,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.PIPE_CASING)
             .toolTipFinisher();
+        // spotless:on
+        return tt;
     }
 
     public void setMachineMeta(int meta) {
@@ -492,7 +502,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public int getMaxParallelRecipes() {
-        return 2 * mPipeCasingTier;
+        return PARALLELS_PER_PIPE_TIER * mPipeCasingTier;
     }
 
     private int getCasingTextureID() {
@@ -532,7 +542,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     public int getMaxCatalystDurability() {
-        return 50;
+        return MAX_CATALYST_DURABILITY;
     }
 
     @Override
@@ -557,7 +567,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         // Awakened Draconium Coils with Tungstensteel Pipe Casings (or above) no longer consume catalysts.
         if (!isCatalystDamageable()) return false;
         for (int i = 0; i < minParallel; i++) {
-            if (MathUtils.randFloat(0, 10000000) / 10000000f < (1.2f - (0.2 * this.mPipeCasingTier))) {
+            if (MathUtils.randFloat(0, 10000000) / 10000000f
+                < (1.2f - (CATALYST_SAVE_PER_PIPE_TIER * this.mPipeCasingTier))) {
                 int damage = getDamage(aStack) + 1;
                 if (damage >= getMaxCatalystDurability()) {
                     addOutputPartial(GregtechItemList.EmptyCatalystCarrier.get(1));
@@ -572,7 +583,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     private boolean isCatalystDamageable() {
-        return this.mCoilTier < 10 || this.mPipeCasingTier < 4;
+        return this.mCoilTier < UNBREAKABLE_COIL_TIER || this.mPipeCasingTier < UNBREAKABLE_PIPE_TIER;
     }
 
     @Override
@@ -602,7 +613,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                         return SimpleCheckRecipeResult.ofFailure("no_catalyst");
                     }
                 } else {
-                    // remove reference to the old catalyst if our new recipe doesn't use it
+                    // remove reference to the catalyst if it is invalid, or if the damage destroys it
                     catalyst = null;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
