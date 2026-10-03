@@ -126,10 +126,13 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     public void clearHatches() {
         super.clearHatches();
 
+        // LoS and nanite hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(this.losHatches);
         for (MTEHatchLoS hatch : this.losHatches) {
             hatch.setOwner(null);
         }
         this.losHatches.clear();
+        clearCraftingIcons(this.naniteHatches);
         this.naniteHatches.clear();
     }
 
@@ -323,7 +326,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
             if (igte.getMetaTileEntity() instanceof MTEHatchNanite naniteHatch) {
                 assembler.naniteHatches.add(naniteHatch);
                 naniteHatch.updateTexture(texture);
-                naniteHatch.updateCraftingIcon(assembler.getMachineCraftingIcon());
+                naniteHatch.updateCraftingIcon(assembler.getMachineCraftingIcon(), assembler.getBaseMetaTileEntity());
 
                 return true;
             }
@@ -368,7 +371,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
                 if (imte instanceof MTEHatchLoS hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     hatch.setOwner(self);
 
                     self.losHatches.add(hatch);
