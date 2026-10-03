@@ -22,6 +22,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
+import gregtech.api.util.ExpectedFluidOutput;
+import gregtech.api.util.ExpectedItemOutput;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
@@ -61,6 +63,8 @@ public class ProcessingLogic {
     // Calculated results
     protected ItemStack[] outputItems;
     protected FluidStack[] outputFluids;
+    protected List<ExpectedItemOutput> expectedItemOutputs;
+    protected List<ExpectedFluidOutput> expectedFluidOutputs;
     protected long calculatedEut;
     protected int duration;
     protected int calculatedParallels = 0;
@@ -309,6 +313,7 @@ public class ProcessingLogic {
      */
     public ProcessingLogic overwriteOutputItems(ItemStack... itemOutputs) {
         this.outputItems = itemOutputs;
+        this.expectedItemOutputs = null;
         return this;
     }
 
@@ -317,6 +322,7 @@ public class ProcessingLogic {
      */
     public ProcessingLogic overwriteOutputFluids(FluidStack... fluidOutputs) {
         this.outputFluids = fluidOutputs;
+        this.expectedFluidOutputs = null;
         return this;
     }
 
@@ -347,6 +353,8 @@ public class ProcessingLogic {
         this.specialSlotItem = null;
         this.outputItems = null;
         this.outputFluids = null;
+        this.expectedItemOutputs = null;
+        this.expectedFluidOutputs = null;
         this.calculatedEut = 0;
         this.duration = 0;
         this.calculatedParallels = 0;
@@ -512,6 +520,8 @@ public class ProcessingLogic {
 
         outputItems = helper.getItemOutputs();
         outputFluids = helper.getFluidOutputs();
+        expectedItemOutputs = helper.getExpectedItemOutputs();
+        expectedFluidOutputs = helper.getExpectedFluidOutputs();
 
         return result;
     }
@@ -617,6 +627,16 @@ public class ProcessingLogic {
 
     public FluidStack[] getOutputFluids() {
         return outputFluids;
+    }
+
+    @Nullable
+    public List<ExpectedItemOutput> getExpectedItemOutputs() {
+        return expectedItemOutputs;
+    }
+
+    @Nullable
+    public List<ExpectedFluidOutput> getExpectedFluidOutputs() {
+        return expectedFluidOutputs;
     }
 
     public int getDuration() {
