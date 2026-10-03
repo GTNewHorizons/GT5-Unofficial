@@ -724,15 +724,15 @@ gt.blockmachines.basicmachine.circuitassembler.tier.02.name=Advanced Circuit Ass
 gt.blockmachines.basicmachine.circuitassembler.tier.03.name=Advanced Circuit Assembler II
 gt.blockmachines.basicmachine.circuitassembler.tier.04.name=Advanced Circuit Assembler III
 gt.blockmachines.basicmachine.circuitassembler.tier.05.name=Advanced Circuit Assembler IV
-gt.blockmachines.basicmachine.circuitassembler.tier.06.name=Advanced Circuit Assembler V
-gt.blockmachines.basicmachine.circuitassembler.tier.07.name=Advanced Circuit Assembler VI
-gt.blockmachines.basicmachine.circuitassembler.tier.08.name=Advanced Circuit Assembler VII
-gt.blockmachines.basicmachine.circuitassembler.tier.09.name=Ultimate Circuit Assembling Machine
-gt.blockmachines.basicmachine.circuitassembler.tier.10.name=Ultimate Circuit Assembling Machine II
-gt.blockmachines.basicmachine.circuitassembler.tier.11.name=Ultimate Circuit Assembling Machine III
-gt.blockmachines.basicmachine.circuitassembler.tier.12.name=Ultimate Circuit Assembling Machine IV
-gt.blockmachines.basicmachine.circuitassembler.tier.13.name=Ultimate Circuit Assembling Machine V
-gt.blockmachines.basicmachine.circuitassembler.tier.14.name=MAX Circuit Assembling Machine
+gt.blockmachines.basicmachine.circuitassembler.tier.06.name=Elite Circuit Assembler
+gt.blockmachines.basicmachine.circuitassembler.tier.07.name=Elite Circuit Assembler II
+gt.blockmachines.basicmachine.circuitassembler.tier.08.name=Ultimate Circuit Architect
+gt.blockmachines.basicmachine.circuitassembler.tier.09.name=Epic Circuit Architect
+gt.blockmachines.basicmachine.circuitassembler.tier.10.name=Epic Circuit Architect II
+gt.blockmachines.basicmachine.circuitassembler.tier.11.name=Epic Circuit Architect III
+gt.blockmachines.basicmachine.circuitassembler.tier.12.name=Epic Circuit Architect IV
+gt.blockmachines.basicmachine.circuitassembler.tier.13.name=Epic Circuit Architect V
+gt.blockmachines.basicmachine.circuitassembler.tier.14.name=Legendary Circuit Architect
 gt.blockmachines.basicmachine.compressor.tier.01.name=Basic Compressor
 gt.blockmachines.basicmachine.compressor.tier.02.name=Advanced Compressor
 gt.blockmachines.basicmachine.compressor.tier.03.name=Advanced Compressor II
@@ -2073,6 +2073,7 @@ gt.mbtt.machine_type.essentia_smeltery_les=Essentia Smeltery, LES
 gt.mbtt.machine_type.breeder_reactor_htgr=Breeder Reactor, HTGR
 gt.mbtt.machine_type.arc_furnace_iaf=Arc Furnace, IAF
 gt.mbtt.machine_type.solar_tower=Solar Tower
+gt.mbtt.machine_type.macerator_ims=Macerator, IMS
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
@@ -6301,7 +6302,7 @@ gt.item.circuit.integrated_processor.tooltip=A Good Circuit
 
 ## Good Integrated Circuit
 gt.item.circuit.good_integrated.name=Good Integrated Circuit
-gt.item.circuit.good_integrated.tooltip=Good Circuit
+gt.item.circuit.good_integrated.tooltip=A Good Circuit
 
 ## Advanced Integrated Circuit
 gt.item.circuit.advanced_integrated.name=Advanced Integrated Circuit
@@ -6383,41 +6384,41 @@ gt.item.circuit_board.transcendent.tooltip=Temporally Warped Board
 
 ## Optical Circuits
 gt.item.circuit.optical_processor.name=Optical Processor
-gt.item.circuit.optical_processor.tooltip=An Optical Circuit
+gt.item.circuit.optical_processor.tooltip=A Super Circuit
 gt.item.circuit.optical_assembly.name=Optical Assembly
-gt.item.circuit.optical_assembly.tooltip=An Optical Circuit
+gt.item.circuit.optical_assembly.tooltip=An Infinite Circuit
 gt.item.circuit.optical_computer.name=Optical Supercomputer
-gt.item.circuit.optical_computer.tooltip=An Optical Circuit
+gt.item.circuit.optical_computer.tooltip=A Bio Circuit
 gt.item.circuit.optical_mainframe.name=Optical Mainframe
 gt.item.circuit.optical_mainframe.tooltip=An Optical Circuit
 
 ## Exotic Circuits
 gt.item.circuit.exotic_processor.name=Exotic Processor
-gt.item.circuit.exotic_processor.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_processor.tooltip=An Infinite Circuit
 gt.item.circuit.exotic_assembly.name=Exotic Assembly
-gt.item.circuit.exotic_assembly.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_assembly.tooltip=A Bio Circuit
 gt.item.circuit.exotic_computer.name=Exotic Supercomputer
-gt.item.circuit.exotic_computer.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_computer.tooltip=An Optical Circuit
 gt.item.circuit.exotic_mainframe.name=Exotic Mainframe
 gt.item.circuit.exotic_mainframe.tooltip=An Exotic Circuit
 
 ## Cosmic Circuits
 gt.item.circuit.cosmic_processor.name=Cosmic Processor
-gt.item.circuit.cosmic_processor.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_processor.tooltip=A Bio Circuit
 gt.item.circuit.cosmic_assembly.name=Cosmic Assembly
-gt.item.circuit.cosmic_assembly.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_assembly.tooltip=An Optical Circuit
 gt.item.circuit.cosmic_computer.name=Cosmic Supercomputer
-gt.item.circuit.cosmic_computer.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_computer.tooltip=An Exotic Circuit
 gt.item.circuit.cosmic_mainframe.name=Cosmic Mainframe
 gt.item.circuit.cosmic_mainframe.tooltip=A Cosmic Circuit
 
 ## Transcendent Circuits
 gt.item.circuit.transcendent_processor.name=Temporally Transcendent Processor
-gt.item.circuit.transcendent_processor.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_processor.tooltip=An Optical Circuit
 gt.item.circuit.transcendent_assembly.name=Temporally Transcendent Assembly
-gt.item.circuit.transcendent_assembly.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_assembly.tooltip=An Exotic Circuit
 gt.item.circuit.transcendent_computer.name=Temporally Transcendent Supercomputer
-gt.item.circuit.transcendent_computer.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_computer.tooltip=A Cosmic Circuit
 gt.item.circuit.transcendent_mainframe.name=Temporally Transcendent Mainframe
 gt.item.circuit.transcendent_mainframe.tooltip=A circuit operating outside of known spacetime
 
