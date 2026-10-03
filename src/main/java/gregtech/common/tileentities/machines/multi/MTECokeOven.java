@@ -110,7 +110,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
         .addElement(
             'C',
-            buildHatchAdder(MTECokeOven.class).atLeast(new HatchElement())
+            buildHatchAdder(MTECokeOven.class).atLeast(new HatchElement("GT5U.MBTT.CokeOvenHatch"))
                 .casingIndex(1)
                 .hint(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings12, 0)))
@@ -426,7 +426,11 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
 
     private static class HatchElement implements IHatchElement<MTECokeOven> {
 
-        public HatchElement() {}
+        private final String name;
+
+        public HatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -446,6 +450,16 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         @Override
         public long count(MTECokeOven cokeOven) {
             return cokeOven.hatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

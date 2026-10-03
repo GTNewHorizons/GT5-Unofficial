@@ -111,12 +111,14 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
 
     private enum TFFTMultiHatch implements IHatchElement<MTETankTFFT> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.TFFTHatch");
 
+        private final String name;
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         @SafeVarargs
-        TFFTMultiHatch(Class<? extends IMetaTileEntity>... mteClasses) {
+        TFFTMultiHatch(String name, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Arrays.asList(mteClasses);
         }
 
@@ -133,6 +135,16 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
         @Override
         public long count(MTETankTFFT t) {
             return t.tfftHatch == null ? 0 : 1;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

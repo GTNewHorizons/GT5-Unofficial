@@ -459,40 +459,34 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
 
     private enum SpecialHatchElement implements IHatchElement<MTEPurificationUnitUVTreatment> {
 
-        LensHousing(MTEPurificationUnitUVTreatment::addLensHousingToMachineList, MTEHatchLensHousing.class) {
+        LensHousing("GT5U.MBTT.LensHousing", MTEPurificationUnitUVTreatment::addLensHousingToMachineList,
+            MTEHatchLensHousing.class) {
 
             @Override
             public long count(MTEPurificationUnitUVTreatment gtMetaTileEntityPurificationUnitUVTreatment) {
                 if (gtMetaTileEntityPurificationUnitUVTreatment.lensInputBus == null) return 0;
                 else return 1;
             }
-
-            @Override
-            public String getDisplayName() {
-                return StatCollector.translateToLocal("GT5U.MBTT.LensHousing");
-            }
         },
 
-        LensIndicator(MTEPurificationUnitUVTreatment::addLensIndicatorToMachineList, MTEHatchLensIndicator.class) {
+        LensIndicator("GT5U.MBTT.LensIndicator", MTEPurificationUnitUVTreatment::addLensIndicatorToMachineList,
+            MTEHatchLensIndicator.class) {
 
             @Override
             public long count(MTEPurificationUnitUVTreatment gtMetaTileEntityPurificationUnitUVTreatment) {
                 if (gtMetaTileEntityPurificationUnitUVTreatment.lensIndicator == null) return 0;
                 else return 1;
             }
-
-            @Override
-            public String getDisplayName() {
-                return StatCollector.translateToLocal("GT5U.MBTT.LensIndicator");
-            }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEPurificationUnitUVTreatment> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEPurificationUnitUVTreatment> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEPurificationUnitUVTreatment> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -505,6 +499,16 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         @Override
         public IGTHatchAdder<? super MTEPurificationUnitUVTreatment> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
