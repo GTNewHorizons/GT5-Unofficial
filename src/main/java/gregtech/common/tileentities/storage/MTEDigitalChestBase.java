@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.storage;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumberCompact;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
@@ -11,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -25,6 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
@@ -34,6 +37,7 @@ import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.item.SimpleItemIO;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.CompactOptions;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -51,6 +55,9 @@ import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
 import fox.spiteful.avaritia.items.ItemStackWrapper;
 import gregtech.api.enums.GTValues;
@@ -60,21 +67,38 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.render.DigitalStorageRenderer;
+import gregtech.common.render.IMTERenderer;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets, IMTERenderer {
+
+    private static final long RENDER_UPDATE_INTERVAL = 20;
+    public static final CompactOptions DISPLAY_COUNT_FORMAT = new CompactOptions().setDecimalPlaces(1);
 
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
 
     private int lastTrueCount;
+    private ItemStack lastRenderItem;
+    private int lastRenderCount;
+    private long lastRenderPacketTick = Long.MIN_VALUE;
+
+    private ItemStack displayItem;
+    private String displayItemCountText;
+    private EntityItem displayEntity;
+    private ItemStack displayEntityStack;
     private ItemStack lastMatterClusterOutput;
 
     private static final class MatterClusterEntry {
@@ -123,6 +147,119 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     public MTEDigitalChestBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean renderInWorld(ISBRWorldContext ctx) {
+        return DigitalStorageRenderer.renderChestInWorld(this, ctx);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean renderInInventory(ISBRInventoryContext ctx) {
+        return DigitalStorageRenderer.renderChestInInventory(this, ctx);
+    }
+
+    @Override
+    public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        DigitalStorageRenderer.renderChestStack(this, x, y, z, timeSinceLastTick);
+    }
+
+    public ForgeDirection getDisplayFacing() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) return ForgeDirection.WEST;
+        return base.getFrontFacing()
+            .getOpposite();
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        ItemStack stack = getRenderItem();
+        buffer.writeInt(getRenderItemCount(stack));
+        ByteBufUtils.writeItemStack(buffer, stack);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        int count = buffer.readInt();
+        ItemStack stack = ByteBufUtils.readItemStack(buffer);
+        updateClientDisplay(stack, stack == null ? 0 : count);
+    }
+
+    @Override
+    public void encodeRenderData(ByteBuf buffer) {
+        ItemStack stack = getRenderItem();
+        buffer.writeInt(getRenderItemCount(stack));
+        buffer.writeBoolean(stack != null);
+        if (stack != null) {
+            ByteBufUtils.writeTag(buffer, stack.writeToNBT(new NBTTagCompound()));
+        }
+    }
+
+    @Override
+    public void decodeRenderData(ByteArrayDataInput buffer) {
+        int count = buffer.readInt();
+        if (buffer.readBoolean()) {
+            updateClientDisplay(
+                ItemStack.loadItemStackFromNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(buffer)),
+                count);
+        } else {
+            updateClientDisplay(null, 0);
+        }
+    }
+
+    private ItemStack getRenderItem() {
+        ItemStack stack = getItemStack();
+        if (stack == null) stack = mInventory[0];
+        if (stack == null) stack = mInventory[1];
+        return stack;
+    }
+
+    private int getRenderItemCount(ItemStack stack) {
+        long count = getItemCount();
+        if (stack != null) {
+            if (GTUtility.areStacksEqual(mInventory[0], stack)) count += mInventory[0].stackSize;
+            if (GTUtility.areStacksEqual(mInventory[1], stack)) count += mInventory[1].stackSize;
+        }
+        return Math.clamp(count, 0, Integer.MAX_VALUE);
+    }
+
+    public ItemStack getClientDisplayItem() {
+        return displayItem;
+    }
+
+    public String getClientDisplayItemCountText() {
+        return displayItemCountText;
+    }
+
+    private void updateClientDisplay(ItemStack stack, int count) {
+        displayItem = stack;
+        displayItemCountText = formatNumberCompact(count, DISPLAY_COUNT_FORMAT);
+        if (stack == null) {
+            displayEntity = null;
+            displayEntityStack = null;
+        }
+    }
+
+    public EntityItem getClientDisplayEntity() {
+        if (displayItem == null) return null;
+        if (displayEntity == null || !GTUtility.areStacksEqual(displayEntityStack, displayItem)) {
+            IGregTechTileEntity base = getBaseMetaTileEntity();
+            if (base == null || base.getWorld() == null) return null;
+            displayEntityStack = displayItem.copy();
+            displayEntityStack.stackSize = 1;
+            displayEntity = new EntityItem(
+                base.getWorld(),
+                base.getXCoord() + 0.5,
+                base.getYCoord() + 0.25,
+                base.getZCoord() + 0.5,
+                displayEntityStack);
+            displayEntity.hoverStart = 0;
+        }
+        return displayEntity;
     }
 
     @Override
@@ -504,7 +641,23 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             lastTrueCount = count + extraCount;
             notifyMatterClusterOutputChange();
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
+            updateRenderData(aTimer);
         }
+    }
+
+    private void updateRenderData(long aTimer) {
+        ItemStack stack = getRenderItem();
+        int count = getRenderItemCount(stack);
+        boolean itemChanged = !GTUtility.areStacksEqualOrNull(stack, lastRenderItem);
+        boolean countChanged = count != lastRenderCount;
+        if (!itemChanged && !countChanged) return;
+        if (!itemChanged && lastRenderPacketTick != Long.MIN_VALUE
+            && aTimer - lastRenderPacketTick < RENDER_UPDATE_INTERVAL) return;
+
+        lastRenderItem = stack == null ? null : stack.copy();
+        lastRenderCount = count;
+        lastRenderPacketTick = aTimer;
+        sendRenderDataToClient(this);
     }
 
     private void insertInputItems() {
