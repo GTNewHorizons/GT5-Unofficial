@@ -33,11 +33,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -52,6 +54,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -71,6 +74,7 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirFilterBase>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -80,6 +84,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     public static final float GLOBAL_MULTIPLIER = 30.0f;
     public static final float SCALING_FACTOR = 2.5f;
     public static final int USES_PER_FILTER = 30;
+    public static final float MAINTENANCE_PENALTY_PERCENT = 10.0f;
 
     private static final Random RANDOM = new XSTR();
 
@@ -190,25 +195,20 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Air Filter, EAF")
-            .addInfo("Needs a Turbine in the controller")
-            .addInfo("Can process " + (2 * multiTier + 1) + "x" + (2 * multiTier + 1) + " chunks")
-            .addInfo("Each muffler hatch reduces pollution in one chunk of the working area by:")
-            .addInfo(
-                "  " + EnumChatFormatting.WHITE
-                    + GLOBAL_MULTIPLIER
-                    + " * multiTierBonus * turbineEff * FLOOR("
-                    + SCALING_FACTOR
-                    + "^mufflerTier)")
-            .addInfo("every second")
-            .addInfo("- multiTierBonus for this controller is " + getBonusByTier())
-            .addInfo("- turbineEff is the efficiency of the Turbine in controller slot")
-            .addInfo("- Effective muffler tier is limited by energy input tier")
-            .addInfo("- Uses " + getEUt() + " EU/t while working")
-            .addSeparator()
-            .addInfo("Insert Absorption Filter in an input bus")
-            .addInfo("  to double pollution cleaning amount (30 uses per item)")
-            .addInfo("Each maintenance issue reduces cleaning amount by 10%")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "air-filter"),
+                ImmutableMap.<String, Object>builder()
+                    .put("chunk_size", 2 * multiTier + 1)
+                    .put("global_multiplier", formatNumber(GLOBAL_MULTIPLIER))
+                    .put("scaling_factor", formatNumber(SCALING_FACTOR))
+                    .put("tier_bonus", formatNumber(getBonusByTier()))
+                    .put("eu_usage", formatNumber(getEUt()))
+                    .put("filter_uses", USES_PER_FILTER)
+                    .put("boost_per_filter", formatNumber(BOOST_PER_FILTER))
+                    .put("maint_penalty", formatNumber(MAINTENANCE_PENALTY_PERCENT))
+                    .build())
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
             .addCasing("9-22", getCasingString(), false)
@@ -220,6 +220,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addOutputBus("0+", "Any bottom casing", 1)
             .addAir("Interior of the structure")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
