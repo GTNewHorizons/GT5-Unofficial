@@ -16,6 +16,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import net.minecraft.util.ResourceLocation;
+import com.google.common.collect.ImmutableMap;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
@@ -139,9 +141,11 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("DT")
-            .addInfo("Fluids are output one per layer based on the slot number in NEI")
-            .addInfo("Increase the height to output more fluid types")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "distillation-tower"),
+                ImmutableMap.<String, Object>builder().build())
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom center")
             .addCasing("16-79", "Clean Stainless Steel Machine Casing", false)
@@ -156,6 +160,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             .addStructureFooter("Minimum casings increases with height (7 x h - 5)")
             .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

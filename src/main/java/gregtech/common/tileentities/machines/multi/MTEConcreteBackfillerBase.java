@@ -6,6 +6,8 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import net.minecraft.util.ResourceLocation;
+import com.google.common.collect.ImmutableMap;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import java.util.List;
@@ -37,6 +39,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     private int mLastXOff = 0, mLastZOff = 0;
     private int clientYHead;
     private boolean mLiquidEnabled = true;
+    private static final int CONCRETE_PER_BLOCK = 144;
 
     public boolean isLiquidEnabled() {
         return mLiquidEnabled;
@@ -89,20 +92,23 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     }
 
     protected MultiblockTooltipBuilder createTooltip(String aStructureName) {
-        String casings = getCasingBlockItem().get(0)
-            .getDisplayName();
+        String casings = getCasingBlockItem().get(0).getDisplayName();
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
+        // spotless:off
         tt.addMachineType("Concrete Backfiller")
-            .addInfo("Will fill in areas below it with light concrete. This goes through walls")
-            .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
-            .addInfo("Will pull back the pipes after it finishes that layer")
-            .addInfo("Range is " + getRadius() + "x" + getRadius() + " blocks horizontally")
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-            .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "concrete-backfiller"),
+                ImmutableMap.<String, Object>builder()
+                    .put("radius", getRadius())
+                    .put("min_tier", GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+                    .put("concrete_per_block", formatNumber(CONCRETE_PER_BLOCK))
+                    .put(
+                        "cycle_time",
+                        baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
+                            : formatNumber(baseCycleTime / 20.0) + " seconds")
+                    .build())
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
@@ -113,6 +119,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addInputHatch("1+", "Any bottom casing", 1)
             .addOutputBus("0+", "Any bottom casing", 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
