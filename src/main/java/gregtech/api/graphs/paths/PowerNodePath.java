@@ -20,9 +20,7 @@ public class PowerNodePath extends NodePath {
     int mTick = 0;
     boolean mCountUp = true;
 
-    // voltage of the packet currently being pushed through this path, after loss.
-    // applyVoltage() is always called on a path right before addAmps() (see PowerNodes#processNextNode and
-    // #processNodeInject), so this is what the amps recorded next are travelling at.
+    // Retained for legacy addAmps callers; recursive transfers pass their own voltage explicitly.
     private long mCurrentVoltageAfterLoss = 0;
 
     private final AveragePerTickCounter avgAmperageCounter = new AveragePerTickCounter(TickTime.SECOND);
@@ -76,9 +74,13 @@ public class PowerNodePath extends NodePath {
     }
 
     public void addAmps(long aAmps) {
+        addAmps(aAmps, mCurrentVoltageAfterLoss);
+    }
+
+    public void addAmps(long aAmps, long aVoltageAfterLoss) {
 
         avgAmperageCounter.addValue(aAmps);
-        avgEnergyCounter.addValue(aAmps * mCurrentVoltageAfterLoss);
+        avgEnergyCounter.addValue(aAmps * Math.max(aVoltageAfterLoss, 0));
 
         this.mAmps += aAmps;
         if (this.mAmps > mMaxAmps * 40) {
