@@ -23,11 +23,13 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -120,22 +122,11 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Implosion Compressor, EIC")
-            .addInfo("Explosions are fun!")
-            .addInfo("Uses electricity instead of Explosives")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Parallels"
-                    + EnumChatFormatting.GRAY
-                    + " are determined by "
-                    + EnumChatFormatting.WHITE
-                    + "Containment Block"
-                    + EnumChatFormatting.GRAY
-                    + " Tier")
-            .addInfo(createParallelText(EnumChatFormatting.WHITE, "Neutronium", 1))
-            .addInfo(createParallelText(EnumChatFormatting.RED, "Infinity", 4))
-            .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
-            .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
-            .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "electric-implosion-compressor"),
+                ImmutableMap.<String, Object>builder().build())
             .addMaxTierSkips(1)
             .addSupportAny()
             .beginStructureBlock(15, 7, 7, true)
@@ -155,6 +146,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

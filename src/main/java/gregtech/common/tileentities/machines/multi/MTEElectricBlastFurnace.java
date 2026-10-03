@@ -17,6 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 
 import java.util.List;
 
@@ -27,11 +28,12 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -60,7 +62,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -69,6 +70,10 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int mHeatingCapacity = 0;
+    private static final int EU_REDUCTION_PERCENT = 5;
+    private static final int HEAT_PER_TIER = 100;
+    private static final int EU_REDUCTION_HEAT_THRESHOLD = 900;
+    private static final int HEAT_PER_PERFECT_OC = 1800;
 
     protected static final int CASING_INDEX = 11;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -115,36 +120,17 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Blast Furnace, EBF")
-            .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-            .addInfo(
-                "Increases Heat by " + EnumChatFormatting.RED
-                    + "100K"
-                    + EnumChatFormatting.GRAY
-                    + " for every "
-                    + TooltipHelper.tierText("Voltage")
-                    + " tier past "
-                    + EnumChatFormatting.AQUA
-                    + "MV")
-            .addInfo(
-                "Reduces " + TooltipHelper.effText("EU Usage")
-                    + " by "
-                    + EnumChatFormatting.WHITE
-                    + "5%"
-                    + EnumChatFormatting.GRAY
-                    + " every "
-                    + EnumChatFormatting.RED
-                    + "900K"
-                    + EnumChatFormatting.GRAY
-                    + " above the recipe requirement")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "1800K"
-                    + EnumChatFormatting.GRAY
-                    + " over the recipe requirement grants 1 "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Perfect Overclock")
-            .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "electric-blast-furnace"),
+                ImmutableMap.<String, Object>builder()
+                    .put("heat_per_tier", formatNumber(HEAT_PER_TIER))
+                    .put("eu_reduction", EU_REDUCTION_PERCENT)
+                    .put("eu_reduction_heat", formatNumber(EU_REDUCTION_HEAT_THRESHOLD))
+                    .put("heat_per_poc", formatNumber(HEAT_PER_PERFECT_OC))
+                    .put("voltageTier_MV", voltageTooltipFormatted(2))
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
@@ -159,6 +145,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
