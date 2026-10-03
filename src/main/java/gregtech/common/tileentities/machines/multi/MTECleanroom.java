@@ -291,7 +291,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
      * are checked, for efficiency. If a block is not one of the allowed types, CleanroomBlockType.INVALID is returned.
      */
     private CleanroomBlockType getBlockType(IGregTechTileEntity aBaseMetaTileEntity, int dx, int dy, int dz,
-                                            int allowedMask) {
+        int allowedMask) {
         Block block = aBaseMetaTileEntity.getBlockOffset(dx, dy, dz);
         int meta = aBaseMetaTileEntity.getMetaIDOffset(dx, dy, dz);
 
@@ -329,7 +329,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     if (dx != dxMin && dx != dxMax)
                         // Door is in the N or S wall, definitely open.
                         isDoorOpen = true;
-                        // Otherwise check adjacent blocks for other doors.
+                    // Otherwise check adjacent blocks for other doors.
                     else if (dz > dzMin
                         && aBaseMetaTileEntity.getBlockOffset(dx, dy, dz - 1) instanceof ic2.core.block.BlockIC2Door
                         && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx, dy, dz - 1))
@@ -343,7 +343,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     if (dz != dzMin && dz != dzMax)
                         // Door is in the N or S wall, definitely open.
                         isDoorOpen = true;
-                        // Check adjacent blocks for other doors.
+                    // Check adjacent blocks for other doors.
                     else if (dx > dxMin
                         && aBaseMetaTileEntity.getBlockOffset(dx - 1, dy, dz) instanceof ic2.core.block.BlockIC2Door
                         && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx - 1, dy, dz))

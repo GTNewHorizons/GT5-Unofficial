@@ -93,13 +93,13 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEAlgaePond(this.mName);
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override
-    public boolean supportsPowerPanel() {
-        return false;
+    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new MTEAlgaePond(this.mName);
     }
 
     @Override
