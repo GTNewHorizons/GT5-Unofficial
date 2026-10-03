@@ -2548,7 +2548,7 @@ gt.nei.solar_tower.3=Input Amount = 1000 x T
 gt.nei.tgs.1=The sapling is not consumed.
 gt.nei.tgs.2=If %s is provided,
 gt.nei.tgs.3=Saplings are made instead.
-gt.nei.tgs.sapling=Outputted if %s is provided
+gt.nei.tgs.sapling=Output if %s is provided
 gt.nei.tgs.tooltip.sapling=Place in machine controller slot
 gt.nei.tgs.tooltip.saw=Place in an input bus to harvest logs
 gt.nei.tgs.tooltip.needsSaw=Requires a Saw to harvest
