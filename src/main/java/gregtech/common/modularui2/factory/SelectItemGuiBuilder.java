@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.IntSupplier;
 
 import net.minecraft.item.ItemStack;
 
@@ -15,8 +16,11 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
@@ -46,6 +50,9 @@ public class SelectItemGuiBuilder {
     public static final int DESELECTED = -1;
     private static final int COLS = 9;
     private static final int GUI_WIDTH = 18 * COLS + 7 * 2;
+    private static final int SLOT_SIZE = 18;
+    private static final int GRID_TOP = 46;
+    private static final int SCROLL_BAR_WIDTH = 6;
 
     private final ModularPanel panel;
     private final List<ItemStack> choices;
@@ -60,6 +67,7 @@ public class SelectItemGuiBuilder {
     private @Nullable Consumer<SlotLikeButtonWidget> currentItemWidgetCustomizer;
     private @Nullable BiConsumer<Integer, SlotLikeButtonWidget> choiceWidgetCustomizer;
     private boolean allowDeselected;
+    private int maxVisibleRows;
 
     private boolean built = false;
 
@@ -168,6 +176,11 @@ public class SelectItemGuiBuilder {
         return this;
     }
 
+    public SelectItemGuiBuilder setMaxVisibleRows(int maxVisibleRows) {
+        this.maxVisibleRows = maxVisibleRows;
+        return this;
+    }
+
     /**
      * Builds panel from the passed template panel with all the elements specified.
      */
@@ -176,7 +189,9 @@ public class SelectItemGuiBuilder {
             throw new IllegalStateException("Choices must not be empty!");
         }
         int rows = (choices.size() - 1) / COLS + 1;
-        panel.size(GUI_WIDTH, 53 + 18 * rows);
+        int visibleRows = maxVisibleRows > 0 ? Math.min(rows, maxVisibleRows) : rows;
+        boolean scrollable = visibleRows < rows;
+        panel.size(GUI_WIDTH + (scrollable ? SCROLL_BAR_WIDTH : 0), 53 + SLOT_SIZE * visibleRows);
 
         panel.childIf(
             headerItem != null || title != null,
@@ -240,10 +255,17 @@ public class SelectItemGuiBuilder {
                 rowWidgets.add(widget);
             }
         }
-        panel.child(
-            new Grid().coverChildren()
-                .pos(7, 46)
-                .grid(choiceWidgets));
+        Grid choiceGrid = new Grid().coverChildren()
+            .grid(choiceWidgets);
+        if (scrollable) {
+            panel.child(
+                new ScrollableChoiceGrid(() -> selected > DESELECTED ? selected / COLS * SLOT_SIZE : 0)
+                    .child(choiceGrid)
+                    .pos(7, GRID_TOP)
+                    .size(SLOT_SIZE * COLS + SCROLL_BAR_WIDTH, SLOT_SIZE * visibleRows));
+        } else {
+            panel.child(choiceGrid.pos(7, GRID_TOP));
+        }
 
         if (selectedSyncHandler != null) {
             // Correct current selected
@@ -264,5 +286,29 @@ public class SelectItemGuiBuilder {
     public interface OnSelectedAction {
 
         void accept(int selected, MouseData mouseData);
+    }
+
+    private static class ScrollableChoiceGrid extends ListWidget<IWidget, ScrollableChoiceGrid> {
+
+        private final IntSupplier initialScroll;
+        private boolean scrolledToSelection;
+
+        ScrollableChoiceGrid(IntSupplier initialScroll) {
+            this.initialScroll = initialScroll;
+            scrollDirection(new VerticalScrollData(false, SCROLL_BAR_WIDTH));
+            // keep the grid left alignd so the reserved
+            // scroll bar strip on the right stays clear of the last column
+            crossAxisAlignment(Alignment.CrossAxis.START);
+        }
+
+        @Override
+        public boolean postLayoutWidgets() {
+            boolean laidOut = super.postLayoutWidgets();
+            if (laidOut && !this.scrolledToSelection) {
+                this.scrolledToSelection = true;
+                getScrollData().scrollTo(getScrollArea(), this.initialScroll.getAsInt());
+            }
+            return laidOut;
+        }
     }
 }
