@@ -787,7 +787,13 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected enum DataHatchElement implements IHatchElement<MTEDrillerBase> {
 
-        DataAccess;
+        DataAccess("GT5U.MBTT.DataAccessHatch");
+
+        private final String name;
+
+        DataHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -802,6 +808,16 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         @Override
         public long count(MTEDrillerBase t) {
             return t.mDataAccessHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
