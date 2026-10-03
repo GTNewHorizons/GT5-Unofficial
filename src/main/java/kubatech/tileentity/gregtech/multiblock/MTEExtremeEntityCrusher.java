@@ -152,8 +152,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public static final int INFERNAL_POWER_MULTIPLIER = 8;
     public static final int BATCH_MODE_MULTIPLIER = 16;
     public static final int RITUAL_DURATION = 400;
-    public static final long RITUAL_EU_DIVISOR = 4L;
     public static final int RITUAL_DAMAGE = 3;
+    public static final long RITUAL_EU_DIVISOR = 4L;
     public final Random rand = new FastRandom();
     public final WeaponCache weaponCache;
     private EECEventHandler eventHandler;
