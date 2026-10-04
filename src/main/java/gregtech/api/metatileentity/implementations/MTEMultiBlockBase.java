@@ -660,9 +660,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 deactivateCoilLease();
             }
 
-            if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
-                coilLease = GTCoilTracker.activate(this, mCoils);
+            if (mMachine && isActive) {
+                tryActivateCoilLease();
             }
+        }
+    }
+
+    // method to hook into for non-coil coilLeases.
+    protected void tryActivateCoilLease() {
+        if (!mCoils.isEmpty() && coilLease == null) {
+            coilLease = GTCoilTracker.activate(this, mCoils);
         }
     }
 

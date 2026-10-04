@@ -42,8 +42,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
@@ -74,13 +76,16 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.common.data.GTCoilTracker;
 import gregtech.common.gui.modularui.multiblock.MTEPlasmaForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -555,7 +560,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     MTEPlasmaForge::onCasingFound,
                     ofBlock(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))))
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings1, DIM_TRANS_CASING))
-        .addElement('s', ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING))
+        .addElement('s', activeBridge(ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING)))
         .build();
 
     public MTEPlasmaForge(int aID, String aName, String aNameRegional) {
@@ -641,7 +646,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         IIconContainer glow = OVERLAY_FUSION1_GLOW;
-        if (convergence && discount == maximum_discount) {
+        if (isConvergenceActive()) {
             glow = OVERLAY_RAINBOWSCREEN_GLOW;
         }
         return Textures.BlockIcons.createTextureWithCasing(
@@ -719,7 +724,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 overclockCalculator = super.createOverclockCalculator(recipeAfterAdjustments(recipe, inputFluids))
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity);
-                if (convergence && discount == maximum_discount && enoughCatalyst) {
+                if (isConvergenceActive() && enoughCatalyst) {
                     overclockCalculator = overclockCalculator.enablePerfectOC();
                 }
                 return overclockCalculator;
@@ -747,7 +752,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             for (FluidStack fuel : valid_fuels) {
                 if (tRecipe.mFluidInputs[i].isFluidEqual(fuel)) {
                     recalculateDiscount();
-                    if (convergence && discount == maximum_discount) {
+                    if (isConvergenceActive()) {
                         calculateCatalystIncrease(tRecipe, inputFluids, i);
                         getBaseMetaTileEntity()
                             .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
@@ -758,7 +763,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             }
         }
         // Convergence adjusts the recipe even if it has no catalyst input
-        if (convergence && discount == maximum_discount) {
+        if (isConvergenceActive()) {
             // Append 0 of the chosen catalyst to input fluids for calculations.
             FluidStack[] fluidInputsWithCatalyst = new FluidStack[tRecipe.mFluidInputs.length + 1];
             for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
@@ -831,6 +836,11 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     public void clearHatches() {
         super.clearHatches();
         mExoticEnergyHatches.clear();
+        bridges.clear();
+    }
+
+    boolean isConvergenceActive() {
+        return this.convergence && this.discount == maximum_discount;
     }
 
     @Override
@@ -944,10 +954,19 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 if (convergence && (controllerStack == null
                     || !controllerStack.isItemEqual(ItemList.Transdimensional_Alignment_Matrix.get(1)))) {
                     convergence = false;
+                    deactivateBridgeLease();
                     getBaseMetaTileEntity()
                         .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
                 }
             }
+        }
+    }
+
+    @Override
+    protected void tryActivateCoilLease() {
+        super.tryActivateCoilLease();
+        if (isConvergenceActive() && !bridges.isEmpty() && bridgeLease == null) {
+            bridgeLease = GTCoilTracker.activate(this, bridges);
         }
     }
 
@@ -1004,6 +1023,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     public void setConvergenceStatus(boolean value) {
         this.convergence = value;
+        if (!convergence) {
+            this.deactivateBridgeLease();
+        }
     }
 
     public int getCatalystTypeForRecipesWithoutCatalyst() {
@@ -1075,6 +1097,36 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     "GT5U.infodata.plasma_forge.fuel_discount",
                     formatNumber(100 * (1 - tag.getDouble("discount")))));
 
+        }
+    }
+
+    // todo: figure out how to make two leases exist in harmony without sucking
+    public LongArrayList bridges = new LongArrayList();
+    private GTCoilTracker.MultiCoilLease bridgeLease = null;
+
+    public static IStructureElement<MTEPlasmaForge> activeBridge(IStructureElement<MTEPlasmaForge> element) {
+        return new GTStructureUtility.ProxyStructureElement<>(element) {
+
+            @Override
+            public boolean check(MTEPlasmaForge t, World world, int x, int y, int z) {
+                if (!element.check(t, world, x, y, z)) return false;
+                t.bridges.add(CoordinatePacker.pack(x, y, z));
+
+                return true;
+            }
+        };
+    }
+
+    @Override
+    protected void deactivateCoilLease() {
+        super.deactivateCoilLease();
+        deactivateBridgeLease();
+    }
+
+    public void deactivateBridgeLease() {
+        if (bridgeLease != null) {
+            GTCoilTracker.deactivate(bridgeLease);
+            bridgeLease = null;
         }
     }
 }
