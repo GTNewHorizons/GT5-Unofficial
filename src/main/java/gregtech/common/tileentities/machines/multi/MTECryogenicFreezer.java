@@ -64,8 +64,8 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int PARALLELS = 16;
-    private static final float SPEED_BONUS = 3F;
-    private static final float EU_MODIFIER = 0.9F;
+    private static final double SPEED_BONUS = 3.0D;
+    private static final double EU_MODIFIER = 0.9D;
     private static final int CRYOTHEUM_PER_SECOND = 10;
 
     private static IStructureDefinition<MTECryogenicFreezer> STRUCTURE_DEFINITION = null;
@@ -209,7 +209,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / SPEED_BONUS)
+            .setSpeedBonus(1.0D / SPEED_BONUS)
             .setEuModifier(EU_MODIFIER)
             .setMaxParallelSupplier(this::getTrueParallel);
     }

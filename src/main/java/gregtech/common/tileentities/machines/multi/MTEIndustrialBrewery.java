@@ -174,7 +174,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.5F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 1.5D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
