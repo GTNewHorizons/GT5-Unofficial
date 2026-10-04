@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,17 +14,16 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Mouse;
 
 import com.cleanroommc.modularui.api.GuiAxis;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.GuiDraw;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -34,23 +31,21 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.GTMod;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.gui.modularui.multiblock.dronecentre.widget.CameraViewportWidget;
 
 public class CameraObservePanel extends ModularPanel {
 
-    private static final int COLOR_OVERLAY_BG = Color.withAlpha(Color.BLACK.brighter(1), 144);
-    private static final int COLOR_BORDER = Color.CYAN.main;
-    private static final int COLOR_BACKGROUND = Color.WHITE.darker(6);
-    private static final int COLOR_OUTER_LINE = Color.BLACK.main;
-    private static final int COLOR_INNER_LINE_LIGHT = Color.WHITE.main;
-    private static final int COLOR_INNER_LINE_DARK = Color.GREY.darker(1);
-    private static final int COLOR_RESCUE_TEXT = Color.WHITE.main;
-    private static final int COLOR_DECORATIVE_LINE = Color.withAlpha(Color.CYAN.main, 80);
-    private static final int COLOR_RECIPE_TEXT = Color.WHITE.darker(5);
+    private static final int HEADER_HEIGHT = 16;
+    private static final int FOOTER_HEIGHT = 26;
+    private static final int SIDEBAR_WIDTH = 100;
+    private static final int RESCUE_BUTTON_HEIGHT = 18;
+    private static final float SIDEBAR_TEXT_SCALE = 0.75F;
+    private static final float HELP_TEXT_SCALE = 0.7F;
 
-    private final Runnable closeCallback;
     private final List<String> rawRecipeInfo = new ArrayList<>();
     private final List<String> currentRecipeInfo = new ArrayList<>();
 
@@ -58,60 +53,30 @@ public class CameraObservePanel extends ModularPanel {
     private NBTTagCompound lastObservedStatus = null;
     private long lastHoveredCoord = CoordinatePacker.pack(-2, -2, -2);
 
-    private static final IDrawable BACKGROUND = (_, x, y, width, height, _) -> {
-        drawRect(x, y, x + width, y + height, COLOR_OVERLAY_BG);
-        drawFrame(x, y, x + width, y + height, COLOR_BORDER);
-    };
-
     public CameraObservePanel(PanelSyncManager syncManager, Runnable closeCallback) {
         super("cameraObservePanel");
-        this.closeCallback = closeCallback;
 
-        this.background((_, x, y, w, h, _) -> {
-            int sideW = Math.clamp((int) (w * 0.18), 60, 100);
-            int margin = Math.max(8, (int) (w * 0.03));
-            int gap = Math.max(6, (int) (w * 0.02));
-
-            int vx = margin + sideW + gap;
-            int vw = w - 2 * (margin + sideW + gap);
-            int vy = Math.max(16, (int) (h * 0.1));
-            int footerH = Math.max(20, (int) (h * 0.15));
-            int vh = h - vy - footerH;
-
-            int avx = x + vx;
-            int avy = y + vy;
-
-            // Background
-            drawRect(x, y, x + w, avy, COLOR_BACKGROUND);
-            drawRect(x, avy + vh, x + w, y + h, COLOR_BACKGROUND);
-            drawRect(x, avy, avx, avy + vh, COLOR_BACKGROUND);
-            drawRect(avx + vw, avy, x + w, avy + vh, COLOR_BACKGROUND);
-
-            // Border
-            drawRect(avx - 1, avy - 1, avx + vw + 1, avy, COLOR_BORDER);
-            drawRect(avx - 1, avy - 1, avx, avy + vh + 1, COLOR_BORDER);
-            drawRect(avx - 1, avy + vh, avx + vw + 1, avy + vh + 1, COLOR_BORDER);
-            drawRect(avx + vw, avy - 1, avx + vw + 1, avy + vh + 1, COLOR_BORDER);
-
-            // Outer line
-            drawRect(x, y, x + w, y + 1, COLOR_OUTER_LINE);
-            drawRect(x, y, x + 1, y + h, COLOR_OUTER_LINE);
-            drawRect(x, y + h - 1, x + w, y + h, COLOR_OUTER_LINE);
-            drawRect(x + w - 1, y, x + w, y + h, COLOR_OUTER_LINE);
-
-            // Inner line
-            drawRect(x + 1, y + 1, x + w - 1, y + 2, COLOR_INNER_LINE_LIGHT);
-            drawRect(x + 1, y + 1, x + 2, y + h - 1, COLOR_INNER_LINE_LIGHT);
-            drawRect(x + 1, y + h - 2, x + w - 1, y + h - 1, COLOR_INNER_LINE_DARK);
-            drawRect(x + w - 2, y + 1, x + w - 1, y + h - 1, COLOR_INNER_LINE_DARK);
-        })
+        this.sizeRel(CameraViewportClientManager.PANEL_SCREEN_FRACTION)
+            .center()
+            .disableThemeBackground(true)
+            .child(
+                Flow.column()
+                    .full()
+                    .child(createHeader())
+                    .child(
+                        Flow.row()
+                            .fullWidth()
+                            .expanded()
+                            .child(createMetricsSidebar())
+                            .child(createViewportFrame())
+                            .child(createRecipeSidebar()))
+                    .child(createFooter()))
+            .child(ButtonWidget.panelCloseButton())
             .onCloseAction(() -> {
-                if (syncManager.isClient()) {
-                    if (!GTMod.proxy.cameraViewportManager.isSwitchingToRemoteGui()) {
-                        GTMod.proxy.cameraViewportManager.stopObserving();
-                        if (this.closeCallback != null) {
-                            this.closeCallback.run();
-                        }
+                if (syncManager.isClient() && !GTMod.proxy.cameraViewportManager.isSwitchingToRemoteGui()) {
+                    GTMod.proxy.cameraViewportManager.stopObserving();
+                    if (closeCallback != null) {
+                        closeCallback.run();
                     }
                 }
             });
@@ -130,132 +95,101 @@ public class CameraObservePanel extends ModularPanel {
     }
 
     @Override
-    public void beforeResize(boolean onOpen) {
-        Minecraft mc = Minecraft.getMinecraft();
-        ScaledResolution sr = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
-        int sw = sr.getScaledWidth();
-        int sh = sr.getScaledHeight();
-
-        int panelW = (int) (sw * CameraViewportClientManager.PANEL_SCREEN_FRACTION);
-        int panelH = (int) (sh * CameraViewportClientManager.PANEL_SCREEN_FRACTION);
-
-        this.width(panelW)
-            .height(panelH);
-
-        this.removeAll();
-        buildChildren(panelW, panelH);
-
-        super.beforeResize(onOpen);
-    }
-
-    private void buildChildren(int panelW, int panelH) {
-        final int sideW = Math.clamp((int) (panelW * 0.18), 60, 100);
-        final int margin = Math.max(8, (int) (panelW * 0.03));
-        final int gap = Math.max(6, (int) (panelW * 0.02));
-
-        final int vx = margin + sideW + gap;
-        final int vw = panelW - 2 * (margin + sideW + gap);
-        final int vy = Math.max(16, (int) (panelH * 0.1));
-        final int footerH = Math.max(20, (int) (panelH * 0.15));
-        final int vh = panelH - vy - footerH;
-
-        this.child(
-            new Widget<>().size(panelW, panelH)
-                .left(0)
-                .top(0));
-
-        this.child(
-            IKey.lang("GT5U.gui.text.drone_observe_default")
-                .asWidget()
-                .textAlign(Alignment.CENTER)
-                .scale(Math.clamp(panelW / 426.6F, 0.7F, 1.1F))
-                .left(vx)
-                .top((vy - 14) / 2)
-                .width(vw)
-                .height(14));
-
-        // Drone Metrics
-        float textScale = Math.clamp(sideW / 113.3F, 0.5F, 0.8F);
-        this.child(
-            createDroneMetricsWidget(sideW, vh, textScale).left(margin)
-                .top(vy));
-
-        this.child(
-            new ButtonWidget<>().left(margin + 4)
-                .top(vy + vh - 22)
-                .size(sideW - 8, 18)
-                .onMousePressed(mouseButton -> {
-                    if (mouseButton == 0) {
-                        ((CameraViewportClientManager) GTMod.proxy.cameraViewportManager).resetToSpawn();
-                    }
-                    return true;
-                })
-                .overlay(
-                    IKey.lang("GT5U.gui.button.drone_rescue")
-                        .alignment(Alignment.CENTER)
-                        .color(COLOR_RESCUE_TEXT))
-                .tooltipBuilder(t -> {
-                    if (!Mouse.isGrabbed()) {
-                        t.add(IKey.lang("GT5U.gui.button.drone_rescue.tooltip"));
-                    }
-                }));
-
-        // Viewport
-        this.child(
-            new CameraViewportWidget().left(vx)
-                .top(vy)
-                .size(vw, vh));
-
-        // Recipe
-        this.child(
-            createRecipeWidget(sideW, vh, textScale).left(panelW - margin - sideW)
-                .top(vy));
-
-        // Help text
-        float helpScale = Math.clamp(panelW / 640F, 0.5F, 0.7F);
-        int lineH = (int) (10 * helpScale);
-        int helpColH = 2 * lineH + 4;
-
-        this.child(
-            Flow.column()
-                .center()
-                .childPadding(4)
-                .child(
-                    IKey.lang("GT5U.gui.text.drone_observe_help_1")
-                        .asWidget()
-                        .textAlign(Alignment.CENTER)
-                        .scale(helpScale)
-                        .width(vw)
-                        .height(lineH))
-                .child(
-                    IKey.lang("GT5U.gui.text.drone_observe_help_2")
-                        .asWidget()
-                        .textAlign(Alignment.CENTER)
-                        .scale(helpScale)
-                        .width(vw)
-                        .height(lineH))
-                .left(vx)
-                .top(vy + vh + (footerH - helpColH) / 2)
-                .width(vw)
-                .height(helpColH));
-
-        this.child(ButtonWidget.panelCloseButton());
-    }
-
-    @Override
     public boolean isDraggable() {
         return false;
     }
 
-    private Flow createDroneMetricsWidget(int width, int height, float textScale) {
-        CameraViewportClientManager cvm = (CameraViewportClientManager) GTMod.proxy.cameraViewportManager;
-        Flow col = Flow.column()
-            .background(BACKGROUND)
-            .size(width, height)
+    private static IWidget createHeader() {
+        return IKey.lang("GT5U.gui.text.drone_observe_default")
+            .asWidget()
+            .fullWidth()
+            .height(HEADER_HEIGHT)
+            .textAlign(Alignment.CENTER)
+            .background(GTGuiTextures.BACKGROUND_STANDARD);
+    }
+
+    private static IWidget createFooter() {
+        return Flow.column()
+            .fullWidth()
+            .height(FOOTER_HEIGHT)
+            .background(GTGuiTextures.BACKGROUND_STANDARD)
+            .mainAxisAlignment(Alignment.MainAxis.CENTER)
+            .childPadding(2)
+            .child(createHelpLine("GT5U.gui.text.drone_observe_help_1"))
+            .child(createHelpLine("GT5U.gui.text.drone_observe_help_2"));
+    }
+
+    private static IWidget createHelpLine(String langKey) {
+        return IKey.lang(langKey)
+            .asWidget()
+            .fullWidth()
+            .scale(HELP_TEXT_SCALE)
+            .textAlign(Alignment.CENTER);
+    }
+
+    private static Flow createSidebar() {
+        return Flow.column()
+            .width(SIDEBAR_WIDTH)
+            .fullHeight()
+            .background(GTGuiTextures.BACKGROUND_STANDARD)
+            .padding(4)
+            .childPadding(4);
+    }
+
+    private IWidget createMetricsSidebar() {
+        return createSidebar().child(createDroneMetricsWidget(SIDEBAR_TEXT_SCALE))
+            .child(
+                new ButtonWidget<>().fullWidth()
+                    .height(RESCUE_BUTTON_HEIGHT)
+                    .overlay(IKey.lang("GT5U.gui.button.drone_rescue"))
+                    .onMousePressed(mouseButton -> {
+                        if (mouseButton == 0) {
+                            ((CameraViewportClientManager) GTMod.proxy.cameraViewportManager).resetToSpawn();
+                        }
+                        return true;
+                    })
+                    .tooltipBuilder(t -> {
+                        if (!Mouse.isGrabbed()) {
+                            t.add(IKey.lang("GT5U.gui.button.drone_rescue.tooltip"));
+                        }
+                    }));
+    }
+
+    private IWidget createRecipeSidebar() {
+        return createSidebar().child(createRecipeWidget(SIDEBAR_TEXT_SCALE));
+    }
+
+    /** The camera view, wrapped in a 1px themed frame drawn just outside of it. */
+    private static IWidget createViewportFrame() {
+        return new ParentWidget<>().expanded()
+            .fullHeight()
+            .padding(1)
+            .widgetTheme(GTWidgetThemes.DRONE_CAMERA_FRAME)
+            .child(new CameraViewportWidget().full());
+    }
+
+    /** A dark info box used by both sidebars. */
+    private static <T extends Flow> T styleInfoBox(T column) {
+        column.widgetTheme(GTWidgetThemes.DRONE_CAMERA_SCREEN)
+            .fullWidth()
+            .expanded()
             .padding(4)
             .childPadding(2);
+        return column;
+    }
 
-        int innerW = width - 8;
+    private static IWidget createDivider() {
+        return new Widget<>().widgetTheme(GTWidgetThemes.DRONE_CAMERA_DIVIDER)
+            .fullWidth()
+            .height(2)
+            .marginBottom(4);
+    }
+
+    private Flow createDroneMetricsWidget(float textScale) {
+        CameraViewportClientManager cvm = (CameraViewportClientManager) GTMod.proxy.cameraViewportManager;
+        Flow col = styleInfoBox(Flow.column());
+
+        int innerW = SIDEBAR_WIDTH - 16;
 
         // Title header
         col.child(
@@ -265,13 +199,7 @@ public class CameraObservePanel extends ModularPanel {
                 .scale(textScale)
                 .height((int) (12 * textScale)));
 
-        // Decorative line
-        col.child(
-            ((IDrawable) (_, x, y, width1, height1,
-                _) -> drawRect(x, y, x + width1, y + height1, COLOR_DECORATIVE_LINE)).asWidget()
-                    .width(innerW)
-                    .height(2)
-                    .marginBottom(4));
+        col.child(createDivider());
 
         col.child(
             IKey.lang("GT5U.gui.text.drone_cam_stream_on")
@@ -357,14 +285,10 @@ public class CameraObservePanel extends ModularPanel {
         return col;
     }
 
-    private RecipeFlow createRecipeWidget(int width, int height, float textScale) {
-        RecipeFlow col = new RecipeFlow(this);
-        col.background(BACKGROUND)
-            .size(width, height)
-            .padding(4)
-            .childPadding(2);
+    private RecipeFlow createRecipeWidget(float textScale) {
+        RecipeFlow col = styleInfoBox(new RecipeFlow(this));
 
-        int innerW = width - 8;
+        int innerW = SIDEBAR_WIDTH - 16;
 
         // Title header
         col.child(
@@ -374,16 +298,10 @@ public class CameraObservePanel extends ModularPanel {
                 .scale(textScale)
                 .height((int) (12 * textScale)));
 
-        // line
-        col.child(
-            ((IDrawable) (_, x, y, width1, height1,
-                _) -> drawRect(x, y, x + width1, y + height1, COLOR_DECORATIVE_LINE)).asWidget()
-                    .width(innerW)
-                    .height(2)
-                    .marginBottom(4));
+        col.child(createDivider());
 
         // recipe details
-        final int maxWidth = (int) ((width - 8) / textScale);
+        final int maxWidth = (int) (innerW / textScale);
         for (int i = 0; i < 16; i++) {
             final int index = i;
             TextWidget<?> textWidget = IKey.dynamic(() -> {
@@ -392,8 +310,8 @@ public class CameraObservePanel extends ModularPanel {
                 }
                 return "";
             })
-                .color(COLOR_RECIPE_TEXT)
                 .asWidget()
+                .widgetTheme(GTWidgetThemes.DRONE_CAMERA_TEXT)
                 .width(innerW)
                 .scale(textScale)
                 .height((int) (10 * textScale))
@@ -443,8 +361,7 @@ public class CameraObservePanel extends ModularPanel {
         lastObservedStatus = tag;
         lastHoveredCoord = hCoord;
 
-        float textScale = Math.clamp(width / 113.3F, 0.5F, 0.8F);
-        int maxWidth = (int) ((width - 8) / textScale);
+        int maxWidth = (int) ((width - 8) / SIDEBAR_TEXT_SCALE);
 
         List<String> newInfo = new ArrayList<>();
 
@@ -652,17 +569,6 @@ public class CameraObservePanel extends ModularPanel {
             contentPart = contentPart.replaceAll("\\{[^}]*}", "");
         }
         return prefix + contentPart.trim();
-    }
-
-    private static void drawRect(int left, int top, int right, int bottom, int color) {
-        GuiDraw.drawRect(left, top, right - left, bottom - top, color);
-    }
-
-    private static void drawFrame(int left, int top, int right, int bottom, int color) {
-        GuiDraw.drawRect(left, top, right - left, 1, color);
-        GuiDraw.drawRect(left, bottom - 1, right - left, 1, color);
-        GuiDraw.drawRect(left, top, 1, bottom - top, color);
-        GuiDraw.drawRect(right - 1, top, 1, bottom - top, color);
     }
 
     public static class RecipeFlow extends Flow {

@@ -210,6 +210,60 @@ public final class GTWidgetThemes {
         .parser(noInheritanceParser(WidgetTheme.class))
         .register();
 
+    // Drone Centre camera screen
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_FRAME = themeApi
+        .widgetThemeKeyBuilder("droneCameraFrame", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new Rectangle().color(Color.CYAN.main)
+                    .hollow(),
+                Color.WHITE.main,
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_SCREEN = themeApi
+        .widgetThemeKeyBuilder("droneCameraScreen", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new DrawableStack(
+                    new Rectangle().color(Color.withAlpha(Color.BLACK.brighter(1), 144)),
+                    new Rectangle().color(Color.CYAN.main)
+                        .hollow()),
+                Color.WHITE.main,
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_DIVIDER = themeApi
+        .widgetThemeKeyBuilder("droneCameraDivider", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new Rectangle().color(Color.withAlpha(Color.CYAN.main, 80)),
+                Color.WHITE.main,
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_TEXT = themeApi
+        .widgetThemeKeyBuilder("droneCameraText", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, Color.WHITE.darker(5), false, 0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+
     private static WidgetThemeKey<WidgetTheme> registerThemedTexture(String textureThemeId) {
         return themeApi.widgetThemeKeyBuilder(textureThemeId, WidgetTheme.class)
             .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0xFF404040, false, 0))
