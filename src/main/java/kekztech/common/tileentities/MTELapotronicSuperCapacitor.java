@@ -1123,14 +1123,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     private enum LSCHatchElement implements IHatchElement<MTELapotronicSuperCapacitor> {
 
-        Energy(MTEHatchEnergyMulti.class, MTEHatchEnergy.class) {
+        Energy("GT5U.MBTT.AnyEnergyHatch", MTEHatchEnergyMulti.class, MTEHatchEnergy.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {
                 return t.mEnergyHatches.size() + t.mEnergyHatchesTT.size() + t.mEnergyTunnelsTT.size();
             }
         },
-        Dynamo(MTEHatchDynamoMulti.class, MTEHatchDynamo.class) {
+        Dynamo("GT5U.MBTT.AnyEnergyDynamo", MTEHatchDynamoMulti.class, MTEHatchDynamo.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {
@@ -1138,10 +1138,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             }
         },;
 
+        private final String name;
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         @SafeVarargs
-        LSCHatchElement(Class<? extends IMetaTileEntity>... mteClasses) {
+        LSCHatchElement(String name, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Arrays.asList(mteClasses);
         }
 
@@ -1153,6 +1155,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         @Override
         public IGTHatchAdder<? super MTELapotronicSuperCapacitor> adder() {
             return MTELapotronicSuperCapacitor::addBottomHatches;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
