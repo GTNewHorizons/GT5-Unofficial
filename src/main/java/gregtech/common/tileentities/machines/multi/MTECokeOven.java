@@ -110,7 +110,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
         .addElement(
             'C',
-            buildHatchAdder(MTECokeOven.class).atLeast(new HatchElement("GT5U.MBTT.CokeOvenHatch"))
+            buildHatchAdder(MTECokeOven.class).atLeast(CokeHatchElement.CokeHatch)
                 .casingIndex(1)
                 .hint(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings12, 0)))
@@ -424,11 +424,13 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         this.fluid = fluid;
     }
 
-    private static class HatchElement implements IHatchElement<MTECokeOven> {
+    private enum CokeHatchElement implements IHatchElement<MTECokeOven> {
+
+        CokeHatch("GT5U.MBTT.CokeOvenHatch");
 
         private final String name;
 
-        public HatchElement(String name) {
+        CokeHatchElement(String name) {
             this.name = name;
         }
 
@@ -440,11 +442,6 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         @Override
         public IGTHatchAdder<? super MTECokeOven> adder() {
             return MTECokeOven::addHatch;
-        }
-
-        @Override
-        public String name() {
-            return "Coke Oven Hatch";
         }
 
         @Override
