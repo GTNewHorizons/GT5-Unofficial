@@ -47,8 +47,9 @@ public class ProspectingPacket extends DetravPacket {
         public BlockInfo(ItemStack stack) {
             this.stack = stack;
             this.name = stack.getDisplayName();
-            this.rgba = ProspectingPacket.getItemColor(stack);
             IOreMaterial mat = OreManager.getMaterial(stack);
+            short[] rgba1 = mat == null ? new short[] { 125, 125, 125, 255 } : mat.getRGBA();
+            this.rgba = rgba(rgba1);
             this.internalName = mat == null ? "" : mat.getInternalName();
         }
     }
@@ -60,7 +61,7 @@ public class ProspectingPacket extends DetravPacket {
         public FluidInfo(FluidStack stack) {
             this.stack = stack;
             this.name = stack.getLocalizedName();
-            this.rgba = ProspectingPacket.getFluidColor(stack);
+            this.rgba = rgba(FluidColors.getColor(stack.getFluidID()));
         }
     }
 
@@ -93,13 +94,6 @@ public class ProspectingPacket extends DetravPacket {
      * {object id: (fluid stack, localized name, object rgba)}
      */
     public final Short2ObjectOpenHashMap<FluidInfo> fluids = new Short2ObjectOpenHashMap<>();
-    /**
-     * {object id: localized name}
-     */
-    // /** {object id: (object name, object rgba)} */
-    // public final Short2ObjectOpenHashMap<ObjectIntPair<String>> objects = new Short2ObjectOpenHashMap<>();
-    // /** {object id: ore material internal name}, used to render the ore icon on scanner markers. */
-    // public final Short2ObjectOpenHashMap<String> oreMaterialNames = new Short2ObjectOpenHashMap<>();
     /**
      * {object name: object id}
      */
@@ -171,18 +165,6 @@ public class ProspectingPacket extends DetravPacket {
         tOut.writeInt(size);
         tOut.writeInt(ptype);
 
-        // tOut.writeInt(objects.size());
-        //
-        // for (var obj : objects.short2ObjectEntrySet()) {
-        // tOut.writeShort(obj.getShortKey());
-        // tOut.writeUTF(
-        // obj.getValue()
-        // .left());
-        // tOut.writeInt(
-        // obj.getValue()
-        // .rightInt());
-        // tOut.writeUTF(oreMaterialNames.getOrDefault(obj.getShortKey(), ""));
-        // }
         tOut.writeInt(items.size());
         for (var obj : items.short2ObjectEntrySet()) {
             tOut.writeShort(obj.getShortKey());
@@ -315,16 +297,6 @@ public class ProspectingPacket extends DetravPacket {
             }
         }
         return new Short2ObjectOpenHashMap<>();
-    }
-
-    private static int getItemColor(ItemStack stack) {
-        IOreMaterial mat = OreManager.getMaterial(stack);
-        short[] rgba = mat == null ? new short[] { 125, 125, 125, 255 } : mat.getRGBA();
-        return rgba(rgba);
-    }
-
-    private static int getFluidColor(FluidStack fluid) {
-        return rgba(FluidColors.getColor(fluid.getFluidID()));
     }
 
     public Object2IntOpenHashMap<String> getColorMap() {
