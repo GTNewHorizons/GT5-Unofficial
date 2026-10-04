@@ -99,7 +99,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public IStructureDefinition<MTEBECStorage> compile(String[][] definition) {
         structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 21, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
+            .withHatches(1, 42, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
