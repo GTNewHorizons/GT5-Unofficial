@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -66,6 +67,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -795,8 +797,18 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     private boolean updateModuleEU(long newPortion, boolean force) {
+        if (modules.isEmpty()) {
+            return false;
+        }
+        List<MTEHatch> energyHatches = getExoticAndNormalEnergyHatchList();
+        if (energyHatches.isEmpty()) {
+            return false;
+        }
+
         int matrix = 0;
         int nonMatrix = 0;
+        var modules = new ArrayList<>(this.modules);
+
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
             ModuleTypes type = module.getModuleType();
             if (type == ModuleTypes.Splitter) continue;
@@ -809,7 +821,17 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             else nonMatrix++;
         }
 
-        long totalEUt = this.getMaxInputEu();
+        if (matrix + nonMatrix == 0) {
+            return false;
+        }
+        long totalEUt = ExoticEnergyInputHelper.getTotalEuMulti(energyHatches);
+        if (totalEUt == 0) {
+            for (MTENanochipAssemblyModuleBase<?> module : modules) {
+                module.setAvailableEUt(0);
+                module.setBufferSize(BigInteger.ZERO);
+            }
+            return true;
+        }
 
         long matrixFullPortion = (long) ((newPortion / 100.0f) * totalEUt);
         long nonMatrixFullPortion = totalEUt - matrixFullPortion;
@@ -882,14 +904,16 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     // Hatch adder for modules
     public enum AssemblyHatchElement implements IHatchElement<MTENanochipAssemblyComplex> {
 
-        AssemblyModule(MTENanochipAssemblyComplex::addModuleToMachineList, MTENanochipAssemblyModuleBase.class) {
+        AssemblyModule("GT5U.MBTT.AnyModule", MTENanochipAssemblyComplex::addModuleToMachineList,
+            MTENanochipAssemblyModuleBase.class) {
 
             @Override
             public long count(MTENanochipAssemblyComplex tileEntity) {
                 return tileEntity.modules.size();
             }
         },
-        VacuumConveyorHatch(MTENanochipAssemblyComplex::addConveyorToMachineList, MTEHatchVacuumConveyor.class) {
+        VacuumConveyorHatch("GT5U.MBTT.VacuumConveyorHatch", MTENanochipAssemblyComplex::addConveyorToMachineList,
+            MTEHatchVacuumConveyor.class) {
 
             @Override
             public long count(MTENanochipAssemblyComplex tileEntity) {
@@ -898,7 +922,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         },
         // Hatches are allowed in the module base slots, but the assembly complex ignores these for its base operation,
         // so we need a custom adder to not add them to our hatch lists
-        IgnoredHatch(MTENanochipAssemblyComplex::ignoreAndAcceptHatch, MTEHatch.class) {
+        IgnoredHatch("GT5U.MBTT.IgnoredHatch", MTENanochipAssemblyComplex::ignoreAndAcceptHatch, MTEHatch.class) {
 
             @Override
             public long count(MTENanochipAssemblyComplex tileEntity) {
@@ -906,14 +930,16 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTENanochipAssemblyComplex> adder;
 
         @SafeVarargs
-        AssemblyHatchElement(IGTHatchAdder<MTENanochipAssemblyComplex> adder,
+        AssemblyHatchElement(String name, IGTHatchAdder<MTENanochipAssemblyComplex> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
+            this.name = name;
         }
 
         @Override
@@ -924,6 +950,16 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         @Override
         public IGTHatchAdder<? super MTENanochipAssemblyComplex> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
