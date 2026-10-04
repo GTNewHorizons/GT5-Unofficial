@@ -364,9 +364,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
             if (base.isActive()) {
                 builder.add(
-                    IGregTechDeviceInformation
-                        .encode("GT5U.gui.text.pump_rate.metrics", numberFormat.format(getFlowRatePerTick())),
-                    IGregTechDeviceInformation.encode("GT5U.gui.text.pump_recovery.metrics", mOilFlow));
+                    IGregTechDeviceInformation.encode("GT5U.gui.text.pump_rate", formatNumber(getFlowRatePerTick())),
+                    IGregTechDeviceInformation.encode("GT5U.gui.text.pump_recovery", formatNumber(mOilFlow)));
             } else {
                 builder.add(failureReason);
             }

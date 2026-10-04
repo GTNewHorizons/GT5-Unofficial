@@ -31,7 +31,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -579,26 +578,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         runtimeFailure = newFailureReason;
     }
 
-    /**
-     * Gets a reason for why the drill turned off, for use in UIs and such.
-     *
-     * @return A reason, or empty if the machine is active or there is no message set yet.
-     */
-    @NotNull
-    protected Optional<String> getFailureReason() {
-        if (getBaseMetaTileEntity().isActive()) {
-            return Optional.empty();
-        }
-
-        if (!shutdownReason.isEmpty()) {
-            return Optional.of(StatCollector.translateToLocal(shutdownReason));
-        }
-
-        return Optional.ofNullable(lastRuntimeFailure)
-            .map(CheckRecipeResult::getDisplayString);
-    }
-
-    /** Same as {@link #getFailureReason()}, but as an {@link IGregTechDeviceInformation#encode} argument. */
+    /** Returns why the drill is off as an {@link IGregTechDeviceInformation#encode} argument, or empty if active. */
     @NotNull
     protected Optional<String> getEncodedFailureReason() {
         if (getBaseMetaTileEntity().isActive()) {
