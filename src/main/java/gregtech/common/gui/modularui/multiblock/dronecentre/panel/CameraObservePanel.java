@@ -40,7 +40,7 @@ public class CameraObservePanel extends ModularPanel {
     private static final int HEADER_HEIGHT = 16;
     private static final int FOOTER_HEIGHT = 26;
     private static final int SIDEBAR_WIDTH = 100;
-    private static final int RESCUE_BUTTON_HEIGHT = 18;
+    private static final int RESCUE_BUTTON_HEIGHT = 26;
     private static final float SIDEBAR_TEXT_SCALE = 0.75F;
     private static final float HELP_TEXT_SCALE = 0.7F;
 
@@ -139,7 +139,7 @@ public class CameraObservePanel extends ModularPanel {
             .fullHeight()
             .background(GTGuiTextures.BACKGROUND_STANDARD)
             .padding(4)
-            .childPadding(4);
+            .childPadding(2);
     }
 
     private IWidget createMetricsSidebar() {
