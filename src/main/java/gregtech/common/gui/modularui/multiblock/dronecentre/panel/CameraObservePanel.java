@@ -2,10 +2,8 @@ package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.DoubleSupplier;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -34,6 +32,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
+import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
 import gregtech.common.gui.modularui.multiblock.dronecentre.widget.CameraViewportWidget;
 
 public class CameraObservePanel extends ModularPanel {
@@ -259,7 +258,7 @@ public class CameraObservePanel extends ModularPanel {
 
     /** Strips WAILA formatting from every line and drops lines that end up empty. */
     private static void cleanLines(List<String> lines) {
-        lines.replaceAll(CameraObservePanel::cleanWailaLine);
+        lines.replaceAll(DroneCentreGuiUtil::cleanWailaLine);
         lines.removeIf(String::isEmpty);
     }
 
@@ -336,95 +335,5 @@ public class CameraObservePanel extends ModularPanel {
         if (itemCount == 0 && fluidCount == 0) {
             lines.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.gui.text.drone_no_outputs"));
         }
-    }
-
-    public static String cleanWailaLine(String line) {
-        if (line == null) return "";
-
-        StringBuilder prefix = new StringBuilder();
-        int idx = 0;
-        while (idx < line.length()) {
-            char c = line.charAt(idx);
-            if (c == ' ' || c == ' ') {
-                prefix.append(c);
-                idx++;
-            } else if (c == '§' && idx + 1 < line.length()) {
-                prefix.append(line, idx, idx + 2);
-                idx += 2;
-            } else {
-                break;
-            }
-        }
-        String contentPart = line.substring(idx);
-
-        if (contentPart.startsWith("¤¦a{") && contentPart.endsWith("}")) {
-            String content = contentPart.substring(4, contentPart.length() - 1);
-            String[] parts = content.split("\u0082");
-            if (parts.length > 0) {
-                String key = parts[0];
-                if ("waila.gt.progress".equals(key) && parts.length >= 3) {
-                    try {
-                        long progress = Long.parseLong(parts[1]);
-                        long max = Long.parseLong(parts[2]);
-                        String label = StatCollector.translateToLocal("GT5U.gui.text.progress");
-                        if (max <= 40) {
-                            if (max <= 1) {
-                                return String.format(Locale.ROOT, "%s%s%d / %d t", prefix, label, progress, max);
-                            } else {
-                                double pct = (progress * 100.0) / max;
-                                return String
-                                    .format(Locale.ROOT, "%s%s%d / %d t (%.1f%%)", prefix, label, progress, max, pct);
-                            }
-                        } else {
-                            double pSec = progress * 0.05;
-                            double mSec = max * 0.05;
-                            double pct = (progress * 100.0) / max;
-                            return String
-                                .format(Locale.ROOT, "%s%s%.1f / %.1f s (%.1f%%)", prefix, label, pSec, mSec, pct);
-                        }
-                    } catch (Exception ignored) {}
-                } else if ("waila.stack".equals(key) && parts.length >= 5) {
-                    try {
-                        int type = Integer.parseInt(parts[1]);
-                        String name = parts[2];
-                        int amount = Integer.parseInt(parts[3]);
-                        int meta = Integer.parseInt(parts[4]);
-
-                        ItemStack stack = null;
-                        if (type == 0) {
-                            net.minecraft.block.Block block = (net.minecraft.block.Block) net.minecraft.block.Block.blockRegistry
-                                .getObject(name);
-                            if (block != null) {
-                                stack = new ItemStack(block, amount, meta);
-                            }
-                        } else if (type == 1) {
-                            Item item = (Item) Item.itemRegistry.getObject(name);
-                            if (item != null) {
-                                stack = new ItemStack(item, amount, meta);
-                            }
-                        }
-
-                        if (stack != null) {
-                            String displayName = stack.getDisplayName();
-                            return prefix + displayName + " x" + amount;
-                        }
-                    } catch (Exception ignored) {}
-                }
-            }
-        }
-
-        // WAILA control characters
-        contentPart = contentPart.replace("¤", "");
-        contentPart = contentPart.replace("¥", "");
-        contentPart = contentPart.replace("¦", "");
-        contentPart = contentPart.replace("\u0082", "");
-        contentPart = contentPart.replace("\u0001", "");
-        contentPart = contentPart.replace("\u0002", "");
-        contentPart = contentPart.replace("\u0003", "");
-        contentPart = contentPart.replace("\u0004", "");
-        if (contentPart.contains("{") && contentPart.contains("}")) {
-            contentPart = contentPart.replaceAll("\\{[^}]*}", "");
-        }
-        return prefix + contentPart.trim();
     }
 }

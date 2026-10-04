@@ -3151,6 +3151,7 @@ GT5U.gui.text.drone_locked_recipe=Recipe Lock:
 GT5U.gui.text.drone_locked_recipe_unnamed=ON
 GT5U.gui.text.drone_output_item=%s x%s
 GT5U.gui.text.drone_output_fluid=%s x%sL
+GT5U.gui.text.drone_progress=§fProgress: %s
 GT5U.gui.text.recipe_metrics_header=§3[ RECIPE METRICS ]
 GT5U.gui.text.recipe_none=§7No active recipe.
 GT5U.gui.text.recipe_connecting=§7Connecting... Synchronizing NBT recipe stream...

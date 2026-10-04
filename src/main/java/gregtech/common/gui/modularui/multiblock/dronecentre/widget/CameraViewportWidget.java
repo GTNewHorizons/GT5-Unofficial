@@ -44,7 +44,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
-import gregtech.common.gui.modularui.multiblock.dronecentre.panel.CameraObservePanel;
+import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -57,7 +57,7 @@ public class CameraViewportWidget extends ParentWidget<CameraViewportWidget> imp
     private static final float SIGNAL_LOST_TEXT_SCALE = 2.0F;
     private static final long SIGNAL_LOST_BLINK_MILLIS = 500;
 
-    // Static noise effect colors 
+    // Static noise effect colors
     private static final int NOISE_SCANLINE_COLOR = Color.WHITE.main;
     private static final int NOISE_BAND_COLOR = Color.BLACK.main;
     private static final int NOISE_FLASH_COLOR = Color.WHITE.darker(5);
@@ -298,7 +298,7 @@ public class CameraViewportWidget extends ParentWidget<CameraViewportWidget> imp
      */
     private static List<String> toInfoBoxLines(List<String> wailaLines) {
         List<String> infoBoxLines = new ArrayList<>();
-        infoBoxLines.add(CameraObservePanel.cleanWailaLine(wailaLines.getFirst()));
+        infoBoxLines.add(DroneCentreGuiUtil.cleanWailaLine(wailaLines.getFirst()));
 
         String producingLabel = StatCollector.translateToLocal("GT5U.waila.producing")
             .toLowerCase();
@@ -308,7 +308,7 @@ public class CameraViewportWidget extends ParentWidget<CameraViewportWidget> imp
             .toLowerCase();
 
         for (int i = 1; i < wailaLines.size(); i++) {
-            String clean = CameraObservePanel.cleanWailaLine(wailaLines.get(i));
+            String clean = DroneCentreGuiUtil.cleanWailaLine(wailaLines.get(i));
             String lower = clean.toLowerCase();
             if (lower.isEmpty()) continue;
 
