@@ -3,7 +3,6 @@ package tectech.thing.metaTileEntity.hatch;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -21,7 +20,6 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
-import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.mechanics.dataTransport.DataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
@@ -34,8 +32,6 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     public static IIconContainer EM_D_SIDES;
     public static IIconContainer EM_D_ACTIVE;
     public static IIconContainer EM_D_CONN;
-
-    private String clientLocale = "en_US";
 
     public T q;
 
@@ -114,17 +110,6 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
 
     protected void resetHistory() {
 
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return false;
-        }
-        if (aPlayer instanceof EntityPlayerMPAccessor) {
-            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
-        }
-        return false;
     }
 
     @Override
