@@ -136,8 +136,8 @@ public class CameraObservePanel extends ModularPanel {
         int sw = sr.getScaledWidth();
         int sh = sr.getScaledHeight();
 
-        int panelW = (int) (sw * 0.8);
-        int panelH = (int) (sh * 0.8);
+        int panelW = (int) (sw * CameraViewportClientManager.PANEL_SCREEN_FRACTION);
+        int panelH = (int) (sh * CameraViewportClientManager.PANEL_SCREEN_FRACTION);
 
         this.width(panelW)
             .height(panelH);
@@ -282,7 +282,7 @@ public class CameraObservePanel extends ModularPanel {
 
         col.child(IKey.dynamic(() -> {
             int signal = cvm.getSignalStrength();
-            if (signal <= 10) {
+            if (cvm.isSignalLost()) {
                 return StatCollector.translateToLocal("GT5U.gui.text.drone_signal_link") + "§c0%";
             }
             String sigColor = "§a";

@@ -59,7 +59,7 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
     private static final int BASE_COLOR_FLASH = Color.WHITE.darker(5);
 
     private long lastStateHash = 0L;
-    private List<String> lastLines = null;
+    private List<String> wailaLines = null;
 
     public CameraViewportWidget() {}
 
@@ -76,20 +76,18 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
 
         Minecraft mc = Minecraft.getMinecraft();
 
-        int signal = cvm.getSignalStrength();
-
         if (cvm.returningFromRemoteGui) {
             cvm.returningFromRemoteGui = false;
-            if (signal > 10) {
+            if (!cvm.isSignalLost()) {
                 Mouse.setGrabbed(true);
             }
         }
-        if (signal <= 10) {
+        if (cvm.isSignalLost()) {
             if (Mouse.isGrabbed()) {
                 Mouse.setGrabbed(false);
             }
             cvm.hoveredMachineCoord = CameraViewportManager.NULL_COORD;
-            cvm.cachedWailaLines = null;
+            wailaLines = null;
 
             // A black screen
             GuiDraw.drawRect(0, 0, w, h, COLOR_BLACK_SCREEN);
@@ -165,24 +163,13 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
                         stateHash = 31L * stateHash + mop.blockZ;
                         stateHash = 31L * stateHash + System.identityHashCode(status);
 
-                        if (stateHash == lastStateHash) {
-                            cvm.cachedWailaLines = lastLines;
-                        } else {
-                            cvm.cachedWailaLines = generateWailaLines(
-                                mc,
-                                mop,
-                                te,
-                                gte,
-                                mte,
-                                status,
-                                mte.getLocalName());
+                        if (stateHash != lastStateHash) {
+                            wailaLines = generateWailaLines(mc, mop, te, gte, mte, status, mte.getLocalName());
                             lastStateHash = stateHash;
-                            lastLines = cvm.cachedWailaLines;
                         }
                     } else {
-                        cvm.cachedWailaLines = null;
+                        wailaLines = null;
                         lastStateHash = 0L;
-                        lastLines = null;
                     }
                 }
             }
@@ -190,17 +177,16 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
 
         if (!hasHovered) {
             cvm.hoveredMachineCoord = CameraViewportManager.NULL_COORD;
-            cvm.cachedWailaLines = null;
+            wailaLines = null;
             lastStateHash = 0L;
-            lastLines = null;
         }
 
-        if (cvm.cachedWailaLines != null && !cvm.cachedWailaLines.isEmpty()) {
-            drawBasicInfoHUD(w, cvm.cachedWailaLines);
+        if (wailaLines != null && !wailaLines.isEmpty()) {
+            drawBasicInfoHUD(w, wailaLines);
         }
 
         // Noise
-        signal = cvm.getSignalStrength();
+        int signal = cvm.getSignalStrength();
         if (signal < 100) {
             double noiseFactor = (100.0 - signal) / 90.0;
             ThreadLocalRandom rand = ThreadLocalRandom.current();
@@ -263,8 +249,7 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
 
     @Override
     public @NotNull Result onMousePressed(int mouseButton) {
-        if (mouseButton == 0
-            && ((CameraViewportClientManager) GTMod.proxy.cameraViewportManager).getSignalStrength() > 10) {
+        if (mouseButton == 0 && !((CameraViewportClientManager) GTMod.proxy.cameraViewportManager).isSignalLost()) {
             Mouse.setGrabbed(true);
             return Result.SUCCESS;
         }
