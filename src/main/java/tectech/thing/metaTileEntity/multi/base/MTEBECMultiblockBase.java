@@ -277,7 +277,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
 
     public enum BECHatches implements IHatchElement<MTEBECMultiblockBase<?>> {
 
-        Hatch("GT5U.MBTT.CondensateHatch", MTEHatchBEC.class) {
+        Hatch("GT5U.MBTT.CondensateDetectorHatch", MTEHatchBEC.class) {
 
             @Override
             public long count(MTEBECMultiblockBase<?> t) {

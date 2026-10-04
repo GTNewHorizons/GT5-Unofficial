@@ -1123,14 +1123,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     private enum LSCHatchElement implements IHatchElement<MTELapotronicSuperCapacitor> {
 
-        Energy("GT5U.MBTT.ExoticEnergyHatch", MTEHatchEnergyMulti.class, MTEHatchEnergy.class) {
+        Energy("GT5U.MBTT.AnyEnergyHatch", MTEHatchEnergyMulti.class, MTEHatchEnergy.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {
                 return t.mEnergyHatches.size() + t.mEnergyHatchesTT.size() + t.mEnergyTunnelsTT.size();
             }
         },
-        Dynamo("GT5U.MBTT.ExoticEnergyDynamo", MTEHatchDynamoMulti.class, MTEHatchDynamo.class) {
+        Dynamo("GT5U.MBTT.AnyEnergyDynamo", MTEHatchDynamoMulti.class, MTEHatchDynamo.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {

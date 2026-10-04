@@ -980,7 +980,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     private enum SpecialHatchElement implements IHatchElement<MTEPCBFactory> {
 
-        NaniteBus("GT5U.MBTT.NaniteBus", MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
+        NaniteBus("GT5U.MBTT.NaniteContainmentBus", MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
 
             @Override
             public long count(MTEPCBFactory gtMetaTileEntityPCBFactory) {
