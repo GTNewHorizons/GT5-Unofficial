@@ -3,6 +3,7 @@ package detrav.net;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -282,33 +283,26 @@ public class ProspectingPacket extends DetravPacket {
     }
 
     public List<String> getAllKeys() {
-        List<String> allKeys = new ArrayList<>();
         switch (this.ptype) {
-            case DetravMetaGeneratedTool01.MODE_ALL_ORES, DetravMetaGeneratedTool01.MODE_BIG_ORES -> {
-                if (this.items.size() > 1) {
-                    allKeys.add(StatCollector.translateToLocal("gui.detrav.scanner.all"));
+            case DetravMetaGeneratedTool01.MODE_ALL_ORES, DetravMetaGeneratedTool01.MODE_BIG_ORES, DetravMetaGeneratedTool01.MODE_FLUIDS -> {
+                List<String> allKeys = this.basicInfo()
+                    .short2ObjectEntrySet()
+                    .stream()
+                    .map(e -> e.getValue().name)
+                    .sorted()
+                    .collect(Collectors.toList());
+                if (allKeys.size() > 1) {
+                    allKeys.addFirst(StatCollector.translateToLocal("gui.detrav.scanner.all"));
                 }
-                allKeys.addAll(
-                    this.items.short2ObjectEntrySet()
-                        .stream()
-                        .map(e -> e.getValue().name)
-                        .toList());
-            }
-            case DetravMetaGeneratedTool01.MODE_FLUIDS -> {
-                if (this.fluids.size() > 1) {
-                    allKeys.add(StatCollector.translateToLocal("gui.detrav.scanner.all"));
-                }
-                allKeys.addAll(
-                    this.fluids.short2ObjectEntrySet()
-                        .stream()
-                        .map(e -> e.getValue().name)
-                        .toList());
+                return allKeys;
             }
             case DetravMetaGeneratedTool01.MODE_POLLUTION -> {
+                List<String> allKeys = new ArrayList<>();
                 allKeys.add(StatCollector.translateToLocal("gui.detrav.scanner.pollution"));
+                return allKeys;
             }
         }
-        return allKeys;
+        return new ArrayList<>();
     }
 
     public Short2ObjectOpenHashMap<? extends BasicInfo> basicInfo() {
