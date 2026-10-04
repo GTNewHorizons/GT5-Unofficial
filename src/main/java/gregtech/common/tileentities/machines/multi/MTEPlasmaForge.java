@@ -71,6 +71,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
@@ -646,18 +647,34 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         IIconContainer glow = OVERLAY_FUSION1_GLOW;
+        ITexture casing = casingTexturePages[0][DIM_BRIDGE_CASING];
         if (isConvergenceActive()) {
             glow = OVERLAY_RAINBOWSCREEN_GLOW;
+            if (aActive) casing = TextureFactory.of(Textures.BlockIcons.MACHINE_DIM_BRIDGE_CONVERGENCE);
         }
-        return Textures.BlockIcons.createTextureWithCasing(
-            this,
-            side,
-            aFacing,
-            aActive,
-            OVERLAY_DTPF_OFF,
-            OVERLAY_DTPF_OFF_GLOW,
-            OVERLAY_DTPF_ON,
-            glow);
+
+        if (side == aFacing) {
+            if (aActive) return new ITexture[] { this.getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_DTPF_ON)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(glow)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { this.getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_DTPF_OFF)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_DTPF_OFF_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { casing };
+
     }
 
     @Override
