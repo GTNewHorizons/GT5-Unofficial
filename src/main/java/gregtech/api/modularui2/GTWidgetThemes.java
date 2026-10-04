@@ -211,6 +211,12 @@ public final class GTWidgetThemes {
         .register();
 
     // Drone Centre camera screen
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_DRONE_CAMERA = themeApi
+        .widgetThemeKeyBuilder("backgroundDroneCamera", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_DRONE_CAMERA, Color.WHITE.main, 0xFF404040, false, 0))
+        .defaultHoverTheme(null)
+        .register();
     public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_FRAME = themeApi
         .widgetThemeKeyBuilder("droneCameraFrame", WidgetTheme.class)
         .defaultTheme(

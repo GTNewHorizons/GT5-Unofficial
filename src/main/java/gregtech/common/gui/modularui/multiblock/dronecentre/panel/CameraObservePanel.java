@@ -28,7 +28,6 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.GTMod;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
@@ -37,6 +36,8 @@ import gregtech.common.gui.modularui.multiblock.dronecentre.widget.CameraViewpor
 
 public class CameraObservePanel extends ModularPanel {
 
+    // These must match the border sizes of GTGuiTextures.BACKGROUND_DRONE_CAMERA, whose transparent window is where
+    // the camera view goes
     private static final int HEADER_HEIGHT = 16;
     private static final int FOOTER_HEIGHT = 26;
     private static final int SIDEBAR_WIDTH = 100;
@@ -58,7 +59,7 @@ public class CameraObservePanel extends ModularPanel {
 
         this.sizeRel(CameraViewportClientManager.PANEL_SCREEN_FRACTION)
             .center()
-            .disableThemeBackground(true)
+            .widgetTheme(GTWidgetThemes.BACKGROUND_DRONE_CAMERA)
             .child(
                 Flow.column()
                     .full()
@@ -110,15 +111,13 @@ public class CameraObservePanel extends ModularPanel {
             .asWidget()
             .fullWidth()
             .height(HEADER_HEIGHT)
-            .textAlign(Alignment.CENTER)
-            .background(GTGuiTextures.BACKGROUND_STANDARD);
+            .textAlign(Alignment.CENTER);
     }
 
     private static IWidget createFooter() {
         return Flow.column()
             .fullWidth()
             .height(FOOTER_HEIGHT)
-            .background(GTGuiTextures.BACKGROUND_STANDARD)
             .mainAxisAlignment(Alignment.MainAxis.CENTER)
             .childPadding(2)
             .child(createHelpLine("GT5U.gui.text.drone_observe_help_1"))
@@ -137,7 +136,6 @@ public class CameraObservePanel extends ModularPanel {
         return Flow.column()
             .width(SIDEBAR_WIDTH)
             .fullHeight()
-            .background(GTGuiTextures.BACKGROUND_STANDARD)
             .padding(4)
             .childPadding(2);
     }
