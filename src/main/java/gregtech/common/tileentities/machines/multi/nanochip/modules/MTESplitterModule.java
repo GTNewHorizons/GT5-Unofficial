@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
@@ -148,6 +150,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
                     TOOLTIP_COLORED,
                     TOOLTIP_VCOs,
                     TOOLTIP_CCs))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.splitter.body.6"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.splitter.flavor.1")))
             .beginStructureBlock(7, 5, 7, false)
@@ -206,10 +209,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         // in VacuumConveyorHatch.onColorChange
         this.vacuumConveyorInputs.fixConsistency();
         this.vacuumConveyorOutputs.fixConsistency();
-        // Splitter logic needs to carefully separate input colors so we can't just use refreshInputItems, we have to do
-        // it manually
-        // Some day I'll refactor this, maybe.
-        this.inputFakeItems.clear();
+
         for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
             for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
                 // Get the contents of this hatch as fake items.
@@ -219,9 +219,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
                 byte currentDye = conveyor.getColorization();
                 if (currentDye == -1) continue;
                 for (ItemStack stack : itemsInHatch) {
-                    // Add it to the internal module fake item list
-                    this.inputFakeItems.add(stack);
-                    // Now process routing for this stack
+                    // Process routing for this stack
                     List<Byte> outputDyes = getGetOutputColors(currentDye, stack);
                     if (outputDyes == null) continue;
 
@@ -343,6 +341,34 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
         rules = loadRulesTagList(nbt.getTagList("rules", Constants.NBT.TAG_COMPOUND));
         return true;
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, ForgeDirection side,
+        float x, float y, float z) {
+        if (!baseMetaTileEntity.isServerSide()) return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        }
+
+        if (!pasteCopiedData(player, dataStick.stackTagCompound)) return false;
+
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.loaded"));
+        return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player) {
+        if (!baseMetaTileEntity.isServerSide()) return;
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            super.onLeftclick(baseMetaTileEntity, player);
+            return;
+        }
+        dataStick.stackTagCompound = getCopiedData(player);
+        dataStick.setStackDisplayName("Splitter Rule Data");
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.saved"));
     }
 
     @Override

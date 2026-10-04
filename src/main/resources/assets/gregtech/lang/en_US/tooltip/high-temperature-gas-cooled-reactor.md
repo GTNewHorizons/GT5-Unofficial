@@ -1,13 +1,15 @@
-Uses up to {red:{var:fuel_percent}}% of fuel per operation
-{red:10}% of this value is flat, {red:90}% follows the formula y=1-(1-x)^3 (x is % fill level)
-Maintenance problems decrease the efficiency of cooling by {red:20}% for each issue
-Uses {red:{var:power}} EU/t, increasing by up to {red:{var:power_penalty}} times when lacking Helium Gas
-Helium gas increases effectiveness of heat exchangers linearly up to {red:100}% at max capacity
-The Reactor loses {red:{var:helium_lost}}% helium per operation
-It requires at least {red:{var:min_helium}}% helium to start operation
-One Operation takes longer based on reactor fill level
-Between {red:{var:min_time}}s and {red:{var:max_time}}s
-Providing coolant/water/both speeds up recipe by
-{red:{var:coolant_speedup}}%/{red:{var:water_speedup}}%/{red:{var:total_speedup}}% total recipe time/second
-The amount of necessary fluid for maximum bonus speed scales with TRISO Balls
-{red:{var:coolant_per_ball}} coolant/tick/ball and {red:{var:water_per_ball}} distilled water/tick/ball
+Uses up to {green:{var:fuel_percent}%} of {white:Fuel} per operation
+Requires at least {green:{var:min_helium}%} {gold:Helium} to start operation
+{gold:Helium} increases heat exchanger effectiveness linearly up to {green:100%} at max capacity
+The reactor loses {green:{var:helium_lost}%} of its stored {gold:Helium} per operation
+Uses {aqua:{var:power} EU/t}, increasing by up to {green:{var:power_penalty}x} when lacking {gold:Helium}
+{gray:{hr}}
+Operation time scales with reactor fill level
+Between {green:{var:min_time}s} and {green:{var:max_time}s}
+{green:10%} of this value is flat, {green:90%} follows the formula {aqua:y = 1 - (1 - x)^3} ({white:x} is % fill level)
+Maintenance problems decrease efficiency by {green:20%} for each issue
+{gray:{hr}}
+Supplying {gold:Coolant}, {gold:Water}, or both speeds up the recipe by
+{green:{var:coolant_speedup}%} / {green:{var:water_speedup}%} / {green:{var:total_speedup}%} total recipe time per second
+The amount of fluid needed for max bonus scales with {gold:TRISO Balls}
+{green:{var:coolant_per_ball}} {gold:Coolant}/tick/ball and {green:{var:water_per_ball}} {gold:Distilled Water}/tick/ball
