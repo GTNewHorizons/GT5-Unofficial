@@ -817,7 +817,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     private enum CentrifugeHatchElement implements IHatchElement<MTESpinmatron> {
 
-        ROTOR_ASSEMBLY(MTESpinmatron::addTurbineHatch, MTEHatchTurbine.class) {
+        ROTOR_ASSEMBLY("GT5U.MBTT.RotorAssembly", MTESpinmatron::addTurbineHatch, MTEHatchTurbine.class) {
 
             @Override
             public long count(MTESpinmatron mteSpinmatron) {
@@ -825,11 +825,14 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTESpinmatron> adder;
 
         @SafeVarargs
-        CentrifugeHatchElement(IGTHatchAdder<MTESpinmatron> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        CentrifugeHatchElement(String name, IGTHatchAdder<MTESpinmatron> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -842,6 +845,16 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         @Override
         public IGTHatchAdder<? super MTESpinmatron> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }
