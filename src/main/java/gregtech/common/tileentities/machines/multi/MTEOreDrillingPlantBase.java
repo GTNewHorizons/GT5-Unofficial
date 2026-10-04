@@ -389,31 +389,27 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         if (!base.isActive()) {
             return ImmutableList.of(
-                getFailureReason()
-                    .map(
-                        reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
-                    .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic")));
+                getEncodedFailureReason()
+                    .map(reason -> IGregTechDeviceInformation.encode("GT5U.gui.text.drill_offline_reason", reason))
+                    .orElse("GT5U.gui.text.drill_offline_generic"));
         }
 
         return switch (workState) {
             case AT_BOTTOM -> ImmutableList.of(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.drill_ores_left_chunk",
-                    formatNumber(oreBlockPositions.size())),
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation
+                    .encode("GT5U.gui.text.drill_ores_left_chunk", formatNumber(oreBlockPositions.size())),
+                IGregTechDeviceInformation.encode(
                     "GT5U.gui.text.drill_chunks_left",
                     formatNumber(getChunkNumber()),
                     formatNumber(getTotalChunkCount())),
                 veinName == null ? ""
-                    : StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName));
+                    : IGregTechDeviceInformation.encode("GT5U.gui.text.drill_current_vein", veinName));
             case DOWNWARD -> ImmutableList.of(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.gui.text.drill_ores_left_layer",
-                    getYHead(),
-                    formatNumber(oreBlockPositions.size())),
+                IGregTechDeviceInformation
+                    .encode("GT5U.gui.text.drill_ores_left_layer", getYHead(), formatNumber(oreBlockPositions.size())),
                 veinName == null ? ""
-                    : StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName));
-            case UPWARD, ABORT -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
+                    : IGregTechDeviceInformation.encode("GT5U.gui.text.drill_current_vein", veinName));
+            case UPWARD, ABORT -> ImmutableList.of("GT5U.gui.text.retracting_pipe");
         };
     }
 
