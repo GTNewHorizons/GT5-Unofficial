@@ -3,32 +3,31 @@ package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.DoubleSupplier;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.input.Mouse;
 
-import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
-import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
-import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.GTMod;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -46,12 +45,14 @@ public class CameraObservePanel extends ModularPanel {
     private static final float SIDEBAR_TEXT_SCALE = 0.75F;
     private static final float HELP_TEXT_SCALE = 0.7F;
 
-    private final List<String> rawRecipeInfo = new ArrayList<>();
-    private final List<String> currentRecipeInfo = new ArrayList<>();
+    private final CameraViewportClientManager cameraManager = (CameraViewportClientManager) GTMod.proxy.cameraViewportManager;
 
-    private int lastUpdateWidth = -1;
+    /** Recipe sidebar lines. The detail lines are shown below a divider, which is hidden when they are empty. */
+    private final List<String> recipeLines = new ArrayList<>();
+    private final List<String> recipeDetailLines = new ArrayList<>();
+    private boolean recipeTextOutdated = true;
     private NBTTagCompound lastObservedStatus = null;
-    private long lastHoveredCoord = CoordinatePacker.pack(-2, -2, -2);
+    private long lastHoveredCoord = CameraViewportManager.NULL_COORD;
 
     public CameraObservePanel(PanelSyncManager syncManager, Runnable closeCallback) {
         super("cameraObservePanel");
@@ -92,6 +93,12 @@ public class CameraObservePanel extends ModularPanel {
                 Mouse.setGrabbed(false);
             }
         }
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        refreshRecipeText();
     }
 
     @Override
@@ -137,14 +144,24 @@ public class CameraObservePanel extends ModularPanel {
     }
 
     private IWidget createMetricsSidebar() {
-        return createSidebar().child(createDroneMetricsWidget(SIDEBAR_TEXT_SCALE))
+        ListWidget<IWidget, ?> metrics = createInfoBox("GT5U.gui.text.drone_metrics_header")
+            .child(createInfoLine(IKey.lang("GT5U.gui.text.drone_cam_stream_on")))
+            .child(createInfoLine(IKey.dynamic(this::formatSignalStrength)))
+            .child(createInfoLine(IKey.lang("GT5U.gui.text.drone_recipe_on")).marginBottom(4))
+            .child(createInfoLine(createCameraPositionKey('X', () -> cameraManager.cameraX)))
+            .child(createInfoLine(createCameraPositionKey('Y', () -> cameraManager.cameraY)))
+            .child(createInfoLine(createCameraPositionKey('Z', () -> cameraManager.cameraZ)))
+            .child(createDivider())
+            .child(createInfoLine(IKey.lang("GT5U.gui.text.drone_level_excellent")));
+
+        return createSidebar().child(metrics)
             .child(
                 new ButtonWidget<>().fullWidth()
                     .height(RESCUE_BUTTON_HEIGHT)
                     .overlay(IKey.lang("GT5U.gui.button.drone_rescue"))
                     .onMousePressed(mouseButton -> {
                         if (mouseButton == 0) {
-                            ((CameraViewportClientManager) GTMod.proxy.cameraViewportManager).resetToSpawn();
+                            cameraManager.resetToSpawn();
                         }
                         return true;
                     })
@@ -156,7 +173,13 @@ public class CameraObservePanel extends ModularPanel {
     }
 
     private IWidget createRecipeSidebar() {
-        return createSidebar().child(createRecipeWidget(SIDEBAR_TEXT_SCALE));
+        return createSidebar().child(
+            createInfoBox("GT5U.gui.text.recipe_metrics_header")
+                .child(createInfoLine(IKey.dynamic(() -> String.join("\n", recipeLines))))
+                .child(createDivider().setEnabledIf(_ -> !recipeDetailLines.isEmpty()))
+                .child(
+                    createInfoLine(IKey.dynamic(() -> String.join("\n", recipeDetailLines)))
+                        .setEnabledIf(_ -> !recipeDetailLines.isEmpty())));
     }
 
     /** The camera view, wrapped in a 1px themed frame drawn just outside of it. */
@@ -168,317 +191,151 @@ public class CameraObservePanel extends ModularPanel {
             .child(new CameraViewportWidget().full());
     }
 
-    /** A dark info box used by both sidebars. */
-    private static <T extends Flow> T styleInfoBox(T column) {
-        column.widgetTheme(GTWidgetThemes.DRONE_CAMERA_SCREEN)
+    /** A dark, scrollable info box with a title and divider, used by both sidebars. */
+    private static ListWidget<IWidget, ?> createInfoBox(String headerLangKey) {
+        return new ListWidget<>().widgetTheme(GTWidgetThemes.DRONE_CAMERA_SCREEN)
             .fullWidth()
             .expanded()
             .padding(4)
-            .childPadding(2);
-        return column;
+            .collapseDisabledChild()
+            .child(createInfoLine(IKey.lang(headerLangKey)))
+            .child(createDivider());
     }
 
-    private static IWidget createDivider() {
+    private static Widget<?> createDivider() {
         return new Widget<>().widgetTheme(GTWidgetThemes.DRONE_CAMERA_DIVIDER)
             .fullWidth()
             .height(2)
+            .marginTop(2)
             .marginBottom(4);
     }
 
-    private Flow createDroneMetricsWidget(float textScale) {
-        CameraViewportClientManager cvm = (CameraViewportClientManager) GTMod.proxy.cameraViewportManager;
-        Flow col = styleInfoBox(Flow.column());
-
-        int innerW = SIDEBAR_WIDTH - 16;
-
-        // Title header
-        col.child(
-            IKey.lang("GT5U.gui.text.drone_metrics_header")
-                .asWidget()
-                .width(innerW)
-                .scale(textScale)
-                .height((int) (12 * textScale)));
-
-        col.child(createDivider());
-
-        col.child(
-            IKey.lang("GT5U.gui.text.drone_cam_stream_on")
-                .asWidget()
-                .width(innerW)
-                .scale(textScale)
-                .height((int) (10 * textScale)));
-
-        col.child(IKey.dynamic(() -> {
-            int signal = cvm.getSignalStrength();
-            if (cvm.isSignalLost()) {
-                return StatCollector.translateToLocal("GT5U.gui.text.drone_signal_link") + "§c0%";
-            }
-            String sigColor = "§a";
-            if (signal < 40) {
-                sigColor = "§c";
-            } else if (signal < 75) {
-                sigColor = "§e";
-            }
-            return StatCollector.translateToLocal("GT5U.gui.text.drone_signal_link") + sigColor + signal + "%";
-        })
-            .asWidget()
-            .width(innerW)
-            .scale(textScale)
-            .height((int) (10 * textScale)));
-
-        col.child(
-            IKey.lang("GT5U.gui.text.drone_recipe_on")
-                .asWidget()
-                .width(innerW)
-                .scale(textScale)
-                .height((int) (10 * textScale))
-                .marginBottom(4));
-
-        col.child(
-            IKey.dynamic(
-                () -> String.format(
-                    StatCollector.translateToLocal("GT5U.gui.text.drone_cam_pos"),
-                    'X',
-                    (int) Math.floor(cvm.cameraX)))
-                .asWidget()
-                .width(innerW)
-                .scale(textScale)
-                .height((int) (10 * textScale)));
-
-        col.child(
-            IKey.dynamic(
-                () -> String.format(
-                    StatCollector.translateToLocal("GT5U.gui.text.drone_cam_pos"),
-                    'Y',
-                    (int) Math.floor(cvm.cameraY)))
-                .asWidget()
-                .width(innerW)
-                .scale(textScale)
-                .height((int) (10 * textScale)));
-
-        col.child(
-            IKey.dynamic(
-                () -> String.format(
-                    StatCollector.translateToLocal("GT5U.gui.text.drone_cam_pos"),
-                    'Z',
-                    (int) Math.floor(cvm.cameraZ)))
-                .asWidget()
-                .width(innerW)
-                .scale(textScale)
-                .height((int) (10 * textScale))
-                .marginBottom(4));
-
-        col.child(
-            IKey.str("§7--------------")
-                .asWidget()
-                .width(innerW)
-                .scale(textScale)
-                .height((int) (10 * textScale)));
-
-        col.child(
-            IKey.lang("GT5U.gui.text.drone_level_excellent")
-                .asWidget()
-                .width(innerW)
-                .scale(textScale)
-                .height((int) (10 * textScale)));
-
-        return col;
+    private static TextWidget<?> createInfoLine(IKey text) {
+        return text.asWidget()
+            .widgetTheme(GTWidgetThemes.DRONE_CAMERA_TEXT)
+            .fullWidth()
+            .scale(SIDEBAR_TEXT_SCALE)
+            .textAlign(Alignment.CenterLeft)
+            .marginBottom(2);
     }
 
-    private RecipeFlow createRecipeWidget(float textScale) {
-        RecipeFlow col = styleInfoBox(new RecipeFlow(this));
-
-        int innerW = SIDEBAR_WIDTH - 16;
-
-        // Title header
-        col.child(
-            IKey.lang("GT5U.gui.text.recipe_metrics_header")
-                .asWidget()
-                .width(innerW)
-                .scale(textScale)
-                .height((int) (12 * textScale)));
-
-        col.child(createDivider());
-
-        // recipe details
-        final int maxWidth = (int) (innerW / textScale);
-        for (int i = 0; i < 16; i++) {
-            final int index = i;
-            TextWidget<?> textWidget = IKey.dynamic(() -> {
-                if (index < currentRecipeInfo.size()) {
-                    return currentRecipeInfo.get(index);
-                }
-                return "";
-            })
-                .asWidget()
-                .widgetTheme(GTWidgetThemes.DRONE_CAMERA_TEXT)
-                .width(innerW)
-                .scale(textScale)
-                .height((int) (10 * textScale))
-                .setEnabledIf(_ -> index < currentRecipeInfo.size());
-
-            textWidget.tooltip()
-                .setAutoUpdate(true);
-            textWidget.tooltipBuilder(builder -> {
-                if (Mouse.isGrabbed()) {
-                    return;
-                }
-                if (index < rawRecipeInfo.size()) {
-                    String rawLine = rawRecipeInfo.get(index);
-                    String cleanRaw = cleanWailaLine(rawLine);
-                    if (!cleanRaw.isEmpty() && TextRenderer.getFontRenderer()
-                        .getStringWidth(cleanRaw) > maxWidth) {
-                        builder.addLine(cleanRaw);
-                    }
-                }
-            });
-
-            col.child(textWidget);
-        }
-
-        return col;
+    private static IKey createCameraPositionKey(char axis, DoubleSupplier position) {
+        return IKey
+            .lang("GT5U.gui.text.drone_cam_pos", () -> new Object[] { axis, (int) Math.floor(position.getAsDouble()) });
     }
 
-    private void updateExtraInfo(int width) {
-        CameraViewportClientManager cvm = (CameraViewportClientManager) GTMod.proxy.cameraViewportManager;
-        if (cvm.activeConnection == null) {
-            rawRecipeInfo.clear();
-            currentRecipeInfo.clear();
-            lastUpdateWidth = -1;
-            lastObservedStatus = null;
-            lastHoveredCoord = CoordinatePacker.pack(-2, -2, -2);
-            return;
-        }
-
-        NBTTagCompound tag = cvm.observedMachineStatus;
-        long hCoord = cvm.hoveredMachineCoord;
-
-        if (width == lastUpdateWidth && tag == lastObservedStatus && hCoord == lastHoveredCoord) {
-            return;
-        }
-
-        lastUpdateWidth = width;
-        lastObservedStatus = tag;
-        lastHoveredCoord = hCoord;
-
-        int maxWidth = (int) ((width - 8) / SIDEBAR_TEXT_SCALE);
-
-        List<String> newInfo = new ArrayList<>();
-
-        boolean hasHovered = (hCoord != CameraViewportManager.NULL_COORD);
-        boolean hasMatchingTag = tag != null && hasHovered && tag.getLong("observePos") == hCoord;
-
-        if (hasHovered && hasMatchingTag) {
-            boolean isActive = tag.getBoolean("isActive");
-
-            if (isActive) {
-                newInfo.add(StatCollector.translateToLocal("GT5U.waila.producing"));
-
-                int itemLength = tag.getInteger("outputItemLength");
-                for (int i = 0; i < itemLength; i++) {
-                    NBTTagCompound itemNBT = tag.getCompoundTag("outputItemStack" + i);
-                    ItemStack outputStack = ItemStack.loadItemStackFromNBT(itemNBT);
-                    if (outputStack != null) {
-                        String name = outputStack.getDisplayName();
-                        int count = tag.getInteger("outputItemCount" + i);
-                        newInfo.add("§b" + name + " x" + count);
-                    }
-                }
-
-                int fluidLength = tag.getInteger("outputFluidLength");
-                for (int i = 0; i < fluidLength; i++) {
-                    String internalName = tag.getString("outputFluidName" + i);
-                    if (!internalName.isEmpty()) {
-                        net.minecraftforge.fluids.Fluid fluid = FluidRegistry.getFluid(internalName);
-                        String fluidName = fluid != null ? new FluidStack(fluid, 1).getLocalizedName() : internalName;
-                        int count = tag.getInteger("outputFluidCount" + i);
-                        newInfo.add("§3" + fluidName + " x" + count + "L");
-                    }
-                }
-
-                if (itemLength == 0 && fluidLength == 0) {
-                    newInfo.add("§7" + StatCollector.translateToLocal("GT5U.gui.text.drone_no_outputs"));
-                }
-            } else {
-                newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_none"));
-            }
-
-            boolean isLocked = tag.getBoolean("isLockedToRecipe");
-            if (isLocked) {
-                newInfo.add("§7--------------");
-                newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.drone_locked_recipe") + ":");
-                String lockedName = tag.getString("lockedRecipeName");
-                if (lockedName != null && !lockedName.isEmpty()) {
-                    String[] lines = lockedName.split("\r?\n");
-                    for (String line : lines) {
-                        String trimmed = line.trim();
-                        if (!trimmed.isEmpty()) {
-                            if (trimmed.startsWith("-")) {
-                                newInfo.add("§e" + trimmed);
-                            } else {
-                                newInfo.add("§6" + trimmed);
-                            }
-                        }
-                    }
-                } else {
-                    newInfo.add("§aON");
-                }
-            }
+    private String formatSignalStrength() {
+        int signal = cameraManager.getSignalStrength();
+        EnumChatFormatting signalColor;
+        if (cameraManager.isSignalLost()) {
+            signal = 0;
+            signalColor = EnumChatFormatting.RED;
+        } else if (signal < 40) {
+            signalColor = EnumChatFormatting.RED;
+        } else if (signal < 75) {
+            signalColor = EnumChatFormatting.YELLOW;
         } else {
-            if (hasHovered) {
-                newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_connecting_1"));
-                newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_connecting_2"));
-                newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_connecting_3"));
-            } else {
-                newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_no_conn_1"));
-                newInfo.add("§7--------------");
-                newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_no_conn_2"));
-                newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_no_conn_3"));
-                newInfo.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_no_conn_4"));
-            }
+            signalColor = EnumChatFormatting.GREEN;
+        }
+        return StatCollector.translateToLocalFormatted("GT5U.gui.text.drone_signal_link", signalColor, signal);
+    }
+
+    private void refreshRecipeText() {
+        NBTTagCompound status = cameraManager.observedMachineStatus;
+        long hoveredCoord = cameraManager.hoveredMachineCoord;
+        if (!recipeTextOutdated && status == lastObservedStatus && hoveredCoord == lastHoveredCoord) {
+            return;
+        }
+        recipeTextOutdated = false;
+        lastObservedStatus = status;
+        lastHoveredCoord = hoveredCoord;
+
+        recipeLines.clear();
+        recipeDetailLines.clear();
+        buildRecipeLines(status, hoveredCoord);
+        cleanLines(recipeLines);
+        cleanLines(recipeDetailLines);
+    }
+
+    /** Strips WAILA formatting from every line and drops lines that end up empty. */
+    private static void cleanLines(List<String> lines) {
+        lines.replaceAll(CameraObservePanel::cleanWailaLine);
+        lines.removeIf(String::isEmpty);
+    }
+
+    private void buildRecipeLines(NBTTagCompound status, long hoveredCoord) {
+        if (cameraManager.activeConnection == null) {
+            return;
         }
 
-        this.rawRecipeInfo.clear();
-        for (String line : newInfo) {
-            if (line.startsWith("§b") || line.startsWith("§3")
-                || line.startsWith("§a")
-                || line.startsWith("§e")
-                || line.startsWith("§6")
-                || line.startsWith("§7")
-                || line.startsWith("§8")) {
-                this.rawRecipeInfo.add(line.substring(2));
-            } else {
-                this.rawRecipeInfo.add(line);
-            }
+        if (hoveredCoord == CameraViewportManager.NULL_COORD) {
+            recipeLines.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_no_conn"));
+            recipeDetailLines.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_no_conn_hint"));
+            return;
         }
 
-        List<String> formatted = new ArrayList<>();
-        int maxLines = 15;
-        for (int i = 0; i < newInfo.size(); i++) {
-            String line = newInfo.get(i);
-            String clean = cleanWailaLine(line);
-            if (formatted.size() >= maxLines - 1 && i < newInfo.size() - 1) {
-                int remaining = newInfo.size() - i;
-                String moreTemplate = StatCollector.translateToLocal("GT5U.waila.producing.andmore")
-                    .trim();
-                formatted.add("§7" + String.format(moreTemplate, remaining));
-                break;
-            }
-            if (!clean.isEmpty()) {
-                String drawText = clean;
-                if (TextRenderer.getFontRenderer()
-                    .getStringWidth(clean) > maxWidth) {
-                    int dotW = TextRenderer.getFontRenderer()
-                        .getStringWidth("...");
-                    drawText = TextRenderer.getFontRenderer()
-                        .trimStringToWidth(clean, maxWidth - dotW) + "...";
+        // The server has not answered for the newly hovered machine yet
+        if (status == null || status.getLong("observePos") != hoveredCoord) {
+            recipeLines.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_connecting"));
+            return;
+        }
+
+        if (status.getBoolean("isActive")) {
+            addOutputLines(status, recipeLines);
+        } else {
+            recipeLines.add(StatCollector.translateToLocal("GT5U.gui.text.recipe_none"));
+        }
+
+        if (status.getBoolean("isLockedToRecipe")) {
+            recipeDetailLines.add(StatCollector.translateToLocal("GT5U.gui.text.drone_locked_recipe"));
+            String lockedRecipeName = status.getString("lockedRecipeName");
+            if (lockedRecipeName.isEmpty()) {
+                recipeDetailLines.add(
+                    EnumChatFormatting.GREEN
+                        + StatCollector.translateToLocal("GT5U.gui.text.drone_locked_recipe_unnamed"));
+            } else {
+                for (String line : lockedRecipeName.split("\r?\n")) {
+                    String trimmed = line.trim();
+                    if (trimmed.isEmpty()) continue;
+                    EnumChatFormatting color = trimmed.startsWith("-") ? EnumChatFormatting.YELLOW
+                        : EnumChatFormatting.GOLD;
+                    recipeDetailLines.add(color + trimmed);
                 }
-                formatted.add(drawText);
+            }
+        }
+    }
+
+    private static void addOutputLines(NBTTagCompound status, List<String> lines) {
+        lines.add(StatCollector.translateToLocal("GT5U.waila.producing"));
+
+        int itemCount = status.getInteger("outputItemLength");
+        for (int i = 0; i < itemCount; i++) {
+            ItemStack outputStack = ItemStack.loadItemStackFromNBT(status.getCompoundTag("outputItemStack" + i));
+            if (outputStack != null) {
+                lines.add(
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.drone_output_item",
+                        outputStack.getDisplayName(),
+                        status.getInteger("outputItemCount" + i)));
             }
         }
 
-        this.currentRecipeInfo.clear();
-        this.currentRecipeInfo.addAll(formatted);
+        int fluidCount = status.getInteger("outputFluidLength");
+        for (int i = 0; i < fluidCount; i++) {
+            String fluidId = status.getString("outputFluidName" + i);
+            if (fluidId.isEmpty()) continue;
+            Fluid fluid = FluidRegistry.getFluid(fluidId);
+            String fluidName = fluid != null ? new FluidStack(fluid, 1).getLocalizedName() : fluidId;
+            lines.add(
+                EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.drone_output_fluid",
+                    fluidName,
+                    status.getInteger("outputFluidCount" + i)));
+        }
+
+        if (itemCount == 0 && fluidCount == 0) {
+            lines.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.gui.text.drone_no_outputs"));
+        }
     }
 
     public static String cleanWailaLine(String line) {
@@ -488,7 +345,7 @@ public class CameraObservePanel extends ModularPanel {
         int idx = 0;
         while (idx < line.length()) {
             char c = line.charAt(idx);
-            if (c == ' ' || c == '\u00a0') {
+            if (c == ' ' || c == ' ') {
                 prefix.append(c);
                 idx++;
             } else if (c == '§' && idx + 1 < line.length()) {
@@ -569,21 +426,5 @@ public class CameraObservePanel extends ModularPanel {
             contentPart = contentPart.replaceAll("\\{[^}]*}", "");
         }
         return prefix + contentPart.trim();
-    }
-
-    public static class RecipeFlow extends Flow {
-
-        private final CameraObservePanel panel;
-
-        public RecipeFlow(CameraObservePanel panel) {
-            super(GuiAxis.Y);
-            this.panel = panel;
-        }
-
-        @Override
-        public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
-            panel.updateExtraInfo(getArea().width);
-            super.draw(context, widgetTheme);
-        }
     }
 }
