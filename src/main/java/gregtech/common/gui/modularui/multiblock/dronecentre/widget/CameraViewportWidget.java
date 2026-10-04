@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
@@ -58,37 +59,93 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
     private static final int BASE_COLOR_SCANLINE = Color.WHITE.main;
     private static final int BASE_COLOR_FLASH = Color.WHITE.darker(5);
 
-    private long lastStateHash = 0L;
-    private List<String> wailaLines = null;
+    private final CameraViewportClientManager cameraManager = (CameraViewportClientManager) GTMod.proxy.cameraViewportManager;
 
-    public CameraViewportWidget() {}
+    /** Lines of the info box, rebuilt only when the hovered machine or its synced status changes. */
+    private final List<String> infoBoxLines = new ArrayList<>();
+    private long infoBoxMachineCoord = CameraViewportManager.NULL_COORD;
+    private NBTTagCompound infoBoxStatus = null;
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if (cameraManager.activeConnection == null) {
+            return;
+        }
+        updateMouseGrab();
+        updateHoveredMachine();
+    }
+
+    private void updateMouseGrab() {
+        if (cameraManager.returningFromRemoteGui) {
+            cameraManager.returningFromRemoteGui = false;
+            if (!cameraManager.isSignalLost()) {
+                Mouse.setGrabbed(true);
+            }
+        }
+        if (cameraManager.isSignalLost() && Mouse.isGrabbed()) {
+            Mouse.setGrabbed(false);
+        }
+    }
+
+    /**
+     * Which GT machine the camera is looking at (so the server sends its status), and
+     * rebuilds the info box once that status has arrived.
+     */
+    private void updateHoveredMachine() {
+        Minecraft mc = Minecraft.getMinecraft();
+        MovingObjectPosition mop = mc.objectMouseOver;
+        BaseMetaTileEntity hoveredMachine = null;
+        if (!cameraManager.isSignalLost() && mop != null
+            && mop.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
+            && mc.theWorld.getTileEntity(mop.blockX, mop.blockY, mop.blockZ) instanceof BaseMetaTileEntity gte
+            && gte.getMetaTileEntity() != null) {
+            hoveredMachine = gte;
+        }
+
+        if (hoveredMachine == null) {
+            cameraManager.hoveredMachineCoord = CameraViewportManager.NULL_COORD;
+            clearInfoBox();
+            return;
+        }
+
+        long hoveredCoord = CoordinatePacker.pack(mop.blockX, mop.blockY, mop.blockZ);
+        cameraManager.hoveredMachineCoord = hoveredCoord;
+
+        NBTTagCompound status = cameraManager.observedMachineStatus;
+        boolean statusMatchesMachine = status != null && status.getLong("observePos") == hoveredCoord;
+        if (!statusMatchesMachine) {
+            clearInfoBox();
+            return;
+        }
+        if (hoveredCoord == infoBoxMachineCoord && status == infoBoxStatus) {
+            return;
+        }
+
+        infoBoxMachineCoord = hoveredCoord;
+        infoBoxStatus = status;
+        IMetaTileEntity mte = hoveredMachine.getMetaTileEntity();
+        List<String> wailaLines = generateWailaLines(mc, mop, hoveredMachine, mte, status);
+        infoBoxLines.clear();
+        infoBoxLines.addAll(toInfoBoxLines(wailaLines));
+    }
+
+    private void clearInfoBox() {
+        infoBoxLines.clear();
+        infoBoxMachineCoord = CameraViewportManager.NULL_COORD;
+        infoBoxStatus = null;
+    }
 
     @Override
     public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
-        CameraViewportClientManager cvm = (CameraViewportClientManager) GTMod.proxy.cameraViewportManager;
-
-        if (cvm.activeConnection == null) {
+        if (cameraManager.activeConnection == null) {
             return;
         }
 
         int w = getArea().width;
         int h = getArea().height;
 
-        Minecraft mc = Minecraft.getMinecraft();
-
-        if (cvm.returningFromRemoteGui) {
-            cvm.returningFromRemoteGui = false;
-            if (!cvm.isSignalLost()) {
-                Mouse.setGrabbed(true);
-            }
-        }
-        if (cvm.isSignalLost()) {
-            if (Mouse.isGrabbed()) {
-                Mouse.setGrabbed(false);
-            }
-            cvm.hoveredMachineCoord = CameraViewportManager.NULL_COORD;
-            wailaLines = null;
-
+        if (cameraManager.isSignalLost()) {
             // A black screen
             GuiDraw.drawRect(0, 0, w, h, COLOR_BLACK_SCREEN);
 
@@ -118,8 +175,9 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
         }
 
         // Zoom indicator
-        if (cvm.zoomLevel > 1.0F) {
-            String zoomText = String.format(StatCollector.translateToLocal("GT5U.gui.text.drone_zoom"), cvm.zoomLevel);
+        if (cameraManager.zoomLevel > 1.0F) {
+            String zoomText = String
+                .format(StatCollector.translateToLocal("GT5U.gui.text.drone_zoom"), cameraManager.zoomLevel);
             TextRenderer.SHARED.setSimulate(false);
             TextRenderer.SHARED.setShadow(true);
             TextRenderer.SHARED.setScale(0.7F);
@@ -130,7 +188,7 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
         }
 
         // Flashlight
-        if (cvm.flashlightActive) {
+        if (cameraManager.flashlightActive) {
             String zoomText = StatCollector.translateToLocal("GT5U.gui.text.drone_flashlight");
             TextRenderer.SHARED.setSimulate(false);
             TextRenderer.SHARED.setShadow(true);
@@ -141,52 +199,12 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
             TextRenderer.SHARED.draw(zoomText);
         }
 
-        // WAILA
-        MovingObjectPosition mop = mc.objectMouseOver;
-        boolean hasHovered = false;
-        if (mop != null && mop.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-            TileEntity te = mc.theWorld.getTileEntity(mop.blockX, mop.blockY, mop.blockZ);
-            if (te instanceof BaseMetaTileEntity gte) {
-                IMetaTileEntity mte = gte.getMetaTileEntity();
-                if (mte != null) {
-                    hasHovered = true;
-                    long hoverCoord = CoordinatePacker.pack(mop.blockX, mop.blockY, mop.blockZ);
-                    cvm.hoveredMachineCoord = hoverCoord;
-
-                    net.minecraft.nbt.NBTTagCompound status = cvm.observedMachineStatus;
-                    boolean hasSyncedNBT = (status != null && status.getLong("observePos") == hoverCoord);
-
-                    if (hasSyncedNBT) {
-                        long stateHash = 17L;
-                        stateHash = 31L * stateHash + mop.blockX;
-                        stateHash = 31L * stateHash + mop.blockY;
-                        stateHash = 31L * stateHash + mop.blockZ;
-                        stateHash = 31L * stateHash + System.identityHashCode(status);
-
-                        if (stateHash != lastStateHash) {
-                            wailaLines = generateWailaLines(mc, mop, te, gte, mte, status, mte.getLocalName());
-                            lastStateHash = stateHash;
-                        }
-                    } else {
-                        wailaLines = null;
-                        lastStateHash = 0L;
-                    }
-                }
-            }
-        }
-
-        if (!hasHovered) {
-            cvm.hoveredMachineCoord = CameraViewportManager.NULL_COORD;
-            wailaLines = null;
-            lastStateHash = 0L;
-        }
-
-        if (wailaLines != null && !wailaLines.isEmpty()) {
-            drawBasicInfoHUD(w, wailaLines);
+        if (!infoBoxLines.isEmpty()) {
+            drawBasicInfoHUD(w, infoBoxLines);
         }
 
         // Noise
-        int signal = cvm.getSignalStrength();
+        int signal = cameraManager.getSignalStrength();
         if (signal < 100) {
             double noiseFactor = (100.0 - signal) / 90.0;
             ThreadLocalRandom rand = ThreadLocalRandom.current();
@@ -249,20 +267,19 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
 
     @Override
     public @NotNull Result onMousePressed(int mouseButton) {
-        if (mouseButton == 0 && !((CameraViewportClientManager) GTMod.proxy.cameraViewportManager).isSignalLost()) {
+        if (mouseButton == 0 && !cameraManager.isSignalLost()) {
             Mouse.setGrabbed(true);
             return Result.SUCCESS;
         }
         return Result.IGNORE;
     }
 
-    public static List<String> generateWailaLines(final Minecraft mc, final MovingObjectPosition mop,
-        final TileEntity te, final BaseMetaTileEntity gte, final IMetaTileEntity mte, final NBTTagCompound tag,
-        String nameToUse) {
+    private static List<String> generateWailaLines(final Minecraft mc, final MovingObjectPosition mop,
+        final BaseMetaTileEntity gte, final IMetaTileEntity mte, final NBTTagCompound tag) {
         List<String> wailaLines = new ArrayList<>();
-        wailaLines.add("§b" + nameToUse);
+        wailaLines.add(EnumChatFormatting.AQUA + mte.getLocalName());
 
-        IWailaDataAccessor accessor = new CameraWailaAccessor(mc, mop, te, tag);
+        IWailaDataAccessor accessor = new CameraWailaAccessor(mc, mop, gte, tag);
         ItemStack itemStack = mte.getStackForm(1);
         if (itemStack == null) {
             Block block = mc.theWorld.getBlock(mop.blockX, mop.blockY, mop.blockZ);
@@ -277,28 +294,36 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
         if (tag != null) {
             long storedEU = tag.getLong("mStoredEnergy");
             if (storedEU >= Long.MAX_VALUE - 1) {
-                wailaLines.add("§b" + StatCollector.translateToLocal("GT5U.gui.text.drone_stored_energy") + ": §aMAX");
+                wailaLines.add(
+                    EnumChatFormatting.AQUA + StatCollector
+                        .translateToLocalFormatted("GT5U.gui.text.drone_stored_energy_max", EnumChatFormatting.GREEN));
             } else if (storedEU > 0) {
                 wailaLines.add(
-                    "§b" + StatCollector.translateToLocal("GT5U.gui.text.drone_stored_energy")
-                        + ": §a"
-                        + NumberFormatUtil.formatNumber(storedEU)
-                        + " EU");
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.drone_stored_energy",
+                        EnumChatFormatting.GREEN,
+                        NumberFormatUtil.formatNumber(storedEU)));
             }
 
             int maxParallel = tag.getInteger("maxParallelRecipes");
             if (maxParallel > 1) {
-                wailaLines
-                    .add("§b" + StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": §a" + maxParallel);
+                wailaLines.add(
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                        "GT5U.gui.text.drone_max_parallel",
+                        EnumChatFormatting.GREEN,
+                        maxParallel));
             }
         }
 
         return wailaLines;
     }
 
-    private void drawBasicInfoHUD(int w, List<String> lines) {
-        List<String> basicInfo = new ArrayList<>();
-        basicInfo.add(CameraObservePanel.cleanWailaLine(lines.getFirst()));
+    /**
+     * Turns the full WAILA body into the short summary shown in the info box: the machine name plus basic status.
+     */
+    private static List<String> toInfoBoxLines(List<String> wailaLines) {
+        List<String> infoBoxLines = new ArrayList<>();
+        infoBoxLines.add(CameraObservePanel.cleanWailaLine(wailaLines.getFirst()));
 
         String producingLabel = StatCollector.translateToLocal("GT5U.waila.producing")
             .toLowerCase();
@@ -307,37 +332,38 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
         String lockedRecipeLabel = StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe")
             .toLowerCase();
 
-        for (int i = 1; i < lines.size(); i++) {
-            String line = lines.get(i);
-            String clean = CameraObservePanel.cleanWailaLine(line);
+        for (int i = 1; i < wailaLines.size(); i++) {
+            String clean = CameraObservePanel.cleanWailaLine(wailaLines.get(i));
             String lower = clean.toLowerCase();
             if (lower.isEmpty()) continue;
 
-            boolean isAndMore = false;
-            if (!andMorePattern.isEmpty()) {
-                String[] andMoreParts = andMorePattern.split("%d");
-                if (andMoreParts.length > 0) {
-                    isAndMore = true;
-                    for (String part : andMoreParts) {
-                        String p = part.trim();
-                        if (!p.isEmpty() && !lower.contains(p)) {
-                            isAndMore = false;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (clean.startsWith("  ") || clean.startsWith("  ")
-                || lower.contains(producingLabel)
-                || isAndMore
+            // Indented lines are the individual outputs listed under "Producing"
+            boolean isIndented = clean.startsWith("  ") || clean.startsWith("  ");
+            if (isIndented || lower.contains(producingLabel)
+                || matchesAndMore(lower, andMorePattern)
                 || lower.contains(lockedRecipeLabel)) {
                 continue;
             }
-
-            basicInfo.add(clean);
+            infoBoxLines.add(clean);
         }
+        return infoBoxLines;
+    }
 
+    /** Whether the line is the "...and %d more" line, by checking it contains every fixed part of the pattern. */
+    private static boolean matchesAndMore(String lowerCaseLine, String lowerCaseAndMorePattern) {
+        if (lowerCaseAndMorePattern.isEmpty()) {
+            return false;
+        }
+        for (String part : lowerCaseAndMorePattern.split("%d")) {
+            String trimmedPart = part.trim();
+            if (!trimmedPart.isEmpty() && !lowerCaseLine.contains(trimmedPart)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void drawBasicInfoHUD(int w, List<String> basicInfo) {
         float scale = Math.clamp(w / 346.6F, 0.5F, 0.8F);
         int maxW = 100;
         for (String line : basicInfo) {

@@ -3021,6 +3021,7 @@ GT5U.gui.text.drone_cam_pos=§bКамера %c: §7%s
 GT5U.gui.text.drone_level_excellent=§7Уровень: §aОТЛИЧНЫЙ
 GT5U.gui.text.drone_locked_recipe=Блокировка рецепта:
 GT5U.gui.text.drone_locked_recipe_unnamed=ВКЛ
+GT5U.gui.text.drone_max_parallel=Макс. параллель: %s%s
 GT5U.gui.text.recipe_metrics_header=§3[ ПОКАЗАТЕЛИ РЕЦЕПТА ]
 GT5U.gui.text.recipe_none=§7Нет активного рецепта.
 GT5U.gui.text.recipe_connecting=§7Подключение... Синхронизация потока данных рецепта...
