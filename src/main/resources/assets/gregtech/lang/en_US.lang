@@ -2088,7 +2088,7 @@ gt.mbtt.machine_type.vacuum_furnace_dehydrator=Vacuum Furnace, Dehydrator
 gt.mbtt.machine_type.alloy_smelter=Alloy Smelter
 
 # Tooltip flavor text
-gt.mbtt.flavor.exothermic_hearth=§4§oNever one...
+gt.mbtt.flavor.exothermic_hearth=Never one...
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)

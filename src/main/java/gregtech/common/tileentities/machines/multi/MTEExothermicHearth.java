@@ -31,6 +31,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -215,7 +216,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.mbtt.flavor.exothermic_hearth"))
+            .addInfo(EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gt.mbtt.flavor.exothermic_hearth"))
             .beginStructureBlock(23, 43, 23, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("1800-1918", Casings.HearthCasing.getLocalizedName(), false)
