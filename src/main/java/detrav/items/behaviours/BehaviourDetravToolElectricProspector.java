@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -53,7 +54,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
 
             if (scan != null && !scan.isDone()) {
                 scan.cancel(true);
-                aPlayer.addChatMessage(new ChatComponentText("Cancelled pending scan"));
+                aPlayer.addChatMessage(new ChatComponentTranslation("gui.detrav.scanner.chat.cancel"));
             }
 
             if (aPlayer.isSneaking()) {
@@ -62,8 +63,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
 
                 data++;
                 if (data > 3) data = 0;
-                aPlayer.addChatMessage(
-                    new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.mode." + data)));
+                aPlayer.addChatMessage(new ChatComponentTranslation("detrav.scanner.mode." + data));
 
                 DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, data);
                 return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
@@ -75,7 +75,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             final int cX = ((int) aPlayer.posX) >> 4;
             final int cZ = ((int) aPlayer.posZ) >> 4;
             final List<Chunk> chunks = new ArrayList<>();
-            aPlayer.addChatMessage(new ChatComponentText("Scanning..."));
+            aPlayer.addChatMessage(new ChatComponentTranslation("gui.detrav.scanner.chat.scanning"));
 
             final int radius = aItem.getHarvestLevel(aStack, "");
 

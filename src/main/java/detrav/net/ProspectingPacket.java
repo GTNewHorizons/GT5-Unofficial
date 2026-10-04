@@ -1,29 +1,29 @@
 package detrav.net;
 
-import java.io.DataInput;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import detrav.DetravScannerMod;
 import detrav.gui.DetravScannerGUI;
 import detrav.gui.textures.DetravMapTexture;
+import detrav.items.DetravMetaGeneratedTool01;
 import detrav.utils.FluidColors;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.ores.OreManager;
 import it.unimi.dsi.fastutil.longs.Long2ShortOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ShortOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 
 /**
@@ -31,19 +31,77 @@ import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
  */
 public class ProspectingPacket extends DetravPacket {
 
+    public static abstract class BasicInfo {
+
+        public String name;
+        public int rgba;
+    }
+
+    public static class BlockInfo extends BasicInfo {
+
+        public ItemStack stack;
+        /** Used to display an icon. */
+        public String internalName;
+
+        public BlockInfo(ItemStack stack) {
+            this.stack = stack;
+            this.name = stack.getDisplayName();
+            this.rgba = ProspectingPacket.getItemColor(stack);
+            IOreMaterial mat = OreManager.getMaterial(stack);
+            this.internalName = mat == null ? "" : mat.getInternalName();
+        }
+    }
+
+    public static class FluidInfo extends BasicInfo {
+
+        public FluidStack stack;
+
+        public FluidInfo(FluidStack stack) {
+            this.stack = stack;
+            this.name = stack.getLocalizedName();
+            this.rgba = ProspectingPacket.getFluidColor(stack);
+        }
+    }
+
     public final int chunkX;
     public final int chunkZ;
     public final int posX;
     public final int posZ;
     public final int size;
     public final int ptype;
-    /** {packed x,y,z: object id} */
+    /**
+     * {packed x,y,z: object id}
+     * <br>
+     * if `ptype` is ore: the value is the object id.
+     * <br>
+     * If `ptype` is pollution:
+     * if y == 1, the value is the lower 16 bits of the pollution quantity;
+     * if y == 2, the value is the upper 16 bits of the pollution quantity.
+     * <br>
+     * if `ptype` is fluid:
+     * if y == 0, the value is the object id;
+     * if y == 1, the value is the lower 16 bits of the fluid amount;
+     * if y == 2, the value is the upper 16 bits of the fluid amount.
+     */
     public final Long2ShortOpenHashMap map = new Long2ShortOpenHashMap();
-    /** {object id: (object name, object rgba)} */
-    public final Short2ObjectOpenHashMap<ObjectIntPair<String>> objects = new Short2ObjectOpenHashMap<>();
-    /** {object id: ore material internal name}, used to render the ore icon on scanner markers. */
-    public final Short2ObjectOpenHashMap<String> oreMaterialNames = new Short2ObjectOpenHashMap<>();
-    /** {object name: object id} */
+    /**
+     * {object id: (item stack, localized name, object rgba, mat internal name)}
+     */
+    public final Short2ObjectOpenHashMap<BlockInfo> items = new Short2ObjectOpenHashMap<>();
+    /**
+     * {object id: (fluid stack, localized name, object rgba)}
+     */
+    public final Short2ObjectOpenHashMap<FluidInfo> fluids = new Short2ObjectOpenHashMap<>();
+    /**
+     * {object id: localized name}
+     */
+    // /** {object id: (object name, object rgba)} */
+    // public final Short2ObjectOpenHashMap<ObjectIntPair<String>> objects = new Short2ObjectOpenHashMap<>();
+    // /** {object id: ore material internal name}, used to render the ore icon on scanner markers. */
+    // public final Short2ObjectOpenHashMap<String> oreMaterialNames = new Short2ObjectOpenHashMap<>();
+    /**
+     * {object name: object id}
+     */
     private final Object2ShortOpenHashMap<String> nameLookup = new Object2ShortOpenHashMap<>();
 
     public ProspectingPacket(int chunkX, int chunkZ, int posX, int posZ, int size, int ptype) {
@@ -59,8 +117,7 @@ public class ProspectingPacket extends DetravPacket {
         return (0xFF << 24) | ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF));
     }
 
-    public static Object decode(InputStream in) throws IOException {
-        DataInput aData = new DataInputStream(new GZIPInputStream(in));
+    public static Object decode(PacketBuffer aData) throws IOException {
         ProspectingPacket packet = new ProspectingPacket(
             aData.readInt(),
             aData.readInt(),
@@ -69,17 +126,21 @@ public class ProspectingPacket extends DetravPacket {
             aData.readInt(),
             aData.readInt());
 
-        int objectCount = aData.readInt();
-        packet.objects.ensureCapacity(objectCount);
-
-        for (int i = 0; i < objectCount; i++) {
+        int itemCount = aData.readInt();
+        packet.items.ensureCapacity(itemCount);
+        for (int i = 0; i < itemCount; i++) {
             short objectId = aData.readShort();
-            String name = aData.readUTF();
-            int rgba = aData.readInt();
-            String oreMaterialName = aData.readUTF();
+            ItemStack item = ByteBufUtils.readItemStack(aData);
+            packet.items.put(objectId, new BlockInfo(item));
+        }
 
-            packet.objects.put(objectId, ObjectIntPair.of(name, rgba));
-            packet.oreMaterialNames.put(objectId, oreMaterialName);
+        int fluidCount = aData.readInt();
+        packet.fluids.ensureCapacity(fluidCount);
+        for (int i = 0; i < fluidCount; i++) {
+            short objectId = aData.readShort();
+            NBTTagCompound nbt = aData.readNBTTagCompoundFromBuffer();
+            FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt);
+            packet.fluids.put(objectId, new FluidInfo(fluid));
         }
 
         int instanceCount = aData.readInt();
@@ -101,8 +162,7 @@ public class ProspectingPacket extends DetravPacket {
     }
 
     @Override
-    public void encode(OutputStream out) throws IOException {
-        DataOutputStream tOut = new DataOutputStream(new GZIPOutputStream(out));
+    public void encode(PacketBuffer tOut) throws IOException {
         tOut.writeInt(chunkX);
         tOut.writeInt(chunkZ);
         tOut.writeInt(posX);
@@ -110,17 +170,28 @@ public class ProspectingPacket extends DetravPacket {
         tOut.writeInt(size);
         tOut.writeInt(ptype);
 
-        tOut.writeInt(objects.size());
-
-        for (var obj : objects.short2ObjectEntrySet()) {
+        // tOut.writeInt(objects.size());
+        //
+        // for (var obj : objects.short2ObjectEntrySet()) {
+        // tOut.writeShort(obj.getShortKey());
+        // tOut.writeUTF(
+        // obj.getValue()
+        // .left());
+        // tOut.writeInt(
+        // obj.getValue()
+        // .rightInt());
+        // tOut.writeUTF(oreMaterialNames.getOrDefault(obj.getShortKey(), ""));
+        // }
+        tOut.writeInt(items.size());
+        for (var obj : items.short2ObjectEntrySet()) {
             tOut.writeShort(obj.getShortKey());
-            tOut.writeUTF(
-                obj.getValue()
-                    .left());
-            tOut.writeInt(
-                obj.getValue()
-                    .rightInt());
-            tOut.writeUTF(oreMaterialNames.getOrDefault(obj.getShortKey(), ""));
+            ByteBufUtils.writeItemStack(tOut, obj.getValue().stack);
+        }
+        tOut.writeInt(fluids.size());
+        for (var obj : fluids.short2ObjectEntrySet()) {
+            tOut.writeShort(obj.getShortKey());
+            var nbt = obj.getValue().stack.writeToNBT(new NBTTagCompound());
+            tOut.writeNBTTagCompoundToBuffer(nbt);
         }
 
         tOut.writeInt(map.size());
@@ -129,8 +200,6 @@ public class ProspectingPacket extends DetravPacket {
             tOut.writeLong(instance.getLongKey());
             tOut.writeShort(instance.getShortValue());
         }
-
-        tOut.close();
     }
 
     @Override
@@ -156,13 +225,8 @@ public class ProspectingPacket extends DetravPacket {
         } else {
             objectId = nextId++;
 
-            IOreMaterial mat = OreManager.getMaterial(block, meta);
-
-            short[] rgba = mat == null ? new short[] { 125, 125, 125, 255 } : mat.getRGBA();
-
             nameLookup.put(stackName, objectId);
-            objects.put(objectId, ObjectIntPair.of(stackName, rgba(rgba)));
-            oreMaterialNames.put(objectId, mat == null ? "" : mat.getInternalName());
+            items.put(objectId, new BlockInfo(stack));
         }
 
         map.put(CoordinatePacker.pack(aX, y, aZ), objectId);
@@ -184,7 +248,7 @@ public class ProspectingPacket extends DetravPacket {
             objectId = nextId++;
 
             nameLookup.put(stackName, objectId);
-            objects.put(objectId, ObjectIntPair.of(stackName, rgba(FluidColors.getColor(fluid.getFluidID()))));
+            fluids.put(objectId, new FluidInfo(fluid));
         }
 
         int lower = fluid.amount & 0xFFFF;
@@ -216,4 +280,67 @@ public class ProspectingPacket extends DetravPacket {
     public int getSize() {
         return (size * 2 + 1) * 16;
     }
+
+    public List<String> getAllKeys() {
+        List<String> allKeys = new ArrayList<>();
+        switch (this.ptype) {
+            case DetravMetaGeneratedTool01.MODE_ALL_ORES, DetravMetaGeneratedTool01.MODE_BIG_ORES -> {
+                if (this.items.size() > 1) {
+                    allKeys.add(StatCollector.translateToLocal("gui.detrav.scanner.all"));
+                }
+                allKeys.addAll(
+                    this.items.short2ObjectEntrySet()
+                        .stream()
+                        .map(e -> e.getValue().name)
+                        .toList());
+            }
+            case DetravMetaGeneratedTool01.MODE_FLUIDS -> {
+                if (this.fluids.size() > 1) {
+                    allKeys.add(StatCollector.translateToLocal("gui.detrav.scanner.all"));
+                }
+                allKeys.addAll(
+                    this.fluids.short2ObjectEntrySet()
+                        .stream()
+                        .map(e -> e.getValue().name)
+                        .toList());
+            }
+            case DetravMetaGeneratedTool01.MODE_POLLUTION -> {
+                allKeys.add(StatCollector.translateToLocal("gui.detrav.scanner.pollution"));
+            }
+        }
+        return allKeys;
+    }
+
+    public Short2ObjectOpenHashMap<? extends BasicInfo> basicInfo() {
+        switch (this.ptype) {
+            case DetravMetaGeneratedTool01.MODE_BIG_ORES, DetravMetaGeneratedTool01.MODE_ALL_ORES -> {
+                return this.items;
+            }
+            case DetravMetaGeneratedTool01.MODE_FLUIDS -> {
+                return this.fluids;
+            }
+        }
+        return new Short2ObjectOpenHashMap<>();
+    }
+
+    private static int getItemColor(ItemStack stack) {
+        IOreMaterial mat = OreManager.getMaterial(stack);
+        short[] rgba = mat == null ? new short[] { 125, 125, 125, 255 } : mat.getRGBA();
+        return rgba(rgba);
+    }
+
+    private static int getFluidColor(FluidStack fluid) {
+        return rgba(FluidColors.getColor(fluid.getFluidID()));
+    }
+
+    public Object2IntOpenHashMap<String> getColorMap() {
+        var colors = new Object2IntOpenHashMap<String>();
+        for (var e : this.basicInfo()
+            .short2ObjectEntrySet()) {
+            var item = e.getValue();
+            colors.put(item.name, item.rgba);
+        }
+        return colors;
+    }
+
 }

@@ -37,6 +37,7 @@ tooltip.detrav.scanner.success.chance=Chance of a successful scan: §r%s%%
 tooltip.detrav.scanner.distance.0=next to you (0 chunks away), close to you (1-2)
 tooltip.detrav.scanner.distance.1=at medium range (3-5), at long range (6-8), far away (9+)
 
+gui.detrav.scanner.all=All
 gui.detrav.scanner.pollution=Pollution
 gui.detrav.scanner.gibbl=gibbl
 gui.detrav.scanner.unknown_fluid=Unknown Fluid name!
@@ -53,3 +54,7 @@ gui.detrav.scanner.hint.invert=Double-click to invert background
 # Prospector scanners
 gt.detrav.metatool.01.name=Prospector's Scanner (%s)
 gt.detrav.metatool.01.electric.name=Electric Prospector's Scanner (%s)
+
+# Chats
+gui.detrav.scanner.chat.cancel=Cancelled pending scan
+gui.detrav.scanner.chat.scanning=Scanning...

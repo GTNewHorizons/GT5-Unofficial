@@ -1,5 +1,7 @@
 package detrav.gui.textures;
 
+import static com.gtnewhorizons.modularui.api.math.Color.rgba;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -9,6 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -24,7 +27,11 @@ import gregtech.api.util.GTUtility;
 public class DetravMapTexture extends AbstractTexture {
 
     public final ProspectingPacket packet;
-    private String selected = "All";
+    // "All" in the current language, used for comparison with the selected ore name
+    // Since language can change, we need to retrieve the localized "all" string in the constructor rather than
+    // hardcoding it.
+    private final String selectedAll = StatCollector.translateToLocal("gui.detrav.scanner.all");
+    private String selected = selectedAll;
     public int width = -1;
     public int height = -1;
     public boolean invert = false;
@@ -66,12 +73,13 @@ public class DetravMapTexture extends AbstractTexture {
 
                 short selectedId = -1;
 
-                if (!selected.equals("All")) {
-                    for (var e : packet.objects.short2ObjectEntrySet()) {
-                        if (selected.equals(
-                            e.getValue()
-                                .left())) {
-                            selectedId = e.getShortKey();
+                if (!selected.equals(selectedAll)) {
+                    var iterator = packet.items.short2ObjectEntrySet()
+                        .fastIterator();
+                    while (iterator.hasNext()) {
+                        var entry = iterator.next();
+                        if (selected.equals(entry.getValue().name)) {
+                            selectedId = entry.getShortKey();
                             break;
                         }
                     }
@@ -90,13 +98,13 @@ public class DetravMapTexture extends AbstractTexture {
                     if (y < depth[idx]) continue;
                     depth[idx] = (short) y;
 
-                    var object = packet.objects.get(e.getShortValue());
+                    var blockInfo = packet.items.get(e.getShortValue());
 
-                    if (object == null) continue;
+                    if (blockInfo == null) continue;
 
                     topId[idx] = e.getShortValue();
                     topY[idx] = y;
-                    image.setRGB(x, z, object.rightInt());
+                    image.setRGB(x, z, blockInfo.rgba);
                 }
             }
             case DetravMetaGeneratedTool01.MODE_FLUIDS -> {
@@ -105,23 +113,23 @@ public class DetravMapTexture extends AbstractTexture {
                 int maxAmount = 1;
                 for (int cZ = 0; cZ < chunkSize; cZ++) {
                     for (int cX = 0; cX < chunkSize; cX++) {
-                        var object = packet.objects.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
+                        var fluidInfo = packet.fluids.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
                         int amount = packet.getAmount(cX, cZ);
-                        if (object == null || amount <= 0) continue;
-                        if (!selected.equals("All") && !selected.equals(object.left())) continue;
+                        if (fluidInfo == null || amount <= 0) continue;
+                        if (!selected.equals(selectedAll) && !selected.equals(fluidInfo.name)) continue;
                         maxAmount = Math.max(maxAmount, amount);
                     }
                 }
 
                 for (int cZ = 0; cZ < chunkSize; cZ++) {
                     for (int cX = 0; cX < chunkSize; cX++) {
-                        var object = packet.objects.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
+                        var fluidInfo = packet.fluids.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
                         int amount = packet.getAmount(cX, cZ);
 
-                        if (object == null || amount <= 0) continue;
-                        if (!selected.equals("All") && !selected.equals(object.left())) continue;
+                        if (fluidInfo == null || amount <= 0) continue;
+                        if (!selected.equals(selectedAll) && !selected.equals(fluidInfo.name)) continue;
 
-                        int rgba = object.rightInt();
+                        int rgba = fluidInfo.rgba;
                         int fill = Math.max(1, Math.round(16F * amount / maxAmount)); // bottom-up rows, 1..16
 
                         for (int y = 16 - fill; y < 16; y++) {
@@ -187,8 +195,8 @@ public class DetravMapTexture extends AbstractTexture {
         if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return null;
         short id = topId[x + z * bs];
         if (id < 0) return null;
-        var object = packet.objects.get(id);
-        return object == null ? null : object.left();
+        var object = packet.items.get(id);
+        return object == null ? null : object.name;
     }
 
     /** World Y of the topmost ore drawn at the given block column. */
@@ -204,8 +212,8 @@ public class DetravMapTexture extends AbstractTexture {
         if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return 0;
         short id = topId[x + z * bs];
         if (id < 0) return 0;
-        var object = packet.objects.get(id);
-        return object == null ? 0 : object.rightInt();
+        var object = packet.items.get(id);
+        return object == null ? 0 : object.rgba;
     }
 
     /** Ore material internal name of the topmost ore at the given block column, or empty string. */
@@ -214,7 +222,8 @@ public class DetravMapTexture extends AbstractTexture {
         if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return "";
         short id = topId[x + z * bs];
         if (id < 0) return "";
-        return packet.oreMaterialNames.getOrDefault(id, "");
+        var object = packet.items.get(id);
+        return object == null ? "" : object.internalName;
     }
 
     @Override
