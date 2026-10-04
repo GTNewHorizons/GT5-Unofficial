@@ -1966,6 +1966,7 @@ GT5U.MBTT.NaniteContainmentBus=Nanite Containment Bus
 GT5U.MBTT.LineOfSightHatch=Line-Of-Sight Connector Hatch
 GT5U.MBTT.TeleportationControllerHatch=Teleportation Node Controller Hatch
 GT5U.MBTT.CondensateDetectorHatch=Condensate Detector Hatch
+GT5U.MBTT.CondensateHatch=Condensate Hatch
 GT5U.MBTT.NaniteTierDetectorHatch=Nanite Tier Detector Hatch
 GT5U.MBTT.AnyModule=Any Module
 GT5U.MBTT.IgnoredHatch=Any Hatch (used by attached module)
