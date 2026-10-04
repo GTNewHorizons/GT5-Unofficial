@@ -29,7 +29,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
@@ -49,7 +48,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECAssemblerGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -307,11 +305,17 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
     private enum NaniteHatchElement implements IHatchElement<MTEBECAssembler> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.NaniteContainmentBus");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Arrays.asList(MTEHatchNanite.class);
+        }
+
+        NaniteHatchElement(String name) {
+            this.name = name;
         }
 
         @Override
@@ -333,7 +337,12 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
         @Override
         public String getDisplayName() {
-            return ItemList.Hatch_Nanite.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -344,16 +353,27 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
     public enum AssemblerLineOfSightHatch implements IHatchElement<MTEBECAssembler> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.LineOfSightHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return List.of(MTEHatchLoS.class);
         }
 
+        AssemblerLineOfSightHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_LineOfSight_Connector.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
