@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
+import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.api.enums.StoneType;
 import gregtech.api.util.GTUtility;
@@ -118,6 +119,7 @@ public class OreShapes {
 
         var oreBuilder = MaterialLibAPI.newBlockShape("gregtech", "ore")
             .displayName("%s Ore")
+            .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_ore")
             .oreDict("ore")
             .variants(oreVariants)
             .drops(
@@ -133,6 +135,7 @@ public class OreShapes {
 
         var oreSmallBuilder = MaterialLibAPI.newBlockShape("gregtech", "oreSmall")
             .displayName("Small %s Ore")
+            .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.small_material_ore")
             .oreDict("oreSmall")
             .variants(smallOreVariants)
             .drops(

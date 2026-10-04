@@ -6,6 +6,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialEdit;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
+import com.ruling_0.materiallib.api.StandardProperties;
 import com.ruling_0.materiallib.api.TextureSet;
 
 import gregtech.api.enums.Mods;
@@ -36,6 +37,7 @@ public class XModMaterials {
         Fluix = MaterialLibAPI.newMaterial("gregtech", "Fluix", TextureSet.of("gregtech", "NONE"))
             .setTint(0xFFFFFFFF)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Fluix")
+            .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.fluix")
             .setProperty(
                 GTMaterialProperties.FLAGS,
                 EnumSet.of(

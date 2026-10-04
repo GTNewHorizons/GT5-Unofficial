@@ -10,6 +10,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.MaterialRef;
 import com.ruling_0.materiallib.api.Property;
+import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.api.enums.Element;
 
@@ -17,8 +18,8 @@ import gregtech.api.enums.Element;
 /// error.
 ///
 /// Checks the invariants the compiler cannot see: a [MaterialRef] whose target is no longer registered, a
-/// composition whose amounts sum to zero, an unknown [Element] name, a zero density divider, and cycles in the
-/// composition graph.
+/// composition whose amounts sum to zero, an unknown [Element] name, a zero density divider, a missing
+/// [StandardProperties#DISPLAY_NAME_KEY], and cycles in the composition graph.
 public final class MaterialDeclarationValidator {
 
     private static final int MAX_REPORTED = 20;
@@ -46,6 +47,7 @@ public final class MaterialDeclarationValidator {
             checkRefs(material, errors);
             checkElement(material, errors);
             checkDensity(material, errors);
+            checkDisplayNameKey(material, errors);
         }
 
         Set<Material> settled = new HashSet<>();
@@ -105,6 +107,12 @@ public final class MaterialDeclarationValidator {
         Integer divider = material.getProperty(GTMaterialProperties.DENSITY_DIVIDER);
         if (divider != null && divider == 0) {
             errors.add(describe(material, GTMaterialProperties.DENSITY_DIVIDER) + " is 0");
+        }
+    }
+
+    private static void checkDisplayNameKey(Material material, List<String> errors) {
+        if (material.getProperty(StandardProperties.DISPLAY_NAME_KEY) == null) {
+            errors.add(describe(material, StandardProperties.DISPLAY_NAME_KEY) + " is not declared");
         }
     }
 

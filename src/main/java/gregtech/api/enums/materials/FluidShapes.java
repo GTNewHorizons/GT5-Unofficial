@@ -9,6 +9,7 @@ import net.minecraftforge.fluids.Fluid;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
+import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.FluidRef;
@@ -35,39 +36,65 @@ public class FluidShapes {
     // spotless:on
 
     public static void init() {
-        fluidLiquid = fluidShape("fluidLiquid", "%s", legacySlot(FluidNames::fluid), FluidShapes::liquidAttrs);
-        fluidGas = fluidShape("fluidGas", "%s", legacySlot(FluidNames::gas), FluidShapes::gasAttrs);
-        fluidPlasma = fluidShape("fluidPlasma", "%s Plasma", legacySlot(FluidNames::plasma), FluidShapes::plasmaAttrs);
-        fluidMolten = fluidShape("fluidMolten", "Molten %s", legacySlot(FluidNames::molten), FluidShapes::moltenAttrs);
+        fluidLiquid = fluidShape(
+            "fluidLiquid",
+            "%s",
+            "gt.oreprefix.material",
+            legacySlot(FluidNames::fluid),
+            FluidShapes::liquidAttrs);
+        fluidGas = fluidShape(
+            "fluidGas",
+            "%s",
+            "gt.oreprefix.material",
+            legacySlot(FluidNames::gas),
+            FluidShapes::gasAttrs);
+        fluidPlasma = fluidShape(
+            "fluidPlasma",
+            "%s Plasma",
+            "gt.oreprefix.material_plasma",
+            legacySlot(FluidNames::plasma),
+            FluidShapes::plasmaAttrs);
+        fluidMolten = fluidShape(
+            "fluidMolten",
+            "Molten %s",
+            "gt.oreprefix.molten_material",
+            legacySlot(FluidNames::molten),
+            FluidShapes::moltenAttrs);
 
         fluidHydroCracked1 = fluidShape(
             "fluidHydroCracked1",
             "Lightly Hydro-Cracked %s",
+            "gt.oreprefix.lightly_hydro-cracked_material",
             crackedSlot(MaterialFluidNames::hydroCracked, 0),
             FluidShapes::gasAttrs);
         fluidHydroCracked2 = fluidShape(
             "fluidHydroCracked2",
             "Moderately Hydro-Cracked %s",
+            "gt.oreprefix.moderately_hydro-cracked_material",
             crackedSlot(MaterialFluidNames::hydroCracked, 1),
             FluidShapes::gasAttrs);
         fluidHydroCracked3 = fluidShape(
             "fluidHydroCracked3",
             "Severely Hydro-Cracked %s",
+            "gt.oreprefix.severely_hydro-cracked_material",
             crackedSlot(MaterialFluidNames::hydroCracked, 2),
             FluidShapes::gasAttrs);
         fluidSteamCracked1 = fluidShape(
             "fluidSteamCracked1",
             "Lightly Steam-Cracked %s",
+            "gt.oreprefix.lightly_steam-cracked_material",
             crackedSlot(MaterialFluidNames::steamCracked, 0),
             FluidShapes::gasAttrs);
         fluidSteamCracked2 = fluidShape(
             "fluidSteamCracked2",
             "Moderately Steam-Cracked %s",
+            "gt.oreprefix.moderately_steam-cracked_material",
             crackedSlot(MaterialFluidNames::steamCracked, 1),
             FluidShapes::gasAttrs);
         fluidSteamCracked3 = fluidShape(
             "fluidSteamCracked3",
             "Severely Steam-Cracked %s",
+            "gt.oreprefix.severely_steam-cracked_material",
             crackedSlot(MaterialFluidNames::steamCracked, 2),
             FluidShapes::gasAttrs);
     }
@@ -86,10 +113,11 @@ public class FluidShapes {
         };
     }
 
-    private static Shape fluidShape(String name, String displayFormat, Function<Material, FluidRef> ref,
-        ObjIntConsumer<Fluid> attrs) {
+    private static Shape fluidShape(String name, String displayFormat, String displayFormatKey,
+        Function<Material, FluidRef> ref, ObjIntConsumer<Fluid> attrs) {
         return MaterialLibAPI.newFluidShape("gregtech", name)
             .displayName(displayFormat)
+            .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, displayFormatKey)
             .fluidName((shape, material) -> requireRef(ref, shape, material).name())
             .configureFluid((material, fluid) -> {
                 FluidRef fluidRef = requireRef(ref, null, material);

@@ -672,11 +672,13 @@ public class MaterialUtils {
         return formula == null ? "" : formula;
     }
 
-    /// The lang key a material's display name and its derivatives are translated from; derived keys append
-    /// their own suffixes to it.
+    /// The lang key a material's display name and its derivatives are translated from: its
+    /// [StandardProperties#DISPLAY_NAME_KEY], else `Material.` and its lowercased [#internalName]. Derived keys
+    /// append their own suffixes to it.
     public static @Nullable String localizedNameKey(@Nullable Material material) {
-        String name = internalName(material);
-        return name == null ? null : "Material." + name.toLowerCase();
+        if (material == null) return null;
+        String key = material.getProperty(StandardProperties.DISPLAY_NAME_KEY);
+        return key != null ? key : "Material." + internalName(material).toLowerCase();
     }
 
     /// A material's flavor line: the translation of its `<localizedNameKey>.flavorText` key when the lang files
