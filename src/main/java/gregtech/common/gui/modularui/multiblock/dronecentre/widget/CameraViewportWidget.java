@@ -9,7 +9,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -25,39 +24,43 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.GuiDraw;
-import com.cleanroommc.modularui.drawable.text.TextRenderer;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widgets.TextWidget;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.GTMod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.gui.modularui.multiblock.dronecentre.panel.CameraObservePanel;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class CameraViewportWidget extends Widget<CameraViewportWidget> implements Interactable {
+public class CameraViewportWidget extends ParentWidget<CameraViewportWidget> implements Interactable {
 
-    private static final int COLOR_BLACK_SCREEN = Color.BLACK.main;
-    private static final int COLOR_SIGNAL_INTERRUPTED = Color.RED_ACCENT.main;
-    private static final int COLOR_SIGNAL_INTERRUPTED_ALT = Color.RED.darkerSafe(3);
-    private static final int COLOR_INDICATOR = Color.GREEN.main;
-    private static final int COLOR_HUD_TEXT = Color.WHITE.main;
-    private static final int COLOR_HUD_BG = Color.withAlpha(Color.BLACK.brighter(1), 128);
-    private static final int COLOR_HUD_BORDER = Color.withAlpha(Color.GREY.main, 96);
-    private static final int BASE_COLOR_SCANLINE = Color.WHITE.main;
-    private static final int BASE_COLOR_FLASH = Color.WHITE.darker(5);
+    private static final int OVERLAY_MARGIN = 4;
+    private static final int INDICATOR_MARGIN = 8;
+    private static final float INDICATOR_TEXT_SCALE = 0.7F;
+    private static final float INFO_BOX_TEXT_SCALE = 0.7F;
+    private static final float SIGNAL_LOST_TEXT_SCALE = 2.0F;
+    private static final long SIGNAL_LOST_BLINK_MILLIS = 500;
+
+    // Static noise effect colors 
+    private static final int NOISE_SCANLINE_COLOR = Color.WHITE.main;
+    private static final int NOISE_BAND_COLOR = Color.BLACK.main;
+    private static final int NOISE_FLASH_COLOR = Color.WHITE.darker(5);
 
     private final CameraViewportClientManager cameraManager = (CameraViewportClientManager) GTMod.proxy.cameraViewportManager;
 
@@ -65,6 +68,56 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
     private final List<String> infoBoxLines = new ArrayList<>();
     private long infoBoxMachineCoord = CameraViewportManager.NULL_COORD;
     private NBTTagCompound infoBoxStatus = null;
+
+    public CameraViewportWidget() {
+        child(createInfoBox())
+            .child(
+                createIndicator(IKey.lang("GT5U.gui.text.drone_zoom", () -> new Object[] { cameraManager.zoomLevel }))
+                    .left(INDICATOR_MARGIN)
+                    .bottom(OVERLAY_MARGIN)
+                    .setEnabledIf(_ -> cameraManager.zoomLevel > 1.0F && !cameraManager.isSignalLost()))
+            .child(
+                createIndicator(IKey.lang("GT5U.gui.text.drone_flashlight")).right(INDICATOR_MARGIN)
+                    .bottom(OVERLAY_MARGIN)
+                    .setEnabledIf(_ -> cameraManager.flashlightActive && !cameraManager.isSignalLost()))
+            .child(createSignalLostScreen());
+    }
+
+    private IWidget createInfoBox() {
+        return IKey.dynamic(() -> String.join("\n", infoBoxLines))
+            .asWidget()
+            .widgetTheme(GTWidgetThemes.DRONE_CAMERA_INFO_BOX)
+            .scale(INFO_BOX_TEXT_SCALE)
+            .textAlign(Alignment.CENTER)
+            .padding(5, 3)
+            .top(OVERLAY_MARGIN)
+            .leftRel(0.5F)
+            .setEnabledIf(_ -> !infoBoxLines.isEmpty() && !cameraManager.isSignalLost());
+    }
+
+    private static TextWidget<?> createIndicator(IKey text) {
+        return text.asWidget()
+            .widgetTheme(GTWidgetThemes.DRONE_CAMERA_INDICATOR)
+            .scale(INDICATOR_TEXT_SCALE);
+    }
+
+    private IWidget createSignalLostScreen() {
+        return IKey.lang("GT5U.gui.text.drone_signal_interrupted")
+            .asWidget()
+            .full()
+            .widgetTheme(GTWidgetThemes.DRONE_CAMERA_SIGNAL_LOST)
+            .scale(SIGNAL_LOST_TEXT_SCALE)
+            .textAlign(Alignment.CENTER)
+            .onUpdateListener(
+                screen -> screen.widgetTheme(
+                    isBlinkPhase() ? GTWidgetThemes.DRONE_CAMERA_SIGNAL_LOST_BLINK
+                        : GTWidgetThemes.DRONE_CAMERA_SIGNAL_LOST))
+            .setEnabledIf(_ -> cameraManager.isSignalLost());
+    }
+
+    private static boolean isBlinkPhase() {
+        return (System.currentTimeMillis() / SIGNAL_LOST_BLINK_MILLIS) % 2 == 0;
+    }
 
     @Override
     public void onUpdate() {
@@ -136,74 +189,15 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
         infoBoxStatus = null;
     }
 
+    /** Draws static noise over the camera feed that gets stronger as the signal gets weaker. */
     @Override
     public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
-        if (cameraManager.activeConnection == null) {
+        if (cameraManager.activeConnection == null || cameraManager.isSignalLost()) {
             return;
         }
 
         int w = getArea().width;
         int h = getArea().height;
-
-        if (cameraManager.isSignalLost()) {
-            // A black screen
-            GuiDraw.drawRect(0, 0, w, h, COLOR_BLACK_SCREEN);
-
-            String msg = StatCollector.translateToLocal("GT5U.gui.text.drone_signal_interrupted");
-            int textW = TextRenderer.getFontRenderer()
-                .getStringWidth(msg);
-            float scale = 2.0F;
-            float scaleDivisor = 0.5F;
-            float tx = (w - (textW * scale)) * scaleDivisor;
-            float ty = (h - (TextRenderer.getFontRenderer().FONT_HEIGHT * scale)) * scaleDivisor;
-
-            TextRenderer.SHARED.setSimulate(false);
-            TextRenderer.SHARED.setShadow(true);
-            TextRenderer.SHARED.setScale(scale);
-            TextRenderer.SHARED.setPos((int) tx, (int) ty);
-            TextRenderer.SHARED.setAlignment(Alignment.CenterLeft, w);
-
-            int color = COLOR_SIGNAL_INTERRUPTED;
-            if ((System.currentTimeMillis() / 500) % 2 == 0) {
-                color = COLOR_SIGNAL_INTERRUPTED_ALT;
-            }
-            TextRenderer.SHARED.setColor(color);
-            TextRenderer.SHARED.draw(msg);
-
-            drawThinBorder(w, h);
-            return;
-        }
-
-        // Zoom indicator
-        if (cameraManager.zoomLevel > 1.0F) {
-            String zoomText = String
-                .format(StatCollector.translateToLocal("GT5U.gui.text.drone_zoom"), cameraManager.zoomLevel);
-            TextRenderer.SHARED.setSimulate(false);
-            TextRenderer.SHARED.setShadow(true);
-            TextRenderer.SHARED.setScale(0.7F);
-            TextRenderer.SHARED.setPos(8, h - 12);
-            TextRenderer.SHARED.setColor(COLOR_INDICATOR);
-            TextRenderer.SHARED.setAlignment(Alignment.CenterLeft, w);
-            TextRenderer.SHARED.draw(zoomText);
-        }
-
-        // Flashlight
-        if (cameraManager.flashlightActive) {
-            String zoomText = StatCollector.translateToLocal("GT5U.gui.text.drone_flashlight");
-            TextRenderer.SHARED.setSimulate(false);
-            TextRenderer.SHARED.setShadow(true);
-            TextRenderer.SHARED.setScale(0.7F);
-            TextRenderer.SHARED.setPos(0, h - 12);
-            TextRenderer.SHARED.setColor(COLOR_INDICATOR);
-            TextRenderer.SHARED.setAlignment(Alignment.CenterRight, w - 8);
-            TextRenderer.SHARED.draw(zoomText);
-        }
-
-        if (!infoBoxLines.isEmpty()) {
-            drawBasicInfoHUD(w, infoBoxLines);
-        }
-
-        // Noise
         int signal = cameraManager.getSignalStrength();
         if (signal < 100) {
             double noiseFactor = (100.0 - signal) / 90.0;
@@ -226,7 +220,7 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
                 int sy = rand.nextInt(h);
                 int sh = rand.nextInt(3) + 1;
                 int opacity = rand.nextInt(60) + 20;
-                int color = Color.withAlpha(BASE_COLOR_SCANLINE, opacity);
+                int color = Color.withAlpha(NOISE_SCANLINE_COLOR, opacity);
                 GuiDraw.drawRect(0, sy, w, sh, color);
             }
 
@@ -234,35 +228,16 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
                 int bandY = rand.nextInt(h);
                 int bandH = rand.nextInt(15) + 5;
                 int opacity = rand.nextInt(40) + 10;
-                int bandColor = Color.withAlpha(COLOR_BLACK_SCREEN, opacity);
+                int bandColor = Color.withAlpha(NOISE_BAND_COLOR, opacity);
                 GuiDraw.drawRect(0, bandY, w, bandH, bandColor);
             }
 
             if (signal < 30 && rand.nextFloat() < (1.0 - (signal / 30.0)) * 0.25F) {
                 int flashOpacity = rand.nextInt(80) + 40;
-                int flashColor = Color.withAlpha(BASE_COLOR_FLASH, flashOpacity);
+                int flashColor = Color.withAlpha(NOISE_FLASH_COLOR, flashOpacity);
                 GuiDraw.drawRect(0, 0, w, h, flashColor);
             }
         }
-
-        // Border
-        drawThinBorder(w, h);
-    }
-
-    private void drawThinBorder(int w, int h) {
-        Tessellator tessellator = Tessellator.instance;
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-        GL11.glLineWidth(1.0F);
-        GL11.glColor4f(0.3F, 0.3F, 0.3F, 1.0F);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        tessellator.startDrawing(GL11.GL_LINE_LOOP);
-        tessellator.addVertex(0, 0, 0);
-        tessellator.addVertex(w, 0, 0);
-        tessellator.addVertex(w, h, 0);
-        tessellator.addVertex(0, h, 0);
-        tessellator.draw();
-        GL11.glPopAttrib();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     @Override
@@ -361,47 +336,6 @@ public class CameraViewportWidget extends Widget<CameraViewportWidget> implement
             }
         }
         return true;
-    }
-
-    private void drawBasicInfoHUD(int w, List<String> basicInfo) {
-        float scale = Math.clamp(w / 346.6F, 0.5F, 0.8F);
-        int maxW = 100;
-        for (String line : basicInfo) {
-            int lw = TextRenderer.getFontRenderer()
-                .getStringWidth(line);
-            if (lw > maxW) {
-                maxW = lw;
-            }
-        }
-
-        int boxW = (int) (maxW * scale) + 10;
-        int boxH = (int) (basicInfo.size() * 10 * scale) + 6;
-
-        float absX = (w - boxW) / 2.0F;
-        float absY = 4.0F;
-
-        int left = (int) absX;
-        int top = (int) absY;
-        GuiDraw.drawRect(left, top, boxW, boxH, COLOR_HUD_BG);
-        GuiDraw.drawRect(left, top, boxW, 1, COLOR_HUD_BORDER);
-        GuiDraw.drawRect(left, top + boxH - 1, boxW, 1, COLOR_HUD_BORDER);
-        GuiDraw.drawRect(left, top, 1, boxH, COLOR_HUD_BORDER);
-        GuiDraw.drawRect(left + boxW - 1, top, 1, boxH, COLOR_HUD_BORDER);
-
-        int textY = (int) absY + 3;
-        for (String line : basicInfo) {
-            int lw = TextRenderer.getFontRenderer()
-                .getStringWidth(line);
-            int tx = (int) absX + (boxW - (int) (lw * scale)) / 2;
-            TextRenderer.SHARED.setSimulate(false);
-            TextRenderer.SHARED.setShadow(false);
-            TextRenderer.SHARED.setScale(scale);
-            TextRenderer.SHARED.setPos(tx, textY);
-            TextRenderer.SHARED.setColor(COLOR_HUD_TEXT);
-            TextRenderer.SHARED.setAlignment(Alignment.CenterLeft, boxW);
-            TextRenderer.SHARED.draw(line);
-            textY += (int) (10 * scale);
-        }
     }
 
     private record CameraWailaAccessor(Minecraft mc, MovingObjectPosition mop, TileEntity te, NBTTagCompound tag)
