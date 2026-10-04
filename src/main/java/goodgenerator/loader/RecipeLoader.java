@@ -792,17 +792,16 @@ public class RecipeLoader {
             .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T3.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 10 * SECONDS, TierEU.RECIPE_UEV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 2),
                 ItemList.Field_Generator_UIV.get(2),
-                ItemList.Electric_Pump_UIV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 8),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.SpaceTime, 16),
-                ItemList.Circuit_Wafer_PPIC.get(64),
-                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1L })
+                ItemList.Electric_Pump_UIV.get(12),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUEV, 64),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 12),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.SpaceTime, 24),
+                ItemList.Circuit_Wafer_APIC.get(48),
+                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2L })
             .fluidInputs(
-                GGMaterial.metastableOganesson.getMolten(1_000),
+                GGMaterial.metastableOganesson.getMolten(10 * INGOTS),
                 Materials.TranscendentMetal.getMolten(1 * STACKS),
                 Materials.DimensionallyShiftedSuperfluid.getFluid(64_000))
             .itemOutputs(ItemRefer.Field_Restriction_Coil_T4.get(1))
