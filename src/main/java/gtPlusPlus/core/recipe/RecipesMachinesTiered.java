@@ -53,10 +53,10 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_LV.get(1),
                 ItemList.Emitter_LV.get(4),
                 ItemList.Sensor_LV.get(4),
-                MaterialsAlloy.TUMBAGA.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 8))
+                Materials.RedstoneAlloy.getPlates(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 4))
             .itemOutputs(GregtechItemList.Charger_LV.get(1))
-            .fluidInputs(MaterialsAlloy.SILICON_CARBIDE.getFluidStack(4 * INGOTS))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(2 * INGOTS))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -67,10 +67,10 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_MV.get(1),
                 ItemList.Emitter_MV.get(4),
                 ItemList.Sensor_MV.get(4),
-                MaterialsAlloy.EGLIN_STEEL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 8))
+                Materials.PulsatingIron.getPlates(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4))
             .itemOutputs(GregtechItemList.Charger_MV.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.BLACK_METAL.getFluidStack(6 * INGOTS))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(4 * INGOTS))
             .duration(67 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -81,10 +81,11 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_HV.get(1),
                 ItemList.Emitter_HV.get(4),
                 ItemList.Sensor_HV.get(4),
-                MaterialsAlloy.TANTALUM_CARBIDE.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 8))
+                ItemList.Field_Generator_LV.get(2),
+                Materials.EnergeticAlloy.getPlates(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4))
             .itemOutputs(GregtechItemList.Charger_HV.get(1))
-            .fluidInputs(MaterialsAlloy.BLOODSTEEL.getFluidStack(8 * INGOTS))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(8 * INGOTS))
             .duration(90 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -95,10 +96,11 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_EV.get(1),
                 ItemList.Emitter_EV.get(4),
                 ItemList.Sensor_EV.get(4),
-                MaterialsAlloy.INCOLOY_DS.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 8))
+                ItemList.Field_Generator_MV.get(2),
+                Materials.CrystallineAlloy.getPlates(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4))
             .itemOutputs(GregtechItemList.Charger_EV.get(1))
-            .fluidInputs(MaterialsAlloy.INCONEL_792.getFluidStack(10 * INGOTS))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(16 * INGOTS))
             .duration(112 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -109,10 +111,11 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_IV.get(1),
                 ItemList.Emitter_IV.get(4),
                 ItemList.Sensor_IV.get(4),
-                MaterialsAlloy.INCONEL_625.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
+                ItemList.Field_Generator_HV.get(2),
+                Materials.MelodicAlloy.getPlates(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4))
             .itemOutputs(GregtechItemList.Charger_IV.get(1))
-            .fluidInputs(MaterialsAlloy.ARCANITE.getFluidStack(12 * INGOTS))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS))
             .duration(135 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -123,10 +126,11 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_LuV.get(1),
                 ItemList.Emitter_LuV.get(4),
                 ItemList.Sensor_LuV.get(4),
-                MaterialsAlloy.ZERON_100.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8))
+                ItemList.Field_Generator_EV.get(2),
+                Materials.StellarAlloy.getPlates(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4))
             .itemOutputs(GregtechItemList.Charger_LuV.get(1))
-            .fluidInputs(MaterialsAlloy.LAFIUM.getFluidStack(14 * INGOTS))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS))
             .duration(157 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -137,10 +141,11 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_ZPM.get(1),
                 ItemList.Emitter_ZPM.get(4),
                 ItemList.Sensor_ZPM.get(4),
-                MaterialsAlloy.PIKYONIUM.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8))
+                ItemList.Field_Generator_IV.get(2),
+                Materials.NaquadahAlloy.getPlates(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
             .itemOutputs(GregtechItemList.Charger_ZPM.get(1))
-            .fluidInputs(MaterialsAlloy.CINOBITE.getFluidStack(16 * INGOTS))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
             .duration(180 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -151,10 +156,11 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_UV.get(1),
                 ItemList.Emitter_UV.get(4),
                 ItemList.Sensor_UV.get(4),
-                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8))
+                ItemList.Field_Generator_LuV.get(2),
+                Materials.Neutronium.getPlates(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 4))
             .itemOutputs(GregtechItemList.Charger_UV.get(1))
-            .fluidInputs(MaterialsAlloy.TITANSTEEL.getFluidStack(18 * INGOTS))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
             .duration(202 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -165,10 +171,11 @@ public class RecipesMachinesTiered {
                 ItemList.Hull_MAX.get(1),
                 ItemList.Emitter_UHV.get(4),
                 ItemList.Sensor_UHV.get(4),
-                MaterialsAlloy.ABYSSAL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8))
+                ItemList.Field_Generator_ZPM.get(2),
+                Materials.Infinity.getPlates(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 4))
             .itemOutputs(GregtechItemList.Charger_UHV.get(1))
-            .fluidInputs(MaterialsAlloy.OCTIRON.getFluidStack(20 * INGOTS))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS))
             .duration(225 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
