@@ -41,6 +41,7 @@ public class CameraObservePanel extends ModularPanel {
     private static final int HEADER_HEIGHT = 16;
     private static final int FOOTER_HEIGHT = 26;
     private static final int SIDEBAR_WIDTH = 100;
+    private static final int FRAME_BEVEL = 3;
     private static final int RESCUE_BUTTON_HEIGHT = 26;
     private static final float SIDEBAR_TEXT_SCALE = 0.75F;
     private static final float HELP_TEXT_SCALE = 0.7F;
@@ -110,7 +111,8 @@ public class CameraObservePanel extends ModularPanel {
         return IKey.lang("GT5U.gui.text.drone_observe_default")
             .asWidget()
             .fullWidth()
-            .height(HEADER_HEIGHT)
+            .marginTop(FRAME_BEVEL)
+            .height(HEADER_HEIGHT - FRAME_BEVEL)
             .textAlign(Alignment.CENTER);
     }
 
@@ -118,6 +120,7 @@ public class CameraObservePanel extends ModularPanel {
         return Flow.column()
             .fullWidth()
             .height(FOOTER_HEIGHT)
+            .paddingBottom(FRAME_BEVEL)
             .mainAxisAlignment(Alignment.MainAxis.CENTER)
             .childPadding(2)
             .child(createHelpLine("GT5U.gui.text.drone_observe_help_1"))
@@ -195,7 +198,7 @@ public class CameraObservePanel extends ModularPanel {
             .expanded()
             .padding(4)
             .collapseDisabledChild()
-            .child(createInfoLine(IKey.lang(headerLangKey)))
+            .child(createInfoLine(IKey.lang(headerLangKey)).textAlign(Alignment.CENTER))
             .child(createDivider());
     }
 
