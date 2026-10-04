@@ -2626,18 +2626,7 @@ public class OrePrefixes {
      * available; otherwise attempts inflection formatting.
      */
     public static String getLocalizedNameForItemWithInflection(String prefixKey, String materialName) {
-        final String key = prefixKey + "." + materialName.toLowerCase();
-        if (StatCollector.canTranslate(key)) {
-            return StatCollector.translateToLocal(key);
-        }
-        final String phraseKey = prefixKey + ".phrase";
-        final String materialNameKey = "Material." + materialName.toLowerCase();
-        if (StatCollector.canTranslate(phraseKey) && StatCollector.translateToLocal(materialNameKey)
-            .trim()
-            .indexOf(' ') != -1) {
-            return GTInflectionManager.formatInflection(phraseKey, materialNameKey);
-        }
-        return GTInflectionManager.formatInflection(prefixKey, materialNameKey);
+        return inflectedName(prefixKey, materialName.toLowerCase(), "Material." + materialName.toLowerCase());
     }
 
     /**
@@ -2647,7 +2636,26 @@ public class OrePrefixes {
      * being resolved through {@code Material.<name>}.
      */
     public static String getLocalizedNameForItemWithInflectionForKey(String prefixKey, String materialKey) {
-        final String key = prefixKey + "." + materialKey.toLowerCase();
+        return inflectedName(prefixKey, materialKey.toLowerCase(), materialKey);
+    }
+
+    /// The [com.ruling_0.materiallib.api.ShapeNameFormatter] of GregTech's shapes: names a MaterialLib part as
+    /// [#getLocalizedNameForItemWithInflection(String, String)] names GregTech's own, under the format key
+    /// MaterialLib chose. Null when the material's name key has no translation, leaving the name to MaterialLib.
+    public static @Nullable String shapeDisplayName(String formatKey, Material material) {
+        String materialKey = MaterialUtils.localizedNameKey(material);
+        if (!StatCollector.canTranslate(materialKey)) return null;
+        return inflectedName(
+            formatKey,
+            MaterialUtils.internalName(material)
+                .toLowerCase(),
+            materialKey);
+    }
+
+    /// The translation of `prefixKey.specialSuffix` when present; else `prefixKey`'s format, or its `.phrase`
+    /// variant for a material name of several words, with `materialKey`'s translation inflected into it.
+    private static String inflectedName(String prefixKey, String specialSuffix, String materialKey) {
+        final String key = prefixKey + "." + specialSuffix;
         if (StatCollector.canTranslate(key)) {
             return StatCollector.translateToLocal(key);
         }

@@ -11,6 +11,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 import com.ruling_0.materiallib.api.StandardProperties;
 
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.FluidRef;
 
@@ -118,6 +119,7 @@ public class FluidShapes {
         return MaterialLibAPI.newFluidShape("gregtech", name)
             .displayName(displayFormat)
             .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, displayFormatKey)
+            .property(StandardProperties.NAME_FORMATTER, OrePrefixes::shapeDisplayName)
             .fluidName((shape, material) -> requireRef(ref, shape, material).name())
             .configureFluid((material, fluid) -> {
                 FluidRef fluidRef = requireRef(ref, null, material);
