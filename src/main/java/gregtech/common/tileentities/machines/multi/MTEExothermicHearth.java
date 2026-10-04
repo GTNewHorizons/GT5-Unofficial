@@ -266,7 +266,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addCasing("56", "Prismatic Naquadah Frame Box", false)
             .addEnergyHatch("1+", "Any hearth casing", 1)
             .addMaintenanceHatch("1", "Any hearth casing", 1)
-            .addMufflerHatch("1", "Any hearth casing", 1)
+            .addMufflerHatch("1", "Top middle casing", 2)
             .addInputAny("1+", "Any hearth casing", 1)
             .addOutputAny("1+", "Any hearth casing", 1)
             .addStructureInfo("")
