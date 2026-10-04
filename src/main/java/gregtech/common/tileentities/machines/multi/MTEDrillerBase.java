@@ -53,6 +53,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -595,6 +596,25 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
         return Optional.ofNullable(lastRuntimeFailure)
             .map(CheckRecipeResult::getDisplayString);
+    }
+
+    /** Same as {@link #getFailureReason()}, but as an {@link IGregTechDeviceInformation#encode} argument. */
+    @NotNull
+    protected Optional<String> getEncodedFailureReason() {
+        if (getBaseMetaTileEntity().isActive()) {
+            return Optional.empty();
+        }
+
+        if (!shutdownReason.isEmpty()) {
+            return Optional.of(IGregTechDeviceInformation.translatable(shutdownReason));
+        }
+
+        // Other result types have no single lang key, so they stay in the server language.
+        return Optional.ofNullable(lastRuntimeFailure)
+            .map(
+                failure -> failure instanceof SimpleCheckRecipeResult simple
+                    ? IGregTechDeviceInformation.translatable(simple.getTranslationKey())
+                    : failure.getDisplayString());
     }
 
     /**

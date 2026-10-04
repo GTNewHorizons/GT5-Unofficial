@@ -194,7 +194,8 @@ public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
         payloadSize = card.getInt(OUTPUT_ENTRY_LENGTH_KEY);
 
         if (!machineName.isEmpty() && (displaySettings & 1) != 0) {
-            returned.add(panelString(machineName, true));
+            // update() stores the name in the server language; rebuild it here so it follows the reader's language.
+            returned.add(panelString(getMachineName(card.getItemStack()).orElse(machineName), true));
             payloadSize += 1;
             bitmaskOffset = 1;
         } else {
