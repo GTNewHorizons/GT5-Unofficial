@@ -143,20 +143,21 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         .build();
 
     private static IStructureElement<MTEMegaAlloyBlastSmelter> getCoilElement() {
-        IStructureElement<MTEMegaAlloyBlastSmelter> heatingCoilElem = GTStructureChannels.HEATING_COIL
-            .use(activeCoils(ofCoil(MTEMegaAlloyBlastSmelter::setCoilLevel, MTEMegaAlloyBlastSmelter::getCoilLevel)));
+        IStructureElement<MTEMegaAlloyBlastSmelter> heatingCoilElem = activeCoils(
+            ofCoil(MTEMegaAlloyBlastSmelter::setCoilLevel, MTEMegaAlloyBlastSmelter::getCoilLevel));
         IStructureElement<MTEMegaAlloyBlastSmelter> basicCoilElem = ofBlock(ModBlocks.blockCasingsMisc, 14);
-        return partitionBy(
-            te -> te.coilType,
-            ImmutableMap.of(
-                CoilType.Unknown,
-                ofChain(
-                    onElementPass(te -> te.coilType = CoilType.HeatingCoil, heatingCoilElem),
-                    onElementPass(te -> te.coilType = CoilType.BasicCoil, basicCoilElem)),
-                CoilType.HeatingCoil,
-                heatingCoilElem,
-                CoilType.BasicCoil,
-                basicCoilElem));
+        return GTStructureChannels.HEATING_COIL.use(
+            partitionBy(
+                te -> te.coilType,
+                ImmutableMap.of(
+                    CoilType.Unknown,
+                    ofChain(
+                        onElementPass(te -> te.coilType = CoilType.HeatingCoil, heatingCoilElem),
+                        onElementPass(te -> te.coilType = CoilType.BasicCoil, basicCoilElem)),
+                    CoilType.HeatingCoil,
+                    heatingCoilElem,
+                    CoilType.BasicCoil,
+                    basicCoilElem)));
     }
 
     public MTEMegaAlloyBlastSmelter(int aID, String aName, String aNameRegional) {
