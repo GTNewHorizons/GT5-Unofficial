@@ -210,9 +210,9 @@ public enum CircuitComponent {
         406,
         "gt.circuitcomponent.livingbiochip",
         () -> ItemList.Circuit_Parts_Chip_Bioware.get(1)),
-    BoardPico(407, "gt.circuitcomponent.processed.board.pico",()->null,true),
-    BoardQuantum(408, "gt.circuitcomponent.processed.board.quantum",()->null,true),
-    BoardPlanck(409, "gt.circuitcomponent.processed.board.planck",()->null,true),
+    BoardPico(407, "gt.circuitcomponent.processed.board.pico",null,true),
+    BoardQuantum(408, "gt.circuitcomponent.processed.board.quantum",null,true),
+    BoardPlanck(409, "gt.circuitcomponent.processed.board.planck",null,true),
 
     ProcessedBoardMultifiberglassElite(500, "gt.circuitcomponent.processed.board.multifiberelite", () -> BoardMultifiberglassElite, true),
     ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", () -> BoardWetwareLifesupport, true),
@@ -221,7 +221,7 @@ public enum CircuitComponent {
     // id 504 unused
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
-    UnattunedCircuitry(507,"gt.circuitcomponent.unattunedcircuitry",()->null,true),
+    UnattunedCircuitry(507,"gt.circuitcomponent.unattunedcircuitry",null,true),
     CleansedBoardPico(508, "gt.circuitcomponent.processed.board.cleansedpico",()-> BoardPico,true),
     CleansedBoardQuantum(509, "gt.circuitcomponent.processed.board.cleansedquantum",()-> BoardQuantum,true),
     CleansedBoardPlanck(510, "gt.circuitcomponent.processed.board.cleansedplanck",()-> BoardPlanck,true),
@@ -422,10 +422,10 @@ public enum CircuitComponent {
     ProcessedQuantumCircuitCasing(1803, "gt.circuitcomponent.casing.processed.quantum", null, true),
     ProcessedPlanckCircuitCasing(1804, "gt.circuitcomponent.casing.processed.planck", null, true),
     ProcessedCoiledThermalSuperconductor(1805, "gt.circuitcomponent.planck.processed.coiledthermalsuperconductor", null, true),
-    ProcessedCircuitOpticalProcessor(1806,"gt.circuitcomponent.circuit.processed.opticalprocessor", null, true),
-    ProcessedCircuitOpticalAssembly(1807,"gt.circuitcomponent.circuit.processed.opticalassembly", null, true),
-    ProcessedCircuitOpticalComputer(1808,"gt.circuitcomponent.circuit.processed.opticalcomputer", null, true),
-    ProcessedCircuitOpticalMainframe(1809,"gt.circuitcomponent.circuit.processed.opticalmainframe", null, true),
+    ProcessedCircuitOpticalProcessor(1806,"gt.circuitcomponent.circuit.processed.opticalprocessor", CircuitCalibration.OPTICAL, 0.125f),
+    ProcessedCircuitOpticalAssembly(1807,"gt.circuitcomponent.circuit.processed.opticalassembly", CircuitCalibration.OPTICAL, 0.25f),
+    ProcessedCircuitOpticalComputer(1808,"gt.circuitcomponent.circuit.processed.opticalcomputer", CircuitCalibration.OPTICAL, 0.5f),
+    ProcessedCircuitOpticalMainframe(1809,"gt.circuitcomponent.circuit.processed.opticalmainframe", CircuitCalibration.OPTICAL, 1.0f),
 
     // Pico Chain
     OpticalMainframeRack(1810,"gt.circuitcomponent.pico.processed.opticalmainframerack",null,true),

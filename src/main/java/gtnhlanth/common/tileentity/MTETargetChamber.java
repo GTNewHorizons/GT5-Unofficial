@@ -128,7 +128,7 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
         var mte = te.getMetaTileEntity();
         if (!(mte instanceof MTEHatchInputBus bus)) return false;
         bus.updateTexture(casingIndex);
-        bus.updateCraftingIcon(getMachineCraftingIcon());
+        bus.updateCraftingIcon(getMachineCraftingIcon(), getBaseMetaTileEntity());
         return mMaskInputBusses.add(bus);
     }
 
@@ -520,6 +520,10 @@ public class MTETargetChamber extends MTEBeamMultiBase<MTETargetChamber>
     @Override
     public void clearHatches() {
         super.clearHatches();
+        // Mask busses register outside addIfSmartInput, so they need their crafting icon dropped here.
+        for (MTEHatchInputBus bus : validMTEList(mMaskInputBusses)) {
+            bus.updateCraftingIcon(null, getBaseMetaTileEntity());
+        }
         mMaskInputBusses.clear();
     }
 
