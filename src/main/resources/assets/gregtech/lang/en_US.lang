@@ -2017,7 +2017,7 @@ GT5U.MBTT.Structure.WaterCost=The water is a one-time-cost to prime the machine,
 GT5U.MBTT.Structure.WaterFree=The water is spawned for free once formed
 GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier
 GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
-GT5U.MBTT.Structure.UnlimitedTierSkips=Runs any recipe if given enough energy
+GT5U.MBTT.Structure.UnlimitedTierSkips=Runs any recipe regardless of tier, if given enough energy
 GT5U.MBTT.Structure.DataStick.Waterline=Link to the §bWater Purification Plant§7 with a §aData Stick
 GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData Stick
 
