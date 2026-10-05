@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -163,7 +164,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     public enum ModuleHatchElement implements IHatchElement<MTENanochipAssemblyModuleBase<?>> {
 
-        VacuumConveyorHatch(MTENanochipAssemblyModuleBase::addConveyorToMachineList, MTEHatchVacuumConveyor.class) {
+        VacuumConveyorHatch("GT5U.MBTT.VacuumConveyorHatch", MTENanochipAssemblyModuleBase::addConveyorToMachineList,
+            MTEHatchVacuumConveyor.class) {
 
             @Override
             public long count(MTENanochipAssemblyModuleBase<?> tileEntity) {
@@ -171,7 +173,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             }
         },
 
-        RedstoneHatch(MTENanochipAssemblyModuleBase::addRedstoneHatchToMachineList, MTEHatchNanochipRedstone.class) {
+        RedstoneHatch("GT5U.MBTT.SplitterRedstoneHatch", MTENanochipAssemblyModuleBase::addRedstoneHatchToMachineList,
+            MTEHatchNanochipRedstone.class) {
 
             @Override
             public long count(MTENanochipAssemblyModuleBase<?> module) {
@@ -179,12 +182,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTENanochipAssemblyModuleBase<?>> adder;
 
         @SafeVarargs
-        ModuleHatchElement(IGTHatchAdder<MTENanochipAssemblyModuleBase<?>> adder,
+        ModuleHatchElement(String name, IGTHatchAdder<MTENanochipAssemblyModuleBase<?>> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -197,6 +202,16 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         @Override
         public IGTHatchAdder<? super MTENanochipAssemblyModuleBase<?>> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
