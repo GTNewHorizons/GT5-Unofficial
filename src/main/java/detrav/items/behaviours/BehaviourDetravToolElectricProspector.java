@@ -54,7 +54,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
 
             if (scan != null && !scan.isDone()) {
                 scan.cancel(true);
-                aPlayer.addChatMessage(new ChatComponentTranslation("gui.detrav.scanner.chat.cancel"));
+                aPlayer.addChatMessage(new ChatComponentTranslation("detrav.scanner.chat.cancel"));
             }
 
             if (aPlayer.isSneaking()) {
@@ -75,7 +75,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             final int cX = ((int) aPlayer.posX) >> 4;
             final int cZ = ((int) aPlayer.posZ) >> 4;
             final List<Chunk> chunks = new ArrayList<>();
-            aPlayer.addChatMessage(new ChatComponentTranslation("gui.detrav.scanner.chat.scanning"));
+            aPlayer.addChatMessage(new ChatComponentTranslation("detrav.scanner.chat.scanning"));
 
             final int radius = aItem.getHarvestLevel(aStack, "");
 
