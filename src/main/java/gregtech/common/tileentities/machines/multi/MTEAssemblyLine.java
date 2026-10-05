@@ -149,7 +149,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addMarkdown(
                 new ResourceLocation("gregtech", "assembly-line"),
                 ImmutableMap.<String, Object>builder().build())
-            .addMaxTierSkips(1)
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addController("First slice, 3rd layer")
             .addMiscHatch(
