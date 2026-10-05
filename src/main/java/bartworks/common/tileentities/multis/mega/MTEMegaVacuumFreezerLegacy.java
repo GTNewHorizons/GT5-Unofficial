@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.multis.mega;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -256,9 +257,9 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
                     + "consuming "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "coolants:")
-            .addInfo(getCoolantTextFormatted("Molten Spacetime", "75", 1))
-            .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "50", 2))
-            .addInfo(getCoolantTextFormatted("Molten Eternity", "25", 3))
+            .addInfo(getCoolantTextFormatted(SUBSPACE_COOLING_FLUIDS.get(0)))
+            .addInfo(getCoolantTextFormatted(SUBSPACE_COOLING_FLUIDS.get(1)))
+            .addInfo(getCoolantTextFormatted(SUBSPACE_COOLING_FLUIDS.get(2)))
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Reinforcing the structure allows the injection of exotic coolants,")
@@ -360,7 +361,7 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
         }
     }
 
-    public SubspaceCoolingFluid findSubspaceCoolingFluid() {
+    private SubspaceCoolingFluid findSubspaceCoolingFluid() {
         // Loop over all hatches and find the first match with a valid fluid
         for (MTEHatchInput hatch : mInputHatches) {
             Optional<SubspaceCoolingFluid> fluid = SUBSPACE_COOLING_FLUIDS.stream()
@@ -385,7 +386,9 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
                 currentCoolingFluid = findSubspaceCoolingFluid();
 
                 return super.createOverclockCalculator(recipe)
-                    .setMachineHeat(currentCoolingFluid == null ? 0 : currentCoolingFluid.perfectOverclocks * 1800)
+                    .setMachineHeat(
+                        currentCoolingFluid == null ? 0
+                            : currentCoolingFluid.perfectOverclocks * OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
                     .setRecipeHeat(0)
                     .setHeatOC(true)
                     .setHeatDiscount(false);
@@ -502,16 +505,16 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
         return SoundResource.GT_MACHINES_MULTI_MEGA_VACUUM_FREEZER_LOOP;
     }
 
-    private String getCoolantTextFormatted(String fluidType, String litersConsumed, int ocboost) {
+    private String getCoolantTextFormatted(SubspaceCoolingFluid coolant) {
         return String.format(
-            "%s%s L/s%s : %s%d %s: %s%s",
+            "%s%s/s%s : %s%d %s: %s%s",
             EnumChatFormatting.GREEN,
-            litersConsumed,
+            formatFluid(coolant.amount),
             EnumChatFormatting.GRAY,
             EnumChatFormatting.GOLD,
-            ocboost,
+            coolant.perfectOverclocks,
             EnumChatFormatting.GRAY,
             EnumChatFormatting.LIGHT_PURPLE,
-            fluidType);
+            coolant.material.getLocalizedName());
     }
 }

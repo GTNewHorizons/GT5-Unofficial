@@ -33,6 +33,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -1079,7 +1080,13 @@ public class MTETeslaTower extends TTMultiblockBase
 
     private enum CapacitorHatchElement implements IHatchElement<MTETeslaTower> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.CapacitorHatch");
+
+        private final String name;
+
+        CapacitorHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -1094,6 +1101,16 @@ public class MTETeslaTower extends TTMultiblockBase
         @Override
         public long count(MTETeslaTower MTETeslaTower) {
             return MTETeslaTower.eCapacitorHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
