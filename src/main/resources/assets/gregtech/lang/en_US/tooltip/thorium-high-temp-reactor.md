@@ -1,11 +1,12 @@
-Needs to be primed with {gold:{var:helium} Helium} and {gold:{var:min_pebbles} Fuel Pebbles}
-Has a capacity of {gold:{var:max_pebbles} Fuel Pebbles}, having less reduces efficiency
-Consumes up to {green:{var:consumption}%} stored {gold:Fuel Pellets} per operation, scaled by efficiency
-{gold:Coolant} is consumed while running to produce {gold:Hot Coolant}, but running out has no penalty
+Heats coolant with the radioactive decay of TRISO Pebbles
+Insert at least {gold:100,000 Pebbles} and {yellow:730,000L Helium} to start
+Having any less than the maximum 675,000 Pebbles reduces efficiency
 {gray:{hr}}
-A lower efficiency means a higher power cost and less {gold:Hot Coolant}
-Power Cost = {aqua:({var:power_per_tick} / Efficiency)EU/t}
-Hot Coolant = {aqua:({var:coolant_per_tick} * Efficiency)L/t}
+A lower efficiency means a higher power cost and less hot coolant
+{white:Power Cost (EU/t) =} {aqua:3,840 / Efficiency}
+{white:Hot Coolant (L/t) =} {red:4,800 * Efficiency}
 {gray:{hr}}
-Outputs {gold:Burned Out TRISO Pellets} and {gold:Hot Coolant}
-{yellow:One operation takes {var:duration} hours}
+Each operation is {light_purple:9 hours} regardless of the Pebble amount
+Consumes up to {gold:0.5%} of the stored {gold:Pebbles} and all the {yellow:Helium} at the start
+Outputs burned out TRISO Pebbles at the end
+There is no consequence for running out of coolant while running
