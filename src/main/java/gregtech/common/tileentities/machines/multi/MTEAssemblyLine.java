@@ -412,7 +412,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        for (MTEHatchDataAccess hatch_dataAccess : mDataAccessHatches) {
+        for (MTEHatchDataAccess hatch_dataAccess : validMTEList(mDataAccessHatches)) {
             hatch_dataAccess.setActive(true);
         }
         return super.onRunningTick(aStack);
