@@ -52,6 +52,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.CoilLeaseType;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -983,7 +984,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     protected void tryActivateCoilLease() {
         super.tryActivateCoilLease();
         if (isConvergenceActive() && !bridges.isEmpty() && bridgeLease == null) {
-            bridgeLease = GTCoilTracker.activate(this, bridges);
+            bridgeLease = GTCoilTracker.activate(this, CoilLeaseType.BRIDGE, bridges);
         }
     }
 
@@ -1142,7 +1143,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     public void deactivateBridgeLease() {
         if (bridgeLease != null) {
-            GTCoilTracker.deactivate(bridgeLease);
+            GTCoilTracker.deactivate(bridgeLease, CoilLeaseType.BRIDGE);
             bridgeLease = null;
         }
     }

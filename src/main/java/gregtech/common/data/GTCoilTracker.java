@@ -7,13 +7,16 @@ import java.util.function.Function;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.MapMaker;
+import com.google.common.collect.Table;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import gregtech.api.enums.CoilLeaseType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -25,8 +28,6 @@ import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
-import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
-import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 
 /**
  * This class tracks all active heating coils. Each instance is responsible for one world. The main reason this exists
@@ -75,9 +76,9 @@ public class GTCoilTracker {
     private LongSet pendingDeactivations = new LongOpenHashSet();
 
     /**
-     * Used to prevent duplicate lease registrations by the same multi. {multi reference: lease reference}
+     * Used to prevent duplicate lease registrations by the same multi. {multi reference, lease type: lease reference}
      */
-    private final Reference2ReferenceMap<MTEMultiBlockBase, MultiCoilLease> leasesByMulti = new Reference2ReferenceOpenHashMap<>();
+    private final Table<MTEMultiBlockBase, CoilLeaseType, MultiCoilLease> leasesByMulti = HashBasedTable.create();
 
     private static final Long2ObjectFunction<LongSet> CHUNK_LIST_CTOR = ignored -> new LongOpenHashSet();
 
@@ -107,13 +108,13 @@ public class GTCoilTracker {
         this.world = new WeakReference<>(world);
     }
 
-    private MultiCoilLease activateImpl(MTEMultiBlockBase multi, LongList coils) {
+    private MultiCoilLease activateImpl(MTEMultiBlockBase multi, CoilLeaseType coilType, LongList coils) {
         MultiCoilLease lease = new MultiCoilLease(self, multi, new LongArrayList(coils));
 
-        MultiCoilLease existing = leasesByMulti.put(multi, lease);
+        MultiCoilLease existing = leasesByMulti.put(multi, coilType, lease);
 
         if (existing != null) {
-            deactivateImpl(existing);
+            deactivateImpl(existing, coilType);
         }
 
         for (long coil : coils) {
@@ -123,7 +124,7 @@ public class GTCoilTracker {
         return lease;
     }
 
-    private void deactivateImpl(MultiCoilLease lease) {
+    private void deactivateImpl(MultiCoilLease lease, CoilLeaseType leaseType) {
         for (long coil : lease.coils) {
             deactivate(coil);
         }
@@ -134,7 +135,7 @@ public class GTCoilTracker {
         MTEMultiBlockBase multi = lease.multi.get();
 
         if (multi != null) {
-            leasesByMulti.remove(multi);
+            leasesByMulti.remove(multi, leaseType);
         }
     }
 
@@ -239,7 +240,16 @@ public class GTCoilTracker {
         if (base == null || base.isDead()) return null;
 
         return TRACKERS.computeIfAbsent(base.getWorld(), TRACKER_CTOR)
-            .activateImpl(multi, coils);
+            .activateImpl(multi, CoilLeaseType.COIL, coils);
+    }
+
+    public static MultiCoilLease activate(MTEMultiBlockBase multi, CoilLeaseType coilType, LongList coils) {
+        IGregTechTileEntity base = multi.getBaseMetaTileEntity();
+
+        if (base == null || base.isDead()) return null;
+
+        return TRACKERS.computeIfAbsent(base.getWorld(), TRACKER_CTOR)
+            .activateImpl(multi, coilType, coils);
     }
 
     /**
@@ -252,7 +262,15 @@ public class GTCoilTracker {
         GTCoilTracker tracker = lease.tracker.get();
 
         if (tracker != null) {
-            tracker.deactivateImpl(lease);
+            tracker.deactivateImpl(lease, CoilLeaseType.COIL);
+        }
+    }
+
+    public static void deactivate(MultiCoilLease lease, CoilLeaseType coilType) {
+        GTCoilTracker tracker = lease.tracker.get();
+
+        if (tracker != null) {
+            tracker.deactivateImpl(lease, coilType);
         }
     }
 

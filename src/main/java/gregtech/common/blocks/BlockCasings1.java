@@ -168,19 +168,16 @@ public class BlockCasings1 extends BlockCasingsAbstract
                 botTextures.add(
                     TextureFactory.builder()
                         .addIcon(Textures.BlockIcons.MACHINE_DIM_BRIDGE_CONVERGENCE)
-                        .glow()
                         .build());
 
                 topTextures.add(
                     TextureFactory.builder()
                         .addIcon(Textures.BlockIcons.MACHINE_DIM_BRIDGE_CONVERGENCE)
-                        .glow()
                         .build());
 
                 textures.add(
                     TextureFactory.builder()
                         .addIcon(Textures.BlockIcons.MACHINE_DIM_BRIDGE_CONVERGENCE)
-                        .glow()
                         .build());
 
             }
