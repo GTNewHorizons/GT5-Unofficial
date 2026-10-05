@@ -6702,7 +6702,8 @@ GT5U.nei.display.amperage=Amperage: %s A
 GT5U.nei.display.overclock=(OC)
 GT5U.nei.display.average=Average: %s EU/t %s
 GT5U.nei.display.windmill=Windmill
-
+GT5U.nei.display.require_heavy_mode=Requires Heavy Mode
+GT5U.nei.display.casing_tier=Casing Tier: %s
 GT5U.biomes.humidity=Humidity:
 
 # NEI options
