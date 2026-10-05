@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -21,7 +21,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -56,6 +56,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngine> implements ISurvivalConstructable {
 
     protected int freeFuelTicks = 0;
@@ -113,70 +114,29 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(getMachineType())
-            .addInfo("Burns rocket fuel to generate power")
-            .addInfo("There is no upper limit on power output, other than the size of the dynamo hatch")
-            .addInfo(
-                "But there are soft caps at " + EnumChatFormatting.RED
-                    + formatNumber(SOFT_CAP_1)
-                    + EnumChatFormatting.GRAY
-                    + " EU/t and "
-                    + EnumChatFormatting.RED
-                    + formatNumber(SOFT_CAP_2)
-                    + EnumChatFormatting.GRAY
-                    + " EU/t (unboosted) that reduce fuel efficiency")
-            .addInfo(
-                EnumChatFormatting.YELLOW + "Do not insert rocket fuel while disabled - it will be voided on start!"
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Minimum fuel input is " + formatFluid(MIN_FUEL_INPUT_PER_SECOND) + "/s")
-            .addSeparator()
-            .addInfo("The combustion process requires some additional inputs:")
-            .addInfo(
-                formatFluid(LUBRICANT_CONSUMPTION_PER_HOUR) + " of "
-                    + EnumChatFormatting.GOLD
-                    + mLubricantName
-                    + EnumChatFormatting.GRAY
-                    + " per hour (x"
-                    + formatNumber(BOOST_MULTIPLIER)
-                    + " if boosted)")
-            .addInfo(
-                formatNumber(AIR_PERCENT) + "% of current EU/t in "
-                    + EnumChatFormatting.GOLD
-                    + "Air"
-                    + EnumChatFormatting.GRAY
-                    + " per tick (only through air intake hatches)")
-            .addInfo(
-                formatNumber(COOLANT_BOOST_PERCENT) + "% of current EU/t in "
-                    + EnumChatFormatting.GOLD
-                    + mCoolantName
-                    + EnumChatFormatting.GRAY
-                    + " per second to boost (optional)")
-            .addSeparator()
-            .addInfo("If air ever runs out, the machine shuts down and must be manually restarted")
-            .addInfo(
-                "Boosting multiplies the soft caps to " + EnumChatFormatting.RED
-                    + formatNumber(SOFT_CAP_1 * BOOST_MULTIPLIER)
-                    + EnumChatFormatting.GRAY
-                    + " EU/t and "
-                    + EnumChatFormatting.RED
-                    + formatNumber(SOFT_CAP_2 * BOOST_MULTIPLIER)
-                    + EnumChatFormatting.GRAY
-                    + " EU/t")
-            .addInfo(
-                "Takes " + formatNumber(WARMUP_MIN_SECONDS)
-                    + "-"
-                    + formatNumber(WARMUP_MAX_SECONDS)
-                    + " seconds to warm up based on the current EU/t")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "large-rocket-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("cap1", formatNumber(SOFT_CAP_1))
+                    .put("cap2", formatNumber(SOFT_CAP_2))
+                    .put("min_fuel", formatNumber(MIN_FUEL_INPUT_PER_SECOND))
+                    .put("lubricant_amount", formatNumber(LUBRICANT_CONSUMPTION_PER_HOUR))
+                    .put("lubricant", mLubricantName)
+                    .put("boost", formatNumber(BOOST_MULTIPLIER))
+                    .put("air_percent", formatNumber(AIR_PERCENT))
+                    .put("coolant_percent", formatNumber(COOLANT_BOOST_PERCENT))
+                    .put("coolant", mCoolantName)
+                    .put("cap1_boosted", formatNumber(SOFT_CAP_1 * BOOST_MULTIPLIER))
+                    .put("cap2_boosted", formatNumber(SOFT_CAP_2 * BOOST_MULTIPLIER))
+                    .put("warmup_min", formatNumber(WARMUP_MIN_SECONDS))
+                    .put("warmup_max", formatNumber(WARMUP_MAX_SECONDS))
+                    .put("pollution", formatNumber(POLLUTION_PER_EUT))
+                    .put("pollution_unit", formatNumber(POLLUTION_EUT_UNIT))
+                    .put("unit", getFluidUnit())
+                    .build())
             .addSupportAny()
-            .addInfo(
-                "Produces " + EnumChatFormatting.DARK_PURPLE
-                    + formatNumber(POLLUTION_PER_EUT)
-                    + EnumChatFormatting.GRAY
-                    + " pollution per "
-                    + EnumChatFormatting.RED
-                    + formatNumber(POLLUTION_EUT_UNIT)
-                    + " EU/t"
-                    + EnumChatFormatting.GRAY)
             .beginStructureBlock(3, 3, 10, false)
             .addController("Front center, 2nd layer")
             .addCasing("62-76", "Turbodyne Casing", false)
@@ -187,6 +147,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addMufflerHatch("1", "Back center casing", 3)
             .addInputHatch("1+", "Any side or bottom center casing", 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
