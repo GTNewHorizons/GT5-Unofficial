@@ -172,7 +172,7 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     }
 
     public double getSpeedBonus() {
-        return 2f / (1 + coilHeat.getTier());
+        return 2.0D / (1.0D + coilHeat.getTier());
     }
 
     @Override

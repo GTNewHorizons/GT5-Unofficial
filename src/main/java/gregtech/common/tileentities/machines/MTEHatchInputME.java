@@ -23,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -841,9 +842,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 }
             }
             case 1 -> {
-                List<NBTTagCompound> slotList = GTUtility.getCompoundTagList(aNBT, "slots");
+                NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
 
-                for (NBTTagCompound tag : slotList) {
+                // noinspection unchecked
+                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
                     Slot slot = Slot.readFromNBT(tag);
 
                     if (slot != null) slots[tag.getInteger("index")] = slot;
