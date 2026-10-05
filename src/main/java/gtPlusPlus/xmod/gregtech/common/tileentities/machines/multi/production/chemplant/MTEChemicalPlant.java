@@ -48,6 +48,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
@@ -159,6 +160,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     .put("parallels", PARALLELS_PER_PIPE_TIER)
                     .put("speed", Math.round(SPEED_BONUS_PER_COIL_TIER * 100))
                     .put("catalyst_save", Math.round(CATALYST_SAVE_PER_PIPE_TIER * 100))
+                    .put("max_casing", GTValues.TIER_COLORS[9] + GTValues.VN[9])
                     .build())
             .beginStructureBlock(7, 7, 7, false)
             .addController("Front bottom center")

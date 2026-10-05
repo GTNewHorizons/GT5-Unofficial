@@ -1,9 +1,11 @@
 Heavy Industry, now right at your doorstep!
-{gold:{var:parallels} Parallels} per {white:Pipe Casing Tier}
-{green:{var:speed}% Speed} per {white:Coil Tier}
-{light_purple:{var:catalyst_save}% Chance} of not damaging catalyst per {white:Pipe Casing Tier}
+{gold:{var:parallels}} Parallels per {white:Pipe Casing Tier}
+{green:0%} Speed {green:+{var:speed}%} per {white:Heating Coil Tier}
+{light_purple:100%} Chance to damage catalyst {light_purple:-{var:catalyst_save}%} per {white:Pipe Casing Tier}
 {gray:{hr}}
-{white:Plant Tier} is determined by {white:Casing Tier}
-Hatch tiers can't be higher than {white:Machine Casing Tier}, {white:UHV Casing} unlocks all tiers
-Any catalyst must be placed in the {white:Catalyst Housing}
-{white:Awakened Draconium Coils} combined with {white:Tungstensteel Pipe Casings} makes catalyst unbreakable
+{white:Casing Tier} determines the Machine Tier and therefore the available recipes
+{white:Machine Casing Tier} determines the maximum bus/hatch tier ({var:max_casing}§7 unlocks all)
+Tungstensteel Pipe Casings with at least Awakened Draconium Coils makes catalyst unbreakable
+{gray:{hr}}
+{light_purple:Catalysts} are unique, partially consumed items and stored in Catalyst Housing
+Each use reduces the catalyst's durability by one, scaling with the number of active parallels
