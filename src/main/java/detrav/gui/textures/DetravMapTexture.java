@@ -1,7 +1,5 @@
 package detrav.gui.textures;
 
-import static com.gtnewhorizons.modularui.api.math.Color.rgba;
-
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
