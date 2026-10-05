@@ -62,6 +62,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 

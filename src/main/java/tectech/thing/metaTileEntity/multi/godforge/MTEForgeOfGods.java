@@ -99,6 +99,7 @@ import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStr
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static IIconContainer ScreenON;
