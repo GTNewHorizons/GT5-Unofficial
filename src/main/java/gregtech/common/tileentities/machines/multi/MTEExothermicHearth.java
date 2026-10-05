@@ -84,6 +84,7 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExothermicHearth>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

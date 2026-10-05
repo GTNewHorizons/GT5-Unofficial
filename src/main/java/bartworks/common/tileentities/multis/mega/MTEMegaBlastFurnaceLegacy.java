@@ -80,6 +80,7 @@ import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFurnaceLegacy>
     implements ISurvivalConstructable {
 
