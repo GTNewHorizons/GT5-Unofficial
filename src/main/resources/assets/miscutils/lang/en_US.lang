@@ -4028,7 +4028,7 @@ gtpp.book.thermal_boiler.page10=So, now for the Maintenance. After a few Hours o
 gtpp.book.thermal_boiler.page11=To fix these Problems, just go to the Maintenance Hatch and click with the problem corresponding Tool on the Slot to repair. If all six possible runtime Problems happen, the Machine will auto-shutdown no matter what. No Explosion, it's just stopping.
 gtpp.book.thermal_boiler.page12=The Thermal Boiler will produce 800 Liters of Steam per tick for about 5 or 6 Liters of Water per tick at reaching 100% Efficiency. In case of Lava it consumes 1666 Liters every Second.
 gtpp.book.thermal_boiler.page13=A Thermal Boiler is worth about 33 small Thermal Generators, and as the Boilers get much less efficient, when not having enough Fuel, you should consider making a large Nether Pump for Lava, or a good Nuclear Reactor for molten Salt.
-gtpp.book.thermal_boiler.page14=Input and output slots are fully optional, you can place multiple ones of them or even none on the Machine. A Machine without input couldn't process any recipes, while a Machine without output just voids all outputted items and liquids.
+gtpp.book.thermal_boiler.page14=Input and output slots are fully optional, you can place multiple ones of them or even none on the Machine. A Machine without input couldn't process any recipes, while a Machine without output just voids all output items and liquids.
 gtpp.book.thermal_boiler.page15=It might be useful to use the Screwdriver on the Output Hatches to determine what is outputted where.
 
 miscutils.blockcasings.0.name=Centrifuge Casing

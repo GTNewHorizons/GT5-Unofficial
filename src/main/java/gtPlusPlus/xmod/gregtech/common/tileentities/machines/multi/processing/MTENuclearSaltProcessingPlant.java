@@ -45,8 +45,8 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     implements ISurvivalConstructable {
 
     private static final int BASE_PARALLEL = 2;
-    private static final float DURATION_MULTIPLIER = 2.5f;
-    private static final float EU_MULTIPLIER = 1f;
+    private static final double DURATION_MULTIPLIER = 2.5D;
+    private static final double EU_MULTIPLIER = 1.0D;
 
     private int casing;
     private static IStructureDefinition<MTENuclearSaltProcessingPlant> STRUCTURE_DEFINITION = null;
@@ -203,7 +203,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / DURATION_MULTIPLIER)
+        return new ProcessingLogic().setSpeedBonus(1.0D / DURATION_MULTIPLIER)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
