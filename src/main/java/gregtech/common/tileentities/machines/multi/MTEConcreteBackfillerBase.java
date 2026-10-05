@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -114,7 +115,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
             .addCasing("3-8", casings, false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addEnergyHatch("1+", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)
             .addInputBus("0+", "Any bottom casing", 1)
             .addInputHatch("1+", "Any bottom casing", 1)

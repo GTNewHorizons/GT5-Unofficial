@@ -1,1 +1,2 @@
-Turns {gold:Coal} into {gold:Coke} and produces {gold:Creosote Oil}
+Turns Logs into {gold:Charcoal} and Coal into {gold:Coke}
+Produces {gold:Creosote Oil} as a byproduct
