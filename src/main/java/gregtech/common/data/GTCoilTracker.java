@@ -243,6 +243,16 @@ public class GTCoilTracker {
             .activateImpl(multi, CoilLeaseType.COIL, coils);
     }
 
+    /**
+     * Activates the given list of coils. A multi cannot have more than one lease at a time, and if two sets of coils
+     * are activated, the oldest lease is deactivated automatically.
+     *
+     * @param multi    The owning multi
+     * @param coilType the type of coil to be activated
+     * @param coils    The list of coils that should be activated
+     * @return A lease owned by the given multi that should be deactivated when needed (see
+     *         {@link #deactivate(MultiCoilLease)}
+     */
     public static MultiCoilLease activate(MTEMultiBlockBase multi, CoilLeaseType coilType, LongList coils) {
         IGregTechTileEntity base = multi.getBaseMetaTileEntity();
 
@@ -266,6 +276,13 @@ public class GTCoilTracker {
         }
     }
 
+    /**
+     * Deactivates a set of coils. If the multi is destroyed and this is never called, the coils will remain active
+     * until the server restarts or the world is garbage collected.
+     *
+     * @param lease    The lease.
+     * @param coilType the type of coil this lease affects
+     */
     public static void deactivate(MultiCoilLease lease, CoilLeaseType coilType) {
         GTCoilTracker tracker = lease.tracker.get();
 
