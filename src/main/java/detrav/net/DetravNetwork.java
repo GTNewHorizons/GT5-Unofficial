@@ -4,7 +4,6 @@ import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.PacketBuffer;
 
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
@@ -12,6 +11,8 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -36,7 +37,7 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
     protected void encode(ChannelHandlerContext ctx, DetravPacket msg, List<Object> out) throws Exception {
         ByteBuf buf = Unpooled.buffer();
         buf.writeByte(msg.getPacketID());
-        msg.encode(new PacketBuffer(buf));
+        msg.encode(new ByteBufOutputStream(buf));
         out.add(
             new FMLProxyPacket(
                 buf,
@@ -49,7 +50,7 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
     protected void decode(ChannelHandlerContext ctx, FMLProxyPacket msg, List<Object> out) throws Exception {
         ByteBuf payload = msg.payload();
         payload.readByte(); // Sub Channel - Ignore
-        out.add(ProspectingPacket.decode(new PacketBuffer(payload)));
+        out.add(ProspectingPacket.decode(new ByteBufInputStream(payload)));
     }
 
     public void sendToPlayer(DetravPacket aPacket, EntityPlayerMP aPlayer) {

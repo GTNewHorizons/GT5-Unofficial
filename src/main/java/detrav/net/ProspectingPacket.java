@@ -1,9 +1,17 @@
 package detrav.net;
 
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -22,6 +30,8 @@ import detrav.items.DetravMetaGeneratedTool01;
 import detrav.utils.FluidColors;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.ores.OreManager;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.longs.Long2ShortOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ShortOpenHashMap;
@@ -112,7 +122,23 @@ public class ProspectingPacket extends DetravPacket {
         return (0xFF << 24) | ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF));
     }
 
-    public static Object decode(PacketBuffer aData) throws IOException {
+    private static void writeBuffer(DataOutput out, ByteBuf buffer) throws IOException {
+        int length = buffer.readableBytes();
+        out.writeInt(length);
+        byte[] bytes = new byte[length];
+        buffer.readBytes(bytes);
+        out.write(bytes);
+    }
+
+    private static ByteBuf readBuffer(DataInput in) throws IOException {
+        int length = in.readInt();
+        byte[] bytes = new byte[length];
+        in.readFully(bytes);
+        return Unpooled.wrappedBuffer(bytes);
+    }
+
+    public static Object decode(InputStream in) throws IOException {
+        DataInput aData = new DataInputStream(new GZIPInputStream(in));
         ProspectingPacket packet = new ProspectingPacket(
             aData.readInt(),
             aData.readInt(),
@@ -121,21 +147,26 @@ public class ProspectingPacket extends DetravPacket {
             aData.readInt(),
             aData.readInt());
 
-        int itemCount = aData.readInt();
-        packet.items.ensureCapacity(itemCount);
-        for (int i = 0; i < itemCount; i++) {
-            short objectId = aData.readShort();
-            ItemStack item = ByteBufUtils.readItemStack(aData);
-            packet.items.put(objectId, new BlockInfo(item));
-        }
+        // decode items and fluids
+        {
+            PacketBuffer buffer = new PacketBuffer(readBuffer(aData));
 
-        int fluidCount = aData.readInt();
-        packet.fluids.ensureCapacity(fluidCount);
-        for (int i = 0; i < fluidCount; i++) {
-            short objectId = aData.readShort();
-            NBTTagCompound nbt = aData.readNBTTagCompoundFromBuffer();
-            FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt);
-            packet.fluids.put(objectId, new FluidInfo(fluid));
+            int itemCount = buffer.readInt();
+            packet.items.ensureCapacity(itemCount);
+            for (int i = 0; i < itemCount; i++) {
+                short objectId = buffer.readShort();
+                ItemStack item = ByteBufUtils.readItemStack(buffer);
+                packet.items.put(objectId, new BlockInfo(item));
+            }
+
+            int fluidCount = buffer.readInt();
+            packet.fluids.ensureCapacity(fluidCount);
+            for (int i = 0; i < fluidCount; i++) {
+                short objectId = buffer.readShort();
+                NBTTagCompound nbt = buffer.readNBTTagCompoundFromBuffer();
+                FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt);
+                packet.fluids.put(objectId, new FluidInfo(fluid));
+            }
         }
 
         int instanceCount = aData.readInt();
@@ -157,7 +188,8 @@ public class ProspectingPacket extends DetravPacket {
     }
 
     @Override
-    public void encode(PacketBuffer tOut) throws IOException {
+    public void encode(OutputStream out) throws IOException {
+        DataOutputStream tOut = new DataOutputStream(new GZIPOutputStream(out));
         tOut.writeInt(chunkX);
         tOut.writeInt(chunkZ);
         tOut.writeInt(posX);
@@ -165,16 +197,22 @@ public class ProspectingPacket extends DetravPacket {
         tOut.writeInt(size);
         tOut.writeInt(ptype);
 
-        tOut.writeInt(items.size());
-        for (var obj : items.short2ObjectEntrySet()) {
-            tOut.writeShort(obj.getShortKey());
-            ByteBufUtils.writeItemStack(tOut, obj.getValue().stack);
-        }
-        tOut.writeInt(fluids.size());
-        for (var obj : fluids.short2ObjectEntrySet()) {
-            tOut.writeShort(obj.getShortKey());
-            var nbt = obj.getValue().stack.writeToNBT(new NBTTagCompound());
-            tOut.writeNBTTagCompoundToBuffer(nbt);
+        // encode items and fluids
+        {
+            PacketBuffer buffer = new PacketBuffer(Unpooled.buffer());
+            buffer.writeInt(items.size());
+            for (var obj : items.short2ObjectEntrySet()) {
+                buffer.writeShort(obj.getShortKey());
+                ByteBufUtils.writeItemStack(buffer, obj.getValue().stack);
+            }
+            buffer.writeInt(fluids.size());
+            for (var obj : fluids.short2ObjectEntrySet()) {
+                buffer.writeShort(obj.getShortKey());
+                NBTTagCompound nbt = obj.getValue().stack.writeToNBT(new NBTTagCompound());
+                buffer.writeNBTTagCompoundToBuffer(nbt);
+            }
+
+            writeBuffer(tOut, buffer);
         }
 
         tOut.writeInt(map.size());
@@ -183,6 +221,8 @@ public class ProspectingPacket extends DetravPacket {
             tOut.writeLong(instance.getLongKey());
             tOut.writeShort(instance.getShortValue());
         }
+
+        tOut.close();
     }
 
     @Override
