@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -132,56 +133,40 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
     }
 
     private void createAddButtonTooltip(RichTooltip t, boolean isOriginColumn, String axis) {
+        t.addLine(StatCollector.translateToLocal("GT5U.machines.debugstructurewriter.gui.add.tooltip.shift_click"));
         t.addLine(
-            EnumChatFormatting.GREEN + "(Shift) "
-                + EnumChatFormatting.RESET
-                + EnumChatFormatting.AQUA
-                + "Left"
-                + EnumChatFormatting.RESET
-                + "/"
-                + EnumChatFormatting.RED
-                + "Right"
-                + EnumChatFormatting.RESET
-                + " Click to "
-                + EnumChatFormatting.AQUA
-                + "Increment"
-                + EnumChatFormatting.RESET
-                + "/"
-                + EnumChatFormatting.RED
-                + "Decrement");
-        t.addLine((isOriginColumn ? " Origin " : " Size ") + axis + " value by 1 " + EnumChatFormatting.GREEN + "(16)");
+            StatCollector.translateToLocalFormatted(
+                isOriginColumn ? "GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.origin"
+                    : "GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.size",
+                axis,
+                1));
         t.addLine(
             EnumChatFormatting.GRAY + ""
                 + EnumChatFormatting.ITALIC
-                + (isOriginColumn ? "Origin: " : "Size: ")
+                + StatCollector.translateToLocal(
+                    isOriginColumn ? "GT5U.machines.debugstructurewriter.gui.origin"
+                        : "GT5U.machines.debugstructurewriter.gui.size")
+                + ": "
                 + formatNumber(isOriginColumn ? MIN_ORIGIN : MIN_SIZE)
                 + " - "
                 + formatNumber(isOriginColumn ? MAX_ORIGIN : MAX_SIZE));
     }
 
     private void createMultButtonTooltip(RichTooltip t, boolean isOriginColumn, String axis) {
+        t.addLine(StatCollector.translateToLocal("GT5U.machines.debugstructurewriter.gui.mult.tooltip.shift_click"));
         t.addLine(
-            EnumChatFormatting.GREEN + "(Shift) "
-                + EnumChatFormatting.RESET
-                + EnumChatFormatting.AQUA
-                + "Left"
-                + EnumChatFormatting.RESET
-                + "/"
-                + EnumChatFormatting.RED
-                + "Right"
-                + EnumChatFormatting.RESET
-                + " Click to "
-                + EnumChatFormatting.AQUA
-                + "Multiply"
-                + EnumChatFormatting.RESET
-                + "/"
-                + EnumChatFormatting.RED
-                + "Divide");
-        t.addLine((isOriginColumn ? " Origin " : " Size ") + axis + " value by 2 " + EnumChatFormatting.GREEN + "(16)");
+            StatCollector.translateToLocalFormatted(
+                isOriginColumn ? "GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.origin"
+                    : "GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.size",
+                axis,
+                2));
         t.addLine(
             EnumChatFormatting.GRAY + ""
                 + EnumChatFormatting.ITALIC
-                + (isOriginColumn ? "Origin: " : "Size: ")
+                + StatCollector.translateToLocal(
+                    isOriginColumn ? "GT5U.machines.debugstructurewriter.gui.origin"
+                        : "GT5U.machines.debugstructurewriter.gui.size")
+                + ": "
                 + formatNumber(isOriginColumn ? MIN_ORIGIN : MIN_SIZE)
                 + " - "
                 + formatNumber(isOriginColumn ? MAX_ORIGIN : MAX_SIZE));

@@ -203,8 +203,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
         String pseudoJavaCode = getPseudoJavaCode();
         GT_FML_LOGGER.info(pseudoJavaCode);
         result = pseudoJavaCode.split("\\n");
-        aPlayer.addChatMessage(
-            new ChatComponentTranslation(translateToLocal("GT5U.machines.debugstructurewriter.printed")));
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.debugstructurewriter.printed"));
     }
 
     @Override
