@@ -18,7 +18,6 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
@@ -58,16 +57,6 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .addTo(electricImplosionCompressorRecipes);
             }
         }
-
-        // Manual Add due to werkstoff material system disconnected from autogeneration
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Shapes.dust, 4))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Shapes.gem, 3),
-                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 12))
-            .duration(1 * TICKS)
-            .eut(TierEU.RECIPE_UEV)
-            .addTo(electricImplosionCompressorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(highDensityPlutoniumNugget, 5))

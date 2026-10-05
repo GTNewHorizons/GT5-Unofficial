@@ -37,6 +37,7 @@ public final class LoaderShapeConsumers {
         ConsumerNugget.register();
         ConsumerLens.register();
         ConsumerGem.register();
+        ConsumerGemImplosion.register();
         ConsumerToolHead.register();
         ConsumerToolOther.register();
 
