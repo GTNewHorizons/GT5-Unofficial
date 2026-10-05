@@ -24,20 +24,20 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.hatch.MTEHatchSplitterRedstoneGui;
+import gregtech.common.gui.modularui.hatch.MTEHatchNanochipRedstoneGui;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchSplitterRedstone extends MTEHatch {
+public class MTEHatchNanochipRedstone extends MTEHatch {
 
     private byte redstoneInput = 0;
     private int channel = 1;
     public int MAX_CHANNEL = 20;
 
-    public MTEHatchSplitterRedstone(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Allows Redstone Control for Splitter");
+    public MTEHatchNanochipRedstone(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 0, "Allows Redstone Control for certain NAC Modules");
     }
 
-    public MTEHatchSplitterRedstone(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchNanochipRedstone(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -75,7 +75,7 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHatchSplitterRedstone(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchNanochipRedstone(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -92,10 +92,10 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] { translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.1"),
-            translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.2"),
-            translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.3"),
-            translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.4") };
+        return new String[] { translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.1"),
+            translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.2"),
+            translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.3"),
+            translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.4") };
     }
 
     @Override
@@ -114,7 +114,7 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEHatchSplitterRedstoneGui(this).build(data, syncManager, uiSettings);
+        return new MTEHatchNanochipRedstoneGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override

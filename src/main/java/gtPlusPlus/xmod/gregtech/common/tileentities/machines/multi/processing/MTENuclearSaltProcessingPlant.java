@@ -17,6 +17,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -44,8 +45,8 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     implements ISurvivalConstructable {
 
     private static final int BASE_PARALLEL = 2;
-    private static final float DURATION_MULTIPLIER = 2.5f;
-    private static final float EU_MULTIPLIER = 1f;
+    private static final double DURATION_MULTIPLIER = 2.5D;
+    private static final double EU_MULTIPLIER = 1.0D;
 
     private int casing;
     private static IStructureDefinition<MTENuclearSaltProcessingPlant> STRUCTURE_DEFINITION = null;
@@ -78,8 +79,13 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(getMachineType())
-            .addBulkMachineInfo(BASE_PARALLEL, DURATION_MULTIPLIER, EU_MULTIPLIER)
-            .addMarkdown(new ResourceLocation("gregtech", "nuclear-salt-processing-plant"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "nuclear-salt-processing-plant"),
+                ImmutableMap.<String, Object>builder()
+                    .put("parallels", BASE_PARALLEL)
+                    .put("speed", Math.round(DURATION_MULTIPLIER * 100))
+                    .put("eu_eff", Math.round(EU_MULTIPLIER * 100))
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 3, true)
             .addController("Front center, 3rd layer")
@@ -197,7 +203,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / DURATION_MULTIPLIER)
+        return new ProcessingLogic().setSpeedBonus(1.0D / DURATION_MULTIPLIER)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
