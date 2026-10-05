@@ -401,11 +401,12 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
     /**
      * {@inheritDoc}
      *
-     * @implNote Check against the world render pass
+     * @implNote Check against the world render pass. Pass -1 means the block is drawn outside chunk building, such
+     *           as by a piston moving it, so every layer renders in a single call.
      */
     @Override
     public boolean canRenderInPass(@NotNull IntPredicate predicate) {
-        return predicate.test(worldRenderPass) || isBlockRenderer6343DummyWorld(blockAccess);
+        return worldRenderPass == -1 || predicate.test(worldRenderPass) || isBlockRenderer6343DummyWorld(blockAccess);
     }
 
     /**
