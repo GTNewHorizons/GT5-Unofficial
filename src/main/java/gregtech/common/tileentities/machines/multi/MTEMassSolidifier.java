@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -28,11 +29,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -58,7 +61,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
@@ -66,6 +68,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolid
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSolidifier>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -75,12 +78,16 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     private static final int VERTICAL_OFFSET = 5;
     private static final int DEPTH_OFFSET = 0;
 
+    private static final int MAX_SPEEDUP_PERCENT = 300;
+    private static final int PARALLELS_PER_TIER = 10;
+    private static final double EU_MODIFIER = 0.8d;
+
     private double speedup = 1;
     private int runningTickCounter = 0;
     private int glassTier = -1;
     private final static int MAX_CASINGS = 77;
     private final static int MIN_CASINGS = MAX_CASINGS - 53; // = 24. Allow for 53 hatch space to match Fluid Shaper
-                                                             // max.
+    // max.
 
     private static final IStructureDefinition<MTEMassSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMassSolidifier>builder()
@@ -129,7 +136,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
         return Textures.BlockIcons.createTextureWithCasing(
             this,
             side,
@@ -150,17 +157,15 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Fluid Solidifier")
-            .addVoltageParallelInfo(10)
-            .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
-            .addInfo("Decays at double the rate that it speeds up at")
-            .addStaticEuEffInfo(0.8f)
+            .addVoltageParallelInfo(PARALLELS_PER_TIER)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mass-solidifier"),
+                ImmutableMap.<String, Object>builder()
+                    .put("max_speedup", formatNumber(MAX_SPEEDUP_PERCENT))
+                    .build())
             .addGlassEnergyLimitInfo()
-            .addInfo(
-                "Can use " + EnumChatFormatting.YELLOW
-                    + "Solidifier Hatches"
-                    + EnumChatFormatting.GRAY
-                    + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginStructureBlock(5, 6, 9, false)
             .addController("Front bottom center")
@@ -178,6 +183,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);
+        // spotless:on
         return tt;
     }
 
@@ -196,9 +202,9 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         runningTickCounter++;
-        if (runningTickCounter % 10 == 0 && speedup < 3) {
+        if (runningTickCounter % 10 == 0 && speedup < MAX_SPEEDUP_PERCENT) {
             runningTickCounter = 0;
-            speedup += 0.025D;
+            speedup += DECAY_RATE;
         }
         return super.onRunningTick(aStack);
     }
@@ -286,7 +292,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                 return false;
             }
         }.setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.8D)
+            .setEuModifier(EU_MODIFIER)
             .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
@@ -319,7 +325,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
 
     @Override
     public int getMaxParallelRecipes() {
-        return 10 * GTUtility.getTier(this.getMaxInputVoltage());
+        return PARALLELS_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     public double getSpeedBonus() {

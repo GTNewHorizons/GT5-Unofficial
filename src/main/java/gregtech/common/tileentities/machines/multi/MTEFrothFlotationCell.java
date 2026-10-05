@@ -1,4 +1,3 @@
-
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
@@ -18,6 +17,7 @@ import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,6 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -61,6 +62,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFrothFlotationCell>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -118,10 +120,11 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Flotation Cell, FCR")
-            .addInfo("Process that milled ore!")
-            .addInfo("You can only ever process one type of material per controller")
-            .addPerfectOCInfo()
+            .addMarkdown(
+                new ResourceLocation("gregtech", "froth-flotation-cell"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 5, 11, false)
             .addController("Front center, 2nd layer")
@@ -137,6 +140,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .toolTipFinisher(GTAuthors.AuthorNoc.get());
+        // spotless:on
         return tt;
     }
 
