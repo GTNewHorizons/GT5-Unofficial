@@ -19813,7 +19813,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Prasiolite), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.BismuthTelluride), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.CubicZirconia), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SteelMagnetic), 1L)))
-            .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "CRYSTALLISABLE", "NoBlast"))
+            .setProperty(GTMaterialProperties.SUB_TAGS, List.of("CRYSTAL", "NoBlast"))
             .setProperty(GTMaterialProperties.FORMULA, "(Si₅O₁Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅C")
             .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.TOOL_HEAD))
             .build();
