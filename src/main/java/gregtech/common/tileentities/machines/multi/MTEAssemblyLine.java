@@ -521,7 +521,13 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
     private enum DataHatchElement implements IHatchElement<MTEAssemblyLine> {
 
-        DataAccess;
+        DataAccess("GT5U.MBTT.DataAccessHatch");
+
+        private final String name;
+
+        DataHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -536,6 +542,16 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         @Override
         public long count(MTEAssemblyLine t) {
             return t.mDataAccessHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }
