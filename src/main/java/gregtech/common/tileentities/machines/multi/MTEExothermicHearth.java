@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -39,6 +40,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -48,8 +50,10 @@ import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -73,7 +77,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTEExothermicHearthGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -81,6 +84,7 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExothermicHearth>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -191,59 +195,21 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, ExH, MEBF, MBF")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace_exh"))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo(
-                TooltipHelper.effText("-5%") + " EU Usage per "
-                    + TooltipHelper.coloredText("900K", EnumChatFormatting.RED)
-                    + " above the recipe requirement")
-            .addSeparator()
-            .addInfo(
-                "Increases Heat by " + EnumChatFormatting.RED
-                    + "100K"
-                    + EnumChatFormatting.GRAY
-                    + " for every "
-                    + TooltipHelper.tierText("Voltage")
-                    + " tier past "
-                    + EnumChatFormatting.AQUA
-                    + "MV")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "1800K"
-                    + EnumChatFormatting.GRAY
-                    + " over the recipe requirement grants 1 "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Perfect Overclock")
-            .addSeparator()
-            .addInfo(
-                "While active, the machine will heat up and multiply its parallels up to " + EnumChatFormatting.GOLD
-                    + "2x")
-            .addInfo(
-                "Takes " + EnumChatFormatting.LIGHT_PURPLE
-                    + "30 minutes"
-                    + EnumChatFormatting.GRAY
-                    + " of constant running to reach maximum multiplier")
-            .addInfo("While not running, the machine will rapidly cooldown")
-            .addInfo(
-                "Optionally supply " + EnumChatFormatting.RED
-                    + formatFluid(PYROTHEUM_DRAIN_BASE)
-                    + EnumChatFormatting.GRAY
-                    + "/s of "
-                    + EnumChatFormatting.GOLD
-                    + "Pyrotheum"
-                    + EnumChatFormatting.GRAY
-                    + " to speed up heating by "
-                    + EnumChatFormatting.RED
-                    + "6x")
-            .addInfo(
-                "The drain rate of " + EnumChatFormatting.GOLD
-                    + "Pyrotheum"
-                    + EnumChatFormatting.GRAY
-                    + " will increase "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "linearly"
-                    + EnumChatFormatting.GRAY
-                    + " with the parallel multiplier")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "exothermic-hearth"),
+                ImmutableMap.<String, Object>builder()
+                    .put("discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD))
+                    .put("heat_per_tier", formatNumber(MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER))
+                    .put("start_tier", GTValues.VN[MTEElectricBlastFurnace.HEAT_BONUS_START_TIER])
+                    .put("perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD))
+                    .put("max_multiplier", formatNumber(MAX_PARALLEL_MULTIPLIER))
+                    .put("heatup_minutes", formatNumber(HEATUP_MINUTES))
+                    .put("pyrotheum", formatFluid(PYROTHEUM_DRAIN_BASE))
+                    .put("pyrotheum_speedup", formatNumber(PYROTHEUM_HEATUP_SPEEDUP))
+                    .build())
             .addSeparator()
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
@@ -251,29 +217,30 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
-            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Never one...")
+            .addInfo(EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gt.mbtt.flavor.exothermic_hearth"))
             .beginStructureBlock(23, 43, 23, true)
-            .addController("Front center, 4th layer")
-            .addCasing("1800-1904", "Hearth Casing", false)
-            .addCasing("937", "Heat Proof Machine Casing", false)
-            .addCasing("864", "Heating Coil", true)
-            .addCasing("780", "Thermal Containment Casing", false)
-            .addCasing("428", "Radiant Naquadah Alloy Casing", false)
-            .addCasing("332", "Any Tiered Glass", true)
-            .addCasing("308", "Black Plutonium Item Pipe Casing", false)
-            .addCasing("280", "Blast Smelter Heat Containment Coil", false)
-            .addCasing("131", "Tungstensteel Pipe Casing", false)
-            .addCasing("56", "Prismatic Naquadah Frame Box", false)
-            .addEnergyHatch("1+", "Any hearth casing", 1)
-            .addMaintenanceHatch("1", "Any hearth casing", 1)
-            .addMufflerHatch("1", "Any hearth casing", 1)
-            .addInputAny("1+", "Any hearth casing", 1)
-            .addOutputAny("1+", "Any hearth casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("1800-1904", Casings.HearthCasing.getLocalizedName(), false)
+            .addCasing("937", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addCasing("864", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("780", Casings.ThermalContainmentCasing.getLocalizedName(), false)
+            .addCasing("428", Casings.RadiantNaquadahAlloyCasing.getLocalizedName(), false)
+            .addCasing("332", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("308", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
+            .addCasing("280", Casings.BlastSmelterHeatContainmentCoil.getLocalizedName(), false)
+            .addCasing("131", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
+            .addCasing("56", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.PrismaticNaquadah), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors("GregTech Odyssey")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -339,14 +306,21 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     private float parallelModifier = 1;
     public boolean isPyroSupplied = false;
     private static final int PYROTHEUM_DRAIN_BASE = 250;
-    // without pyrotheum, it should take 30 minutes to reach max multiplier (2x)
-    // with pyrotheum, itll take 5 minutes.
-    private static final float INCREMENT_BASE = 1f / 360;
-    private static final float INCREMENT_PYRO = INCREMENT_BASE * 6;
+    /** Highest parallel multiplier reachable by heating up */
+    private static final float MAX_PARALLEL_MULTIPLIER = 2;
+    /** Minutes of constant running (without pyrotheum) to go from 1x to {@link #MAX_PARALLEL_MULTIPLIER} */
+    private static final int HEATUP_MINUTES = 30;
+    /** How much faster the machine heats up while pyrotheum is supplied */
+    private static final int PYROTHEUM_HEATUP_SPEEDUP = 6;
+    /** Ticks between each heat-up step */
+    private static final int HEATUP_INTERVAL_TICKS = 100;
+    private static final float INCREMENT_BASE = (MAX_PARALLEL_MULTIPLIER - 1)
+        / (HEATUP_MINUTES * 60f * 20 / HEATUP_INTERVAL_TICKS);
+    private static final float INCREMENT_PYRO = INCREMENT_BASE * PYROTHEUM_HEATUP_SPEEDUP;
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        // every 5 seconds, increment the parallel modifier.
+        // every HEATUP_INTERVAL_TICKS, increment the parallel modifier.
         runningTickCounter++;
         if (runningTickCounter % 20 == 0) { // drain pyrotheum and crash machine if enough isnt supplied
             if (isPyroSupplied) {
@@ -359,9 +333,9 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                 }
             }
         }
-        if (runningTickCounter % 100 == 0 && parallelModifier < 2) {
+        if (runningTickCounter % HEATUP_INTERVAL_TICKS == 0 && parallelModifier < MAX_PARALLEL_MULTIPLIER) {
             float increment = isPyroSupplied ? INCREMENT_PYRO : INCREMENT_BASE;
-            parallelModifier = Math.min(2, parallelModifier + increment);
+            parallelModifier = Math.min(MAX_PARALLEL_MULTIPLIER, parallelModifier + increment);
         }
         return super.onRunningTick(aStack);
     }
@@ -520,8 +494,8 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             }
         }
         if (errors.isEmpty()) {
-            this.heatingCapacity = (int) getCoilLevel().getHeat()
-                + 100 * (GTUtility.getTierExtended(this.getMaxInputEu()) - 2);
+            this.heatingCapacity = (int) getCoilLevel().getHeat() + MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER
+                * (GTUtility.getTierExtended(this.getMaxInputEu()) - MTEElectricBlastFurnace.HEAT_BONUS_START_TIER);
         }
     }
 

@@ -136,7 +136,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
             .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
             .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
-            .addMaxTierSkips(1)
             .addSupportAny()
             .beginStructureBlock(15, 7, 7, true)
             .addController("Front center, 2nd layer")
