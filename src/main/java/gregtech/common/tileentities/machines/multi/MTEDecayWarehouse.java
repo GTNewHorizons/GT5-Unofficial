@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTUtility.areStacksEqual;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -218,10 +220,10 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             .addCasing("48-52", "Radiation Proof Machine Casing", false)
             .addCasing("17", "Water", false)
             .addCasing("1", "Super/Quantum Chest", true)
-            .addEnergyHatch("1", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("1", "Any casing", 1)
-            .addOutputBus("1", "Any casing", 1)
+            .addEnergyHatch("1", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addInputBus("1", anyCasingText(), 1)
+            .addOutputBus("1", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter("The water is a one-time-cost to prime the machine, place manually")
             .addStructureFooter("Do not insert isotopes into the super/quantum chest")
@@ -244,6 +246,11 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     @Override
     public int getDamageToComponent(ItemStack itemStack) {
         return 0;
+    }
+
+    @Override
+    public boolean explodesOnComponentBreak(ItemStack itemStack) {
+        return false;
     }
 
     @Override
@@ -523,15 +530,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         storedIsotope = aNBT.getDouble("storedIsotope");
         storedProduct = aNBT.getDouble("storedProduct");
 
-        List<NBTTagCompound> list = GTUtility.getCompoundTagList(aNBT, "pendingInputs");
-
-        for (NBTTagCompound tag : list) {
-            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
-
-            if (GTUtility.isStackInvalid(stack)) continue;
-
-            pendingInputs.add(stack);
-        }
+        pendingInputs.addAll(GTUtility.loadItemList(aNBT.getTagList("pendingInputs", Constants.NBT.TAG_COMPOUND)));
 
         GTRecipe recipe = getRecipeMap().findRecipeQuery()
             .caching(false)

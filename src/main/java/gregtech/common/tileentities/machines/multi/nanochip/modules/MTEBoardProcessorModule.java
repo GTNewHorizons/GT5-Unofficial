@@ -44,13 +44,13 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEBoardProcessorModuleGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchNanochipRedstone;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBoardProcessorModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int BOARD_OFFSET_X = 3;
     protected static final int BOARD_OFFSET_Y = 4;
     protected static final int BOARD_OFFSET_Z = 0;
@@ -135,12 +135,13 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.2"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.3"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.4"))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.board_processor.body.5"))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.board_processor.body.output_hatch"))
             .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.5"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.6"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.7"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.8"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body.9"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.board_processor.flavor.1")))
             .beginStructureBlock(7, 7, 7, false)
@@ -195,7 +196,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEBoardProcessorModuleGui(this);
     }
 
@@ -337,6 +338,12 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
         if (aTick % 20 == 0) {
 
+            for (MTEHatchNanochipRedstone hatch : this.redstoneHatches) {
+                if (hatch.getRedstoneInput() > 0) {
+                    flushTank();
+                    break;
+                }
+            }
             if (getImpurityPercentage() >= ((double) autoFlushPercentage / 100)) {
                 flushTank();
             }

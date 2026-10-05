@@ -32,6 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -76,7 +77,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECIONodeGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.Mode;
@@ -927,13 +927,14 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         if (aNBT.hasKey("steps")) {
-            List<NBTTagCompound> steps = GTUtility.getCompoundTagList(aNBT, "steps");
+            NBTTagList steps = aNBT.getTagList("steps", NBT.TAG_COMPOUND);
 
             recipeSteps = new ArrayList<>();
 
             List<NaniteTier> tiers = new ArrayList<>();
 
-            for (NBTTagCompound tag : steps) {
+            // noinspection unchecked
+            for (NBTTagCompound tag : (List<NBTTagCompound>) steps.tagList) {
                 tiers.add(loadNanite(tag.getInteger("nanite")));
             }
 
@@ -993,16 +994,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     public enum NaniteHatch implements IHatchElement<MTEBECIONode> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.NaniteTierDetectorHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Collections.singletonList(MTEHatchNaniteDetector.class);
         }
 
+        NaniteHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_BEC_Nanites.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -1032,16 +1044,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     public enum ControllerHatch implements IHatchElement<MTEBECIONode> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.TeleportationControllerHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Collections.singletonList(MTEHatchIONodeController.class);
         }
 
+        ControllerHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_BEC_IOController.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -1070,16 +1093,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     public enum IONodeLineOfSightHatch implements IHatchElement<MTEBECIONode> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.LineOfSightHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return List.of(MTEHatchLoS.class);
         }
 
+        IONodeLineOfSightHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_LineOfSight_Connector.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override

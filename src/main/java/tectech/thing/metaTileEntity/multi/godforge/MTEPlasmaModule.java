@@ -40,6 +40,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.MTEPlasmaModuleGui;
 import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPlasmaModule extends MTEBaseModule {
 
     private long EUt = 0;

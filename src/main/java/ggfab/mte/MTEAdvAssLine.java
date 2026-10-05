@@ -905,8 +905,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         int duration = tag.getInteger("mDuration");
         if (tag.hasKey(TAG_KEY_PROGRESS_TIMES, Constants.NBT.TAG_LIST)) {
             NBTTagList tl = tag.getTagList(TAG_KEY_PROGRESS_TIMES, Constants.NBT.TAG_INT);
-            @SuppressWarnings({ "unchecked", "rawtypes" })
-            List<NBTTagInt> list = (List) tl.tagList;
+            @SuppressWarnings("unchecked")
+            List<NBTTagInt> list = tl.tagList;
             for (int i = 0, listSize = list.size(); i < listSize; i++) {
                 NBTTagInt t = list.get(i);
                 int progress = t.func_150287_d();
@@ -1082,7 +1082,13 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
     private enum DataHatchElement implements IHatchElement<MTEAdvAssLine> {
 
-        DataAccess;
+        DataAccess("GT5U.MBTT.DataAccessHatch");
+
+        private final String name;
+
+        DataHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -1097,6 +1103,16 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         @Override
         public long count(MTEAdvAssLine t) {
             return t.mDataAccessHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }
