@@ -176,7 +176,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 6F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 6.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

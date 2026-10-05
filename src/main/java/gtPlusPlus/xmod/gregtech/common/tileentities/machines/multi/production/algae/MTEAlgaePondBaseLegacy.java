@@ -331,7 +331,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setEuModifier(0F)
+        }.setEuModifier(0.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

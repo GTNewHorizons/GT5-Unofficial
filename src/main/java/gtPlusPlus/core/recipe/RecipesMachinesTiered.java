@@ -54,12 +54,12 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_LV.get(1),
-                GregtechItemList.TransmissionComponent_LV.get(2),
-                ItemList.Field_Generator_LV.get(1),
-                MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 4),
-                Circuits.MV.get(2))
+                ItemList.Emitter_LV.get(4),
+                ItemList.Sensor_LV.get(4),
+                MaterialLibAPI.getStack(Materials.RedstoneAlloy, Shapes.plate, 4),
+                Circuits.MV.get(4))
             .itemOutputs(GregtechItemList.Charger_LV.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.SiliconCarbide, 4 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RedstoneAlloy, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -68,12 +68,14 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_MV.get(1),
-                GregtechItemList.TransmissionComponent_MV.get(2),
-                ItemList.Field_Generator_MV.get(1),
-                MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.plate, 4),
-                Circuits.HV.get(2))
+                ItemList.Emitter_MV.get(4),
+                ItemList.Sensor_MV.get(4),
+                MaterialLibAPI.getStack(Materials.PulsatingIron, Shapes.plate, 4),
+                Circuits.HV.get(4))
             .itemOutputs(GregtechItemList.Charger_MV.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.BloodSteel, 6 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials.Pentacadmiummagnesiumhexaoxid, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(67 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -82,12 +84,17 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_HV.get(1),
-                GregtechItemList.TransmissionComponent_HV.get(2),
-                ItemList.Field_Generator_HV.get(1),
-                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 4),
-                Circuits.EV.get(2))
+                ItemList.Emitter_HV.get(4),
+                ItemList.Sensor_HV.get(4),
+                ItemList.Field_Generator_LV.get(2),
+                MaterialLibAPI.getStack(Materials.EnergeticAlloy, Shapes.plate, 4),
+                Circuits.EV.get(4))
             .itemOutputs(GregtechItemList.Charger_HV.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.TantalumCarbide, 8 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials.Titaniumonabariumdecacoppereikosaoxid,
+                    FluidShapes.fluidMolten,
+                    16 * INGOTS))
             .duration(90 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -96,12 +103,14 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_EV.get(1),
-                GregtechItemList.TransmissionComponent_EV.get(2),
-                ItemList.Field_Generator_EV.get(1),
-                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 4),
-                Circuits.IV.get(2))
+                ItemList.Emitter_EV.get(4),
+                ItemList.Sensor_EV.get(4),
+                ItemList.Field_Generator_MV.get(2),
+                MaterialLibAPI.getStack(Materials.CrystallineAlloy, Shapes.plate, 4),
+                Circuits.IV.get(4))
             .itemOutputs(GregtechItemList.Charger_EV.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Inconel792, 10 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Uraniumtriplatinid, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(112 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -110,12 +119,14 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_IV.get(1),
-                GregtechItemList.TransmissionComponent_IV.get(2),
-                ItemList.Field_Generator_IV.get(1),
-                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 4),
-                Circuits.LuV.get(2))
+                ItemList.Emitter_IV.get(4),
+                ItemList.Sensor_IV.get(4),
+                ItemList.Field_Generator_HV.get(2),
+                MaterialLibAPI.getStack(Materials.MelodicAlloy, Shapes.plate, 4),
+                Circuits.LuV.get(4))
             .itemOutputs(GregtechItemList.Charger_IV.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Arcanite, 12 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Vanadiumtriindinid, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(135 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -124,12 +135,17 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                GregtechItemList.TransmissionComponent_LuV.get(2),
-                ItemList.Field_Generator_LuV.get(1),
-                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 4),
-                Circuits.ZPM.get(2))
+                ItemList.Emitter_LuV.get(4),
+                ItemList.Sensor_LuV.get(4),
+                ItemList.Field_Generator_EV.get(2),
+                MaterialLibAPI.getStack(Materials.StellarAlloy, Shapes.plate, 4),
+                Circuits.ZPM.get(4))
             .itemOutputs(GregtechItemList.Charger_LuV.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.LafiumCompound, 14 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                    FluidShapes.fluidMolten,
+                    16 * INGOTS))
             .duration(157 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -138,12 +154,17 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_ZPM.get(1),
-                GregtechItemList.TransmissionComponent_ZPM.get(2),
-                ItemList.Field_Generator_ZPM.get(1),
-                MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 4),
-                Circuits.UV.get(2))
+                ItemList.Emitter_ZPM.get(4),
+                ItemList.Sensor_ZPM.get(4),
+                ItemList.Field_Generator_IV.get(2),
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 4),
+                Circuits.UV.get(4))
             .itemOutputs(GregtechItemList.Charger_ZPM.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.CinobiteA243, 16 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials.Tetranaquadahdiindiumhexaplatiumosminid,
+                    FluidShapes.fluidMolten,
+                    16 * INGOTS))
             .duration(180 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -152,12 +173,15 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_UV.get(1),
-                GregtechItemList.TransmissionComponent_UV.get(2),
-                ItemList.Field_Generator_UV.get(1),
-                MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.plate, 4),
-                Circuits.UHV.get(2))
+                ItemList.Emitter_UV.get(4),
+                ItemList.Sensor_UV.get(4),
+                ItemList.Field_Generator_LuV.get(2),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 4),
+                Circuits.UHV.get(4))
             .itemOutputs(GregtechItemList.Charger_UV.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Titansteel, 18 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials.Longasssuperconductornameforuvwire, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(202 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -166,12 +190,15 @@ public class RecipesMachinesTiered {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_MAX.get(1),
-                GregtechItemList.TransmissionComponent_UHV.get(2),
-                ItemList.Field_Generator_UHV.get(1),
-                MaterialLibAPI.getStack(Materials.Quantum, Shapes.plate, 4),
-                Circuits.UEV.get(2))
+                ItemList.Emitter_UHV.get(4),
+                ItemList.Sensor_UHV.get(4),
+                ItemList.Field_Generator_ZPM.get(2),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 4),
+                Circuits.UEV.get(4))
             .itemOutputs(GregtechItemList.Charger_UHV.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Octiron, 20 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials.Longasssuperconductornameforuhvwire, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(225 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);

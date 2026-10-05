@@ -167,7 +167,7 @@ public class BECMetaMaterialRecipes implements Runnable {
             ItemStack[] inputs = { GTModHandler.getModItem(Railcraft.ID, "machine.eta", baseAmounts[t + 1], 8),
                 MaterialLibAPI.getStack(other3Tier[t], Shapes.ring, 2), foilPart(black3Tier[t], 4),
                 MaterialLibAPI.getStack(gray3Tier[t], Shapes.gearGtSmall, 1),
-                MaterialLibAPI.getStack(white3Tier[t], Shapes.screw, 8) };
+                MaterialLibAPI.getStack(white3Tier[t], Shapes.round, 9) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
 

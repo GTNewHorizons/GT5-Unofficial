@@ -1,6 +1,8 @@
-Every coil tier gives a {green:+10%} speed bonus per coil tier
+{green:200%} Speed {green:+{var:speed}%} per {white:Heating Coil Tier}
 Build on a Space Station orbiting a Gas Planet
-Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
-Requires 64x depth Mining Pipes
-Power cost depends on planet tier and depth. See NEI page for more details.
-Can load the chunk it is in (toggle using a Soldering Iron)
+Right-click the controller with a {white:Soldering Iron} to Chunkload
+{gray:{hr}}
+Set the {blue:Depth} (1-4) with a {white:Programmed Circuit} in the input bus
+Depth determines the fluid to pump, the base power cost, and the required Mining Pipes
+{white:Base EU/t =} {aqua:Depth * 4^(T+2)} where T is the Planet Tier
+{white:Mining Pipes =} {aqua:Depth * 64}

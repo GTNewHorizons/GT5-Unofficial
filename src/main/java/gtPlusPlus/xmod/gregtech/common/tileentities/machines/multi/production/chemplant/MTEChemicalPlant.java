@@ -634,7 +634,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
         // Same speed bonus as pyro oven
-        logic.setSpeedBonus(2F / (1 + this.mCoilTier));
+        logic.setSpeedBonus(2.0D / (1.0D + (double) this.mCoilTier));
     }
 
     @Override

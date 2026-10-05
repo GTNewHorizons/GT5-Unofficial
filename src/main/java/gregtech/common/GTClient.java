@@ -136,6 +136,7 @@ import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.GTStitchedMaterialTexture;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
+import gregtech.common.render.NEIFluidRenderer;
 import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.RenderInit;
 import gregtech.common.render.WormholeRenderer;
@@ -356,6 +357,7 @@ public class GTClient extends GTProxy {
             });
         RenderInit.register();
         Pollution.onPostInitClient();
+        NEIFluidRenderer.register();
 
         ModuleRegistrar.instance()
             .registerTooltipRenderer("waila.gt.progress", new TTRenderGTProgressBar());

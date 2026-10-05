@@ -201,7 +201,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     private enum SpecialHatchElement implements IHatchElement<MTEBlackHoleCompressor> {
 
-        UtilityHatch(MTEBlackHoleCompressor::addSensorHatchToMachineList, MTEBlackHoleUtility.class) {
+        UtilityHatch("GT5U.MBTT.UtilityHatch", MTEBlackHoleCompressor::addSensorHatchToMachineList,
+            MTEBlackHoleUtility.class) {
 
             @Override
             public long count(MTEBlackHoleCompressor bhc) {
@@ -209,12 +210,14 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEBlackHoleCompressor> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEBlackHoleCompressor> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEBlackHoleCompressor> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -227,6 +230,16 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         @Override
         public IGTHatchAdder<? super MTEBlackHoleCompressor> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
@@ -631,8 +644,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             }
         }.noRecipeCaching()
             .setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.7F)
-            .setSpeedBonus(0.2F);
+            .setEuModifier(0.7D)
+            .setSpeedBonus(0.2D);
     }
 
     @Override

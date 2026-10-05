@@ -60,10 +60,10 @@ public class Godforge implements Runnable {
     public static final HashMap<ItemStack, Integer> exoticModulePlasmaItemMap = new HashMap<>();
     public static final HashMap<FluidStack, Integer> exoticModulePlasmaFluidMap = new HashMap<>();
     public static final HashMap<ItemStack, Integer> exoticModuleMagmatterItemMap = new HashMap<>();
-    public static final List<ItemStack> quarkGluonFluidItemsForNEI = new ArrayList<>();
+    public static final List<FluidStack> quarkGluonFluidItemsForNEI = new ArrayList<>();
+    public static final List<FluidStack> magmatterTimeFluidItemsForNEI = new ArrayList<>();
+    public static final List<FluidStack> magmatterSpaceFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> quarkGluonItemsForNEI = new ArrayList<>();
-    public static final List<ItemStack> magmatterTimeFluidItemsForNEI = new ArrayList<>();
-    public static final List<ItemStack> magmatterSpaceFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterItemsForNEI = new ArrayList<>();
 
     /// The molten fluid of each dust's material, index-aligned with `items`. An entry whose material has no
@@ -776,22 +776,18 @@ public class Godforge implements Runnable {
 
         // For NEI
         for (FluidStack fluid : exoticModulePlasmaFluidMap.keySet()) {
-            fluid.amount = getRandomIntInRange(1, 64);
-            quarkGluonFluidItemsForNEI.add(GTUtility.getFluidDisplayStack(fluid, true));
+            FluidStack displayFluid = fluid.copy();
+            displayFluid.amount = getRandomIntInRange(1, 64);
+            quarkGluonFluidItemsForNEI.add(displayFluid);
         }
         for (ItemStack item : exoticModulePlasmaItemMap.keySet()) {
             item.stackSize = getRandomIntInRange(1, 7);
             quarkGluonItemsForNEI.add(item);
         }
         for (int i = 0; i < 21; i++) {
-            magmatterTimeFluidItemsForNEI.add(
-                GTUtility.getFluidDisplayStack(
-                    MaterialUtils.fluid(Materials.temporalFluid, getRandomIntInRange(1, 50)),
-                    true));
-            magmatterSpaceFluidItemsForNEI.add(
-                GTUtility.getFluidDisplayStack(
-                    MaterialUtils.fluid(Materials.spatialFluid, getRandomIntInRange(51, 100)),
-                    true));
+            magmatterTimeFluidItemsForNEI.add(MaterialUtils.fluid(Materials.temporalFluid, getRandomIntInRange(1, 50)));
+            magmatterSpaceFluidItemsForNEI
+                .add(MaterialUtils.fluid(Materials.spatialFluid, getRandomIntInRange(51, 100)));
         }
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
 

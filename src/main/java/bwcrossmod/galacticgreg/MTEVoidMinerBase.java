@@ -13,6 +13,7 @@
 
 package bwcrossmod.galacticgreg;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -32,7 +33,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -40,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -54,6 +56,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -68,10 +71,21 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 import gtneioreplugin.util.DimensionHelper;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
     implements ISurvivalConstructable, IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "voidMiner";
+
+    private static final int MIN_TIER_OFFSET = 5;
+    private static final int BASE_ORE_OUTPUT_PER_SECOND = 2;
+    private static final int BATCH_MULTIPLIER = 16;
+    private static final int RECIPE_DURATION_TICKS = 10;
+    private static final int NEON_BOOST = 4;
+    private static final int KRYPTON_BOOST = 8;
+    private static final int XENON_BOOST = 16;
+    private static final int OGANESSON_BOOST = 64;
+    private static final int NOBLE_GAS_CONSUMPTION_PER_TIER = 2;
 
     private ModDimensionDef dimensionDef;
     private boolean canVoidMine = true;
@@ -133,17 +147,17 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     protected int getMinTier() {
-        return this.TIER_MULTIPLIER + 5; // min tier = LuV
+        return this.TIER_MULTIPLIER + MIN_TIER_OFFSET;
     }
 
     int batchMultiplier = 1;
 
     protected void setElectricityStats() {
-        batchMultiplier = batchMode ? 16 : 1;
+        batchMultiplier = batchMode ? BATCH_MULTIPLIER : 1;
         this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
         this.mOutputItems = GTValues.emptyItemStackArray;
         this.mProgresstime = 0;
-        this.mMaxProgresstime = 10 * batchMultiplier;
+        this.mMaxProgresstime = RECIPE_DURATION_TICKS * batchMultiplier;
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
@@ -157,27 +171,20 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Miner, VM")
-            .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
-            .addInfo(
-                "Can be supplied with " + EnumChatFormatting.AQUA
-                    + "2 L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of Noble gases to boost "
-                    + EnumChatFormatting.GOLD
-                    + "output")
-            .addInfo(createGasString(EnumChatFormatting.LIGHT_PURPLE, "Neon", 4))
-            .addInfo(createGasString(EnumChatFormatting.AQUA, "Krypton", 8))
-            .addInfo(createGasString(EnumChatFormatting.DARK_AQUA, "Xenon", 16))
-            .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
-            .addInfo(
-                "Will output " + 2 * this.TIER_MULTIPLIER
-                    + " Ores per Second depending on the Dimension it is built in")
-            .addInfo("Ores selected in the Controller UI or added to an Input Bus are")
-            .addInfo("added to the Whitelist/Blacklist")
-            .addInfo("Use the Controller UI or a screwdriver to toggle Whitelist/Blacklist")
-            .addInfo("Blacklisted or non Whitelisted Ore will be " + EnumChatFormatting.DARK_RED + "VOIDED")
-            .addInfo("Can copy/paste Ore filter configuration with a " + EnumChatFormatting.GREEN + "Data Stick");
+            .addMarkdown(
+                new ResourceLocation("gregtech", "void-miner"),
+                ImmutableMap.<String, Object>builder()
+                    .put("power", formatNumber(GTValues.V[this.getMinTier()]))
+                    .put("gas_rate", NOBLE_GAS_CONSUMPTION_PER_TIER)
+                    .put("neon_boost", NEON_BOOST)
+                    .put("krypton_boost", KRYPTON_BOOST)
+                    .put("xenon_boost", XENON_BOOST)
+                    .put("oganesson_boost", OGANESSON_BOOST)
+                    .put("ores_per_second", BASE_ORE_OUTPUT_PER_SECOND * this.TIER_MULTIPLIER)
+                    .build());
+        // spotless:on
         return tt;
     }
 
@@ -456,16 +463,5 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
-    }
-
-    protected String createGasString(EnumChatFormatting color, String gas, int boost) {
-        return String.format(
-            "%s%s%s : %s%dx%s",
-            color,
-            gas,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.GOLD,
-            boost,
-            EnumChatFormatting.GRAY);
     }
 }

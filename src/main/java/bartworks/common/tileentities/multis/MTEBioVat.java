@@ -792,7 +792,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
 
     private enum RadioHatchElement implements IHatchElement<MTEBioVat> {
 
-        RadioHatch(MTEBioVat::addRadiationInputToMachineList, MTERadioHatch.class) {
+        RadioHatch("GT5U.MBTT.RadioHatch", MTEBioVat::addRadiationInputToMachineList, MTERadioHatch.class) {
 
             @Override
             public long count(MTEBioVat mteBioVat) {
@@ -800,11 +800,13 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEBioVat> adder;
 
         @SafeVarargs
-        RadioHatchElement(IGTHatchAdder<MTEBioVat> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        RadioHatchElement(String name, IGTHatchAdder<MTEBioVat> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -817,6 +819,16 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         @Override
         public IGTHatchAdder<? super MTEBioVat> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

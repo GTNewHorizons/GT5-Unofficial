@@ -196,7 +196,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1 / 2F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 2.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

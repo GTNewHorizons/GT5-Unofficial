@@ -74,8 +74,8 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     private static final int OFFSET_Z = 0;
 
     private static final int PARALLEL_PER_TIER = 16;
-    private static final float SPEED_INCREASE_TIER = 1f;
-    private static final float EU_EFFICIENCY = 0.75f;
+    private static final double SPEED_INCREASE_TIER = 1.0D;
+    private static final double EU_EFFICIENCY = 0.75D;
 
     public MTEIndustrialPackager(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -158,8 +158,8 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addInfo("This Multiblock is used for EXTREME packaging requirements")
             .addInfo("Can be configured to work as an Unpackager in controller")
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
-            .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
-            .addStaticEuEffInfo(EU_EFFICIENCY)
+            .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
+            .addStaticEuEffInfo((float) EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 3, true)
             .addController("Front right, 2nd layer")
@@ -238,7 +238,7 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     public double getSpeedBonus() {
-        return 1F / (SPEED_INCREASE_TIER * (itemPipeTier + 1));
+        return 1.0D / (SPEED_INCREASE_TIER * (itemPipeTier + 1));
     }
 
     private int casingAmount;

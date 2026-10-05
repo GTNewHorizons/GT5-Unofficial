@@ -25,7 +25,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.util.ItemRefer;
-import gregtech.api.casing.Casings;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
@@ -337,32 +336,30 @@ public class BECRecipes implements Runnable {
     private void addBECCasingRecipes() {
         // Electromagnetically-isolated Casing
         addBec(
-            ItemList.ElectromagneticallyIsolatedCasing.get(8),
-            new ItemStack[] { ItemList.BlockQuarkContainmentCasing.get(8),
-                MaterialLibAPI.getStack(Materials.Tairitsu, TEBlockShapes.frameGt, 8),
-                MaterialLibAPI.getStack(Materials.Churitsu, TEBlockShapes.frameGt, 8),
-                MaterialLibAPI.getStack(Materials.Shijima, TEBlockShapes.frameGt, 8),
-                ItemList.MetaMaterial_Shielding1.get(8),
-                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.bolt, 32),
-                MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.ring, 16),
-                MaterialLibAPI.getStack(Materials.Hypogen, Shapes.screw, 32), ItemList.Field_Generator_UEV.get(1) },
-            nanites(4, 1, 1, 1, 3, 1, 2, 1, 2),
-            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(512 * INGOTS),
-                CondensateType.Infinity.getEntangled(64 * INGOTS),
-                CondensateType.CelestialTungsten.getEntangled(64 * INGOTS) },
+            ItemList.ElectromagneticallyIsolatedCasing.get(16),
+            new ItemStack[] { ItemList.BlockQuarkContainmentCasing.get(4),
+                MaterialLibAPI.getStack(Materials.Tairitsu, TEBlockShapes.frameGt, 16),
+                MaterialLibAPI.getStack(Materials.Churitsu, TEBlockShapes.frameGt, 16),
+                MaterialLibAPI.getStack(Materials.Shijima, TEBlockShapes.frameGt, 16),
+                ItemList.MetaMaterial_Shielding1.get(8), ItemList.Field_Generator_UEV.get(1),
+                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.screw, 32),
+                MaterialLibAPI.getStack(Materials.Hypogen, Shapes.screw, 32) },
+            nanites(4, 1, 1, 1, 3, 2, 1, 1),
+            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
+                CondensateType.Infinity.getEntangled(32 * INGOTS),
+                CondensateType.CelestialTungsten.getEntangled(32 * INGOTS) },
             1200 * SECONDS,
             TierEU.RECIPE_UIV);
 
         // Coherence-preserving Plasma Conduit
         addBec(
             ItemList.CoherencePreservingPlasmaConduit.get(8),
-            new ItemStack[] { ItemList.PeaceEnforcementCasing.get(8), Casings.ParticleBeamGuidancePipeCasing.toStack(8),
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, TEBlockShapes.pipeHuge, 8),
-                ItemList.Electromagnet_Tengam.get(8), ItemList.MetaMaterial_EnergyConduit1.get(8),
-                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.rotor, 1),
-                MaterialLibAPI.getStack(Materials.Churitsu, Shapes.stickLong, 4),
-                MaterialLibAPI.getStack(Materials.Hypogen, Shapes.rotor, 1), ItemList.Electric_Pump_UIV.get(2) },
-            nanites(2, 4, 1, 2, 1, 1, 1, 1, 3),
+            new ItemStack[] { ItemList.BlockQuarkPipe.get(1), ItemList.PeaceEnforcementCasing.get(8),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, TEBlockShapes.pipeHuge, 4),
+                ItemList.Electromagnet_Tengam.get(1), ItemList.MetaMaterial_EnergyConduit1.get(4),
+                ItemList.Electric_Pump_UIV.get(2), MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.rotor, 4),
+                MaterialLibAPI.getStack(Materials.Hypogen, Shapes.rotor, 4) },
+            nanites(4, 1, 1, 2, 1, 3, 1, 1),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
                 CondensateType.Infinity.getEntangled(32 * INGOTS),
                 CondensateType.CelestialTungsten.getEntangled(32 * INGOTS) },
@@ -371,15 +368,13 @@ public class BECRecipes implements Runnable {
 
         // Fine-structure Constant Manipulator
         addBec(
-            ItemList.FineStructureConstantManipulator.get(4),
-            new ItemStack[] { ItemList.ConflictInducementCasing.get(4),
-                ItemList.ElectromagneticallyIsolatedCasing.get(1),
-                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.gearGtSmall, 2),
-                MaterialLibAPI.getStack(Materials.Shijima, Shapes.gearGt, 1),
-                MaterialLibAPI.getStack(Materials.Hypogen, Shapes.gearGtSmall, 2),
-                ItemList.MetaMaterial_Waveguide1.get(4), ItemList.MetaMaterial_ElectrograviticValve1.get(4),
-                ItemList.Sensor_UIV.get(1), ItemList.Emitter_UIV.get(1) },
-            nanites(3, 4, 1, 1, 1, 1, 1, 3, 2),
+            ItemList.FineStructureConstantManipulator.get(8),
+            new ItemStack[] { ItemList.ConflictInducementCasing.get(8),
+                ItemList.ElectromagneticallyIsolatedCasing.get(2), ItemList.MetaMaterial_Waveguide1.get(4),
+                ItemList.MetaMaterial_ElectrograviticValve1.get(4), ItemList.Sensor_UIV.get(1),
+                ItemList.Emitter_UIV.get(1), MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.gearGtSmall, 4),
+                MaterialLibAPI.getStack(Materials.Hypogen, Shapes.gearGtSmall, 4) },
+            nanites(3, 4, 1, 1, 3, 2, 1, 1),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
                 CondensateType.Infinity.getEntangled(32 * INGOTS),
                 CondensateType.CelestialTungsten.getEntangled(32 * INGOTS) },
@@ -389,42 +384,45 @@ public class BECRecipes implements Runnable {
         // Condensate Guidance Coil
         addBec(
             ItemList.CondensateGuidanceCoil.get(1),
-            new ItemStack[] { ItemRefer.Field_Restriction_Coil_T2.get(1),
-                ItemList.Naquarite_Universal_Insulator_Foil.get(4), ItemList.MetaMaterial_Waveguide1.get(2),
+            new ItemStack[] { ItemRefer.Compact_Fusion_Coil_T3.get(1),
+                MaterialLibAPI.getStack(Materials.Tairitsu, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.Churitsu, TEBlockShapes.frameGt, 1),
-                MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.screw, 16),
-                MaterialLibAPI.getStack(Materials.Shijima, Shapes.bolt, 16) },
-            nanites(3, 1, 4, 1, 1, 1),
-            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(64 * INGOTS),
-                CondensateType.Infinity.getEntangled(8 * INGOTS),
-                CondensateType.CelestialTungsten.getEntangled(8 * INGOTS) },
+                MaterialLibAPI.getStack(Materials.Shijima, TEBlockShapes.frameGt, 1),
+                ItemList.MetaMaterial_Waveguide1.get(2), ItemList.Naquarite_Universal_Insulator_Foil.get(4),
+                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.wireFine, 8),
+                MaterialLibAPI.getStack(Materials.Hypogen, Shapes.wireFine, 8) },
+            nanites(3, 1, 1, 1, 4, 2, 1, 1),
+            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
+                CondensateType.Infinity.getEntangled(16 * INGOTS),
+                CondensateType.CelestialTungsten.getEntangled(16 * INGOTS) },
             150 * SECONDS,
             TierEU.RECIPE_UIV);
 
         // Condensate Transformative Coil
         addBec(
             ItemList.CondensateTransformativeCoil.get(1),
-            new ItemStack[] { ItemList.CondensateGuidanceCoil.get(1),
+            new ItemStack[] { ItemRefer.Field_Restriction_Coil_T2.get(1),
+                MaterialLibAPI.getStack(Materials.ChromaticGlass, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt02, 4),
-                ItemList.Circuit_Chip_APIC.get(4), ItemList.MetaMaterial_SensorArray1.get(4),
-                ItemList.MetaMaterial_FieldManipulator1.get(2) },
-            nanites(3, 1, 4, 1, 1),
-            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(64 * INGOTS),
-                CondensateType.Infinity.getEntangled(8 * INGOTS),
-                CondensateType.CelestialTungsten.getEntangled(8 * INGOTS) },
+                ItemList.Circuit_Chip_APIC.get(4), ItemList.MetaMaterial_SensorArray1.get(2),
+                ItemList.MetaMaterial_ResonanceChamber1.get(2), ItemList.MetaMaterial_FieldManipulator1.get(2) },
+            nanites(2, 1, 2, 1, 3, 3, 4),
+            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
+                CondensateType.Infinity.getEntangled(16 * INGOTS),
+                CondensateType.CelestialTungsten.getEntangled(16 * INGOTS) },
             300 * SECONDS,
             TierEU.RECIPE_UIV);
 
         // Electromagnetic Waveguide
         addBec(
-            ItemList.ElectromagneticWaveguide.get(4),
-            new ItemStack[] { ItemRefer.AntimatterContainmentCasing.get(4), ItemList.MetaMaterial_Waveguide1.get(4),
+            ItemList.ElectromagneticWaveguide.get(8),
+            new ItemStack[] { ItemRefer.AntimatterContainmentCasing.get(4), ItemList.MetaMaterial_Waveguide1.get(2),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.itemCasing, 4),
                 ItemList.Field_Generator_UEV.get(1) },
             nanites(3, 4, 1, 1),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(512 * INGOTS),
-                CondensateType.Infinity.getEntangled(128 * INGOTS),
-                CondensateType.CelestialTungsten.getEntangled(32 * INGOTS) },
+                CondensateType.Infinity.getEntangled(8 * INGOTS),
+                CondensateType.CelestialTungsten.getEntangled(8 * INGOTS) },
             240 * SECONDS,
             TierEU.RECIPE_UIV);
     }

@@ -269,7 +269,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
     }
 
     public double getSpeedBonus() {
-        return 1F / (BASE_SPEED_BONUS + getCoilSpeedBonus());
+        return 1.0D / (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
     public double getEUMultiplier() {

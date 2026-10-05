@@ -944,5 +944,13 @@ public class ElectrolyzerRecipes implements Runnable {
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CalciumFluoride, FluidShapes.fluidLiquid, 3_000))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Calcium, Shapes.dust, 1))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 2_000))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+
     }
 }

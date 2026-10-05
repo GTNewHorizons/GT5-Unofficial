@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -168,12 +169,15 @@ public class MTEHeatSensor extends MTEHatch {
 
     public enum HeatSensorHatchElement implements IHatchElement<IHeatProducer> {
 
-        HeatSensor(IHeatProducer::addHeatSensorHatchToMachineList, MTEHeatSensor.class);
+        HeatSensor("GT5U.MBTT.HeatSensorHatch", IHeatProducer::addHeatSensorHatchToMachineList, MTEHeatSensor.class);
 
+        private final String name;
         private final IGTHatchAdder<IHeatProducer> adder;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
 
-        HeatSensorHatchElement(IGTHatchAdder<IHeatProducer> adder, Class<? extends IMetaTileEntity> mteClasse) {
+        HeatSensorHatchElement(String name, IGTHatchAdder<IHeatProducer> adder,
+            Class<? extends IMetaTileEntity> mteClasse) {
+            this.name = name;
             this.adder = adder;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasse));
         }
@@ -193,6 +197,15 @@ public class MTEHeatSensor extends MTEHatch {
             return adder;
         }
 
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
 }

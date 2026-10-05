@@ -6,8 +6,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-
-import org.jetbrains.annotations.NotNull;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
@@ -15,13 +14,13 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import codechicken.nei.recipe.StackInfo;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitFlocculation;
@@ -57,23 +56,24 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
     }
 
     @Override
-    @NotNull
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        if (stack.isItemEqual(
-            GTUtility.getFluidDisplayStack(MaterialUtils.fluid(Materials.PolyaluminiumChloride, 1_000), false))) {
-            currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.0"));
-            currentTip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.nei.purified_water.grade_3.1",
-                    MTEPurificationUnitFlocculation.SUCCESS_PER_LEVEL,
-                    MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL));
-        } else if (stack.isItemEqual(
-            GTUtility.getFluidDisplayStack(
-                MaterialLibAPI.getFluidStack(Materials.FlocculationWasteLiquid, FluidShapes.fluidLiquid, 1_000),
-                false))) {
+
+        FluidStack fluid = StackInfo.getFluid(stack);
+        if (fluid != null) {
+            if (fluid.isFluidEqual(MaterialUtils.fluid(Materials.PolyaluminiumChloride, 1_000))) {
+                currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.0"));
+                currentTip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.nei.purified_water.grade_3.1",
+                        MTEPurificationUnitFlocculation.SUCCESS_PER_LEVEL,
+                        MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL));
+            } else if (fluid.isFluidEqual(
+                MaterialLibAPI.getFluidStack(Materials.FlocculationWasteLiquid, FluidShapes.fluidLiquid, 1_000))) {
                     currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.2"));
                 }
+        }
+
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
     }
 }

@@ -122,6 +122,7 @@ import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTWaila;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.config.Gregtech;
 import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputMEGui;
@@ -1134,11 +1135,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                 NBTTagCompound item = inventory.getCompoundTagAt(i);
                 String name = item.getString("name");
                 long amount = item.getLong("amount");
-                currenttip.add(
-                    name + ": "
-                        + EnumChatFormatting.GOLD
-                        + ReadableNumberConverter.INSTANCE.toWideReadableForm(amount)
-                        + EnumChatFormatting.RESET);
+                currenttip.add(GTWaila.getStackListLine(name, amount));
             }
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);

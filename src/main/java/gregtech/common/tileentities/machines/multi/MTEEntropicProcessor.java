@@ -276,7 +276,8 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMachineHeat((getCasingTier() + 1) * 1800)
+                return super.createOverclockCalculator(recipe)
+                    .setMachineHeat((getCasingTier() + 1) * OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
                     .setRecipeHeat(0)
                     .setHeatOC(true)
                     .setHeatDiscount(false);
