@@ -2083,6 +2083,12 @@ gt.mbtt.structure.top_of_reactor_triso=Top of reactor (TRISO Balls)
 gt.mbtt.structure.bottom_of_reactor_burned_triso=Bottom of reactor (Burned Out TRISO Balls)
 gt.mbtt.structure.htgr_input_hatches=Any top pump casing (helium), bottom of tall tower (coolant), top of short tower (distilled water)
 gt.mbtt.structure.htgr_output_hatches=Top of tall tower (hot coolant), bottom of short tower (steam)
+gt.mbtt.structure.top_center_casing=Top center casing
+gt.mbtt.structure.any_bottom_casing_or_top_for_fluid_output=Any bottom casing, or any top casing for fluid output
+gt.mbtt.structure.any_hearth_casing=Any hearth casing
+gt.mbtt.structure.any_heat_proof_machine_casing=Any Heat Proof Machine Casing
+gt.mbtt.structure.glass_tier_limits_energy_input=The glass tier limits the Energy Input tier
+gt.mbtt.structure.mega_hologram_too_big=This multiblock is too big to have its structure hologram displayed fully.
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -2106,6 +2112,15 @@ gt.mbtt.machine_type.breeder_reactor_htgr=Breeder Reactor, HTGR
 gt.mbtt.machine_type.arc_furnace_iaf=Arc Furnace, IAF
 gt.mbtt.machine_type.solar_tower=Solar Tower
 gt.mbtt.machine_type.macerator_ims=Macerator, IMS
+gt.mbtt.machine_type.blast_furnace_ebf=Blast Furnace, EBF
+gt.mbtt.machine_type.blast_furnace_exh=Blast Furnace, ExH, MEBF, MBF
+gt.mbtt.machine_type.blast_furnace_mebf=Blast Furnace, MEBF, MBF
+gt.mbtt.machine_type.blast_furnace_volcanus=Blast Furnace
+gt.mbtt.machine_type.vacuum_furnace_dehydrator=Vacuum Furnace, Dehydrator
+gt.mbtt.machine_type.alloy_smelter=Alloy Smelter
+
+# Tooltip flavor text
+gt.mbtt.flavor.exothermic_hearth=Never one...
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
@@ -2797,6 +2812,10 @@ GT5U.machines.debugstructurewriter.gui.print.tooltip=Print Structure
 GT5U.machines.debugstructurewriter.gui.highlight.tooltip=Show Bounding Box
 GT5U.machines.debugstructurewriter.gui.copy.tooltip=Copy Structure To Clipboard
 GT5U.machines.debugstructurewriter.gui.transpose.tooltip=Transpose
+GT5U.machines.debugstructurewriter.gui.add.tooltip.shift_click=§a(Shift) §r§bLeft§r/§cRight§r Click to §bIncrement§r/§cDecrement
+GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.origin= Origin %s value by %s §a(16)
+GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.size= Size %s value by %s §a(16)
+GT5U.machines.debugstructurewriter.gui.mult.tooltip.shift_click=§a(Shift) §r§bLeft§r/§cRight§r Click to §bMultiply§r/§cDivide
 GT5U.machines.nei_transfer.steam.tooltip=%s steam recipes
 GT5U.machines.nei_transfer.voltage.tooltip=Recipes available in %s
 GT5U.machines.emit_energy.tooltip=Emit energy to output side
@@ -6682,7 +6701,8 @@ GT5U.nei.display.amperage=Amperage: %s A
 GT5U.nei.display.overclock=(OC)
 GT5U.nei.display.average=Average: %s EU/t %s
 GT5U.nei.display.windmill=Windmill
-
+GT5U.nei.display.require_heavy_mode=Requires Heavy Mode
+GT5U.nei.display.casing_tier=Casing Tier: %s
 GT5U.biomes.humidity=Humidity:
 
 # NEI options
@@ -7284,6 +7304,8 @@ gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bcool
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Cryogenic Casing to drain from!
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §a25 §7L/s to gain §a3 §7Maximum Overclocks when
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Universal Collapser §7module
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.super_coolant=Super Coolant
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.spacetime=Spacetime
 
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
@@ -7293,6 +7315,19 @@ gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
 GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
 GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
+GT5U.gui.button.foundry.modules.tooltip.select=Select Module %s
+GT5U.gui.button.foundry.modules.tooltip.unset=Shift-click to unset
+GT5U.gui.button.foundry.modules.tooltip.require_tier=Requires Tier %s Chassis
+GT5U.gui.text.foundry.modules.tooltip.empty=Empty
+
+GT5U.gui.text.foundry.modules.unset.name=Unset
+GT5U.gui.text.foundry.modules.scb.name=Superdense Casting Basins
+GT5U.gui.text.foundry.modules.uc.name=Universal Collapser
+GT5U.gui.text.foundry.modules.pvs.name=Proto-Volt Stabilizer
+GT5U.gui.text.foundry.modules.soc.name=Sentient Overclocker
+GT5U.gui.text.foundry.modules.slc.name=Streamlined Casting
+GT5U.gui.text.foundry.modules.hr.name=Heliocast Reinforcement
+GT5U.gui.text.foundry.modules.hc.name=Hypercooler
 
 GT5U.gui.text.foundry.structure=Structure Architect
 GT5U.gui.text.foundry.idea=Original Idea
