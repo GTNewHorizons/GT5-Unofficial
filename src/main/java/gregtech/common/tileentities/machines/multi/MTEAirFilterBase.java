@@ -80,6 +80,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     // Formerly configurable values
     public static final int POLLUTION_THRESHOLD = 10000;
+    public static final int PROGRESS_TIME = 200;
     public static final float BOOST_PER_FILTER = 2.0f;
     public static final float GLOBAL_MULTIPLIER = 30.0f;
     public static final float SCALING_FACTOR = 2.5f;
@@ -205,7 +206,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                     .put("scaling_factor", formatNumber(SCALING_FACTOR))
                     .put("tier_bonus", formatNumber(getBonusByTier()))
                     .put("eu_usage", formatNumber(getEUt()))
-                    .put("filter_uses", USES_PER_FILTER)
+                    .put("filter_lifespan", USES_PER_FILTER * PROGRESS_TIME / 20)
                     .put("boost_per_filter", formatNumber(BOOST_PER_FILTER))
                     .put("maint_penalty", formatNumber(MAINTENANCE_PENALTY_PERCENT))
                     .build())
@@ -301,7 +302,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         // check pollution for next cycle:
         hasPollution = getTotalPollution() >= POLLUTION_THRESHOLD;
-        mMaxProgresstime = 200;
+        mMaxProgresstime = PROGRESS_TIME;
         mEUt = (int) -getEUt();
         if (!hasPollution) {
             return CheckRecipeResultRegistry.SUCCESSFUL;
