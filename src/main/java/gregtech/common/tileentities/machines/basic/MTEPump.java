@@ -779,11 +779,13 @@ public class MTEPump extends MTEBasicMachine {
             boolean isWaterOrLava = ((this.mPrimaryPumpedBlock == Blocks.water
                 || this.mPrimaryPumpedBlock == Blocks.lava));
 
-            if (isWaterOrLava && getBaseMetaTileEntity().getMetaID(aX, aY, aZ) != 0) {
-                // Water/Lava that isn't a source block - do nothing here, but set the block to air and consume energy
-                // below
+            boolean isFlowingFluid = isWaterOrLava ? getBaseMetaTileEntity().getMetaID(aX, aY, aZ) != 0
+                : !((IFluidBlock) aBlock).canDrain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ);
+
+            if (isFlowingFluid) {
+                // Clear fluid that isn't a source block, set the block to air and consume energy
                 if (debugBlockPump) {
-                    GT_FML_LOGGER.debug("PUMP: Water/Lava - Not a source block");
+                    GT_FML_LOGGER.debug("PUMP: Not a source block");
                 }
 
             } else if (getDrainableStack() == null) {
