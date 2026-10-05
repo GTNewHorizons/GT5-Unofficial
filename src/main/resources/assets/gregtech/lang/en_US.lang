@@ -1,13 +1,24 @@
 # Creative ItemGroup Tab
+itemGroup.GregTech.Casings=Casings
 itemGroup.GregTech.GTPP_BLOCKS=GT++ Blocks
 itemGroup.GregTech.GTPP_MACHINES=GT++ Machines
 itemGroup.GregTech.GTPP_MISC=GT++ Misc
 itemGroup.GregTech.GTPP_OTHER=GT++ Other
 itemGroup.GregTech.GTPP_OTHER_2=GT++ Other II
 itemGroup.GregTech.GTPP_TOOLS=GT++ Tools
+itemGroup.GregTech.GT_DETRAV_TAB=Detrav Scanner
 itemGroup.GregTech.Main=Main
 itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
+
+# Enchantments
+enchantment.damage.endermen=Disjunction
+enchantment.damage.radioactivity=Radioactivity
+enchantment.protection.hazmat=Hazmat
+
+# GT++ bee combs
+gtplusplus.comb.dragonblood=Dragonblood Comb
+gtplusplus.comb.force=Force Comb
 
 # Components
 gt.oreprefix.block_of_material=Block of %s
@@ -225,7 +236,7 @@ gt.blockmachines.input_hatch_solidifier.desc=Fluid Input with Mold for §eFluid 
 gt.blockmachines.input_hatch_debug.desc=§7Stocks Fluids internally\n§7Configure Fluids in the UI\n§7Configured Fluids will not be consumed in processing\n§oWho knew it was this easy???
 gt.blockmachines.output_hatch.desc=Fluid Output for Multiblocks\nCapacity: %s L\nRight click with screwdriver to restrict output\nCan be restricted to put out Items and/or Steam/No Steam/1 specific Fluid\nRestricted Output Hatches are given priority for Multiblock Fluid output
 gt.blockmachines.output_hatch_antimatter.desc=Fluid Output for Multiblocks\nStores Antimatter\nAntimatter can be inserted from any side\nFront face input can be toggled with a screwdriver\nCapacity: 16,384,000L
-gt.blockmachines.output_hatch_me.desc=Fluid Output for Multiblocks\nStores directly into ME\nCan cache up to 128kL of fluids by default\nChange cache size by inserting a fluid storage cell\nChange ME connection behavior by right-clicking with wire cutter\nPartition the inserted Storage Cell to filter accepted outputs
+gt.blockmachines.output_hatch_me.desc=Fluid Output for Multiblocks\nStores directly into ME\nCan cache up to 128,000 L of fluids by default\nChange cache size by inserting a fluid storage cell\nChange ME connection behavior by right-clicking with wire cutter\nPartition the inserted Storage Cell to filter accepted outputs\nRight click with screwdriver to toggle Cache Mode\nShift right click with screwdriver to toggle Check Mode
 gt.blockmachines.output_hatch_void.desc=Voids fluids from Multiblocks\nMust be configured to work\nMimics behavior of restricted hatches
 gt.blockmachines.input_bus.desc=Item Input for Multiblocks\nShift + right click with screwdriver to turn Sort mode on/off\nCapacity: %s stacks
 gt.blockmachines.input_bus.singular.desc=Item Input for Multiblocks\nShift + right click with screwdriver to turn Sort mode on/off\nCapacity: %s stack
@@ -244,7 +255,7 @@ gt.blockmachines.input_bus_linked.desc=%s slot input bus linked together wireles
 gt.blockmachines.input_bus_debug.desc=§7Stocks Items internally\n§7Configure Items in the UI\n§7Configured Items will not be consumed in processing\n§oWho knew it was this easy???
 gt.blockmachines.output_bus.desc=Item Output for Multiblocks\nCapacity: %s stacks\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
 gt.blockmachines.output_bus.singular.desc=Item Output for Multiblocks\nCapacity: %s stack\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
-gt.blockmachines.output_bus_me.desc=Item Output for Multiblocks\nStores directly into ME\nCan cache 1600 items by default\nChange cache size by inserting a storage cell\nChange ME connection behavior by right-clicking with wire cutter\nPartition the inserted Storage Cell to filter accepted outputs
+gt.blockmachines.output_bus_me.desc=Item Output for Multiblocks\nStores directly into ME\nCan cache 1600 items by default\nChange cache size by inserting a storage cell\nChange ME connection behavior by right-clicking with wire cutter\nPartition the inserted Storage Cell to filter accepted outputs\nRight click with screwdriver to toggle Cache Mode\nShift right click with screwdriver to toggle Check Mode
 gt.blockmachines.output_bus_steam.desc=Item Output for Steam Multiblocks\nDoes not automatically export items\nCapacity: 4 stacks\nDoes not work with non-steam multiblocks
 gt.blockmachines.output_bus_void.desc=Voids items from Multiblocks\nMust be configured to work
 gt.blockmachines.output_bus_super.desc=Item Output for Multiblocks\n%s Slots\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
@@ -415,17 +426,15 @@ gt.blockmachines.hatch.nanite.tooltip=Holds nanites for use in multiblocks\nWill
 gt.blockmachines.hatch.nanite.singularity.name=Singularity Nanite Containment Bus
 gt.blockmachines.hatch.nanite.singularity.tooltip=Holds nanites for use in multiblocks\nWill keep its contents when broken
 gt.blockmachines.hatch.output.me.name=Output Hatch (ME)
-gt.blockmachines.hatch.output.me.tooltip=Fluid Output for Multiblocks\nCapacity: 0 L\nRight click with screwdriver to restrict output\nCan be restricted to put out Items and/or Steam/No Steam/1 specific Fluid\nRestricted Output Hatches are given priority for Multiblock Fluid output
 gt.blockmachines.hatch.output_battery.tier.00.name=Discharging Bus (MV)
 gt.blockmachines.hatch.output_battery.tier.00.tooltip=Dischargeable Item Bus for Multiblocks\nCapacity: 4 slots\nAdded by: §2Alkalus §7- §c[GT++]
 gt.blockmachines.hatch.output_battery.tier.01.name=Discharging Bus (EV)
 gt.blockmachines.hatch.output_battery.tier.01.tooltip=Dischargeable Item Bus for Multiblocks\nCapacity: 16 slots\nAdded by: §2Alkalus §7- §c[GT++]
 gt.blockmachines.hatch.output_bus.me.name=Output Bus (ME)
-gt.blockmachines.hatch.output_bus.me.tooltip=Item Output for Multiblocks\nCapacity: 25 stacks\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
 gt.blockmachines.hatch.output_bus.tier.steam.name=Output Bus (Steam)
 gt.blockmachines.hatch.phsensor.name=pH Sensor Hatch
 gt.blockmachines.hatch.phsensor.tooltip=Can be installed in the pH Neutralization Purification Unit.\nOutputs Redstone Signal according to the current pH value.\nRight click to open the GUI and change settings.
-gt.blockmachines.hatch.splitter.redstone.name=Splitter Redstone Input
+gt.blockmachines.hatch.nanochip.redstone.name=Nanochip Redstone Input Hatch
 gt.blockmachines.hatch.toxicresiduesensor.name=Toxic Residue Sensor Hatch
 gt.blockmachines.hatch.toxicresiduesensor.tooltip=Reads Toxic Residue of the Large Neutralization Engine\nRight click to open the GUI and change settings.
 gt.blockmachines.hatch.turbine.name=Rotor Assembly
@@ -436,7 +445,7 @@ gt.blockmachines.hatch.void_bus.tier.00.name=Void Bus
 gt.blockmachines.hatch.water.intake.tier.00.name=Reservoir Hatch
 gt.blockmachines.hatch.wireless.transmitter.energized.tier.12.name=Energized Wireless Dynamo Hatch
 
-gt.blockmachines.hpmachine.alloysmelter.name=High Pressure Alloy Smelter
+gt.blockmachines.hpmachine.alloysmelter.name=High Pressure Steam Alloy Smelter
 gt.blockmachines.hpmachine.alloysmelter.tooltip=Combination Smelter\nMachine Type: §eAlloy Smelter§r
 gt.blockmachines.hpmachine.compressor.name=High Pressure Steam Compressor
 gt.blockmachines.hpmachine.compressor.tooltip=Compressing Items\nMachine Type: §eCompressor§r
@@ -715,15 +724,15 @@ gt.blockmachines.basicmachine.circuitassembler.tier.02.name=Advanced Circuit Ass
 gt.blockmachines.basicmachine.circuitassembler.tier.03.name=Advanced Circuit Assembler II
 gt.blockmachines.basicmachine.circuitassembler.tier.04.name=Advanced Circuit Assembler III
 gt.blockmachines.basicmachine.circuitassembler.tier.05.name=Advanced Circuit Assembler IV
-gt.blockmachines.basicmachine.circuitassembler.tier.06.name=Advanced Circuit Assembler V
-gt.blockmachines.basicmachine.circuitassembler.tier.07.name=Advanced Circuit Assembler VI
-gt.blockmachines.basicmachine.circuitassembler.tier.08.name=Advanced Circuit Assembler VII
-gt.blockmachines.basicmachine.circuitassembler.tier.09.name=Ultimate Circuit Assembling Machine
-gt.blockmachines.basicmachine.circuitassembler.tier.10.name=Ultimate Circuit Assembling Machine II
-gt.blockmachines.basicmachine.circuitassembler.tier.11.name=Ultimate Circuit Assembling Machine III
-gt.blockmachines.basicmachine.circuitassembler.tier.12.name=Ultimate Circuit Assembling Machine IV
-gt.blockmachines.basicmachine.circuitassembler.tier.13.name=Ultimate Circuit Assembling Machine V
-gt.blockmachines.basicmachine.circuitassembler.tier.14.name=MAX Circuit Assembling Machine
+gt.blockmachines.basicmachine.circuitassembler.tier.06.name=Elite Circuit Assembler
+gt.blockmachines.basicmachine.circuitassembler.tier.07.name=Elite Circuit Assembler II
+gt.blockmachines.basicmachine.circuitassembler.tier.08.name=Ultimate Circuit Architect
+gt.blockmachines.basicmachine.circuitassembler.tier.09.name=Epic Circuit Architect
+gt.blockmachines.basicmachine.circuitassembler.tier.10.name=Epic Circuit Architect II
+gt.blockmachines.basicmachine.circuitassembler.tier.11.name=Epic Circuit Architect III
+gt.blockmachines.basicmachine.circuitassembler.tier.12.name=Epic Circuit Architect IV
+gt.blockmachines.basicmachine.circuitassembler.tier.13.name=Epic Circuit Architect V
+gt.blockmachines.basicmachine.circuitassembler.tier.14.name=Legendary Circuit Architect
 gt.blockmachines.basicmachine.compressor.tier.01.name=Basic Compressor
 gt.blockmachines.basicmachine.compressor.tier.02.name=Advanced Compressor
 gt.blockmachines.basicmachine.compressor.tier.03.name=Advanced Compressor II
@@ -955,7 +964,7 @@ gt.blockmachines.basicmachine.microtransmitter.05.name=IV Microwave Energy Trans
 gt.blockmachines.basicmachine.microtransmitter.06.name=LuV Microwave Energy Transmitter
 gt.blockmachines.basicmachine.microtransmitter.07.name=ZPM Microwave Energy Transmitter
 gt.blockmachines.basicmachine.microtransmitter.08.name=UV Microwave Energy Transmitter
-gt.blockmachines.basicmachine.microtransmitter.tooltip=Transmits Energy Wirelessly\nUse Nitrogen Plasma\nfor Inter-dimensional transmission\n0.004EU Loss per 100 Blocks
+gt.blockmachines.basicmachine.microtransmitter.tooltip=Transmits Energy Wirelessly\nRequire Redstone Signal to be Activated\n0.004EU Loss per 100 Blocks\nWhen Doing Inter-dimensional Transmission\nUse Nitrogen Plasma and Require a Dragon Egg Around\nAlso Multiply Loss by 100x 
 gt.blockmachines.basicmachine.microwave.tier.01.name=Basic Microwave
 gt.blockmachines.basicmachine.microwave.tier.02.name=Advanced Microwave
 gt.blockmachines.basicmachine.microwave.tier.03.name=Advanced Microwave II
@@ -1167,6 +1176,7 @@ gt.behaviour.lighter.uses=Remaining Uses: %s
 gt.behaviour.cover_copy_paste=Can copy/paste cover data.
 gt.behaviour.cover_copy_paste.store=Stored Cover Data:
 gt.runfastertooltip=You can walk faster on this Block
+gt.laserplate.name=Laser Resistant Plate
 gt.laserplatingtooltip=Engineered to withstand extreme temperatures
 
 # Tooltip info of tile-entities
@@ -1927,6 +1937,39 @@ GT5U.MBTT.InputHatch.WithFormat=Input Hatch (%s)
 GT5U.MBTT.SolidiferHatch=Solidifier Hatch
 GT5U.MBTT.PatternProviderBus=Pattern Provider Bus
 GT5U.MBTT.ExtrusionBus=Extrusion Bus
+GT5U.MBTT.BulkCatalystHousing=Bulk Catalyst Housing
+GT5U.MBTT.AirIntakeHatch=Air Intake Hatch
+GT5U.MBTT.CapacitorHatch=Capacitor Hatch
+GT5U.MBTT.ComputerRackHatch=Computer Rack
+GT5U.MBTT.ObjectHolder=Object Holder
+GT5U.MBTT.DataAccessHatch=Data Access Hatch
+GT5U.MBTT.AssemblyLineReception=Assembly Line Reception Connector
+GT5U.MBTT.DataBankTransmission=Data Bank Transmission Connector
+GT5U.MBTT.ElectrodeDetectorHatch=Electrode Detector Hatch
+GT5U.MBTT.ElectrodeHatch=Electrode Hatch
+GT5U.MBTT.HeatSensorHatch=Heat Sensor Hatch
+GT5U.MBTT.NeutronAcceleratorHatch=Neutron Accelerator Hatch
+GT5U.MBTT.NeutronSensorHatch=Neutron Sensor
+GT5U.MBTT.RadioHatch=Radio Hatch
+GT5U.MBTT.RotorAssembly=Rotor Assembly
+GT5U.MBTT.SplitterRedstoneHatch=Splitter Redstone Input Hatch
+GT5U.MBTT.TFFTHatch=TFFT Multi I/O Hatch
+GT5U.MBTT.ToxicResidueSensorHatch=Toxic Residue Sensor Hatch
+GT5U.MBTT.TransferHatch=Energy/Dynamo Laser/Multi-Amp Hatch
+GT5U.MBTT.AnyEnergyHatch=Normal/Laser/Multi-Amp Energy Hatch
+GT5U.MBTT.AnyEnergyDynamo=Normal/Laser/Multi-Amp Dynamo Hatch
+GT5U.MBTT.UtilityHatch=Black Hole Utility Hatch
+GT5U.MBTT.VacuumConveyorHatch=Vacuum Conveyor Input/Output
+GT5U.MBTT.WirelessComputationOutput=Cloud Computation Server Hatch
+GT5U.MBTT.WirelessDataBankOutput=Wireless Data Bank Transmission Connector
+GT5U.MBTT.NaniteContainmentBus=Nanite Containment Bus
+GT5U.MBTT.LineOfSightHatch=Line-Of-Sight Connector Hatch
+GT5U.MBTT.TeleportationControllerHatch=Teleportation Node Controller Hatch
+GT5U.MBTT.CondensateDetectorHatch=Condensate Detector Hatch
+GT5U.MBTT.CondensateHatch=Condensate Hatch
+GT5U.MBTT.NaniteTierDetectorHatch=Nanite Tier Detector Hatch
+GT5U.MBTT.AnyModule=Any Module
+GT5U.MBTT.IgnoredHatch=Any Hatch (used by attached module)
 
 gt.unit.liter=L
 gt.unit.liter_per_second=L/s
@@ -1973,7 +2016,6 @@ GT5U.MBTT.Structure.Rain=§cDon't forget to protect the machine from rain and/or
 GT5U.MBTT.Structure.WaterCost=The water is a one-time-cost to prime the machine, insert with a hatch
 GT5U.MBTT.Structure.WaterFree=The water is spawned for free once formed
 GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier
-GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
 GT5U.MBTT.Structure.DataStick.Waterline=Link to the §bWater Purification Plant§7 with a §aData Stick
 GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData Stick
@@ -2041,6 +2083,12 @@ gt.mbtt.structure.top_of_reactor_triso=Top of reactor (TRISO Balls)
 gt.mbtt.structure.bottom_of_reactor_burned_triso=Bottom of reactor (Burned Out TRISO Balls)
 gt.mbtt.structure.htgr_input_hatches=Any top pump casing (helium), bottom of tall tower (coolant), top of short tower (distilled water)
 gt.mbtt.structure.htgr_output_hatches=Top of tall tower (hot coolant), bottom of short tower (steam)
+gt.mbtt.structure.top_center_casing=Top center casing
+gt.mbtt.structure.any_bottom_casing_or_top_for_fluid_output=Any bottom casing, or any top casing for fluid output
+gt.mbtt.structure.any_hearth_casing=Any hearth casing
+gt.mbtt.structure.any_heat_proof_machine_casing=Any Heat Proof Machine Casing
+gt.mbtt.structure.glass_tier_limits_energy_input=The glass tier limits the Energy Input tier
+gt.mbtt.structure.mega_hologram_too_big=This multiblock is too big to have its structure hologram displayed fully.
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -2063,6 +2111,16 @@ gt.mbtt.machine_type.essentia_smeltery_les=Essentia Smeltery, LES
 gt.mbtt.machine_type.breeder_reactor_htgr=Breeder Reactor, HTGR
 gt.mbtt.machine_type.arc_furnace_iaf=Arc Furnace, IAF
 gt.mbtt.machine_type.solar_tower=Solar Tower
+gt.mbtt.machine_type.macerator_ims=Macerator, IMS
+gt.mbtt.machine_type.blast_furnace_ebf=Blast Furnace, EBF
+gt.mbtt.machine_type.blast_furnace_exh=Blast Furnace, ExH, MEBF, MBF
+gt.mbtt.machine_type.blast_furnace_mebf=Blast Furnace, MEBF, MBF
+gt.mbtt.machine_type.blast_furnace_volcanus=Blast Furnace
+gt.mbtt.machine_type.vacuum_furnace_dehydrator=Vacuum Furnace, Dehydrator
+gt.mbtt.machine_type.alloy_smelter=Alloy Smelter
+
+# Tooltip flavor text
+gt.mbtt.flavor.exothermic_hearth=Never one...
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
@@ -2537,7 +2595,7 @@ gt.nei.solar_tower.3=Input Amount = 1000 x T
 gt.nei.tgs.1=The sapling is not consumed.
 gt.nei.tgs.2=If %s is provided,
 gt.nei.tgs.3=Saplings are made instead.
-gt.nei.tgs.sapling=Outputted if %s is provided
+gt.nei.tgs.sapling=Output if %s is provided
 gt.nei.tgs.tooltip.sapling=Place in machine controller slot
 gt.nei.tgs.tooltip.saw=Place in an input bus to harvest logs
 gt.nei.tgs.tooltip.needsSaw=Requires a Saw to harvest
@@ -2557,7 +2615,7 @@ GT5U.recipes.recipe_by.original=Original Recipe by: %s
 GT5U.recipes.recipe_by.modified=Modified by: %s
 GT5U.recipes.recipe_by=Original Recipe by: %s
 GT5U.recipes.not_consume=Does not get consumed in the process
-GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but not get consumed
+GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but does not get consumed
 GT5U.recipes.chance.consume=Consume Chance: %s
 GT5U.recipes.chance.output=Output Chance: %s
 GT5U.recipes.chance.unorganized=Has a %d%% chance to output an unorganized version instead
@@ -2754,6 +2812,10 @@ GT5U.machines.debugstructurewriter.gui.print.tooltip=Print Structure
 GT5U.machines.debugstructurewriter.gui.highlight.tooltip=Show Bounding Box
 GT5U.machines.debugstructurewriter.gui.copy.tooltip=Copy Structure To Clipboard
 GT5U.machines.debugstructurewriter.gui.transpose.tooltip=Transpose
+GT5U.machines.debugstructurewriter.gui.add.tooltip.shift_click=§a(Shift) §r§bLeft§r/§cRight§r Click to §bIncrement§r/§cDecrement
+GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.origin= Origin %s value by %s §a(16)
+GT5U.machines.debugstructurewriter.gui.button.tooltip.diff_value.size= Size %s value by %s §a(16)
+GT5U.machines.debugstructurewriter.gui.mult.tooltip.shift_click=§a(Shift) §r§bLeft§r/§cRight§r Click to §bMultiply§r/§cDivide
 GT5U.machines.nei_transfer.steam.tooltip=%s steam recipes
 GT5U.machines.nei_transfer.voltage.tooltip=Recipes available in %s
 GT5U.machines.emit_energy.tooltip=Emit energy to output side
@@ -2885,6 +2947,11 @@ channels.gregtech.gt_hatch=Enables automatic hatch placement
 channels.gregtech.field=Decides the tier of TFFT Storage Field.
 channels.gregtech.component_casing=Decides the tier of Component Assembly Line Casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
 channels.gregtech.super_chest=Decides the tier of Super/Quantum Chest. Starts at §6Super Chest I§r at value 1 and ends at §6Quantum Chest V§r at value 10.
+channels.gregtech.chassis=Decides the tier of Magnetic Chassis.
+channels.gregtech.coke_oven_casing=Decides the tier of Coke Oven Casing.
+channels.gregtech.construct=Decides the tier of Alchemical Construct.
+channels.gregtech.essentia_cell=Decides the tier of Essentia Diffusion Cell.
+channels.gregtech.piston_block=Decides the tier of Containment Block.
 
 channels.gregtech.master.structuretier=Structure Tier
 channels.gregtech.master.casingtier=Casing Tier
@@ -2895,6 +2962,36 @@ channels.gregtech.master.length=Length
 channels.gregtech.master.height=Height
 channels.gregtech.master.modules=Number of Modules
 channels.gregtech.master.rings=Number of Rings
+channels.gregtech.subchannel.qft_manipulator=Manipulator Tier
+channels.gregtech.subchannel.qft_shielding=Shielding Tier
+channels.gregtech.subchannel.heating_coil=Heating Coil Tier
+channels.gregtech.subchannel.boroglass=Glass Tier
+channels.gregtech.subchannel.prass_unit_casing=Precise Electronic Unit Casing Tier
+channels.gregtech.subchannel.metal_machine_casing=Metal Machine Casing Tier
+channels.gregtech.subchannel.tier_machine_casing=Machine Casing Tier
+channels.gregtech.subchannel.tier_casing=Machine Casing Tier
+channels.gregtech.subchannel.solenoid=Solenoid Tier
+channels.gregtech.subchannel.lsc_capacitor=Capacitor Tier
+channels.gregtech.subchannel.structure_height=Structure Height
+channels.gregtech.subchannel.structure_length=Structure Length
+channels.gregtech.subchannel.pipe_casing=Pipe Casing Tier
+channels.gregtech.subchannel.item_pipe_casing=Item Pipe Casing Tier
+channels.gregtech.subchannel.pss_cell=Vanadium Redox Power Cell Tier
+channels.gregtech.subchannel.synchrotron_antenna=Antenna Casing Tier
+channels.gregtech.subchannel.se_motor=Space Elevator Motor Tier
+channels.gregtech.subchannel.eoh_compression=Spacetime Compression Field Generator Tier
+channels.gregtech.subchannel.eoh_stabilisation=Stabilisation Field Generator Tier
+channels.gregtech.subchannel.eoh_dilation=Time Dilation Field Generator Tier
+channels.gregtech.subchannel.hatch=Hatch placement
+channels.gregtech.subchannel.tfft_field=Storage Field Tier
+channels.gregtech.subchannel.eic_piston=Containment Block Tier
+channels.gregtech.subchannel.alchemical_casing=Alchemical Casing Tier
+channels.gregtech.subchannel.alchemical_construct=Alchemical Construct Tier
+channels.gregtech.subchannel.super_chest=Super Chest Tier
+channels.gregtech.subchannel.magnetic_chassis=Magnetic Chassis Tier
+channels.gregtech.subchannel.component_assemblyline_casing=Component Assembly Line Casing Tier
+channels.gregtech.subchannel.les_essentia_cell=Essentia Diffusion Cell Tier
+channels.gregtech.subchannel.coke_oven_casing=Coke Oven Casing Tier
 
 GT5U.gui.select.current=§8Current:
 GT5U.gui.button.liquid_filling=Liquid Filling
@@ -3033,10 +3130,8 @@ GT5U.gui.text.recipe_result.backfiller_working=§aPouring concrete
 GT5U.gui.text.recipe_result.backfiller_no_concrete=§7No liquid concrete
 GT5U.gui.text.backfiller_current_area=§7Filling at y-level: §a%s
 GT5U.gui.text.pump_fluid_type=Fluid: §a%s
-GT5U.gui.text.pump_rate.1=Pumping rate: §b%s§r
-GT5U.gui.text.pump_rate.2= L/t
-GT5U.gui.text.pump_recovery.1=Recovering §b%s§r
-GT5U.gui.text.pump_recovery.2= L per operation
+GT5U.gui.text.pump_rate=Pumping rate: §b%s§r L/t
+GT5U.gui.text.pump_recovery=Recovering §b%s§r L per operation
 GT5U.gui.text.recipe_result.not_enough_energy=§7Not enough energy
 GT5U.gui.text.recipe_result.power_overflow=§7Power Overflowed: Supplied Energy is too high for this machine.
 GT5U.gui.text.recipe_result.duration_overflow=§7Processing time overflowed
@@ -3216,6 +3311,7 @@ GT5U.gui.text.structure_error.missing_data_hatch=Missing hatch for Data Input
 GT5U.gui.text.structure_error.dt_missing_output_hatch=Missing Output Hatch on Layer %s
 GT5U.gui.text.structure_error.dt_missing_output_hatches=Missing Output Hatch on Layers %s
 GT5U.gui.text.structure_error.coil_level_not_enough=The coil level is not enough
+GT5U.gui.text.structure_error.exotic_hatch_insufficient_coil_tier=Coil tier too low for Multi-Amp Hatch
 GT5U.gui.text.structure_error.missing_top=Top layer is not valid
 GT5U.gui.text.structure_error.dangote_missing_top=Top layer is invalid or muffler hatch is not placed on the top layer
 GT5U.gui.text.structure_error.spelv_module_exceed=Module limit exceeded
@@ -3371,8 +3467,8 @@ GT5U.gui.text.nac.info.line_specifics.primitive.module_count=Suggested Additiona
 GT5U.gui.text.nac.info.line_specifics.primitive.body1=The Prime Unattuned Circuitry component increases Primitive calibration progress by 0.1 each, ignoring the standard formula above.
 GT5U.gui.text.nac.info.line_specifics.primitive.body2=Other Primitive Circuits only increase Primitive calibration progress by 1 per batch.
 GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect1=§3Tier 1§r - §240%% Threshold§r  - 10%% chance to set Primitive Circuit recipe times to 10 ticks 
-GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect2=§3Tier 2§r - §280%% Threshold§r  - +5%% chance to multiply output for non-Primed Unattuned Circuitry Primitive Circuits
-GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect3=§3Tier 3§r - §2100%% Threshold§r - +5%% (10%% total) chance to multiply output for non-Primed Unattuned Circuitry Primitive Circuits
+GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect2=§3Tier 2§r - §280%% Threshold§r  - +5%% chance to multiply output for ULV-EV Primitive Circuits
+GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect3=§3Tier 3§r - §2100%% Threshold§r - +5%% (10%% total) chance to multiply output for ULV-EV Primitive Circuits
 GT5U.gui.text.nac.info.line_specifics.crystal.header=Crystal Circuits
 GT5U.gui.text.nac.info.line_specifics.crystal.power_distribution=Suggested Power Distribution: §d20%% Matrix§r / §380%% Non-Matrix
 GT5U.gui.text.nac.info.line_specifics.crystal.module_count=Suggested Additional Modules:§a 1 Etching Array
@@ -3384,7 +3480,7 @@ GT5U.gui.text.nac.info.line_specifics.wetware.power_distribution=Suggested Power
 GT5U.gui.text.nac.info.line_specifics.wetware.module_count=Suggested Additional Modules:§a 1 Biological Coordinator
 GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect1=§3Tier 1§r - §230%% Threshold§r - 0.8x EU Multiplier to all Modules
 GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect2=§3Tier 2§r - §260%% Threshold§r - 0.8x Recipe Time on Wetware Circuits in the Assembly Matrix
-GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect3=§3Tier 3§r - §290%% Threshold§r - -50% Catalyst Medium consumed in the Biological Coordinator
+GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect3=§3Tier 3§r - §290%% Threshold§r - -50%% Catalyst Medium consumed in the Biological Coordinator
 GT5U.gui.text.nac.info.line_specifics.bioware.header=Bioware Circuits
 GT5U.gui.text.nac.info.line_specifics.bioware.power_distribution=Suggested Power Distribution: §d50%% Matrix§r / §350%% Non-Matrix
 GT5U.gui.text.nac.info.line_specifics.bioware.module_count1=Suggested Additional Modules:§a 1 Biological Coordinator and 1 Strand Splitter
@@ -3473,11 +3569,12 @@ GT5U.tooltip.nac.module.board_processor.body.1=Will try to fill its internal tan
 GT5U.tooltip.nac.module.board_processor.body.2=The internal tank has a capacity of §31,000,000L§7 and must be at least half full for the machine to work
 GT5U.tooltip.nac.module.board_processor.body.3=Running recipes gradually increases fluid impurity, with bigger amounts of fluid taking longer to become impure
 GT5U.tooltip.nac.module.board_processor.body.4=Set an ejection threshold in the GUI to automatically flush the fluid out to be processed, which is §b100%%§7 by default
+GT5U.tooltip.nac.module.board_processor.body.5=Supplying a redstone signal to a Nanochip Redstone Input Hatch will automatically flush the fluid tank
 GT5U.tooltip.nac.module.board_processor.body.output_hatch=Manual and automatic flushing require an Output Hatch
-GT5U.tooltip.nac.module.board_processor.body.5=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
-GT5U.tooltip.nac.module.board_processor.body.6=§b0%%-15%%§r - §aEU Discount = 30%% - 2 * y%%
-GT5U.tooltip.nac.module.board_processor.body.7=§b15%%-65%%§r - Default behaviour
-GT5U.tooltip.nac.module.board_processor.body.8=§b65%%-100%%§r - §4Extra EU cost = 2%% * y%%
+GT5U.tooltip.nac.module.board_processor.body.6=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
+GT5U.tooltip.nac.module.board_processor.body.7=§b0%%-15%%§r - §aEU Discount = 30%% - 2 * y%%
+GT5U.tooltip.nac.module.board_processor.body.8=§b15%%-65%%§r - Default behaviour
+GT5U.tooltip.nac.module.board_processor.body.9=§b65%%-100%%§r - §4Extra EU cost = 2%% * y%%
 GT5U.tooltip.nac.module.cutting_chamber.name=Cutting Chamber
 GT5U.tooltip.nac.module.cutting_chamber.flavor.1=Measure once, cut twice.
 GT5U.tooltip.nac.module.cutting_chamber.action=Cuts your Wafer %s
@@ -3515,6 +3612,8 @@ GT5U.tooltip.nac.module.splitter.body.2=Behavior can be overwritten by creating 
 GT5U.tooltip.nac.module.splitter.body.3=§2Rules§7 can be set by input %s(§5s§7), output %s(§5s§7), supplied redstone signal, and item filters
 GT5U.tooltip.nac.module.splitter.body.4=%s will be transferred after all conditions of a §2Rule§7 are met
 GT5U.tooltip.nac.module.splitter.body.5=If multiple same-%s %s are present, will try and evenly split input %s among them
+GT5U.tooltip.nac.module.splitter.body.6=Can copy/paste §2Rules§7 with a §fData Stick
+
 GT5U.tooltip.nac.module.splitter.redstone_hatch= Any top mesh interface casing
 GT5U.tooltip.nac.module.superconductor_splitter.name=Superconductor Splitter
 GT5U.tooltip.nac.module.superconductor_splitter.flavor.1=Where there are superconductors, there is coolant!
@@ -3529,10 +3628,10 @@ GT5U.tooltip.nac.module.boardprocessor.impurity=Impurity
 GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank (requires an Output Hatch)
 GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank=Edit auto-flush settings
 
-GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex
-GT5U.tooltip.nac.hatch.splitter.body.2=Allows for Redstone Input for rule control
-GT5U.tooltip.nac.hatch.splitter.body.3=Set the channel and redstone threshold in the GUI
-GT5U.tooltip.nac.hatch.splitter.body.4=A redstone rule is active if the supplied redstone signal is >= the threshold on that channel
+GT5U.tooltip.nac.hatch.redstone.body.1=Can be installed in certain §eNAC§7 modules
+GT5U.tooltip.nac.hatch.redstone.body.2=Allows for Redstone Input for rule control
+GT5U.tooltip.nac.hatch.redstone.body.3=Set the channel and redstone threshold in the GUI
+GT5U.tooltip.nac.hatch.redstone.body.4=A redstone rule in the Splitter is active if the supplied redstone signal is >= the threshold on that channel
 GT5U.tooltip.nac.hatch.splitter.rules_manager=Open Rules manager
 GT5U.tooltip.nac.hatch.splitter.add_rule=Add new Rule
 GT5U.tooltip.nac.hatch.splitter.rule.Color=Color
@@ -4424,6 +4523,8 @@ GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the
 GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.hatch.outputme.toggle_checking=Toggle Checking Mode
 GT5U.hatch.outputme.toggle_caching=Toggle Caching Mode
+GT5U.hatch.outputme.refresh_time=Refresh Time (Seconds)
+GT5U.hatch.outputme.refresh_time.tooltip=How often the cached outputs are pushed to the ME network. Minimum %s seconds.
 GT5U.hatch.chisel.configure.singleton=Configure Template
 GT5U.hatch.chisel.configure.grid=Configure Templates
 
@@ -6052,6 +6153,7 @@ gt.Item_Redstone_Sniffer.tooltip=What are these frequencies?!
 gt.Item_Drone_Remote_Interface.name=Drone Remote Interface
 gt.Item_Drone_Remote_Interface.tooltip=Built-in super powerful navigation beacon!!
 gt.item.vajra_core.name=Vajra Core
+gt.Tool_Vajra.name=Vajra
 gt.item.magnetron.name=Magnetron
 gt.Item_Chaos_Locator.name=Chaos Locator
 gt.Item_Chaos_Locator.tooltip=Warps to areas with extreme entropy
@@ -6252,7 +6354,7 @@ gt.item.circuit.integrated_processor.tooltip=A Good Circuit
 
 ## Good Integrated Circuit
 gt.item.circuit.good_integrated.name=Good Integrated Circuit
-gt.item.circuit.good_integrated.tooltip=Good Circuit
+gt.item.circuit.good_integrated.tooltip=A Good Circuit
 
 ## Advanced Integrated Circuit
 gt.item.circuit.advanced_integrated.name=Advanced Integrated Circuit
@@ -6334,41 +6436,41 @@ gt.item.circuit_board.transcendent.tooltip=Temporally Warped Board
 
 ## Optical Circuits
 gt.item.circuit.optical_processor.name=Optical Processor
-gt.item.circuit.optical_processor.tooltip=An Optical Circuit
+gt.item.circuit.optical_processor.tooltip=A Super Circuit
 gt.item.circuit.optical_assembly.name=Optical Assembly
-gt.item.circuit.optical_assembly.tooltip=An Optical Circuit
+gt.item.circuit.optical_assembly.tooltip=An Infinite Circuit
 gt.item.circuit.optical_computer.name=Optical Supercomputer
-gt.item.circuit.optical_computer.tooltip=An Optical Circuit
+gt.item.circuit.optical_computer.tooltip=A Bio Circuit
 gt.item.circuit.optical_mainframe.name=Optical Mainframe
 gt.item.circuit.optical_mainframe.tooltip=An Optical Circuit
 
 ## Exotic Circuits
 gt.item.circuit.exotic_processor.name=Exotic Processor
-gt.item.circuit.exotic_processor.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_processor.tooltip=An Infinite Circuit
 gt.item.circuit.exotic_assembly.name=Exotic Assembly
-gt.item.circuit.exotic_assembly.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_assembly.tooltip=A Bio Circuit
 gt.item.circuit.exotic_computer.name=Exotic Supercomputer
-gt.item.circuit.exotic_computer.tooltip=An Exotic Circuit
+gt.item.circuit.exotic_computer.tooltip=An Optical Circuit
 gt.item.circuit.exotic_mainframe.name=Exotic Mainframe
 gt.item.circuit.exotic_mainframe.tooltip=An Exotic Circuit
 
 ## Cosmic Circuits
 gt.item.circuit.cosmic_processor.name=Cosmic Processor
-gt.item.circuit.cosmic_processor.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_processor.tooltip=A Bio Circuit
 gt.item.circuit.cosmic_assembly.name=Cosmic Assembly
-gt.item.circuit.cosmic_assembly.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_assembly.tooltip=An Optical Circuit
 gt.item.circuit.cosmic_computer.name=Cosmic Supercomputer
-gt.item.circuit.cosmic_computer.tooltip=A Cosmic Circuit
+gt.item.circuit.cosmic_computer.tooltip=An Exotic Circuit
 gt.item.circuit.cosmic_mainframe.name=Cosmic Mainframe
 gt.item.circuit.cosmic_mainframe.tooltip=A Cosmic Circuit
 
 ## Transcendent Circuits
 gt.item.circuit.transcendent_processor.name=Temporally Transcendent Processor
-gt.item.circuit.transcendent_processor.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_processor.tooltip=An Optical Circuit
 gt.item.circuit.transcendent_assembly.name=Temporally Transcendent Assembly
-gt.item.circuit.transcendent_assembly.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_assembly.tooltip=An Exotic Circuit
 gt.item.circuit.transcendent_computer.name=Temporally Transcendent Supercomputer
-gt.item.circuit.transcendent_computer.tooltip=A circuit operating outside of known spacetime
+gt.item.circuit.transcendent_computer.tooltip=A Cosmic Circuit
 gt.item.circuit.transcendent_mainframe.name=Temporally Transcendent Mainframe
 gt.item.circuit.transcendent_mainframe.tooltip=A circuit operating outside of known spacetime
 
@@ -6600,7 +6702,8 @@ GT5U.nei.display.amperage=Amperage: %s A
 GT5U.nei.display.overclock=(OC)
 GT5U.nei.display.average=Average: %s EU/t %s
 GT5U.nei.display.windmill=Windmill
-
+GT5U.nei.display.require_heavy_mode=Requires Heavy Mode
+GT5U.nei.display.casing_tier=Casing Tier: %s
 GT5U.biomes.humidity=Humidity:
 
 # NEI options
@@ -6709,6 +6812,8 @@ GT5U.waila.hatch.outputme.fluid_cache_capacity=Fluid cache capacity: §e%s L§r
 GT5U.waila.hatch.outputme.item_cache_empty=This bus has no cached stacks
 GT5U.waila.hatch.outputme.item_cache_detail=The bus contains §6%d§r cached stack%s:
 GT5U.waila.hatch.outputme.item_cache_detail.more=§oAnd %d more...
+GT5U.waila.hatch.outputme.flush_interval=§7Flushes to ME every §e%ss§7 (§anext in %ss§7)
+GT5U.waila.hatch.outputme.flush_interval.idle=§7Flushes to ME every §e%ss§7
 GT5U.waila.hatch.outputme.fluid_cache_empty=This hatch has no cached fluids
 GT5U.waila.hatch.outputme.fluid_cache_detail=The hatch contains §6%d§r cached fluid%s:
 GT5U.waila.hatch.outputme.fluid_cache_detail.more=§oAnd %d more...
@@ -7200,6 +7305,8 @@ gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bcool
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Cryogenic Casing to drain from!
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §a25 §7L/s to gain §a3 §7Maximum Overclocks when
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Universal Collapser §7module
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.super_coolant=Super Coolant
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.spacetime=Spacetime
 
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
@@ -7209,6 +7316,19 @@ gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
 GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
 GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
+GT5U.gui.button.foundry.modules.tooltip.select=Select Module %s
+GT5U.gui.button.foundry.modules.tooltip.unset=Shift-click to unset
+GT5U.gui.button.foundry.modules.tooltip.require_tier=Requires Tier %s Chassis
+GT5U.gui.text.foundry.modules.tooltip.empty=Empty
+
+GT5U.gui.text.foundry.modules.unset.name=Unset
+GT5U.gui.text.foundry.modules.scb.name=Superdense Casting Basins
+GT5U.gui.text.foundry.modules.uc.name=Universal Collapser
+GT5U.gui.text.foundry.modules.pvs.name=Proto-Volt Stabilizer
+GT5U.gui.text.foundry.modules.soc.name=Sentient Overclocker
+GT5U.gui.text.foundry.modules.slc.name=Streamlined Casting
+GT5U.gui.text.foundry.modules.hr.name=Heliocast Reinforcement
+GT5U.gui.text.foundry.modules.hc.name=Hypercooler
 
 GT5U.gui.text.foundry.structure=Structure Architect
 GT5U.gui.text.foundry.idea=Original Idea
@@ -7599,6 +7719,7 @@ fluid.fluid.hydrogenperoxide=Hydrogen Peroxide
 fluid.fluid.impurelifbef2=Impure Molten Salt Base
 fluid.fluid.kerosene=Kerosene
 fluid.fluid.liquidhydrogen=Liquid Hydrogen
+fluid.fluid.lithiumperoxide=Lithium Peroxide
 fluid.fluid.monomethylhydrazine=Monomethylhydrazine
 fluid.fluid.naphthalene=Naphthalene
 fluid.fluid.nitrogentetroxide=Nitrogen Tetroxide
@@ -7634,6 +7755,7 @@ fluid.leadzincsolution=Lead-Zinc Solution
 fluid.liquid_drillingfluid=Drilling Fluid
 fluid.liquid_sodium=Liquid Sodium
 fluid.liquidresin=Liquid Resin
+fluid.lithiumhydroxide=Lithium Hydroxide
 fluid.mobessence=Mob Essence
 fluid.mud.red.slurry=Red Mud Slurry
 fluid.nitrobenzene=Nitrobenzene
@@ -8384,8 +8506,8 @@ GT5U.infodata.wormhole_generator.status.inactive=Wormhole status: §7Inactive§f
 GT5U.infodata.wormhole_generator.status.no_energy=Wormhole status: §7No energy in input hatches§f
 GT5U.infodata.wormhole_generator.diameter=Wormhole diameter: §b%,d§r angstrom
 GT5U.infodata.wormhole_generator.optimal_transfer_speed=Optimal transfer speed: §b%,.0f§r EU/t
-GT5U.infodata.wormhole_generator.transferred=%s hatch (%,dA/t %s) transferred §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last %d seconds
-GT5U.infodata.wormhole_generator.received=%s hatch (%,dA/t %s) received §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last %d seconds
+GT5U.infodata.wormhole_generator.transferred=%s hatch (%,dA %s) transferred §b%,d§f EU (equivalent to %,dA) with an efficiency of %.3f%% in the last %d seconds
+GT5U.infodata.wormhole_generator.received=%s hatch (%,dA %s) received §b%,d§f EU (equivalent to %,dA) with an efficiency of %.3f%% in the last %d seconds
 GT5U.infodata.wormhole_generator.not_present=%s hatch is not present
 
 GT5U.infodata.wormhole_generator.hatch.top=Top
@@ -8945,17 +9067,17 @@ achievement.gt.blockmachines.hatch.energywirelesstunnel8.tier.13=UXV 4,194,304A 
 achievement.gt.blockmachines.hatch.energywirelesstunnel8.tier.13.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.hatch.energywirelesstunnel9.tier.13=UXV 16,777,216A Wireless Energy Hatch
 achievement.gt.blockmachines.hatch.energywirelesstunnel9.tier.13.desc=Pick up this item to see the recipe in NEI
-achievement.gt.blockmachines.hatch.energytunnel8.tier.12=UMV 4,194,304A/t Laser Target Hatch
+achievement.gt.blockmachines.hatch.energytunnel8.tier.12=UMV 4,194,304A Laser Target Hatch
 achievement.gt.blockmachines.hatch.energytunnel8.tier.12.desc=Pick up this item to see the recipe in NEI
-achievement.gt.blockmachines.hatch.energytunnel8.tier.13=UXV 4,194,304A/t Laser Target Hatch
+achievement.gt.blockmachines.hatch.energytunnel8.tier.13=UXV 4,194,304A Laser Target Hatch
 achievement.gt.blockmachines.hatch.energytunnel8.tier.13.desc=Pick up this item to see the recipe in NEI
-achievement.gt.blockmachines.hatch.energytunnel9.tier.13=UXV 16,777,216A/t Laser Target Hatch
+achievement.gt.blockmachines.hatch.energytunnel9.tier.13=UXV 16,777,216A Laser Target Hatch
 achievement.gt.blockmachines.hatch.energytunnel9.tier.13.desc=Pick up this item to see the recipe in NEI
-achievement.gt.blockmachines.hatch.dynamotunnel8.tier.12=UMV 4,194,304A/t Laser Source Hatch
+achievement.gt.blockmachines.hatch.dynamotunnel8.tier.12=UMV 4,194,304A Laser Source Hatch
 achievement.gt.blockmachines.hatch.dynamotunnel8.tier.12.desc=Pick up this item to see the recipe in NEI
-achievement.gt.blockmachines.hatch.dynamotunnel8.tier.13=UXV 4,194,304A/t Laser Source Hatch
+achievement.gt.blockmachines.hatch.dynamotunnel8.tier.13=UXV 4,194,304A Laser Source Hatch
 achievement.gt.blockmachines.hatch.dynamotunnel8.tier.13.desc=Pick up this item to see the recipe in NEI
-achievement.gt.blockmachines.hatch.dynamotunnel9.tier.13=UXV 16,777,216A/t Laser Source Hatch
+achievement.gt.blockmachines.hatch.dynamotunnel9.tier.13=UXV 16,777,216A Laser Source Hatch
 achievement.gt.blockmachines.hatch.dynamotunnel9.tier.13.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.hatch.wireless.transmitter.energized.tier.12=Energized Wireless Dynamo Hatch
 achievement.gt.blockmachines.hatch.wireless.transmitter.energized.tier.12.desc=Pick up this item to see the recipe in NEI
@@ -9774,7 +9896,7 @@ gt.item.gravitational_lens.tooltip=Portable gravitational well
 
 # Planck Circuit Items
 gt.item.calabi_yau_manifold.name=Calabi-Yau Manifold
-gt.item.calabi_yau_manifold.tooltip=Mathmatical!
+gt.item.calabi_yau_manifold.tooltip=Mathematical!
 gt.item.raw_manifold_bud.name=Raw Manifold Bud
 gt.item.raw_manifold_bud.tooltip=Needs to be shown what to do
 gt.item.blossoming_manifold_bud.name=Blossoming Manifold Bud
@@ -10021,6 +10143,9 @@ gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning
 # NEI Aliases
 gt.alias.debug=Debug
 gt.alias.mechanical_armor=Mechanical Armor
+gt.alias.fibre=Fibre
+gt.alias.vci=VCI
+gt.alias.vco=VCO
 
 # Multiblocks
 gt.blockmachines.algaefarm.controller.tier.single.name=Algae Farm
@@ -10239,7 +10364,6 @@ gt.metatool.01.file.name=File (%s)
 gt.metatool.01.file.tooltip=Hand-held electric filing device
 
 # Side names
-gt.lang.face.any=Any Side
 gt.lang.face.back=Back
 gt.lang.face.bottom=Bottom
 gt.lang.face.front=Front
@@ -10266,8 +10390,6 @@ gt.metaitem.01.32708.with.WithPunchCardData.name=With Punch Card Data
 gt.metaitem.01.32708.with.WithScannedBookData.name=With Scanned Book Data
 gt.metaitem.01.32708.with.WithScannedMapData.name=With Scanned Map Data
 gt.metaitem.01.32708.with.WritesResearchResult.name=Writes Research result
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=IT'S FREE! Place Lava on Side
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=IT'S FREE! Place Lava on Top
 
 # Chat messages
 GT5U.chat.cover.connectable=Connectable: %s
@@ -10301,3 +10423,41 @@ GT5U.nei.solar_factory.tier_required=Multi Tier required: %s
 
 # Item tooltips
 GT5U.tooltip.switch_metadata.sneak_right_click=Sneak right-click to switch mode
+
+# Material flavor text
+Material.amalgatite.flavorText=It could have been great!
+Material.antimatter.flavorText=Dirac's mistake
+Material.bedrockium.flavorText=Layer of sediment shielding a painful abyss
+Material.blackdwarfmatter.flavorText=Shadow of a dead star
+Material.computation base.flavorText=01000011 01101111 01101101 01110000 01110101 01110100 01100101
+Material.dimensionallyshiftedsuperfluid.flavorText=Hyperbolic elbow grease
+Material.dimensionallytranscendentresidue.flavorText=Sticky
+Material.eternity.flavorText=無極
+Material.hexanite.flavorText=Insanity and willpower, given form
+Material.ichorium.flavorText=Fabric of planar coalescence
+Material.infinity.flavorText=The fury of the universe in the palm of your hand
+Material.magmatter.flavorText=Magnetic monopole matter
+Material.magnetohydrodynamicallyconstrainedstarmatter.flavorText=Stabilised core of a dead star
+Material.primordialmatter.flavorText=ΩK = 0.0007 ± 0.0019
+Material.prismaticnaquadah.flavorText=Absorbs all radiation
+Material.protohalkonite.flavorText=Forged to be indestructible, probably
+Material.protomatter.flavorText=This is what they make chicken nuggets out of
+Material.quarkgluonplasma.flavorText=Matter beyond structure
+Material.rawstarmatter.flavorText=Flesh of a main-sequence star
+Material.sixphasedcopper.flavorText=Mixture of copper variants from archaic FTB mods
+Material.spacetime.flavorText=Reality itself distilled into physical form
+Material.spatialfluid.flavorText=Expands and attenuates simultaneously
+Material.temporalfluid.flavorText=Everlasting and everpresent
+Material.transcendentmetal.flavorText=Spatially incomprehensible
+Material.universium.flavorText=A tear into the space beyond space
+Material.uuamplifier.flavorText=Accelerates the Mass Fabricator
+Material.uumatter.flavorText=Universally usable matter
+Material.whitedwarfmatter.flavorText=Heart of a dead star
+
+# Material pipe names
+Material.plastic.fluidpipe.newname=Plastic
+Material.polybenzimidazole.fluidpipe.newname=PBI
+Material.polytetrafluoroethylene.fluidpipe.newname=PTFE
+Material.polyvinylchloride.itempipe.newname=PVC
+Material.redstone.fluidpipe.newname=High Pressure
+Material.wood.fluidpipe.newname=Wooden

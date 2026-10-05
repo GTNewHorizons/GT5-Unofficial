@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.powInt;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     private int casingAmount;
     private HeatingCoilLevel coilLevel;
     private static final int MAX_LENGTH = 16;
-    private static final float EU_MODIFIER = 0.98f;
+    private static final double EU_MODIFIER = 0.98D;
     private static final int PARALLELS_T1 = 16;
     private static final int PARALLELS_T2 = 32;
     private static final int SLICE_PARALLELS_T1 = 8;
@@ -303,7 +304,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (getCoilTier() < HeatingCoilLevel.UMV.getTier() + 1) {
-                errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+                errors.add(StructureErrorRegistry.EXOTIC_HATCH_INSUFFICIENT_COIL_TIER);
             }
         } else {
             checkHasEnergyHatch(errors);
@@ -363,7 +364,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     public double getEuModifier() {
-        return Math.pow(EU_MODIFIER, getCoilTier());
+        return powInt(EU_MODIFIER, getCoilTier());
     }
 
     @Override
@@ -383,8 +384,8 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         return this.coilLevel;
     }
 
-    public float euModifier(int coilTier) {
-        return (float) Math.pow(EU_MODIFIER, coilTier);
+    public double euModifier(int coilTier) {
+        return powInt(EU_MODIFIER, coilTier);
     }
 
     @Override

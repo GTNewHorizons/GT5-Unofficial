@@ -9,7 +9,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -48,7 +47,6 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
 
     private MTEHatchInput coolantInputHatch;
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int SUPERCOND_SPLITTER_OFFSET_X = 3;
     protected static final int SUPERCOND_SPLITTER_OFFSET_Y = 7;
     protected static final int SUPERCOND_SPLITTER_OFFSET_Z = 0;
@@ -180,7 +178,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
      * @return A recipe if one was found, null otherwise
      */
     @Override
-    protected GTRecipe findRecipe(ArrayList<ItemStack> inputs) {
+    protected GTRecipe findRecipe(List<ItemStack> inputs) {
         RecipeMap<?> recipeMap = this.getRecipeMap();
         return recipeMap.findRecipeQuery()
             .items(inputs.toArray(new ItemStack[] {}))

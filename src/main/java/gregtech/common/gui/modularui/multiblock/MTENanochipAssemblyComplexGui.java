@@ -673,6 +673,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             }).size(102, 14))
             .child(
                 new SliderWidget().bounds(1, 99)
+                    .scrollValues(1, 2, 5, -1)
                     .value(new DoubleValue.Dynamic(portionSync::getIntValue, val -> portionSync.setIntValue((int) val)))
                     .sliderSize(2, 14)
                     .size(102, 14)

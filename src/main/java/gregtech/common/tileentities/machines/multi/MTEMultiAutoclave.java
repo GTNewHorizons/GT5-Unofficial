@@ -292,12 +292,12 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return new MTEMultiAutoclave(this.mName);
     }
 
-    public float euModifier(int fluidPipeTier) {
-        return (float) (12 - fluidPipeTier) / 12;
+    public double euModifier(int fluidPipeTier) {
+        return (double) (12 - fluidPipeTier) / 12;
     }
 
-    public float speedBoost(int coilTier) {
-        return (float) 1 / (1 + 0.25f * coilTier);
+    public double speedBoost(int coilTier) {
+        return 1.0D / (1.0D + 0.25D * coilTier);
     }
 
     @Override
