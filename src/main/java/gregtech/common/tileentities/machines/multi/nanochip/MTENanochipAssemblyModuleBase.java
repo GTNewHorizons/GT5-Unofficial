@@ -493,11 +493,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .setFluidInputs(fluidInputs)
             .setAvailableEUt(this.availableEUt)
             .enableBatchMode(0)
-            .setRecipe(properRecipe)
+            .setRecipe(recipe)
             .setMachine(this, false, false)
             .setMaxParallel(this.getMaximumParallel())
             .setOutputCalculation(true)
-            .setCalculator(OverclockCalculator.ofNoOverclock(properRecipe))
+            .setCalculator(OverclockCalculator.ofNoOverclock(recipe))
             .setConsumption(false)
             .build();
 
