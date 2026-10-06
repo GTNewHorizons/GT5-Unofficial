@@ -59,26 +59,18 @@ public class BaseRecipeLoader {
     public void run() {
         // todo: Move those recipes in NHCore
         if (NewHorizonsCoreMod.isModLoaded()) {
-            runSafely("Assembler", new Assembler()::run);
-            runSafely("AssemblyLine", new AssemblyLine()::run);
-            runSafely("CircuitAssembler", new CircuitAssembler()::run);
-            runSafely("Crafting", new Crafting()::run);
-            runSafely("Extractor", new Extractor()::run);
-            runSafely("ResearchStationAssemblyLine", new ResearchStationAssemblyLine()::run);
-            runSafely("Godforge", new Godforge()::run);
+            new Assembler().run();
+            new AssemblyLine().run();
+            new CircuitAssembler().run();
+            new Crafting().run();
+            new Extractor().run();
+            new ResearchStationAssemblyLine().run();
+            new Godforge().run();
         } else {
             Godforge.runDevEnvironmentRecipes();
         }
-        runSafely("Godforge.addFakeUpgradeCostRecipes", Godforge::addFakeUpgradeCostRecipes);
-        runSafely("FoundryFakeModuleCostLoader", FoundryFakeModuleCostLoader::load);
+        Godforge.addFakeUpgradeCostRecipes();
+        FoundryFakeModuleCostLoader.load();
     }
 
-    /// Runs one recipe loader in isolation: a thrown exception is logged and the loaders queued after it still run.
-    private static void runSafely(String name, Runnable loader) {
-        try {
-            loader.run();
-        } catch (Throwable t) {
-            TecTech.LOGGER.error("Recipe loader " + name + " failed", t);
-        }
-    }
 }
