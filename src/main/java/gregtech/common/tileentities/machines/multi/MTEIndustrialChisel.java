@@ -25,6 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -59,6 +60,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChise
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndustrialChisel>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -87,13 +89,12 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Chisel")
             .addBulkMachineInfo(16, 3f, 0.75f)
-            .addInfo("Factory Grade Auto Chisel")
-            .addInfo("Chisel Bus: Set ghost targets to define the desired output variants")
-            .addInfo("CRIB: Uses the pattern output as the target block")
-            .addInfo("Regular Bus: Use a programmed circuit to select a variant (see NEI)")
-            .addInfo("Also supports ArchitectureCraft shapes as target blocks")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-chisel"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
             .addController("Front left, 3rd layer")
@@ -113,6 +114,7 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

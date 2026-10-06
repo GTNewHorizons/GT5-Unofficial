@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -31,6 +32,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -54,7 +56,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
@@ -62,6 +63,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCokeOven>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -102,26 +104,18 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Coke Oven, ICO")
-            .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-            .addInfo(
-                TooltipHelper.parallelText(PARALLELS_T1) + " base and +"
-                    + TooltipHelper.parallelText(SLICE_PARALLELS_T1)
-                    + " Parallels per extra slice with Heat Resistant Casing")
-            .addInfo(
-                TooltipHelper.parallelText(PARALLELS_T2) + " base and +"
-                    + TooltipHelper.parallelText(SLICE_PARALLELS_T2)
-                    + " Parallels per extra slice with Heat Proof Casing")
-            .addInfo(
-                EnumChatFormatting.AQUA + "-2% "
-                    + EnumChatFormatting.GRAY
-                    + "EU Usage per "
-                    + EnumChatFormatting.WHITE
-                    + "Heating Coil"
-                    + EnumChatFormatting.GRAY
-                    + " Tier (multiplicatively)")
-            .addInfo("Max 15 additional slices, eternal coils unlock unlimited slices")
-            .addInfo("Infinity Coils and higher allow for single multi-amp energy hatch")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-coke-oven"),
+                ImmutableMap.<String, Object>builder()
+                    .put("base_para_t1", PARALLELS_T1)
+                    .put("slice_para_t1", SLICE_PARALLELS_T1)
+                    .put("base_para_t2", PARALLELS_T2)
+                    .put("slice_para_t2", SLICE_PARALLELS_T2)
+                    .put("eu_reduction", Math.round((1 - EU_MODIFIER) * 100))
+                    .put("max_slices", MAX_LENGTH - 1)
+                    .build())
             .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(6, 36, 7, 7, 5, 5, false)
@@ -150,6 +144,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addSubChannel(GTStructureChannels.COKE_OVEN_CASING)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Nicouuuuu")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

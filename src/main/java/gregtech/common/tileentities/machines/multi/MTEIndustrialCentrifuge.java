@@ -25,12 +25,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -57,12 +59,12 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCentrifuge>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -175,22 +177,19 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Centrifuge")
-            .addInfo(
-                TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER) + " - "
-                    + TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER * 2)
-                    + " Parallels per "
-                    + TooltipHelper.coloredText("Voltage", TooltipHelper.TIER_COLOR)
-                    + " Tier")
-            .addInfo(
-                TooltipHelper.speedText((float) SPEED) + " - " + TooltipHelper.speedText((float) MAX_SPEED) + " Speed")
-            .addInfo(
-                TooltipHelper.coloredText("Parallels", TooltipHelper.PARALLEL_COLOR) + " and "
-                    + TooltipHelper.coloredText("Speed", TooltipHelper.SPEED_COLOR)
-                    + " increase as the machine gains momentum")
-            .addInfo("Momentum is lost at four times the rate it is gained")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-centrifuge"),
+                ImmutableMap.<String, Object>builder()
+                    .put("base_parallel", BASE_PARALLEL_PER_TIER)
+                    .put("max_parallel", BASE_PARALLEL_PER_TIER * 2)
+                    .put("min_speed", SPEED * 100)
+                    .put("max_speed", MAX_SPEED * 100)
+                    .put("eu_eff", formatNumber(EU_EFFICIENCY * 100))
+                    .build())
             .addStaticEuEffInfo((float) EU_EFFICIENCY)
-            .addInfo("Disable animations with a screwdriver")
+            .addInfo("Right-click the controller with a " + EnumChatFormatting.WHITE + "Screwdriver" + EnumChatFormatting.GRAY + " to disable animations")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front center, 3rd layer")
@@ -204,6 +203,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .addOutputAny("1+", "Any casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Ducked")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
