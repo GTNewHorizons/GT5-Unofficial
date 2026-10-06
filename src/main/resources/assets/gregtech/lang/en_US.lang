@@ -3189,21 +3189,23 @@ GT5U.gui.text.drone_no_outputs=No outputs
 GT5U.gui.text.drone_observe_default=Drone Camera
 GT5U.gui.text.drone_metrics_header=§3[ DRONE METRICS ]
 GT5U.gui.text.drone_cam_stream_on=§bCam Stream: §aON
-GT5U.gui.text.drone_signal_link=§bSignal Link:
+GT5U.gui.text.drone_signal_link=§bSignal Link: %s%s%%
 GT5U.gui.text.drone_recipe_on=§bRecipe: §aON
 GT5U.gui.text.drone_cam_pos=§bCam %c: §7%s
 GT5U.gui.text.drone_level_excellent=§7Level: §aEXCELLENT
-GT5U.gui.text.drone_stored_energy=Energy
-GT5U.gui.text.drone_locked_recipe=Recipe Lock
+GT5U.gui.text.drone_stored_energy=Energy: %s%s EU
+GT5U.gui.text.drone_stored_energy_max=Energy: %sMAX
+GT5U.gui.text.drone_max_parallel=Max Parallel: %s%s
+GT5U.gui.text.drone_locked_recipe=Recipe Lock:
+GT5U.gui.text.drone_locked_recipe_unnamed=ON
+GT5U.gui.text.drone_output_item=%s x%s
+GT5U.gui.text.drone_output_fluid=%s x%sL
+GT5U.gui.text.drone_progress=§fProgress: %s
 GT5U.gui.text.recipe_metrics_header=§3[ RECIPE METRICS ]
 GT5U.gui.text.recipe_none=§7No active recipe.
-GT5U.gui.text.recipe_connecting_1=§7Connecting...
-GT5U.gui.text.recipe_connecting_2=§7Synchronizing NBT
-GT5U.gui.text.recipe_connecting_3=§7recipe stream...
-GT5U.gui.text.recipe_no_conn_1=§7NO CONNECTION
-GT5U.gui.text.recipe_no_conn_2=§7Aim crosshair at
-GT5U.gui.text.recipe_no_conn_3=§7a machine to see
-GT5U.gui.text.recipe_no_conn_4=§7recipe details.
+GT5U.gui.text.recipe_connecting=§7Connecting... Synchronizing NBT recipe stream...
+GT5U.gui.text.recipe_no_conn=§7NO CONNECTION
+GT5U.gui.text.recipe_no_conn_hint=§7Aim crosshair at a machine to see recipe details.
 GT5U.gui.text.drone_zoom=ZOOM: %.1fx
 GT5U.gui.text.drone_flashlight=Flashlight ON
 GT5U.gui.text.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
@@ -3571,9 +3573,9 @@ GT5U.tooltip.nac.module.board_processor.body.4=Set an ejection threshold in the 
 GT5U.tooltip.nac.module.board_processor.body.5=Supplying a redstone signal to a Nanochip Redstone Input Hatch will automatically flush the fluid tank
 GT5U.tooltip.nac.module.board_processor.body.output_hatch=Manual and automatic flushing require an Output Hatch
 GT5U.tooltip.nac.module.board_processor.body.6=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
-GT5U.tooltip.nac.module.board_processor.body.7=§b0%%-15%%§r - §aEU Discount = 30%% - 2 * y%%
+GT5U.tooltip.nac.module.board_processor.body.7=§b0%%-15%%§r - §aDuration Modifier = 70%% + (2 * y%%)
 GT5U.tooltip.nac.module.board_processor.body.8=§b15%%-65%%§r - Default behaviour
-GT5U.tooltip.nac.module.board_processor.body.9=§b65%%-100%%§r - §4Extra EU cost = 2%% * y%%
+GT5U.tooltip.nac.module.board_processor.body.9=§b65%%-100%%§r - §4Duration Modifier = 100%% + (2%% * y%%)
 GT5U.tooltip.nac.module.cutting_chamber.name=Cutting Chamber
 GT5U.tooltip.nac.module.cutting_chamber.flavor.1=Measure once, cut twice.
 GT5U.tooltip.nac.module.cutting_chamber.action=Cuts your Wafer %s
