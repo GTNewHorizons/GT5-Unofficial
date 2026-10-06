@@ -21,8 +21,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
 /// Registers the stick-to-frame recipes for a material's `frameGt`. Materials below IV processing tier also get a
-/// hand-crafting recipe. Called once per frame material by [gregtech.loaders.shapeconsumers.ConsumerFrame], not on
-/// its prefix.
+/// hand-crafting recipe. Called once per frame material by [ShapeRecipeTable], not on its prefix.
 public class ProcessingFrame implements IOreRecipeRegistrator {
 
     public static final ProcessingFrame INSTANCE = new ProcessingFrame();

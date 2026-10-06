@@ -121,6 +121,7 @@ import gregtech.loaders.materials.LoaderGTMaterialPasses;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
 import gregtech.loaders.misc.GTBees;
+import gregtech.loaders.oreprocessing.ShapeRecipeTable;
 import gregtech.loaders.postload.BlockResistanceLoader;
 import gregtech.loaders.postload.BookAndLootLoader;
 import gregtech.loaders.postload.CraftingRecipeLoader;
@@ -144,7 +145,6 @@ import gregtech.loaders.preload.LoaderMaterialPartOredict;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
 import gregtech.loaders.preload.LoaderPipeShapeEntities;
-import gregtech.loaders.shapeconsumers.LoaderShapeConsumers;
 import gtnhlanth.loader.RecipeLoader;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
@@ -323,7 +323,7 @@ public class GTMod {
     public void materialRegistration(MaterialRegistrationEvent event) {
         MaterialSystem.init();
         OrePrefixes.copyDataFromShapes();
-        LoaderShapeConsumers.register();
+        ShapeRecipeTable.register();
         CauldronWashing.register();
     }
 

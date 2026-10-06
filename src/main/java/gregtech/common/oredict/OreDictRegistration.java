@@ -19,8 +19,8 @@ import gregtech.api.util.OreDictUtils;
 /// name names -- the `NULL` placeholder under a prefix that is not material-based.
 ///
 /// A MaterialLib item runs no prefix registrators unless its ore name is the target of an [OreDictAliases] prefix
-/// alias (`crystalCertusQuartz`, `plankWood`, ...): the shape consumers in `gregtech.loaders.shapeconsumers`
-/// process every MaterialLib item once per (shape, material), but not under an alias prefix.
+/// alias (`crystalCertusQuartz`, `plankWood`, ...): [gregtech.loaders.oreprocessing.ShapeRecipeTable] processes every
+/// MaterialLib item once per (shape, material), but not under an alias prefix.
 final class OreDictRegistration {
 
     @NotNull

@@ -10,7 +10,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import detrav.items.DetravMetaGeneratedTool01;
-import detrav.items.processing.ProcessingDetravToolProspector;
 import detrav.net.DetravNetwork;
 import detrav.proxies.CommonProxy;
 import detrav.utils.DetravCreativeTab;
@@ -34,10 +33,7 @@ public class DetravScannerMod {
     public static DetravScannerMod instance;
 
     public DetravScannerMod() {
-        GregTechAPI.sAfterGTPreload.add(() -> {
-            new DetravMetaGeneratedTool01(); // items
-            new ProcessingDetravToolProspector(); // recipes and etc
-        });
+        GregTechAPI.sAfterGTPreload.add(DetravMetaGeneratedTool01::new);
         new DetravNetwork();
     }
 

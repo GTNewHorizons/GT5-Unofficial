@@ -23,7 +23,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
 /// Registers crafting and assembler recipes for a material's machine casing and its advanced variant. Called once
-/// per casing material by [gregtech.loaders.shapeconsumers.ConsumerCasing], not on its prefix.
+/// per casing material by [ShapeRecipeTable], not on its prefix.
 public class ProcessingCasing implements IOreRecipeRegistrator {
 
     public static final ProcessingCasing INSTANCE = new ProcessingCasing();

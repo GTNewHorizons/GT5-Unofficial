@@ -1953,7 +1953,6 @@ public class OrePrefixes {
 
     public final Collection<Material> mIgnoredMaterials = new HashSet<>();
     private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<>();
-    private final List<IOreRecipeRegistrator> shapeRegistrators = new ArrayList<>();
     public ItemStack mContainerItem = null;
     public MaterialStack mSecondaryMaterial = null;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
@@ -2135,20 +2134,10 @@ public class OrePrefixes {
     }
 
     /// Attaches `registrator` to other mods' items registered in the ore dictionary under this prefix; see
-    /// [#processOre]. Registrators that generate recipes for MaterialLib materials use [#addShapeRegistrator].
+    /// [#processOre]. MaterialLib parts get their recipes from [gregtech.loaders.oreprocessing.ShapeRecipeTable].
     public boolean add(IOreRecipeRegistrator registrator) {
         if (registrator == null) return false;
         return mOreProcessing.add(registrator);
-    }
-
-    /// Runs `registrator` once for every MaterialLib material generating one of this prefix's shapes, with that
-    /// material's stack, during MaterialLib's postInit. Must be called before then.
-    public void addShapeRegistrator(IOreRecipeRegistrator registrator) {
-        shapeRegistrators.add(registrator);
-    }
-
-    public List<IOreRecipeRegistrator> getShapeRegistrators() {
-        return shapeRegistrators;
     }
 
     /// Runs every registered ore-processing registrator for a MaterialLib [Material], dispatching each
