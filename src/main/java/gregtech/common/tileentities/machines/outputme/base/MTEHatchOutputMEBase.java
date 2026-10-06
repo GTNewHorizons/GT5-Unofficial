@@ -72,7 +72,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.GTWaila;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
 import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -123,7 +122,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         String getDisableKey();
 
         @NotNull
-        String getLangPrefix();
+        String getTypePrefix();
 
         @NotNull
         String getUnitSuffix();
@@ -852,10 +851,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     }
 
     @SideOnly(Side.CLIENT)
-    private int processWailaCache(List<String> ss, String listKey, String countKey, NBTTagCompound tag, boolean showStackCount) {
+    private int processWailaCache(List<String> ss, String listKey, String countKey, NBTTagCompound tag,
+        boolean showStackCount) {
         NBTTagList stacks = tag.getTagList(listKey, 10);
         int stackCount = tag.getInteger(countKey);
-        String prefix = env.getLangPrefix();
+        String prefix = env.getTypePrefix();
 
         if (stackCount == 0) {
             ss.add(StatCollector.translateToLocal("GT5U.waila.hatch.outputme." + prefix + "_cache_empty"));

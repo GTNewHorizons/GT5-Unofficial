@@ -574,7 +574,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public @NotNull String getLangPrefix() {
+    public @NotNull String getTypePrefix() {
         return "item";
     }
 

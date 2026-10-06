@@ -319,7 +319,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
-    public @NotNull String getLangPrefix() {
+    public @NotNull String getTypePrefix() {
         return "fluid";
     }
 
