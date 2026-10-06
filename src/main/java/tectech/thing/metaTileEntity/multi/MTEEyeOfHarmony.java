@@ -68,7 +68,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -1016,11 +1015,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 16, 16, 0);
     }
 
-    private static final Fluid HYDROGEN_GAS = MaterialUtils.gas(Materials.Hydrogen, 1)
+    private static final Fluid HYDROGEN_GAS = MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1)
         .getFluid();
-    private static final Fluid HELIUM_GAS = MaterialUtils.gas(Materials.Helium, 1)
+    private static final Fluid HELIUM_GAS = MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1)
         .getFluid();
-    private static final Fluid RAW_STAR_MATTER = MaterialUtils.fluidOf(Materials.RawStarMatter);
+    private static final Fluid RAW_STAR_MATTER = MaterialLibAPI
+        .getFluid(Materials.RawStarMatter, FluidShapes.fluidLiquid);
 
     private final Map<Fluid, Long> validFluidMap = new HashMap<>() {
 

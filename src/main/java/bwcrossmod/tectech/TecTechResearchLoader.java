@@ -27,7 +27,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialUtils;
 import tectech.recipe.TTRecipeAdder;
 
 public class TecTechResearchLoader {
@@ -44,7 +43,8 @@ public class TecTechResearchLoader {
                 MaterialLibAPI.getStack(Materials.BlackPlutonium, Shapes.plate, 3), ItemList.Electric_Motor_ZPM.get(9L),
                 ItemList.Sensor_ZPM.get(9L), ItemList.Field_Generator_ZPM.get(9L),
                 MaterialLibAPI.getStack(Materials.BlackPlutonium, Shapes.screw, 36) },
-            new FluidStack[] { MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS),
+            new FluidStack[] {
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 20_000) },
             ItemRegistry.voidminer[1].copy(),
             2 * MINUTES,
@@ -62,7 +62,8 @@ public class TecTechResearchLoader {
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 3), ItemList.Electric_Motor_UV.get(9L),
                 ItemList.Sensor_UV.get(9L), ItemList.Field_Generator_UV.get(9L),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, 36) },
-            new FluidStack[] { MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS),
+            new FluidStack[] {
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, 20_000) },
             ItemRegistry.voidminer[2].copy(),
             2 * MINUTES,
@@ -81,7 +82,8 @@ public class TecTechResearchLoader {
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.ring, 64),
                 MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt01, 64),
                 ItemList.Electric_Piston_UV.get(64), },
-            new FluidStack[] { MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS),
+            new FluidStack[] {
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 10 * INGOTS) },
             ItemList.ElectricImplosionCompressor.get(1L),

@@ -38,7 +38,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -71,7 +70,9 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
 
     static {
         excitedLiquid = Arrays.asList(
-            Pair.of(MaterialUtils.fluid(Materials.spatialFluid, 20L), ExcitedLiquidCoe[0]),
+            Pair.of(
+                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 20),
+                ExcitedLiquidCoe[0]),
             Pair.of(
                 MaterialLibAPI.getFluidStack(Materials.AtomicSeparationCatalyst, FluidShapes.fluidMolten, 20),
                 ExcitedLiquidCoe[1]),
@@ -83,7 +84,9 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
                 MaterialLibAPI.getFluidStack(Materials.Caesium, FluidShapes.fluidMolten, 180),
                 ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
-            Pair.of(MaterialUtils.fluid(Materials.temporalFluid, 20L), CoolantEfficiency[0]),
+            Pair.of(
+                MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, 20),
+                CoolantEfficiency[0]),
             Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
             Pair.of(
                 MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 1_000),

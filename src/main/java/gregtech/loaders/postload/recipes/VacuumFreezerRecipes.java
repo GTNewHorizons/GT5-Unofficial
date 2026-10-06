@@ -23,7 +23,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -240,8 +239,8 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .fluidInputs(MaterialUtils.gas(Materials.Air, 2_000))
-                .fluidOutputs(MaterialUtils.fluid(Materials.LiquidAir, 1_000))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Air, FluidShapes.fluidGas, 2_000))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.LiquidAir, FluidShapes.fluidLiquid, 1_000))
                 .duration(1 * SECONDS + 8 * TICKS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(vacuumFreezerRecipes);
@@ -305,7 +304,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.plasma(Materials.Force, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Force, FluidShapes.fluidPlasma, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Force, FluidShapes.fluidMolten, 1_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -320,7 +319,10 @@ public class VacuumFreezerRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, shape, multiplier))
             .itemOutputs(MaterialLibAPI.getStack(Materials.protohalkonite, shape, multiplier))
             .fluidInputs(
-                MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, (long) partFraction * multiplier / 4),
+                MaterialLibAPI.getFluidStack(
+                    Materials.dimensionallyshiftedsuperfluid,
+                    FluidShapes.fluidLiquid,
+                    partFraction * multiplier / 4),
                 MaterialLibAPI.getFluidStack(
                     Materials.SuperCoolant,
                     FluidShapes.fluidLiquid,

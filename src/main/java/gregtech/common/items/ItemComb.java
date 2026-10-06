@@ -1260,14 +1260,15 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, fluidAmount);
                 case 2 ->
                     /* MV */
-                    MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, fluidAmount);
+                    MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, fluidAmount);
                 case 3 ->
                     /* HV */
-                    MaterialUtils.fluid(Materials.PhosphoricAcidGT5U, fluidAmount);
+                    MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, fluidAmount);
                 case 4 ->
                     /* EV */
-                    MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, this.getFluidAmount());
-                default -> MaterialUtils.fluid(Materials.phtalicacid, fluidAmount);
+                    MaterialLibAPI
+                        .getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, this.getFluidAmount());
+                default -> MaterialLibAPI.getFluidStack(Materials.phtalicacid, FluidShapes.fluidLiquid, fluidAmount);
             };
         }
 
@@ -1422,7 +1423,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 new ItemStack(ModItems.manaCookie, 1))
             .outputChances(35 * 100, 15 * 100, 15 * 100, 15 * 100, 15 * 100, 5 * 100, 2 * 100, 1 * 10)
             .duration(20 * SECONDS)
-            .fluidInputs(MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 250L))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 250))
             .eut(TierEU.RECIPE_EV)
             .addTo(sifterRecipes);
     }

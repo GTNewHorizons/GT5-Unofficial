@@ -22,7 +22,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -34,7 +33,7 @@ public class RecipesRareEarthProcessing {
         // Brine Check and assignment
         FluidStack mBrine = FluidRegistry.getFluidStack("brine", 1_000);
         if (mBrine == null) {
-            mBrine = MaterialUtils.anyFluid(Materials.Brine, 1_000);
+            mBrine = MaterialLibAPI.getFluidStack(Materials.Brine, FluidShapes.fluidLiquid, 1_000);
         }
 
         // Add Process for creating Brine
@@ -72,8 +71,10 @@ public class RecipesRareEarthProcessing {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.Laser_Lens_WoodsGlass.get(0))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.HydrogenChlorideMix, 4_000))
-            .fluidOutputs(MaterialUtils.fluid(Materials.IndustrialStrengthHydrogenChloride, 4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrogenChlorideMix, FluidShapes.fluidLiquid, 4_000))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials.IndustrialStrengthHydrogenChloride, FluidShapes.fluidLiquid, 4_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(laserEngraverRecipes);
@@ -98,7 +99,9 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.RareEarthII, Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials.RareEarthII, Shapes.crushed, 2))
             .outputChances(10000, 9000, 8000)
-            .fluidInputs(MaterialUtils.fluid(Materials.IndustrialStrengthHydrogenChloride, 1_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials.IndustrialStrengthHydrogenChloride, FluidShapes.fluidLiquid, 1_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalBathRecipes);
@@ -110,7 +113,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.RareEarthII, Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials.RareEarthII, Shapes.crushed, 2))
             .outputChances(9000, 8000, 7000)
-            .fluidInputs(MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalBathRecipes);
@@ -123,7 +126,9 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.RareEarthIII, Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials.RareEarthIII, Shapes.crushed, 2))
             .outputChances(10000, 9000, 8000)
-            .fluidInputs(MaterialUtils.fluid(Materials.IndustrialStrengthHydrofluoricAcid, 1_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials.IndustrialStrengthHydrofluoricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);
@@ -135,7 +140,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.RareEarthIII, Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials.RareEarthIII, Shapes.crushed, 2))
             .outputChances(9000, 8000, 7000)
-            .fluidInputs(MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);

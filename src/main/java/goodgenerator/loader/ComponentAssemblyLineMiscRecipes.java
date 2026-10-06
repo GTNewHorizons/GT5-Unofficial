@@ -37,7 +37,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.recipe.Scanning;
 import tectech.recipe.TTRecipeAdder;
 
@@ -77,7 +76,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(7, 20),
                 getALCircuit(6, 24))
             .fluidInputs(
-                MaterialUtils.anyFluid(Materials.Indalloy140, 12 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 12 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, 16 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 5_000))
             .itemOutputs(Component_Assembly_Line.get(1))
@@ -218,8 +217,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t, 8),
                 getALCircuit(t - 1, 16))
             .fluidInputs(
-                MaterialUtils.anyFluid(Materials.Indalloy140, t * 4 * INGOTS),
-                MaterialUtils.anyFluid(Materials.Zeron100, t * 2 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, t * 4 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Zeron100, FluidShapes.fluidMolten, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_LuV.get(1))
@@ -246,8 +245,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t, 8),
                 getALCircuit(t - 1, 16))
             .fluidInputs(
-                MaterialUtils.anyFluid(Materials.Indalloy140, t * 4 * INGOTS),
-                MaterialUtils.anyFluid(Materials.Pikyonium64B, t * 2 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, t * 4 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Pikyonium64B, FluidShapes.fluidMolten, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_ZPM.get(1))
@@ -275,8 +274,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t, 8),
                 getALCircuit(t - 1, 16))
             .fluidInputs(
-                MaterialUtils.anyFluid(Materials.Indalloy140, t * 4 * INGOTS),
-                MaterialUtils.anyFluid(Materials.AdvancedNitinol, t * 2 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, t * 4 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.AdvancedNitinol, FluidShapes.fluidMolten, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_UV.get(1))
@@ -303,8 +302,9 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.gearGtSmall, 16),
                 MaterialLibAPI.getStack(Materials.Bedrockium, TEBlockShapes.cableGt04, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { MaterialUtils.anyFluid(Materials.Indalloy140, t * 4 * INGOTS),
-                MaterialUtils.anyFluid(Materials.AbyssalAlloy, t * 2 * INGOTS),
+            new FluidStack[] {
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, t * 4 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.AbyssalAlloy, FluidShapes.fluidMolten, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)) },
             Compassline_Casing_UHV.get(1),
@@ -330,8 +330,10 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.gearGtSmall, 16),
                 MaterialLibAPI.getStack(Materials.Draconium, TEBlockShapes.cableGt04, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, t * 4 * INGOTS),
-                MaterialUtils.anyFluid(Materials.Quantum, t * 2 * INGOTS), StackUtils.getTieredFluid(t, t * INGOTS),
+            new FluidStack[] {
+                MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, t * 4 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Quantum, FluidShapes.fluidMolten, t * 2 * INGOTS),
+                StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)) },
             Compassline_Casing_UEV.get(1),
             50 * SECONDS,
@@ -356,9 +358,12 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.gearGtSmall, 16),
                 MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.cableGt04, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, t * 4 * INGOTS),
-                MaterialUtils.anyFluid(Materials.Hypogen, t * 2 * INGOTS), StackUtils.getTieredFluid(t, t * INGOTS),
-                MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, 1000 * (t - 2)) },
+            new FluidStack[] {
+                MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, t * 4 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, t * 2 * INGOTS),
+                StackUtils.getTieredFluid(t, t * INGOTS),
+                MaterialLibAPI
+                    .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1000 * (t - 2)) },
             Compassline_Casing_UIV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UEV);

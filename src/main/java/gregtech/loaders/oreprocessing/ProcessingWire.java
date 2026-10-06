@@ -301,7 +301,11 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(stack)
                             .circuit(24)
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
-                            .fluidInputs(MaterialUtils.molten(Materials.Silicone, (long) costMultiplier * HALF_INGOTS))
+                            .fluidInputs(
+                                MaterialLibAPI.getFluidStack(
+                                    Materials.Silicone,
+                                    FluidShapes.fluidMolten,
+                                    costMultiplier * HALF_INGOTS))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cableRecipes);
@@ -334,7 +338,11 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(stack)
                             .circuit(24)
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
-                            .fluidInputs(MaterialUtils.molten(Materials.Silicone, (long) costMultiplier * HALF_INGOTS))
+                            .fluidInputs(
+                                MaterialLibAPI.getFluidStack(
+                                    Materials.Silicone,
+                                    FluidShapes.fluidMolten,
+                                    costMultiplier * HALF_INGOTS))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(assemblerRecipes);
@@ -459,7 +467,9 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemInputs(stack)
                     .circuit(24)
                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
-                    .fluidInputs(MaterialUtils.molten(Materials.Silicone, costMultiplier * HALF_INGOTS))
+                    .fluidInputs(
+                        MaterialLibAPI
+                            .getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ULV)
                     .addTo(cableRecipes);
@@ -492,7 +502,9 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemInputs(stack)
                     .circuit(24)
                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
-                    .fluidInputs(MaterialUtils.molten(Materials.Silicone, costMultiplier * HALF_INGOTS))
+                    .fluidInputs(
+                        MaterialLibAPI
+                            .getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ULV)
                     .addTo(assemblerRecipes);
@@ -561,7 +573,9 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                         MaterialLibAPI.getStack(Materials.PolyphenyleneSulfide, Shapes.foil, costMultiplier))
                     .circuit(24)
                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
-                    .fluidInputs(MaterialUtils.molten(Materials.Silicone, costMultiplier * HALF_INGOTS))
+                    .fluidInputs(
+                        MaterialLibAPI
+                            .getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(cableRecipes);
@@ -572,7 +586,9 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                         MaterialLibAPI.getStack(Materials.PolyphenyleneSulfide, Shapes.foil, costMultiplier))
                     .circuit(24)
                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
-                    .fluidInputs(MaterialUtils.molten(Materials.Silicone, costMultiplier * HALF_INGOTS))
+                    .fluidInputs(
+                        MaterialLibAPI
+                            .getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);

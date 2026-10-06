@@ -69,7 +69,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -138,7 +137,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.ChromaticGlass, 16 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ChromaticGlass, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);

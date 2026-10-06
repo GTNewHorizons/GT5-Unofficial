@@ -513,7 +513,7 @@ public class GTRecipeBuilder {
      *             .itemOutputs(ItemList.DebugEnergyHatch.get(1))
      *             .fluidInputs(
      *                      // Works with normal FluidStack inputs as well
-     *                      MaterialUtils.fluid(Materials.SulfuricAcid, 1_000),
+     *                      MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000),
      *                      new SubstituteFluidStack(
      *                          // Each fluid has its own amount
      *                          GTUtility.getLava(1_000),

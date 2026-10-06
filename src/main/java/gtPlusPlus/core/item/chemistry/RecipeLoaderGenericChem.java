@@ -25,7 +25,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
@@ -165,7 +164,9 @@ public class RecipeLoaderGenericChem {
                 MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidPlasma, 18_000),
                 MaterialLibAPI.getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, 18_000),
                 new FluidStack(TFFluids.fluidCryotheum, 4_000))
-            .fluidOutputs(MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 4 * STACKS + 24 * INGOTS))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 4 * STACKS + 24 * INGOTS))
             .duration(13 * MINUTES + 20 * SECONDS)
             .eut(3842160)
             .metadata(CHEMPLANT_CASING_TIER, 7)
@@ -338,7 +339,8 @@ public class RecipeLoaderGenericChem {
                 MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, 2))
             .circuit(12)
             .itemOutputs(GregtechItemList.SolidAcidCatalyst.get(5))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.SolidAcidCatalystMixture, 1_000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.SolidAcidCatalystMixture, FluidShapes.fluidLiquid, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

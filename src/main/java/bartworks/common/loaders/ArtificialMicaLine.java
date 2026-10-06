@@ -20,7 +20,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -42,7 +41,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1), GTUtility.getEmptyCell(4))
             .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 4))
-            .fluidInputs(MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 6_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 6_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -63,7 +62,7 @@ public class ArtificialMicaLine {
             .itemInputs(MaterialLibAPI.getStack(Materials.RockSalt, Shapes.dust, 4))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Potassiumfluorosilicate, Shapes.dust, 9))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 2_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);

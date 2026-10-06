@@ -45,6 +45,7 @@ import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -52,6 +53,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -92,8 +94,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     protected int mMaxParallel = 0;
     private boolean mFluidMode = false, doFermium = false, doNeptunium = false;
     private boolean renderDisabled = false;
-    private static final Fluid mNeptunium = MaterialUtils.plasmaOf(Materials.Neptunium);
-    private static final Fluid mFermium = MaterialUtils.plasmaOf(Materials.Fermium);
+    private static final Fluid mNeptunium = MaterialLibAPI.getFluid(Materials.Neptunium, FluidShapes.fluidPlasma);
+    private static final Fluid mFermium = MaterialLibAPI.getFluid(Materials.Fermium, FluidShapes.fluidPlasma);
     private static final String MAIN_PIECE = "main";
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHousings = new ArrayList<>();
     // spotless:off

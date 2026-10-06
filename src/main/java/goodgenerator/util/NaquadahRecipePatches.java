@@ -16,7 +16,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -61,14 +60,14 @@ public final class NaquadahRecipePatches {
 
     private static FluidStack replaceNaquadahOutput(FluidStack output) {
         if (output == null) return null;
-        if (output.isFluidEqual(MaterialUtils.molten(Materials.Naquadah, 1))) {
+        if (output.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, 1))) {
             return MaterialLibAPI.getFluidStack(Materials.NaquadahGoo, FluidShapes.fluidLiquid, output.amount * 2);
         }
-        if (output.isFluidEqual(MaterialUtils.molten(Materials.NaquadahEnriched, 1))) {
+        if (output.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.NaquadahEnriched, FluidShapes.fluidMolten, 1))) {
             return MaterialLibAPI
                 .getFluidStack(Materials.EnrichedNaquadahGoo, FluidShapes.fluidLiquid, output.amount * 2);
         }
-        if (output.isFluidEqual(MaterialUtils.molten(Materials.Naquadria, 1))) {
+        if (output.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, 1))) {
             return MaterialLibAPI.getFluidStack(Materials.NaquadriaGoo, FluidShapes.fluidLiquid, output.amount * 2);
         }
         return null;

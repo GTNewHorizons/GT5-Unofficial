@@ -38,7 +38,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -4020,7 +4019,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
                 .itemOutputs(MaterialLibAPI.getStack(Materials.Americium, Shapes.crushedPurified, 8))
-                .fluidInputs(MaterialUtils.plasma(Materials.Bromine, 29))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Bromine, FluidShapes.fluidPlasma, 29))
                 .duration(3 * SECONDS + 15 * TICKS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(UniversalChemical);
@@ -4062,7 +4061,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
                 .itemOutputs(MaterialLibAPI.getStack(Materials.Europium, Shapes.crushedPurified, 8))
-                .fluidInputs(MaterialUtils.plasma(Materials.Bromine, 6))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Bromine, FluidShapes.fluidPlasma, 6))
                 .duration(1 * SECONDS + 17 * TICKS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(UniversalChemical);
@@ -4078,7 +4077,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.INDIUM, 4))
                 .itemOutputs(MaterialLibAPI.getStack(Materials.Indium, Shapes.crushedPurified, 4))
-                .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 293))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 293))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(UniversalChemical);
@@ -4153,30 +4152,30 @@ public class ChemicalRecipes implements Runnable {
 
     public void polymerizationRecipes() {
         addDefaultPolymerizationRecipes(
-            MaterialUtils.fluidOf(Materials.VinylAcetate),
-            MaterialUtils.fluidOf(Materials.PolyvinylAcetate));
+            MaterialLibAPI.getFluid(Materials.VinylAcetate, FluidShapes.fluidLiquid),
+            MaterialLibAPI.getFluid(Materials.PolyvinylAcetate, FluidShapes.fluidLiquid));
 
         addDefaultPolymerizationRecipes(
-            MaterialUtils.gas(Materials.Ethylene, 1)
+            MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1)
                 .getFluid(),
-            MaterialUtils.molten(Materials.Plastic, 1)
+            MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1)
                 .getFluid());
 
         addDefaultPolymerizationRecipes(
-            MaterialUtils.gas(Materials.Tetrafluoroethylene, 1)
+            MaterialLibAPI.getFluidStack(Materials.Tetrafluoroethylene, FluidShapes.fluidGas, 1)
                 .getFluid(),
-            MaterialUtils.molten(Materials.Polytetrafluoroethylene, 1)
+            MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1)
                 .getFluid());
 
         addDefaultPolymerizationRecipes(
-            MaterialUtils.gas(Materials.VinylChloride, 1)
+            MaterialLibAPI.getFluidStack(Materials.VinylChloride, FluidShapes.fluidGas, 1)
                 .getFluid(),
-            MaterialUtils.molten(Materials.PolyvinylChloride, 1)
+            MaterialLibAPI.getFluidStack(Materials.PolyvinylChloride, FluidShapes.fluidMolten, 1)
                 .getFluid());
 
         addDefaultPolymerizationRecipes(
-            MaterialUtils.fluidOf(Materials.Styrene),
-            MaterialUtils.molten(Materials.Polystyrene, 1)
+            MaterialLibAPI.getFluid(Materials.Styrene, FluidShapes.fluidLiquid),
+            MaterialLibAPI.getFluidStack(Materials.Polystyrene, FluidShapes.fluidMolten, 1)
                 .getFluid());
     }
 

@@ -249,8 +249,9 @@ public class MTEExoticModule extends MTEBaseModule {
         numberOfFluids = 2;
         int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
         int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
-        randomizedFluidInput = new FluidStack[] { MaterialUtils.fluid(Materials.temporalFluid, timeAmount * 1000L),
-            MaterialUtils.fluid(Materials.spatialFluid, spaceAmount * 1000L) };
+        randomizedFluidInput = new FluidStack[] {
+            MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, timeAmount * 1000),
+            MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, spaceAmount * 1000) };
 
         return new GTRecipe(
             null,
@@ -262,9 +263,10 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils.addAll(
                 convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount),
-                MaterialUtils.fluid(Materials.temporalFluid, timeAmount),
-                MaterialUtils.fluid(Materials.spatialFluid, spaceAmount)),
-            new FluidStack[] { MaterialUtils.molten(Materials.Magmatter, 576 * actualParallel) },
+                MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, timeAmount),
+                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, spaceAmount)),
+            new FluidStack[] { MaterialLibAPI
+                .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, (int) (576 * actualParallel)) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -451,7 +453,8 @@ public class MTEExoticModule extends MTEBaseModule {
 
             FluidStack outputFluid;
             if (magmatterMode) {
-                outputFluid = MaterialUtils.molten(Materials.Magmatter, actualParallel * 4 * INGOTS);
+                outputFluid = MaterialLibAPI
+                    .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, (int) (actualParallel * 4 * INGOTS));
             } else {
                 outputFluid = MaterialLibAPI
                     .getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, (int) (1000 * actualParallel));

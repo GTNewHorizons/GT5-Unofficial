@@ -14,7 +14,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.MaterialUtils;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FusionReactorRecipes implements Runnable {
@@ -362,7 +361,7 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Cobalt, FluidShapes.fluidMolten, INGOTS),
-                MaterialUtils.anyFluid(Materials.Neon, 1 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 1 * INGOTS))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Rubidium, FluidShapes.fluidMolten, INGOTS))
             .duration(1 * SECONDS + 4 * TICKS)
             .eut(98304)

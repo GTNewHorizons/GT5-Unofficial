@@ -13,7 +13,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -44,7 +43,8 @@ public class SpacePumpingRecipes {
             Pair.of(3, 2),
             MaterialLibAPI.getFluidStack(Materials.OilExtraHeavy, FluidShapes.fluidLiquid, 1_400_000));
         RECIPES.put(Pair.of(3, 3), GTUtility.getLava(1_800_000));
-        RECIPES.put(Pair.of(3, 4), MaterialUtils.gas(Materials.NatruralGas, 1_400_000));
+        RECIPES
+            .put(Pair.of(3, 4), MaterialLibAPI.getFluidStack(Materials.NatruralGas, FluidShapes.fluidGas, 1_400_000));
 
         // T4
         RECIPES
@@ -63,7 +63,7 @@ public class SpacePumpingRecipes {
         RECIPES.put(
             Pair.of(5, 1),
             MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 4_480_000));
-        RECIPES.put(Pair.of(5, 2), MaterialUtils.gas(Materials.Helium3, 2_800_000));
+        RECIPES.put(Pair.of(5, 2), MaterialLibAPI.getFluidStack(Materials.Helium3, FluidShapes.fluidGas, 2_800_000));
         RECIPES
             .put(Pair.of(5, 3), MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, 2_800_000));
         RECIPES.put(Pair.of(5, 4), MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1_400_000));
@@ -84,7 +84,9 @@ public class SpacePumpingRecipes {
         RECIPES.put(Pair.of(6, 5), MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_792_000));
 
         // T7
-        RECIPES.put(Pair.of(7, 1), MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 672_000));
+        RECIPES.put(
+            Pair.of(7, 1),
+            MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 672_000));
         RECIPES.put(Pair.of(7, 2), MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 1_792_000));
         RECIPES.put(Pair.of(7, 3), MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 1_792_000));
         RECIPES.put(Pair.of(7, 4), MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_792_000));

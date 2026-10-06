@@ -21,6 +21,7 @@ import biomesoplenty.api.content.BOPCBlocks;
 import biomesoplenty.api.content.BOPCItems;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -225,7 +226,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials.Ardite, Shapes.dust, 32),
                 MaterialLibAPI.getStack(Materials.Cobalt, Shapes.dust, 32))
             .fluidInputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 3_000))
-            .fluidOutputs(MaterialUtils.fluid(Materials.poornetherwaste, 16_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.poornetherwaste, FluidShapes.fluidLiquid, 16_000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 7200)
             .duration(1 * MINUTES)
@@ -394,7 +395,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials.Netherrack, Shapes.milled, 64),
                 MaterialLibAPI.getStack(Materials.Netherrack, Shapes.milled, 64),
                 MaterialLibAPI.getStack(Materials.Netherrack, Shapes.milled, 64))
-            .fluidInputs(MaterialUtils.fluid(Materials.nefariousoil, 8_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.nefariousoil, FluidShapes.fluidLiquid, 8_000))
             .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 8_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)

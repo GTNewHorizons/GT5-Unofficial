@@ -31,7 +31,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.Particle;
@@ -110,7 +109,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.anyFluid(Materials.AdvancedNitinol, 9216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AdvancedNitinol, FluidShapes.fluidMolten, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UHV.get(4), ItemList.Field_Generator_UV.get(4))
             .itemOutputs(ItemList.ATLASCasing.get(4))
             .metadata(
@@ -126,7 +125,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.anyFluid(Materials.AbyssalAlloy, 9216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AbyssalAlloy, FluidShapes.fluidMolten, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UEV.get(4), ItemList.Field_Generator_UHV.get(4))
             .itemOutputs(ItemList.ALICECasing.get(4))
             .metadata(
@@ -142,7 +141,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Quantum, 9216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Quantum, FluidShapes.fluidMolten, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UIV.get(4), ItemList.Field_Generator_UEV.get(4))
             .itemOutputs(ItemList.LHCbCasing.get(4))
             .metadata(

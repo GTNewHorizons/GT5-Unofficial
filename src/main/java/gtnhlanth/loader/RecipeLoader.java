@@ -567,8 +567,9 @@ public class RecipeLoader {
          * GT_Values.RA.stdBuilder().itemInputs(MaterialLibAPI.getStack(Materials.Silicon,
          * Shapes.foil, 1))
          * .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SiliconTetrachloride,
-         * FluidShapes.fluidLiquid, 3_000), MaterialUtils.fluid(Materials.Ammonia, 4_000))
-         * .fluidOutputs(MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 12_000))
+         * FluidShapes.fluidLiquid, 3_000), MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas,
+         * 4_000))
+         * .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 12_000))
          * .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconNitride, Shapes.plate, 1))
          * .duration(GTRecipeBuilder.SECONDS *
          * 30) .eut(TierEU.RECIPE_EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
@@ -1015,7 +1016,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Arsenic, Shapes.dust, 8),
                 MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.Cadmium, Shapes.dust, 2))
-            .fluidOutputs(MaterialUtils.anyFluid(Materials.Bromine, 200))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Bromine, FluidShapes.fluidLiquid, 200))
             .metadata(CentrifugeRecipeKey.INSTANCE, true)
             .eut(TierEU.RECIPE_UEV)
             .duration(3 * SECONDS)

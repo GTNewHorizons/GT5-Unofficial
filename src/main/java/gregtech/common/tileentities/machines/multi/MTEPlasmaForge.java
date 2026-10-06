@@ -930,7 +930,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
         // Increase present catalyst and residue by calculated amount
         for (FluidStack outputFluid : recipe.mFluidOutputs) {
-            if (outputFluid.isFluidEqual(MaterialUtils.fluid(Materials.DimensionallyTranscendentResidue, 1))) {
+            if (outputFluid.isFluidEqual(
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 1))) {
                 outputFluid.amount += (int) (extraCatalystNeeded * fuelEnergy.getRight());
             }
         }

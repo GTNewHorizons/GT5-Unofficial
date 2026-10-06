@@ -134,11 +134,21 @@ public class GTPostLoad {
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
                 .addTo(cannerRecipes);
-            if (GTUtility.areFluidsEqual(MaterialUtils.molten(Materials.Ruthenium, 1), tData.fluid)
-                || GTUtility.areFluidsEqual(MaterialUtils.molten(Materials.Rhodium, 1), tData.fluid)
-                || GTUtility.areFluidsEqual(MaterialUtils.molten(Materials.Osmium, 1), tData.fluid)
-                || GTUtility.areFluidsEqual(MaterialUtils.molten(Materials.Iridium, 1), tData.fluid)
-                || GTUtility.areFluidsEqual(MaterialUtils.molten(Materials.Platinum, 1), tData.fluid)) {
+            if (GTUtility.areFluidsEqual(
+                MaterialLibAPI.getFluidStack(Materials.Ruthenium, FluidShapes.fluidMolten, 1),
+                tData.fluid)
+                || GTUtility.areFluidsEqual(
+                    MaterialLibAPI.getFluidStack(Materials.Rhodium, FluidShapes.fluidMolten, 1),
+                    tData.fluid)
+                || GTUtility.areFluidsEqual(
+                    MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 1),
+                    tData.fluid)
+                || GTUtility.areFluidsEqual(
+                    MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 1),
+                    tData.fluid)
+                || GTUtility.areFluidsEqual(
+                    MaterialLibAPI.getFluidStack(Materials.Platinum, FluidShapes.fluidMolten, 1),
+                    tData.fluid)) {
                 continue;
             }
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
@@ -269,7 +279,7 @@ public class GTPostLoad {
         if (!MTEMassfabricator.sRequiresUUA) {
 
             MTEMassfabricator.nonUUARecipe = GTValues.RA.stdBuilder()
-                .fluidOutputs(MaterialUtils.fluid(Materials.UUMatter, 1L))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1))
                 .duration(MTEMassfabricator.sDurationMultiplier)
                 .eut(MTEMassfabricator.BASE_EUT)
                 .ignoreCollision()
@@ -288,7 +298,7 @@ public class GTPostLoad {
                     Materials.UUAmplifier,
                     FluidShapes.fluidLiquid,
                     (int) (MTEMassfabricator.sUUAperUUM)))
-            .fluidOutputs(MaterialUtils.fluid(Materials.UUMatter, 1L))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1))
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
             .eut(MTEMassfabricator.BASE_EUT)
             .ignoreCollision()

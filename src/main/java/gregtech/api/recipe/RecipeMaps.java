@@ -65,7 +65,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AlgaePondFrontend;
@@ -1472,7 +1471,10 @@ public final class RecipeMaps {
                 .build()
                 .ifPresent(ret::add);
             b.fluidInputs(
-                MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, clamp(aDuration * aEUt / 4000, 1, 10)))
+                MaterialLibAPI.getFluidStack(
+                    Materials.dimensionallyshiftedsuperfluid,
+                    FluidShapes.fluidLiquid,
+                    clamp(aDuration * aEUt / 4000, 1, 10)))
                 .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);

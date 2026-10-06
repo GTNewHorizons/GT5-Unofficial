@@ -23,7 +23,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -39,7 +38,8 @@ public class PlasmaForgeRecipes implements Runnable {
         {
             // Dimensionally Shifted Superfluid
 
-            Fluid celestialTungstenPlasma = MaterialUtils.plasmaOf(Materials.CelestialTungsten);
+            Fluid celestialTungstenPlasma = MaterialLibAPI
+                .getFluid(Materials.CelestialTungsten, FluidShapes.fluidPlasma);
 
             // Tier 5
             // Best recipe, unlocks with Stellar Catalyst.
@@ -166,11 +166,13 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Avaritia.ID, "Singularity", 8, 5))
                 .fluidInputs(
-                    MaterialUtils.anyFluid(Materials.CelestialTungsten, 1 * STACKS + 8 * INGOTS),
-                    MaterialUtils.anyFluid(Materials.AstralTitanium, 4 * STACKS + 32 * INGOTS),
-                    MaterialUtils.anyFluid(Materials.Hypogen, 36 * INGOTS),
-                    MaterialUtils.anyFluid(Materials.ChromaticGlass, 9 * STACKS),
-                    MaterialUtils.anyFluid(Materials.Rhugnor, 18 * INGOTS),
+                    MaterialLibAPI
+                        .getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 1 * STACKS + 8 * INGOTS),
+                    MaterialLibAPI
+                        .getFluidStack(Materials.AstralTitanium, FluidShapes.fluidMolten, 4 * STACKS + 32 * INGOTS),
+                    MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 36 * INGOTS),
+                    MaterialLibAPI.getFluidStack(Materials.ChromaticGlass, FluidShapes.fluidMolten, 9 * STACKS),
+                    MaterialLibAPI.getFluidStack(Materials.Rhugnor, FluidShapes.fluidMolten, 18 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Mellion, FluidShapes.fluidMolten, 1 * STACKS + 8 * INGOTS))
                 .fluidOutputs(
                     MaterialLibAPI

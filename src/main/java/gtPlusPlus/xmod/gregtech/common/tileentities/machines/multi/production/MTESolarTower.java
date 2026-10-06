@@ -35,17 +35,18 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -553,10 +554,10 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
         if (this.mEfficiency == this.getMaxEfficiency(null) && this.mHeatLevel >= HEAT_CONVERSION_THRESHOLD) {
             if (mColdSalt == null) {
-                mColdSalt = MaterialUtils.anyFluidOf(Materials.SolarSaltCold);
+                mColdSalt = MaterialLibAPI.getFluid(Materials.SolarSaltCold, FluidShapes.fluidLiquid);
             }
             if (mHotSalt == null) {
-                mHotSalt = MaterialUtils.anyFluidOf(Materials.SolarSaltHot);
+                mHotSalt = MaterialLibAPI.getFluid(Materials.SolarSaltHot, FluidShapes.fluidLiquid);
             }
             ArrayList<FluidStack> aFluids = this.getStoredFluids();
             for (FluidStack aFluid : aFluids) {

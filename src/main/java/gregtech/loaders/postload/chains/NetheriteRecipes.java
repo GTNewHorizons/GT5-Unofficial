@@ -54,7 +54,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -97,7 +96,8 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Leaching
                 .itemInputs(getModItem(Botania.ID, "manaResource", 24, 10, missing))
                 .fluidInputs(
-                    MaterialUtils.fluid(Materials.IndustrialStrengthHydrofluoricAcid, 4000),
+                    MaterialLibAPI
+                        .getFluidStack(Materials.IndustrialStrengthHydrofluoricAcid, FluidShapes.fluidLiquid, 4000),
                     new FluidStack(GTPPFluids.HydrogenPeroxide, 4000))
                 .itemOutputs(MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, 4))
                 .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.prismarinesolution, FluidShapes.fluidLiquid, 8000))

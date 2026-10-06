@@ -48,6 +48,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -495,7 +496,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
                             FluidStack drained = hatch.drain(
                                 ForgeDirection.UNKNOWN,
-                                MaterialUtils.molten(Materials.Magmatter, Integer.MAX_VALUE),
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, Integer.MAX_VALUE),
                                 true);
                             if (drained == null) {
                                 continue;

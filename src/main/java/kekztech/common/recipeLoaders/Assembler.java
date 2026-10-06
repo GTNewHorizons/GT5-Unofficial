@@ -20,7 +20,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import kekztech.Items;
 import kekztech.common.Blocks;
@@ -54,7 +53,7 @@ public class Assembler implements Runnable {
                 ItemList.Field_Generator_LV.get(4),
                 MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, TEBlockShapes.pipeTiny, 25))
             .itemOutputs(TileEntities.tfftHatch.getStackForm(1))
-            .fluidInputs(MaterialUtils.molten(Materials.Plastic, 3 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -82,7 +81,7 @@ public class Assembler implements Runnable {
                 ItemList.FluidRegulator_MV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 2))
-            .fluidInputs(MaterialUtils.molten(Materials.Plastic, 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -97,7 +96,7 @@ public class Assembler implements Runnable {
                 ItemList.FluidRegulator_HV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 3))
-            .fluidInputs(MaterialUtils.molten(Materials.Plastic, 3 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

@@ -18,7 +18,6 @@ import codechicken.nei.recipe.StackInfo;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -61,7 +60,8 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
 
         FluidStack fluid = StackInfo.getFluid(stack);
         if (fluid != null) {
-            if (fluid.isFluidEqual(MaterialUtils.fluid(Materials.PolyaluminiumChloride, 1_000))) {
+            if (fluid.isFluidEqual(
+                MaterialLibAPI.getFluidStack(Materials.PolyaluminiumChloride, FluidShapes.fluidLiquid, 1_000))) {
                 currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.0"));
                 currentTip.add(
                     StatCollector.translateToLocalFormatted(

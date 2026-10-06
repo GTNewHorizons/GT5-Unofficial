@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,11 +17,11 @@ import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.RecipeMap;
@@ -162,7 +163,7 @@ public class MTEReplicator extends MTEBasicMachine {
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return aFluid.isFluidEqual(MaterialUtils.fluid(Materials.UUMatter, 1L));
+        return aFluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1));
     }
 
     @Override

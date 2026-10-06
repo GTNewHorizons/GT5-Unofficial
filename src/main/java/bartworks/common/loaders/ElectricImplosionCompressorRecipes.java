@@ -89,7 +89,11 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 1),
                 MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, STACKS))
-            .fluidOutputs(MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16 * INGOTS))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials.MagnetohydrodynamicallyConstrainedStarMatter,
+                    FluidShapes.fluidMolten,
+                    16 * INGOTS))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);
@@ -106,7 +110,11 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Eternity, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 4 * STACKS))
-            .fluidOutputs(MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 72 * INGOTS))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials.MagnetohydrodynamicallyConstrainedStarMatter,
+                    FluidShapes.fluidMolten,
+                    72 * INGOTS))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);

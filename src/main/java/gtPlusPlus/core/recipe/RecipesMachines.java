@@ -23,7 +23,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.block.ModBlocks;
@@ -87,7 +86,7 @@ public class RecipesMachines {
                 MaterialLibAPI.getStack(Materials.Platinum, Shapes.wireFine, 32),
                 Circuits.LuV.get(4))
             .itemOutputs(GregtechItemList.RTG.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.NiobiumCarbide, 16 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NiobiumCarbide, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -102,7 +101,7 @@ public class RecipesMachines {
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 4))
             .circuit(17)
             .itemOutputs(new ItemStack(ModBlocks.blockVolumetricFlaskSetter, 1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.SiliconCarbide, 8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SiliconCarbide, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -179,7 +178,7 @@ public class RecipesMachines {
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.wireGt08, 4))
             .itemOutputs(new ItemStack(DimensionEverglades.blockPortalFrame, 2))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Zeron100, 8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Zeron100, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(4 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -201,7 +200,7 @@ public class RecipesMachines {
                 MaterialLibAPI.getStack(Materials.ArceusAlloy2B, Shapes.plateDouble, 4),
                 ItemList.Hull_LuV.get(1))
             .itemOutputs(GregtechItemList.Casing_BedrockMiner.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.MaragingSteel350, 16 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.MaragingSteel350, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);

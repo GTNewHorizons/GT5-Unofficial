@@ -36,7 +36,6 @@ import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -263,11 +262,11 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     protected static final HashSet<Fluid> LEGAL_FLUIDS = new HashSet<>(
         Arrays.asList(
-            MaterialUtils.fluidOf(Materials.IronIIIChloride),
-            MaterialUtils.fluidOf(Materials.GrowthMediumSterilized),
-            MaterialUtils.fluidOf(Materials.BiohMediumSterilized),
-            MaterialUtils.fluidOf(Materials.prismaticacid),
-            MaterialUtils.fluidOf(Materials.UUMatter)));
+            MaterialLibAPI.getFluid(Materials.IronIIIChloride, FluidShapes.fluidLiquid),
+            MaterialLibAPI.getFluid(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid),
+            MaterialLibAPI.getFluid(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid),
+            MaterialLibAPI.getFluid(Materials.prismaticacid, FluidShapes.fluidLiquid),
+            MaterialLibAPI.getFluid(Materials.UUMatter, FluidShapes.fluidLiquid)));
 
     private static boolean holds(FluidStack stack, Material material) {
         return stack.isFluidEqual(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidLiquid, 0));
@@ -404,8 +403,10 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             impurityFluidAmount = fluidAmount;
             FluidStack toFlush = new FluidStack(
                 impurityFluidStack.getFluid(),
-                impurityFluidStack.getFluid() == MaterialUtils.fluidOf(Materials.prismaticgas) ? impurityFluidAmount / 4
-                    : impurityFluidAmount);
+                impurityFluidStack.getFluid()
+                    == MaterialLibAPI.getFluid(Materials.prismaticgas, FluidShapes.fluidLiquid)
+                        ? impurityFluidAmount / 4
+                        : impurityFluidAmount);
             addOutputPartial(toFlush);
             storedFluidStack = null;
             impurityFluidStack = null;

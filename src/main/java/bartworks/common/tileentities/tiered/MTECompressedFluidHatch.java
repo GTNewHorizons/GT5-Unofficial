@@ -22,7 +22,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.util.GTUtility;
@@ -49,7 +48,9 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return GTUtility
             .areFluidsEqual(aFluid, MaterialLibAPI.getFluidStack(Materials.LiquidAir, FluidShapes.fluidLiquid, 1))
-            || GTUtility.areFluidsEqual(aFluid, MaterialUtils.fluid(Materials.nethersemifluid, 1))
+            || GTUtility.areFluidsEqual(
+                aFluid,
+                MaterialLibAPI.getFluidStack(Materials.nethersemifluid, FluidShapes.fluidLiquid, 1))
             || GTUtility
                 .areFluidsEqual(aFluid, MaterialLibAPI.getFluidStack(Materials.ToxicAir, FluidShapes.fluidGas, 1));
     }

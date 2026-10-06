@@ -9,9 +9,9 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialUtils;
 import tectech.thing.CustomItemList;
 
 public class CircuitAssembler implements Runnable {
@@ -22,7 +22,7 @@ public class CircuitAssembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Circuits.LV.get(2), MaterialLibAPI.getStack(Materials.Gold, Shapes.foil, 4))
             .itemOutputs(CustomItemList.parametrizerMemory.get(1))
-            .fluidInputs(MaterialUtils.molten(Materials.Plastic, 1 * HALF_INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
             .requiresCleanRoom()
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)

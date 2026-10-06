@@ -21,7 +21,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -68,7 +67,7 @@ public class Assembler implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.wireFine, 64))
             .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
-            .fluidInputs(MaterialUtils.molten(Materials.Plastic, 8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

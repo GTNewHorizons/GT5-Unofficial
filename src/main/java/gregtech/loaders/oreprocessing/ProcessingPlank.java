@@ -26,7 +26,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -244,7 +243,8 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
-            .fluidInputs(MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, 1))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1))
             .duration(10 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);

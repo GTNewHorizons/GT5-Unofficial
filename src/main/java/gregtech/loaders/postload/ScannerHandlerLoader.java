@@ -18,6 +18,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
@@ -26,6 +27,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
@@ -100,7 +102,8 @@ public class ScannerHandlerLoader {
     public static @Nullable GTScannerResult scanForestryIndividual(@Nonnull MetaTileEntity aScanner,
         @Nonnull ItemStack aInput, @Nullable ItemStack aSpecialSlot, @Nullable FluidStack aFluid) {
         // must have at enough honey to start
-        if (aFluid == null || !aFluid.containsFluid(MaterialUtils.fluid(Materials.Honey, FORESTRY_SCAN_HONEY_USAGE)))
+        if (aFluid == null || !aFluid.containsFluid(
+            MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, FORESTRY_SCAN_HONEY_USAGE)))
             return null;
         try {
             IIndividual tIndividual = AlleleManager.alleleRegistry.getIndividual(aInput);

@@ -24,7 +24,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
@@ -167,7 +166,9 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
                     .getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, Integer.MAX_VALUE));
         }
         if (baseMulti.bioT3Active) {
-            fakeFluids.add(MaterialUtils.fluid(Materials.BiohMediumSterilized, Integer.MAX_VALUE));
+            fakeFluids.add(
+                MaterialLibAPI
+                    .getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, Integer.MAX_VALUE));
         }
         FluidStack[] inputFluids = fakeFluids.toArray(new FluidStack[] {});
         this.fluidInputs = inputFluids;

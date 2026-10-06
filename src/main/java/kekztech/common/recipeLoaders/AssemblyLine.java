@@ -24,7 +24,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.Scanning;
 import kekztech.common.Blocks;
@@ -94,7 +93,7 @@ public class AssemblyLine implements Runnable {
                 GTModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.CrystallinePinkSlime, FluidShapes.fluidMolten, 30 * INGOTS),
-                MaterialUtils.molten(Materials.RadoxPoly, 20 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, 20 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 8))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -118,7 +117,7 @@ public class AssemblyLine implements Runnable {
                 GTModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MelodicAlloy, FluidShapes.fluidMolten, 40 * INGOTS),
-                MaterialUtils.molten(Materials.RadoxPoly, 24 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, 24 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 9))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
@@ -142,7 +141,7 @@ public class AssemblyLine implements Runnable {
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.StellarAlloy, FluidShapes.fluidMolten, 50 * INGOTS),
-                MaterialUtils.molten(Materials.RadoxPoly, 32 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, 32 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 10))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -166,7 +165,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_ResistorASMD.get(8),
                 ItemList.Circuit_Parts_TransistorASMD.get(8),
                 MaterialLibAPI.getStack(Materials.Platinum, Shapes.wireFine, 64))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Indalloy140, 5 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 5 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
             .duration(50 * SECONDS)
             .eut(80_000)
@@ -190,7 +189,9 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(8),
                 MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt01, 32))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Indalloy140, 20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 20 * INGOTS),
+                GTModHandler.getIC2Coolant(16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(100_000)
@@ -214,7 +215,9 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_HPIC.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, TEBlockShapes.cableGt01, 32))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Indalloy140, 20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 20 * INGOTS),
+                GTModHandler.getIC2Coolant(16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .eut(200_000)
             .duration(1 * MINUTES + 40 * SECONDS)

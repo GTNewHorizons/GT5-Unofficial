@@ -45,7 +45,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -72,14 +71,15 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     private static final FluidStack[] magneticUpgrades = {
         MaterialLibAPI.getFluidStack(Materials.TengamPurified, FluidShapes.fluidMolten, 1),
-        MaterialUtils.fluid(Materials.temporalFluid, 1L), MaterialUtils.molten(Materials.Magmatter, 1L) };
+        MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 1) };
     private static final FluidStack[] gravityUpgrades = {
         MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1),
-        MaterialUtils.fluid(Materials.spatialFluid, 1L),
+        MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 1),
         MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 1) };
     private static final FluidStack[] containmentUpgrades = {
-        MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 1),
-        MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L) };
+        MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 1), MaterialLibAPI
+            .getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 1) };
     private static final FluidStack[] activationUpgrades = {
         MaterialLibAPI.getFluidStack(Materials.NaquadahBasedLiquidFuelMkVDepleted, FluidShapes.fluidLiquid, 1),
         MaterialLibAPI.getFluidStack(Materials.NaquadahBasedLiquidFuelMkVIDepleted, FluidShapes.fluidLiquid, 1) };

@@ -23,7 +23,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -190,7 +189,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.NetherStar, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.NetherStar, Shapes.gem, 1))
             .outputChances(3333)
-            .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 4 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 4 * INGOTS))
             .duration(60 * MINUTES)
             .eut((int) TierEU.RECIPE_HV)
             .addTo(autoclaveRecipes);
@@ -322,7 +321,7 @@ public class AutoclaveRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Salt, Shapes.gemChipped, 64),
                 MaterialLibAPI.getStack(Materials.Diamond, Shapes.gemChipped, 64),
                 MaterialLibAPI.getStack(Materials.VanadioOxyDravite, Shapes.gemChipped, 64))
-            .fluidInputs(MaterialUtils.plasma(Materials.ChromaticGlass, 1_000_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ChromaticGlass, FluidShapes.fluidPlasma, 1_000_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemExquisite, 1))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_MAX)

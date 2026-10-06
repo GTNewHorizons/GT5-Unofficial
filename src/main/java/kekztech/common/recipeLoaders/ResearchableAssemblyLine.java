@@ -16,7 +16,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import kekztech.common.Blocks;
 import tectech.recipe.TTRecipeAdder;
@@ -40,7 +39,8 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_UHPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(32),
                 ItemList.Circuit_Parts_DiodeASMD.get(64),
                 MaterialLibAPI.getStack(Materials.SuperconductorUHV, TEBlockShapes.wireGt02, 64) },
-            new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 32 * INGOTS),
+            new FluidStack[] {
+                MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, STACKS),
                 GTModHandler.getIC2Coolant(32_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
@@ -62,7 +62,8 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_PPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64),
                 MaterialLibAPI.getStack(Materials.SuperconductorUEV, TEBlockShapes.wireGt04, 64) },
-            new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 1 * STACKS),
+            new FluidStack[] {
+                MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 1 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, 2 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, 2 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 64_000) },
@@ -85,8 +86,9 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_QPIC.get(64), ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
                 MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt08, 64) },
-            new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 2 * STACKS),
-                MaterialUtils.anyFluid(Materials.CelestialTungsten, 2 * STACKS),
+            new FluidStack[] {
+                MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 2 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 2 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, 2 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 128_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9),
@@ -108,9 +110,10 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_FPIC.get(64), ItemList.Circuit_Parts_Chip_Bioware.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
                 MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt16, 64) },
-            new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 4 * STACKS),
+            new FluidStack[] {
+                MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 4 * STACKS),
                 new FluidStack(FluidRegistry.getFluid("molten.astraltitanium"), 4 * STACKS),
-                MaterialUtils.anyFluid(Materials.CelestialTungsten, 4 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 4 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 256_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10),
             360 * 20,

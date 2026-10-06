@@ -21,7 +21,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 
 public class FormingPressRecipes implements Runnable {
@@ -201,7 +200,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 4),
                 MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.nanite, 4),
                 MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.plate, 1))
-            .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 4_096_000L))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 4_096_000))
             .itemOutputs(ItemList.NaniteFramework.get(1))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -248,7 +247,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.HighDurabilityCompoundSteel, Shapes.ring, 2),
                 MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.screw, 16))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 10 * INGOTS))
             .itemOutputs(ItemList.T2Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -260,7 +259,8 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.ring, 2),
                 MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.screw, 16))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 10 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 10 * INGOTS))
             .itemOutputs(ItemList.T3Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -272,7 +272,9 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.ring, 2),
                 MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.screw, 16))
-            .fluidInputs(MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, 10 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 10 * INGOTS))
             .itemOutputs(ItemList.T4Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UIV)

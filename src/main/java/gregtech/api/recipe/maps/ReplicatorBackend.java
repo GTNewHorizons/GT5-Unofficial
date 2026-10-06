@@ -13,11 +13,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMapBackend;
@@ -121,7 +123,8 @@ public class ReplicatorBackend extends RecipeMapBackend {
             .map(Element::getMass)
             .map(ReplicatorBackend::getUUMAmountFromMass)
             .flatMap(
-                uum -> builder.fluidInputs(MaterialUtils.fluid(Materials.UUMatter, uum))
+                uum -> builder
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, uum))
                     .duration(GTUtility.safeInt(uum * 512L, 1))
                     .eut(TierEU.RECIPE_LV)
                     .ignoreCollision()

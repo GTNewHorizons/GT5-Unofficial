@@ -42,7 +42,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.XSTR;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
@@ -654,7 +653,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
             return 0;
         }
         if (hasPlasma(fluidStack, Materials.Plutonium241, PLASMA_PLUTONIUM241_USAGE)) return 5;
-        if (fluidStack.isFluidEqual(MaterialUtils.plasma(Materials.Technetium, 1))
+        if (fluidStack.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Technetium, FluidShapes.fluidPlasma, 1))
             && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE) return 4;
         if (hasPlasma(fluidStack, Materials.Radon, PLASMA_RADON_USAGE)) return 3;
         if (hasPlasma(fluidStack, Materials.Bismuth, PLASMA_BISMUTH_USAGE)) return 2;

@@ -259,7 +259,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Tungsten, TEBlockShapes.wireGt04, 2),
                         MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_IV.get(1))
-                    .fluidInputs(MaterialUtils.molten(Materials.TPVAlloy, 1 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TPVAlloy, FluidShapes.fluidMolten, 1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -341,7 +341,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Quantium, TEBlockShapes.wireGt04, 2),
                         MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UMV.get(1))
-                    .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 1 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -383,7 +383,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Tungsten, TEBlockShapes.wireGt08, 2),
                         MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_IV.get(1))
-                    .fluidInputs(MaterialUtils.molten(Materials.TPVAlloy, 4 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TPVAlloy, FluidShapes.fluidMolten, 4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -472,7 +472,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Quantium, TEBlockShapes.wireGt08, 2),
                         MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UMV.get(1))
-                    .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 4 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -515,7 +515,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Tungsten, TEBlockShapes.wireGt12, 2),
                         MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_IV.get(1))
-                    .fluidInputs(MaterialUtils.molten(Materials.TPVAlloy, 16 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TPVAlloy, FluidShapes.fluidMolten, 16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -604,7 +604,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Quantium, TEBlockShapes.wireGt12, 2),
                         MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UMV.get(1))
-                    .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 16 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -682,7 +682,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Quantium, TEBlockShapes.wireGt16, 2),
                         MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UMV.get(1))
-                    .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 64 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 64 * INGOTS))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -727,7 +727,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Tungsten, TEBlockShapes.wireGt04, 2),
                         MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_IV.get(1))
-                    .fluidInputs(MaterialUtils.molten(Materials.TPVAlloy, 1 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TPVAlloy, FluidShapes.fluidMolten, 1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -809,7 +809,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Quantium, TEBlockShapes.wireGt04, 2),
                         MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UMV.get(1))
-                    .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 1 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -851,7 +851,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Tungsten, TEBlockShapes.wireGt08, 2),
                         MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_IV.get(1))
-                    .fluidInputs(MaterialUtils.molten(Materials.TPVAlloy, 4 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TPVAlloy, FluidShapes.fluidMolten, 4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -940,7 +940,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Quantium, TEBlockShapes.wireGt08, 2),
                         MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UMV.get(1))
-                    .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 4 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -983,7 +983,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Tungsten, TEBlockShapes.wireGt12, 2),
                         MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_IV.get(1))
-                    .fluidInputs(MaterialUtils.molten(Materials.TPVAlloy, 16 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TPVAlloy, FluidShapes.fluidMolten, 16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -1072,7 +1072,7 @@ public class Assembler implements Runnable {
                         MaterialLibAPI.getStack(Materials.Quantium, TEBlockShapes.wireGt12, 2),
                         MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UMV.get(1))
-                    .fluidInputs(MaterialUtils.anyFluid(Materials.Hypogen, 16 * INGOTS))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);

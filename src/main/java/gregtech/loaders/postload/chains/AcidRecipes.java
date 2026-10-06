@@ -28,7 +28,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -89,7 +88,9 @@ public class AcidRecipes {
         // Chlorosulfonic Acid Line
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.PhosphorousPentoxide, Shapes.dust, 7))
-            .fluidInputs(MaterialUtils.fluid(Materials.IndustrialStrengthHydrogenChloride, 4000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials.IndustrialStrengthHydrogenChloride, FluidShapes.fluidLiquid, 4000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.PhosphorusChlorineMixture, FluidShapes.fluidLiquid, 2000),
                 GTUtility.getWater(5000L))
@@ -119,7 +120,7 @@ public class AcidRecipes {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.StagnantWasteWater, FluidShapes.fluidLiquid, 6000),
-                MaterialUtils.anyFluid(Materials.HydrogenCyanide, 4000))
+                MaterialLibAPI.getFluidStack(Materials.HydrogenCyanide, FluidShapes.fluidGas, 4000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.ActivatedWasteWater, FluidShapes.fluidLiquid, 2000),
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 8000))

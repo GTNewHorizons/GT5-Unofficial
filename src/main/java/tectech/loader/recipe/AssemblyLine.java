@@ -82,7 +82,7 @@ public class AssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.foil, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 16 * INGOTS),
-                MaterialUtils.molten(Materials.Silicone, 1872),
+                MaterialLibAPI.getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, 1872),
                 GTModHandler.getIC2Coolant(2_000),
                 MaterialUtils.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), 9 * INGOTS))
             .itemOutputs(CustomItemList.eM_Coil.get(4))
@@ -105,7 +105,7 @@ public class AssemblyLine implements Runnable {
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Naquadah, Shapes.wireFine, 16) },
                 CustomItemList.DATApipe.get(2))
             .fluidInputs(
-                MaterialUtils.fluid(Materials.UUMatter, 500),
+                MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 500),
                 MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(1_000))
             .itemOutputs(CustomItemList.holder_Hatch.get(1))
@@ -126,7 +126,7 @@ public class AssemblyLine implements Runnable {
                 CustomItemList.DATApipe.get(8),
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.plateSuperdense, 2) })
             .fluidInputs(
-                MaterialUtils.fluid(Materials.UUMatter, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
@@ -149,7 +149,7 @@ public class AssemblyLine implements Runnable {
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Naquadah, Shapes.wireFine, 32) },
                 CustomItemList.DATApipe.get(16))
             .fluidInputs(
-                MaterialUtils.fluid(Materials.UUMatter, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),
                 MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 9 * INGOTS))
@@ -185,7 +185,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_ZPM.get(4),
                 new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 32),
                 ItemList.LargeMolecularAssembler.get(2))
-            .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 8000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 8000))
             .itemOutputs(ItemList.BeamCrafter.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(60 * SECONDS)

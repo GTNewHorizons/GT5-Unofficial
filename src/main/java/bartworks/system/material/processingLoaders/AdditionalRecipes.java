@@ -73,7 +73,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
@@ -268,7 +267,7 @@ public class AdditionalRecipes {
         List<Pair<Fluid, Integer>> liquidOtherFuels = Arrays.asList(
             ImmutablePair.of(GTPPFluids.PropionicAcid, 150),
             ImmutablePair.of(
-                MaterialUtils.molten(Materials.Redstone, 1)
+                MaterialLibAPI.getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 1)
                     .getFluid(),
                 40));
         for (Pair<Fluid, Integer> otherFuel : liquidOtherFuels) {
