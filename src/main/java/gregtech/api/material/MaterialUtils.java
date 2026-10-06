@@ -114,7 +114,7 @@ public class MaterialUtils {
     }
 
     /// The raw [Fluid] for a material's liquid slot. A [#recordSlotFluid]-stored LIQUID fluid takes
-    /// precedence; otherwise the material must declare a [MaterialFluidNames] `fluid()` slot and MaterialLib
+    /// precedence; otherwise a material listed in [MaterialFluidNames] must declare its `fluid()` slot, and MaterialLib
     /// must have registered a fluid for one of the liquid-state shapes. Vanilla fluids such as `Water` and
     /// `Milk` have no slot row and are not reachable here.
     public static @Nullable Fluid fluidOf(@Nullable Material material) {
@@ -182,7 +182,7 @@ public class MaterialUtils {
 
     /// [#fluidOf]'s raw [Fluid] for the `molten()` slot, resolved from the same [MaterialFluidNames] `molten`
     /// slot (or [#recordSlotFluid] store) as [#molten]. Does not fall back to the [FluidShapes#fluidMolten]
-    /// shape lookup, so this is null exactly when the slot itself is unset.
+    /// shape lookup, so for a material listed in [MaterialFluidNames] this is null exactly when the slot is unset.
     public static @Nullable Fluid moltenOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.MOLTEN, FluidNames::molten);
     }
@@ -239,17 +239,19 @@ public class MaterialUtils {
             FluidState.SOLID,
             new Shape[] {}));
 
-    /// A [#recordSlotFluid]-stored fluid wins; otherwise the material must declare the [MaterialFluidNames]
-    /// slot, and the fluid is the one MaterialLib registered for the first shape in [#STATE_SHAPES] that the
-    /// material generates.
+    /// A [#recordSlotFluid]-stored fluid wins. A material listed in [MaterialFluidNames] must declare the slot,
+    /// and the fluid is the one MaterialLib registered for the first shape in [#STATE_SHAPES] that the material
+    /// generates. Any other material resolves through the state's own shape alone.
     private static @Nullable Fluid resolveSlotFluid(@Nullable Material material, FluidState state,
         Function<FluidNames, FluidRef> slot) {
         Fluid stored = storedFluid(material, state);
         if (stored != null) return stored;
         if (material == null) return null;
+        Shape[] shapes = STATE_SHAPES.get(state);
         FluidNames legacyFluids = MaterialFluidNames.of(material.getName());
-        if (legacyFluids == null || slot.apply(legacyFluids) == null) return null;
-        for (Shape shape : STATE_SHAPES.get(state)) {
+        if (legacyFluids == null) return shapes.length == 0 ? null : MaterialLibAPI.getFluid(material, shapes[0]);
+        if (slot.apply(legacyFluids) == null) return null;
+        for (Shape shape : shapes) {
             Fluid fluid = MaterialLibAPI.getFluid(material, shape);
             if (fluid != null) return fluid;
         }

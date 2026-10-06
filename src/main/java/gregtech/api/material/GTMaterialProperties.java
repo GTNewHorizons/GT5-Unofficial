@@ -111,6 +111,17 @@ public class GTMaterialProperties {
     /// default: it pins the material's fluids to 0 K, where an undeclared point is filled in from
     /// [#COMPOSITION] and otherwise falls back to room temperature (see [MaterialUtils#meltingPoint]).
     public static final Property<Integer> MELTING_POINT = Property.of("gregtech", "meltingPoint", -1);
+    /// The Kelvin temperature of the material's [gregtech.api.enums.materials.FluidShapes#fluidLiquid] fluid.
+    public static final Property<Integer> LIQUID_TEMPERATURE = Property.of("gregtech", "liquidTemperature", 295);
+    /// The Kelvin temperature of the material's [gregtech.api.enums.materials.FluidShapes#fluidGas] fluid.
+    public static final Property<Integer> GAS_TEMPERATURE = Property.of("gregtech", "gasTemperature", 295);
+    /// The Kelvin temperature of the material's [gregtech.api.enums.materials.FluidShapes#fluidPlasma] fluid.
+    public static final Property<Integer> PLASMA_TEMPERATURE = Property.of("gregtech", "plasmaTemperature", 10000);
+    /// The Kelvin temperature of the material's [gregtech.api.enums.materials.FluidShapes#fluidMolten] fluid, `-1`
+    /// when undeclared. An undeclared temperature is the declared [#MELTING_POINT], or 1000 K without one.
+    public static final Property<Integer> MOLTEN_TEMPERATURE = Property.of("gregtech", "moltenTemperature", -1);
+    /// The Kelvin temperature of the material's six hydro- and steam-cracked fluids.
+    public static final Property<Integer> CRACKED_TEMPERATURE = Property.of("gregtech", "crackedTemperature", 775);
     /// The EU/t of every fluid extractor recipe melting a part into this material's molten fluid, in place of the
     /// formula derived from the fluid's temperature.
     public static final Property<Integer> MELTING_VOLTAGE = Property.of("gregtech", "meltingVoltage");
