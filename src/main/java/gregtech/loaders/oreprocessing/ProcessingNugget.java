@@ -27,12 +27,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingNugget INSTANCE;
+    public static final ProcessingNugget INSTANCE = new ProcessingNugget();
 
-    public ProcessingNugget() {
-        INSTANCE = this;
-        OrePrefixes.nugget.add(this);
-    }
+    private ProcessingNugget() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

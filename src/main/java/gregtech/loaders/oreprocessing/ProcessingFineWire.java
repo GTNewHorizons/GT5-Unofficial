@@ -13,11 +13,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingFineWire INSTANCE;
+    public static final ProcessingFineWire INSTANCE = new ProcessingFineWire();
 
-    public ProcessingFineWire() {
-        INSTANCE = this;
-    }
+    private ProcessingFineWire() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

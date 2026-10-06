@@ -14,9 +14,9 @@ import gregtech.api.util.GTModHandler;
 
 public class ProcessingCompressed implements IOreRecipeRegistrator {
 
-    public ProcessingCompressed() {
-        OrePrefixes.compressed.add(this);
-    }
+    public static final ProcessingCompressed INSTANCE = new ProcessingCompressed();
+
+    private ProcessingCompressed() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

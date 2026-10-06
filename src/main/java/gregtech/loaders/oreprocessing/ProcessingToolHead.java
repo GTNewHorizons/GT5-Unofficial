@@ -29,11 +29,9 @@ import gregtech.common.items.MetaGeneratedTool01;
 public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH OLD TOOL
                                                                                            // HEAD??? generator
 
-    public static ProcessingToolHead INSTANCE;
+    public static final ProcessingToolHead INSTANCE = new ProcessingToolHead();
 
-    public ProcessingToolHead() {
-        INSTANCE = this;
-    }
+    private ProcessingToolHead() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

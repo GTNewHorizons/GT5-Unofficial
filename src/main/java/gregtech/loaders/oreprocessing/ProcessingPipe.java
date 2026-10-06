@@ -26,11 +26,9 @@ import gregtech.api.util.GTUtility;
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingPipe INSTANCE;
+    public static final ProcessingPipe INSTANCE = new ProcessingPipe();
 
-    public ProcessingPipe() {
-        INSTANCE = this;
-    }
+    private ProcessingPipe() {}
 
     /*
      * This was constructed based on data observation: somehow the materials for the corresponding prefixes

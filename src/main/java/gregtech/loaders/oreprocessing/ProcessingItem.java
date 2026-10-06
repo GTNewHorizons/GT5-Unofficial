@@ -11,9 +11,9 @@ import gregtech.api.objects.ItemData;
 
 public class ProcessingItem implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public ProcessingItem() {
-        OrePrefixes.item.add(this);
-    }
+    public static final ProcessingItem INSTANCE = new ProcessingItem();
+
+    private ProcessingItem() {}
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Material aMaterial, String aOreDictName, String aModName,

@@ -33,8 +33,8 @@ import gregtech.common.ores.GTOreAdapter;
 /// Rows run at MaterialLib's postInit in table order; the stack-size clamps run at init.
 ///
 /// Materials flagged [GTMaterialFlag#NO_RECIPES], prefixes a material ignores and ignored oredict names are skipped.
-/// Registrators are [Supplier]s because the table registers before
-/// `gregtech.loaders.preload.LoaderOreProcessing` constructs the `Processing*` singletons.
+/// Registrators are [Supplier]s so each `Processing*` class initializes when its rows first run, after every mod's
+/// items exist.
 public final class ShapeRecipeTable {
 
     private ShapeRecipeTable() {}

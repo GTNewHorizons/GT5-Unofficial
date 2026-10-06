@@ -25,11 +25,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingStickLong INSTANCE;
+    public static final ProcessingStickLong INSTANCE = new ProcessingStickLong();
 
-    public ProcessingStickLong() {
-        INSTANCE = this;
-    }
+    private ProcessingStickLong() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

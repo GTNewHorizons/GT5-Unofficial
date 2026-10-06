@@ -19,11 +19,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingRecycling INSTANCE;
+    public static final ProcessingRecycling INSTANCE = new ProcessingRecycling();
 
-    public ProcessingRecycling() {
-        INSTANCE = this;
-    }
+    private ProcessingRecycling() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

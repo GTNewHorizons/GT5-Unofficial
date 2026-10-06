@@ -17,11 +17,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingIceOre implements IOreRecipeRegistrator {
 
-    public static ProcessingIceOre INSTANCE;
+    public static final ProcessingIceOre INSTANCE = new ProcessingIceOre();
 
-    public ProcessingIceOre() {
-        INSTANCE = this;
-    }
+    private ProcessingIceOre() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oredictName, String modName,

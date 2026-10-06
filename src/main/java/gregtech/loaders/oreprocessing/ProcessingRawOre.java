@@ -31,11 +31,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingRawOre INSTANCE;
+    public static final ProcessingRawOre INSTANCE = new ProcessingRawOre();
 
-    public ProcessingRawOre() {
-        INSTANCE = this;
-    }
+    private ProcessingRawOre() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

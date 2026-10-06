@@ -20,10 +20,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public ProcessingCrystallized() {
-        OrePrefixes.crystal.add(this);
-        OrePrefixes.crystalline.add(this);
-    }
+    public static final ProcessingCrystallized INSTANCE = new ProcessingCrystallized();
+
+    private ProcessingCrystallized() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

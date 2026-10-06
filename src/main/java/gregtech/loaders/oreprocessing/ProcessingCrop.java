@@ -14,9 +14,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public ProcessingCrop() {
-        OrePrefixes.crop.add(this);
-    }
+    public static final ProcessingCrop INSTANCE = new ProcessingCrop();
+
+    private ProcessingCrop() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

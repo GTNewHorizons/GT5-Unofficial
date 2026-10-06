@@ -20,11 +20,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingScrew INSTANCE;
+    public static final ProcessingScrew INSTANCE = new ProcessingScrew();
 
-    public ProcessingScrew() {
-        INSTANCE = this;
-    }
+    private ProcessingScrew() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

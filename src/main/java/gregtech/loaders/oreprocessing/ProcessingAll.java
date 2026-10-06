@@ -9,9 +9,9 @@ import gregtech.api.enums.OrePrefixes;
 public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO ACTUALLY COMPARE ALL THE
                                                                                       // PROCESSING CLASSES
 
-    public ProcessingAll() {
-        for (OrePrefixes tPrefix : OrePrefixes.VALUES) tPrefix.add(this);
-    }
+    public static final ProcessingAll INSTANCE = new ProcessingAll();
+
+    private ProcessingAll() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

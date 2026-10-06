@@ -76,9 +76,9 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     private static final HashSet<String> sProcessedPlanks = new HashSet<>();
     private static final HashSet<Item> sGroupedOakSlabItems = new HashSet<>();
 
-    public ProcessingPlank() {
-        OrePrefixes.plank.add(this);
-    }
+    public static final ProcessingPlank INSTANCE = new ProcessingPlank();
+
+    private ProcessingPlank() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

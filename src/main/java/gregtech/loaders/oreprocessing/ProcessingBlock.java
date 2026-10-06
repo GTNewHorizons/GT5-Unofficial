@@ -35,7 +35,7 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingBlock INSTANCE;
+    public static final ProcessingBlock INSTANCE = new ProcessingBlock();
 
     private static final int INGOT_RECIPE_REMOVAL = 1;
     private static final int GEM_RECIPE_REMOVAL = 1 << 1;
@@ -150,10 +150,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
     private final Set<GTUtility.ItemId> queuedPackingRemovals = new HashSet<>();
 
-    public ProcessingBlock() {
-        INSTANCE = this;
-        OrePrefixes.block.add(this);
-    }
+    private ProcessingBlock() {}
 
     private void removePackingRecipe(ItemStack input) {
         if (input == null || (GTModHandler.isBufferingCraftingRecipes()

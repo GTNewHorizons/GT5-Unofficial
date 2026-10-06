@@ -25,11 +25,9 @@ import gregtech.api.util.GTRecipeBuilder;
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingLens INSTANCE;
+    public static final ProcessingLens INSTANCE = new ProcessingLens();
 
-    public ProcessingLens() {
-        INSTANCE = this;
-    }
+    private ProcessingLens() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

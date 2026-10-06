@@ -32,11 +32,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingCell implements IOreRecipeRegistrator {
 
-    public static ProcessingCell INSTANCE;
+    public static final ProcessingCell INSTANCE = new ProcessingCell();
 
-    public ProcessingCell() {
-        INSTANCE = this;
-    }
+    private ProcessingCell() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

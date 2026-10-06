@@ -41,15 +41,13 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingWire INSTANCE;
+    public static final ProcessingWire INSTANCE = new ProcessingWire();
 
     private final Material[] dielectrics = { Materials.PolyvinylChloride, Materials.Polydimethylsiloxane };
 
     private static Object tt;
 
-    public ProcessingWire() {
-        INSTANCE = this;
-    }
+    private ProcessingWire() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

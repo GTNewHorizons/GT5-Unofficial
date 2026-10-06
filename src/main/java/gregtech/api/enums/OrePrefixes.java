@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GTValues.D2;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.StackSizeLimits.LOG_STACK_SIZE;
 import static gregtech.api.enums.StackSizeLimits.ORE_STACK_SIZE;
@@ -26,11 +25,8 @@ import com.google.common.collect.ImmutableList;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.Shape;
 
-import gregtech.GTLoggers;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTShapeProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -1952,7 +1948,6 @@ public class OrePrefixes {
     public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
 
     public final Collection<Material> mIgnoredMaterials = new HashSet<>();
-    private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<>();
     public ItemStack mContainerItem = null;
     public MaterialStack mSecondaryMaterial = null;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
@@ -2131,35 +2126,6 @@ public class OrePrefixes {
     public boolean addFamiliarPrefix(OrePrefixes prefix) {
         if (prefix == null || mFamiliarPrefixes.contains(prefix) || prefix == this) return false;
         return mFamiliarPrefixes.add(prefix);
-    }
-
-    /// Attaches `registrator` to other mods' items registered in the ore dictionary under this prefix; see
-    /// [#processOre]. MaterialLib parts get their recipes from [gregtech.loaders.oreprocessing.ShapeRecipeTable].
-    public boolean add(IOreRecipeRegistrator registrator) {
-        if (registrator == null) return false;
-        return mOreProcessing.add(registrator);
-    }
-
-    /// Runs every registered ore-processing registrator for a MaterialLib [Material], dispatching each
-    /// registrator's [IOreRecipeRegistrator#registerOre(OrePrefixes, Material, String, String, ItemStack)] entry.
-    public void processOre(Material material, String oreDictName, String modName, ItemStack stack) {
-
-        if (material == null) return;
-        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
-        if (material == Materials.NULL && !isSelfReferencing && isMaterialBased) return;
-        if (!GTUtility.isStackValid(stack)) return;
-
-        for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
-            if (D2) {
-                GTLoggers.GT_ORE_DICT_LOGGER.info(
-                    "Processing '{}' with the Prefix '{}' and the Material '{}' at {}",
-                    oreDictName,
-                    name,
-                    MaterialUtils.internalName(material),
-                    GTUtility.getClassName(tRegistrator));
-            }
-            tRegistrator.registerOre(this, material, oreDictName, modName, GTUtility.copyAmount(1, stack));
-        }
     }
 
     /// Returns a crafting ingredient accepting any item under the oredict name of this prefix and `material`. It

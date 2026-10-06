@@ -37,11 +37,9 @@ import gregtech.api.util.GTUtility;
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingShaping INSTANCE;
+    public static final ProcessingShaping INSTANCE = new ProcessingShaping();
 
-    public ProcessingShaping() {
-        INSTANCE = this;
-    }
+    private ProcessingShaping() {}
 
     /// Whether this pass shapes `material`'s parts from its ingots, or from its dust for Glass.
     static boolean shapesFromIngots(Material material) {

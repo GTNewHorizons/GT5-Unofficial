@@ -24,9 +24,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public ProcessingLog() {
-        OrePrefixes.log.add(this);
-    }
+    public static final ProcessingLog INSTANCE = new ProcessingLog();
+
+    private ProcessingLog() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

@@ -36,16 +36,9 @@ import gregtech.api.util.GTUtility;
 public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH GEM???
                                                                                       // generators
 
-    public static ProcessingGem INSTANCE;
+    public static final ProcessingGem INSTANCE = new ProcessingGem();
 
-    public ProcessingGem() {
-        INSTANCE = this;
-        OrePrefixes.gem.add(this);
-        OrePrefixes.gemChipped.add(this);
-        OrePrefixes.gemExquisite.add(this);
-        OrePrefixes.gemFlawed.add(this);
-        OrePrefixes.gemFlawless.add(this);
-    }
+    private ProcessingGem() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

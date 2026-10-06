@@ -25,11 +25,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingCrushedOre INSTANCE;
+    public static final ProcessingCrushedOre INSTANCE = new ProcessingCrushedOre();
 
-    public ProcessingCrushedOre() {
-        INSTANCE = this;
-    }
+    private ProcessingCrushedOre() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

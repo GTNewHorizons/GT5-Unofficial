@@ -35,12 +35,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingStick INSTANCE;
+    public static final ProcessingStick INSTANCE = new ProcessingStick();
 
-    public ProcessingStick() {
-        INSTANCE = this;
-        OrePrefixes.stick.add(this);
-    }
+    private ProcessingStick() {}
 
     /// Molds `stack`, `material`'s `prefix` part, when [ProcessingShaping] does not shape that material from
     /// ingots: from its molten fluid, or else from the liquid or gas its dust converts to, taking the part's share

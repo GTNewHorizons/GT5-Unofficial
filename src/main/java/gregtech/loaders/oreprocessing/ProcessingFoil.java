@@ -21,11 +21,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingFoil implements IOreRecipeRegistrator {
 
-    public static ProcessingFoil INSTANCE;
+    public static final ProcessingFoil INSTANCE = new ProcessingFoil();
 
-    public ProcessingFoil() {
-        INSTANCE = this;
-    }
+    private ProcessingFoil() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

@@ -38,20 +38,9 @@ public class ProcessingOre implements IOreRecipeRegistrator {
 
     private final ArrayList<Material> mAlreadyListedOres = new ArrayList<>(1000);
 
-    public static ProcessingOre INSTANCE;
+    public static final ProcessingOre INSTANCE = new ProcessingOre();
 
-    public ProcessingOre() {
-        INSTANCE = this;
-        for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            final String name = prefix.getName();
-            if (!name.startsWith("ore")) continue;
-            if (prefix == OrePrefixes.orePoor) continue;
-            if (prefix == OrePrefixes.oreSmall) continue;
-            if (prefix == OrePrefixes.oreRich) continue;
-            if (prefix == OrePrefixes.oreNormal) continue;
-            prefix.add(this);
-        }
-    }
+    private ProcessingOre() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

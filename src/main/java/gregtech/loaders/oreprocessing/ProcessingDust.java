@@ -60,11 +60,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingDust INSTANCE;
+    public static final ProcessingDust INSTANCE = new ProcessingDust();
 
-    public ProcessingDust() {
-        INSTANCE = this;
-    }
+    private ProcessingDust() {}
 
     /// The gas or liquid form a material's dust converts to and from, [GTMaterialProperties#DUST_FLUID_AMOUNT] litres
     /// of it, or null when the material declares no corresponding gas or fluid or its dust melts into a molten fluid.

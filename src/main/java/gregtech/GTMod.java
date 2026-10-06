@@ -143,7 +143,6 @@ import gregtech.loaders.preload.LoaderGTItemData;
 import gregtech.loaders.preload.LoaderGTOreDictionary;
 import gregtech.loaders.preload.LoaderMaterialPartOredict;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
-import gregtech.loaders.preload.LoaderOreProcessing;
 import gregtech.loaders.preload.LoaderPipeShapeEntities;
 import gtnhlanth.loader.RecipeLoader;
 import ic2.api.recipe.IRecipeInput;
@@ -382,7 +381,6 @@ public class GTMod {
 
         AE2Compat.onPreInit();
 
-        new LoaderOreProcessing().run();
         new LoaderGTOreDictionary().run();
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();

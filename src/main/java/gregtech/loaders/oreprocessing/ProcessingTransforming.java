@@ -23,11 +23,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingTransforming implements IOreRecipeRegistrator {
 
-    public static ProcessingTransforming INSTANCE;
+    public static final ProcessingTransforming INSTANCE = new ProcessingTransforming();
 
-    public ProcessingTransforming() {
-        INSTANCE = this;
-    }
+    private ProcessingTransforming() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

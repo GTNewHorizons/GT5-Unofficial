@@ -18,9 +18,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public ProcessingSlab() {
-        OrePrefixes.slab.add(this);
-    }
+    public static final ProcessingSlab INSTANCE = new ProcessingSlab();
+
+    private ProcessingSlab() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

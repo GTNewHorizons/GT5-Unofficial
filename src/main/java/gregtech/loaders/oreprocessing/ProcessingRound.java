@@ -20,11 +20,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingRound INSTANCE;
+    public static final ProcessingRound INSTANCE = new ProcessingRound();
 
-    public ProcessingRound() {
-        INSTANCE = this;
-    }
+    private ProcessingRound() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

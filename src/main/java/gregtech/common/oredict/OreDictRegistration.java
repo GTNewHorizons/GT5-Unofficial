@@ -14,6 +14,7 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OreDictUtils;
+import gregtech.loaders.oreprocessing.ForeignPartRecipes;
 
 /// One buffered ore-dictionary registration: the stack, the prefix its name resolved to, and the material its
 /// name names -- the `NULL` placeholder under a prefix that is not material-based.
@@ -44,7 +45,8 @@ final class OreDictRegistration {
         this.modId = modId == null || modId.equals("UNKNOWN") ? null : modId;
     }
 
-    /// Runs the prefix's registrators for this registration, unless the stack has no item, the prefix ignores the
+    /// Generates this registration's recipes through [ForeignPartRecipes], unless the stack has no item, the prefix
+    /// ignores the
     /// material, the stack is a MaterialLib item outside an alias prefix, a shape override, or a unified copy.
     void registerRecipes() {
         if (stack.getItem() == null || prefix.isIgnored(material)
@@ -60,9 +62,10 @@ final class OreDictRegistration {
 
         ItemStack single = GTUtility.copyAmount(1, stack);
         if (OreDictUtils.isInterchangeableWithTarget(stack)) {
-            GTRecipeBuilder.withoutRecipesTaking(single, () -> prefix.processOre(material, oreName, modId, single));
+            GTRecipeBuilder
+                .withoutRecipesTaking(single, () -> ForeignPartRecipes.run(prefix, material, oreName, modId, single));
         } else {
-            prefix.processOre(material, oreName, modId, single);
+            ForeignPartRecipes.run(prefix, material, oreName, modId, single);
         }
     }
 

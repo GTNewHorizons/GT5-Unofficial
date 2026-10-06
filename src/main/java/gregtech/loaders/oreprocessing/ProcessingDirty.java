@@ -32,15 +32,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingDirty INSTANCE;
+    public static final ProcessingDirty INSTANCE = new ProcessingDirty();
 
-    public ProcessingDirty() {
-        INSTANCE = this;
-        OrePrefixes.clump.add(this);
-        OrePrefixes.shard.add(this);
-        OrePrefixes.crushed.add(this);
-        OrePrefixes.dirtyGravel.add(this);
-    }
+    private ProcessingDirty() {}
 
     @Override
     public void registerOre(OrePrefixes orePrefix, Material material, String oreDictName, String modName,

@@ -29,11 +29,9 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingOreSmelting INSTANCE;
+    public static final ProcessingOreSmelting INSTANCE = new ProcessingOreSmelting();
 
-    public ProcessingOreSmelting() {
-        INSTANCE = this;
-    }
+    private ProcessingOreSmelting() {}
 
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,

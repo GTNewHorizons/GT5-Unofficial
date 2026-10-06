@@ -63,24 +63,13 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static ProcessingPlate INSTANCE;
+    public static final ProcessingPlate INSTANCE = new ProcessingPlate();
 
     private record CompressedPlate(Mods mod, String itemName, int meta) {}
 
     private static Map<Material, CompressedPlate> compressedPlates;
 
-    public ProcessingPlate() {
-        INSTANCE = this;
-        OrePrefixes.plate.add(this);
-        OrePrefixes.plateDouble.add(this);
-        OrePrefixes.plateTriple.add(this);
-        OrePrefixes.plateQuadruple.add(this);
-        OrePrefixes.plateQuintuple.add(this);
-        OrePrefixes.plateDense.add(this);
-        OrePrefixes.plateSuperdense.add(this);
-        OrePrefixes.plateAlloy.add(this);
-        OrePrefixes.itemCasing.add(this);
-    }
+    private ProcessingPlate() {}
 
     /**
      * Register processes for the {@link ItemStack} with Ore Dictionary Name Prefix "plate"
