@@ -30,7 +30,10 @@ import gregtech.common.ores.OreInfo;
 /// `gt.blockores2`..`gt.blockores7` blocks, and the bartworks `bw.blockores*` blocks. An ore keeps its material,
 /// stone type and size. HeeEndium ores become Hardcore Ender Expansion's endium ore, and any other ore with no
 /// MaterialLib counterpart becomes its stone.
-final class LegacyOreTransformers {
+///
+/// [#resolveTileEntityOre] and [#resolveWerkstoffTileEntityOre] answer the same question for callers that read
+/// saved chunks before Postea migrates them.
+public final class LegacyOreTransformers {
 
     private static final int SMALL_ORE_META_OFFSET = 16000;
     private static final int NATURAL_ORE_META_OFFSET = 8000;
@@ -80,10 +83,10 @@ final class LegacyOreTransformers {
 
         TileEntityReplacementManager.tileEntityTransformer(
             "bw.blockoresTE",
-            (tag, world, chunk) -> toBlockInfo(resolveWerkstoffOre(tag.getInteger("m"), StoneType.Stone, false)));
+            (tag, world, chunk) -> toBlockInfo(resolveWerkstoffTileEntityOre(tag.getInteger("m"), false)));
         TileEntityReplacementManager.tileEntityTransformer(
             "bw.blockoresSmallTE",
-            (tag, world, chunk) -> toBlockInfo(resolveWerkstoffOre(tag.getInteger("m"), StoneType.Stone, true)));
+            (tag, world, chunk) -> toBlockInfo(resolveWerkstoffTileEntityOre(tag.getInteger("m"), true)));
         registerWerkstoffOres(StoneType.Stone, "01", "02");
         registerWerkstoffOres(StoneType.Moon, "03", "04");
     }
@@ -112,11 +115,19 @@ final class LegacyOreTransformers {
             (originalId, tag) -> setStack(tag, resolver.apply(tag.getInteger("Damage"))));
     }
 
-    private static @Nullable ImmutableBlockMeta resolveTileEntityOre(int meta) {
+    /// The block a saved `GT_TileEntity_Ores` tile entity with metadata `meta` migrates to, or null when the metadata
+    /// names no stone type.
+    public static @Nullable ImmutableBlockMeta resolveTileEntityOre(int meta) {
         return resolve(
             LegacyMaterialIDIndex.get(meta % 1000),
             GTUtility.getIndexSafe(TILE_ENTITY_STONES, meta % SMALL_ORE_META_OFFSET / 1000),
             meta >= SMALL_ORE_META_OFFSET);
+    }
+
+    /// The block a saved `bw.blockoresTE` (or, when `small`, `bw.blockoresSmallTE`) tile entity for werkstoff
+    /// `werkstoffId` migrates to.
+    public static @Nullable ImmutableBlockMeta resolveWerkstoffTileEntityOre(int werkstoffId, boolean small) {
+        return resolveWerkstoffOre(werkstoffId, StoneType.Stone, small);
     }
 
     private static @Nullable ImmutableBlockMeta resolveWerkstoffOre(int werkstoffId, StoneType stoneType,
