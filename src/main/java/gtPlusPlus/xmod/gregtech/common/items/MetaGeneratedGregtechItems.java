@@ -42,7 +42,6 @@ import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Transmi
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.Textures;
@@ -68,7 +67,7 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
     }
 
     public MetaGeneratedGregtechItems() {
-        super("MU-metaitem.01", new OrePrefixes[] { null });
+        super("MU-metaitem.01");
     }
 
     public void generateMetaItems() {

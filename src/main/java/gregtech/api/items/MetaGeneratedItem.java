@@ -24,11 +24,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import com.ruling_0.materiallib.api.Material;
-
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,7 +34,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
@@ -117,21 +111,6 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         mIconList = new IIcon[aItemAmount][1];
 
         sInstances.put(getUnlocalizedName(), this);
-    }
-
-    /// Whether a meta-item damage value addresses the generated-material range -- 32 prefix blocks of 1000
-    /// material id slots -- rather than the custom-item range at `mOffset` and beyond.
-    public static boolean isMaterialItem(int meta) {
-        return meta >= 0 && meta < 32000;
-    }
-
-    public static boolean isMaterialItem(@NotNull ItemStack stack) {
-        return isMaterialItem(stack.getItemDamage());
-    }
-
-    /// The [Material] whose generated items occupy a material id slot, or null when the slot is empty.
-    public static @Nullable Material generatedMaterial(int id) {
-        return LegacyMaterialIDIndex.get(id);
     }
 
     /**

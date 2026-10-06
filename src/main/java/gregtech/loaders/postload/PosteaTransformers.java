@@ -27,7 +27,6 @@ import com.gtnewhorizons.postea.utility.BlockInfo;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -40,13 +39,11 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MaterialParts;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.common.items.MetaGeneratedItem98;
-import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
 
 public class PosteaTransformers implements Runnable {
@@ -169,10 +166,10 @@ public class PosteaTransformers implements Runnable {
 
     private static final int MAX_REPORTED_UNRESOLVED_ROWS = 50;
 
-    /// Migrates saved [MetaGeneratedItemX32] stacks (`gt.metaitem.01/02/03`, damage < 32000) and
-    /// [MetaGeneratedItem99] stacks (`gt.metaitem.99`, cell molten/cracked prefixes) whose prefix cut over to
-    /// a MaterialLib shape (see [MaterialParts]) into the equivalent MaterialLib stack. Hand-listed custom parts
-    /// (damage >= 32000 on `metaitem.01/02/03`) and prefixes that have not cut over pass through unchanged.
+    /// Migrates saved material stacks of the legacy meta-items (`gt.metaitem.01/02/03` below damage 32000, and
+    /// the `gt.metaitem.99` molten and cracked cells) into the equivalent MaterialLib stack, decoded through
+    /// [LegacyMetaItemTable]. Hand-listed custom parts (damage 32000 and up on `metaitem.01/02/03`) pass through
+    /// unchanged.
     private void registerMaterialLibCutoverTransformers() {
         registerMetaItemCutoverTransformer("gt.metaitem.01");
         registerMetaItemCutoverTransformer("gt.metaitem.02");
@@ -622,13 +619,11 @@ public class PosteaTransformers implements Runnable {
     }
 
     private static void registerMetaItemCutoverTransformer(String itemName) {
-        MetaGeneratedItemX32 item = (MetaGeneratedItemX32) GameRegistry.findItem("gregtech", itemName);
         addItemTransformer("gregtech:" + itemName, (originalId, tag) -> {
             int damage = tag.getInteger("Damage");
-            if (damage >= 32000) return false;
-            OrePrefixes prefix = item.getOrePrefix(damage);
-            Material material = item.getMaterial(damage);
-            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
+            OrePrefixes prefix = LegacyMetaItemTable.metaItemPrefix(itemName, damage);
+            if (prefix == null) return false;
+            ItemStack cutover = MaterialParts.stack(prefix, LegacyMaterialIDIndex.get(damage % 1000), 1);
             if (cutover == null) return false;
             IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
             tag.setShort("Damage", (short) cutover.getItemDamage());
@@ -637,12 +632,11 @@ public class PosteaTransformers implements Runnable {
     }
 
     private static void registerMetaItem99CutoverTransformer() {
-        MetaGeneratedItem99 item = (MetaGeneratedItem99) GameRegistry.findItem("gregtech", "gt.metaitem.99");
         addItemTransformer("gregtech:gt.metaitem.99", (originalId, tag) -> {
             int damage = tag.getInteger("Damage");
-            OrePrefixes prefix = item.getOrePrefix(damage);
-            Material material = item.getMaterial(damage);
-            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
+            OrePrefixes prefix = LegacyMetaItemTable.cellPrefix(damage);
+            if (prefix == null) return false;
+            ItemStack cutover = MaterialParts.stack(prefix, LegacyMaterialIDIndex.get(damage % 1000), 1);
             if (cutover == null) return false;
             IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
             tag.setShort("Damage", (short) cutover.getItemDamage());

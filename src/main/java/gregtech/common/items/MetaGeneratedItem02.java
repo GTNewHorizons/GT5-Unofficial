@@ -289,8 +289,6 @@ import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
 import static gregtech.common.items.IDMetaItem02.Vajra_Core;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -301,8 +299,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
@@ -317,7 +313,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.items.MetaGeneratedItemX32;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
@@ -340,40 +335,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     private static final String aTextCover = "Usable as Cover";
 
     public MetaGeneratedItem02() {
-        super(
-            "metaitem.02",
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.toolHeadHammer,
-            OrePrefixes.toolHeadFile,
-            OrePrefixes.toolHeadSaw,
-            OrePrefixes.toolHeadDrill,
-            OrePrefixes.toolHeadChainsaw,
-            OrePrefixes.toolHeadWrench,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.toolHeadBuzzSaw,
-            OrePrefixes.turbineBlade,
-            null,
-            OrePrefixes.itemCasing,
-            OrePrefixes.wireFine,
-            OrePrefixes.gearGtSmall,
-            OrePrefixes.rotor,
-            OrePrefixes.stickLong,
-            OrePrefixes.springSmall,
-            OrePrefixes.spring,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.gemChipped,
-            OrePrefixes.gemFlawed,
-            OrePrefixes.gemFlawless,
-            OrePrefixes.gemExquisite,
-            OrePrefixes.gearGt);
+        super("metaitem.02");
         INSTANCE = this;
 
         ItemList.ThermosCan_Coffee.set(
@@ -3535,30 +3497,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         return false;
     }
 
-    @Override
-    public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack) {
-        int aDamage = aStack.getItemDamage();
-        return ((aDamage >= 25000) && (aDamage < 27000)) || (super.hasProjectile(aProjectileType, aStack));
-    }
-
-    @Override
-    public boolean isItemStackUsable(ItemStack aStack) {
-        int aDamage = aStack.getItemDamage();
-        Material aMaterial = getMaterial(aDamage);
-        Enchantment enchantment = MaterialUtils.getToolEnchantment(aMaterial);
-        if ((aDamage >= 25000) && (aDamage < 27000) && (enchantment != null)) {
-            Enchantment tEnchant = enchantment == Enchantment.fortune ? Enchantment.looting : enchantment;
-            if (tEnchant.type == EnumEnchantmentType.weapon) {
-                if (!ItemStackNBT.getBoolean(aStack, "GT.HasBeenUpdated")) {
-                    ItemStackNBT.setBoolean(aStack, "GT.HasBeenUpdated", true);
-                    GTUtility.ItemNBT
-                        .addEnchantment(aStack, tEnchant, MaterialUtils.getToolEnchantmentLevel(aMaterial));
-                }
-            }
-        }
-        return super.isItemStackUsable(aStack);
-    }
-
     private void setAllFluidContainerStats() {
         setFluidContainerStats(32000 + Food_Raw_Fries.ID, 0L, 16L);
         setFluidContainerStats(32000 + Food_Fries.ID, 0L, 16L);
@@ -4072,12 +4010,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             context -> new CoverWirelessMaintenanceDetector(
                 context,
                 TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)));
-    }
-
-    @Override
-    public boolean doesShowInCreative(OrePrefixes aPrefix, Material aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (!aPrefix.getName()
-            .startsWith("toolHead"));
     }
 
     @Override

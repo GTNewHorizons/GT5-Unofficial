@@ -37,7 +37,6 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
-import com.ruling_0.materiallib.api.Material;
 
 import gregtech.GTLoggers;
 import gregtech.api.enums.SubTag;
@@ -239,15 +238,6 @@ public abstract class MetaBaseItem extends GTGenericItem
             GTLoggers.GT_FML_LOGGER.error("Error right clicking item", e);
         }
         return aStack;
-    }
-
-    /// The MaterialLib material generated into the given item damage's slot, or null for item damage out of
-    /// bounds.
-    public Material getMaterial(int damage) {
-        if (!MetaGeneratedItem.isMaterialItem(damage)) {
-            return null;
-        }
-        return MetaGeneratedItem.generatedMaterial(damage % 1_000);
     }
 
     @Override

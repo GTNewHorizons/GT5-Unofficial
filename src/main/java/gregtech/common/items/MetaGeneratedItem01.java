@@ -472,7 +472,6 @@ import static gregtech.common.items.IDMetaItem01.ZPM6;
 import java.util.List;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
@@ -481,9 +480,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
 
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import codechicken.enderstorage.api.EnderStorageDyeTool;
@@ -501,7 +498,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.Wildcard;
@@ -509,16 +505,12 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedItemX32;
-import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.MaterialData;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 import gregtech.common.config.Other;
@@ -594,40 +586,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         Spray_Color_Used_14.ID, Spray_Color_Used_15.ID };
 
     public MetaGeneratedItem01() {
-        super(
-            "metaitem.01",
-            OrePrefixes.dustTiny,
-            OrePrefixes.dustSmall,
-            OrePrefixes.dust,
-            OrePrefixes.dustImpure,
-            OrePrefixes.dustPure,
-            OrePrefixes.crushed,
-            OrePrefixes.crushedPurified,
-            OrePrefixes.crushedCentrifuged,
-            OrePrefixes.gem,
-            OrePrefixes.nugget,
-            null,
-            OrePrefixes.ingot,
-            OrePrefixes.ingotHot,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.plate,
-            OrePrefixes.plateDouble,
-            OrePrefixes.plateTriple,
-            OrePrefixes.plateQuadruple,
-            OrePrefixes.plateQuintuple,
-            OrePrefixes.plateDense,
-            OrePrefixes.stick,
-            OrePrefixes.lens,
-            OrePrefixes.round,
-            OrePrefixes.bolt,
-            OrePrefixes.screw,
-            OrePrefixes.ring,
-            OrePrefixes.foil,
-            OrePrefixes.cell,
-            OrePrefixes.cellPlasma);
+        super("metaitem.01");
         INSTANCE = this;
 
         ItemList.Credit_Greg_Copper.set(
@@ -3950,85 +3909,21 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         craftingShapelessRecipes();
     }
 
-    @Override
-    public boolean onEntityItemUpdate(EntityItem aItemEntity) {
-        int damage = aItemEntity.getEntityItem()
-            .getItemDamage();
-        if (!isMaterialItem(damage)) return false;
-        return CauldronWashing
-            .washDropped(mGeneratedPrefixList[damage / 1000], LegacyMaterialIDIndex.get(damage % 1000), aItemEntity);
-    }
-
+    /// The special items act through [gregtech.api.items.MetaBaseItem#onItemUseFirst]; the plain use hook does
+    /// nothing for them.
     @Override
     public boolean onItemUse(final ItemStack oldItemStack, final EntityPlayer player, final World world, final int x,
         final int y, final int z, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
-        int damage = oldItemStack.getItemDamage();
-        if (!isMaterialItem(damage)) return false;
-        return CauldronWashing.washHeld(
-            mGeneratedPrefixList[damage / 1000],
-            LegacyMaterialIDIndex.get(damage % 1000),
-            oldItemStack,
-            player,
-            world,
-            x,
-            y,
-            z);
+        return false;
     }
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
-        int aDamage = aStack.getItemDamage();
-        if (isMaterialItem(aDamage)) {
-            Material aMaterial = LegacyMaterialIDIndex.get(aDamage % 1000);
-            if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials.NULL)) {
-                OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
-                if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
-                    aList.add(StatCollector.translateToLocal("GT5U.tooltip.purify.1"));
-                }
-                if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
-                    aList.add(StatCollector.translateToLocal("GT5U.tooltip.flour.cauldron"));
-                }
-                if (aPrefix == OrePrefixes.ingotHot && Client.tooltip.showHotIngotText) {
-                    aList.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
-                }
-            }
-        }
         if (Client.tooltip.showRadioactiveText && GTUtility.getRadioactivityLevel(aStack) > 0) {
             aList.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
             aList.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
         }
-    }
-
-    public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Material aMaterial) {
-        FluidStack plasma = MaterialUtils.plasma(aMaterial, 1L);
-        if (aPrefix == OrePrefixes.cellPlasma && plasma != null) {
-            if (MaterialUtils.generates(aMaterial, GTMaterialGenerationFlag.PLASMA)) return true;
-            // Loop through fusion recipes
-            for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
-                // Make sure fluid output can't be null (not sure if possible)
-                if (recipe.getFluidOutput(0) != null) {
-                    // Fusion recipe output matches current plasma cell fluid
-                    if (recipe.getFluidOutput(0)
-                        .isFluidEqual(plasma)) return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean doesShowInCreative(OrePrefixes aPrefix, Material aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (((aPrefix != OrePrefixes.gem) || (!MaterialUtils.internalName(aMaterial)
-            .startsWith("Infused"))) && (aPrefix != OrePrefixes.dustTiny)
-            && (aPrefix != OrePrefixes.dustSmall)
-            && (aPrefix != OrePrefixes.dustImpure)
-            && (aPrefix != OrePrefixes.dustPure)
-            && (aPrefix != OrePrefixes.crushed)
-            && (aPrefix != OrePrefixes.crushedPurified)
-            && (aPrefix != OrePrefixes.crushedCentrifuged)
-            && (aPrefix != OrePrefixes.ingotHot)
-            && !(aPrefix == OrePrefixes.cellPlasma && !isPlasmaCellUsed(aPrefix, aMaterial)));
     }
 
     @Override

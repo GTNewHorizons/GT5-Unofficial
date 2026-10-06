@@ -315,12 +315,8 @@ import static gregtech.common.items.IDMetaItem03.Unbound_WDM_Strands;
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import com.ruling_0.materiallib.api.Material;
-
-import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.CircuitComponents;
@@ -328,7 +324,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
@@ -336,7 +331,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.OreDictUtils;
 import gregtech.common.covers.CoverMetricsTransmitter;
@@ -347,25 +341,13 @@ import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
 import gregtech.common.render.items.UniversiumMetaItemRenderer;
-import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(
-    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
-    modid = Mods.ModIDs.RAILCRAFT)
-public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
+public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
 
     public static MetaGeneratedItem03 INSTANCE;
 
     public MetaGeneratedItem03() {
-        super(
-            "metaitem.03",
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.nanite,
-            OrePrefixes.rawOre,
-            OrePrefixes.plateSuperdense);
+        super("metaitem.03");
         INSTANCE = this;
         Object[] o = GTValues.emptyObjectArray;
         final String RAW = "gt.item.circuit.raw_circuit.tooltip";
@@ -2302,20 +2284,4 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
     }
 
-    @Override
-    public boolean doesShowInCreative(OrePrefixes aPrefix, Material aMaterial, boolean aDoShowAllItems) {
-        String pref = aPrefix.toString()
-            .toLowerCase();
-        return aDoShowAllItems || pref.contains("rawore") || pref.contains("platesuperdense");
-    }
-
-    @Override
-    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
-    public boolean shouldBurn(ItemStack itemStack) {
-        ItemData data = MaterialData.getAssociation(itemStack);
-        if (data == null || data.mMaterial == null || data.mPrefix == null) {
-            return false;
-        }
-        return data.mMaterial.mMaterial == Materials.Firestone && data.mPrefix == OrePrefixes.rawOre;
-    }
 }

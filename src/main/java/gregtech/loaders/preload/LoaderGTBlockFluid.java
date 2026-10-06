@@ -94,7 +94,6 @@ import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
-import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.ores.GTOreAdapter;
@@ -165,7 +164,6 @@ public class LoaderGTBlockFluid implements Runnable {
         // Pre-initialization needs to happen before then, though, because the cell icons get deleted at some point
         // between load and post-load.
         MetaGeneratedItem98.preInit();
-        new MetaGeneratedItem99();
         new MetaGeneratedTool01();
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
