@@ -127,11 +127,11 @@ public class UnificationOreAdapter implements IOreAdapter {
                 if (ml == null) continue;
 
                 for (ItemStack ore : OreDictionary.getOres(name)) {
-                    if (!(ore.getItem() instanceof ItemBlock itemBlock)) return;
+                    if (!(ore.getItem() instanceof ItemBlock itemBlock)) continue;
 
                     Block block = itemBlock.field_150939_a;
 
-                    if (isGTOre(block)) return;
+                    if (isGTOre(block)) continue;
 
                     ImmutableBlockMeta bm = new BlockMeta(block, itemBlock.getMetadata(ore.getItemDamage()));
 
