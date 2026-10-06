@@ -56,7 +56,6 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import it.unimi.dsi.fastutil.Pair;
 import tectech.mechanics.boseEinsteinCondensate.BECInventory;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
-import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECStorageGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchCondensateDetector;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -100,7 +99,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public IStructureDefinition<MTEBECStorage> compile(String[][] definition) {
         structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 21, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
+            .withHatches(1, 42, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
@@ -301,7 +300,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive()) {
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
             if (torus == null) {
                 torus = new GTSoundLoop(
                     SoundResource.GT_MACHINES_BEC_GENERATOR.resourceLocation,
@@ -347,9 +346,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     .playSound(pillar);
             }
         } else {
-            if (pillar != null) pillar.stop();
-            if (torus != null) torus.stop();
-            if (torusFar != null) torusFar.stop();
+            if (pillar != null) pillar.setFadeMe(true);
+            if (torus != null) torus.setFadeMe(true);
+            if (torusFar != null) torusFar.setFadeMe(true);
 
             pillar = null;
             torus = null;
@@ -375,9 +374,15 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
             .collect(Collectors.toList());
     }
 
-    private static class DetectorHatchElement implements IHatchElement<MTEBECStorage> {
+    private enum DetectorHatchElement implements IHatchElement<MTEBECStorage> {
 
-        public static final DetectorHatchElement INSTANCE = new DetectorHatchElement();
+        INSTANCE("GT5U.MBTT.CondensateDetectorHatch");
+
+        private final String name;
+
+        DetectorHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -403,13 +408,13 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         }
 
         @Override
-        public String name() {
-            return "DetectorHatchElement";
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
         }
 
         @Override
-        public String getDisplayName() {
-            return CustomItemList.Hatch_BEC_CondensateDetector.getDisplayName();
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override

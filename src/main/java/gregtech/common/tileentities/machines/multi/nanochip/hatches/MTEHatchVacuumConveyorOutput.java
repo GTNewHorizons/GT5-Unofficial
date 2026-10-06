@@ -76,6 +76,7 @@ public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor impleme
     public CircuitComponentPacket extractPacket() {
         CircuitComponentPacket outputPacket = this.contents;
         this.contents = null;
+        this.markDirty();
         return outputPacket;
     }
 

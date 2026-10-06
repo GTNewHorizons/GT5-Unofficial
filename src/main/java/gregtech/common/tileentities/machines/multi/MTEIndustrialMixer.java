@@ -27,6 +27,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -61,8 +63,8 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     private static final int OFFSET_Z = 0;
 
     private static final int PARALLEL_PER_TIER = 8;
-    private static final float SPEED_INCREASE_TIER = 1f;
-    private static final float SPEED_BASIC = 1f;
+    private static final double SPEED_INCREASE_TIER = 1.0D;
+    private static final double SPEED_BASIC = 1.0D;
 
     private int glassTier = -1;
 
@@ -179,8 +181,8 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Mixer, IMM")
             .addVoltageParallelInfo(8)
-            .addStaticSpeedInfo(SPEED_BASIC)
-            .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
+            .addStaticSpeedInfo((float) SPEED_BASIC)
+            .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
             .addStaticEuEffInfo(1)
             .addInfo(
                 TIER_COLORS[VoltageIndex.UIV] + "UIV+ "
@@ -220,7 +222,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     }
 
     public double getSpeedBonus() {
-        return 1F / (SPEED_INCREASE_TIER + (itemPipeTier + 1));
+        return 1.0D / (SPEED_INCREASE_TIER + (itemPipeTier + 1));
     }
 
     private int casingAmount;
@@ -300,8 +302,9 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_MIXER;
     }
 

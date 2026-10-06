@@ -62,7 +62,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -285,7 +284,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
         // Hatches are allowed in the module base slots, but the elevator ignores these for its base operation,
         // so we need a custom adder to not add them to our hatch lists
-        IgnoredHatch(TileEntitySpaceElevator::ignoreAndAcceptHatch, MTEHatch.class) {
+        IgnoredHatch("GT5U.MBTT.IgnoredHatch", TileEntitySpaceElevator::ignoreAndAcceptHatch, MTEHatch.class) {
 
             @Override
             public long count(TileEntitySpaceElevator tileEntity) {
@@ -293,14 +292,17 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             }
         };
 
+        private final String name;
+
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<TileEntitySpaceElevator> adder;
 
         @SafeVarargs
-        ElevatorHatchElement(IGTHatchAdder<TileEntitySpaceElevator> adder,
+        ElevatorHatchElement(String name, IGTHatchAdder<TileEntitySpaceElevator> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
+            this.name = name;
         }
 
         @Override
@@ -311,6 +313,16 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         @Override
         public IGTHatchAdder<? super TileEntitySpaceElevator> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
@@ -844,7 +856,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.multimachine.incomplete_structure"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 

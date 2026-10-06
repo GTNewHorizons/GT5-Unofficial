@@ -375,7 +375,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack, long totalPerParallel, long perParallel) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             IAEItemStack rejected = inventory.injectItems(AEItemStack.create(stack), Actionable.MODULATE, null);
