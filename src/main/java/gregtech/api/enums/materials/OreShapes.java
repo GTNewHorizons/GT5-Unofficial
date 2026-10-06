@@ -15,27 +15,21 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.GTOreAdapter;
 
-/// Block [Shape] declarations for GT's ores. Unlike `block`, `ore` and `oreSmall` carry a real
-/// generation bit (`ORE`), so membership follows the capability-bit pipeline rather than a curated list.
+/// Block [Shape] declarations for GT's ores.
 ///
-/// Variants are named after [StoneType]'s enum constants, lowercased, in declaration order -- see
-/// [#STONE_TYPE_NAMES]. This name list is fixed permanently once shipped: a variant name is part of a placed
-/// block's save identity (`materiallib:ore_<variant>`/`materiallib:oreSmall_<variant>`), so it must never be
-/// reordered or renamed. `oreSmall` omits the two `StoneCategory.Ice` variants (`packedice`, `blueice`):
-/// legacy small ore never generates on ice stone (`GTOreAdapter#supports`).
+/// Variants are the lowercased names of [StoneType]'s constants (see [#STONE_TYPE_NAMES]). A variant name is part
+/// of a placed block's save identity, so the list must never be reordered or renamed. `oreSmall` has no variants
+/// for ice stone, where small ores never generate.
 ///
-/// [#init] runs before `Materials#init`, which references `ore`/`oreSmall`, so touching [StoneType] from this
-/// class at that point would load it too early. [#STONE_TYPE_NAMES]/[#SMALL_ORE_EXCLUDED]/
-/// [#KNOWN_VARIANT_BASES] are therefore plain string data, and [#stoneTypeOf] resolves a variant back to its
-/// [StoneType] lazily, from behavior hooks that only run during gameplay.
+/// [#init] runs before [Materials#init], too early to load [StoneType]. The variant data is therefore plain
+/// strings, and [#stoneTypeOf] resolves a [StoneType] lazily.
 public class OreShapes {
 
     // spotless:off
     public static Shape ore;
     public static Shape oreSmall;
 
-    /// [StoneType]'s enum constant names, in declaration order -- a hand-copied literal, see this class's
-    /// javadoc.
+    /// [StoneType]'s constant names, in declaration order, copied by hand.
     private static final String[] STONE_TYPE_NAMES = {
         "Stone", "Netherrack", "Endstone", "BlackGranite", "RedGranite", "Marble", "Basalt", "Moon", "Mars",
         "Asteroid", "Phobos", "Deimos", "Ceres", "Io", "Europa", "Ganymede", "Callisto", "Enceladus", "Titan",
@@ -44,23 +38,16 @@ public class OreShapes {
         "SethIce", "SethClay", "Deepslate", "Tuff", "BlueIce",
     };
 
-    /// [StoneType]s of [gregtech.api.enums.StoneCategory#Ice], excluded from [#oreSmall]'s variant list --
-    /// see this class's javadoc.
+    /// [StoneType]s of [gregtech.api.enums.StoneCategory#Ice], excluded from [#oreSmall]'s variants.
     private static final String[] SMALL_ORE_EXCLUDED = { "PackedIce", "BlueIce" };
     // spotless:on
 
-    /// The variant whose per-material icon stands in for the whole shape wherever GregTech draws ore art without
-    /// a shape block behind it. Every variant resolves the same `ore`/`oreSmall` texture unless a texture set
-    /// ships per-variant art, and this is the only variant both shapes declare.
+    /// The variant whose icon stands for the whole shape wherever GregTech draws ore art with no block behind it.
     public static final String ICON_VARIANT = variantOf(STONE_TYPE_NAMES[0]);
 
-    /// Untinted per-variant background textures, one per [StoneType], each a `"<domain>:<path>"` icon name
-    /// resolved on the block atlas (basePath `textures/blocks/`, per
-    /// [com.ruling_0.materiallib.api.BlockShapeBuilder#variantBase]'s contract) -- vanilla Minecraft blocks, GT's
-    /// own granite/marble/basalt block art (`textures/blocks/iconsets/<NAME>.png`, converted the same way as
-    /// every other GT block icon), and cross-mod stone/terrain textures (GalaxySpace, Galacticraft, AmunRa,
-    /// EtFuturumRequiem). [com.ruling_0.materiallib.api.BlockShapeBuilder#variantBase] registers a path
-    /// unconditionally with no existence check, so a wrong one renders as `missingno` in world.
+    /// The untinted background texture of each [StoneType], as a block atlas icon name.
+    /// [com.ruling_0.materiallib.api.BlockShapeBuilder#variantBase] does not check that it exists, so a wrong
+    /// path renders as `missingno`.
     private static final Map<String, String> KNOWN_VARIANT_BASES = Map.ofEntries(
         Map.entry("Stone", "minecraft:stone"),
         Map.entry("Netherrack", "minecraft:netherrack"),
@@ -169,9 +156,8 @@ public class OreShapes {
         return stoneTypeName.toLowerCase(Locale.ROOT);
     }
 
-    /// The variant whose per-material icon carries `stoneType`'s ore art, so that a texture set shipping
-    /// `ore_<variant>.png`/`oreSmall_<variant>.png` reskins that stone type alone. Small ore on ice stone falls
-    /// back to [#ICON_VARIANT], the only variant [#oreSmall] declares for it -- see this class's javadoc.
+    /// The variant whose icon carries `stoneType`'s ore art. Small ore on ice stone falls back to
+    /// [#ICON_VARIANT].
     public static String iconVariantOf(StoneType stoneType, boolean small) {
         String stoneTypeName = stoneType.name();
         if (small && isSmallOreExcluded(stoneTypeName)) return ICON_VARIANT;
@@ -179,7 +165,6 @@ public class OreShapes {
     }
 
     /// The [StoneType] a variant name resolves to, or null if `variant` names none of [#STONE_TYPE_NAMES].
-    /// Resolved lazily via [StoneType#valueOf]; caching it at [#init] time is unsafe, see this class's javadoc.
     public static StoneType stoneTypeOf(String variant) {
         for (String stoneTypeName : STONE_TYPE_NAMES) {
             if (variantOf(stoneTypeName).equals(variant)) {

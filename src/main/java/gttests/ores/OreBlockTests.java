@@ -39,9 +39,8 @@ import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 import gregtech.common.ores.SmallOreDrops;
 
-/// Pins the ore blocks [GTOreAdapter] serves for GregTech's own materials, former bartworks Werkstoff materials
-/// (Bismutite) and former gtPlusPlus materials (Cerite): which stones carry them, their harvest levels, and what
-/// breaking one drops under the `FortuneItem` drop system.
+/// The ore blocks [GTOreAdapter] serves for Iron, Bismutite and Cerite: which stones carry them, their harvest
+/// levels, and their drops.
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class OreBlockTests {
 

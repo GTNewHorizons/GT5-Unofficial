@@ -14,12 +14,11 @@ import com.ruling_0.materiallib.api.StackResolver;
 import bartworks.common.configs.Configuration;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-/// The void miner blacklist named by material, resolved into the `modid:blockname:meta` keys
-/// [VoidMinerUtility.DropMap] filters drops against. An ore block's metadata is the material's registry index,
-/// which moves whenever the material set changes, hence the indirection.
+/// Turns the void miner blacklist, configured by material name, into the `modid:blockname:meta` keys
+/// [VoidMinerUtility.DropMap] filters drops against. Ore metadata is the material's registry index, which shifts
+/// whenever the material set changes, so the config names materials instead.
 ///
-/// The first call must come no earlier than the drop map build at gregtech postInit, once the MaterialLib
-/// registries are populated.
+/// Call no earlier than gregtech postInit.
 public final class VoidMinerMaterialBlacklist {
 
     private static final Logger LOGGER = LogManager.getLogger(VoidMinerMaterialBlacklist.class);
@@ -30,8 +29,7 @@ public final class VoidMinerMaterialBlacklist {
 
     private VoidMinerMaterialBlacklist() {}
 
-    /// The blacklisted block keys from [Configuration.Multiblocks#voidMinerBlacklistMaterials], resolved on the
-    /// first call and kept for the session.
+    /// The blacklisted block keys from [Configuration.Multiblocks#voidMinerBlacklistMaterials], resolved once.
     public static Set<String> cached() {
         if (cached == null) cached = resolve();
         return cached;

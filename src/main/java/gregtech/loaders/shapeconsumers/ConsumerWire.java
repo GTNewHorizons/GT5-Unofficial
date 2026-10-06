@@ -4,7 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.loaders.oreprocessing.ProcessingWire;
 
-/// Dispatches [ProcessingWire]'s recipe generation for the six wire shapes.
+/// Generates wire recipes through [ProcessingWire].
 public final class ConsumerWire {
 
     private ConsumerWire() {}

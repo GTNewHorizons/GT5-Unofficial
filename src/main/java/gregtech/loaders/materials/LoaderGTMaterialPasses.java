@@ -15,9 +15,8 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Gregtech;
 
-/// gregtech-owned material passes that have no MaterialLib equivalent: disabling the hot-ingot variant for
-/// materials whose blast furnace temperature does not warrant one, and writing the configured harvest-level
-/// overrides into [GTMod#proxy]'s harvest-level table.
+/// Applies GregTech's own per-material settings that MaterialLib has no equivalent for. These cover prefix
+/// generation overrides, which materials skip a hot ingot, and the configured harvest levels in [GTMod#proxy].
 public final class LoaderGTMaterialPasses {
 
     private LoaderGTMaterialPasses() {}
@@ -29,10 +28,8 @@ public final class LoaderGTMaterialPasses {
         addHarvestLevelNerfs();
     }
 
-    /// Applies each material's per-prefix generation overrides: [GTMaterialProperties#ADDED_PREFIXES] names the
-    /// prefixes it generates beyond its generation-flag categories, and [GTMaterialProperties#REMOVED_PREFIXES]
-    /// the ones it is excluded from. Both feed [OrePrefixes#doGenerateItem], so this runs before any pass that
-    /// consults it.
+    /// Applies each material's [GTMaterialProperties#ADDED_PREFIXES] and [GTMaterialProperties#REMOVED_PREFIXES].
+    /// Runs before any pass that consults [OrePrefixes#doGenerateItem].
     private static void applyPrefixGenerationOverrides() {
         for (Material material : MaterialLibAPI.getMaterials()) {
             List<String> added = material.getProperty(GTMaterialProperties.ADDED_PREFIXES);

@@ -17,8 +17,8 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialParts;
 import gttests.PosteaTestSupport;
 
-/// Pins that the acid cells gtPlusPlus minted onto IC2's cell item load as the MaterialLib cells of the same
-/// acids. Skips in a world's first session; see [PosteaTestSupport].
+/// Saved gtPlusPlus acid cells on IC2's cell item load as the matching MaterialLib cells. Skips in a world's first
+/// session; see [PosteaTestSupport].
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class GtppAcidCellMigrationTests {
 

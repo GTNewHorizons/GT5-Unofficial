@@ -5,12 +5,11 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 
-/// The materials whose legacy meta-item generation included the metal item set (`MaterialUtils#generates` `METAL`),
-/// keyed by their legacy 1000-slot generated-material id. See [PosteaTransformers] for how the framebox item
-/// migration uses it.
+/// The legacy generated-material ids whose materials had the metal item set. [PosteaTransformers] uses it to tell
+/// legacy frame box items apart from other machine items.
 ///
-/// Rows are the materials whose [gregtech.api.material.GTMaterialProperties#GENERATION_FLAGS] carry `METAL`,
-/// declared in ascending id order.
+/// Rows are the materials whose [gregtech.api.material.GTMaterialProperties#GENERATION_FLAGS] carry `METAL`, in
+/// ascending id order.
 public final class LegacyMetalItemsTable {
 
     private static final boolean[] IDS = build();

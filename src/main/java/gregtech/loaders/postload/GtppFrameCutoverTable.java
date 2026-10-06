@@ -4,10 +4,10 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials.Materials;
 
-/// The materials whose gtPlusPlus frame block (`miscutils:blockFrameGt<Name>`, one distinct registered block
-/// per material) a saved world can still hold, for [PosteaTransformers]' migration onto the
-/// [TEBlockShapes#frameGt] shape. Frozen: a name leaving this list orphans that
-/// block in every world that has one placed.
+/// Save migration table for gtPlusPlus frame blocks (`miscutils:blockFrameGt<Name>`). [PosteaTransformers] migrates
+/// each listed material's block onto the [gregtech.api.enums.materials.TEBlockShapes#frameGt] shape.
+///
+/// Rows are never removed. A missing material orphans that block in existing worlds.
 public final class GtppFrameCutoverTable {
 
     private GtppFrameCutoverTable() {}

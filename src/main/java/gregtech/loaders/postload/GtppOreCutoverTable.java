@@ -1,8 +1,9 @@
 package gregtech.loaders.postload;
 
-/// The gtPlusPlus ore-cutover Postea migration table: one row per legacy `BlockBaseOre` instance. See
-/// [PosteaTransformers] for how a row is migrated. Frozen: a name leaving this table orphans that block in
-/// every world that has one placed.
+/// Save migration table for gtPlusPlus ore blocks, one row per legacy `BlockBaseOre`. See [PosteaTransformers] for
+/// the migration.
+///
+/// Rows are never removed. A missing row orphans that block in existing worlds.
 public final class GtppOreCutoverTable {
 
     public record Entry(String unlocalizedName, String registryName) {}

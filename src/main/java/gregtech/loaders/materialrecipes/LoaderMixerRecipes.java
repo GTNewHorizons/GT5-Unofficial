@@ -21,15 +21,13 @@ import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
-/// Generates the Mixer recipe (composition -> dust) for MaterialLib materials -- the canonical reader of
+/// Generates mixer recipes (composition -> dust) for the [#CARRIERS] that declare
 /// [GTMaterialProperties#HAS_MIXER_RECIPE].
 ///
-/// Each carrier's [MaterialUtils#reducedComposition] mixes into the smallest whole batch. Each entry resolves to a
-/// dust input ([MaterialUtils#compositionDust]), except a single gas-only entry (e.g. Hydrogen, Oxygen), which
-/// resolves to a fluid input ([MaterialUtils#compositionGas]). [#CARRIERS] never declares more than one such entry,
-/// so this carries no cell-item byproduct accounting. [GTMaterialProperties#MIX_CIRCUIT] adds an integrated-circuit
-/// input when set to 1 or higher. Duration and EU scale off the carrier's own [MaterialAtomics#mass] and
-/// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], divided/multiplied by its composition's entry count.
+/// Each recipe mixes the smallest whole batch of the [MaterialUtils#reducedComposition]. Each entry becomes a dust
+/// input. At most one gas-only entry (e.g. Hydrogen) is supported, and it becomes a fluid input.
+/// [GTMaterialProperties#MIX_CIRCUIT] adds an integrated circuit input when set to 1 or higher. Duration scales
+/// with the carrier's [MaterialAtomics#mass], and EU with its [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU].
 public final class LoaderMixerRecipes {
 
     private static final Material[] CARRIERS = { Materials.CircuitCompoundMK3, Materials.MagnetoResonatic,

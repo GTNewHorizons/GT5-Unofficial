@@ -8,14 +8,11 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.util.GTUtility;
 
-/// Resolves the chemical-formula display string for a MaterialLib [Material] from
-/// [GTMaterialProperties#FORMULA] (see its javadoc for which legacy system sourced each value), translating
-/// through the [#formulaKey] localization key when [GTMaterialProperties#FORMULA_LOCALIZED] is set.
+/// Resolves a [Material]'s chemical formula display string from [GTMaterialProperties#FORMULA], translating it
+/// through the material's `.ChemicalFormula` lang key when [GTMaterialProperties#FORMULA_LOCALIZED] is set.
 ///
-/// [#forSearch] feeds [gregtech.nei.searchprovider.ChemicalFormulaFilter] and returns the stored string --
-/// unsanitized, including `"?"`/`"??"` placeholders; the filter applies its own validity check and
-/// sanitization. [#forTooltip] returns the ready-to-display line (or null for none), suppressing the
-/// exact-`"?"` placeholder.
+/// [#forSearch] returns the raw string, `"?"` and `"??"` placeholders included. [#forTooltip] returns the display
+/// line and hides the `"?"` placeholder.
 public final class MaterialFormulas {
 
     private MaterialFormulas() {}
@@ -31,15 +28,13 @@ public final class MaterialFormulas {
             : formula;
     }
 
-    /// The formula tooltip line to display, or null when the legacy renderer showed none.
+    /// The formula tooltip line to display, or null when there is none or it is the `"?"` placeholder.
     public static @Nullable String forTooltip(@Nullable Material material) {
         String formula = forSearch(material);
         return GTUtility.isStringValid(formula) && !"?".equals(formula) ? formula : null;
     }
 
-    /// Builds the `"Material." + name.toLowerCase() + ".ChemicalFormula"` localization key the lang files use
-    /// for a material's formula string, where `name` is [GTMaterialProperties#LEGACY_NAME] when present, else
-    /// the MaterialLib registration name.
+    /// The lang key for a material's formula: its [MaterialUtils#localizedNameKey] plus `.ChemicalFormula`.
     private static String formulaKey(Material material) {
         return MaterialUtils.localizedNameKey(material) + ".ChemicalFormula";
     }

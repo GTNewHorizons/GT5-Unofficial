@@ -2,9 +2,8 @@ package gregtech.api.enums.materials;
 
 import com.ruling_0.materiallib.api.Property;
 
-/// Typed property keys for the base stats of the wire/cable, fluid pipe, and item pipe families. Each key
-/// holds a material's base value; per-size values derive from it through the transforms in
-/// [gregtech.api.material.PipeStats]. The values themselves are set by [PipeMaterials].
+/// Property keys for the base stats of wires, cables, fluid pipes and item pipes. Per-size values derive from
+/// the base through [gregtech.api.material.PipeStats]. [PipeMaterials] sets the values.
 public class PipeProperties {
 
     /// Base amperage of the 1x wire and cable; thicker sizes multiply it.
@@ -13,8 +12,7 @@ public class PipeProperties {
     public static final Property<Long> BASE_CABLE_VOLT = Property.of("gregtech", "baseCableVolt");
     /// Voltage loss per meter of insulated cable; bare wire loss defaults to twice this (see [#WIRE_LOSS]).
     public static final Property<Integer> BASE_CABLE_LOSS = Property.of("gregtech", "baseCableLoss");
-    /// Explicit bare-wire voltage loss per meter, for a material where the twice-[#BASE_CABLE_LOSS] rule does
-    /// not hold or where [#NO_CABLE] leaves no cable loss to derive from.
+    /// Bare-wire voltage loss per meter, overriding the twice-[#BASE_CABLE_LOSS] default.
     public static final Property<Integer> WIRE_LOSS = Property.of("gregtech", "wireLoss");
     /// The material generates bare wires only, no insulated cable variants.
     public static final Property<Boolean> NO_CABLE = Property.of("gregtech", "noCable");

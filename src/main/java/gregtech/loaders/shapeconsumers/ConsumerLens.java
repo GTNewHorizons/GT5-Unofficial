@@ -4,7 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingLens;
 
-/// Dispatches [ProcessingLens]'s `lens`-prefix recipe generation for MaterialLib's cutover lens shape.
+/// Generates lens recipes through [ProcessingLens].
 public final class ConsumerLens {
 
     private ConsumerLens() {}

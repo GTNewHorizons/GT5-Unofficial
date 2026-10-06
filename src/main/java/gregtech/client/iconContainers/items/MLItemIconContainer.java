@@ -14,14 +14,12 @@ import gregtech.api.enums.Textures.InvisibleIcon;
 import gregtech.api.material.GTMaterialIconSets;
 import gregtech.api.util.GTUtil;
 
-/// One material's item-atlas icon, drawn from MaterialLib's texture-set resolution.
+/// One material's item-atlas icon from MaterialLib.
 ///
-/// The art is either a [GTMaterialIconSets] icon set's or, where GregTech declared none for the name, the item
-/// shape of that name. The set wins because it binds every registered material, where a shape only binds the
-/// materials that generate it. Which of the two applies is decided on the first draw and remembered; the
-/// [IIcon] itself is fetched through that handle every time, since MaterialLib rebinds icons on every resource
-/// reload. Obtain instances from [gregtech.api.material.GTMaterialIcons], which interns them so the textures
-/// built from them dedupe.
+/// The art comes from the [GTMaterialIconSets] icon set of that name, or from the item shape of that name if
+/// there is no such set. An icon set binds every material, while a shape only binds the materials it generates
+/// for. The source is resolved on first draw, but the [IIcon] is fetched every time since MaterialLib rebinds
+/// icons on resource reload. Obtain instances from [gregtech.api.material.GTMaterialIcons].
 public final class MLItemIconContainer extends AbstractItemIconContainer {
 
     private final String name;
@@ -44,7 +42,7 @@ public final class MLItemIconContainer extends AbstractItemIconContainer {
         return InvisibleIcon.INVISIBLE_ICON;
     }
 
-    /// Null: the stack's layers, its trailing overlay included, come through [#getLayerIcon].
+    /// Null, since every layer comes through [#getLayerIcon].
     @Override
     public IIcon getOverlayIcon() {
         return null;

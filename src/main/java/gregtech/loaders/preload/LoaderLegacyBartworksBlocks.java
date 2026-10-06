@@ -20,14 +20,12 @@ import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.common.ores.BWOreAdapter;
 
-/// The storage, casing and ore blocks the bartworks werkstoff materials were placed as. Their MaterialLib
-/// shapes supersede them, but the blocks stay registered: a saved world still holds them, and the Postea
-/// migration and the ore adapters address them by their original registration names and metadata.
+/// Registers the legacy bartworks storage, casing and ore blocks. MaterialLib shapes supersede them, but they stay
+/// registered for saved worlds. The Postea migration and the ore adapters address them by their original names and
+/// metadata.
 ///
-/// This loader is permanent despite its name, but nothing live matches these blocks any more: structure
-/// definitions match the MaterialLib casing shapes through [gregtech.api.util.GTStructureUtility#ofBlockCasing],
-/// and the casing slots cut over in Postea like every other slot -- including the gt-bridge proxy werkstoff ids
-/// [LegacyWerkstoffIndex#init] adds explicit rows for.
+/// Structures match the MaterialLib casing shapes through [gregtech.api.util.GTStructureUtility#ofBlockCasing], not
+/// these blocks.
 public class LoaderLegacyBartworksBlocks {
 
     public static Block storageBlocks;
@@ -62,9 +60,8 @@ public class LoaderLegacyBartworksBlocks {
         registerCasingAssociations();
     }
 
-    /// Keeps each legacy casing slot associated with its material, so a recipe naming one resolves to the
-    /// MaterialLib casing that supersedes it, and a material with no MaterialLib casing shape keeps resolving to
-    /// the legacy block it still uses.
+    /// Associates each legacy casing slot with its material. A recipe naming the slot resolves to the MaterialLib
+    /// casing, or to the legacy block for a material without one.
     private static void registerCasingAssociations() {
         for (Material material : MaterialLibAPI.getMaterials()) {
             int id = LegacyWerkstoffIndex.idOf(material);

@@ -5,21 +5,13 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTModHandler;
 
-/// The [OrePrefixes#circuit] and [OrePrefixes#wrapCircuit] ore-dictionary entries, keyed by voltage tier.
+/// The [OrePrefixes#circuit] and [OrePrefixes#wrapCircuit] oredict entries by voltage tier. Keeps the mapping
+/// from tier to oredict name in one place, since the names do not match the tiers (`LV` is `Basic`, `UHV` is
+/// `Infinite`).
 ///
-/// Each tier names an ore-dictionary entry whose material name is unrelated to the tier abbreviation (`LV` is
-/// named `Basic`, `UHV` is named `Infinite`, and so on). Routing every call site through this enum keeps that
-/// mapping in one place.
-///
-/// Each tier declares the concrete items standing for its entries: NewHorizonsCoreMod's placeholder circuit,
-/// registered under the [OrePrefixes#circuit] name, and GoodGenerator's circuit wrap, registered under the
-/// [OrePrefixes#wrapCircuit] name.
-///
-/// Each prefix exposes two accessors:
-/// - [#get(int)] and [#getWrap(int)] return the declared [ItemStack] for recipe inputs and outputs that need a
-/// concrete stack.
-/// - [#getIngredient()] and [#getWrapIngredient()] return an [ItemData] for crafting-grid recipes; see
-/// [gregtech.api.util.GTModHandler#addCraftingRecipe].
+/// [#get(int)] returns NewHorizonsCoreMod's placeholder circuit and [#getWrap(int)] GoodGenerator's circuit wrap,
+/// where a recipe needs a concrete stack. [#getIngredient()] and [#getWrapIngredient()] return the oredict form
+/// for crafting recipes; see [gregtech.api.util.GTModHandler#addCraftingRecipe].
 public enum Circuits {
 
     ULV("Primitive", "CircuitULV", 0),
@@ -64,7 +56,7 @@ public enum Circuits {
         return new ItemData(OrePrefixes.wrapCircuit, materialName);
     }
 
-    /// The ore-dictionary material name this constant stands for.
+    /// The oredict material name this constant stands for.
     public String materialName() {
         return materialName;
     }

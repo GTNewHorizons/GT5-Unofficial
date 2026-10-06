@@ -11,13 +11,11 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.OreShapes;
 
-/// Clamps MaterialLib's block-kind shapes (`block`, `ore`, `oreSmall`, the only cutover shapes backed by an
-/// [ItemBlock]) to their prefix's default stack size. `gregtech.loaders.oreprocessing.ProcessingAll` applies
-/// the same clamp to foreign mods' block-form items through the oredict path, which does not reach
-/// MaterialLib's own items.
+/// Clamps the `block`, `ore` and `oreSmall` items to their prefix's default stack size.
+/// `gregtech.loaders.oreprocessing.ProcessingAll` applies the same clamp to other mods' blocks through the oredict
+/// path.
 ///
-/// The clamp mutates the single [Item] backing a whole shape rather than one material's stack, so the
-/// per-material consumer re-applies it once per material.
+/// The clamp mutates the [Item] shared by a whole shape, so each material's dispatch reapplies it.
 public final class ConsumerStackSizeClamp {
 
     private ConsumerStackSizeClamp() {}

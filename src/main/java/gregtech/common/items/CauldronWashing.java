@@ -21,9 +21,8 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 
-/// Washing in a cauldron that holds water: an impure or purified dust becomes its clean dust, a crushed ore becomes
-/// purified crushed ore, and wheat dust becomes dough, each lowering the water level by one. Items wash when dropped
-/// into the cauldron or when a player uses them on it; [#register] attaches both to the MaterialLib item shapes.
+/// Washes items in a water cauldron, either dropped in or used on it. Impure and purified dusts become clean dust,
+/// crushed ore becomes purified crushed ore, and wheat dust becomes dough. Each wash lowers the water by one level.
 public final class CauldronWashing {
 
     private static final Map<Material, Material> CLEANED_DUSTS = new HashMap<>();

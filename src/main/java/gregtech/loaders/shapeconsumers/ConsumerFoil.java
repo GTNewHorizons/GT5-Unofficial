@@ -4,7 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingFoil;
 
-/// Dispatches [ProcessingFoil]'s `foil`-prefix recipe generation for MaterialLib's cutover foil shape.
+/// Generates foil recipes through [ProcessingFoil].
 public final class ConsumerFoil {
 
     private ConsumerFoil() {}

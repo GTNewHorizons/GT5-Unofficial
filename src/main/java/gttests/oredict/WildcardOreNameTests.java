@@ -17,8 +17,8 @@ import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTUtility;
 
-/// Pins that every member's part is registered under its wildcard's ore name, including the `gear` names that only
-/// the `gearGt` alias produces.
+/// Every wildcard member's parts are registered under the wildcard's oredict names, including the `gear` names
+/// from the `gearGt` alias.
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class WildcardOreNameTests {
 

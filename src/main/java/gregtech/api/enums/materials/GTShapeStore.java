@@ -9,10 +9,9 @@ import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.api.enums.OrePrefixes;
 
-/// The [Shape]s GregTech declares, collected in declaration order as the holder classes ([Shapes],
-/// [CellShapes], [BlockShapes], [OreShapes], [TEBlockShapes]) build them. [gregtech.api.material.MaterialParts]
-/// derives its prefix-to-shape map from [#all], so a shape that skips [#reg] is invisible to the legacy prefix
-/// cutover. [FluidShapes] stays outside: fluid shapes carry no oredict prefixes.
+/// The [Shape]s GregTech declares, in declaration order. [gregtech.api.material.MaterialParts] maps oredict
+/// prefixes to shapes from [#all], so every shape with a prefix must go through [#reg]. [FluidShapes] has no
+/// prefixes and stays out.
 public final class GTShapeStore {
 
     private static final List<Shape> SHAPES = new ArrayList<>();

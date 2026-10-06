@@ -4,8 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingStickLong;
 
-/// Dispatches [ProcessingStickLong]'s `stickLong`-prefix recipe generation for MaterialLib's cutover long-stick
-/// shape.
+/// Generates long-stick recipes through [ProcessingStickLong].
 public final class ConsumerStickLong {
 
     private ConsumerStickLong() {}

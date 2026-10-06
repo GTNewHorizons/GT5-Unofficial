@@ -10,22 +10,17 @@ import com.ruling_0.materiallib.api.MaterialLibClient;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/// The per-material art GregTech draws itself, filed in the material texture sets under a name no item or block
-/// shape owns.
+/// Per-material art that GregTech draws itself and no item or block shape owns: tool heads and handles, pipe end
+/// faces, and decorative cover faces. Each [IconSet] resolves through the material's texture set the same way a
+/// shape's icons do.
 ///
-/// An assembled [gregtech.api.items.MetaGeneratedTool] picks its head and handle art at render time from the
-/// materials in its NBT, and a pipe end face or a decorative cover is an extra icon of a block that already exists,
-/// so neither can hang off a shape's own icons. A [IconSet] gives that art the full texture-set resolution -- chain,
-/// fallbacks, unification alternatives, `_OVERLAY` -- with no game object behind it.
-///
-/// The names are plain strings so that common code can ask whether one exists on a dedicated server, where
-/// MaterialLib's client-only icon API must never classload; [#register] creates the [IconSet] handles behind
-/// them client-side.
+/// The names are plain strings so common code can check them on a dedicated server, where MaterialLib's
+/// client-only icon API must not classload. [#register] creates the [IconSet]s client-side.
 public final class GTMaterialIconSets {
 
     private GTMaterialIconSets() {}
 
-    /// The item-atlas names: one per tool part GregTech composites from a material in a tool's NBT.
+    /// The item-atlas names, one per tool part drawn from a material in a tool's NBT.
     // spotless:off
     public static final Set<String> ITEM_NAMES = Set.of(
         "toolWrench", "toolCrowbar", "toolWireCutter", "toolScoop", "toolBranchCutter", "toolKnife",

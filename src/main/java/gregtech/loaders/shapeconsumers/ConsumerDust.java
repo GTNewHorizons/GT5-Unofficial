@@ -4,9 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingDust;
 
-/// Dispatches [ProcessingDust]'s recipe generation for MaterialLib's cutover dust-family shapes. `dustRefined`
-/// (which shares [ProcessingDust]'s `"dustPure", "dustImpure", "dustRefined"` switch case) has no MaterialLib
-/// shape.
+/// Generates dust-family recipes through [ProcessingDust].
 public final class ConsumerDust {
 
     private ConsumerDust() {}

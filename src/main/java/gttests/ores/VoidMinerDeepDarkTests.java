@@ -25,8 +25,8 @@ import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 
-/// Pins the Deep Dark void miner list `VoidMinerLoader` builds: one Stone ore per material, every material at
-/// weight 1 when no weight is configured, former bartworks Werkstoff and gtPlusPlus ores included.
+/// The Deep Dark void miner list holds one Stone ore per material, each at weight 1 when no weights are
+/// configured.
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class VoidMinerDeepDarkTests {
 

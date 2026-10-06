@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 
+/// Arc furnace results that depend on the gas used, such as copper smelted in oxygen giving annealed copper.
 public class MaterialArcSmeltHelper {
 
     private static Map<Material, Map<Material, Material>> table;

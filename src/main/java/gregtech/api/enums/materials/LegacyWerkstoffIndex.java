@@ -30,10 +30,8 @@ public class LegacyWerkstoffIndex {
             }
         }
 
-        // gt-bridge proxy werkstoffe (bartworks' BWGTMaterialReference, id = 31766 + the legacy sub id):
-        // bartworks declared these ids only to give a gregtech material casing slots (Magnesia: metal parts
-        // and a molten fluid), so they belong to no material's WERKSTOFF_IDS. Postea still has to resolve
-        // saved casings and parts addressed by them.
+        // Bartworks' gt-bridge werkstoffe (id = 31766 + the legacy sub id) belong to no material's WERKSTOFF_IDS,
+        // but saved casings and parts still address them.
         occupy(31776, Materials.Carbon);
         occupy(31820, Materials.Silver);
         occupy(31850, Materials.Iridium);
@@ -62,20 +60,15 @@ public class LegacyWerkstoffIndex {
         return INDEX.get(id);
     }
 
-    /// The legacy werkstoff id a material occupies, or -1 when it carries none. The inverse of [#get], for the
-    /// legacy bartworks blocks that address a material by its id as block metadata.
+    /// The first legacy werkstoff id a material carries, or -1 when it carries none.
     public static int idOf(@Nullable Material material) {
         if (material == null) return -1;
         List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         return ids == null || ids.isEmpty() ? -1 : ids.get(0);
     }
 
-    /// Whether the werkstoff part set covers `prefix` for this material, read from
-    /// [GTMaterialProperties#WERKSTOFF_PREFIXES]. Narrower than asking whether the material resolves a stack
-    /// for the prefix: gregtech's own part autogen covers shapes the werkstoff part set never named.
-    ///
-    /// False for a material also carrying [GTMaterialProperties#OLD_SUB_ID] -- a merged declaration whose
-    /// parts gregtech owns outright (Salt, RockSalt, Spodumene and the like).
+    /// Whether [GTMaterialProperties#WERKSTOFF_PREFIXES] lists `prefix` for this material. False for a material
+    /// that also carries [GTMaterialProperties#OLD_SUB_ID], since GregTech owns its parts.
     public static boolean generatesPrefix(@Nullable Material material, OrePrefixes prefix) {
         if (material == null || material.getProperty(GTMaterialProperties.OLD_SUB_ID) != null) return false;
         List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);

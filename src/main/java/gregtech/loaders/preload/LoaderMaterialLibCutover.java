@@ -17,30 +17,17 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.OreDictUtils;
 
-/// Hands the ore-dictionary unificator MaterialLib stacks for the item cutover: every (prefix,
-/// material) pair [MaterialParts] maps to a MaterialLib shape gets unified the same way
-/// [gregtech.api.items.MetaGeneratedItemX32]'s constructor unifies its own generated stacks (including the
-/// soldering-metal and toolbox bookkeeping), run after that constructor so the MaterialLib stack becomes
-/// the unificator's preferred one.
+/// Registers MaterialLib part stacks under their oredict names and associates unifiable ones with their material.
+/// Each pair [MaterialParts] maps to a shape is registered the way [gregtech.api.items.MetaGeneratedItemX32]'s
+/// constructor registers its own stacks, including the soldering-metal and toolbox lists.
 ///
-/// The membership-driven prefixes get a second pass over each shape block's served materials instead. The
-/// pipe-family legacy items were meta tile entities rather than generated items, so
-/// `OrePrefixes#doGenerateItem` cannot gate them and their material sets live only in the MaterialLib
-/// registry; `sheetmetal` additionally serves bartworks-backed materials, which carry no
-/// [LegacyMaterialIDIndex] sub-id.
+/// Wire, cable, pipe, frame and `sheetmetal` stacks come from each shape block's served materials instead, since
+/// [OrePrefixes#doGenerateItem] does not cover them. Each GregTech material's minted parts then get a pass of their
+/// own, since the oredict event cannot parse every name back to its pair. Names come from
+/// [OrePrefixes#oreDictName], the name [OreDictUtils] lookups ask for.
 ///
-/// Each `set` call makes the shape stack the prefix's unification target and adds the material association
-/// that drives the auto-generated recycling recipes.
-///
-/// Every material's minted parts then get a pass of their own, since the ore-dictionary event cannot parse every
-/// name back to its pair: a legacy name MaterialLib cannot accept as a registration name is carried as
-/// [GTMaterialProperties#LEGACY_NAME] while the stacks register under the sanitized name, a name holding a `.` reads
-/// as a private one, and `blockCasing` names parse as `block`. [OrePrefixes#oreDictName] builds the legacy name, so
-/// that is the name every [OreDictUtils] lookup asks for.
-///
-/// The High Pressure fluid pipes [TieredItems#ZPM] declares additionally register under its tier-keyed
-/// `pipeSmallUltimate`..`pipeLargeUltimate` ingredient names, the identity every crafting recipe referencing
-/// them uses.
+/// The High Pressure fluid pipes of [TieredItems#ZPM] also register under the
+/// `pipeSmallUltimate`..`pipeLargeUltimate` names their recipes use.
 public class LoaderMaterialLibCutover implements Runnable {
 
     @Override

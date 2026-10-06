@@ -18,34 +18,25 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.oredict.OreDictRegistrationHandler;
 import gregtech.common.ores.GTOreAdapter;
 
-/// Shared dispatch glue for the `Consumer*` classes in this package: each targets one [Shape] and delegates to
-/// the same [IOreRecipeRegistrator] its `gregtech.loaders.oreprocessing.Processing*` counterpart already
-/// implements, resolving stacks through [MaterialLibAPI] instead of an oredict event. Most shapes map onto a
-/// single legacy `OrePrefixes`; the ore shape maps onto one prefix per stone variant, through
-/// [#delegateOreVariants].
+/// Shared glue for the `Consumer*` classes in this package. Each consumer targets a [Shape] and runs the matching
+/// `gregtech.loaders.oreprocessing.Processing*` [IOreRecipeRegistrator] once per material, with the stack from
+/// [MaterialLibAPI].
 ///
-/// A `Processing*` class that also generates recipes for other mods' items attaches to its prefix through
-/// [OrePrefixes#add], which the ore-dictionary registration path dispatches. A prefix with no MaterialLib shape
-/// gets no consumer here and serves those items through that path alone.
+/// A `Processing*` class that also handles other mods' items attaches to its prefix through [OrePrefixes#add], and
+/// the oredict path dispatches those. A prefix with no MaterialLib shape gets no consumer and is served by that path
+/// alone.
 ///
-/// Dispatch is postInit, not init: several `Processing*` bodies transitively class-load
-/// [gregtech.api.util.GTRecipeConstants], whose static initializer reads material data that
-/// [gregtech.api.enums.materials.Materials] populates from `MaterialRegistrationEvent`. Dispatching at init
-/// can reach that initializer before the registry resolves -- the class-init trap
-/// [gregtech.api.enums.materials.OreShapes]'s javadoc describes. postInit still precedes GregTech's own
-/// postInit, since `required-after:materiallib` orders MaterialLib's lifecycle first.
+/// Dispatch runs at MaterialLib's postInit, after every mod's init and before GregTech's own postInit.
 ///
-/// Registrators are passed as [Supplier]s, not resolved instances: `Consumer*#register` runs during
-/// `MaterialRegistrationEvent`, before `gregtech.loaders.preload.LoaderOreProcessing` has constructed the
-/// `Processing*` singletons.
+/// Registrators are passed as [Supplier]s because consumers register before
+/// `gregtech.loaders.preload.LoaderOreProcessing` constructs the `Processing*` singletons.
 final class ShapeConsumerSupport {
 
     private ShapeConsumerSupport() {}
 
-    /// Registers `registrator` to run once per material generating `shape`, at MaterialLib's postInit, passing
-    /// the MaterialLib material straight through to `registrator`'s
-    /// [IOreRecipeRegistrator#registerOre(OrePrefixes, com.ruling_0.materiallib.api.Material, String, String,
-    /// ItemStack)] entry. A shape/material pair with no resolvable stack is skipped.
+    /// Registers `registrator` to run under `prefix` once per material generating `shape`, at MaterialLib's
+    /// postInit. Materials flagged [GTMaterialFlag#NO_RECIPES], prefixes the material ignores and ignored oredict
+    /// names are skipped.
     static void delegate(Shape shape, OrePrefixes prefix, Supplier<IOreRecipeRegistrator> registrator) {
         delegate(shape, prefix, material -> true, registrator);
     }
@@ -61,15 +52,14 @@ final class ShapeConsumerSupport {
         });
     }
 
-    /// [#delegate(Shape, OrePrefixes, Supplier)] for the variant-carrying ore shape: every material dispatches
-    /// once per [StoneType] it has an ore block on ([GTOreAdapter#getVariantStack]), under that stone's own
-    /// [StoneType#getPrefix] and that stone's block. `groupPrefix` names the variant group.
+    /// [#delegate(Shape, OrePrefixes, Supplier)] for the ore shape. Each material dispatches once per [StoneType]
+    /// it has an ore block on, under that stone's [StoneType#getPrefix].
     ///
-    /// Every variant of one material shares a [GTRecipeBuilder#withVariantGroup] tag, so NEI shows the fan-out
-    /// as a single cycling entry per action instead of one entry per stone.
+    /// All variants of one material share a [GTRecipeBuilder#withVariantGroup] tag named by `groupPrefix`, so NEI
+    /// shows one cycling entry per recipe instead of one per stone.
     ///
-    /// [StoneType] and [GTOreAdapter] are touched only from inside the postInit callback:
-    /// see the class-init trap [gregtech.api.enums.materials.OreShapes]'s javadoc describes.
+    /// [StoneType] and [GTOreAdapter] must only be touched inside the callback; see
+    /// [gregtech.api.enums.materials.OreShapes].
     static void delegateOreVariants(Shape shape, OrePrefixes groupPrefix, Supplier<IOreRecipeRegistrator> registrator) {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {

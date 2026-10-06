@@ -18,13 +18,12 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.OreDictItemStack;
 
-/// An ore-dictionary wildcard such as `plateAnyIron`: every member material's part is also registered under the
-/// wildcard's name, so a recipe naming it accepts any member. Each wildcard is a MaterialLib [Family] of its
-/// members, and names one member as its [#representative], the material a recipe's recycling data counts the
-/// wildcard as and the part a recipe shows first.
+/// An oredict wildcard such as `plateAnyIron`. Every member material's part also registers under the wildcard's
+/// name, so a recipe naming it accepts any member. Each wildcard is a MaterialLib [Family] of its members. Its
+/// [#representative] is the member that recycling data counts the wildcard as, and the part a recipe shows first.
 ///
-/// A wildcard is not a material. Its family carries no shapes or properties, because family properties are
-/// inherited by the members, and one material may belong to several wildcards.
+/// A wildcard is not a material. Its family carries no shapes or properties, since members inherit family
+/// properties and a material may belong to several wildcards.
 public enum Wildcard {
 
     AnyIron("Iron", "Iron", "PigIron", "CastIron"),
@@ -63,7 +62,7 @@ public enum Wildcard {
         return representative;
     }
 
-    /// The ore-dictionary name of `prefix` for this wildcard, such as `plateAnyIron`.
+    /// The oredict name of `prefix` for this wildcard, such as `plateAnyIron`.
     public String oreDictName(OrePrefixes prefix) {
         return prefix.oreDictName(name());
     }
@@ -80,7 +79,7 @@ public enum Wildcard {
     }
 
     /// The representative of the wildcard named `name`, such as `AnySyntheticRubber`, or null when no wildcard has
-    /// that name. A saved tool may name a wildcard as one of its materials.
+    /// that name.
     public static @Nullable Material representativeNamed(String name) {
         for (Wildcard wildcard : values()) {
             if (wildcard.name()
@@ -100,7 +99,7 @@ public enum Wildcard {
         return result;
     }
 
-    /// The representative's part for a wildcard ore-dictionary name such as `plateAnyIron`, or null when
+    /// The representative's part for a wildcard oredict name such as `plateAnyIron`, or null when
     /// `oreName` names no wildcard.
     public static @Nullable ItemStack representativeStack(String oreName) {
         for (Wildcard wildcard : values()) {

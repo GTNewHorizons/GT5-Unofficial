@@ -36,14 +36,11 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.crossmod.backhand.Backhand;
 
-/// The item form of a [PipeShapeBlock]: damage is the material's global index. Display names go through the
-/// `gt.oreprefix.*` localization keys with grammatical inflection, tooltips reuse the canonical
-/// material-agnostic MTE's description primed with the stack's material, and placement mirrors
-/// [ItemMachines#placeBlockAt] with the shape's fixed MTE id.
+/// The item form of a [PipeShapeBlock]. Damage is the material index. Names and tooltips come from the shape's
+/// MTE, evaluated for the stack's material. Placement mirrors [ItemMachines#placeBlockAt].
 public class PipeShapeItemBlock extends ItemBlock {
 
-    /// Display-name overrides keyed by legacy internal material name, replacing the material's own name in
-    /// the prefix format. One table serves both pipe families.
+    /// Pipe display-name overrides for the material name, keyed by internal material name.
     private static final Map<String, String> MATERIAL_DISPLAY_OVERRIDES = Map.of(
         "Wood",
         "Wooden",
@@ -180,7 +177,7 @@ public class PipeShapeItemBlock extends ItemBlock {
         return true;
     }
 
-    /// The Backhand offhand-wrench input-blocking shortcut, mirroring `ItemMachines#pipeDirectionOffhand`.
+    /// Mirrors `ItemMachines#pipeDirectionOffhand`.
     private static void pipeDirectionOffhand(EntityPlayer player, MTEFluidPipe pipe, ForgeDirection side) {
         ItemStack offHand = Backhand.getOffhandItem(player);
         if (GTUtility.isStackInList(offHand, GregTechAPI.sWrenchList)) {

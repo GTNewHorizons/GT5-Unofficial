@@ -4,10 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingPure;
 
-/// Dispatches [ProcessingPure]'s `crushedPurified`-prefix recipe generation for MaterialLib's cutover
-/// crushed-purified-ore shape. Of the three prefixes [ProcessingPure] shares one body across
-/// (`crushedPurified`, `cleanGravel`, `reduced`), only `crushedPurified` is cut over; the other two have no
-/// MaterialLib shape.
+/// Generates purified crushed-ore recipes through [ProcessingPure].
 public final class ConsumerPure {
 
     private ConsumerPure() {}

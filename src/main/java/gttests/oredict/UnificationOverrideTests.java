@@ -28,10 +28,8 @@ import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.OreDictUtils;
 
-/// Pins which item stands for a material part when several mods register one. GregTech-preferred names must
-/// keep a GregTech item although most competing registrations reach GregTech through
-/// `GTProxy#catchUpPreExistingOreDictEntries` rather than a live event; pairs declared with a shape override
-/// must resolve to the overriding item through every lookup.
+/// Which item a material part unifies to when several mods register one. GregTech-preferred names keep a GregTech
+/// item, and shape-override pairs resolve to the overriding item through every lookup.
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class UnificationOverrideTests {
 
@@ -57,8 +55,8 @@ public class UnificationOverrideTests {
         helper.succeed();
     }
 
-    /// A pair served by a shape override has one item everywhere: MaterialLib, the item its ore-dictionary name
-    /// stands for, and the association other mods read a vanilla stack's material from.
+    /// A pair served by a shape override has the same item in MaterialLib, its oredict unification target, and
+    /// its material association.
     @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
     public static void overriddenPairsResolveToTheirVanillaItemEverywhere(GameTestHelper helper) {
         List<String> mismatches = new ArrayList<>();
@@ -187,8 +185,7 @@ public class UnificationOverrideTests {
         helper.succeed();
     }
 
-    /// Only a MaterialLib pair or a target GregTech set turns one mod's item into another's: other mods' parts of
-    /// shapes GregTech does not generate stay as they are.
+    /// Other mods' parts with no MaterialLib pair do not unify.
     @GameTest(timeoutTicks = 20, batch = "gt5.oredict")
     public static void namesWithoutMaterialLibPartsDoNotUnify(GameTestHelper helper) {
         List<String> converted = new ArrayList<>();

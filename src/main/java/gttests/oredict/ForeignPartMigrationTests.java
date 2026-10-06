@@ -17,8 +17,8 @@ import gregtech.api.material.MaterialParts;
 import gregtech.loaders.postload.ForeignPartTable;
 import gttests.PosteaTestSupport;
 
-/// Pins that a saved stack of another mod's unified part loads as the MaterialLib pair it stands for. Skips in a
-/// world's first session; see [PosteaTestSupport].
+/// Saved stacks of other mods' unified parts load as their MaterialLib items. Skips in a world's first session;
+/// see [PosteaTestSupport].
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class ForeignPartMigrationTests {
 

@@ -6,8 +6,8 @@ import java.util.Map;
 import com.gtnewhorizons.horizonqa.api.GameTestHelper;
 import com.gtnewhorizons.postea.utility.TransformerRegistry;
 
-/// Postea resolves its id-keyed transformers only when it loads a saved world, so tests of migrated saves skip in a
-/// world's first session.
+/// Skips migrated-save tests in a world's first session, since Postea only activates its id-keyed transformers
+/// when loading a saved world.
 public final class PosteaTestSupport {
 
     private PosteaTestSupport() {}

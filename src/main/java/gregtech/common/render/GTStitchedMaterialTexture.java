@@ -7,15 +7,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.render.ISBRContext;
 
-/// A material texture a caller can hold across atlas stitches and resource reloads. The delegate texture reads
-/// the container's layers on every draw; the layer-0 tint is taken from the supplier on the first face drawn
-/// after each stitch, so a held texture always tints with the material's current color.
+/// A material texture that stays valid across atlas stitches and resource reloads. It rebuilds on the first face
+/// drawn after each stitch, taking the tint from the supplier at that point.
 ///
-/// Faces draw from several chunk meshing threads, so the rebuild is lock free -- one volatile field holds an
-/// immutable generation-and-texture pair, and a race costs at most a duplicate build.
+/// Faces draw from several chunk meshing threads, so the rebuild is lock free. A race costs at most a duplicate
+/// build.
 ///
-/// [#isValidTexture] is constant because [gregtech.api.covers.CoverRegistry] vets a cover texture on a
-/// dedicated server, where no atlas exists and a build must not be forced.
+/// [#isValidTexture] is constant since [gregtech.api.covers.CoverRegistry] checks cover textures on dedicated
+/// servers, which have no atlas.
 public final class GTStitchedMaterialTexture implements ITexture {
 
     private static volatile int generation;

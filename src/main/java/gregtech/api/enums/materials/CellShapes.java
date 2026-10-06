@@ -10,23 +10,18 @@ import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.common.items.GTSolidCellShapeItem;
 
-/// Cell [Shape] declarations. Every cell shape drains to [#emptyCell], a gregtech-owned standalone empty container
-/// item registered through MaterialLib alongside the shapes themselves.
+/// Cell [Shape] declarations. Every cell drains to [#emptyCell].
 ///
-/// `cellPlasma` needs two shapes sharing one oredict prefix: a plasma cell holds [GTRecipeBuilder#INGOTS] (144 mB)
-/// for most materials that also have a molten fluid (metal plasmas), and 1000 mB for gas and element plasmas and for
-/// the materials whose plasma fluid registers its own 1000 mB cell -- a per-material volume MaterialLib's container
-/// shape does not support directly. A material declares [#cellPlasmaLight] for the 1000 mB cell. [MaterialParts]
-/// resolves the two back to one prefix.
+/// Two oredict prefixes span several shapes, since a MaterialLib container has one volume and binds one fluid
+/// shape:
+/// - `cellPlasma` holds 144 mB for most metal plasmas. Materials whose plasma cell holds 1000 mB declare
+/// [#cellPlasmaLight] instead.
+/// - `cell` covers [#cell] for liquids, [#cellGas] for gases and [#cellSolid] for materials with no fluid.
 ///
-/// `cell`, `cellGas` and `cellSolid` share the `cell` prefix the same way. A MaterialLib container binds one fluid
-/// shape, and the liquid and gas fluid names are frozen in world NBT. Gas materials therefore fill [#cellGas], and a
-/// material with a cell but no fluid at all fills [#cellSolid]; [MaterialParts] resolves both back to the `cell`
-/// prefix.
+/// [gregtech.api.material.MaterialParts] resolves each group back to its prefix.
 public class CellShapes {
 
-    /// The empty cell every cell shape drains to, rebound onto `ItemList.Cell_Empty` during GTProxy's preInit.
-    /// Renders through the same [#CELL_BASE] art as the filled cells.
+    /// The empty cell every cell shape drains to, bound to `ItemList.Cell_Empty`.
     public static EmptyContainerHandle emptyCell;
 
     /// Untinted container base for [#cell] and the six cracked-cell shapes.

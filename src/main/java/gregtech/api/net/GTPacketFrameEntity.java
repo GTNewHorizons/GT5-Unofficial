@@ -14,10 +14,9 @@ import io.netty.buffer.Unpooled;
 
 /// Server -> Client : Full state of a frame-box tile entity.
 ///
-/// [FrameShapeBlock] never creates tile entities itself, so after a chunk load the client has no tile
-/// entity for the vanilla description packet to land on and the packet is dropped. The frame tile entity
-/// therefore describes itself with this packet instead; the client handler creates the tile entity when
-/// it is missing and applies the same description buffer the vanilla packet would have carried.
+/// [FrameShapeBlock] never creates tile entities itself, so after a chunk load the vanilla description packet has
+/// no tile entity to land on. The client handler creates the tile entity when it is missing and applies the
+/// description buffer.
 public class GTPacketFrameEntity extends GTPacket {
 
     private int mX;

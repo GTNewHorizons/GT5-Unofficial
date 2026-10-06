@@ -20,15 +20,13 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.TEBlockShapes;
 
-/// Angelica pauses an animated block icon's frame advance while it is off-screen. [#ANIMATED]'s storage-block
-/// and frame-box art must keep animating regardless of visibility, so this forces their icons to tick every
-/// client frame through [TextureServices#updateTextureAnimation].
+/// Keeps the animated storage-block and frame-box icons of [#ANIMATED] ticking every client frame. Angelica
+/// pauses animations of off-screen block icons, and these must keep animating.
 @SideOnly(Side.CLIENT)
 public class AnimatedBlockTextureHandler implements IResourceManagerReloadListener {
 
-    /// The materials whose storage block and frame box carry a baked animated icon. `Dragonblood` needs no
-    /// entry of its own despite sharing the same animation: it declares the same texture set as `Hypogen`
-    /// (`CUSTOM/hypogen`), so both materials' `block`/`frameGt` icons resolve to the same stitched sprite.
+    /// The materials whose storage block and frame box carry an animated icon. `Dragonblood` shares `Hypogen`'s
+    /// texture set, so the `Hypogen` entry covers it.
     private static final Material[] ANIMATED = { Materials.AstralTitanium, Materials.CelestialTungsten,
         Materials.ChromaticGlass, Materials.Hypogen };
 
@@ -49,7 +47,6 @@ public class AnimatedBlockTextureHandler implements IResourceManagerReloadListen
 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager) {
-        // A reload re-stitches the atlas and reassigns each block's sprite, so the cached icons go stale.
         icons = null;
     }
 

@@ -37,13 +37,12 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.GTRendererBlock;
 
-/// The block backing one pipe-family MaterialLib shape (a wire, cable, fluid pipe, or item pipe of one
-/// size): metadata is the material's global index, and every placement carries a [BaseMetaPipeEntity]
-/// whose meta tile entity is the single material-agnostic instance registered for this shape's [#mteId].
-/// World behavior (collision, redstone, drops, updates) mirrors [BlockMachines].
+/// The block for one size of wire, cable, fluid pipe, or item pipe MaterialLib shape. Metadata is the material
+/// index. Each placement carries a [BaseMetaPipeEntity] bound to the shape's material-agnostic MTE ([#mteId]).
+/// World behavior mirrors [BlockMachines].
 public class PipeShapeBlock extends ShapeBlock {
 
-    /// The pipe kind a shape belongs to, deciding harvest tool, tile entity kind, and stat derivation.
+    /// The pipe kind a shape belongs to.
     public enum PipeFamily {
         WIRE,
         CABLE,
@@ -65,8 +64,8 @@ public class PipeShapeBlock extends ShapeBlock {
 
     private boolean checkingAdjacent = false;
 
-    /// `iconName` is the texture-set file this shape's art lives in, which several shapes share: every wire and
-    /// cable gauge draws `wire.png`, and each item pipe draws the fluid pipe art of its size.
+    /// `iconName` is the texture-set file of this shape's art, which several shapes can share (e.g. every wire and
+    /// cable draws `wire.png`).
     public PipeShapeBlock(String name, String displayNameFormat, String prefixKey, int mteId, PipeFamily family,
         int sizeIndex, int pipeAmount, float thickness, String iconName, String... oreDicts) {
         super(new MaterialMachines(), "gregtech", name, displayNameFormat, oreDicts);
@@ -93,7 +92,7 @@ public class PipeShapeBlock extends ShapeBlock {
         return iconName;
     }
 
-    /// The id of the single material-agnostic MTE every placement of this shape binds.
+    /// The id of the material-agnostic MTE every placement of this shape binds.
     public int getMteId() {
         return mteId;
     }

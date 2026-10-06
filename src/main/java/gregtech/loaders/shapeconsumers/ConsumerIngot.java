@@ -4,7 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingIngot;
 
-/// Dispatches [ProcessingIngot]'s `ingot`/`ingotHot` recipe generation for MaterialLib's cutover ingot shapes.
+/// Generates ingot and hot-ingot recipes through [ProcessingIngot].
 public final class ConsumerIngot {
 
     private ConsumerIngot() {}

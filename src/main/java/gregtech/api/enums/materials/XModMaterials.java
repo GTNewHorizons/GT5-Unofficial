@@ -13,18 +13,14 @@ import gregtech.api.enums.Mods;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 
-/// Materials whose items all belong to another mod. GregTech declares the material itself unconditionally, so
-/// its ore-dictionary names keep resolving and its registration name stays stable in a saved world, and takes
-/// the item side from the owning mod through [ForeignShape] rows applied with [MaterialLibAPI#editMaterial].
+/// Materials whose items all belong to another mod. GregTech always declares the material, so its oredict names
+/// and save identity stay stable, and takes the items from the owning mod through [ForeignShape] rows.
 ///
-/// Every row is conditional on its mod: a generated shape with no override makes MaterialLib mint its own item,
-/// which for a material GregTech does not itself produce would be a new item appearing whenever the mod is
-/// absent. Without the mod the material therefore stays shapeless, and call sites must read it through
-/// `MaterialParts` or `Material#hasShape` rather than fetching a part outright.
+/// A row applies only when its mod is loaded. Without the mod the material has no shapes, so call sites check
+/// `Material#hasShape` or go through `MaterialParts` instead of fetching a part directly.
 ///
-/// A prefix MaterialLib has no shape for cannot carry a row: those ore-dictionary names
-/// (`crystalFluix`, `pearlFluix`) reach the material through [gregtech.common.oredict.OreDictAliases] and the
-/// ordinary name parsing instead.
+/// Oredict names with no MaterialLib shape (`crystalFluix`, `pearlFluix`) reach the material through
+/// [gregtech.common.oredict.OreDictAliases].
 public class XModMaterials {
 
     public static Material Fluix;

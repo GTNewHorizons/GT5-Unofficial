@@ -40,15 +40,11 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
 import gregtech.common.config.Client;
 
-/// GregTech's read layer over a MaterialLib [Material]: the accessors for everything GregTech attaches to a
-/// material through [GTMaterialProperties], grouped by domain (fluids, ores, tools, names, flags, colour).
+/// Accessors for everything GregTech attaches to a MaterialLib [Material] through [GTMaterialProperties], grouped
+/// by domain (fluids, ores, tools, names, flags, colour).
 ///
-/// Every accessor tolerates a null material and answers with the same value an unset property would give.
-/// Values whose default is a plain constant are declared on the [Property] key itself
-/// (see [gregtech.api.material.GTMaterialProperties]); the accessors here carry only the null-material case and
-/// the defaults a constant cannot express.
-///
-/// Computation lives in the purpose-built classes this delegates to, [MaterialAtomics] and [MaterialFormulas].
+/// Accessors tolerate a null material and answer what an unset property would. Plain-constant defaults live on the
+/// [com.ruling_0.materiallib.api.Property] key itself.
 public class MaterialUtils {
 
     private MaterialUtils() {}
@@ -71,8 +67,7 @@ public class MaterialUtils {
     private static Map<String, Material> legacyNameToMaterial;
 
     /// The dust [ItemStack] a [GTMaterialProperties#COMPOSITION] entry contributes to a recipe, sized by the
-    /// entry's amount, or null when the referenced material carries no `dust` shape (a gas/fluid-only
-    /// component -- see [#compositionGas]).
+    /// entry's amount, or null when the material carries no `dust` shape (see [#compositionGas]).
     public static @Nullable ItemStack compositionDust(MaterialRefStack entry) {
         Material material = entry.material()
             .resolve();
@@ -98,8 +93,7 @@ public class MaterialUtils {
     }
 
     /// The molten fluid stack for a material at `amount`, or null when [#hasMolten] is false. A
-    /// [#recordSlotFluid]-stored MOLTEN fluid takes precedence; otherwise resolves the
-    /// [FluidShapes#fluidMolten] MaterialLib shape stack directly.
+    /// [#recordSlotFluid]-stored MOLTEN fluid takes precedence over the [FluidShapes#fluidMolten] shape.
     public static @Nullable FluidStack molten(@Nullable Material material, long amount) {
         Fluid stored = storedFluid(material, FluidState.MOLTEN);
         if (stored != null) return new FluidStack(stored, (int) amount);
@@ -113,17 +107,14 @@ public class MaterialUtils {
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// The raw [Fluid] for a material's liquid slot. A [#recordSlotFluid]-stored LIQUID fluid takes
-    /// precedence; otherwise a material listed in [MaterialFluidNames] must declare its `fluid()` slot, and MaterialLib
-    /// must have registered a fluid for one of the liquid-state shapes. Vanilla fluids such as `Water` and
-    /// `Milk` have no slot row and are not reachable here.
+    /// The [Fluid] for a material's liquid slot. A [#recordSlotFluid]-stored LIQUID fluid takes precedence.
+    /// A material listed in [MaterialFluidNames] must declare its `fluid()` slot. Vanilla fluids such as `Water`
+    /// and `Milk` are not reachable here.
     public static @Nullable Fluid fluidOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.LIQUID, FluidNames::fluid);
     }
 
-    /// [#fluid], for a material's `gas()` slot; null when it carries none. Agrees with any
-    /// [FluidShapes#fluidGas] shape the material generates, and also resolves gas fluids that never became a
-    /// MaterialLib shape.
+    /// [#fluid], for a material's `gas()` slot.
     public static @Nullable FluidStack gas(@Nullable Material material, long amount) {
         Fluid fluid = resolveSlotFluid(material, FluidState.GAS, FluidNames::gas);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
@@ -143,7 +134,7 @@ public class MaterialUtils {
         return flags != null && flags.contains(flag);
     }
 
-    /// [#fluid], for a material's `solid()` slot.
+    /// The [#recordSlotFluid]-stored SOLID fluid, as a sized [FluidStack].
     public static @Nullable FluidStack solid(@Nullable Material material, long amount) {
         Fluid fluid = storedFluid(material, FluidState.SOLID);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
@@ -180,9 +171,8 @@ public class MaterialUtils {
         return resolveSlotFluid(material, FluidState.PLASMA, FluidNames::plasma);
     }
 
-    /// [#fluidOf]'s raw [Fluid] for the `molten()` slot, resolved from the same [MaterialFluidNames] `molten`
-    /// slot (or [#recordSlotFluid] store) as [#molten]. Does not fall back to the [FluidShapes#fluidMolten]
-    /// shape lookup, so for a material listed in [MaterialFluidNames] this is null exactly when the slot is unset.
+    /// [#fluidOf]'s raw [Fluid] for the `molten()` slot. Unlike [#molten], null when a material listed in
+    /// [MaterialFluidNames] declares no `molten()` slot, even if it carries the [FluidShapes#fluidMolten] shape.
     public static @Nullable Fluid moltenOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.MOLTEN, FluidNames::molten);
     }
@@ -209,9 +199,9 @@ public class MaterialUtils {
 
     private static final Map<Material, EnumMap<FluidState, Fluid>> slotFluids = new HashMap<>();
 
-    /// Records the Forge fluid backing one of `material`'s legacy fluid states, for materials whose fluids are
-    /// configured at registration time instead of carried as [MaterialFluidNames] data. A recorded fluid takes
-    /// precedence over the property resolution in [#fluidOf]/[#gas]/[#molten]/[#solid]/[#plasma].
+    /// Records the Forge fluid backing one of `material`'s fluid states, for fluids configured at registration
+    /// instead of declared in [MaterialFluidNames]. A recorded fluid takes precedence in [#fluidOf], [#gas],
+    /// [#molten], [#solid] and [#plasma].
     public static void recordSlotFluid(Material material, FluidState state, Fluid fluid) {
         slotFluids.computeIfAbsent(material, k -> new EnumMap<>(FluidState.class))
             .put(state, fluid);
@@ -293,20 +283,18 @@ public class MaterialUtils {
         return MaterialLibAPI.getFluid(material, CRACKED_SHAPES.get(type)[severity]);
     }
 
-    /// The block-form metadata index a material was assigned (e.g. the frame and storage-block variant
-    /// selector), from [GTMaterialProperties#OLD_SUB_ID], or `-1` if unset. `-1` is this accessor's own
-    /// sentinel, not a [GTMaterialProperties#OLD_SUB_ID] default: absence is meaningful for that key.
+    /// The metadata index a material was assigned, such as its frame and storage block variant
+    /// ([GTMaterialProperties#OLD_SUB_ID]). `-1` if unset.
     public static int oldSubId(@Nullable Material material) {
         if (material == null) return -1;
         Integer id = material.getProperty(GTMaterialProperties.OLD_SUB_ID);
         return id == null ? -1 : id;
     }
 
-    /// The `[r, g, b, a]` short array for a material's declared MaterialLib tint ([StandardProperties#TINT]),
-    /// or null for a material that declares none. A resource
-    /// pack overrides the declared value through the lang key
-    /// `color.resource.materiallib.<MaterialName>.tint`. Resolved through a [ColorResource] on every call, so
-    /// a per-draw read follows such an override while a value captured once at load keeps the coded default.
+    /// The `[r, g, b, a]` short array for a material's declared [StandardProperties#TINT], or null when it
+    /// declares none. A resource pack can override it through the lang key
+    /// `color.resource.materiallib.<MaterialName>.tint`. Resolved through a [ColorResource] on every call, so a
+    /// value captured once at load misses the override.
     public static @Nullable short[] rgba(@Nullable Material material) {
         if (material == null || !material.hasProperty(StandardProperties.TINT)) return null;
         int declared = material.getProperty(StandardProperties.TINT);
@@ -318,10 +306,9 @@ public class MaterialUtils {
             (short) ((argb >>> 24) & 0xFF) };
     }
 
-    /// The `[r, g, b, a]` short array for a material's molten/plasma fluid color. Unpacks
-    /// [GTMaterialProperties#MOLTEN_ARGB] when present;
-    /// otherwise falls back to [#rgba], and to `{255, 255, 255, 0}` when neither is present. Never null,
-    /// unlike [#rgba]. Resolved through a [ColorResource] on every call, as [#rgba] is.
+    /// The `[r, g, b, a]` short array for a material's molten and plasma fluid color:
+    /// [GTMaterialProperties#MOLTEN_ARGB], else [#rgba], else `{255, 255, 255, 0}`. Never null. Resolved through a
+    /// [ColorResource] on every call, as [#rgba] is.
     public static short[] moltenRgba(@Nullable Material material) {
         Integer declared = material == null ? null : material.getProperty(GTMaterialProperties.MOLTEN_ARGB);
         if (declared == null) {
@@ -439,10 +426,9 @@ public class MaterialUtils {
         return material == null || material.getProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES);
     }
 
-    /// The Kelvin melting point for a material: its declared [GTMaterialProperties#MELTING_POINT], or -- for a
-    /// material that declares none but whose [GTMaterialProperties#COMPOSITION] holds more than one unit -- the
-    /// average over that composition, where a component carrying no melting point of its own counts toward the
-    /// divisor but contributes nothing. `-1` when neither applies.
+    /// The Kelvin melting point: the declared [GTMaterialProperties#MELTING_POINT], else the average over a
+    /// [GTMaterialProperties#COMPOSITION] of more than one unit, where components with no melting point count as
+    /// zero. `-1` when neither applies.
     public static int meltingPoint(@Nullable Material material) {
         if (material == null) return -1;
         int declared = material.getProperty(GTMaterialProperties.MELTING_POINT);
@@ -462,8 +448,8 @@ public class MaterialUtils {
     }
 
     /// A material's gas registration temperature in Kelvin: room temperature (295 K) when
-    /// [GTMaterialProperties#GAS_TEMP] is unset or zero, otherwise the material's [#meltingPoint] -- not the
-    /// `GAS_TEMP` property's own value.
+    /// [GTMaterialProperties#GAS_TEMP] is unset or zero, otherwise its [#meltingPoint]. The `GAS_TEMP` value
+    /// itself is not used.
     public static int gasTemperature(@Nullable Material material) {
         Integer gasTemp = material == null ? null : material.getProperty(GTMaterialProperties.GAS_TEMP);
         return gasTemp == null || gasTemp == 0 ? 295 : meltingPoint(material);
@@ -568,7 +554,7 @@ public class MaterialUtils {
         return material == null ? 0f : material.getProperty(GTMaterialProperties.HEAT_DAMAGE);
     }
 
-    /// Whether a material's items unify under the ore dictionary -- `true` unless
+    /// Whether a material's items unify by oredict -- `true` unless
     /// [GTMaterialProperties#UNIFIABLE] is explicitly `false`.
     public static boolean unifiable(@Nullable Material material) {
         return material == null || material.getProperty(GTMaterialProperties.UNIFIABLE);
@@ -626,9 +612,8 @@ public class MaterialUtils {
         return hop == null ? target : hop.resolve();
     }
 
-    /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of
-    /// the same name -- see [GTMaterialProperties#FLAGS]. Also true when [GTMaterialProperties#SUB_TAGS]
-    /// names `flag`, which is the second source for the same 1:1 name mapping.
+    /// Whether a material's [GTMaterialProperties#FLAGS] carry `flag`, or its [GTMaterialProperties#SUB_TAGS]
+    /// list the flag's constant name.
     public static boolean hasFlag(@Nullable Material material, GTMaterialFlag flag) {
         if (material == null) return false;
         EnumSet<GTMaterialFlag> flags = material.getProperty(GTMaterialProperties.FLAGS);
@@ -645,8 +630,8 @@ public class MaterialUtils {
         return subTags != null && subTags.contains(subTag);
     }
 
-    /// The legacy internal name of a MaterialLib material -- [GTMaterialProperties#LEGACY_NAME] when present
-    /// (MaterialLib sanitizes registration names), otherwise the registration name.
+    /// A material's internal name: [GTMaterialProperties#LEGACY_NAME] when present, otherwise the registration
+    /// name.
     public static @Nullable String internalName(@Nullable Material material) {
         if (material == null) return null;
         String legacyName = material.getProperty(GTMaterialProperties.LEGACY_NAME);
@@ -800,8 +785,8 @@ public class MaterialUtils {
         return stoneType.getCategory() == category;
     }
 
-    /// Whether a [Material] carries the [GTMaterialFlag] equivalent of a legacy [SubTag] (see
-    /// [#flagForSubTag]); false for a null material.
+    /// Whether a [Material] carries the [GTMaterialFlag] matching `subTag` (see [#flagForSubTag]). False for a null
+    /// material.
     public static boolean hasSubTag(@Nullable Material material, SubTag subTag) {
         if (material == null) return false;
         GTMaterialFlag flag = flagForSubTag(subTag);
@@ -838,8 +823,6 @@ public class MaterialUtils {
 
     /// The [GTMaterialFlag] whose enum-constant name equals `subTag`'s name, or null when none does.
     private static @Nullable GTMaterialFlag flagForSubTag(SubTag subTag) {
-        // AnaerobeGas and NobleGas are the two GTMaterialFlag constants whose SubTag name does not match the
-        // enum constant name.
         switch (subTag.mName) {
             case "AnaerobeGas":
                 return GTMaterialFlag.ANAEROBE_GAS;

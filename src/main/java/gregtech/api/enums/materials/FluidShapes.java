@@ -193,8 +193,7 @@ public class FluidShapes {
             .setLuminosity(15);
     }
 
-    /// Mirrors `GTFluid#configureFromStateTemperature`'s `MOLTEN` case, which falls through into `LIQUID`'s
-    /// gaseous/viscosity after computing its own temperature-dependent luminosity.
+    /// Mirrors the `MOLTEN` case of `GTFluid#configureFromStateTemperature`.
     private static void moltenAttrs(Fluid fluid, int temperature) {
         int luminosity = temperature >= 3500 ? 15 : (temperature < 1000 ? 0 : 14 * (temperature - 1000) / 2500 + 1);
         fluid.setGaseous(false)

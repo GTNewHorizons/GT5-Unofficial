@@ -5,9 +5,8 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MaterialParts;
 
-/// Dispatches the registrators attached through [OrePrefixes#addShapeRegistrator], which other code (the
-/// prospector scanners, other mods) attaches after this package's consumers are registered: the consumer for
-/// every prefix shape is registered up front and reads the prefix's list when MaterialLib dispatches it.
+/// Runs the registrators attached through [OrePrefixes#addShapeRegistrator] for every prefix shape. Registrators may
+/// attach after this consumer is registered, so each dispatch reads the prefix's current list.
 public final class ConsumerShapeRegistrators {
 
     private ConsumerShapeRegistrators() {}

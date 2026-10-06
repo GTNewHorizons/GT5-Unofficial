@@ -4,7 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.loaders.oreprocessing.ProcessingCell;
 
-/// Dispatches [ProcessingCell]'s `cell`/`cellPlasma` recipe generation for the cutover cell shapes.
+/// Generates cell and plasma-cell recipes through [ProcessingCell].
 public final class ConsumerCell {
 
     private ConsumerCell() {}

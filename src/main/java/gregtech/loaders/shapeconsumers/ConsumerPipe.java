@@ -7,13 +7,11 @@ import gregtech.api.enums.materials.PipeMaterials;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.loaders.oreprocessing.ProcessingPipe;
 
-/// Dispatches [ProcessingPipe]'s recipe generation for the twelve pipe prefixes. The fluid and item shapes
-/// sharing a `pipeTiny`..`pipeHuge` prefix string are both delegated under that prefix; their material sets
-/// are disjoint, see [TEBlockShapes].
+/// Generates fluid and item pipe recipes through [ProcessingPipe].
 ///
-/// The High Pressure (Redstone) fluid pipes are skipped: their oredict identity is the tier-keyed
-/// `pipeSmallUltimate`..`pipeLargeUltimate` names (registered by
-/// `gregtech.loaders.preload.LoaderMaterialLibCutover`), and they have no generated recipes.
+/// Fluid and item pipes share the `pipeTiny`..`pipeHuge` prefixes. Their material sets are disjoint, see
+/// [TEBlockShapes].
+/// High Pressure (Redstone) fluid pipes are skipped; they have no generated recipes.
 public final class ConsumerPipe {
 
     private ConsumerPipe() {}

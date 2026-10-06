@@ -11,12 +11,8 @@ import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.PipeShapeBlock;
 
-/// Registers the canonical material-agnostic MTE instance behind each [TEBlockShapes] shape, one per
-/// shape at the id its block declares: wires and cables ([MTECable]), fluid pipes ([MTEFluidPipe]), item
-/// pipes ([MTEItemPipe]), and the frame box ([MTEFrame]). Each instance derives its material and stats from
-/// its host block's metadata instead of carrying them per registration. The material membership of each
-/// shape is declared at material registration; the frame set's authoritative source is
-/// [PipeMaterials#frameMaterials].
+/// Registers the material-agnostic MTE behind each [TEBlockShapes] shape, at the id its block declares. Each MTE
+/// reads its material and stats from its host block's metadata.
 public final class LoaderPipeShapeEntities implements Runnable {
 
     @Override

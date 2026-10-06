@@ -10,16 +10,12 @@ import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.common.blocks.PipeShapeBlock.PipeFamily;
 
-/// Block [Shape] declarations for the pipe families: wires, cables, fluid pipes (single- and multi-channel),
-/// item pipes (normal and restrictive), and the frame box. Each shape is backed by one [PipeShapeBlock] (or
-/// [FrameShapeBlock]) carrying the id of the material-agnostic MTE registered for it by
-/// [gregtech.loaders.preload.LoaderPipeShapeEntities].
+/// Block [Shape] declarations for wires, cables, fluid pipes, item pipes and the frame box. Each is backed by a
+/// [PipeShapeBlock] or [FrameShapeBlock] holding the id of the MTE that
+/// [gregtech.loaders.preload.LoaderPipeShapeEntities] registers for it.
 ///
-/// The fluid and item pipe prefixes share their oredict name strings (`pipeTiny`..`pipeHuge` serve both
-/// families for disjoint material sets), so the item-pipe shape names differ (`itemPipeTiny`..) while their
-/// oredict prefixes keep the legacy strings. These shapes feed [gregtech.api.material.MaterialParts]'s prefix-to-shape
-/// map; the `itemPipe*` shapes, whose names match no `OrePrefixes`, are folded there under the
-/// `pipeTiny`..`pipeHuge` / `pipeRestrictive*` prefix keys, the fluid shape staying the first candidate.
+/// Fluid and item pipes share the `pipeTiny`..`pipeHuge` oredict prefixes, for disjoint material sets. The item
+/// pipe shapes take their own names (`itemPipeTiny`..) but keep the shared prefixes.
 public class TEBlockShapes {
 
     // spotless:off

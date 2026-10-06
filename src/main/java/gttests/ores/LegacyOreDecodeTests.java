@@ -17,10 +17,9 @@ import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 
-/// Pins the decoding of the legacy tile-entity ore metas VisualProspecting reads from unconverted chunks:
-/// `GT_TileEntity_Ores` packs the legacy material sub id, a thousands digit indexing Stone, Netherrack, Endstone
-/// and the other pre-space stones, and a small-ore offset of 16000; `bw.blockoresTE` holds a werkstoff id on
-/// Stone.
+/// Decoding of the legacy tile-entity ore metas that VisualProspecting reads from unconverted chunks.
+/// `GT_TileEntity_Ores` metas are the legacy sub id, plus 1000 per stone index, plus 16000 for small ores.
+/// `bw.blockoresTE` holds a werkstoff id on Stone.
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class LegacyOreDecodeTests {
 

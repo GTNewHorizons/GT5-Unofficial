@@ -5,10 +5,8 @@ import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingIceOre;
 
-/// Dispatches [ProcessingIceOre]'s `ore`/`rawOre` recipe generation. A second, independent registrator on
-/// those prefixes alongside [ProcessingOre]/[ProcessingRawOre]. The ore line fans out per stone variant (see
-/// [ShapeConsumerSupport#delegateOreVariants]), which is what reaches the ice stones ice-ore materials
-/// actually generate on; `rawOre` is an item shape with no variants.
+/// Generates ice-ore recipes through [ProcessingIceOre]. Ore blocks dispatch once per stone variant, which is what
+/// reaches the ice stones (see [ShapeConsumerSupport#delegateOreVariants]).
 public final class ConsumerIceOre {
 
     private ConsumerIceOre() {}

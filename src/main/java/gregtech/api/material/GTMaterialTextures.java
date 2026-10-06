@@ -8,17 +8,16 @@ import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTStitchedMaterialTexture;
 
-/// Builds the [ITexture] a material [IIconContainer] draws as, so a material's art stacks the same way everywhere it
-/// is drawn. `of` fixes the layer-0 tint it is handed and reads the container's layers on every draw. `stored`
-/// re-resolves that tint after each atlas stitch, for a caller that holds one texture across resource reloads.
+/// Builds the [ITexture] a material [IIconContainer] draws as, so a material's art stacks the same way everywhere.
+/// `of` fixes the layer-0 tint it is given. `stored` re-resolves that tint after each atlas stitch, for a caller
+/// that holds one texture across resource reloads.
 public final class GTMaterialTextures {
 
     private GTMaterialTextures() {}
 
     /// The [ITexture] drawing `container`'s whole icon layer stack: layer 0 tinted with `rgba` and every further
-    /// layer with the color the container reports for it, `glow` applying to all of them. Art bound from a
-    /// resource-pack override draws untinted; a caller passing `untintOverrideArt` false has already resolved
-    /// override art into `rgba` itself, where something outranks the white-out (a painted frame keeps its dye).
+    /// layer with the color the container reports for it, `glow` applying to all of them. Resource-pack override
+    /// art draws untinted unless `untintOverrideArt` is false, as for a painted frame that keeps its dye.
     public static ITexture of(IIconContainer container, short[] rgba, boolean glow, boolean untintOverrideArt) {
         ITextureBuilder builder = TextureFactory.builder()
             .addIcon(container)

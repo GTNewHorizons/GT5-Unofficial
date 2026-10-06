@@ -1,9 +1,8 @@
 package gregtech.api.material;
 
-/// Pure size transforms deriving per-size wire/cable, fluid pipe, and item pipe stats from the base values
-/// held in [PipeProperties]. Wire and cable sizes are indexed 0 to 5
-/// (1x, 2x, 4x, 8x, 12x, 16x); pipe sizes 0 to 4 (tiny, small, medium, large, huge). All arithmetic is exact
-/// integer arithmetic, truncating division included.
+/// Derives per-size wire, cable, fluid pipe, and item pipe stats from the base values in
+/// [gregtech.api.enums.materials.PipeProperties]. Wire and cable sizes are indexed 0 to 5 (1x, 2x, 4x, 8x, 12x,
+/// 16x). Pipe sizes are indexed 0 to 4 (tiny, small, medium, large, huge). Division truncates.
 public final class PipeStats {
 
     /// Fluid channel count of the quadruple fluid pipe.

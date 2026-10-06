@@ -20,18 +20,12 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.nei.GTNEIDefaultHandler.CachedDefaultRecipe;
 
-/// Collapses the per-stone-variant ore recipes `ShapeConsumerSupport#delegateOreVariants` fans out into one
-/// NEI entry per (material, action): the shared [GTRecipeConstants#VARIANT_GROUP] tag plus the recipe's other
-/// inputs identify the members, and their stacks become permutations of a single displayed recipe.
+/// Collapses the per-stone-variant ore recipes into one NEI entry per material and action. Recipes sharing a
+/// [GTRecipeConstants#VARIANT_GROUP] tag and other inputs merge, and their stacks become permutations of one
+/// displayed recipe. This is display only; the recipe map keeps every variant.
 ///
-/// Display only. The recipe map still holds every member, so machine lookup, "show recipes" and "show uses"
-/// all still answer for each individual stone variant -- the merged entry's permutation lists contain all of
-/// them, so a query on any variant lands on it.
-///
-/// NEI cycles input permutations on its own timer and never touches output permutations
-/// ([codechicken.nei.recipe.NEIRecipeWidget]), and the slots hold different numbers of permutations anyway.
-/// A [Cycle] therefore drives the whole entry from the ore slot: whichever variant NEI has cycled that slot
-/// to, every other slot is set to the same member before it is drawn.
+/// NEI cycles each input slot on its own and never cycles outputs, so a [Cycle] keeps every slot of the entry
+/// on the variant the ore slot shows.
 final class OreVariantGroups {
 
     private OreVariantGroups() {}
@@ -80,8 +74,8 @@ final class OreVariantGroups {
         return displayed;
     }
 
-    /// The key recipes of one group share: the tag plus the identity of every input that is not a variant
-    /// stack. Stack sizes are left out, since a richer stone multiplies both the ore and its reagents.
+    /// The key recipes of one group share: the tag plus every input that is not a variant stack. Stack sizes are
+    /// left out, since a richer stone multiplies both the ore and its reagents.
     private static @Nullable String groupKey(GTRecipe recipe) {
         String tag = recipe.getMetadata(GTRecipeConstants.VARIANT_GROUP);
         if (tag == null) return null;
@@ -168,9 +162,8 @@ final class OreVariantGroups {
         followerStarts.add(starts);
     }
 
-    /// Replaces the first member's slot contents with every member's, and answers where each member's run
-    /// starts. Null when all the members hold the same stacks there, in which case the slot is left alone so
-    /// NEI has nothing to cycle.
+    /// Replaces the first member's slot contents with every member's, and returns where each member's run
+    /// starts. Returns null and leaves the slot alone when all members hold the same stacks there.
     private static int @Nullable [] concatenate(List<CachedDefaultRecipe> members, int slot, boolean input) {
         List<ItemStack> merged = new ArrayList<>();
         int[] starts = new int[members.size()];
@@ -231,8 +224,8 @@ final class OreVariantGroups {
             this.followerStarts = followerStarts;
         }
 
-        /// Re-pins on every call rather than only when the ore slot moves: a follower with fewer permutations
-        /// than the ore slot advances on the shared timer even while the ore slot stays put.
+        /// Re-pins on every call, since a follower with fewer permutations advances even while the ore slot
+        /// stays put.
         void sync() {
             int permutation = key.getPermutationIndex(key.item);
             if (permutation < 0 || permutation >= memberOfPermutation.length) return;

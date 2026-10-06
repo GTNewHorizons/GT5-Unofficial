@@ -4,7 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingScrew;
 
-/// Dispatches [ProcessingScrew]'s `screw`-prefix recipe generation for MaterialLib's cutover screw shape.
+/// Generates screw recipes through [ProcessingScrew].
 public final class ConsumerScrew {
 
     private ConsumerScrew() {}

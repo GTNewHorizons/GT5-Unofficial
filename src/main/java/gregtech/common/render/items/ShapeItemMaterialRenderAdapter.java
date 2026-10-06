@@ -16,13 +16,11 @@ import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTUtil;
 
-/// Adapts a MaterialLib [ShapeItem] to the [IGT_ItemWithMaterialRenderer] surface the
-/// [GeneratedMaterialRenderer] family reads from, letting a material's special renderer (assigned through
-/// [gregtech.api.material.MaterialRenderers#recordRenderer]) draw shape-backed items. See
-/// [IGT_ItemWithMaterialRenderer#resolve] for construction.
+/// Adapts a MaterialLib [ShapeItem] to [IGT_ItemWithMaterialRenderer], so a material's
+/// [GeneratedMaterialRenderer] can draw shape items. Obtain instances through
+/// [IGT_ItemWithMaterialRenderer#resolve].
 ///
-/// A shape item carries one icon layer stack rather than a per-pass icon list, so this reports a single render
-/// pass and hands the stack to the renderer through [#getIconContainer].
+/// Reports a single render pass and hands the whole layer stack to the renderer through [#getIconContainer].
 public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMaterialRenderer {
 
     private final ShapeItem item;
@@ -66,12 +64,12 @@ public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMateria
         return MaterialLibAPI.getMaterialByIndex(damage);
     }
 
-    /// The number of leading render passes a fluid container spends on its base, ahead of the fill stack.
+    /// The number of leading render passes spent on a fluid container's base.
     private static int basePassOffset(ShapeItem item) {
         return item instanceof ShapeFluidInContainer ? 1 : 0;
     }
 
-    /// The modulation color of the first fill pass, past a fluid container's leading base pass.
+    /// The color of the first fill pass.
     @Override
     public short[] getRGBa(ItemStack aStack) {
         return GTUtil.getRGBaArray(item.getColorFromItemStack(aStack, basePassOffset(item)));
@@ -98,10 +96,9 @@ public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMateria
         return 1;
     }
 
-    /// One material's icon layer stack on the adapted [ShapeItem]: the fill layers first, with a fluid container's
-    /// untinted base as the trailing layer, so layer 0 stays the silhouette the [GeneratedMaterialRenderer] family
-    /// depth-clips the contained fluid to. The item itself draws the base as its leading render pass;
-    /// [#getLayerIcon] translates between the two orders.
+    /// One material's icon layers on the adapted [ShapeItem]. Fill layers come first and a fluid container's base
+    /// comes last, so layer 0 is the silhouette [GeneratedMaterialRenderer] clips fluid to. The item draws the base
+    /// first, and [#getLayerIcon] translates between the two orders.
     private static final class LayerStack implements IIconContainer {
 
         private final ShapeItem item;
@@ -117,7 +114,7 @@ public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMateria
             return getLayerIcon(0);
         }
 
-        /// Always null; the stack's layers, its trailing overlay included, come through [#getLayerIcon].
+        /// Null, since every layer comes through [#getLayerIcon].
         @Override
         public IIcon getOverlayIcon() {
             return null;

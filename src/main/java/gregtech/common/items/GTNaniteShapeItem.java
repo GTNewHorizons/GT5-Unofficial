@@ -12,8 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.NaniteTier;
 
-/// The `nanite` MaterialLib shape. A shape of its own rather than a plain item shape so that the
-/// [NaniteTier] every nanite-consuming multiblock reads off the stack also reaches its tooltip.
+/// The `nanite` MaterialLib shape. Adds the stack's [NaniteTier] to its tooltip.
 public class GTNaniteShapeItem extends ShapeItem {
 
     public GTNaniteShapeItem(String modid, String name, String displayNameFormat, String... oreDicts) {

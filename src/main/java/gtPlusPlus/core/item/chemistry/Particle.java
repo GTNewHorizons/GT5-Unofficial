@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.ModItems;
 
+/// Elementary and composite particles, with lookups for their particle and ion items.
 public class Particle {
 
     public static final Particle GRAVITON;

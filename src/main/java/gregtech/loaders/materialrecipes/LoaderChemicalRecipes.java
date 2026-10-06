@@ -21,17 +21,13 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
-/// Generates the chemical-reactor recipe (composition -> dust) for MaterialLib materials -- the canonical
-/// reader of [GTMaterialProperties#HAS_CHEMICAL_RECIPE]. Registers through [GTRecipeConstants#UniversalChemical],
-/// which itself fans a single recipe out to both the single-block chemical reactor and the multiblock large
-/// chemical reactor.
+/// Generates chemical reactor recipes (composition -> dust) for the [#CARRIERS] that declare
+/// [GTMaterialProperties#HAS_CHEMICAL_RECIPE]. Recipes go to [GTRecipeConstants#UniversalChemical], which covers
+/// both the single-block and the large chemical reactor.
 ///
-/// Each carrier's [GTMaterialProperties#COMPOSITION] entries resolve to a dust input per entry
-/// ([MaterialUtils#compositionDust]), except a single gas-only entry (e.g. Oxygen), which resolves to a fluid
-/// input ([MaterialUtils#compositionGas]). [#CARRIERS] never declares more than one such entry, so this
-/// carries no cell-item byproduct accounting. Duration is the composition's total proton count (each entry's
-/// [MaterialAtomics#protons] times its amount) divided by its entry count; EU scales off the carrier's
-/// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU] and its entry count.
+/// Each [GTMaterialProperties#COMPOSITION] entry becomes a dust input. At most one gas-only entry (e.g. Oxygen) is
+/// supported, and it becomes a fluid input. Duration scales with the composition's [MaterialAtomics#protons], and
+/// EU with the carrier's [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU].
 public final class LoaderChemicalRecipes {
 
     private static final Material[] CARRIERS = { Materials.BismuthTelluride, Materials.Dibismuthhydroborat,

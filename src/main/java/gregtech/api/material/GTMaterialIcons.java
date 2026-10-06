@@ -17,17 +17,14 @@ import gregtech.api.util.client.ResourceUtils;
 import gregtech.client.iconContainers.blocks.MLBlockIconContainer;
 import gregtech.client.iconContainers.items.MLItemIconContainer;
 
-/// The lookup from a material and a texture name to the [IIconContainer] GregTech's own renderers draw it through.
+/// Looks up the [IIconContainer] GregTech's own renderers draw a material's art through.
 ///
-/// Tools, pipes, ores and covers pick their art per material at draw time from an MTE field or a stack's NBT, so
-/// they cannot reach it through a shape's item or block the way a generated item does. Each container handed out
-/// here resolves its art from the MaterialLib shape or the [GTMaterialIconSets] icon set of the same name, which
-/// gives GregTech's art the same texture-set chain, fallbacks, unification alternatives, and `_OVERLAY` handling
-/// every shape gets.
+/// Tools, pipes, ores and covers pick their art per material at draw time, so they cannot reach it through a
+/// shape's item or block. Each container resolves its art from the MaterialLib shape or [GTMaterialIconSets] icon
+/// set of the same name, with the same texture-set handling every shape gets.
 ///
-/// Containers are interned per name -- plus the shape variant, where one applies -- and material, because
-/// renderers ask for them once per frame and [gregtech.api.render.TextureFactory] deduplicates the textures it
-/// builds by container identity.
+/// Containers are interned per name and material, since [gregtech.api.render.TextureFactory] deduplicates
+/// textures by container identity.
 public final class GTMaterialIcons {
 
     private GTMaterialIcons() {}
@@ -52,16 +49,16 @@ public final class GTMaterialIcons {
     }
 
     /// `material`'s ore art from the `ore` or `oreSmall` shape named `name`, in the shape's
-    /// [OreShapes#ICON_VARIANT] variant -- for a caller drawing ore art with no stone type behind it.
+    /// [OreShapes#ICON_VARIANT] variant. For ore art drawn with no stone type behind it.
     public static IIconContainer oreBlock(String name, Material material) {
         return oreBlock(name, OreShapes.ICON_VARIANT, material);
     }
 
     /// `material`'s ore art from the `variant` backing block of the `ore` or `oreSmall` shape named `name`, drawn
-    /// in render pass 1 so the stone background the caller composites underneath shows through.
+    /// in render pass 1 over a stone background the caller composites underneath.
     ///
-    /// A texture set shipping `<name>_<variant>.png` reskins that one stone type; every other variant resolves the
-    /// set's shared `<name>.png`. `variant` must be one the shape declares -- see [OreShapes#iconVariantOf].
+    /// A texture set shipping `<name>_<variant>.png` reskins that one stone type. Every other variant uses the
+    /// set's shared `<name>.png`. `variant` must be one the shape declares (see [OreShapes#iconVariantOf]).
     public static IIconContainer oreBlock(String name, String variant, Material material) {
         return intern(
             oreContainers,
@@ -70,17 +67,16 @@ public final class GTMaterialIcons {
             () -> new MLBlockIconContainer(name, variant, material, 1));
     }
 
-    /// Whether any item art exists under `prefix`'s name. Answerable on a dedicated server: the shape registry is
-    /// common data and the icon-set names are plain strings. False for a name belonging to a block or fluid shape.
+    /// Whether any item art exists under `prefix`'s name. Safe to call on a dedicated server. False for a name
+    /// belonging to a block or fluid shape.
     public static boolean hasItemIcon(OrePrefixes prefix) {
         String name = prefix.name();
         return GTMaterialIconSets.ITEM_NAMES.contains(name) || ShapeRegistry.instance()
             .getItemShape(name) != null;
     }
 
-    /// The item-atlas icon identifier for `name` in the texture set `setName`, or the `NONE` set's when that set
-    /// ships no such file -- the tail of the chain a shape's icons resolve through. For an item that registers
-    /// material art straight into the atlas instead of drawing it through an [IIconContainer].
+    /// The item-atlas icon identifier for `name` in the texture set `setName`, falling back to the `NONE` set when
+    /// that set ships no such file. For items that register material art straight into the atlas.
     public static String itemIconPath(String setName, String name) {
         String path = "gregtech:materials/" + setName + "/" + name;
         if (itemTextureExists(path)) return path;

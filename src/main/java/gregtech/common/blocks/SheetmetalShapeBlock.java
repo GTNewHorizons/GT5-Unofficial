@@ -23,23 +23,19 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.client.DynamicLangManager;
 import gregtech.common.render.GTRendererBlock;
 
-/// The block backing the `sheetmetal` MaterialLib shape: a decorative material block with no tile entity,
-/// metadata equal to the material's global index. Harvested with a pickaxe at level 1, with the hardness and
-/// resistance of vanilla's iron block, and rendered in both the opaque and alpha-blended passes. Placing or
-/// breaking one causes a machine-structure update. AE2 is denied facades of it through
-/// [appeng.api.parts.IFacadeControl].
+/// The `sheetmetal` MaterialLib shape block, a decorative multiblock structure part. Metadata is the material
+/// index. AE2 cannot make facades of it.
 public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextures, IFacadeControl {
 
     private final Map<Integer, ITexture[][]> texturesByIndex = new ConcurrentHashMap<>();
 
     public SheetmetalShapeBlock(String name, String displayNameFormat, String... oreDicts) {
         super("gregtech", name, displayNameFormat, oreDicts);
-        // Sheetmetal is a multiblock structure part: machines re-check their structure when a neighbor changes.
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
-    /// Sheetmetal names are fused from the material and the shape at runtime, so each served material's stack is
-    /// handed to [DynamicLangManager] to get a static lang key backing its display name.
+    /// Registers each served material's stack with [DynamicLangManager] so its runtime display name gets a lang
+    /// key.
     @Override
     public void bindServedMaterials(Material[] materials) {
         super.bindServedMaterials(materials);

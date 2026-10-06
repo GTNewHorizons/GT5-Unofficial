@@ -28,39 +28,29 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTUtility;
 
-/// The bridge between GregTech's legacy [OrePrefixes] domain and MaterialLib's [Shape] domain.
+/// Bridges GregTech's [OrePrefixes] and MaterialLib's [Shape]s.
 ///
-/// Code holding a shape calls [MaterialLibAPI#getStack] directly and lets it throw: both sides of a
-/// (material, shape) pair are explicitly declared, so a call site naming a pair the material does not
-/// generate is a declaration bug, not a data condition. This class serves the callers that do *not* hold a
-/// shape -- a prefix read from a saved NBT tag, a werkstoff prefix list, an ore-dictionary name -- where the
-/// prefix domain is strictly wider than the shape domain and "no MaterialLib backing for this pair" is an
-/// expected answer with a defined legacy behaviour on the other side. Those entry points answer null, and
-/// each caller decides what null means for it.
+/// Code holding a shape calls [MaterialLibAPI#getStack] directly and lets it throw on an undeclared pair. This
+/// class serves callers holding only a prefix, such as one read from NBT or an oredict name. There are more
+/// prefixes than shapes, so these lookups answer null for a pair with no MaterialLib backing, and each caller
+/// decides what that means.
 ///
-/// The ore-dictionary ingredient builders live here too: their material amounts and secondary materials live
-/// on the prefix, not the shape.
+/// The oredict ingredient builders live here too, since their material amounts live on the prefix.
 ///
-/// Amounts are `long` because that is what GregTech's recipe code carries; MaterialLib takes an `int`.
-///
-/// The membership checks below read [Material#hasShape], which tests a material's declared shape instances by
-/// identity; `ShapeItem#getServedMaterials` is the canonical-safe alternative for iterating a shape's
-/// materials.
+/// Amounts are `long` to match GregTech's recipe code. MaterialLib takes an `int`.
 public class MaterialParts {
 
     private MaterialParts() {}
 
-    /// A material's full cell, resolving `cell`, then `cellGas`, then `cellMolten`: a gas material holds its
-    /// plain cell under `cellGas` (see [CellShapes]), and a gtPlusPlus material whose single fluid claimed the
-    /// molten shape rather than a liquid or gas slot holds its cell only under `cellMolten`. Null when the
-    /// material carries none of the three, or is itself null.
+    /// A material's full cell: the first of `cell`, `cellGas` and `cellMolten` it carries (see [CellShapes]).
+    /// Null when it carries none of them or `material` is null.
     public static @Nullable ItemStack cell(@Nullable Material material, long amount) {
         if (material == null) return null;
         return firstShapeStack(material, amount, CellShapes.cell, CellShapes.cellGas, CellShapes.cellMolten);
     }
 
-    /// The throwing counterpart of [#cell] for call sites declaring that a specific material must carry a
-    /// plain cell. Throws [IllegalStateException] naming the material when it carries none.
+    /// [#cell] without the `cellMolten` fallback, throwing [IllegalStateException] when the material carries
+    /// neither `cell` nor `cellGas`.
     public static ItemStack requireCell(Material material, long amount) {
         ItemStack stack = firstShapeStack(material, amount, CellShapes.cell, CellShapes.cellGas);
         if (stack == null) throw new IllegalStateException(material.getName() + " carries no plain cell shape");
@@ -77,44 +67,34 @@ public class MaterialParts {
 
     private static Map<String, List<Shape>> prefixToShapes;
 
-    /// The MaterialLib shape a legacy item [OrePrefixes] cuts over to, or null if that prefix is not part of
-    /// the cutover (e.g. a container prefix with no MaterialLib shape). For a multi-candidate prefix (`cellPlasma`,
-    /// `pipeTiny`..`pipeHuge`), the shape a specific material actually generates may differ -- see [#stack];
-    /// callers that must see every candidate use [#shapes].
+    /// The first MaterialLib shape serving `prefix`, or null when no shape serves it. A multi-candidate prefix
+    /// (`cellPlasma`, `pipeTiny`..`pipeHuge`) has more shapes (see [#shapes]).
     public static @Nullable Shape shape(OrePrefixes prefix) {
         List<Shape> shapes = shapes(prefix);
         return shapes.isEmpty() ? null : shapes.get(0);
     }
 
-    /// Every candidate shape a legacy [OrePrefixes] cuts over to, in resolution order ([#stack] uses the
-    /// first one a material generates); empty when the prefix is not part of the cutover.
+    /// Every shape serving `prefix`, in resolution order. Empty when no shape serves it.
     public static List<Shape> shapes(OrePrefixes prefix) {
         if (prefix == null) return Collections.emptyList();
         List<Shape> shapes = prefixShapes().get(prefix.name());
         return shapes == null ? Collections.emptyList() : shapes;
     }
 
-    /// The MaterialLib stack backing a legacy (prefix, material) pair, or null when the pair has no
-    /// MaterialLib backing -- either the prefix declares no shape at all, or this particular material generates
-    /// none of the prefix's candidate shapes.
-    ///
-    /// When a prefix maps to more than one candidate shape (`cellPlasma`, `pipeTiny`..`pipeHuge`), the first
-    /// one `material` generates wins; [#shapes] exposes the full candidate list.
+    /// The MaterialLib stack for a (prefix, material) pair: the first of the prefix's [#shapes] the material
+    /// generates. Null when it generates none of them.
     public static @Nullable ItemStack stack(OrePrefixes prefix, @Nullable Material material, long amount) {
         Shape shape = servedShape(prefix, material);
         return shape == null ? null : MaterialLibAPI.getStack(material, shape, (int) amount);
     }
 
-    /// Whether a (prefix, material) pair has a MaterialLib equivalent (see [#stack]). Unlike [#shape], which
-    /// answers whether a prefix has cut over at all, this answers per material: a material that does not generate
-    /// the prefix's shape has no MaterialLib stack even where the prefix itself has cut over.
+    /// Whether a (prefix, material) pair has a MaterialLib stack (see [#stack]).
     public static boolean isCutOver(OrePrefixes prefix, @Nullable Material material) {
         return servedShape(prefix, material) != null;
     }
 
     /// Whether MaterialLib's own item or block of the pair's shape carries `material`. False for a pair with no
-    /// MaterialLib backing and for one a foreign item stands in for (`gem` Diamond is the vanilla diamond), whose
-    /// stack other mods register and, for another mod's item, cannot be fetched before MaterialLib's init.
+    /// MaterialLib backing and for one a foreign item stands in for (`gem` Diamond is the vanilla diamond).
     public static boolean isMinted(OrePrefixes prefix, @Nullable Material material) {
         Shape shape = servedShape(prefix, material);
         if (shape == null) return false;
@@ -215,25 +195,21 @@ public class MaterialParts {
         return association != null && association.mMaterial.mMaterial == material;
     }
 
-    /// The crafting-table ingredient for `prefix` and `material`. The returned [ItemData] resolves to an
-    /// ore-dictionary name through [ItemData#toString], so the ingredient accepts any matching item, and also
-    /// carries the material association a reversible recipe's auto-generated recycling needs. Null when
-    /// `prefix` or `material` is null. Use [#namedIngredient] for an ingredient that must not carry an
-    /// association.
+    /// The crafting-table ingredient for `prefix` and `material`, accepting any item under the matching oredict
+    /// name. It carries the material association, so reversible recipes generate recycling from it. Null when
+    /// either argument is null. [#namedIngredient] omits the association.
     public static @Nullable ItemData craftIngredient(OrePrefixes prefix, @Nullable Material material) {
         return prefix == null || material == null ? null : new ItemData(prefix, material);
     }
 
-    /// [#craftIngredient(OrePrefixes,Material)] without the material association: the [ItemData] only names
-    /// the ore-dictionary entry, so a reversible recipe derives no recycling output from this ingredient.
+    /// [#craftIngredient(OrePrefixes,Material)] without the material association, so reversible recipes derive no
+    /// recycling from it.
     public static @Nullable ItemData namedIngredient(OrePrefixes prefix, @Nullable Material material) {
         return prefix == null || material == null ? null : new ItemData(prefix, MaterialUtils.internalName(material));
     }
 
-    /// The shapes serving each ore-dictionary prefix, keyed by the prefix strings the shapes themselves
-    /// declare. Where several shapes share a prefix (`cellPlasma` holds both plasma cell sizes, and a fluid
-    /// pipe shares `pipeTiny`..`pipeHuge` with an item pipe), the shape whose own name is the prefix comes
-    /// first and the rest follow in name order, so the candidate order does not depend on declaration order.
+    /// The shapes serving each oredict prefix, keyed by the prefixes the shapes declare. Where several shapes
+    /// share a prefix, the shape named after the prefix comes first and the rest follow in name order.
     private static Map<String, List<Shape>> prefixShapes() {
         if (prefixToShapes == null) {
             if (GTShapeStore.all()

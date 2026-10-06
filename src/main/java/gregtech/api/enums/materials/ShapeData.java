@@ -21,15 +21,12 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.material.GTShapeProperties;
 import gregtech.api.objects.MaterialStack;
 
-/// The per-form data GregTech attaches to its MaterialLib shapes: how much material one item of the shape
-/// holds, how it unifies, which texture slot it draws, and the rest of what a form knows about itself
-/// independently of the material taking it. This is where those values are declared; the shape-backed
-/// [gregtech.api.enums.OrePrefixes] take them from here at load.
+/// GregTech's per-shape data, such as how much material one item holds, whether it unifies and which texture
+/// slot it draws. The shape-backed [gregtech.api.enums.OrePrefixes] read these values at load.
 ///
-/// The values are set on the shape objects directly, not through
-/// `com.ruling_0.materiallib.api.MaterialLibAPI#editShape`, which is the path for changing another mod's
-/// shape. Runs inside `com.ruling_0.materiallib.api.MaterialRegistrationEvent`, after the shape declarations
-/// and before shapes resolve, while the shapes are still mutable.
+/// The values are set on the shape objects directly, so [#init] runs during
+/// `com.ruling_0.materiallib.api.MaterialRegistrationEvent`, before shapes resolve. Another mod's shape is
+/// changed through `com.ruling_0.materiallib.api.MaterialLibAPI#editShape` instead.
 ///
 /// A value equal to the [GTShapeProperties] key's default is omitted.
 public final class ShapeData {

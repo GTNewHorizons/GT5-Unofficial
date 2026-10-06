@@ -22,6 +22,7 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.util.CustomGlyphs;
 
+/// GregTech's materials, registered with MaterialLib by [#init].
 public class Materials {
 
     // spotless:off
@@ -13355,8 +13356,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeOrange")
             .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 1300)
             .build();
-        // Steam carries no item/block/fluid shapes and no OLD_SUB_ID: its only backing is the "steam" Forge
-        // fluid GT hand-registers in LoaderGTBlockFluid, which also wires it onto MaterialUtils' slot store.
+        // Steam has no shapes. Its gas is the "steam" Forge fluid registered in LoaderGTBlockFluid.
         Materials.Steam = MaterialLibAPI.newMaterial("gregtech", "Steam", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
@@ -32619,10 +32619,9 @@ public class Materials {
         // spotless:on
     }
 
-    /// The superconductor wire markers: the material a tier's superconductor wires unify under, carrying no
-    /// composition of its own -- the wires are made from the tier's `Superconductor*Base` material, which is a
-    /// separate material declared above. `SuperconductorUHV` registers as `Superconductor`, the name its
-    /// ore-dictionary entries have always used.
+    /// The superconductor wire materials, one per tier. They have no composition of their own. The wires are made
+    /// from the tier's `Superconductor*Base` material. `SuperconductorUHV` registers as `Superconductor` to keep
+    /// its oredict names.
     private static void initPart32() {
         // spotless:off
         Materials.SuperconductorMV = MaterialLibAPI.newMaterial("gregtech", "SuperconductorMV", TextureSet.of("gregtech", "SHINY"))

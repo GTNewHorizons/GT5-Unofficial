@@ -15,10 +15,7 @@ import com.ruling_0.materiallib.api.ShapeBlock;
 import gregtech.api.GregTechAPI;
 import gregtech.api.material.MaterialUtils;
 
-/// The `block` MaterialLib shape (compressed/storage blocks, e.g. "Block of Iron"), backing every cut-over
-/// material with metadata equal to the material's global index. Every storage block harvests pickaxe-only at
-/// level 1, counts as a beacon base, takes vanilla's iron block hardness and resistance, and causes a
-/// machine-structure update on placement and removal.
+/// The `block` MaterialLib shape block (storage blocks, e.g. "Block of Iron"). Metadata is the material index.
 public class GTStorageShapeBlock extends ShapeBlock {
 
     public GTStorageShapeBlock(String modid, String name, String displayNameFormat, String... oreDicts) {
@@ -38,9 +35,8 @@ public class GTStorageShapeBlock extends ShapeBlock {
         super.breakBlock(world, x, y, z, block, meta);
     }
 
-    /// The per-material storage-block art, keyed by [MaterialUtils#internalName] rather than the material's
-    /// MaterialLib name, since the art is per-material and the two names can differ. A material whose art file
-    /// does not exist falls back to this shape's texture-set candidates.
+    /// The per-material storage-block art, keyed by [MaterialUtils#internalName]. A material without an art file
+    /// falls back to this shape's texture-set candidates.
     @Override
     protected String iconPathFor(Material material) {
         return "gregtech:materials/blocks/" + MaterialUtils.internalName(material)

@@ -14,12 +14,11 @@ import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.api.enums.Element;
 
-/// Sweeps every GregTech material declaration once at boot and reports what it finds as a single aggregated
-/// error.
+/// Checks every GregTech material declaration once at boot and throws one aggregated error for what it finds.
 ///
-/// Checks the invariants the compiler cannot see: a [MaterialRef] whose target is no longer registered, a
-/// composition whose amounts sum to zero, an unknown [Element] name, a zero density divider, a missing
-/// [StandardProperties#DISPLAY_NAME_KEY], and cycles in the composition graph.
+/// Catches what the compiler cannot: a [MaterialRef] that does not resolve, a composition whose amounts sum to
+/// zero, an unknown [Element] name, a zero density divider, a missing [StandardProperties#DISPLAY_NAME_KEY], and
+/// composition cycles.
 public final class MaterialDeclarationValidator {
 
     private static final int MAX_REPORTED = 20;
@@ -36,7 +35,7 @@ public final class MaterialDeclarationValidator {
 
     private MaterialDeclarationValidator() {}
 
-    /// Requires the resolved registry, so it runs no earlier than the start of GT's preInit.
+    /// Requires the resolved registry, available from GregTech's preInit on.
     public static void validate() {
         List<String> errors = new ArrayList<>();
         List<Material> materials = new ArrayList<>();

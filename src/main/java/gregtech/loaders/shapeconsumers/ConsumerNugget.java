@@ -4,7 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingNugget;
 
-/// Dispatches [ProcessingNugget]'s `nugget`-prefix recipe generation for MaterialLib's cutover nugget shape.
+/// Generates nugget recipes through [ProcessingNugget].
 public final class ConsumerNugget {
 
     private ConsumerNugget() {}

@@ -4,15 +4,11 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.objects.ItemData;
 
-/// The [OrePrefixes#componentCircuit] ore-dictionary entries, keyed by the discrete component they stand for.
+/// The [OrePrefixes#componentCircuit] oredict entries for discrete circuit components, each paired with the
+/// GregTech item it unifies to.
 ///
-/// Each component names an ore-dictionary entry that carries no composition and generates no items, and declares
-/// the GregTech item that is that entry's unification target. Routing every call site through this enum keeps
-/// that mapping in one place.
-///
-/// [#get(int)] returns the declared [ItemStack] for recipe inputs and outputs that need a concrete stack.
-/// [#getIngredient()] returns an [ItemData] for crafting-grid recipes; see
-/// [gregtech.api.util.GTModHandler#addCraftingRecipe].
+/// [#get(int)] returns that item where a recipe needs a concrete stack. [#getIngredient()] returns the oredict
+/// form for crafting recipes; see [gregtech.api.util.GTModHandler#addCraftingRecipe].
 public enum CircuitComponents {
 
     RESISTOR("Resistor", ItemList.Circuit_Parts_Resistor),
@@ -37,7 +33,7 @@ public enum CircuitComponents {
         return new ItemData(OrePrefixes.componentCircuit, materialName);
     }
 
-    /// The ore-dictionary material name this constant stands for.
+    /// The oredict material name this constant stands for.
     public String materialName() {
         return materialName;
     }

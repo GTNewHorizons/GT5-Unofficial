@@ -20,11 +20,8 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-/// The blockCasing/blockCasingAdvanced recipe registrator: crafting-table and assembler recipes for a
-/// material's bolted machine casing and its rebolted (advanced) variant. Dispatched once per
-/// blockCasing-generating material by [gregtech.loaders.shapeconsumers.ConsumerCasing]. The advanced casing's
-/// outer plating is `plateDouble`, except Wood which uses `plank`. Like [ProcessingFrame] it is not registered
-/// on its prefix.
+/// Registers crafting and assembler recipes for a material's machine casing and its advanced variant. Called once
+/// per casing material by [gregtech.loaders.shapeconsumers.ConsumerCasing], not on its prefix.
 public class ProcessingCasing implements IOreRecipeRegistrator {
 
     public static final ProcessingCasing INSTANCE = new ProcessingCasing();
@@ -82,8 +79,8 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
             .addTo(assemblerRecipes);
     }
 
-    /// The part the casing's outer shell is pressed from: [Materials#Wood] takes vanilla planks, every other
-    /// material its own double plate.
+    /// The advanced casing's outer plating: vanilla planks for [Materials#Wood], otherwise the material's double
+    /// plate.
     private static @Nullable ItemStack outerPart(Material material, long amount) {
         if (material == Materials.Wood) return new ItemStack(Blocks.planks, (int) amount, WILDCARD);
         return MaterialParts.stack(OrePrefixes.plateDouble, material, amount);

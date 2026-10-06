@@ -1,11 +1,10 @@
 package gregtech.api.material;
 
-/// Boolean material flags, mirroring the names of `gregtech.api.enums.SubTag` in the legacy material system.
+/// Boolean material flags, declared through [GTMaterialProperties#FLAGS].
 ///
-/// Names are kept identical to their `SubTag` counterparts so the two systems map 1:1 by name,
-/// except [#ANAEROBE_GAS] and [#NOBLE_GAS] which mirror the `"AnaerobeGas"` / `"NobleGas"` `SubTag`s materials
-/// declare via [GTMaterialProperties#SUB_TAGS], using this enum's own naming convention instead of their
-/// `SubTag#mName` strings.
+/// Each constant shares its name with a [gregtech.api.enums.SubTag], so prefix conditions written against
+/// sub-tags can test these flags (see [MaterialSubTagView]). The exceptions are [#ANAEROBE_GAS] and
+/// [#NOBLE_GAS], which match the `"AnaerobeGas"` and `"NobleGas"` sub-tags.
 public enum GTMaterialFlag {
     ANAEROBE_GAS,
     NOBLE_GAS,

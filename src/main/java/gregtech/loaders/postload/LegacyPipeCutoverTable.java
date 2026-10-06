@@ -10,19 +10,10 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.TEBlockShapes;
 
-/// The frozen per-material pipe-family MTE ids, mapped to the MaterialLib shape and material each id's
-/// wire/cable/fluid-pipe/item-pipe served, for [PosteaTransformers]' save migration. The id layout is:
+/// Save migration table mapping each legacy per-material wire, cable and pipe MTE id to the MaterialLib shape and
+/// material it becomes. See [PosteaTransformers] for the migration.
 ///
-/// - wire/cable rows occupy startId+0..5 as wireGt01..16 and +6..11 as cableGt01..16 (wire-only rows just
-/// the first six),
-/// - GregTech fluid rows startId+0..4 as pipeTiny..Huge plus a quadruple/nonuple pair at multiFluidStartId
-/// (startId+5 unless displaced); gtPlusPlus/goodgenerator fluid rows registered no multi-channel pipes,
-/// - the wooden and High Pressure pipes three sequential small/medium/large ids,
-/// - item rows ten ids ordered tiny..huge then restrictiveTiny..Huge, six (medium..huge, restrictive
-/// likewise) for the materials without tiny/small sizes, with the Brass through Osmium rows keeping their
-/// historical non-sequential id lists.
-///
-/// Ids absent from the table (gaps inside the freed ranges) have no migration and must stay untouched.
+/// Rows are never removed or renumbered. Ids absent from the table have no migration and must stay untouched.
 public final class LegacyPipeCutoverTable {
 
     public record Entry(Shape shape, Material material) {}

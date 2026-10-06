@@ -4,9 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingOreSmelting;
 
-/// Dispatches [ProcessingOreSmelting]'s recipe generation for MaterialLib's cutover crushed-ore and dust
-/// shapes. `dustRefined` (which shares [ProcessingOreSmelting]'s dust-family switch case) has no MaterialLib
-/// shape.
+/// Generates blast-furnace smelting recipes for crushed ores and dusts through [ProcessingOreSmelting].
 public final class ConsumerOreSmelting {
 
     private ConsumerOreSmelting() {}

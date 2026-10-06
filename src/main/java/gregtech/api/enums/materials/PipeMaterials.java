@@ -9,17 +9,14 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 
-/// The pipe-family stat tables: one declared row per material carrying wires/cables, fluid pipes, or item
-/// pipes, applied as [PipeProperties] values through [MaterialLibAPI#editMaterial]. The values are exact
-/// literals, not derived: each row pins the stats its material's pipes have always had.
+/// Wire, cable, fluid pipe and item pipe stats, one row per material, applied as [PipeProperties] values. The
+/// values are exact literals, not derived.
 ///
-/// The wooden and High Pressure fluid pipes exist in three sizes whose capacities follow no base-value
-/// formula, so they carry per-size capacity constants here instead of a [PipeProperties#BASE_PIPE_FLOW]
-/// value.
-/// The High Pressure pipes occupy Redstone's pipe shapes but are made from steel pipes and pumps, so they hold no
-/// Redstone and are never recycled ([#isHighPressurePipe]).
+/// Wooden and High Pressure fluid pipes come in three sizes whose capacities follow no formula, so they use the
+/// per-size constants here instead of [PipeProperties#BASE_PIPE_FLOW]. High Pressure pipes use Redstone's pipe
+/// shapes but contain no Redstone and are never recycled ([#isHighPressurePipe]).
 ///
-/// Rows reference [Materials] fields, so [#init] must run after those are assigned.
+/// Rows reference [Materials] fields, so [#init] runs after [Materials#init].
 public class PipeMaterials {
 
     /// Fluid capacities (small, medium, large) of the wooden fluid pipes.
@@ -237,8 +234,7 @@ public class PipeMaterials {
         for (FluidPipe row : fluidPipes) {
             MaterialEdit edit = edit(row.material()).setProperty(PipeProperties.BASE_PIPE_FLOW, row.baseCapacity())
                 .setProperty(PipeProperties.PIPE_HEAT_RESISTANCE, row.heatResistance());
-            // These two rows exist only with their parent mod (Void pipes with Thaumcraft, DarkSteel with
-            // EnderIO); the properties themselves stay unconditional.
+            // The properties stay unconditional. Only the shapes need the parent mod.
             if (row.material() == Materials.Void && !Mods.Thaumcraft.isModLoaded()) continue;
             if (row.material() == Materials.DarkSteel && !Mods.EnderIO.isModLoaded()) continue;
             edit.generateShapes(

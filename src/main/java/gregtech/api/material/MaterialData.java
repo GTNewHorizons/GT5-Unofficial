@@ -31,13 +31,11 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 
 /// What each item stack is made of ([ItemData]), keyed by item and damage.
 ///
-/// An entry is an association, the prefix and material an ore-dictionary name stands for (`plateIron` as a plate of
-/// Iron), a composition listing what a stack is made of (a machine's plates and circuits), or both merged. Scanners,
-/// recycling and ore-dictionary recipe generation read it.
+/// An entry is an association (`plateIron` as a plate of Iron), a composition (a machine's plates and circuits), or
+/// both merged.
 ///
-/// Storing an entry with recyclable material registers the stack's recycling recipes (macerating, arc and fluid
-/// smelting): every stored stack at once when loading starts, then each later entry as it arrives. Unified copies
-/// ([OreDictUtils#isUnifiedCopy]) get none, and an item interchangeable with its ore-dictionary target
+/// Storing an entry with recyclable material registers the stack's recycling recipes. Unified copies
+/// ([OreDictUtils#isUnifiedCopy]) get none, and an item interchangeable with its oredict target
 /// ([OreDictUtils#isInterchangeableWithTarget]) gets no machine recipes.
 public final class MaterialData {
 
@@ -99,18 +97,18 @@ public final class MaterialData {
         dataByStack.remove(stack);
     }
 
-    /// Adds an association for a stack: the prefix and material an ore-dictionary name stands for, e.g. `plateIron`
-    /// as `OrePrefixes.plate` + `Materials.Iron`.
+    /// Adds an association for a stack: the prefix and material an oredict name stands for, e.g. `plateIron` as
+    /// `OrePrefixes.plate` + `Materials.Iron`.
     ///
     /// An existing association is never rewritten. An existing explicit composition is merged into the
-    /// association; when the two name different materials, the association's wins.
+    /// association, and the association's material wins when the two differ.
     public static void addAssociation(OrePrefixes prefix, Material material, ItemStack stack) {
         if (prefix == null || material == null || GTUtility.isStackInvalid(stack)) return;
         addAssociation(() -> new ItemData(prefix, material), stack);
     }
 
-    /// Adds a name-only association (see [ItemData#ItemData(OrePrefixes, String)]) for the ore-dictionary entries
-    /// whose material side is not a material at all.
+    /// Adds a name-only association (see [ItemData#ItemData(OrePrefixes, String)]) for oredict entries whose
+    /// material side is not a material.
     public static void addAssociation(OrePrefixes prefix, String materialName, ItemStack stack) {
         if (prefix == null || materialName == null || GTUtility.isStackInvalid(stack)) return;
         addAssociation(() -> new ItemData(prefix, materialName), stack);

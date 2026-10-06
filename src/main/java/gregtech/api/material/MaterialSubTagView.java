@@ -7,12 +7,10 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ISubTagContainer;
 
-/// MaterialLib view over a [Material], letting a legacy [ICondition] of [ISubTagContainer] -- the
-/// [gregtech.api.enums.OrePrefixes#mCondition] a prefix carries -- evaluate against MaterialLib state. Every
-/// [SubTag] a prefix condition tests carries a same-named [GTMaterialFlag], so membership routes through the
-/// material's MaterialLib FLAGS property via [MaterialUtils#hasSubTag].
+/// Lets a prefix's [gregtech.api.enums.OrePrefixes#mCondition] test a [Material]. Each [SubTag] maps to the
+/// same-named [GTMaterialFlag] (see [MaterialUtils#hasSubTag(Material, SubTag)]).
 ///
-/// Condition evaluation only ever calls [#contains]; the mutating [ISubTagContainer] methods are inert.
+/// The mutating [ISubTagContainer] methods do nothing.
 public final class MaterialSubTagView implements ISubTagContainer {
 
     public final Material material;

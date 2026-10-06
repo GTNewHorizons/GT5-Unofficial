@@ -10,10 +10,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.materials.CellShapes;
 
-/// The `cellSolid` MaterialLib shape: a cell for a material that has a cell form but no fluid to put in it. A
-/// plain item shape because a [com.ruling_0.materiallib.api.ShapeFluidInContainer] binds a fluid shape every
-/// generating material must also generate. Drawn the way that shape draws a cell -- an untinted container base
-/// under the texture set's tinted `cell` fill, whose art it shares with [CellShapes#cell].
+/// The `cellSolid` MaterialLib shape, a cell for a material with no fluid. It is a plain item shape since a
+/// [com.ruling_0.materiallib.api.ShapeFluidInContainer] requires a fluid. It draws like [CellShapes#cell]: an
+/// untinted container base under the tinted `cell` fill.
 public class GTSolidCellShapeItem extends ShapeItem {
 
     private final String baseIconPath;
@@ -49,7 +48,7 @@ public class GTSolidCellShapeItem extends ShapeItem {
         baseIcon = register.registerIcon(baseIconPath);
     }
 
-    /// The container base's first pass, plus one pass per fill layer.
+    /// One pass for the container base, plus one per fill layer.
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderPasses(int meta) {
@@ -64,14 +63,14 @@ public class GTSolidCellShapeItem extends ShapeItem {
         return super.getIconFromDamageForRenderPass(damage, pass - 1);
     }
 
-    /// The container base, not the fill, for callers that ask for a single icon; see [ShapeItem#getIconFromDamage].
+    /// The container base, not the fill.
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int damage) {
         return baseIcon;
     }
 
-    /// White for the container base's first pass, and each fill layer's own color for the passes after it.
+    /// White for the container base, and each fill layer's own color after it.
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int renderPass) {

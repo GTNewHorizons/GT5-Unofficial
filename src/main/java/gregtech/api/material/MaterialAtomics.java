@@ -9,12 +9,10 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.Element;
 
-/// Computes a material's atomic quantities -- protons, neutrons, and mass -- from declaration data using a
-/// single canonical formula: an [GTMaterialProperties#ELEMENT]-backed material reads the [Element] table, a
-/// composition-backed one takes the density-weighted average over [GTMaterialProperties#COMPOSITION]
-/// (`density * sum(amount * component) / (totalAmount * M)`), and a material with neither falls back to
-/// [Element#Tc]. A declared [GTMaterialProperties#PROTONS] or [GTMaterialProperties#MASS] value overrides the
-/// formula for that quantity.
+/// Computes a material's protons, neutrons, and mass. An [GTMaterialProperties#ELEMENT]-backed material reads the
+/// [Element] table. A composed material takes the density-weighted average over [GTMaterialProperties#COMPOSITION]
+/// (`density * sum(amount * component) / (totalAmount * M)`). A material with neither falls back to [Element#Tc].
+/// A declared [GTMaterialProperties#PROTONS] or [GTMaterialProperties#MASS] overrides the formula.
 public final class MaterialAtomics {
 
     private MaterialAtomics() {}
@@ -52,9 +50,8 @@ public final class MaterialAtomics {
         return (density(material) * sum) / (totalAmount * M);
     }
 
-    /// The density value `(M * densityMultiplier) / densityDivider` from
-    /// [GTMaterialProperties#DENSITY_MULTIPLIER]/[GTMaterialProperties#DENSITY_DIVIDER] (each `1` when
-    /// absent), using integer division with no rounding.
+    /// `(M * densityMultiplier) / densityDivider` from [GTMaterialProperties#DENSITY_MULTIPLIER] and
+    /// [GTMaterialProperties#DENSITY_DIVIDER], each `1` when absent, in truncating integer division.
     public static long density(Material material) {
         Integer multiplier = material.getProperty(GTMaterialProperties.DENSITY_MULTIPLIER);
         Integer divider = material.getProperty(GTMaterialProperties.DENSITY_DIVIDER);

@@ -4,8 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingGear;
 
-/// Dispatches [ProcessingGear]'s `gearGt`/`gearGtSmall` recipe generation for MaterialLib's cutover gear
-/// shapes.
+/// Generates gear and small-gear recipes through [ProcessingGear].
 public final class ConsumerGear {
 
     private ConsumerGear() {}

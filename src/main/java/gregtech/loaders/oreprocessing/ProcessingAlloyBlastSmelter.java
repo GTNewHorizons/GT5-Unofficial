@@ -31,26 +31,20 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemIntegratedCircuit;
 
-/// Alloy blast smelter recipes that turn a solid material into its molten fluid, in two shapes:
+/// Alloy blast smelter recipes that melt a solid material into its molten fluid.
 ///
-/// - [#generateComposites] combines a material's [MaterialUtils#reducedComposition] component dusts (or, for a
-/// component without a dust, its fluid) into the output's molten fluid at that ratio.
-/// - [#generateSingleDust] blasts a material's own dust directly into its own molten fluid, independent of
-/// composite status.
+/// - [#generateComposites] mixes the component dusts of a material's [MaterialUtils#reducedComposition]. A
+/// component without a dust goes in as its fluid.
+/// - [#generateSingleDust] melts a material's own dust.
+/// - [#generateFromExistingBlastFurnaceRecipes] mirrors registered blast furnace recipes, skipping duplicates of
+/// recipes already present. It runs after the other two.
 ///
-/// Both shapes resolve the molten fluid through [MaterialUtils#anyFluid]'s state-priority lookup, which also
-/// reaches a material whose melt is declared as its liquid. A material whose fluid does not resolve registers
-/// nothing.
-///
-/// [#generateFromExistingBlastFurnaceRecipes] is a separate, non-per-material pass: it mirrors every
-/// already-registered blast furnace recipe that resolves a molten fluid, deduping against a snapshot of
-/// `alloyBlastSmelterRecipes` taken before its own loop runs, so [#generateComposites] and
-/// [#generateSingleDust] must run first.
+/// The per-material recipes take their molten fluid from [MaterialUtils#anyFluid].
 public class ProcessingAlloyBlastSmelter {
 
     private ProcessingAlloyBlastSmelter() {}
 
-    /// The frozen set of materials that get a composite recipe.
+    /// The materials that get a composite recipe.
     // spotless:off
     private static final Set<Material> COMPOSITE = Set.of(
         Materials.AbyssalAlloy, Materials.AncientGranite, Materials.Arcanite,
@@ -72,8 +66,7 @@ public class ProcessingAlloyBlastSmelter {
         Materials.ZirconiumCarbide);
     // spotless:on
 
-    /// Registers [#COMPOSITE]'s recipes. Call once, before [#generateFromExistingBlastFurnaceRecipes] (whose
-    /// dedup check must see these).
+    /// Registers [#COMPOSITE]'s recipes.
     public static void generateComposites() {
         for (Material material : COMPOSITE) {
             List<MaterialRefStack> composites = MaterialUtils.reducedComposition(material);
@@ -87,8 +80,7 @@ public class ProcessingAlloyBlastSmelter {
         }
     }
 
-    /// The frozen set of materials that get a single-dust recipe. Membership does not by itself mean a recipe
-    /// gets registered -- see [#generateSingleDust]'s runtime gate.
+    /// The materials that may get a single-dust recipe. See [#generateSingleDust] for the checks.
     // spotless:off
     private static final Set<Material> SINGLE_DUST = Set.of(
         Materials.AbyssalAlloy, Materials.AdvancedNitinol, Materials.Arcanite,
@@ -109,9 +101,7 @@ public class ProcessingAlloyBlastSmelter {
         Materials.TungstenTitaniumCarbide, Materials.WatertightSteel, Materials.Zeron100);
     // spotless:on
 
-    /// Registers [#SINGLE_DUST]'s recipes, each gated at runtime on `BLAST_REQUIRED` and on the material's
-    /// molten fluid resolving. Call once, at the same point as [#generateComposites] and before
-    /// [#generateFromExistingBlastFurnaceRecipes].
+    /// Registers [#SINGLE_DUST]'s recipes for the materials that declare `BLAST_REQUIRED` and have a molten fluid.
     public static void generateSingleDust() {
         for (Material material : SINGLE_DUST) {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED))) continue;
@@ -173,13 +163,10 @@ public class ProcessingAlloyBlastSmelter {
     private static Map<String, FluidStack> ingotToFluid;
     private static Map<String, String> hotToCold;
 
-    /// Mirrors every already-registered [RecipeMaps#blastFurnaceRecipes] recipe (GregTech's own or any other
-    /// mod's) whose output resolves a molten fluid -- through [RecipeMaps#fluidExtractionRecipes]'s
-    /// ingot-to-fluid recipes directly, or through [RecipeMaps#vacuumFreezerRecipes]'s hot-to-cold-ingot
-    /// recipes chained into the same ingot-to-fluid map -- into `alloyBlastSmelterRecipes`, skipping any
-    /// blast-furnace recipe hotter than 3600K and any duplicate of a recipe already present (from
-    /// [#generateComposites]/[#generateSingleDust] or gtPlusPlus's hand-written loaders). Call once, after
-    /// every other mod's recipes are registered, and after [#generateComposites]/[#generateSingleDust].
+    /// Copies each enabled [RecipeMaps#blastFurnaceRecipes] recipe of at most 3600K whose output ingot has a molten
+    /// fluid into `alloyBlastSmelterRecipes`, skipping duplicates. The fluid comes from
+    /// [RecipeMaps#fluidExtractionRecipes], following [RecipeMaps#vacuumFreezerRecipes] from hot to cold ingots.
+    /// Call once, after every other mod's recipes are registered.
     public static void generateFromExistingBlastFurnaceRecipes() {
         ingotToFluid = new HashMap<>();
         hotToCold = new HashMap<>();

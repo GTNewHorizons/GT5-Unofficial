@@ -25,9 +25,8 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.common.ores.GTOreAdapter;
 import gttests.PosteaTestSupport;
 
-/// Pins that the legacy `bw.blockores*` ore blocks a saved world holds, placed or in inventories, load as the
-/// MaterialLib ore of the same material, stone and size. Both skip in a world's first session; see
-/// [PosteaTestSupport].
+/// Saved legacy `bw.blockores*` ores, placed or as items, load as the MaterialLib ore of the same material, stone
+/// and size. Skips in a world's first session; see [PosteaTestSupport].
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class LegacyBartworksOreMigrationTests {
 

@@ -2,14 +2,13 @@ package gregtech.loaders.postload;
 
 import gregtech.api.enums.OrePrefixes;
 
-/// The gtPlusPlus item-cutover Postea migration table: one row per legacy
-/// `miscutils:item*`/`miscutils:block*`-registered gtPlusPlus per-material part whose prefix has cut over to a
-/// MaterialLib shape. See [PosteaTransformers] for how a row is migrated.
+/// Save migration table for gtPlusPlus per-material parts (`miscutils:item*` and `miscutils:block*`) that map onto
+/// MaterialLib shapes. See [PosteaTransformers] for the migration.
 ///
-/// `frameGt` is out of this table -- see [GtppFrameCutoverTable] -- as are five `cell` rows whose legacy item
-/// was never a `miscutils:` registration, hand-migrated in [PosteaTransformers] instead.
+/// Frame blocks are in [GtppFrameCutoverTable]. Six gtPlusPlus `cell` items have no row here and are migrated
+/// directly in [PosteaTransformers].
 ///
-/// Frozen: a row leaving this table orphans that item in every world that holds one.
+/// Rows are never removed. A missing row orphans that item in existing worlds.
 public final class GtppItemCutoverTable {
 
     public record Entry(OrePrefixes prefix, String materialName, String registryName) {}

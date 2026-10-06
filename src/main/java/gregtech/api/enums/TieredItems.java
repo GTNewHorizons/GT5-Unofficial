@@ -14,17 +14,12 @@ import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTUtility;
 
-/// The non-circuit ore-dictionary entries that hang off a voltage tier -- batteries and high-pressure fluid
-/// pipes -- keyed by voltage tier.
+/// The tiered battery and fluid pipe oredict entries by voltage tier. Like [Circuits], it keeps the mapping from
+/// tier to oredict name in one place.
 ///
-/// Each tier's ore-dictionary material name is unrelated to the tier abbreviation (`LV` is named `Basic`, `UHV`
-/// is named `Infinite`, and so on). Routing every call site through this enum keeps that mapping in one place.
-///
-/// A tier declares the concrete items it stands for: the IC2 battery registered under its `battery` name (`LV`
-/// to `EV`), and the material whose fluid pipes are registered under its pipe names (`ZPM`). A `get...(int)`
-/// returns that declared [ItemStack] and throws for a tier that declares none. A `get...Ingredient()` returns
-/// the name-only [ItemData] form for crafting-grid recipes, offered at every tier; see
-/// [gregtech.api.util.GTModHandler#addCraftingRecipe].
+/// A `get...(int)` returns the tier's concrete item and throws for a tier without one. Only `LV` to `EV` have
+/// batteries and only `ZPM` has pipes. A `get...Ingredient()` returns the oredict form for crafting recipes at
+/// any tier; see [gregtech.api.util.GTModHandler#addCraftingRecipe].
 public enum TieredItems {
 
     ULV("Primitive", null, null),
@@ -99,7 +94,7 @@ public enum TieredItems {
         return pipeMaterial.get();
     }
 
-    /// The ore-dictionary material name this constant stands for.
+    /// The oredict material name this constant stands for.
     public String materialName() {
         return materialName;
     }

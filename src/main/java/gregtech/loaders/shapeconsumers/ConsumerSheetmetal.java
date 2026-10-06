@@ -4,8 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.loaders.oreprocessing.ProcessingSheetmetal;
 
-/// Dispatches [ProcessingSheetmetal]'s bender recipe for the `sheetmetal` shape, to every material that
-/// generates the `sheetmetal` prefix.
+/// Generates the sheetmetal bender recipe through [ProcessingSheetmetal].
 public final class ConsumerSheetmetal {
 
     private ConsumerSheetmetal() {}

@@ -14,13 +14,10 @@ import gregtech.api.enums.Textures.InvisibleIcon;
 import gregtech.api.material.GTMaterialIconSets;
 import gregtech.api.util.GTUtil;
 
-/// One material's block-atlas icon, drawn from MaterialLib's texture-set resolution;
-/// the block-atlas counterpart of
-/// [MLItemIconContainer][gregtech.client.iconContainers.items.MLItemIconContainer], with the same
-/// icon-set-before-shape resolution and the same resolve-once, read-the-icon-every-time contract.
+/// One material's block-atlas icon from MaterialLib. The block counterpart of
+/// [MLItemIconContainer][gregtech.client.iconContainers.items.MLItemIconContainer], resolving the same way.
 ///
-/// Ore art draws in render pass 1 so the transparent parts of the icon show the stone behind it; every other
-/// material block icon is opaque and draws in pass 0.
+/// Ore art draws in render pass 1 so the stone shows through it. Other material block icons draw in pass 0.
 public final class MLBlockIconContainer extends AbstractBlockIconContainer {
 
     private final String name;
@@ -32,8 +29,7 @@ public final class MLBlockIconContainer extends AbstractBlockIconContainer {
     private IconSet iconSet;
     private boolean resolved;
 
-    /// `variant` names which backing block of a block shape declared with variants to read the icon from, and is
-    /// null for a variant-less shape or an icon set.
+    /// `variant` picks the backing block of a variant block shape, and is null otherwise.
     public MLBlockIconContainer(String name, String variant, Material material, int renderPass) {
         this.name = name;
         this.variant = variant;
@@ -49,7 +45,7 @@ public final class MLBlockIconContainer extends AbstractBlockIconContainer {
         return InvisibleIcon.INVISIBLE_ICON;
     }
 
-    /// Null: the stack's layers, its trailing overlay included, come through [#getLayerIcon].
+    /// Null, since every layer comes through [#getLayerIcon].
     @Override
     public IIcon getOverlayIcon() {
         return null;

@@ -6,10 +6,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MaterialParts;
 import gregtech.loaders.oreprocessing.ProcessingTransforming;
 
-/// Dispatches [ProcessingTransforming]'s recipe generation for every prefix that carries material
-/// (`getMaterialAmount() > 0`) and is neither a container nor enchantable, scoped to the prefixes that have a
-/// MaterialLib shape via [MaterialParts#shapes]. Every candidate shape of a matching prefix is delegated, so the
-/// fluid and item pipe shapes sharing a `pipeTiny`..`pipeHuge` prefix each dispatch their own materials.
+/// Generates chemical-bath and polarizer transforming recipes through [ProcessingTransforming], for every
+/// material-carrying prefix that is neither a container nor enchantable. Every candidate shape of a prefix is
+/// delegated, so fluid and item pipes each dispatch their own materials.
 public final class ConsumerTransforming {
 
     private ConsumerTransforming() {}

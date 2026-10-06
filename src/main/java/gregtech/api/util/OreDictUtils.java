@@ -31,20 +31,15 @@ import gregtech.api.objects.ItemData;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 
-/// GregTech's ore-dictionary helpers: registration and lookup, which item stands for an ore-dictionary name, and
-/// which items are other mods' copies of it. What an item is made of lives in [MaterialData].
+/// A set of oredict helpers to help with managing items that should (or should not) unify by oredict tags.
 ///
-/// MaterialLib decides the item for every name of a (prefix, material) pair it serves: the pair's stack, MaterialLib's
-/// own item or the foreign item a shape override declares, whatever else registers under the name and in whatever
-/// order. A pair MaterialLib's own item serves answers from GregTech's preInit on; one a foreign item stands in for
-/// answers from GregTech's init, once that item is registered (see [#useMaterialLibTargets]). `cellEmpty` stands
-/// for the empty cell every cell drains to; other names stand for no item.
+/// Handles other mods' versions of items that are generated through the MaterialLib system.
 ///
-/// Another mod's item registered under a name that stands for a different item is a unified copy
-/// ([#isUnifiedCopy]): GregTech generates no recipes for it, and `ForeignPartTable` migrates saved stacks of it.
+/// Unified items are excluded from recipe generation and `ForeignPartTable` governs migrated saved stacks
+/// to the unification target item. To prevent items from unifying, see [#addToBlacklist].
 ///
-/// Keyed by [OrePrefixes] throughout: an association starts from an ore-dictionary name. See [OrePrefixes]'s
-/// class javadoc for why the prefix and shape spaces are not interchangeable.
+/// Keyed by [OrePrefixes]. See [OrePrefixes] class javadoc for why prefixes and MaterialLib
+/// [com.ruling_0.materiallib.api.Shape]s are not interchangeable.
 public class OreDictUtils {
 
     private static volatile Map<String, MaterialLibPair> materialLibPairs;

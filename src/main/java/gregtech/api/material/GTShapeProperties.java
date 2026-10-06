@@ -8,21 +8,18 @@ import com.ruling_0.materiallib.api.Property;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.objects.MaterialStack;
 
-/// Typed property keys GregTech attaches to MaterialLib shapes, holding the per-form data a form knows about
-/// itself independently of the material taking it: a plate is one ingot of whatever it is made of.
+/// Typed property keys GregTech attaches to MaterialLib shapes, holding the data a form carries whatever material
+/// takes it. For example, a plate is one ingot of whatever it is made of.
 ///
-/// [ShapeData] declares the values, and every shape-backed
-/// [gregtech.api.enums.OrePrefixes] takes them from here at load, so this is the only place the 88 of them
-/// are written. The 220 prefixes no shape serves declare their own on the prefix.
+/// [gregtech.api.enums.materials.ShapeData] declares the values, and every shape-backed
+/// [gregtech.api.enums.OrePrefixes] reads them at load. Prefixes no shape serves declare their own values.
 ///
-/// The keys mirror the prefix accessors one for one, and their defaults match the
-/// [gregtech.api.enums.OrePrefixBuilder] defaults, so a shape that declares nothing reads what an undeclared
-/// prefix would.
+/// The keys mirror the prefix accessors one for one, and their defaults match
+/// [gregtech.api.enums.OrePrefixBuilder]'s.
 public class GTShapeProperties {
 
     /// Units of material in one item of this shape, in 3628800ths of a unit
-    /// ([gregtech.api.enums.OrePrefixes#getMaterialAmount]). This is what [gregtech.api.objects.ItemData] turns
-    /// into a [MaterialStack], and therefore the number every reverse recipe divides by.
+    /// ([gregtech.api.enums.OrePrefixes#getMaterialAmount]).
     public static final Property<Long> MATERIAL_AMOUNT = Property.of("gregtech", "materialAmount", -1L);
 
     /// The second material an item of this shape is partly made of, contributed as a byproduct to the reverse
@@ -31,10 +28,8 @@ public class GTShapeProperties {
 
     public static final Property<Integer> DEFAULT_STACK_SIZE = Property.of("gregtech", "defaultStackSize", 64);
 
-    /// The material generation groups a material must belong to for this shape's item to be generated for it
-    /// ([gregtech.api.enums.OrePrefixes#getGenerationFlags]). Mirrors [GTMaterialProperties#GENERATION_FLAGS]
-    /// on the other side: the material declares which groups it is in, the shape which groups it accepts, and
-    /// an item exists where the two overlap.
+    /// The generation groups this shape accepts ([gregtech.api.enums.OrePrefixes#getGenerationFlags]). An item
+    /// generates for a material whose [GTMaterialProperties#GENERATION_FLAGS] share one of these groups.
     public static final Property<Set<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
         .of("gregtech", "shapeGenerationFlags", Set.of());
 

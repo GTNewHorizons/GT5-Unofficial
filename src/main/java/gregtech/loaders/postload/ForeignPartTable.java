@@ -2,11 +2,10 @@ package gregtech.loaders.postload;
 
 import gregtech.api.enums.OrePrefixes;
 
-/// The foreign-part Postea migration table: one row per other mod's item that GregTech unifies onto a MaterialLib
-/// pair. No recipe, loot table or world generator hands these items out while GregTech is loaded, so saved stacks of
-/// them only exist in older worlds. See [PosteaTransformers] for how a row is migrated.
+/// Save migration table for other mods' items that GregTech unifies onto a MaterialLib pair. Each row maps one item
+/// to the prefix and material its saved stacks convert to. See [PosteaTransformers] for the migration.
 ///
-/// Frozen: a row leaving this table leaves that item unconverted in every world that holds one.
+/// Rows are never removed. A missing row leaves that item unconverted in existing worlds.
 public final class ForeignPartTable {
 
     public record Entry(String registryName, int meta, OrePrefixes prefix, String materialName) {}

@@ -20,13 +20,12 @@ import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 
-/// Implodes four dust into three gems with eight tiny piles of Dark Ash, for every material generating a dust and a
-/// gem MaterialLib mints itself. The implosion map copies each recipe into the electric implosion compressor.
+/// Generates implosion recipes turning four dust into three gems and eight tiny piles of Dark Ash, for every material
+/// with a dust and a gem MaterialLib mints itself.
 ///
-/// A gem another mod's item stands in for is covered only when listed in `foreignGems`: the rest (Nether Star, Ender
-/// Pearl, Thaumcraft shards) keep only the recipes their own loaders give them. Skipped outright are the gems
-/// [gregtech.loaders.oreprocessing.ProcessingDust] implodes by name with their own amounts, Amalgatite, AE2's Fluix
-/// and `NoBlast` materials, which [gregtech.loaders.oreprocessing.ProcessingGem] keeps out of implosion too.
+/// A gem another mod's item stands in for gets the recipe only when listed in `foreignGems`. `skipped` holds the gems
+/// [gregtech.loaders.oreprocessing.ProcessingDust] implodes by name, plus Amalgatite and Fluix. `NoBlast` materials
+/// never implode.
 public final class ConsumerGemImplosion {
 
     private ConsumerGemImplosion() {}

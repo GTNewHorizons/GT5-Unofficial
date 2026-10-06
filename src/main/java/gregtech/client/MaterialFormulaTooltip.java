@@ -19,13 +19,10 @@ import gregtech.api.material.MaterialFormulas;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Client;
 
-/// Renders the material tooltip lines on MaterialLib-served stacks (items, block item forms, and fluid
-/// containers -- all backed by [ShapeItem] or [ShapeBlock.ShapeBlockItem]): the chemical formula directly below
-/// the display name, the flavor line under it, then the hot-ingot and handling-hazard warnings at the end.
+/// Adds material tooltip lines to [ShapeItem] and [ShapeBlock.ShapeBlockItem] stacks. The chemical formula and
+/// flavor text go directly below the display name, and the hot-ingot and hazard warnings go at the end.
 ///
-/// An [ItemTooltipEvent] handler reading declaration data through [MaterialFormulas] and [MaterialUtils], so
-/// the `Client.tooltip` toggles gate each line at render time and localized formulas re-resolve on language
-/// switch.
+/// Each line is gated by its `Client.tooltip` toggle.
 public class MaterialFormulaTooltip {
 
     @SubscribeEvent

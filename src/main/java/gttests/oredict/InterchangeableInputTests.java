@@ -23,6 +23,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OreDictUtils;
 
+/// Which items recipe inputs holding circuits and SMD components accept.
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class InterchangeableInputTests {
 

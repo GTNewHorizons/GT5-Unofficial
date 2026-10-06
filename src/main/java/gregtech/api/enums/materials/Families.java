@@ -9,11 +9,11 @@ import com.ruling_0.materiallib.api.TextureSet;
 
 import gregtech.api.material.GTMaterialProperties;
 
-/// Groupings for [Materials]. All materials of a family generate its [Shape]s.
+/// Groupings for [Materials]. Every member of a family generates the family's shapes.
 ///
-/// [#all] and [#superconductors] carry no shapes: `all` exists only to give every material a fallback texture
-/// set, and `superconductors` only to carry [GTMaterialProperties#IS_SUPERCONDUCTOR] for its members. The
-/// superconductor markers take their wire shapes from [PipeMaterials], like every other wire material.
+/// [#all] and [#superconductors] generate no shapes. `all` gives every material a fallback texture set, and
+/// `superconductors` sets [GTMaterialProperties#IS_SUPERCONDUCTOR] on its members. Wires, superconducting or not,
+/// come from [PipeMaterials].
 public class Families {
 
     // spotless:off

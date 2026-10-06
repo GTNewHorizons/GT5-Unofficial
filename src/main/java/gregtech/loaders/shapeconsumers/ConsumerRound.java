@@ -4,7 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingRound;
 
-/// Dispatches [ProcessingRound]'s `round`-prefix recipe generation for MaterialLib's cutover round shape.
+/// Generates round recipes through [ProcessingRound].
 public final class ConsumerRound {
 
     private ConsumerRound() {}

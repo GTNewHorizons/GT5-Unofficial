@@ -15,10 +15,9 @@ import gregtech.api.hazards.HazardProtection;
 import gregtech.api.material.GTMaterialProperties;
 import ic2.core.IC2Potion;
 
-/// Poisons or irradiates a player carrying an item made of a [GTMaterialProperties#TOXIC] or
-/// [GTMaterialProperties#IS_RADIOACTIVE] material without the matching hazmat suit. The check is a
-/// player-tick inventory scan because every MaterialLib item of a shape shares one [ShapeItem] instance
-/// across all materials, leaving no per-material item to override.
+/// Poisons or irradiates a player carrying a [GTMaterialProperties#TOXIC] or [GTMaterialProperties#IS_RADIOACTIVE]
+/// [ShapeItem] without the matching hazmat suit. This is an inventory scan on player tick, since one [ShapeItem]
+/// serves every material of its shape.
 public class MaterialHazardHandler {
 
     @SubscribeEvent

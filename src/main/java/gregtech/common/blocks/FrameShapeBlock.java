@@ -45,10 +45,11 @@ import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.common.render.GTRendererBlock;
 
-/// The block backing the frame-box MaterialLib shape: metadata is the material's global index, the raw index
-/// with no flag bits. A plain frame has no tile entity; [#hasTileEntity] answers true unconditionally so a
-/// tile entity attached later (a cover applied through [#spawnFrameEntity]) survives chunk save/load, while
-/// [#createTileEntity] returns null so placement never auto-creates one.
+/// The frame-box MaterialLib shape block. Metadata is the material index.
+///
+/// A plain frame has no tile entity. Applying a cover attaches one through [#spawnFrameEntity].
+/// [#hasTileEntity] is always true so that tile entity survives chunk save/load, while [#createTileEntity]
+/// returns null so placement never creates one.
 public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
 
     private static final ThreadLocal<IGregTechTileEntity> temporaryTileEntity = new ThreadLocal<>();
@@ -416,7 +417,7 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
         });
     }
 
-    /// The item form of the frame shape: damage is the material's global index, named by [#displayName].
+    /// The item form of the frame shape. Damage is the material index, and the name comes from [#displayName].
     public static class FrameShapeItemBlock extends ItemBlock {
 
         public FrameShapeItemBlock(Block block) {

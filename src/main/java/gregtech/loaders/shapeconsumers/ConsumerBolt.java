@@ -4,7 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingBolt;
 
-/// Dispatches [ProcessingBolt]'s `bolt`-prefix recipe generation for MaterialLib's cutover bolt shape.
+/// Generates bolt recipes through [ProcessingBolt].
 public final class ConsumerBolt {
 
     private ConsumerBolt() {}

@@ -4,7 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingGem;
 
-/// Dispatches [ProcessingGem]'s recipe generation for MaterialLib's cutover gem-family shapes.
+/// Generates gem-family recipes through [ProcessingGem].
 public final class ConsumerGem {
 
     private ConsumerGem() {}
