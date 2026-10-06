@@ -69,7 +69,7 @@ public class Configuration {
         @Config.Comment({
             "This is a blacklist for the Void Miner, blacklisted ores will not enter the drop prize pool.",
             "Please fill in the Unique Identifier of Ore and connect Damage with a colon,",
-            "For example: gregtech:gt.blockores:32" })
+            "For example: minecraft:quartz_ore:0" })
         @Config.DefaultStringList({})
         public String[] voidMinerBlacklist;
 
