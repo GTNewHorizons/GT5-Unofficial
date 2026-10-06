@@ -3,6 +3,8 @@ package gregtech.loaders.oreprocessing;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +21,7 @@ import gregtech.api.util.GTUtility;
 /// Recipes for items other mods register in the ore dictionary, and for MaterialLib items registered under a prefix
 /// alias. MaterialLib parts get theirs from [ShapeRecipeTable]; this covers what has no MaterialLib pair: crops, logs,
 /// planks, slabs, `item*` and `plateAlloy*` names, crystals, foreign blocks, ores, gems, nuggets, plates, sticks and
-/// crushed ores, and the stack-size clamp [ProcessingAll] applies to every foreign block.
+/// crushed ores, and the stack-size clamp of every foreign block.
 ///
 /// [gregtech.common.oredict.OreDictRegistration] decides which registrations reach [#run].
 public final class ForeignPartRecipes {
@@ -73,6 +75,15 @@ public final class ForeignPartRecipes {
 
     private ForeignPartRecipes() {}
 
+    /// Lowers the stack limit of `stack`'s item to `prefix`'s default stack size, when the item is a block. The limit
+    /// belongs to the item, so it applies to every stack of it.
+    static void clampStackSize(OrePrefixes prefix, ItemStack stack) {
+        Item item = stack.getItem();
+        if (item instanceof ItemBlock && prefix.getDefaultStackSize() < item.getItemStackLimit(stack)) {
+            item.setMaxStackSize(prefix.getDefaultStackSize());
+        }
+    }
+
     private static void register(IOreRecipeRegistrator registrator, OrePrefixes... prefixes) {
         for (OrePrefixes prefix : prefixes) {
             REGISTRATORS.put(prefix, registrator);
@@ -88,7 +99,7 @@ public final class ForeignPartRecipes {
         if (material == Materials.NULL && !prefix.isSelfReferencing() && prefix.isMaterialBased()) return;
         if (!GTUtility.isStackValid(stack)) return;
 
-        ProcessingAll.INSTANCE.registerOre(prefix, material, oreDictName, modName, GTUtility.copyAmount(1, stack));
+        clampStackSize(prefix, stack);
         IOreRecipeRegistrator registrator = REGISTRATORS.get(prefix);
         if (registrator != null) {
             registrator.registerOre(prefix, material, oreDictName, modName, GTUtility.copyAmount(1, stack));

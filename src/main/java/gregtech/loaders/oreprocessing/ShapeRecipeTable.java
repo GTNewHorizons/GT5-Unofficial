@@ -3,8 +3,6 @@ package gregtech.loaders.oreprocessing;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -176,17 +174,12 @@ public final class ShapeRecipeTable {
             () -> ProcessingPipe.INSTANCE);
     }
 
-    /// Clamps the shape's item to the prefix's default stack size. The clamp mutates the [Item] shared by a whole
-    /// shape, so each material reapplies it.
+    /// Clamps the shape's item to the prefix's default stack size, once per material.
     private static void clamp(Shape shape, OrePrefixes prefix) {
         if (shape == null) return;
         MaterialLibAPI.registerShapeConsumer("gregtech", shape, (s, material) -> {
             ItemStack stack = MaterialLibAPI.getStack(material, s, 1);
-            if (stack == null) return;
-            Item item = stack.getItem();
-            if (item instanceof ItemBlock && prefix.getDefaultStackSize() < item.getItemStackLimit(stack)) {
-                item.setMaxStackSize(prefix.getDefaultStackSize());
-            }
+            if (stack != null) ForeignPartRecipes.clampStackSize(prefix, stack);
         });
     }
 
