@@ -2,7 +2,6 @@ package gregtech.common.fluid;
 
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 
-import java.util.Arrays;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
@@ -14,16 +13,13 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.ShapeFluidInContainer;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
@@ -162,91 +158,11 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     }
 
     /**
-     * @inheritDoc
-     */
-    @Override
-    public IGTRegisteredFluid configureMaterials(final Material material) {
-        if (material != null) configureMaterialSlots(material);
-        return this;
-    }
-
-    /// Writes `MaterialUtils`'s slot store and `Fluid`->`Material` twin map for the state this fluid carries.
-    private void configureMaterialSlots(Material material) {
-        MaterialUtils.recordFluidMaterial(registeredFluid, material);
-        MaterialUtils.recordSlotFluid(material, slotState(), registeredFluid);
-    }
-
-    private MaterialUtils.FluidState slotState() {
-        return switch (fluidState) {
-            case SLURRY -> MaterialUtils.FluidState.SOLID;
-            case GAS -> MaterialUtils.FluidState.GAS;
-            case PLASMA -> MaterialUtils.FluidState.PLASMA;
-            case MOLTEN -> MaterialUtils.FluidState.MOLTEN;
-            default -> MaterialUtils.FluidState.LIQUID;
-        };
-    }
-
-    /**
      * Adds a server-side localized-name
      */
     @Override
     public IGTRegisteredFluid addLocalizedName() {
         GTLanguageManager.addStringLocalization(getUnlocalizedName(), defaultLocalName);
-        return this;
-    }
-
-    private boolean addLocalizedNameHasOreprefix(Material material, String[] oreprefixNames) {
-        return Arrays.stream(oreprefixNames)
-            .anyMatch(oreprefixName -> addLocalizedNameHasOreprefix(material, oreprefixName));
-    }
-
-    private boolean addLocalizedNameHasOreprefix(Material material, String oreprefixName) {
-        final String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
-        if (defaultLocalName.contains(oreprefixNameRemovedFormat)) {
-            if (String.format(oreprefixName, MaterialUtils.localName(material))
-                .equals(defaultLocalName)) {
-                localizedName = () -> OrePrefixes
-                    .getLocalizedNameForItem(oreprefixName, "%s", MaterialUtils.internalName(material));
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Check if the localized name matches the material name, or if it matches any of the oreprefix formatted material
-     * names. If neither matches, add a key for localized.
-     *
-     * @param material material from GT/BW/GT++
-     *
-     * @implNote The method checks for the following oreprefix patterns:
-     *           <ul>
-     *           <li>Molten %s</li>
-     *           <li>%s Plasma</li>
-     *           <li>Lightly Hydro-Cracked %s</li>
-     *           <li>Lightly Steam-Cracked %s</li>
-     *           <li>Moderately Hydro-Cracked %s</li>
-     *           <li>Moderately Steam-Cracked %s</li>
-     *           <li>Severely Hydro-Cracked %s</li>
-     *           <li>Severely Steam-Cracked %s</li>
-     *           </ul>
-     *           If a pattern matches, it uses formatted localization with the appropriate oreprefix key.
-     */
-    @Override
-    public IGTRegisteredFluid addLocalizedName(Material material) {
-        if (material == null) return addLocalizedName();
-        if (!MaterialUtils.localName(material)
-            .equals(defaultLocalName)) {
-            if (addLocalizedNameHasOreprefix(
-                material,
-                new String[] { "Molten %s", "%s Plasma", "Lightly Hydro-Cracked %s", "Lightly Steam-Cracked %s",
-                    "Moderately Hydro-Cracked %s", "Moderately Steam-Cracked %s", "Severely Hydro-Cracked %s",
-                    "Severely Steam-Cracked %s" })) {
-                return this;
-            }
-            return addLocalizedName();
-        }
-        localizedName = () -> MaterialUtils.localizedName(material);
         return this;
     }
 

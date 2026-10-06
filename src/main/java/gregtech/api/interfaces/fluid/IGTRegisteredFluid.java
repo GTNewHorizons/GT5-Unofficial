@@ -4,8 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
-import com.ruling_0.materiallib.api.Material;
-
 public interface IGTRegisteredFluid {
 
     /**
@@ -42,16 +40,7 @@ public interface IGTRegisteredFluid {
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGTRegisteredFluid registerPContainers(final ItemStack fullContainer, final ItemStack emptyContainer);
 
-    /// Configures a MaterialLib [Material]'s fluids from this fluid's state. Records the fluid into `MaterialUtils`'s
-    /// slot store (so `MaterialUtils.fluid`/`gas`/`molten`/`solid`/`plasma` resolve it post-loader) and the
-    /// `Fluid`->`Material` twin map.
-    @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
-    IGTRegisteredFluid configureMaterials(final Material material);
-
     IGTRegisteredFluid addLocalizedName();
-
-    /// `material` is a MaterialLib material.
-    IGTRegisteredFluid addLocalizedName(final Material material);
 
     /**
      * @return this {@link IGTRegisteredFluid} cast to {@link Fluid}

@@ -54,6 +54,8 @@ public class GTMaterialProperties {
     public static final Property<Boolean> FORMULA_LOCALIZED = Property.of("gregtech", "formulaLocalized");
     /// The literal flavor line shown in italics under the formula on every stack of the material.
     public static final Property<String> FLAVOR_TEXT = Property.of("gregtech", "flavorText");
+    /// The light level of the material's fluids, in place of each fluid shape's own.
+    public static final Property<Integer> FLUID_LUMINOSITY = Property.of("gregtech", "fluidLuminosity");
     public static final Property<EnumSet<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
         .of("gregtech", "generationFlags");
     public static final Property<MaterialRef> HANDLE_MATERIAL = Property.of("gregtech", "handleMaterial");
@@ -128,6 +130,8 @@ public class GTMaterialProperties {
     public static final Property<List<String>> REMOVED_PREFIXES = Property.of("gregtech", "removedPrefixes");
     public static final Property<MaterialRef> SMELT_INTO = Property.of("gregtech", "smeltInto");
     public static final Property<Integer> SMELTING_MULTIPLIER = Property.of("gregtech", "smeltingMultiplier", 1);
+    /// The Forge fluid name of the material's solid form, such as crushed ice.
+    public static final Property<String> SOLID_FLUID = Property.of("gregtech", "solidFluid");
     public static final Property<Float> STEAM_MULTIPLIER = Property.of("gregtech", "steamMultiplier");
     /// The material's tier, read by some recipe generators.
     public static final Property<Integer> TIER = Property.of("gregtech", "tier", 0);

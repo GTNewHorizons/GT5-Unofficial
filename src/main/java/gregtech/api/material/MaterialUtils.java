@@ -15,11 +15,13 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.color.ColorResource;
+import com.ruling_0.materiallib.api.FluidMaterialInfo;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.MaterialRef;
@@ -85,18 +87,13 @@ public class MaterialUtils {
         return MaterialLibAPI.getFluidStack(material, FluidShapes.fluidGas, (int) (1000 * entry.amount()));
     }
 
-    /// Returns whether the material carries the [FluidShapes#fluidMolten] shape or a [#recordSlotFluid]-recorded
-    /// MOLTEN fluid.
+    /// Returns whether the material carries the [FluidShapes#fluidMolten] shape.
     public static boolean hasMolten(@Nullable Material material) {
-        if (material == null) return false;
-        return material.hasShape(FluidShapes.fluidMolten) || storedFluid(material, FluidState.MOLTEN) != null;
+        return material != null && material.hasShape(FluidShapes.fluidMolten);
     }
 
-    /// Returns the molten fluid at `amount`, or null when [#hasMolten] is false. A [#recordSlotFluid]-recorded
-    /// MOLTEN fluid takes precedence over the [FluidShapes#fluidMolten] shape.
+    /// Returns the molten fluid at `amount`, or null when [#hasMolten] is false.
     public static @Nullable FluidStack molten(@Nullable Material material, long amount) {
-        Fluid stored = storedFluid(material, FluidState.MOLTEN);
-        if (stored != null) return new FluidStack(stored, (int) amount);
         if (!hasMolten(material)) return null;
         return MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) amount);
     }
@@ -107,9 +104,8 @@ public class MaterialUtils {
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// Returns the fluid for the material's liquid slot, or null when it has none. A [#recordSlotFluid]-recorded
-    /// LIQUID fluid takes precedence. A material listed in [MaterialFluidNames] answers null unless it declares a
-    /// `fluid()` slot. Vanilla fluids such as `Water` and `Milk` are not reachable here.
+    /// Returns the fluid for the material's liquid slot, or null when it has none. A material listed in
+    /// [MaterialFluidNames] answers null unless it declares a `fluid()` slot.
     public static @Nullable Fluid fluidOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.LIQUID, FluidNames::fluid);
     }
@@ -133,14 +129,15 @@ public class MaterialUtils {
         return flags != null && flags.contains(flag);
     }
 
-    /// Returns the [#recordSlotFluid]-recorded SOLID fluid as a stack of `amount`, or null when none is recorded.
+    /// Returns the material's [GTMaterialProperties#SOLID_FLUID] as a stack of `amount`, or null when it declares
+    /// none.
     public static @Nullable FluidStack solid(@Nullable Material material, long amount) {
-        Fluid fluid = storedFluid(material, FluidState.SOLID);
-        return fluid == null ? null : new FluidStack(fluid, (int) amount);
+        String name = material == null ? null : material.getProperty(GTMaterialProperties.SOLID_FLUID);
+        return name == null ? null : FluidRegistry.getFluidStack(name, (int) amount);
     }
 
     /// Returns the first of the material's molten, liquid and gas fluids as a stack of `amount`. Null when it
-    /// carries none of the three shapes. [#recordSlotFluid]-recorded fluids are not consulted.
+    /// carries none of the three shapes.
     public static @Nullable FluidStack anyFluid(@Nullable Material material, long amount) {
         Fluid fluid = anyFluidOf(material);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
@@ -187,28 +184,12 @@ public class MaterialUtils {
         return material != null && material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS);
     }
 
-    /// The five fluid states a material can carry, keying [#recordSlotFluid]'s store.
-    public enum FluidState {
+    /// The fluid states a material can carry.
+    private enum FluidState {
         LIQUID,
         GAS,
         MOLTEN,
-        SOLID,
         PLASMA
-    }
-
-    private static final Map<Material, EnumMap<FluidState, Fluid>> slotFluids = new HashMap<>();
-
-    /// Records the Forge fluid backing one of `material`'s fluid states. A recorded fluid takes precedence in that
-    /// state's accessors, such as [#fluidOf] and [#molten].
-    public static void recordSlotFluid(Material material, FluidState state, Fluid fluid) {
-        slotFluids.computeIfAbsent(material, k -> new EnumMap<>(FluidState.class))
-            .put(state, fluid);
-    }
-
-    private static @Nullable Fluid storedFluid(@Nullable Material material, FluidState state) {
-        if (material == null) return null;
-        EnumMap<FluidState, Fluid> fluids = slotFluids.get(material);
-        return fluids == null ? null : fluids.get(state);
     }
 
     /// The shapes that can back each fluid state, in resolution order. A state usually maps to its own shape,
@@ -223,22 +204,17 @@ public class MaterialUtils {
             FluidState.MOLTEN,
             new Shape[] { FluidShapes.fluidMolten },
             FluidState.PLASMA,
-            new Shape[] { FluidShapes.fluidPlasma },
-            FluidState.SOLID,
-            new Shape[] {}));
+            new Shape[] { FluidShapes.fluidPlasma }));
 
-    /// Returns the fluid backing `state`. A [#recordSlotFluid]-recorded fluid wins. A material listed in
-    /// [MaterialFluidNames] must declare the slot, and the fluid is the one MaterialLib registered for the first
-    /// shape in [#STATE_SHAPES] that the material generates. Any other material resolves through the state's own
-    /// shape alone.
+    /// Returns the fluid backing `state`. A material listed in [MaterialFluidNames] must declare the slot, and the
+    /// fluid is the one MaterialLib registered for the first shape in [#STATE_SHAPES] that the material generates.
+    /// Any other material resolves through the state's own shape alone.
     private static @Nullable Fluid resolveSlotFluid(@Nullable Material material, FluidState state,
         Function<FluidNames, FluidRef> slot) {
-        Fluid stored = storedFluid(material, state);
-        if (stored != null) return stored;
         if (material == null) return null;
         Shape[] shapes = STATE_SHAPES.get(state);
         FluidNames legacyFluids = MaterialFluidNames.of(material.getName());
-        if (legacyFluids == null) return shapes.length == 0 ? null : MaterialLibAPI.getFluid(material, shapes[0]);
+        if (legacyFluids == null) return MaterialLibAPI.getFluid(material, shapes[0]);
         if (slot.apply(legacyFluids) == null) return null;
         for (Shape shape : shapes) {
             Fluid fluid = MaterialLibAPI.getFluid(material, shape);
@@ -247,16 +223,10 @@ public class MaterialUtils {
         return null;
     }
 
-    private static final Map<Fluid, Material> fluidMaterials = new LinkedHashMap<>();
-
-    /// Records that `fluid` was registered for `material`; read back through [#materialOfFluid].
-    public static void recordFluidMaterial(Fluid fluid, Material material) {
-        fluidMaterials.put(fluid, material);
-    }
-
-    /// The material [#recordFluidMaterial] recorded for a fluid, or null when none owns it.
+    /// The material whose fluid `fluid` is, or null when it is no material's ([MaterialLibAPI#lookupFluid]).
     public static @Nullable Material materialOfFluid(@Nullable Fluid fluid) {
-        return fluid == null ? null : fluidMaterials.get(fluid);
+        FluidMaterialInfo info = MaterialLibAPI.lookupFluid(fluid);
+        return info == null ? null : info.material();
     }
 
     /// The two cracking families of a material's cracked fluids.

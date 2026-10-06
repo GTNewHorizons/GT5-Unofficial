@@ -13106,6 +13106,7 @@ public class Materials {
             .build();
         Materials.Water = MaterialLibAPI.newMaterial("gregtech", "Water", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF0000FF)
+            .setProperty(GTMaterialProperties.SOLID_FLUID, "ice")
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Water")
@@ -13124,6 +13125,7 @@ public class Materials {
             .build();
         Materials.Ice = MaterialLibAPI.newMaterial("gregtech", "Ice", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFC8C8FF)
+            .setProperty(GTMaterialProperties.SOLID_FLUID, "ice")
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Ice")
@@ -18293,6 +18295,7 @@ public class Materials {
             .build();
         Materials.EnrichedBacterialSludge = MaterialLibAPI.newMaterial("gregtech", "EnrichedBacterialSludge", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF36F60E)
+            .setProperty(GTMaterialProperties.FLUID_LUMINOSITY, 15)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
             .removeShape(CellShapes.cell)
@@ -18304,6 +18307,7 @@ public class Materials {
             .build();
         Materials.FermentedBacterialSludge = MaterialLibAPI.newMaterial("gregtech", "FermentedBacterialSludge", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF008C10)
+            .setProperty(GTMaterialProperties.FLUID_LUMINOSITY, 8)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
             .removeShape(CellShapes.cell)

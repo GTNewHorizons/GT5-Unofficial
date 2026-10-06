@@ -156,6 +156,8 @@ public class FluidShapes {
                 int kelvin = temperature.applyAsInt(material);
                 fluid.setTemperature(kelvin);
                 attrs.accept(fluid, kelvin);
+                Integer luminosity = material.getProperty(GTMaterialProperties.FLUID_LUMINOSITY);
+                if (luminosity != null) fluid.setLuminosity(luminosity);
             })
             .iconPath((shape, material) -> {
                 FluidRef fluidRef = ref.apply(material);
