@@ -252,9 +252,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
 
     private String getCoolantTextFormatted(String fluidType, int speedBoost) {
         return String.format(
-            "%s%d L/s%s : %s%d %s: %s%s",
+            "%s%s/s%s : %s%d %s: %s%s",
             EnumChatFormatting.GOLD,
-            BOOSTER_DRAIN,
+            formatFluid(BOOSTER_DRAIN),
             EnumChatFormatting.GRAY,
             EnumChatFormatting.GREEN,
             speedBoost,
@@ -471,7 +471,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 }
                 currentBoosterFluid = findBoosterFluid();
                 return super.createOverclockCalculator(recipe)
-                    .setMachineHeat(currentBoosterFluid == null ? 0 : currentBoosterFluid.perfectOverclock * 1800)
+                    .setMachineHeat(
+                        currentBoosterFluid == null ? 0
+                            : currentBoosterFluid.perfectOverclock * OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
                     .setRecipeHeat(0)
                     .setHeatOC(true)
                     .setHeatDiscount(false);
