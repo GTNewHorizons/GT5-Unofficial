@@ -56,6 +56,7 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
  * Responsible for recipe addition / search for recipemap.
@@ -86,6 +87,7 @@ public class RecipeMapBackend {
      * All the recipes belonging to this backend, indexed by recipe category.
      */
     private final Map<RecipeCategory, Collection<GTRecipe>> recipesByCategory = new HashMap<>();
+    private final Int2ObjectOpenHashMap<List<GTRecipe>> recipesByIdentityHash = new Int2ObjectOpenHashMap<>();
 
     /** Size of the cache map below. */
     public static final int CACHE_MAP_SIZE = 256;
@@ -151,15 +153,19 @@ public class RecipeMapBackend {
 
     // region add recipe
 
-    /**
-     * Adds the supplied recipe to the recipe list and index, without any check.
-     *
-     * @return Supplied recipe.
-     */
+    /// Adds the supplied recipe to the recipe list and index, unless an identical recipe (see
+    /// [GTRecipe#isIdenticalTo]) is already registered.
+    ///
+    /// @return the supplied recipe, or the identical recipe already registered
     public GTRecipe compileRecipe(GTRecipe recipe) {
         if (recipe.getRecipeCategory() == null) {
             recipe.setRecipeCategory(recipeMap.getDefaultRecipeCategory());
         }
+        List<GTRecipe> sameHash = recipesByIdentityHash.computeIfAbsent(recipe.identityHash(), k -> new ArrayList<>(1));
+        for (GTRecipe existing : sameHash) {
+            if (existing != recipe && recipe.isIdenticalTo(existing)) return existing;
+        }
+        sameHash.add(recipe);
 
         recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
             .add(recipe);
@@ -316,6 +322,7 @@ public class RecipeMapBackend {
     }
 
     private void clearLookupStructures() {
+        recipesByIdentityHash.clear();
         meaningfulItems.clear();
         meaningfulFluids.clear();
         Arrays.fill(cacheMap, null);
@@ -324,6 +331,11 @@ public class RecipeMapBackend {
     }
 
     private void rebuildLookupStructures() {
+        recipesByIdentityHash.clear();
+        for (GTRecipe recipe : allRecipes()) {
+            recipesByIdentityHash.computeIfAbsent(recipe.identityHash(), k -> new ArrayList<>(1))
+                .add(recipe);
+        }
         meaningfulItems.clear();
         meaningfulFluids.clear();
         Arrays.fill(cacheMap, null);

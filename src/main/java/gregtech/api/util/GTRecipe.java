@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -826,6 +827,98 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     // endregion
+
+    /// Whether `other` is the same recipe: equal item and fluid inputs and outputs, with stack sizes and NBT, and the
+    /// same chances, duration, power, special value and item, flags, category, NEI text and metadata. Recipes with
+    /// alternative inputs are never identical to another.
+    public boolean isIdenticalTo(GTRecipe other) {
+        if (other == this) return true;
+        if (getClass() != other.getClass() || this instanceof GTRecipe_WithAlt) return false;
+        return mDuration == other.mDuration && mEUt == other.mEUt
+            && mSpecialValue == other.mSpecialValue
+            && mEnabled == other.mEnabled
+            && mHidden == other.mHidden
+            && mFakeRecipe == other.mFakeRecipe
+            && mCanBeBuffered == other.mCanBeBuffered
+            && mNeedsEmptyOutput == other.mNeedsEmptyOutput
+            && isNBTSensitive == other.isNBTSensitive
+            && exactItemInputs == other.exactItemInputs
+            && recipeCategory == other.recipeCategory
+            && sameStacks(mInputs, other.mInputs)
+            && sameStacks(mOutputs, other.mOutputs)
+            && sameFluids(mFluidInputs, other.mFluidInputs)
+            && sameFluids(mFluidOutputs, other.mFluidOutputs)
+            && mAltFluidInputs == null
+            && other.mAltFluidInputs == null
+            && Arrays.equals(mInputChances, other.mInputChances)
+            && Arrays.equals(mOutputChances, other.mOutputChances)
+            && Arrays.equals(mFluidInputChances, other.mFluidInputChances)
+            && Arrays.equals(mFluidOutputChances, other.mFluidOutputChances)
+            && sameSpecialItems(mSpecialItems, other.mSpecialItems)
+            && Arrays.equals(neiDesc, other.neiDesc)
+            && metadataStorage.getEntries()
+                .equals(other.metadataStorage.getEntries());
+    }
+
+    /// A hash consistent with [#isIdenticalTo]: identical recipes hash alike.
+    public int identityHash() {
+        int hash = 31 * (31 * mDuration + mEUt) + mSpecialValue;
+        hash = 31 * hash + stacksHash(mInputs);
+        hash = 31 * hash + stacksHash(mOutputs);
+        hash = 31 * hash + fluidsHash(mFluidInputs);
+        return 31 * hash + fluidsHash(mFluidOutputs);
+    }
+
+    private static int stacksHash(ItemStack[] stacks) {
+        if (stacks == null) return 0;
+        int hash = 1;
+        for (ItemStack stack : stacks) {
+            hash = 31 * hash + (stack == null || stack.getItem() == null ? 0
+                : (Item.getIdFromItem(stack.getItem()) * 31 + stack.getItemDamage()) * 31 + stack.stackSize);
+        }
+        return hash;
+    }
+
+    private static int fluidsHash(FluidStack[] fluids) {
+        if (fluids == null) return 0;
+        int hash = 1;
+        for (FluidStack fluid : fluids) {
+            hash = 31 * hash + (fluid == null || fluid.getFluid() == null ? 0
+                : fluid.getFluid()
+                    .getName()
+                    .hashCode() * 31 + fluid.amount);
+        }
+        return hash;
+    }
+
+    private static boolean sameStacks(ItemStack[] a, ItemStack[] b) {
+        if (a == null || b == null) return a == b;
+        if (a.length != b.length) return false;
+        for (int i = 0; i < a.length; i++) {
+            if (!ItemStack.areItemStacksEqual(a[i], b[i])) return false;
+        }
+        return true;
+    }
+
+    private static boolean sameFluids(FluidStack[] a, FluidStack[] b) {
+        if (a == null || b == null) return a == b;
+        if (a.length != b.length) return false;
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] == null || b[i] == null) {
+                if (a[i] != b[i]) return false;
+            } else if (!a[i].isFluidStackIdentical(b[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean sameSpecialItems(Object a, Object b) {
+        if (a instanceof ItemStack stackA && b instanceof ItemStack stackB) {
+            return ItemStack.areItemStacksEqual(stackA, stackB);
+        }
+        return Objects.equals(a, b);
+    }
 
     public RecipeCategory getRecipeCategory() {
         return recipeCategory;
