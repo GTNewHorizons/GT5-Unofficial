@@ -3,9 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
-import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
@@ -49,14 +47,6 @@ public class ProcessingCell implements IOreRecipeRegistrator {
             case "cell" -> {
                 if (material == Materials.Empty) {
                     GTModHandler.removeRecipeByOutputDelayed(stack);
-                    if (modName.equalsIgnoreCase("AtomicScience")) {
-                        RA.stdBuilder()
-                            .itemInputs(ItemList.Cell_Empty.get(1L))
-                            .itemOutputs(stack)
-                            .duration(15 * SECONDS)
-                            .eut(2)
-                            .addTo(extractorRecipes);
-                    }
                 } else {
                     if (MaterialUtils.fuelPower(material) > 0) {
                         GTRecipeBuilder recipeBuilder = RA.stdBuilder();
