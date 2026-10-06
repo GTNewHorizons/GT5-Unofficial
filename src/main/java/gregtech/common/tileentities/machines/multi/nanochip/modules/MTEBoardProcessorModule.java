@@ -308,7 +308,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         }
 
         if (getImpurityPercentage() <= 0.15) {
-            durationMultiplier = (float) (1 - 0.3 + getImpurityPercentage() * 2);
+            durationMultiplier = (float) (0.7 + getImpurityPercentage() * 2);
         } else if (getImpurityPercentage() >= 0.65) {
             durationMultiplier = (float) (1 + 2 * (getImpurityPercentage() - 0.65));
         }

@@ -3573,7 +3573,7 @@ GT5U.tooltip.nac.module.board_processor.body.4=Set an ejection threshold in the 
 GT5U.tooltip.nac.module.board_processor.body.5=Supplying a redstone signal to a Nanochip Redstone Input Hatch will automatically flush the fluid tank
 GT5U.tooltip.nac.module.board_processor.body.output_hatch=Manual and automatic flushing require an Output Hatch
 GT5U.tooltip.nac.module.board_processor.body.6=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
-GT5U.tooltip.nac.module.board_processor.body.7=§b0%%-15%%§r - §aDuration Modifier = 100%% - (30%% - 2 * y%%)
+GT5U.tooltip.nac.module.board_processor.body.7=§b0%%-15%%§r - §aDuration Modifier = 70%% + (2 * y%%)
 GT5U.tooltip.nac.module.board_processor.body.8=§b15%%-65%%§r - Default behaviour
 GT5U.tooltip.nac.module.board_processor.body.9=§b65%%-100%%§r - §4Duration Modifier = 100%% + (2%% * y%%)
 GT5U.tooltip.nac.module.cutting_chamber.name=Cutting Chamber
