@@ -42,7 +42,7 @@ public final class MLItemIconContainer extends AbstractItemIconContainer {
         return InvisibleIcon.INVISIBLE_ICON;
     }
 
-    /// Null, since every layer comes through [#getLayerIcon].
+    /// Returns null. Every layer comes through [#getLayerIcon].
     @Override
     public IIcon getOverlayIcon() {
         return null;

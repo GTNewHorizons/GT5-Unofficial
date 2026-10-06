@@ -15,8 +15,8 @@ public class MaterialArcSmeltHelper {
 
     private MaterialArcSmeltHelper() {}
 
-    /// The (gas -> result) mapping for `material`, or an empty map when it has no gas-conditional
-    /// arc-smelting recipe.
+    /// Returns the gas -> result mapping for `material`, or an empty map when it has no gas-conditional
+    /// arc-smelting recipe. Throws [IllegalStateException] before `MaterialSystem.init`.
     public static Map<Material, Material> withGas(@Nullable Material material) {
         if (material == null) return Collections.emptyMap();
         return table().getOrDefault(material, Collections.emptyMap());

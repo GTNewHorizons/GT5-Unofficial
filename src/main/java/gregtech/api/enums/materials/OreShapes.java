@@ -156,7 +156,7 @@ public class OreShapes {
         return stoneTypeName.toLowerCase(Locale.ROOT);
     }
 
-    /// The variant whose icon carries `stoneType`'s ore art. Small ore on ice stone falls back to
+    /// Returns the variant whose icon carries `stoneType`'s ore art. Small ore on ice stone falls back to
     /// [#ICON_VARIANT].
     public static String iconVariantOf(StoneType stoneType, boolean small) {
         String stoneTypeName = stoneType.name();
@@ -164,7 +164,7 @@ public class OreShapes {
         return variantOf(stoneTypeName);
     }
 
-    /// The [StoneType] a variant name resolves to, or null if `variant` names none of [#STONE_TYPE_NAMES].
+    /// Returns the [StoneType] a variant name resolves to, or null if `variant` names none of [#STONE_TYPE_NAMES].
     public static StoneType stoneTypeOf(String variant) {
         for (String stoneTypeName : STONE_TYPE_NAMES) {
             if (variantOf(stoneTypeName).equals(variant)) {

@@ -50,7 +50,7 @@ public final class CauldronWashing {
         CLEANED_DUSTS.put(in, out);
     }
 
-    /// The washed form of `stackSize` items of `prefix` and `material`, or null when they do not wash.
+    /// Returns the washed form of `stackSize` items of `prefix` and `material`, or null when they do not wash.
     public static ItemStack result(OrePrefixes prefix, Material material, int stackSize) {
         if (material == null || material == Materials.Empty || material == Materials.NULL) return null;
         return switch (prefix.getName()) {
@@ -62,7 +62,8 @@ public final class CauldronWashing {
         };
     }
 
-    /// Washes a dropped item that sits in a cauldron holding water. Returns whether it washed.
+    /// Washes a dropped item that sits in a cauldron holding water. Returns whether it washed, always false on the
+    /// client.
     public static boolean washDropped(OrePrefixes prefix, Material material, EntityItem entity) {
         World world = entity.worldObj;
         if (world.isRemote || !washes(prefix, material)) return false;

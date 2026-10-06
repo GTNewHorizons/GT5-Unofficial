@@ -21,17 +21,17 @@ public final class MaterialFluidNames {
     private static final Map<String, List<FluidRef>> HYDRO_CRACKED = buildHydroCracked();
     private static final Map<String, List<FluidRef>> STEAM_CRACKED = buildSteamCracked();
 
-    /// The fluid slots `materialName` declares, or null when it declares none.
+    /// Returns the fluids `materialName` declares per state, or null when it declares none.
     public static @Nullable FluidNames of(String materialName) {
         return LEGACY.get(materialName);
     }
 
-    /// The three hydro-cracked fluids (light, moderate, severe), or null when `materialName` has none.
+    /// Returns the three hydro-cracked fluids (light, moderate, severe), or null when `materialName` has none.
     public static @Nullable List<FluidRef> hydroCracked(String materialName) {
         return HYDRO_CRACKED.get(materialName);
     }
 
-    /// [#hydroCracked], for the steam-cracked fluids.
+    /// Same as [#hydroCracked], for the steam-cracked fluids.
     public static @Nullable List<FluidRef> steamCracked(String materialName) {
         return STEAM_CRACKED.get(materialName);
     }

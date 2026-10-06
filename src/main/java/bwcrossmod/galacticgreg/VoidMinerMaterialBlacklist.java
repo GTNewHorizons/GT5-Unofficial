@@ -29,7 +29,8 @@ public final class VoidMinerMaterialBlacklist {
 
     private VoidMinerMaterialBlacklist() {}
 
-    /// The blacklisted block keys from [Configuration.Multiblocks#voidMinerBlacklistMaterials], resolved once.
+    /// Returns the unmodifiable set of block keys blacklisted by
+    /// [Configuration.Multiblocks#voidMinerBlacklistMaterials], resolved on the first call.
     public static Set<String> cached() {
         if (cached == null) cached = resolve();
         return cached;
@@ -55,7 +56,7 @@ public final class VoidMinerMaterialBlacklist {
     }
 
     /// Adds the keys of one config entry, either `<Material>` over every ore shape or `<Material>:<shapeToken>`
-    /// over one. False when the entry names no registered material or matches no ore block.
+    /// over one. Returns false when the entry names no registered material or matches no ore block.
     private static boolean addEntry(String entry, Set<String> keys) {
         int separator = entry.indexOf(':');
         Material material = StackResolver.getMaterial(separator == -1 ? entry : entry.substring(0, separator));

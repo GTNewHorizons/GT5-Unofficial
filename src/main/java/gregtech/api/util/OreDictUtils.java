@@ -50,10 +50,10 @@ public class OreDictUtils {
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
     private static final Set<Item> unificationWildcardBlacklist = new ReferenceOpenHashSet<>();
 
-    /// Marks `stack` as never being a unified copy, for items that share an ore-dictionary name with a different item
-    /// but are their own thing (the Industrial Diamond under `gemDiamond`). A recipe input holding a blacklisted item
-    /// with a name-only association, such as a specific circuit or SMD component, accepts only that item.
-    /// [GTModHandler#collisionProbe(String)] passes over blacklisted items.
+    /// Marks `stack` as never being a unified copy, for an item that shares an oredict name with a different item but
+    /// is its own thing, such as the Industrial Diamond under `gemDiamond`. A wildcard stack blacklists every damage
+    /// value of its item. A recipe input holding a blacklisted item with a name-only association accepts only that
+    /// item.
     public static void addToBlacklist(ItemStack stack) {
         if (GTUtility.isStackInvalid(stack)) return;
 
@@ -69,8 +69,9 @@ public class OreDictUtils {
         return unificationBlacklist.contains(stack) || unificationWildcardBlacklist.contains(stack.getItem());
     }
 
-    /// Registers `stack` under the ore-dictionary name of `prefix` and `material` and associates it with the pair,
-    /// including for prefixes the ore-dictionary handler does not associate (buckets, bottles, molten cells).
+    /// Registers a single-item copy of `stack` under the oredict name of `prefix` and `material`, and associates it
+    /// with the pair. Works for prefixes the oredict handler does not associate, such as buckets and molten cells.
+    /// Does nothing when an argument is null or the stack is invalid.
     public static void registerAndAssociate(OrePrefixes prefix, Material material, ItemStack stack) {
         if (prefix == null || material == null || GTUtility.isStackInvalid(stack)) return;
         stack = GTUtility.copyAmount(1, stack);
@@ -78,8 +79,8 @@ public class OreDictUtils {
         MaterialData.addAssociation(prefix, material, stack);
     }
 
-    /// Registers `stack` under the ore-dictionary name of `prefix` and `materialName` with a name-only association
-    /// (see [ItemData#ItemData(OrePrefixes, String)]).
+    /// Same as [#registerAndAssociate(OrePrefixes, Material, ItemStack)], with a name-only association (see
+    /// [ItemData#ItemData(OrePrefixes, String)]).
     public static void registerAndAssociate(OrePrefixes prefix, String materialName, ItemStack stack) {
         if (prefix == null || materialName == null || GTUtility.isStackInvalid(stack)) return;
         stack = GTUtility.copyAmount(1, stack);
@@ -89,8 +90,7 @@ public class OreDictUtils {
 
     private record MaterialLibPair(OrePrefixes prefix, Material material) {}
 
-    /// Every ore-dictionary name MaterialLib serves a unifiable (prefix, material) pair under. Ore blocks stay
-    /// out: their shapes are stone variants with no single stack, and vanilla's ore blocks keep their names.
+    /// Returns the oredict names of every unifiable pair MaterialLib serves, keyed to the pair, ore prefixes excluded.
     private static Map<String, MaterialLibPair> materialLibPairs() {
         Map<String, MaterialLibPair> pairs = materialLibPairs;
         if (pairs == null) {
@@ -109,11 +109,9 @@ public class OreDictUtils {
         return pairs;
     }
 
-    /// Lets every MaterialLib pair decide its names from here on, including those a foreign item stands in for.
-    /// Called at the start of GregTech's init: during preInit another mod's overriding item may not be registered
-    /// yet.
-    /// A foreign item standing in for a pair is associated with it and added to its prefix here, since the
-    /// ore-dictionary event that would do so may never be processed for it (`stickObsidian` is an ignored name).
+    /// Makes every MaterialLib pair the unification target for its oredict name, including pairs a foreign item
+    /// stands in for. Each such foreign item is associated with its pair and added to its prefix. Runs at the start of
+    /// GregTech's init, once other mods' overriding items are registered.
     public static void useMaterialLibTargets() {
         materialLibTargetsLive = true;
         for (MaterialLibPair pair : materialLibPairs().values()) {
@@ -126,10 +124,11 @@ public class OreDictUtils {
         }
     }
 
-    /// The item every stack registered under `oreName` unifies to: the MaterialLib stack of the pair the name stands
-    /// for, or the empty cell for `cellEmpty`, which MaterialLib serves outside any pair. Null when MaterialLib serves
-    /// nothing under the name, when GregTech's shapes are not registered yet, or when a foreign item stands in for the
-    /// pair and [#useMaterialLibTargets] has not run yet.
+    /// Returns the MaterialLib stack every item registered under `oreName` unifies to, or the empty cell for
+    /// `cellEmpty`. The returned stack is shared and must not be modified.
+    ///
+    /// Returns null when MaterialLib serves nothing under the name or before GregTech's shapes are registered. A pair
+    /// a foreign item stands in for also returns null until [#useMaterialLibTargets] has run.
     @Nullable
     public static ItemStack unificationTarget(String oreName) {
         ItemStack target = materialLibTargets.get(oreName);
@@ -150,25 +149,23 @@ public class OreDictUtils {
         return target;
     }
 
-    /// Whether `stack` is another mod's copy of a part that unifies onto a different item. Recipes generated for such
-    /// a copy would only repeat those of the item it unifies onto.
+    /// Returns whether `stack` is another mod's copy of a part that unifies onto a different item.
     public static boolean isUnifiedCopy(ItemStack stack) {
         return !GTUtility.isStackInvalid(stack) && !staysDistinct(stack) && unifiedTargetOf(stack) != null;
     }
 
-    /// Whether `stack` stays in play under a name that stands for a different item (see [#staysDistinct]), while
-    /// recipe inputs holding that other item accept it.
+    /// Returns whether `stack` keeps its own identity under an oredict name that unifies onto a different item, as a
+    /// blacklisted item or a block does. Recipe inputs holding that other item accept it.
     public static boolean isInterchangeableWithTarget(ItemStack stack) {
         return !GTUtility.isStackInvalid(stack) && staysDistinct(stack) && unifiedTargetOf(stack) != null;
     }
 
-    /// Whether `stack` is never a unified copy: blacklisted, or a block. Blocks are placed in the world, and other
-    /// mods' storage and decorative blocks stay obtainable in their own right.
+    /// Returns whether `stack` is blacklisted or a block, neither of which is ever a unified copy.
     private static boolean staysDistinct(ItemStack stack) {
         return isBlacklisted(stack) || GTUtility.getBlockFromStack(stack) != Blocks.air;
     }
 
-    /// The item `stack` unifies onto, or null when it unifies onto nothing but itself.
+    /// Returns the item `stack` unifies onto, or null when it unifies onto nothing but itself.
     @Nullable
     private static ItemStack unifiedTargetOf(ItemStack stack) {
         ItemData itemData = getUnifiable(stack);
@@ -180,15 +177,14 @@ public class OreDictUtils {
         return target;
     }
 
-    /// The stack's item data when it names a unification target: a prefix+material association or a
-    /// name-only one (see [ItemData#hasUnificationName]), never a bare composition.
+    /// Returns `stack`'s item data when it has a unification name (see [ItemData#hasUnificationName]), otherwise null.
     @Nullable
     private static ItemData getUnifiable(ItemStack stack) {
         ItemData rData = MaterialData.get(stack);
         return rData != null && rData.hasUnificationName() ? rData : null;
     }
 
-    /// The ore-dictionary name of `stack`'s association, or null when it has none. Recipe inputs with the same
+    /// Returns the oredict name of `stack`'s association, or null when it has none. Recipe inputs with the same
     /// association name are interchangeable.
     @Nullable
     public static String associationName(@Nullable ItemStack stack) {
@@ -196,8 +192,9 @@ public class OreDictUtils {
         return data != null && data.hasUnificationName() ? data.toString() : null;
     }
 
-    /// The association name by which a recipe input holding `stack` accepts other items, or null when it accepts
-    /// only `stack`: when `stack` has no association, or is blacklisted with a name-only association.
+    /// Returns the association name by which a recipe input holding `stack` accepts other items. Returns null when
+    /// the input accepts only `stack`, which is when `stack` has no association or is blacklisted with a name-only
+    /// association.
     @Nullable
     public static String inputAssociationName(@Nullable ItemStack stack) {
         ItemData data = MaterialData.get(stack);
@@ -205,8 +202,8 @@ public class OreDictUtils {
         return data.toString();
     }
 
-    /// `stack` followed by every other obtainable item that shares its association: what a recipe input holding
-    /// `stack` also accepts. Unified copies are left out.
+    /// Returns `stack` itself followed by a copy of every other item a recipe input holding `stack` accepts, sized
+    /// like `stack`. Unified copies are left out.
     public static List<ItemStack> getInterchangeableStacks(ItemStack stack) {
         List<ItemStack> stacks = new ArrayList<>();
         stacks.add(stack);

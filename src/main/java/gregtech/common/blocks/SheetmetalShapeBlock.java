@@ -34,8 +34,7 @@ public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextur
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
-    /// Registers each served material's stack with [DynamicLangManager] so its runtime display name gets a lang
-    /// key.
+    /// Also registers each served material's stack with [DynamicLangManager] for a runtime lang key.
     @Override
     public void bindServedMaterials(Material[] materials) {
         super.bindServedMaterials(materials);

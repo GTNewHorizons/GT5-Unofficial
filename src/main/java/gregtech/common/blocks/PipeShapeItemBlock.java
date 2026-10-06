@@ -71,9 +71,9 @@ public class PipeShapeItemBlock extends ItemBlock {
         return shape;
     }
 
-    /// The language key overriding the material's display name in a pipe display-name format, or null when
-    /// the material keeps its own name. `suffix` picks the per-family key (`.fluidpipe.newname` or
-    /// `.itempipe.newname`).
+    /// Returns the language key replacing the material's name in a pipe display-name format, and registers its
+    /// localization. Returns null when `material` is null or keeps its own name. `suffix` picks the per-family
+    /// key (`.fluidpipe.newname` or `.itempipe.newname`).
     public static String overrideKeyFor(Material material, String suffix) {
         if (material == null) return null;
         String display = MATERIAL_DISPLAY_OVERRIDES.get(MaterialUtils.internalName(material));
@@ -83,7 +83,7 @@ public class PipeShapeItemBlock extends ItemBlock {
         return key;
     }
 
-    /// Whether a material's pipes hide the material tooltip (only the High Pressure pipes do).
+    /// Returns whether a material's pipes hide the material tooltip. Only the High Pressure pipes do.
     public static boolean skipsMaterialTooltip(Material material) {
         return material != null && "Redstone".equals(MaterialUtils.internalName(material));
     }

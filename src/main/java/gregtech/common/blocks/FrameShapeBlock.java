@@ -64,13 +64,13 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
-    /// The id of the single material-agnostic frame MTE bound by [#spawnFrameEntity].
+    /// Returns the id of the material-agnostic frame MTE that [#spawnFrameEntity] attaches.
     public int getMteId() {
         return mteId;
     }
 
-    /// The display name of a material's frame box. The Infused stones and the sand-family materials name the
-    /// material alone.
+    /// Returns the localized display name of a material's frame box. The Infused materials are named as an
+    /// Infused Stone, and the sand-family materials by the material name alone.
     public static String displayName(Material material) {
         String internalName = MaterialUtils.internalName(material);
         return switch (internalName) {
@@ -87,7 +87,8 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
         GameRegistry.registerBlock(this, FrameShapeItemBlock.class, getName());
     }
 
-    /// Attaches the frame MTE to a plain frame block, without touching the block metadata.
+    /// Attaches the frame MTE to the frame block at the position and returns it, or returns the one already there.
+    /// Leaves the block metadata untouched. A non-null `player` becomes the owner.
     public BaseMetaPipeEntity spawnFrameEntity(World world, EntityPlayer player, int x, int y, int z) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof BaseMetaPipeEntity base) {

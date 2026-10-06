@@ -55,20 +55,20 @@ public class LegacyWerkstoffIndex {
         size++;
     }
 
-    /// The material occupying a legacy werkstoff id slot; null for an unoccupied id.
+    /// Returns the material occupying a legacy werkstoff id slot, or null for an unoccupied id.
     public static @Nullable Material get(int id) {
         return INDEX.get(id);
     }
 
-    /// The first legacy werkstoff id a material carries, or -1 when it carries none.
+    /// Returns the first legacy werkstoff id a material carries, or -1 when it carries none.
     public static int idOf(@Nullable Material material) {
         if (material == null) return -1;
         List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         return ids == null || ids.isEmpty() ? -1 : ids.get(0);
     }
 
-    /// Whether [GTMaterialProperties#WERKSTOFF_PREFIXES] lists `prefix` for this material. False for a material
-    /// that also carries [GTMaterialProperties#OLD_SUB_ID], since GregTech owns its parts.
+    /// Returns whether [GTMaterialProperties#WERKSTOFF_PREFIXES] lists `prefix` for this material. Always false
+    /// for a material that also carries [GTMaterialProperties#OLD_SUB_ID].
     public static boolean generatesPrefix(@Nullable Material material, OrePrefixes prefix) {
         if (material == null || material.getProperty(GTMaterialProperties.OLD_SUB_ID) != null) return false;
         List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);

@@ -17,7 +17,7 @@ public final class MaterialFormulas {
 
     private MaterialFormulas() {}
 
-    /// The raw formula string for NEI search, or null when the material carries none.
+    /// Returns the formula string for NEI search, or null when the material is null or carries none.
     public static @Nullable String forSearch(@Nullable Material material) {
         if (material == null) return null;
 
@@ -28,13 +28,13 @@ public final class MaterialFormulas {
             : formula;
     }
 
-    /// The formula tooltip line to display, or null when there is none or it is the `"?"` placeholder.
+    /// Returns the formula tooltip line, or null when there is none or it is the `"?"` placeholder.
     public static @Nullable String forTooltip(@Nullable Material material) {
         String formula = forSearch(material);
         return GTUtility.isStringValid(formula) && !"?".equals(formula) ? formula : null;
     }
 
-    /// The lang key for a material's formula: its [MaterialUtils#localizedNameKey] plus `.ChemicalFormula`.
+    /// Returns the material's [MaterialUtils#localizedNameKey] plus `.ChemicalFormula`.
     private static String formulaKey(Material material) {
         return MaterialUtils.localizedNameKey(material) + ".ChemicalFormula";
     }

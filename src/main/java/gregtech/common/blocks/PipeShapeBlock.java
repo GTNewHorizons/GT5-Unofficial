@@ -82,7 +82,7 @@ public class PipeShapeBlock extends ShapeBlock {
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
-    /// The language key of this shape's `gt.oreprefix.*` display-name format.
+    /// Returns the lang key of this shape's `gt.oreprefix.*` display-name format.
     public String getPrefixKey() {
         return prefixKey;
     }
@@ -92,7 +92,7 @@ public class PipeShapeBlock extends ShapeBlock {
         return iconName;
     }
 
-    /// The id of the material-agnostic MTE every placement of this shape binds.
+    /// Returns the id of the material-agnostic MTE every placement of this shape binds.
     public int getMteId() {
         return mteId;
     }
@@ -101,12 +101,12 @@ public class PipeShapeBlock extends ShapeBlock {
         return family;
     }
 
-    /// The size step within the family: wires/cables 0 to 5, pipes 0 (tiny) to 4 (huge).
+    /// Returns the size step within the family, 0 to 5 for wires and cables and 0 (tiny) to 4 (huge) for pipes.
     public int getSizeIndex() {
         return sizeIndex;
     }
 
-    /// Fluid channel count; 1 outside [PipeFamily#FLUID_MULTI].
+    /// Returns the fluid channel count, which is 1 outside [PipeFamily#FLUID_MULTI].
     public int getPipeAmount() {
         return pipeAmount;
     }

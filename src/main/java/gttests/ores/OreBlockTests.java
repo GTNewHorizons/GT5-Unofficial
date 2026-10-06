@@ -181,7 +181,7 @@ public class OreBlockTests {
             "Ore drop system is " + GTMod.proxy.oreDropSystem);
     }
 
-    /// Harvests Iron ore on Stone [#SAMPLES] times and returns the raw iron dropped, failing on any harvest that
+    /// Harvests Iron ore on Stone [#SAMPLES] times and returns the total raw iron dropped, failing on any harvest that
     /// drops something else or a count outside `[min, max]`.
     private static int rawOreYield(GameTestHelper helper, EntityPlayer player, int min, int max) {
         ItemStack rawIron = MaterialParts.stack(OrePrefixes.rawOre, Materials.Iron, 1);
@@ -202,8 +202,8 @@ public class OreBlockTests {
         return total;
     }
 
-    /// The number of small-ore parts of `material` among `drops`, or `-1` when a drop is neither such a part nor
-    /// the dust of `stone`.
+    /// Returns the number of small-ore parts of `material` among `drops`, or `-1` when a drop is neither such a
+    /// part nor the dust of `stone`.
     private static int countParts(List<ItemStack> drops, Material material, StoneType stone) {
         List<ItemStack> parts = SmallOreDrops.getDropList(material);
         int count = 0;
@@ -219,7 +219,8 @@ public class OreBlockTests {
         return count;
     }
 
-    /// Places the ore [GTOreAdapter] serves for the triple at [#ORE], failing unless it decodes back to it.
+    /// Places the ore [GTOreAdapter] serves for `material`, `stone` and `small` at [#ORE] and returns its stack,
+    /// failing unless the placed block decodes back to them.
     private static ItemStack place(GameTestHelper helper, Material material, StoneType stone, boolean small) {
         ItemStack stack = GTOreAdapter.INSTANCE.getVariantStack(material, stone, small);
         String name = (small ? "small " : "") + material.getName() + " ore on " + stone;

@@ -60,8 +60,7 @@ public class LoaderLegacyBartworksBlocks {
         registerCasingAssociations();
     }
 
-    /// Associates each legacy casing slot with its material. A recipe naming the slot resolves to the MaterialLib
-    /// casing, or to the legacy block for a material without one.
+    /// Associates each legacy casing slot with its material.
     private static void registerCasingAssociations() {
         for (Material material : MaterialLibAPI.getMaterials()) {
             int id = LegacyWerkstoffIndex.idOf(material);
@@ -72,7 +71,7 @@ public class LoaderLegacyBartworksBlocks {
         }
     }
 
-    /// Hides the legacy slot of any material whose MaterialLib block resolves, so only the replacement lists.
+    /// Hides from NEI each legacy storage and casing slot whose MaterialLib replacement resolves.
     public static void hideSupersededSlots() {
         for (Material material : MaterialLibAPI.getMaterials()) {
             if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;

@@ -79,8 +79,8 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
             .addTo(assemblerRecipes);
     }
 
-    /// The advanced casing's outer plating: vanilla planks for [Materials#Wood], otherwise the material's double
-    /// plate.
+    /// Returns the advanced casing's outer plating. That is vanilla planks for [Materials#Wood], otherwise the
+    /// material's double plate, or null when it has none.
     private static @Nullable ItemStack outerPart(Material material, long amount) {
         if (material == Materials.Wood) return new ItemStack(Blocks.planks, (int) amount, WILDCARD);
         return MaterialParts.stack(OrePrefixes.plateDouble, material, amount);

@@ -114,7 +114,7 @@ public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMateria
             return getLayerIcon(0);
         }
 
-        /// Null, since every layer comes through [#getLayerIcon].
+        /// Always null. Every layer comes through [#getLayerIcon].
         @Override
         public IIcon getOverlayIcon() {
             return null;

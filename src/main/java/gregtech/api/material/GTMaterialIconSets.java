@@ -40,7 +40,8 @@ public final class GTMaterialIconSets {
     private static final Map<String, IconSet> itemSets = new HashMap<>();
     private static final Map<String, IconSet> blockSets = new HashMap<>();
 
-    /// Creates every icon set named above. Runs during preInit, ahead of the first texture stitch.
+    /// Creates the icon sets for [#ITEM_NAMES] and [#BLOCK_NAMES]. Must run during preInit, before the first
+    /// texture stitch.
     @SideOnly(Side.CLIENT)
     public static void register() {
         for (String name : ITEM_NAMES) {
@@ -51,13 +52,13 @@ public final class GTMaterialIconSets {
         }
     }
 
-    /// The item-atlas icon set named `name`, or null when none was declared.
+    /// Returns the item-atlas icon set named `name`, or null when none was declared.
     @SideOnly(Side.CLIENT)
     public static IconSet item(String name) {
         return itemSets.get(name);
     }
 
-    /// The block-atlas icon set named `name`, or null when none was declared.
+    /// Returns the block-atlas icon set named `name`, or null when none was declared.
     @SideOnly(Side.CLIENT)
     public static IconSet block(String name) {
         return blockSets.get(name);

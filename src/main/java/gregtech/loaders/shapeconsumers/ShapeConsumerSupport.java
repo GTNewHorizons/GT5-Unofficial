@@ -36,13 +36,13 @@ final class ShapeConsumerSupport {
 
     /// Registers `registrator` to run under `prefix` once per material generating `shape`, at MaterialLib's
     /// postInit. Materials flagged [GTMaterialFlag#NO_RECIPES], prefixes the material ignores and ignored oredict
-    /// names are skipped.
+    /// names are skipped. A null `shape` registers nothing.
     static void delegate(Shape shape, OrePrefixes prefix, Supplier<IOreRecipeRegistrator> registrator) {
         delegate(shape, prefix, material -> true, registrator);
     }
 
-    /// [#delegate(Shape, OrePrefixes, Supplier)] restricted to materials passing `filter`, which runs before the
-    /// material's stack is resolved.
+    /// Same as [#delegate(Shape, OrePrefixes, Supplier)], restricted to materials passing `filter`. The filter
+    /// runs before the material's stack is resolved.
     static void delegate(Shape shape, OrePrefixes prefix, Predicate<Material> filter,
         Supplier<IOreRecipeRegistrator> registrator) {
         if (shape == null) return;
@@ -52,11 +52,9 @@ final class ShapeConsumerSupport {
         });
     }
 
-    /// [#delegate(Shape, OrePrefixes, Supplier)] for the ore shape. Each material dispatches once per [StoneType]
-    /// it has an ore block on, under that stone's [StoneType#getPrefix].
-    ///
-    /// All variants of one material share a [GTRecipeBuilder#withVariantGroup] tag named by `groupPrefix`, so NEI
-    /// shows one cycling entry per recipe instead of one per stone.
+    /// Same as [#delegate(Shape, OrePrefixes, Supplier)] for the ore shape, dispatching each material once per
+    /// [StoneType] it has an ore block on, under that stone's [StoneType#getPrefix]. All variants of one material
+    /// share a [GTRecipeBuilder#withVariantGroup] tag named by `groupPrefix`.
     ///
     /// [StoneType] and [GTOreAdapter] must only be touched inside the callback; see
     /// [gregtech.api.enums.materials.OreShapes].

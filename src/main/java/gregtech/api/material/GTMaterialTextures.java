@@ -15,8 +15,8 @@ public final class GTMaterialTextures {
 
     private GTMaterialTextures() {}
 
-    /// The [ITexture] drawing `container`'s whole icon layer stack: layer 0 tinted with `rgba` and every further
-    /// layer with the color the container reports for it, `glow` applying to all of them. Resource-pack override
+    /// Returns a texture drawing `container`'s whole icon layer stack. Layer 0 is tinted with `rgba`, every further
+    /// layer with the color the container reports for it, and `glow` applies to all of them. Resource-pack override
     /// art draws untinted unless `untintOverrideArt` is false, as for a painted frame that keeps its dye.
     public static ITexture of(IIconContainer container, short[] rgba, boolean glow, boolean untintOverrideArt) {
         ITextureBuilder builder = TextureFactory.builder()
@@ -37,8 +37,8 @@ public final class GTMaterialTextures {
         return of(container, rgba, false);
     }
 
-    /// The [ITexture] composing `container`'s layer stack as [#of(IIconContainer, short[], boolean)] does, resolved
-    /// afresh from `rgba` on the first draw after every atlas stitch.
+    /// Returns a texture composing `container`'s layer stack as [#of(IIconContainer, short[], boolean)] does,
+    /// rebuilt with a fresh tint from `rgba` on the first draw after every atlas stitch.
     public static ITexture stored(IIconContainer container, Supplier<short[]> rgba, boolean glow) {
         return new GTStitchedMaterialTexture(container, rgba, glow);
     }

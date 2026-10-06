@@ -25,7 +25,8 @@ public final class GTShapeStore {
         return shape.setProperty(StandardProperties.NAME_FORMATTER, OrePrefixes::shapeDisplayName);
     }
 
-    /// Every collected shape, in declaration order. Empty before the holder classes' init.
+    /// Returns an unmodifiable live view of every recorded shape, in declaration order. Empty before the holder
+    /// classes' init.
     public static List<Shape> all() {
         return VIEW;
     }

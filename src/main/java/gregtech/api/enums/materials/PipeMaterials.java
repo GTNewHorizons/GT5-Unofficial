@@ -174,7 +174,7 @@ public class PipeMaterials {
         }
     }
 
-    /// The wire sizes this table grants as one unit: a material carrying any of them carries all six.
+    /// Returns the six wire shapes. A material carrying any of them carries all six.
     public static Shape[] wireShapes() {
         return new Shape[] { TEBlockShapes.wireGt01, TEBlockShapes.wireGt02, TEBlockShapes.wireGt04,
             TEBlockShapes.wireGt08, TEBlockShapes.wireGt12, TEBlockShapes.wireGt16 };

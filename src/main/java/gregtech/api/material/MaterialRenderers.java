@@ -19,13 +19,12 @@ public class MaterialRenderers {
 
     private static final Map<Material, GeneratedMaterialRenderer> materialRenderers = new HashMap<>();
 
-    /// Registers `renderer` as the special item renderer for `material`.
+    /// Records `renderer` as the special item renderer for `material`.
     public static void recordRenderer(Material material, GeneratedMaterialRenderer renderer) {
         materialRenderers.put(material, renderer);
     }
 
-    /// The [GeneratedMaterialRenderer] [#recordRenderer] registered for `material`, or null when it has no
-    /// special renderer.
+    /// Returns the renderer [#recordRenderer] recorded for `material`, or null when it has none.
     public static @Nullable GeneratedMaterialRenderer rendererOf(@Nullable Material material) {
         return material == null ? null : materialRenderers.get(material);
     }

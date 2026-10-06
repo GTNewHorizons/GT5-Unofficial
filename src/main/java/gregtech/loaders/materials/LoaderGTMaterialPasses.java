@@ -29,7 +29,8 @@ public final class LoaderGTMaterialPasses {
     }
 
     /// Applies each material's [GTMaterialProperties#ADDED_PREFIXES] and [GTMaterialProperties#REMOVED_PREFIXES].
-    /// Runs before any pass that consults [OrePrefixes#doGenerateItem].
+    /// Must run before any pass that consults [OrePrefixes#doGenerateItem]. Throws [IllegalStateException] for a
+    /// prefix name that matches no [OrePrefixes].
     private static void applyPrefixGenerationOverrides() {
         for (Material material : MaterialLibAPI.getMaterials()) {
             List<String> added = material.getProperty(GTMaterialProperties.ADDED_PREFIXES);

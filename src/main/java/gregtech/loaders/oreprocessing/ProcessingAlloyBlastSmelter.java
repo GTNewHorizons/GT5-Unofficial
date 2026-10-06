@@ -163,10 +163,10 @@ public class ProcessingAlloyBlastSmelter {
     private static Map<String, FluidStack> ingotToFluid;
     private static Map<String, String> hotToCold;
 
-    /// Copies each enabled [RecipeMaps#blastFurnaceRecipes] recipe of at most 3600K whose output ingot has a molten
-    /// fluid into `alloyBlastSmelterRecipes`, skipping duplicates. The fluid comes from
-    /// [RecipeMaps#fluidExtractionRecipes], following [RecipeMaps#vacuumFreezerRecipes] from hot to cold ingots.
-    /// Call once, after every other mod's recipes are registered.
+    /// Copies each enabled [RecipeMaps#blastFurnaceRecipes] recipe of at most 3600 K into `alloyBlastSmelterRecipes`,
+    /// outputting the molten fluid of its ingot and skipping duplicates. The fluid is looked up in
+    /// [RecipeMaps#fluidExtractionRecipes], and hot ingots through [RecipeMaps#vacuumFreezerRecipes]. Valid only
+    /// after every other mod's recipes are registered.
     public static void generateFromExistingBlastFurnaceRecipes() {
         ingotToFluid = new HashMap<>();
         hotToCold = new HashMap<>();

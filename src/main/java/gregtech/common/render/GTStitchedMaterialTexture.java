@@ -31,7 +31,7 @@ public final class GTStitchedMaterialTexture implements ITexture {
         this.glow = glow;
     }
 
-    /// Marks every stored texture stale; each recomposes against the new atlas on its next drawn face.
+    /// Marks every stored texture stale. Each rebuilds against the new atlas on its next drawn face.
     public static void onAtlasStitched() {
         generation++;
     }

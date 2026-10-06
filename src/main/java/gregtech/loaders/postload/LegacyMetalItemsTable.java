@@ -16,7 +16,7 @@ public final class LegacyMetalItemsTable {
 
     private LegacyMetalItemsTable() {}
 
-    /// Whether a legacy generated-material id belongs to a material that generated metal items.
+    /// Returns whether a legacy generated-material id belongs to a material that generated metal items.
     public static boolean contains(int id) {
         return id >= 0 && id < IDS.length && IDS[id];
     }

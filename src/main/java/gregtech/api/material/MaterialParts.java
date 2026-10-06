@@ -42,22 +42,22 @@ public class MaterialParts {
 
     private MaterialParts() {}
 
-    /// A material's full cell: the first of `cell`, `cellGas` and `cellMolten` it carries (see [CellShapes]).
-    /// Null when it carries none of them or `material` is null.
+    /// Returns the material's full cell, the first of `cell`, `cellGas` and `cellMolten` it carries (see
+    /// [CellShapes]). Null when `material` is null or carries none of them.
     public static @Nullable ItemStack cell(@Nullable Material material, long amount) {
         if (material == null) return null;
         return firstShapeStack(material, amount, CellShapes.cell, CellShapes.cellGas, CellShapes.cellMolten);
     }
 
-    /// [#cell] without the `cellMolten` fallback, throwing [IllegalStateException] when the material carries
-    /// neither `cell` nor `cellGas`.
+    /// Same as [#cell] without the `cellMolten` fallback. Throws [IllegalStateException] when the material
+    /// carries neither `cell` nor `cellGas`.
     public static ItemStack requireCell(Material material, long amount) {
         ItemStack stack = firstShapeStack(material, amount, CellShapes.cell, CellShapes.cellGas);
         if (stack == null) throw new IllegalStateException(material.getName() + " carries no plain cell shape");
         return stack;
     }
 
-    /// The stack for the first of `candidates` that `material` generates, or null when it generates none.
+    /// Returns the stack for the first of `candidates` that `material` generates, or null when it generates none.
     private static @Nullable ItemStack firstShapeStack(Material material, long amount, Shape... candidates) {
         for (Shape shape : candidates) {
             if (material.hasShape(shape)) return MaterialLibAPI.getStack(material, shape, (int) amount);
@@ -67,34 +67,36 @@ public class MaterialParts {
 
     private static Map<String, List<Shape>> prefixToShapes;
 
-    /// The first MaterialLib shape serving `prefix`, or null when no shape serves it. A multi-candidate prefix
-    /// (`cellPlasma`, `pipeTiny`..`pipeHuge`) has more shapes (see [#shapes]).
+    /// Returns the first shape serving `prefix`, or null when none does. To get every candidate, see [#shapes].
     public static @Nullable Shape shape(OrePrefixes prefix) {
         List<Shape> shapes = shapes(prefix);
         return shapes.isEmpty() ? null : shapes.get(0);
     }
 
-    /// Every shape serving `prefix`, in resolution order. Empty when no shape serves it.
+    /// Returns every shape serving `prefix`, the one named after the prefix first. Empty when none does or
+    /// `prefix` is null. The returned list is shared and must not be modified.
+    ///
+    /// Throws [IllegalStateException] before GregTech's shapes are declared.
     public static List<Shape> shapes(OrePrefixes prefix) {
         if (prefix == null) return Collections.emptyList();
         List<Shape> shapes = prefixShapes().get(prefix.name());
         return shapes == null ? Collections.emptyList() : shapes;
     }
 
-    /// The MaterialLib stack for a (prefix, material) pair: the first of the prefix's [#shapes] the material
-    /// generates. Null when it generates none of them.
+    /// Returns the stack for the first of `prefix`'s [#shapes] that `material` generates. Null when `material`
+    /// is null or generates none of them.
     public static @Nullable ItemStack stack(OrePrefixes prefix, @Nullable Material material, long amount) {
         Shape shape = servedShape(prefix, material);
         return shape == null ? null : MaterialLibAPI.getStack(material, shape, (int) amount);
     }
 
-    /// Whether a (prefix, material) pair has a MaterialLib stack (see [#stack]).
+    /// Returns whether the pair has a MaterialLib stack (see [#stack]).
     public static boolean isCutOver(OrePrefixes prefix, @Nullable Material material) {
         return servedShape(prefix, material) != null;
     }
 
-    /// Whether MaterialLib's own item or block of the pair's shape carries `material`. False for a pair with no
-    /// MaterialLib backing and for one a foreign item stands in for (`gem` Diamond is the vanilla diamond).
+    /// Returns whether MaterialLib's own item or block of the pair's shape carries `material`. False for a pair
+    /// with no MaterialLib backing and for one a foreign item stands in for (`gem` Diamond is the vanilla diamond).
     public static boolean isMinted(OrePrefixes prefix, @Nullable Material material) {
         Shape shape = servedShape(prefix, material);
         if (shape == null) return false;
@@ -112,7 +114,7 @@ public class MaterialParts {
         return minted;
     }
 
-    /// The first of `prefix`'s candidate shapes that `material` generates, or null when it generates none.
+    /// Returns the first of `prefix`'s shapes that `material` generates, or null when it generates none.
     private static @Nullable Shape servedShape(OrePrefixes prefix, @Nullable Material material) {
         if (material == null) return null;
         for (Shape shape : shapes(prefix)) {
@@ -121,9 +123,10 @@ public class MaterialParts {
         return null;
     }
 
-    /// A material amount (in [gregtech.api.enums.GTValues#M] units) of `material` as dust: whole dusts when the
-    /// amount divides evenly or reaches 16 dusts, else small dusts when it divides into quarters or reaches 8 dusts,
-    /// else tiny dusts. Null when the amount is not positive or the material carries none of the three.
+    /// Returns `materialAmount` (in [gregtech.api.enums.GTValues#M] units) of `material` as dust. It picks whole
+    /// dusts when the amount divides evenly or reaches 16 dusts, else small dusts when it divides into quarters or
+    /// reaches 8 dusts, else tiny dusts. Null when the amount is below one tiny dust or the material carries none
+    /// of the three.
     public static @Nullable ItemStack dustOf(@Nullable Material material, long materialAmount) {
         if (materialAmount <= 0) return null;
         ItemStack stack = null;
@@ -139,14 +142,14 @@ public class MaterialParts {
         return stack;
     }
 
-    /// [#dustOf(Material, long)] of a [MaterialStack]'s material and amount.
+    /// Same as [#dustOf(Material, long)] for a [MaterialStack]'s material and amount.
     public static @Nullable ItemStack dustOf(@Nullable MaterialStack materialStack) {
         return materialStack == null ? null : dustOf(materialStack.mMaterial, materialStack.mAmount);
     }
 
-    /// A material amount of `material` as metal: blocks when the amount is a multiple of more than one block or
-    /// reaches 8 blocks, else ingots when it divides evenly or reaches 8 ingots, else nuggets. Null when the
-    /// amount is not positive or the material carries none of the three.
+    /// Returns `materialAmount` of `material` as metal. It picks blocks when the amount is a whole number of at
+    /// least two blocks or reaches 8 blocks, else ingots when it divides evenly or reaches 8 ingots, else nuggets.
+    /// Null when the amount is below one nugget or the material carries none of the three.
     public static @Nullable ItemStack ingotOf(@Nullable Material material, long materialAmount) {
         if (materialAmount <= 0) return null;
         ItemStack stack = null;
@@ -168,7 +171,7 @@ public class MaterialParts {
         return stack != null ? stack : dustOf(material, materialAmount);
     }
 
-    /// [#ingotOrDustOf(Material, long)] of a [MaterialStack]'s material and amount.
+    /// Same as [#ingotOrDustOf(Material, long)] for a [MaterialStack]'s material and amount.
     public static @Nullable ItemStack ingotOrDustOf(@Nullable MaterialStack materialStack) {
         return materialStack == null ? null : ingotOrDustOf(materialStack.mMaterial, materialStack.mAmount);
     }
@@ -179,7 +182,7 @@ public class MaterialParts {
         return stack != null ? stack : ingotOf(material, materialAmount);
     }
 
-    /// The pair's stack at `amount`, honouring the component-disabling config the prefix takes part in.
+    /// Returns the pair's stack at `amount`, or null when the component config disables the pair.
     private static @Nullable ItemStack amountPart(OrePrefixes prefix, @Nullable Material material, long amount) {
         if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material)) {
             return null;
@@ -187,17 +190,16 @@ public class MaterialParts {
         return GTUtility.copyAmount((int) amount, stack(prefix, material, 1));
     }
 
-    /// Whether `stack`'s unification association ([MaterialData#getAssociation]) names `material` as
-    /// its primary material, compared by identity.
+    /// Returns whether `stack`'s [MaterialData#getAssociation] names `material` as its primary material.
     public static boolean isPartOf(@Nullable ItemStack stack, @Nullable Material material) {
         if (material == null) return false;
         ItemData association = MaterialData.getAssociation(stack);
         return association != null && association.mMaterial.mMaterial == material;
     }
 
-    /// The crafting-table ingredient for `prefix` and `material`, accepting any item under the matching oredict
-    /// name. It carries the material association, so reversible recipes generate recycling from it. Null when
-    /// either argument is null. [#namedIngredient] omits the association.
+    /// Returns a crafting-table ingredient accepting any item under the oredict name of `prefix` and `material`.
+    /// It carries the material association, so reversible recipes generate recycling from it. Null when either
+    /// argument is null. For an ingredient without the association, see [#namedIngredient].
     public static @Nullable ItemData craftIngredient(OrePrefixes prefix, @Nullable Material material) {
         return prefix == null || material == null ? null : new ItemData(prefix, material);
     }
@@ -208,8 +210,8 @@ public class MaterialParts {
         return prefix == null || material == null ? null : new ItemData(prefix, MaterialUtils.internalName(material));
     }
 
-    /// The shapes serving each oredict prefix, keyed by the prefixes the shapes declare. Where several shapes
-    /// share a prefix, the shape named after the prefix comes first and the rest follow in name order.
+    /// Returns the shapes serving each oredict prefix. Where several shapes share a prefix, the shape named after
+    /// the prefix comes first and the rest follow in name order.
     private static Map<String, List<Shape>> prefixShapes() {
         if (prefixToShapes == null) {
             if (GTShapeStore.all()

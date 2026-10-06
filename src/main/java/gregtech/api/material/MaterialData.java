@@ -101,14 +101,15 @@ public final class MaterialData {
     /// `OrePrefixes.plate` + `Materials.Iron`.
     ///
     /// An existing association is never rewritten. An existing explicit composition is merged into the
-    /// association, and the association's material wins when the two differ.
+    /// association, and the association's material wins when the two differ. A wildcard-damage stack also gets the
+    /// association at damages 0 to 15.
     public static void addAssociation(OrePrefixes prefix, Material material, ItemStack stack) {
         if (prefix == null || material == null || GTUtility.isStackInvalid(stack)) return;
         addAssociation(() -> new ItemData(prefix, material), stack);
     }
 
-    /// Adds a name-only association (see [ItemData#ItemData(OrePrefixes, String)]) for oredict entries whose
-    /// material side is not a material.
+    /// Same as [#addAssociation(OrePrefixes, Material, ItemStack)], with a name-only association (see
+    /// [ItemData#ItemData(OrePrefixes, String)]) for oredict entries whose material side is not a material.
     public static void addAssociation(OrePrefixes prefix, String materialName, ItemStack stack) {
         if (prefix == null || materialName == null || GTUtility.isStackInvalid(stack)) return;
         addAssociation(() -> new ItemData(prefix, materialName), stack);
@@ -124,14 +125,16 @@ public final class MaterialData {
         return data;
     }
 
-    /// The stack's data when it carries a prefix+material association.
+    /// Returns the stack's data when it carries a prefix+material association. Returns null otherwise, including for
+    /// a name-only association.
     @Nullable
     public static ItemData getAssociation(ItemStack stack) {
         ItemData data = get(stack);
         return data != null && data.hasValidPrefixMaterialData() ? data : null;
     }
 
-    /// Every stack with data, as stored: single items, wildcard damage for wildcard entries.
+    /// Returns an unmodifiable live view of every stack with data, as stored: single items, with wildcard damage for
+    /// wildcard entries.
     public static Set<ItemStack> stacks() {
         return Collections.unmodifiableSet(dataByStack.keySet());
     }

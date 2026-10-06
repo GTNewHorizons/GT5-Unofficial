@@ -35,8 +35,8 @@ public class GTStorageShapeBlock extends ShapeBlock {
         super.breakBlock(world, x, y, z, block, meta);
     }
 
-    /// The per-material storage-block art, keyed by [MaterialUtils#internalName]. A material without an art file
-    /// falls back to this shape's texture-set candidates.
+    /// Returns the per-material storage-block icon path, keyed by [MaterialUtils#internalName]. A material without
+    /// an art file falls back to this shape's texture-set candidates.
     @Override
     protected String iconPathFor(Material material) {
         return "gregtech:materials/blocks/" + MaterialUtils.internalName(material)

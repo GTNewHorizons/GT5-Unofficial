@@ -30,7 +30,7 @@ final class OreVariantGroups {
 
     private OreVariantGroups() {}
 
-    /// The recipes of `sorted` as displayed entries, in the same order, with each variant group replaced by
+    /// Returns the recipes of `sorted` as displayed entries, in the same order, with each variant group replaced by
     /// one merged entry at the position of its first member. A group whose members do not share a slot layout
     /// stays expanded.
     static List<CachedDefaultRecipe> collapse(List<GTRecipe> sorted, Function<GTRecipe, CachedDefaultRecipe> factory) {
@@ -74,8 +74,9 @@ final class OreVariantGroups {
         return displayed;
     }
 
-    /// The key recipes of one group share: the tag plus every input that is not a variant stack. Stack sizes are
-    /// left out, since a richer stone multiplies both the ore and its reagents.
+    /// Returns the key all recipes of one group share, or null for an untagged recipe. The key is the tag plus
+    /// every input that is not a variant stack. Stack sizes are left out, since a richer stone multiplies both the
+    /// ore and its reagents.
     private static @Nullable String groupKey(GTRecipe recipe) {
         String tag = recipe.getMetadata(GTRecipeConstants.VARIANT_GROUP);
         if (tag == null) return null;
@@ -100,14 +101,14 @@ final class OreVariantGroups {
         return key.toString();
     }
 
-    /// Whether a stack is one of the ore blocks a variant group cycles through.
+    /// Returns whether a stack is one of the ore blocks a variant group cycles through.
     private static boolean isVariantStack(ItemStack stack) {
         Block block = Block.getBlockFromItem(stack.getItem());
         return block != null && GTOreAdapter.INSTANCE.supports(block, stack.getItemDamage());
     }
 
-    /// The group's first member with every other member's stacks appended to its slots, or null when the
-    /// members disagree on slot layout or none of the inputs is a variant stack.
+    /// Returns the group's first member with every other member's stacks appended to its slots, or null when the
+    /// members disagree on slot layout or have no ore slot that differs between them.
     private static @Nullable CachedDefaultRecipe merge(List<GTRecipe> recipes,
         Function<GTRecipe, CachedDefaultRecipe> factory) {
         List<CachedDefaultRecipe> members = new ArrayList<>(recipes.size());
@@ -224,8 +225,8 @@ final class OreVariantGroups {
             this.followerStarts = followerStarts;
         }
 
-        /// Re-pins on every call, since a follower with fewer permutations advances even while the ore slot
-        /// stays put.
+        /// Pins every follower slot to the member the ore slot currently shows. A follower with fewer permutations
+        /// advances on its own, so this needs a call before every read of the slots.
         void sync() {
             int permutation = key.getPermutationIndex(key.item);
             if (permutation < 0 || permutation >= memberOfPermutation.length) return;

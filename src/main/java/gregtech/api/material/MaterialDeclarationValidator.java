@@ -35,7 +35,8 @@ public final class MaterialDeclarationValidator {
 
     private MaterialDeclarationValidator() {}
 
-    /// Requires the resolved registry, available from GregTech's preInit on.
+    /// Validates every GregTech material declaration, throwing an [IllegalStateException] that lists the problems
+    /// found. Requires the resolved registry, available from GregTech's preInit on.
     public static void validate() {
         List<String> errors = new ArrayList<>();
         List<Material> materials = new ArrayList<>();

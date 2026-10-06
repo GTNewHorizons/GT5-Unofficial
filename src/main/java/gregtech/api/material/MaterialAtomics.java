@@ -50,8 +50,8 @@ public final class MaterialAtomics {
         return (density(material) * sum) / (totalAmount * M);
     }
 
-    /// `(M * densityMultiplier) / densityDivider` from [GTMaterialProperties#DENSITY_MULTIPLIER] and
-    /// [GTMaterialProperties#DENSITY_DIVIDER], each `1` when absent, in truncating integer division.
+    /// Returns `(M * densityMultiplier) / densityDivider` from [GTMaterialProperties#DENSITY_MULTIPLIER] and
+    /// [GTMaterialProperties#DENSITY_DIVIDER], each `1` when absent.
     public static long density(Material material) {
         Integer multiplier = material.getProperty(GTMaterialProperties.DENSITY_MULTIPLIER);
         Integer divider = material.getProperty(GTMaterialProperties.DENSITY_DIVIDER);

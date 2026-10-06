@@ -45,7 +45,7 @@ public final class MLBlockIconContainer extends AbstractBlockIconContainer {
         return InvisibleIcon.INVISIBLE_ICON;
     }
 
-    /// Null, since every layer comes through [#getLayerIcon].
+    /// Returns null. Every layer comes through [#getLayerIcon].
     @Override
     public IIcon getOverlayIcon() {
         return null;

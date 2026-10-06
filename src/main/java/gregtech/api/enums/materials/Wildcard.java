@@ -51,35 +51,35 @@ public enum Wildcard {
         }
     }
 
-    /// The member materials. Only available once MaterialLib has resolved its registry.
+    /// Returns the member materials. Throws [IllegalStateException] before MaterialLib has resolved its registry.
     public Set<Material> members() {
         return family.getMaterials();
     }
 
-    /// The member that stands for this wildcard in compositions and displays.
+    /// Returns the member that stands for this wildcard in compositions and displays.
     public Material representative() {
         if (representative == null) representative = MaterialLibAPI.getMaterial("gregtech", representativeName);
         return representative;
     }
 
-    /// The oredict name of `prefix` for this wildcard, such as `plateAnyIron`.
+    /// Returns the oredict name of `prefix` for this wildcard, such as `plateAnyIron`.
     public String oreDictName(OrePrefixes prefix) {
         return prefix.oreDictName(name());
     }
 
-    /// The crafting ingredient for `prefix` of any member: stringifies to [#oreDictName] and counts as the
-    /// [#representative]'s part in reversible recipes' compositions.
+    /// Returns the crafting ingredient for `prefix` of any member. It stringifies to [#oreDictName] and counts as
+    /// the [#representative]'s part in reversible recipes' compositions.
     public ItemData ingredient(OrePrefixes prefix) {
         return new ItemData(prefix, representative(), oreDictName(prefix));
     }
 
-    /// A machine-recipe input of `amount` of `prefix` that accepts any member.
+    /// Returns a machine-recipe input of `amount` of `prefix` that accepts any member.
     public OreDictItemStack input(OrePrefixes prefix, int amount) {
         return new OreDictItemStack(oreDictName(prefix), amount);
     }
 
-    /// The representative of the wildcard named `name`, such as `AnySyntheticRubber`, or null when no wildcard has
-    /// that name.
+    /// Returns the representative of the wildcard named `name`, such as `AnySyntheticRubber`, or null when no
+    /// wildcard has that name.
     public static @Nullable Material representativeNamed(String name) {
         for (Wildcard wildcard : values()) {
             if (wildcard.name()
@@ -88,7 +88,7 @@ public enum Wildcard {
         return null;
     }
 
-    /// The wildcards `material` is a member of.
+    /// Returns the wildcards `material` is a member of, or an empty list for null.
     public static List<Wildcard> containing(@Nullable Material material) {
         if (material == null) return Collections.emptyList();
         List<Wildcard> result = new ArrayList<>(1);
@@ -99,8 +99,8 @@ public enum Wildcard {
         return result;
     }
 
-    /// The representative's part for a wildcard oredict name such as `plateAnyIron`, or null when
-    /// `oreName` names no wildcard.
+    /// Returns the representative's part for a wildcard oredict name such as `plateAnyIron`. Null when `oreName`
+    /// names no wildcard or the representative has no such part.
     public static @Nullable ItemStack representativeStack(String oreName) {
         for (Wildcard wildcard : values()) {
             String name = wildcard.name();
