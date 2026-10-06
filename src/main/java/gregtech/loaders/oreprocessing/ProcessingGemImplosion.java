@@ -4,6 +4,8 @@ import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -12,6 +14,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
@@ -21,41 +24,52 @@ import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.util.GTUtility;
 
-/// Generates implosion recipes turning four dust into three gems and eight tiny piles of Dark Ash, for every material
-/// with a dust and a gem MaterialLib mints itself.
+/// Generates the implosion recipes turning four dust into three gems and tiny piles of Dark Ash.
 ///
-/// A gem another mod's item stands in for gets the recipe only when listed in `FOREIGN_GEMS`. `SKIPPED` holds the
-/// gems [ProcessingDust] implodes by name, plus Amalgatite and Fluix. `NoBlast` materials never implode.
+/// The gems in `YIELDS` take their listed Dark Ash and explosive amounts; Diamond yields IC2 Industrial Diamonds.
+/// Every other material with a gem MaterialLib mints itself takes 8 Dark Ash and 24 explosives; a gem another mod's
+/// item stands in for qualifies only when listed in `FOREIGN_GEMS`. Amalgatite, Fluix and `NoBlast` materials never
+/// implode.
 public final class ProcessingGemImplosion implements IOreRecipeRegistrator {
 
     public static final ProcessingGemImplosion INSTANCE = new ProcessingGemImplosion();
 
-    private static final Set<Material> SKIPPED = Set.of(
-        Materials.Diamond,
-        Materials.ManaDiamond,
-        Materials.BotaniaDragonstone,
-        Materials.Opal,
-        Materials.Olivine,
-        Materials.Emerald,
-        Materials.Ruby,
-        Materials.Sapphire,
-        Materials.GreenSapphire,
-        Materials.Topaz,
-        Materials.BlueTopaz,
-        Materials.Tanzanite,
-        Materials.Amethyst,
-        Materials.FoolsRuby,
-        Materials.GarnetRed,
-        Materials.GarnetYellow,
-        Materials.Jasper,
-        Materials.Amber,
-        Materials.Monazite,
-        Materials.Forcicium,
-        Materials.Forcillium,
-        Materials.Force,
-        Materials.Amalgatite,
-        XModMaterials.Fluix);
+    private record Yield(int darkAsh, int additive) {}
+
+    private static final Map<Material, Yield> YIELDS = new IdentityHashMap<>();
+
+    static {
+        register(16, 32, Materials.Diamond, Materials.ManaDiamond, Materials.BotaniaDragonstone);
+        register(
+            12,
+            24,
+            Materials.Opal,
+            Materials.Olivine,
+            Materials.Emerald,
+            Materials.Ruby,
+            Materials.Sapphire,
+            Materials.GreenSapphire,
+            Materials.Topaz,
+            Materials.BlueTopaz,
+            Materials.Tanzanite,
+            Materials.Amethyst);
+        register(
+            8,
+            16,
+            Materials.FoolsRuby,
+            Materials.GarnetRed,
+            Materials.GarnetYellow,
+            Materials.Jasper,
+            Materials.Amber,
+            Materials.Monazite,
+            Materials.Forcicium,
+            Materials.Forcillium,
+            Materials.Force);
+    }
+
+    private static final Set<Material> NEVER = Set.of(Materials.Amalgatite, XModMaterials.Fluix);
 
     private static final Set<Material> FOREIGN_GEMS = Set.of(
         Materials.Coal,
@@ -67,23 +81,32 @@ public final class ProcessingGemImplosion implements IOreRecipeRegistrator {
 
     private ProcessingGemImplosion() {}
 
-    /// Whether `material` gets the generic implosion recipe.
-    public static boolean implodes(Material material) {
-        return !SKIPPED.contains(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_BLAST)
-            && material.hasShape(Shapes.dust)
-            && (MaterialParts.isMinted(material, Shapes.gem) || FOREIGN_GEMS.contains(material));
+    private static void register(int darkAsh, int additive, Material... materials) {
+        for (Material material : materials) {
+            YIELDS.put(material, new Yield(darkAsh, additive));
+        }
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName, ItemStack gem) {
+    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName, ItemStack dust) {
+        Yield named = YIELDS.get(material);
+        if (named != null) {
+            ItemStack gems = material == Materials.Diamond ? ItemList.IC2_Industrial_Diamond.get(3L)
+                : MaterialLibAPI.findStack(material, Shapes.gem, 3);
+            implode(dust, gems, named);
+        } else if (!NEVER.contains(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_BLAST)
+            && (MaterialParts.isMinted(material, Shapes.gem) || FOREIGN_GEMS.contains(material))) {
+                implode(dust, MaterialLibAPI.getStack(material, Shapes.gem, 3), new Yield(8, 24));
+            }
+    }
+
+    private static void implode(ItemStack dust, ItemStack gems, Yield yield) {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Shapes.dust, 4))
-            .itemOutputs(
-                MaterialLibAPI.getStack(material, Shapes.gem, 3),
-                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 8))
+            .itemInputs(GTUtility.copyAmount(4, dust))
+            .itemOutputs(gems, MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, yield.darkAsh()))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .metadata(ADDITIVE_AMOUNT, 24)
+            .metadata(ADDITIVE_AMOUNT, yield.additive())
             .addTo(implosionRecipes);
     }
 }

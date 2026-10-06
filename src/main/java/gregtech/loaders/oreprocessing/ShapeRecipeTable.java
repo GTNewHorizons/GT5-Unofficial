@@ -60,6 +60,7 @@ public final class ShapeRecipeTable {
         on(Shapes.dustImpure, OrePrefixes.dustImpure, () -> ProcessingDust.INSTANCE);
         on(Shapes.dustSmall, OrePrefixes.dustSmall, () -> ProcessingDust.INSTANCE);
         on(Shapes.dustTiny, OrePrefixes.dustTiny, () -> ProcessingDust.INSTANCE);
+        on(Shapes.dust, OrePrefixes.dust, () -> ProcessingGemImplosion.INSTANCE);
         on(Shapes.crushed, OrePrefixes.crushed, () -> ProcessingOreSmelting.INSTANCE);
         on(Shapes.crushedPurified, OrePrefixes.crushedPurified, () -> ProcessingOreSmelting.INSTANCE);
         on(Shapes.crushedCentrifuged, OrePrefixes.crushedCentrifuged, () -> ProcessingOreSmelting.INSTANCE);
@@ -95,7 +96,6 @@ public final class ShapeRecipeTable {
         on(Shapes.gemExquisite, OrePrefixes.gemExquisite, () -> ProcessingGem.INSTANCE);
         on(Shapes.gemFlawed, OrePrefixes.gemFlawed, () -> ProcessingGem.INSTANCE);
         on(Shapes.gemFlawless, OrePrefixes.gemFlawless, () -> ProcessingGem.INSTANCE);
-        on(Shapes.gem, OrePrefixes.gem, ProcessingGemImplosion::implodes, () -> ProcessingGemImplosion.INSTANCE);
         on(Shapes.toolHeadBuzzSaw, OrePrefixes.toolHeadBuzzSaw, () -> ProcessingToolHead.INSTANCE);
         on(Shapes.toolHeadChainsaw, OrePrefixes.toolHeadChainsaw, () -> ProcessingToolHead.INSTANCE);
         on(Shapes.toolHeadDrill, OrePrefixes.toolHeadDrill, () -> ProcessingToolHead.INSTANCE);

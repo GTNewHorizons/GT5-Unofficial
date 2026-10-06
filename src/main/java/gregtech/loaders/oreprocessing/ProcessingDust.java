@@ -13,7 +13,6 @@ import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -435,72 +434,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTModHandler.addSmeltingRecipe(
                             GTUtility.copyAmount(1, stack),
                             MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 1));
-                        break;
-                    case "Diamond": {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(4, stack))
-                            .itemOutputs(
-                                ItemList.IC2_Industrial_Diamond.get(3L),
-                                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 16))
-                            .duration(1 * SECONDS)
-                            .eut(TierEU.RECIPE_LV)
-                            .metadata(ADDITIVE_AMOUNT, 32)
-                            .addTo(implosionRecipes);
-                    }
-                        break;
-                    case "ManaDiamond":
-                    case "BotaniaDragonstone": {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(4, stack))
-                            .itemOutputs(
-                                MaterialLibAPI.findStack(material, Shapes.gem, 3),
-                                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 16))
-                            .duration(1 * SECONDS)
-                            .eut(TierEU.RECIPE_LV)
-                            .metadata(ADDITIVE_AMOUNT, 32)
-                            .addTo(implosionRecipes);
-                    }
-                        break;
-                    case "Opal":
-                    case "Olivine":
-                    case "Emerald":
-                    case "Ruby":
-                    case "Sapphire":
-                    case "GreenSapphire":
-                    case "Topaz":
-                    case "BlueTopaz":
-                    case "Tanzanite":
-                    case "Amethyst": {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(4, stack))
-                            .itemOutputs(
-                                MaterialLibAPI.findStack(material, Shapes.gem, 3),
-                                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 12))
-                            .duration(1 * SECONDS)
-                            .eut(TierEU.RECIPE_LV)
-                            .metadata(ADDITIVE_AMOUNT, 24)
-                            .addTo(implosionRecipes);
-                    }
-                        break;
-                    case "FoolsRuby":
-                    case "GarnetRed":
-                    case "GarnetYellow":
-                    case "Jasper":
-                    case "Amber":
-                    case "Monazite":
-                    case "Forcicium":
-                    case "Forcillium":
-                    case "Force": {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(4, stack))
-                            .itemOutputs(
-                                MaterialLibAPI.findStack(material, Shapes.gem, 3),
-                                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 8))
-                            .duration(1 * SECONDS)
-                            .eut(TierEU.RECIPE_LV)
-                            .metadata(ADDITIVE_AMOUNT, 16)
-                            .addTo(implosionRecipes);
-                    }
                         break;
                 }
             }
