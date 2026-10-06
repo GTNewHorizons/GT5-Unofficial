@@ -19,6 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -200,18 +201,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 } else {
                     if (unifiable) {
-                        // Implosion compressor recipes
-                        if (implodable && MaterialLibAPI.findStack(material, Shapes.gemFlawless, 1) != null) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(3, stack))
-                                .itemOutputs(
-                                    MaterialLibAPI.findStack(material, Shapes.gemFlawless, 1),
-                                    MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 2))
-                                .duration(1 * SECONDS)
-                                .eut(TierEU.RECIPE_LV)
-                                .metadata(ADDITIVE_AMOUNT, 8)
-                                .addTo(implosionRecipes);
-                        }
+                        if (implodable) addTierImplosion(material, stack, Shapes.gemFlawless);
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
@@ -282,17 +272,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (unifiable) {
                         // Implosion compressor recipes
                         {
-                            if (implodable && MaterialLibAPI.findStack(material, Shapes.gemFlawed, 1) != null) {
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, stack))
-                                    .itemOutputs(
-                                        MaterialLibAPI.findStack(material, Shapes.gemFlawed, 1),
-                                        MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .metadata(ADDITIVE_AMOUNT, 8)
-                                    .addTo(implosionRecipes);
-                            }
+                            if (implodable) addTierImplosion(material, stack, Shapes.gemFlawed);
                         }
 
                         // Crafting recipes
@@ -384,17 +364,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (unifiable) {
                         // Implosion compressor recipes
                         {
-                            if (implodable && MaterialLibAPI.findStack(material, Shapes.gem, 1) != null) {
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, stack))
-                                    .itemOutputs(
-                                        MaterialLibAPI.findStack(material, Shapes.gem, 1),
-                                        MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .metadata(ADDITIVE_AMOUNT, 8)
-                                    .addTo(implosionRecipes);
-                            }
+                            if (implodable) addTierImplosion(material, stack, Shapes.gem);
                         }
 
                         // Crafting recipes
@@ -464,17 +434,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (unifiable) {
                         // Implosion compressor recipes
                         {
-                            if (implodable && MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1) != null) {
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, stack))
-                                    .itemOutputs(
-                                        MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1),
-                                        MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .metadata(ADDITIVE_AMOUNT, 8)
-                                    .addTo(implosionRecipes);
-                            }
+                            if (implodable) addTierImplosion(material, stack, Shapes.gemExquisite);
                         }
 
                         // Crafting recipes
@@ -513,5 +473,18 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             }
             default -> {}
         }
+    }
+
+    /// Implodes three gems of `stack`'s tier into one of the `next` tier, when the material has it.
+    private static void addTierImplosion(Material material, ItemStack stack, Shape next) {
+        ItemStack output = MaterialLibAPI.findStack(material, next, 1);
+        if (output == null) return;
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(3, stack))
+            .itemOutputs(output, MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 2))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .metadata(ADDITIVE_AMOUNT, 8)
+            .addTo(implosionRecipes);
     }
 }
