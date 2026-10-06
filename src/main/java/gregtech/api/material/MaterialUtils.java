@@ -290,16 +290,11 @@ public class MaterialUtils {
         return id == null ? -1 : id;
     }
 
-    /// Returns a new `[r, g, b, a]` array for the material's [StandardProperties#TINT], or null when it declares
-    /// none. A resource pack can override it through the lang key `color.resource.materiallib.<MaterialName>.tint`.
-    /// A value cached at load misses that override.
+    /// Returns a new `[r, g, b, a]` array for the material's [MaterialLibAPI#getTint], or null when it declares no
+    /// [StandardProperties#TINT]. A value cached at load misses a resource pack's override.
     public static @Nullable short[] rgba(@Nullable Material material) {
         if (material == null || !material.hasProperty(StandardProperties.TINT)) return null;
-        int declared = material.getProperty(StandardProperties.TINT);
-        int argb = tintColors.computeIfAbsent(
-            material,
-            key -> new ColorResource("materiallib", key.getName() + ".tint", String.format("0x%08X", declared), true))
-            .getColor();
+        int argb = MaterialLibAPI.getTint(material);
         return new short[] { (short) ((argb >>> 16) & 0xFF), (short) ((argb >>> 8) & 0xFF), (short) (argb & 0xFF),
             (short) ((argb >>> 24) & 0xFF) };
     }
@@ -323,7 +318,6 @@ public class MaterialUtils {
 
     /// The strong references [ColorResource]'s weak instance registry needs to keep re-resolving these colors
     /// on a resource reload.
-    private static final Map<Material, ColorResource> tintColors = new ConcurrentHashMap<>();
     private static final Map<Material, ColorResource> moltenColors = new ConcurrentHashMap<>();
 
     /// The name of a material's [StandardProperties#TEXTURE_SET], i.e. the folder its art lives in under

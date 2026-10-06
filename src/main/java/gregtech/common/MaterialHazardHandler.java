@@ -8,6 +8,7 @@ import net.minecraft.potion.PotionEffect;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.ShapeItem;
+import com.ruling_0.materiallib.api.StackMaterialInfo;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -28,7 +29,8 @@ public class MaterialHazardHandler {
         boolean radioactive = false;
         for (ItemStack stack : player.inventory.mainInventory) {
             if (stack == null || !(stack.getItem() instanceof ShapeItem)) continue;
-            Material material = MaterialLibAPI.getMaterialByIndex(stack.getItemDamage());
+            StackMaterialInfo info = MaterialLibAPI.lookupStack(stack);
+            Material material = info == null ? null : info.material();
             if (material == null) continue;
             if (!toxic) toxic = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.TOXIC));
             if (!radioactive)

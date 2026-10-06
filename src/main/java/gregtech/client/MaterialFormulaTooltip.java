@@ -12,6 +12,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.ShapeBlock;
 import com.ruling_0.materiallib.api.ShapeItem;
+import com.ruling_0.materiallib.api.StackMaterialInfo;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.materials.Shapes;
@@ -31,8 +32,10 @@ public class MaterialFormulaTooltip {
         if (stack == null) return;
         Item item = stack.getItem();
         if (!(item instanceof ShapeItem) && !(item instanceof ShapeBlock.ShapeBlockItem)) return;
+        StackMaterialInfo info = MaterialLibAPI.lookupStack(stack);
+        if (info == null) return;
 
-        Material material = MaterialLibAPI.getMaterialByIndex(stack.getItemDamage());
+        Material material = info.material();
         List<String> tooltip = event.toolTip;
         int insertAt = Math.min(1, tooltip.size());
         if (Client.tooltip.showFormula) {

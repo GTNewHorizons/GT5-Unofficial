@@ -12,9 +12,8 @@ import com.gtnewhorizon.gtnhlib.util.font.GlyphReplacements;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
-import com.ruling_0.materiallib.api.ShapeBlock;
 import com.ruling_0.materiallib.api.ShapeFluid;
-import com.ruling_0.materiallib.api.ShapeItem;
+import com.ruling_0.materiallib.api.StackMaterialInfo;
 
 import codechicken.nei.ItemStackMap;
 import codechicken.nei.api.ItemFilter;
@@ -123,9 +122,9 @@ public class ChemicalFormulaFilter implements ItemFilter {
 
     private static String getChemicalFormula(ItemStack itemstack) {
 
-        if (itemstack.getItem() instanceof ShapeItem || itemstack.getItem() instanceof ShapeBlock.ShapeBlockItem) {
-            Material material = MaterialLibAPI.getMaterialByIndex(itemstack.getItemDamage());
-            String formula = MaterialFormulas.forSearch(material);
+        StackMaterialInfo info = MaterialLibAPI.lookupStack(itemstack);
+        if (info != null) {
+            String formula = MaterialFormulas.forSearch(info.material());
             if (formula != null) return formula;
         }
 

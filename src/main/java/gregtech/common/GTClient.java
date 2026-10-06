@@ -84,7 +84,6 @@ import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.GTMaterialIconSets;
-import gregtech.api.material.MaterialRenderers;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
@@ -254,7 +253,6 @@ public class GTClient extends GTProxy {
 
     private static void registerMaterialItemRenderer(Material material, GeneratedMaterialRenderer renderer) {
         MaterialLibClient.setItemRenderer(material, renderer);
-        MaterialRenderers.recordRenderer(material, renderer);
     }
 
     @Override

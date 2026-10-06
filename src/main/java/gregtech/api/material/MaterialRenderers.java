@@ -1,31 +1,21 @@
 package gregtech.api.material;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibClient;
 
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 
-/// The per-material special item renderers. Each is registered together with
-/// [com.ruling_0.materiallib.api.MaterialLibClient#setItemRenderer] so this store and MaterialLib's lookup agree.
-///
-/// Kept apart from [MaterialUtils] because [GeneratedMaterialRenderer] is client-side.
+/// Reads the special item renderer a material carries through [MaterialLibClient#setItemRenderer]. Client-side only.
 public class MaterialRenderers {
 
     private MaterialRenderers() {}
 
-    private static final Map<Material, GeneratedMaterialRenderer> materialRenderers = new HashMap<>();
-
-    /// Records `renderer` as the special item renderer for `material`.
-    public static void recordRenderer(Material material, GeneratedMaterialRenderer renderer) {
-        materialRenderers.put(material, renderer);
-    }
-
-    /// Returns the renderer [#recordRenderer] recorded for `material`, or null when it has none.
+    /// Returns the material's renderer when it is a [GeneratedMaterialRenderer], otherwise null.
     public static @Nullable GeneratedMaterialRenderer rendererOf(@Nullable Material material) {
-        return material == null ? null : materialRenderers.get(material);
+        if (material == null) return null;
+        return MaterialLibClient.getItemRenderer(material) instanceof GeneratedMaterialRenderer renderer ? renderer
+            : null;
     }
 }
