@@ -560,17 +560,12 @@ import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import gregtech.common.render.items.WireFrameTesseractRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCuttingMachine.SawbladeTiers;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
-import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.InterfaceList(
-    value = {
-        @Optional.Interface(
-            iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
-            modid = Mods.ModIDs.RAILCRAFT),
-        @Optional.Interface(
-            iface = "codechicken.enderstorage.api.EnderStorageDyeTool",
-            modid = Mods.ModIDs.ENDER_STORAGE), })
-public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning, EnderStorageDyeTool {
+    value = { @Optional.Interface(
+        iface = "codechicken.enderstorage.api.EnderStorageDyeTool",
+        modid = Mods.ModIDs.ENDER_STORAGE), })
+public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements EnderStorageDyeTool {
 
     public static MetaGeneratedItem01 INSTANCE;
     private static final String aTextEmptyRow = "   ";
@@ -5104,26 +5099,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         registerTieredTooltip(ItemList.BatteryHull_UMV_Full.get(1), UMV);
         registerTieredTooltip(ItemList.BatteryHull_UxV_Full.get(1), UXV);
 
-    }
-
-    @Override
-    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
-    public boolean shouldBurn(ItemStack itemStack) {
-        ItemData data = MaterialData.getAssociation(itemStack);
-        if (data == null || data.mMaterial == null
-            || data.mMaterial.mMaterial != Materials.Firestone
-            || data.mPrefix == null) {
-            return false;
-        }
-        return data.mPrefix == OrePrefixes.dustTiny || data.mPrefix == OrePrefixes.dustSmall
-            || data.mPrefix == OrePrefixes.dust
-            || data.mPrefix == OrePrefixes.dustImpure
-            || data.mPrefix == OrePrefixes.dustRefined
-            || data.mPrefix == OrePrefixes.dustPure
-            || data.mPrefix == OrePrefixes.crushed
-            || data.mPrefix == OrePrefixes.crushedPurified
-            || data.mPrefix == OrePrefixes.crushedCentrifuged
-            || data.mPrefix == OrePrefixes.gem;
     }
 
     @Override
