@@ -34,6 +34,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
@@ -46,6 +47,7 @@ import gregtech.api.material.MaterialParts;
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.common.items.MetaGeneratedItem98;
+import gregtech.crossmod.forgemultipart.MicroblockMaterials;
 import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
 
 public class PosteaTransformers implements Runnable {
@@ -72,6 +74,7 @@ public class PosteaTransformers implements Runnable {
         registerIC2BlocksTransformer();
         registerBartworksLabPartTransformer();
         registerMaterialLibCutoverTransformers();
+        if (Mods.ForgeMicroblocks.isModLoaded()) remapLegacyMicroblockMaterials();
         claimMissingMappings();
     }
 
@@ -544,6 +547,20 @@ public class PosteaTransformers implements Runnable {
         if (material == null) return null;
         ItemStack cutover = MaterialParts.stack(prefix, material, 1);
         return cutover != null ? cutover : MaterialLibAPI.findStack(material, BlockShapes.block, 1);
+    }
+
+    /// Points the microblock materials saves recorded for the legacy storage blocks at the MaterialLib blocks'
+    /// names; see [MicroblockMaterials].
+    private static void remapLegacyMicroblockMaterials() {
+        LegacyStorageBlockTable.BATCHES.forEach((block, batch) -> {
+            for (int meta = 0; meta < batch.length; meta++) {
+                if (batch[meta] != null) MicroblockMaterials.remapLegacy(block, meta, batch[meta]);
+            }
+        });
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            int id = LegacyWerkstoffIndex.idOf(material);
+            if (id >= 0) MicroblockMaterials.remapLegacy("bartworks:bw.werkstoffblocks.01", id, material);
+        }
     }
 
     private static void registerStorageBlockCutoverTransformer(String originalId, Material[] batch) {

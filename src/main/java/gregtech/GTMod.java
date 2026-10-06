@@ -110,6 +110,7 @@ import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.chunkapi.ClientMetaManager;
+import gregtech.crossmod.forgemultipart.MicroblockMaterials;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.FissionFuelLoader;
@@ -437,6 +438,7 @@ public class GTMod {
         }
 
         proxy.onInitialization(event);
+        if (Mods.ForgeMicroblocks.isModLoaded()) MicroblockMaterials.register();
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
