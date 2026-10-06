@@ -72,7 +72,6 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .child(createButtonHoldingColumn(panel, syncManager));
     }
 
-    // todo: add more functionality from the ticket
     protected Flow createButtonHoldingColumn(ModularPanel panel, PanelSyncManager syncManager) {
         Flow column = Flow.column()
             .width(40)
