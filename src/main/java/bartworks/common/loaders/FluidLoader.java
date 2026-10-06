@@ -94,9 +94,9 @@ public class FluidLoader {
                             new short[] { (short) B.getColor()
                                 .getRed(),
                                 (short) B.getColor()
-                                    .getBlue(),
+                                    .getGreen(),
                                 (short) B.getColor()
-                                    .getGreen() })
+                                    .getBlue() })
                         .withDefaultLocalName(B.getLocalisedName() + " Fluid")
                         .withStateAndTemperature(FluidState.LIQUID, 300)
                         .buildAndRegister()
