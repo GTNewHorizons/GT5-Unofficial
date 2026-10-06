@@ -1050,6 +1050,21 @@ public class GTModHandler {
                 || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
         }
 
+        String flags = "shaped" + aMirrored
+            + aBuffered
+            + aKeepNBT
+            + aRemovable
+            + aReversible
+            + aRemoveAllOthersWithSameOutput
+            + aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT
+            + aRemoveAllOtherShapedsWithSameOutput
+            + aRemoveAllOtherNativeRecipes
+            + aCheckForCollisions
+            + aOnlyAddIfThereIsAnyRecipeOutputtingThis
+            + Arrays.toString(aEnchantmentsAdded)
+            + Arrays.toString(aEnchantmentLevelsAdded);
+        if (isRepeatedCraftingRecipe(flags, aResult, aRecipe)) return true;
+
         StringBuilder shape = new StringBuilder(E);
         int idx = 0;
         if (aRecipe[idx] instanceof Boolean) {
@@ -1301,6 +1316,39 @@ public class GTModHandler {
             aRecipe);
     }
 
+    private static final Set<String> sAddedCraftingRecipes = new HashSet<>();
+
+    /// Records a crafting recipe GregTech adds and returns whether an identical one, with the same `flags`, result
+    /// and normalized ingredients, was added before.
+    private static boolean isRepeatedCraftingRecipe(String flags, ItemStack result, Object[] recipe) {
+        StringBuilder key = new StringBuilder(flags).append('|')
+            .append(craftingKey(result));
+        for (Object part : recipe) {
+            key.append('|');
+            if (part instanceof ItemStack stack) {
+                key.append(craftingKey(stack));
+            } else if (part instanceof ItemData data) {
+                String name = data.toString();
+                if (name.isEmpty()) return false;
+                key.append('#')
+                    .append(name);
+            } else {
+                key.append(part);
+            }
+        }
+        return !sAddedCraftingRecipes.add(key.toString());
+    }
+
+    private static String craftingKey(ItemStack stack) {
+        if (stack == null || stack.getItem() == null) return "null";
+        return Item.getIdFromItem(stack.getItem()) + "@"
+            + stack.getItemDamage()
+            + "x"
+            + stack.stackSize
+            + (stack.hasTagCompound() ? stack.getTagCompound()
+                .toString() : "");
+    }
+
     /**
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
@@ -1315,6 +1363,17 @@ public class GTModHandler {
             else if (!(aRecipe[i] == null || aRecipe[i] instanceof ItemStack
                 || aRecipe[i] instanceof String
                 || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
+        }
+
+        if (inputValidator == null) {
+            String flags = "shapeless" + aBuffered
+                + aCheckForCollisions
+                + aKeepNBT
+                + aRemovable
+                + overwriteNBT
+                + Arrays.toString(aEnchantmentsAdded)
+                + Arrays.toString(aEnchantmentLevelsAdded);
+            if (isRepeatedCraftingRecipe(flags, aResult, aRecipe)) return true;
         }
 
         ItemStack[] tRecipe = new ItemStack[9];
