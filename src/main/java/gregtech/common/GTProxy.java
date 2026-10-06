@@ -433,6 +433,9 @@ public class GTProxy implements IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(this);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new MaterialHazardHandler());
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
@@ -1258,38 +1261,6 @@ public class GTProxy implements IFuelHandler {
             if (tileEntity instanceof IGregTechTileEntity) {
                 tileEntity.onChunkUnload();
             }
-        }
-    }
-
-    @SubscribeEvent
-    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
-        final EntityPlayer player = event.player;
-        if (!event.side.isServer() || event.phase == TickEvent.Phase.END
-            || player.isDead
-            || player.ticksExisted % 120 != 0) {
-            return;
-        }
-
-        final ItemStack[] mainInventory = player.inventory.mainInventory;
-        for (ItemStack stack : mainInventory) {
-            applyItemEffects(player, stack);
-        }
-        final ItemStack[] armorInventory = player.inventory.armorInventory;
-        for (final ItemStack stack : armorInventory) {
-            applyItemEffects(player, stack);
-        }
-    }
-
-    private static void applyItemEffects(EntityPlayer player, ItemStack stack) {
-        if (stack == null || player.capabilities.isCreativeMode) {
-            return;
-        }
-        GTUtility.applyRadioactivity(player, GTUtility.getRadioactivityLevel(stack), stack.stackSize);
-        final float heat = GTUtility.getHeatDamageFromItem(stack);
-        if (heat > 0.0F) {
-            GTUtility.applyHeatDamageFromItem(player, heat, stack);
-        } else if (heat < 0.0F) {
-            GTUtility.applyFrostDamage(player, -heat);
         }
     }
 

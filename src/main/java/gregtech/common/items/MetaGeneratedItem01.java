@@ -501,6 +501,7 @@ import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.Wildcard;
+import gregtech.api.hazards.ItemHazards;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
@@ -3915,7 +3916,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements EnderSt
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
-        if (Client.tooltip.showRadioactiveText && GTUtility.getRadioactivityLevel(aStack) > 0) {
+        if (Client.tooltip.showRadioactiveText && ItemHazards.radiationLevel(aStack) > 0) {
             aList.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
             aList.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
         }

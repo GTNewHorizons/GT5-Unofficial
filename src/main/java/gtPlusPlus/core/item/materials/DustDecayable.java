@@ -13,15 +13,15 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.hazards.IRadioactiveItem;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.OreDictUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.BaseItemTickable;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 
-public class DustDecayable extends BaseItemTickable {
+public class DustDecayable extends BaseItemTickable implements IRadioactiveItem {
 
     private final ItemStack turnsIntoItem;
     private final int radLevel;
@@ -71,15 +71,14 @@ public class DustDecayable extends BaseItemTickable {
                     .getDisplayName()));
     }
 
+    /// Decay advances only in a decayables chest, never in an inventory.
     @Override
     public void onUpdate(final ItemStack stack, final World world, final Entity entityHolding, final int slot,
-        final boolean heldInHand) {
-        if (world == null || stack == null || world.isRemote) {
-            return;
-        }
-        if (entityHolding instanceof EntityPlayer) {
-            EntityUtils.applyRadiationDamageToEntity(stack.stackSize, this.radLevel, world, entityHolding);
-        }
+        final boolean heldInHand) {}
+
+    @Override
+    public int getRadiationLevel(ItemStack stack) {
+        return radLevel;
     }
 
     public ItemStack getDecayResult() {

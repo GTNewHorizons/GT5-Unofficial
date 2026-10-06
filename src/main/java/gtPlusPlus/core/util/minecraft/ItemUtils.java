@@ -152,21 +152,6 @@ public class ItemUtils {
         return output;
     }
 
-    public static int getRadioactivityLevel(final String materialName) {
-        int sRadiation = 0;
-        if (materialName.toLowerCase()
-            .contains("uranium")) {
-            sRadiation = 2;
-        } else if (materialName.toLowerCase()
-            .contains("plutonium")) {
-                sRadiation = 4;
-            } else if (materialName.toLowerCase()
-                .contains("thorium")) {
-                    sRadiation = 1;
-                }
-        return sRadiation;
-    }
-
     private static final Map<Item, String> mModidCache = new HashMap<>();
 
     private static String getModId(final Item item) {

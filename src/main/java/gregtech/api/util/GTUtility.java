@@ -63,7 +63,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -151,7 +150,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
-import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
@@ -1965,25 +1963,6 @@ public class GTUtility {
         if (aValue == null) return aNBT;
         aNBT.setString(aTag.toString(), aValue.toString());
         return aNBT;
-    }
-
-    public static float getHeatDamageFromItem(ItemStack aStack) {
-        ItemData tData = MaterialData.get(aStack);
-        return tData == null ? 0
-            : (tData.mPrefix == null ? 0 : tData.mPrefix.mHeatDamage)
-                + (tData.hasValidMaterialData() ? MaterialUtils.heatDamage(tData.mMaterial.mMaterial) : 0);
-    }
-
-    public static int getRadioactivityLevel(ItemStack aStack) {
-        ItemData tData = MaterialData.get(aStack);
-        if (tData != null && tData.hasValidMaterialData()) {
-            Material material = tData.mMaterial.mMaterial;
-            if (MaterialUtils.getArmorEnchantment(material) instanceof EnchantmentRadioactivity)
-                return MaterialUtils.getArmorEnchantmentLevel(material);
-            if (MaterialUtils.getToolEnchantment(material) instanceof EnchantmentRadioactivity)
-                return MaterialUtils.getToolEnchantmentLevel(material);
-        }
-        return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }
 
     public static boolean applyHeatDamage(EntityLivingBase entity, float damage) {

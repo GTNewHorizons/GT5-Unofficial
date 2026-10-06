@@ -5,43 +5,45 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
-import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
-import com.ruling_0.materiallib.api.ShapeItem;
-import com.ruling_0.materiallib.api.StackMaterialInfo;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.hazards.HazardProtection;
-import gregtech.api.material.GTMaterialProperties;
-import ic2.core.IC2Potion;
+import gregtech.api.hazards.ItemHazards;
+import gregtech.api.util.GTUtility;
 
-/// Poisons or irradiates a player carrying a [GTMaterialProperties#TOXIC] or [GTMaterialProperties#IS_RADIOACTIVE]
-/// [ShapeItem] without the matching hazmat suit. This is an inventory scan on player tick, since one [ShapeItem]
-/// serves every material of its shape.
+/// Applies the [ItemHazards] of everything a survival player carries, in the main inventory and the armor slots,
+/// every [#INTERVAL] ticks: radiation per stack, heat or frost per stack, and one poison effect when any stack is
+/// toxic. Poison outlasts the interval, so it stays on while a toxic stack is carried.
 public class MaterialHazardHandler {
+
+    private static final int INTERVAL = 120;
+    private static final int POISON_TICKS = INTERVAL + 20;
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END || event.side.isClient()) return;
         EntityPlayer player = event.player;
+        if (event.phase != TickEvent.Phase.START || !event.side.isServer()
+            || player.isDead
+            || player.capabilities.isCreativeMode
+            || player.ticksExisted % INTERVAL != 0) return;
         boolean toxic = false;
-        boolean radioactive = false;
-        for (ItemStack stack : player.inventory.mainInventory) {
-            if (stack == null || !(stack.getItem() instanceof ShapeItem)) continue;
-            StackMaterialInfo info = MaterialLibAPI.lookupStack(stack);
-            Material material = info == null ? null : info.material();
-            if (material == null) continue;
-            if (!toxic) toxic = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.TOXIC));
-            if (!radioactive)
-                radioactive = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.IS_RADIOACTIVE));
-            if (toxic && radioactive) break;
-        }
+        for (ItemStack stack : player.inventory.mainInventory) toxic |= applyStackHazards(player, stack);
+        for (ItemStack stack : player.inventory.armorInventory) toxic |= applyStackHazards(player, stack);
         if (toxic && !HazardProtection.isWearingFullBioHazmat(player)) {
-            player.addPotionEffect(new PotionEffect(Potion.poison.getId(), 80, 4));
+            player.addPotionEffect(new PotionEffect(Potion.poison.id, POISON_TICKS, 4));
         }
-        if (radioactive && !HazardProtection.isWearingFullRadioHazmat(player)) {
-            player.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, 80, 4));
+    }
+
+    /// Applies `stack`'s radiation and heat to `player`, and returns whether it is toxic.
+    private static boolean applyStackHazards(EntityPlayer player, ItemStack stack) {
+        if (stack == null) return false;
+        GTUtility.applyRadioactivity(player, ItemHazards.radiationLevel(stack), stack.stackSize);
+        float heat = ItemHazards.heatDamage(stack);
+        if (heat > 0) {
+            GTUtility.applyHeatDamageFromItem(player, heat, stack);
+        } else if (heat < 0) {
+            GTUtility.applyFrostDamage(player, -heat);
         }
+        return ItemHazards.isToxic(stack);
     }
 }

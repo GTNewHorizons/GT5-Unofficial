@@ -740,12 +740,12 @@ public class MaterialUtils {
         if (tooltip != null && !tooltip.isEmpty()) list.add(tooltip);
     }
 
-    /// Appends the material's [GTMaterialProperties#IS_RADIOACTIVE] and [GTMaterialProperties#TOXIC] warnings to
+    /// Appends the material's [GTMaterialProperties#RADIATION_LEVEL] and [GTMaterialProperties#TOXIC] warnings to
     /// `list`, each behind its own `Client.tooltip` toggle, followed by one shared hazmat line.
     public static void addHazardTooltips(@Nullable Material material, List<String> list) {
         if (material == null) return;
         boolean radioactive = Client.tooltip.showRadioactiveText
-            && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.IS_RADIOACTIVE));
+            && material.getProperty(GTMaterialProperties.RADIATION_LEVEL) != null;
         boolean toxic = Client.tooltip.showToxicText
             && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.TOXIC));
         if (radioactive) list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));

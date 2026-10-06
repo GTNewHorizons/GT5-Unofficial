@@ -71,8 +71,6 @@ public class GTMaterialProperties {
     /// Whether a mixer recipe is generated from [#COMPOSITION] and [#MIX_CIRCUIT].
     public static final Property<Boolean> HAS_MIXER_RECIPE = Property.of("gregtech", "hasMixerRecipe");
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage", 0f);
-    /// Whether the material is radioactive.
-    public static final Property<Boolean> IS_RADIOACTIVE = Property.of("gregtech", "isRadioactive");
     /// Whether the material is a superconductor. Set on members of
     /// [gregtech.api.enums.materials.Families#superconductors].
     public static final Property<Boolean> IS_SUPERCONDUCTOR = Property.of("gregtech", "isSuperconductor", false);
@@ -122,7 +120,8 @@ public class GTMaterialProperties {
     /// A declared proton count that replaces the [MaterialAtomics] composition formula for this material.
     /// Composition sums over components still use their computed values.
     public static final Property<Long> PROTONS = Property.of("gregtech", "protons");
-    /// The radiation level a radioactive material's items and blocks inflict on the carrier. Absent when `0`.
+    /// The radiation level a radioactive material's items and blocks inflict on the carrier; see
+    /// [gregtech.api.hazards.ItemHazards#radiationLevel]. Absent when the material is not radioactive.
     public static final Property<Integer> RADIATION_LEVEL = Property.of("gregtech", "radiationLevel");
     public static final Property<MaterialRef> SMELT_INTO = Property.of("gregtech", "smeltInto");
     public static final Property<Integer> SMELTING_MULTIPLIER = Property.of("gregtech", "smeltingMultiplier", 1);

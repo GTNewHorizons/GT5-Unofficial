@@ -18,12 +18,10 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemDustUnique extends Item {
 
     protected final int colour;
-    protected final int sRadiation;
     protected final String typeLoc;
     protected final String materialName;
     protected final String chemicalNotation;
@@ -50,7 +48,6 @@ public class BaseItemDustUnique extends Item {
         } else {
             this.chemicalNotation = StringUtils.subscript(mChemicalFormula);
         }
-        this.sRadiation = ItemUtils.getRadioactivityLevel(materialName);
         GameRegistry.registerItem(this, unlocalizedName);
 
         String temp = "";
@@ -100,12 +97,6 @@ public class BaseItemDustUnique extends Item {
         if (Client.tooltip.showFormula) {
             if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("NullFormula")) {
                 list.add(this.chemicalNotation);
-            }
-        }
-        if (Client.tooltip.showRadioactiveText) {
-            if (this.sRadiation > 0) {
-                list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
-                list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
             }
         }
         super.addInformation(stack, player, list, adv);

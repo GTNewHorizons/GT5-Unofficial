@@ -138,10 +138,10 @@ public class RadioHatchMaterialLoader {
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadria4.get(1), 15, 12);
     }
 
-    /// Whether `material`'s rods are radio hatch fuel: it is declared radioactive, or it is an element at or above
-    /// bismuth.
+    /// Whether `material`'s rods are radio hatch fuel: it has a [GTMaterialProperties#RADIATION_LEVEL], or it is an
+    /// element at or above bismuth.
     private static boolean isRadioactive(Material material) {
-        return Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.IS_RADIOACTIVE))
+        return material.getProperty(GTMaterialProperties.RADIATION_LEVEL) != null
             || MaterialUtils.element(material) != null && MaterialUtils.protons(material) >= 83;
     }
 

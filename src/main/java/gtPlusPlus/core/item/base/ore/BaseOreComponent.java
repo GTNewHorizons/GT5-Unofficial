@@ -3,12 +3,10 @@ package gtPlusPlus.core.item.base.ore;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
 import com.ruling_0.materiallib.api.Material;
 
@@ -18,13 +16,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialIcons;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.OreDictUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class BaseOreComponent extends Item {
 
@@ -67,17 +63,6 @@ public class BaseOreComponent extends Item {
         final boolean adv) {
         MaterialUtils.addTooltips(componentMaterial, tooltip);
         super.addInformation(stack, player, tooltip, adv);
-    }
-
-    @Override
-    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-        final boolean p_77663_5_) {
-        Integer radiationLevel = componentMaterial.getProperty(GTMaterialProperties.RADIATION_LEVEL);
-        EntityUtils.applyRadiationDamageToEntity(
-            iStack.stackSize,
-            radiationLevel == null ? 0 : radiationLevel,
-            world,
-            entityHolding);
     }
 
     /**

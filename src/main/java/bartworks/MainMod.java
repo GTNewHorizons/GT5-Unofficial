@@ -71,7 +71,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.CasingTier;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GlassTier;
-import gregtech.common.MaterialHazardHandler;
 import tectech.loader.recipe.Godforge;
 
 @Mod(
@@ -162,9 +161,6 @@ public final class MainMod {
             .isClient() && Configuration.tooltip.addGlassTierInTooltips) {
             MinecraftForge.EVENT_BUS.register(new GlassTier.GlassTooltipHandler());
         }
-        FMLCommonHandler.instance()
-            .bus()
-            .register(new MaterialHazardHandler());
         ServerEventHandler serverEventHandler = new ServerEventHandler();
         if (event.getSide()
             .isServer()) {
