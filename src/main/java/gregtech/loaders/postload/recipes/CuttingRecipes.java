@@ -19,13 +19,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialData;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.OreDictItemStack;
@@ -373,43 +371,6 @@ public class CuttingRecipes implements Runnable {
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
-
-        // From ProcessingStone - Redrock cutter
-        if (!OreDictionary.getOres("stoneRedrock")
-            .isEmpty()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(new OreDictItemStack("stoneRedrock", 1))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, Materials.Redrock, 1L))
-                .fluidInputs(GTUtility.getWater(37))
-                .duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(cutterRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(new OreDictItemStack("stoneRedrock", 1))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, Materials.Redrock, 1L))
-                .fluidInputs(GTModHandler.getDistilledWater(28))
-                .duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(cutterRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(new OreDictItemStack("stoneRedrock", 1))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, Materials.Redrock, 1L))
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 4))
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(cutterRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(new OreDictItemStack("stoneRedrock", 1))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, Materials.Redrock, 1L))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1))
-                .duration(4 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(cutterRecipes);
-        }
 
         // From ProcessingStone - Marble cutter
         GTValues.RA.stdBuilder()
