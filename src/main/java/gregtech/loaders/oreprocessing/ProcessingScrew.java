@@ -18,15 +18,14 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingScrew implements PartRecipeGenerator {
 
     public static final ProcessingScrew INSTANCE = new ProcessingScrew();
 
     private ProcessingScrew() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             if (MaterialLibAPI.findStack(material, Shapes.bolt, 1) != null) {
                 GTValues.RA.stdBuilder()

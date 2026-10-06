@@ -17,15 +17,14 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingRecycling implements PartRecipeGenerator {
 
     public static final ProcessingRecycling INSTANCE = new ProcessingRecycling();
 
     private ProcessingRecycling() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if ((material != Materials.Empty) && (GTUtility.getFluidForFilledItem(stack, true) == null)
             && !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
             && (MaterialLibAPI.findStack(material, Shapes.dust, 1) != null)) {

@@ -24,15 +24,14 @@ import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingRotor implements PartRecipeGenerator {
 
     public static final ProcessingRotor INSTANCE = new ProcessingRotor();
 
     private ProcessingRotor() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (MaterialUtils.unifiable(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             ItemStack tPlate = MaterialLibAPI.findStack(material, Shapes.plate, 4);
             ItemStack tRing = MaterialLibAPI.findStack(material, Shapes.ring, 1);

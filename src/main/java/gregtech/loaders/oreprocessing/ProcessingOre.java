@@ -26,7 +26,6 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -36,7 +35,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 
-public class ProcessingOre implements IOreRecipeRegistrator {
+public class ProcessingOre implements PartRecipeGenerator {
 
     private final ArrayList<Material> mAlreadyListedOres = new ArrayList<>(1000);
 
@@ -45,8 +44,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
     private ProcessingOre() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == null) return;
 
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {

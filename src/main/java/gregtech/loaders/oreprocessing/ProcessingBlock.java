@@ -33,7 +33,7 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingBlock implements PartRecipeGenerator {
 
     public static final ProcessingBlock INSTANCE = new ProcessingBlock();
 
@@ -162,8 +162,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == Materials.Ichorium || material == Materials.NetherQuartz) {
             return;
         }

@@ -16,20 +16,18 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingTransforming implements IOreRecipeRegistrator {
+public class ProcessingTransforming implements PartRecipeGenerator {
 
     public static final ProcessingTransforming INSTANCE = new ProcessingTransforming();
 
     private ProcessingTransforming() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         Shape shape = MaterialParts.shape(prefix);
         if (shape == null) return;
 

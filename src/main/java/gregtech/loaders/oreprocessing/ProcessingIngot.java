@@ -31,15 +31,14 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingIngot implements PartRecipeGenerator {
 
     public static final ProcessingIngot INSTANCE = new ProcessingIngot();
 
     private ProcessingIngot() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         boolean noSmashing = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean stretchy = MaterialUtils.hasFlag(material, GTMaterialFlag.STRETCHY);
         boolean noSmelting = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING);

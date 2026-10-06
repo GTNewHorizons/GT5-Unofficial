@@ -18,15 +18,14 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingRound implements PartRecipeGenerator {
 
     public static final ProcessingRound INSTANCE = new ProcessingRound();
 
     private ProcessingRound() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             if (MaterialLibAPI.findStack(material, Shapes.nugget, 1) != null) {
                 GTValues.RA.stdBuilder()

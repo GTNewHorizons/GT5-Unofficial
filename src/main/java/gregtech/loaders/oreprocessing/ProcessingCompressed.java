@@ -6,21 +6,19 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 
-public class ProcessingCompressed implements IOreRecipeRegistrator {
+public class ProcessingCompressed implements PartRecipeGenerator {
 
     public static final ProcessingCompressed INSTANCE = new ProcessingCompressed();
 
     private ProcessingCompressed() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         GTModHandler.removeRecipeByOutputDelayed(stack);
         CoverRegistry.registerDecorativeCover(
             stack,

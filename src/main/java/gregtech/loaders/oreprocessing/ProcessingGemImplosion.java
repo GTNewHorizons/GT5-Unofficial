@@ -20,7 +20,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.XModMaterials;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -32,7 +31,7 @@ import gregtech.api.util.GTUtility;
 /// Every other material with a gem MaterialLib mints itself takes 8 Dark Ash and 24 explosives; a gem another mod's
 /// item stands in for qualifies only when listed in `FOREIGN_GEMS`. Amalgatite, Fluix and `NoBlast` materials never
 /// implode.
-public final class ProcessingGemImplosion implements IOreRecipeRegistrator {
+public final class ProcessingGemImplosion implements PartRecipeGenerator {
 
     public static final ProcessingGemImplosion INSTANCE = new ProcessingGemImplosion();
 
@@ -88,7 +87,7 @@ public final class ProcessingGemImplosion implements IOreRecipeRegistrator {
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName, ItemStack dust) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack dust) {
         Yield named = YIELDS.get(material);
         if (named != null) {
             ItemStack gems = material == Materials.Diamond ? ItemList.IC2_Industrial_Diamond.get(3L)

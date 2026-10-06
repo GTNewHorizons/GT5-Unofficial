@@ -11,15 +11,14 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingBolt implements PartRecipeGenerator {
 
     public static final ProcessingBolt INSTANCE = new ProcessingBolt();
 
     private ProcessingBolt() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (MaterialUtils.processingMaterialTierEU(material) >= TierEU.IV) {
             return;
         }

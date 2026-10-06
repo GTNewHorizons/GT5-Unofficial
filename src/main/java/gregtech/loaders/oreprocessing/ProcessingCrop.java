@@ -12,15 +12,14 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingCrop implements PartRecipeGenerator {
 
     public static final ProcessingCrop INSTANCE = new ProcessingCrop();
 
     private ProcessingCrop() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(8, stack))
             .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))

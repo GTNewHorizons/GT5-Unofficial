@@ -16,15 +16,14 @@ import gregtech.api.util.GTModHandler;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 
-public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingToolOther implements PartRecipeGenerator {
 
     public static final ProcessingToolOther INSTANCE = new ProcessingToolOther();
 
     private ProcessingToolOther() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == null) return;
 
         if ((material == Materials.Stone) || (material == Materials.Flint)) {

@@ -26,16 +26,15 @@ import gregtech.api.util.GTModHandler;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 
-public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH OLD TOOL
-                                                                                           // HEAD??? generator
+public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE WITH OLD TOOL
+                                                                 // HEAD??? generator
 
     public static final ProcessingToolHead INSTANCE = new ProcessingToolHead();
 
     private ProcessingToolHead() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         boolean unifiable = MaterialUtils.unifiable(material);
         boolean specialRecipeReq1 = unifiable && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean specialRecipeReq2 = unifiable && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);

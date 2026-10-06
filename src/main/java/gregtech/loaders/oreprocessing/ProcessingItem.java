@@ -9,15 +9,14 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 
-public class ProcessingItem implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingItem implements PartRecipeGenerator {
 
     public static final ProcessingItem INSTANCE = new ProcessingItem();
 
     private ProcessingItem() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Material aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
+    public void generate(OrePrefixes aPrefix, Material aMaterial, String aOreDictName, ItemStack aStack) {
 
         switch (aOreDictName) {
             case "itemSilicon" -> MaterialData.add(aStack, new ItemData(Materials.Silicon, 3628800L));

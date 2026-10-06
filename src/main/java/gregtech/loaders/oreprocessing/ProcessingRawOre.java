@@ -15,15 +15,14 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingRawOre implements PartRecipeGenerator {
 
     public static final ProcessingRawOre INSTANCE = new ProcessingRawOre();
 
     private ProcessingRawOre() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == null) return;
 
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {

@@ -23,15 +23,14 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipeBuilder;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
-public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingLens implements PartRecipeGenerator {
 
     public static final ProcessingLens INSTANCE = new ProcessingLens();
 
     private ProcessingLens() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         AEApi.instance()
             .registries()
             .blockingModeIgnoreItem()

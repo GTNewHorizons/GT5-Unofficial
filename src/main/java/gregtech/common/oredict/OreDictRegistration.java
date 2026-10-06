@@ -63,9 +63,9 @@ final class OreDictRegistration {
         ItemStack single = GTUtility.copyAmount(1, stack);
         if (OreDictUtils.isInterchangeableWithTarget(stack)) {
             GTRecipeBuilder
-                .withoutRecipesTaking(single, () -> ForeignPartRecipes.run(prefix, material, oreName, modId, single));
+                .withoutRecipesTaking(single, () -> ForeignPartRecipes.run(prefix, material, oreName, single));
         } else {
-            ForeignPartRecipes.run(prefix, material, oreName, modId, single);
+            ForeignPartRecipes.run(prefix, material, oreName, single);
         }
     }
 

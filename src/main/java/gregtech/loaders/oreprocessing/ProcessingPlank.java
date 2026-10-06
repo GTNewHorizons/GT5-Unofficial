@@ -30,7 +30,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("ControlFlowStatementWithoutBraces")
-public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingPlank implements PartRecipeGenerator {
 
     /**
      * Sometimes automatically searching for recipes is not enough to ensure that the corresponding slab is correctly
@@ -81,8 +81,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     private ProcessingPlank() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (!oreDictName.startsWith("plankWood")) {
             return;
         }

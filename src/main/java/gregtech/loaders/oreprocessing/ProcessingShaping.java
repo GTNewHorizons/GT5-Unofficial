@@ -35,7 +35,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
-public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingShaping implements PartRecipeGenerator {
 
     public static final ProcessingShaping INSTANCE = new ProcessingShaping();
 
@@ -48,8 +48,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (shapesFromIngots(material)) {
             long materialMass = MaterialUtils.mass(material);
             int tAmount = (int) (prefix.getMaterialAmount() / 3628800L);

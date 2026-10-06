@@ -25,15 +25,14 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingNugget implements PartRecipeGenerator {
 
     public static final ProcessingNugget INSTANCE = new ProcessingNugget();
 
     private ProcessingNugget() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
             && MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.gem, 1) != null) {
             GTValues.RA.stdBuilder()

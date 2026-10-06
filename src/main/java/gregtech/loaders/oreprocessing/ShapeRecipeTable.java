@@ -18,7 +18,6 @@ import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.PipeMaterials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -183,13 +182,13 @@ public final class ShapeRecipeTable {
         });
     }
 
-    private static void on(Shape shape, OrePrefixes prefix, Supplier<IOreRecipeRegistrator> registrator) {
+    private static void on(Shape shape, OrePrefixes prefix, Supplier<PartRecipeGenerator> registrator) {
         on(shape, prefix, material -> true, registrator);
     }
 
     /// A null `shape` registers nothing. `filter` runs before the material's stack is resolved.
     private static void on(Shape shape, OrePrefixes prefix, Predicate<Material> filter,
-        Supplier<IOreRecipeRegistrator> registrator) {
+        Supplier<PartRecipeGenerator> registrator) {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
             if (!filter.test(material)) return;
@@ -201,8 +200,7 @@ public final class ShapeRecipeTable {
     /// variants of one material share a [GTRecipeBuilder#withVariantGroup] tag named by `groupPrefix`.
     ///
     /// [StoneType] and [GTOreAdapter] must only be touched inside the callback; see [OreShapes].
-    private static void onOreVariants(Shape shape, OrePrefixes groupPrefix,
-        Supplier<IOreRecipeRegistrator> registrator) {
+    private static void onOreVariants(Shape shape, OrePrefixes groupPrefix, Supplier<PartRecipeGenerator> registrator) {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
             String group = groupPrefix.getName() + ":" + MaterialUtils.internalName(material);
@@ -215,12 +213,12 @@ public final class ShapeRecipeTable {
         });
     }
 
-    private static void dispatch(Supplier<IOreRecipeRegistrator> registrator, OrePrefixes prefix, Material material,
+    private static void dispatch(Supplier<PartRecipeGenerator> registrator, OrePrefixes prefix, Material material,
         ItemStack stack) {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES) || prefix.isIgnored(material)) return;
         String oreName = prefix.getName() + MaterialUtils.internalName(material);
         if (OreDictRegistrationHandler.isIgnoredName(oreName)) return;
         registrator.get()
-            .registerOre(prefix, material, oreName, "materiallib", stack);
+            .generate(prefix, material, oreName, stack);
     }
 }

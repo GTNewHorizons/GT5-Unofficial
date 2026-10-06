@@ -27,15 +27,14 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingOreSmelting implements PartRecipeGenerator {
 
     public static final ProcessingOreSmelting INSTANCE = new ProcessingOreSmelting();
 
     private ProcessingOreSmelting() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == null) return;
 
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) return;

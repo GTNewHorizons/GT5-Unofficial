@@ -33,7 +33,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingStick implements PartRecipeGenerator {
 
     public static final ProcessingStick INSTANCE = new ProcessingStick();
 
@@ -74,8 +74,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         addMeltMoldRecipe(OrePrefixes.stick, material, stack, ItemList.Shape_Mold_Rod, 7 * SECONDS + 10 * TICKS);
         {
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {

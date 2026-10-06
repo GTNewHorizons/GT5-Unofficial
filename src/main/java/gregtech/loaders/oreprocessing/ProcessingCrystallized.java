@@ -18,15 +18,14 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingCrystallized implements PartRecipeGenerator {
 
     public static final ProcessingCrystallized INSTANCE = new ProcessingCrystallized();
 
     private ProcessingCrystallized() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == null) return;
 
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {

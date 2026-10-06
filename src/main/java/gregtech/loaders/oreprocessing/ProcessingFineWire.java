@@ -11,15 +11,14 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingFineWire implements PartRecipeGenerator {
 
     public static final ProcessingFineWire INSTANCE = new ProcessingFineWire();
 
     private ProcessingFineWire() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
             GTRecipeRegistrator.registerWiremillRecipes(material, 100, 4);
         }

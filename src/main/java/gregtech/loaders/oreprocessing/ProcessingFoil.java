@@ -13,21 +13,19 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingFoil implements IOreRecipeRegistrator {
+public class ProcessingFoil implements PartRecipeGenerator {
 
     public static final ProcessingFoil INSTANCE = new ProcessingFoil();
 
     private ProcessingFoil() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         // ArtificialMicaLine bends Fluorophlogopite plates on the same circuit into Mica Insulator Foil
         if (material != Materials.Fluorophlogopite) registerBenderRecipe(material);
         registerCover(stack, material);

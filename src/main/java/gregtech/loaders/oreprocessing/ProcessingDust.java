@@ -57,7 +57,7 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingDust implements PartRecipeGenerator {
 
     public static final ProcessingDust INSTANCE = new ProcessingDust();
 
@@ -123,8 +123,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         switch (prefix.getName()) {
             case "dust" -> {
                 if (MaterialLibAPI.findStack(material, Shapes.dustSmall, 1) != null) {

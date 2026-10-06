@@ -34,16 +34,15 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH GEM???
-                                                                                      // generators
+public class ProcessingGem implements PartRecipeGenerator { // TODO COMPARE WITH GEM???
+                                                            // generators
 
     public static final ProcessingGem INSTANCE = new ProcessingGem();
 
     private ProcessingGem() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         long materialMass = MaterialUtils.mass(material);
         boolean noSmashing = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean noWorking = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);

@@ -23,19 +23,19 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
+import gregtech.loaders.oreprocessing.PartRecipeGenerator;
 
 /**
  * Created by wital_000 on 18.03.2016.
  */
-public class ProcessingDetravToolProspector implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingDetravToolProspector implements PartRecipeGenerator {
 
     public static final ProcessingDetravToolProspector INSTANCE = new ProcessingDetravToolProspector();
 
     private ProcessingDetravToolProspector() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Material material, String aOreDictName, String aModName,
-        ItemStack aStack) {
+    public void generate(OrePrefixes aPrefix, Material material, String aOreDictName, ItemStack aStack) {
         if (DetravScannerMod.DEBUG_ENABLED) return;
 
         Material steel = Materials.Steel;

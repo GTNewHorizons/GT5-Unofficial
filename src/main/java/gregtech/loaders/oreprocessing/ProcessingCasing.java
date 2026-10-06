@@ -18,21 +18,19 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
 /// Registers crafting and assembler recipes for a material's machine casing and its advanced variant. Called once
 /// per casing material by [ShapeRecipeTable], not on its prefix.
-public class ProcessingCasing implements IOreRecipeRegistrator {
+public class ProcessingCasing implements PartRecipeGenerator {
 
     public static final ProcessingCasing INSTANCE = new ProcessingCasing();
 
     private ProcessingCasing() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         OrePrefixes outer = material == Materials.Wood ? OrePrefixes.plank : OrePrefixes.plateDouble;
 
         if (MaterialLibAPI.findStack(material, Shapes.plate, 1) == null

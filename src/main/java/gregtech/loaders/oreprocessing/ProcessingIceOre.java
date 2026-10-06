@@ -9,21 +9,19 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingIceOre implements IOreRecipeRegistrator {
+public class ProcessingIceOre implements PartRecipeGenerator {
 
     public static final ProcessingIceOre INSTANCE = new ProcessingIceOre();
 
     private ProcessingIceOre() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oredictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oredictName, ItemStack stack) {
         if (prefix != OrePrefixes.ore && prefix != OrePrefixes.rawOre) return;
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.ICE_ORE)) return;
 

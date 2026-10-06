@@ -7,13 +7,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
@@ -26,7 +23,7 @@ import gregtech.api.util.GTUtility;
 /// [gregtech.common.oredict.OreDictRegistration] decides which registrations reach [#run].
 public final class ForeignPartRecipes {
 
-    private static final Map<OrePrefixes, IOreRecipeRegistrator> REGISTRATORS = new IdentityHashMap<>();
+    private static final Map<OrePrefixes, PartRecipeGenerator> REGISTRATORS = new IdentityHashMap<>();
 
     static {
         register(ProcessingBlock.INSTANCE, OrePrefixes.block);
@@ -84,7 +81,7 @@ public final class ForeignPartRecipes {
         }
     }
 
-    private static void register(IOreRecipeRegistrator registrator, OrePrefixes... prefixes) {
+    private static void register(PartRecipeGenerator registrator, OrePrefixes... prefixes) {
         for (OrePrefixes prefix : prefixes) {
             REGISTRATORS.put(prefix, registrator);
         }
@@ -93,16 +90,15 @@ public final class ForeignPartRecipes {
     /// Generates the recipes for one ore-dictionary registration of `stack` under `prefix`. Does nothing for a
     /// [GTMaterialFlag#NO_RECIPES] material or an invalid stack, or under a material-based prefix whose name named
     /// no material.
-    public static void run(OrePrefixes prefix, Material material, String oreDictName, @Nullable String modName,
-        ItemStack stack) {
+    public static void run(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == null || MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
         if (material == Materials.NULL && !prefix.isSelfReferencing() && prefix.isMaterialBased()) return;
         if (!GTUtility.isStackValid(stack)) return;
 
         clampStackSize(prefix, stack);
-        IOreRecipeRegistrator registrator = REGISTRATORS.get(prefix);
+        PartRecipeGenerator registrator = REGISTRATORS.get(prefix);
         if (registrator != null) {
-            registrator.registerOre(prefix, material, oreDictName, modName, GTUtility.copyAmount(1, stack));
+            registrator.generate(prefix, material, oreDictName, GTUtility.copyAmount(1, stack));
         }
     }
 }

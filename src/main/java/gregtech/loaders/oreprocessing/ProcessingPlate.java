@@ -61,7 +61,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingPlate implements PartRecipeGenerator {
 
     public static final ProcessingPlate INSTANCE = new ProcessingPlate();
 
@@ -71,19 +71,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
     private ProcessingPlate() {}
 
-    /**
-     * Register processes for the {@link ItemStack} with Ore Dictionary Name Prefix "plate"
-     *
-     * @param prefix      always != null, the {@link OrePrefixes} of the {@link ItemStack}
-     * @param material    always != null, and can be == _NULL if the Prefix is Self Referencing or not Material based!
-     *                    the {@link Material} of the {@link ItemStack}
-     * @param oreDictName the Ore Dictionary Name {@link String} of the {@link ItemStack}
-     * @param modName     the ModID {@link String} of the mod providing this {@link ItemStack}
-     * @param stack       always != null, the {@link ItemStack} to register
-     */
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         final boolean noSmashing = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         final boolean noWorking = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);
         final long materialMass = MaterialUtils.mass(material);

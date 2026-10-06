@@ -16,15 +16,14 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingSlab implements PartRecipeGenerator {
 
     public static final ProcessingSlab INSTANCE = new ProcessingSlab();
 
     private ProcessingSlab() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (oreDictName.startsWith("slabWood")) {
             if (Railcraft.isModLoaded()) {
                 GTValues.RA.stdBuilder()

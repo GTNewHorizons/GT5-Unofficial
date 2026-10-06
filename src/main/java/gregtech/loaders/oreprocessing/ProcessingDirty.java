@@ -30,14 +30,14 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingDirty implements PartRecipeGenerator {
 
     public static final ProcessingDirty INSTANCE = new ProcessingDirty();
 
     private ProcessingDirty() {}
 
     @Override
-    public void registerOre(OrePrefixes orePrefix, Material material, String oreDictName, String modName,
+    public void generate(OrePrefixes orePrefix, Material material, String oreDictName,
         net.minecraft.item.ItemStack stack) {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;

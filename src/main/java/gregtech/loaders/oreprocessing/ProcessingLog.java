@@ -22,15 +22,14 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingLog implements PartRecipeGenerator {
 
     public static final ProcessingLog INSTANCE = new ProcessingLog();
 
     private ProcessingLog() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         short meta = (short) stack.getItemDamage();
 
         if (meta == Short.MAX_VALUE) {

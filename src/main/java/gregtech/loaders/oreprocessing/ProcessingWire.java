@@ -39,7 +39,7 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingWire implements PartRecipeGenerator {
 
     public static final ProcessingWire INSTANCE = new ProcessingWire();
 
@@ -50,8 +50,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
     private ProcessingWire() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (tt == TunnelType.ME) {
             try {
                 tt = TunnelType.valueOf("GT_POWER");

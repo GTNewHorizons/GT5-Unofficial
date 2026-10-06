@@ -11,22 +11,20 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
 /// Registers the bender recipe that presses two plates into a `sheetmetal`. Called once per sheetmetal material by
 /// [ShapeRecipeTable].
-public class ProcessingSheetmetal implements IOreRecipeRegistrator {
+public class ProcessingSheetmetal implements PartRecipeGenerator {
 
     public static final ProcessingSheetmetal INSTANCE = new ProcessingSheetmetal();
 
     private ProcessingSheetmetal() {}
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
 
         GTValues.RA.stdBuilder()

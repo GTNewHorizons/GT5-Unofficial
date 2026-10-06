@@ -24,7 +24,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
-public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingPipe implements PartRecipeGenerator {
 
     public static final ProcessingPipe INSTANCE = new ProcessingPipe();
 
@@ -62,8 +62,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     @Override
-    public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
-        ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == null) return;
 
         long bits = getPipeBits(prefix, material);
