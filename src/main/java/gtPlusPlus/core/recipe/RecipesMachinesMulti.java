@@ -923,7 +923,8 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Multi_Use.get(1),
-                GregtechItemList.TransmissionComponent_MV.get(2),
+                ItemList.Emitter_MV.get(4),
+                ItemList.Sensor_MV.get(4),
                 ItemList.Electric_Piston_EV.get(2),
                 MaterialsAlloy.INCONEL_625.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1))
@@ -1036,7 +1037,8 @@ public class RecipesMachinesMulti {
                 GregtechItemList.Casing_Refinery_Structural.get(4),
                 GregtechItemList.LFTRControlCircuit.get(1),
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Platinum, 16),
-                GregtechItemList.TransmissionComponent_IV.get(2),
+                ItemList.Sensor_IV.get(4),
+                ItemList.Emitter_IV.get(4),
                 GregtechItemList.Gregtech_Computer_Cube.get(1))
             .itemOutputs(GregtechItemList.GT4_Multi_Crafter.get(1))
             .fluidInputs(MaterialsAlloy.PIKYONIUM.getFluidStack(8 * INGOTS))
