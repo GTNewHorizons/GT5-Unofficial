@@ -84,8 +84,9 @@ public class VoidMinerUtility {
                     ItemStack stack = OreManager.getStack(info, 1);
 
                     if (stack == null) {
-                        GTLoggers.GT_FML_LOGGER.error("Could not add ore {} to void miner drop map!", material);
-                        return;
+                        GTLoggers.GT_FML_LOGGER
+                            .error("Could not add ore {} on {} to void miner drop map!", material, stones);
+                        continue;
                     }
 
                     addDrop(stack, weight);
