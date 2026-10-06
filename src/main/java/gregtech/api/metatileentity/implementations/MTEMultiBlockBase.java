@@ -4061,10 +4061,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return !disableMaintenance && hasMaintenanceChecks;
     }
 
-    public void setMaxParallelForPanel(int parallel) {
-        this.maxParallel = parallel;
-    }
-
     @Nonnull
     public CheckRecipeResult getCheckRecipeResult() {
         return checkRecipeResult;
