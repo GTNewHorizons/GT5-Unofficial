@@ -56,7 +56,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean specialRecipeReq = MaterialUtils.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE);
         boolean fuelPower = MaterialUtils.fuelPower(material) > 0;
         boolean unifiable = MaterialUtils.unifiable(material);
-        boolean implodable = !MaterialUtils.hasSubTag(material, "NoBlast");
+        boolean implodable = !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_BLAST);
 
         // Nether quartz is skipped due to its 4:1 ratio.
         if (material == Materials.NetherQuartz) return;

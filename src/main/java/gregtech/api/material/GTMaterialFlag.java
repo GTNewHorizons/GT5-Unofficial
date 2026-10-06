@@ -2,27 +2,21 @@ package gregtech.api.material;
 
 /// Boolean material flags, declared through [GTMaterialProperties#FLAGS].
 ///
-/// Each constant shares its name with a [gregtech.api.enums.SubTag], so prefix conditions written against
-/// sub-tags can test these flags (see [MaterialSubTagView]). The exceptions are [#ANAEROBE_GAS] and
-/// [#NOBLE_GAS], which match the `"AnaerobeGas"` and `"NobleGas"` sub-tags.
+/// A constant named like a [gregtech.api.enums.SubTag] also answers prefix conditions written against that
+/// sub-tag (see [MaterialSubTagView]).
 public enum GTMaterialFlag {
-    ANAEROBE_GAS,
-    NOBLE_GAS,
     BLASTFURNACE_CALCITE_DOUBLE,
     BLASTFURNACE_CALCITE_TRIPLE,
     DONT_ADD_DEFAULT_BBF_RECIPE,
-    INDUCTIONSMELTING_LOW_OUTPUT,
     WASHING_SODIUMPERSULFATE,
     WASHING_MERCURY,
     WASHING_MERCURY_99_PERCENT,
     ELECTROMAGNETIC_SEPERATION_GOLD,
     ELECTROMAGNETIC_SEPERATION_IRON,
     ELECTROMAGNETIC_SEPERATION_NEODYMIUM,
-    PULVERIZING_CINNABAR,
     NO_WORKING,
     NO_SMASHING,
     NO_RECIPES,
-    NO_UNIFICATION,
     NO_RECYCLING,
     NO_RECYCLING_RECIPES,
     NO_SMELTING,
@@ -30,7 +24,6 @@ public enum GTMaterialFlag {
     SMELTING_TO_FLUID,
     SMELTING_TO_GEM,
     WOOD,
-    FOOD,
     STONE,
     PEARL,
     QUARTZ,
@@ -39,29 +32,23 @@ public enum GTMaterialFlag {
     MAGICAL,
     METAL,
     PAPER,
-    BURNING,
     FLAMMABLE,
     UNBURNABLE,
     EXPLOSIVE,
     BOUNCY,
-    INVISIBLE,
     TRANSPARENT,
-    HAS_COLOR,
     STRETCHY,
     SOFT,
     MORTAR_GRINDABLE,
     SOLDERING_MATERIAL,
     SOLDERING_MATERIAL_BAD,
     SOLDERING_MATERIAL_GOOD,
-    ENERGY_ELECTRICITY,
-    ENERGY_ROTATIONAL,
-    ENERGY_STEAM,
-    ENERGY_AIR,
-    ENERGY_HEAT,
-    ENERGY_REDSTONE_FLUX,
-    PROJECTILE_ARROW,
     BLACK_HOLE,
     ICE_ORE,
     MULTI_PLATE,
-    TRANSMUTABLE_NUGGETS
+    TRANSMUTABLE_NUGGETS,
+    /// Gems that never get an implosion recipe.
+    NO_BLAST,
+    /// Metals whose blast furnace recipes take any [gregtech.api.util.BlastFurnaceGasStat] gas.
+    NOBLE_GAS_SMELTING
 }

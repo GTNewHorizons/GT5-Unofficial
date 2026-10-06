@@ -30,15 +30,9 @@ public class GTMaterialProperties {
     public static final Property<Integer> BLAST_TEMP = Property.of("gregtech", "blastTemp", 0);
     /// The EU/t of the blast furnace recipe smelting this material's dust, in place of MV.
     public static final Property<Integer> BLAST_VOLTAGE = Property.of("gregtech", "blastVoltage");
-    /// The Kelvin boiling point.
-    public static final Property<Integer> BOILING_POINT = Property.of("gregtech", "boilingPoint");
     public static final Property<Integer> BYPRODUCT_MULTIPLIER = Property.of("gregtech", "byProductMultiplier", 1);
     public static final Property<Boolean> CAN_BE_CRACKED = Property.of("gregtech", "canBeCracked", false);
     public static final Property<List<MaterialRefStack>> COMPOSITION = Property.of("gregtech", "composition");
-    /// The gas amount multiplier when this material is a blast furnace gas.
-    public static final Property<Double> EBF_GAS_AMOUNT_MULTIPLIER = Property.of("gregtech", "ebfGasAmountMultiplier");
-    /// The recipe duration multiplier when this material is a blast furnace gas.
-    public static final Property<Double> EBF_GAS_TIME_MULTIPLIER = Property.of("gregtech", "ebfGasTimeMultiplier");
     public static final Property<Integer> DENSITY_DIVIDER = Property.of("gregtech", "densityDivider");
     public static final Property<Integer> DENSITY_MULTIPLIER = Property.of("gregtech", "densityMultiplier");
     public static final Property<MaterialRef> DIRECT_SMELTING = Property.of("gregtech", "directSmelting");
@@ -74,8 +68,6 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_CORRESPONDING_GAS = Property.of("gregtech", "hasCorrespondingGas", false);
     public static final Property<Boolean> HAS_ELECTROLYZER_RECIPE = Property
         .of("gregtech", "hasElectrolyzerRecipe", false);
-    /// Whether this material registers a gas-state fluid. Independent of [#HAS_CORRESPONDING_GAS].
-    public static final Property<Boolean> HAS_GAS = Property.of("gregtech", "hasGas");
     public static final Property<Boolean> HAS_GLOWING_ORE = Property.of("gregtech", "hasGlowingOre");
     /// Whether a mixer recipe is generated from [#COMPOSITION] and [#MIX_CIRCUIT].
     public static final Property<Boolean> HAS_MIXER_RECIPE = Property.of("gregtech", "hasMixerRecipe");
@@ -137,8 +129,6 @@ public class GTMaterialProperties {
     public static final Property<MaterialRef> SMELT_INTO = Property.of("gregtech", "smeltInto");
     public static final Property<Integer> SMELTING_MULTIPLIER = Property.of("gregtech", "smeltingMultiplier", 1);
     public static final Property<Float> STEAM_MULTIPLIER = Property.of("gregtech", "steamMultiplier");
-    /// Sub-tag names declared as plain strings, read by [MaterialUtils#hasFlag] and [MaterialUtils#hasSubTag].
-    public static final Property<List<String>> SUB_TAGS = Property.of("gregtech", "subTags");
     /// The material's tier, read by some recipe generators.
     public static final Property<Integer> TIER = Property.of("gregtech", "tier", 0);
     public static final Property<String> TOOL_ENCHANTMENT = Property.of("gregtech", "toolEnchantment");

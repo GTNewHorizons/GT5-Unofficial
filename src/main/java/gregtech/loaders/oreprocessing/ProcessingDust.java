@@ -174,11 +174,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTModHandler.removeFurnaceSmelting(stack);
                         if (MaterialUtils.autoGenerateBlastFurnaceRecipes(material)
                             && MaterialUtils.blastFurnaceTemp(material) > 0) {
-                            // A material carrying the AnaerobeSmelting/NobleGasSmelting SubTag blast-smelts under
-                            // a gas: BlastFurnaceWithGas fans one recipe out into a gas-input variant per
-                            // BlastFurnaceGasStat, keyed on circuit 11 and the base gas amount in ADDITIVE_AMOUNT.
-                            if (MaterialUtils.hasSubTag(material, "AnaerobeSmelting")
-                                || MaterialUtils.hasSubTag(material, "NobleGasSmelting")) {
+                            // A NOBLE_GAS_SMELTING material blast-smelts under a gas: BlastFurnaceWithGas fans one
+                            // recipe out into a gas-input variant per BlastFurnaceGasStat, keyed on circuit 11 and
+                            // the base gas amount in ADDITIVE_AMOUNT.
+                            if (MaterialUtils.hasFlag(material, GTMaterialFlag.NOBLE_GAS_SMELTING)) {
                                 blastFurnaceBuilder(material, stack, tDustStack, 11).metadata(ADDITIVE_AMOUNT, 1000)
                                     .addTo(BlastFurnaceWithGas);
                             } else {

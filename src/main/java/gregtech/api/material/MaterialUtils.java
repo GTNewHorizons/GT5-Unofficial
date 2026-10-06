@@ -364,11 +364,6 @@ public class MaterialUtils {
         return material == null ? Element.Tc.getProtons() : MaterialAtomics.protons(material);
     }
 
-    /// [#mass], for [MaterialAtomics#neutrons].
-    public static long neutrons(@Nullable Material material) {
-        return material == null ? Element.Tc.getNeutrons() : MaterialAtomics.neutrons(material);
-    }
-
     /// The ore byproducts list for a material, resolved from [GTMaterialProperties#ORE_BYPRODUCTS] in
     /// declaration order; empty when absent.
     public static List<Material> oreByProducts(@Nullable Material material) {
@@ -608,22 +603,11 @@ public class MaterialUtils {
         return hop == null ? target : hop.resolve();
     }
 
-    /// Whether a material's [GTMaterialProperties#FLAGS] carry `flag`, or its [GTMaterialProperties#SUB_TAGS]
-    /// list the flag's constant name.
+    /// Whether a material's [GTMaterialProperties#FLAGS] carry `flag`.
     public static boolean hasFlag(@Nullable Material material, GTMaterialFlag flag) {
         if (material == null) return false;
         EnumSet<GTMaterialFlag> flags = material.getProperty(GTMaterialProperties.FLAGS);
-        if (flags != null && flags.contains(flag)) return true;
-        List<String> subTags = material.getProperty(GTMaterialProperties.SUB_TAGS);
-        return subTags != null && subTags.contains(flag.name());
-    }
-
-    /// Whether a material's [GTMaterialProperties#SUB_TAGS] names `subTag`. For the sub-tags with no
-    /// [GTMaterialFlag] counterpart (`"NoBlast"`, `"AnaerobeSmelting"`, `"NobleGasSmelting"`).
-    public static boolean hasSubTag(@Nullable Material material, String subTag) {
-        if (material == null) return false;
-        List<String> subTags = material.getProperty(GTMaterialProperties.SUB_TAGS);
-        return subTags != null && subTags.contains(subTag);
+        return flags != null && flags.contains(flag);
     }
 
     /// A material's internal name: [GTMaterialProperties#LEGACY_NAME] when present, otherwise the registration
@@ -814,14 +798,6 @@ public class MaterialUtils {
 
     /// Returns the [GTMaterialFlag] matching `subTag`'s name, or null when none does.
     private static @Nullable GTMaterialFlag flagForSubTag(SubTag subTag) {
-        switch (subTag.mName) {
-            case "AnaerobeGas":
-                return GTMaterialFlag.ANAEROBE_GAS;
-            case "NobleGas":
-                return GTMaterialFlag.NOBLE_GAS;
-            default:
-                break;
-        }
         try {
             return GTMaterialFlag.valueOf(subTag.mName);
         } catch (IllegalArgumentException e) {

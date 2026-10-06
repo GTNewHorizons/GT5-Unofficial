@@ -17,6 +17,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.XModMaterials;
+import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 
@@ -66,7 +67,7 @@ public final class ConsumerGemImplosion {
         ShapeConsumerSupport.delegate(
             Shapes.gem,
             OrePrefixes.gem,
-            material -> !skipped.contains(material) && !MaterialUtils.hasSubTag(material, "NoBlast")
+            material -> !skipped.contains(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_BLAST)
                 && material.hasShape(Shapes.dust)
                 && (MaterialParts.isMinted(OrePrefixes.gem, material) || foreignGems.contains(material)),
             () -> ConsumerGemImplosion::implode);
