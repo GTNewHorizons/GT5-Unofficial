@@ -40,6 +40,8 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.StackMaterialInfo;
 
 import appeng.util.ReadableNumberConverter;
 import codechicken.lib.gui.GuiDraw;
@@ -55,7 +57,9 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TieredVariant;
+import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -78,6 +82,7 @@ import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -271,10 +276,13 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 tResults.addAll(ccRepresentations);
             }
         }
-        if (aResult.getUnlocalizedName()
-            .startsWith("gt.blockores")) {
-            for (int i = 0; i < 8; i++) {
-                tResults.add(new ItemStack(aResult.getItem(), 1, aResult.getItemDamage() % 1000 + i * 1000));
+        StackMaterialInfo ore = aResult == null ? null : MaterialLibAPI.lookupStack(aResult);
+        if (ore != null && ore.material() != null
+            && (ore.shape() == OreShapes.ore || ore.shape() == OreShapes.oreSmall)) {
+            for (StoneType stoneType : StoneType.VALUES) {
+                ItemStack variant = GTOreAdapter.INSTANCE
+                    .getVariantStack(ore.material(), stoneType, ore.shape() == OreShapes.oreSmall);
+                if (variant != null) tResults.add(variant);
             }
         }
         addFluidStacks(aResult, tResults);

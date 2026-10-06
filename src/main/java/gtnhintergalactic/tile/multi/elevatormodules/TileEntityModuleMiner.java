@@ -28,6 +28,7 @@ import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.StackMaterialInfo;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -37,6 +38,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -739,12 +741,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         if (oreStack == null || oreStack.getItem() == null) {
             return null;
         }
-        // For GT ores we want to save the ore independent of its stone type
-        if (oreStack.getUnlocalizedName()
-            .startsWith("gt.blockores")) {
-            return oreStack.getItem()
-                .getUnlocalizedName() + ":"
-                + oreStack.getItemDamage() % 1000;
+        // GT ores are keyed by material alone, so a filter entry matches every stone type and size
+        StackMaterialInfo ore = MaterialLibAPI.lookupStack(oreStack);
+        if (ore != null && ore.material() != null
+            && (ore.shape() == OreShapes.ore || ore.shape() == OreShapes.oreSmall)) {
+            return "ore:" + ore.material()
+                .getKey();
         } else {
             return oreStack.getItem()
                 .getUnlocalizedName() + ":"
