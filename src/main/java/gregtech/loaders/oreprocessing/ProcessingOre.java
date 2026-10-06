@@ -22,6 +22,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
@@ -30,6 +31,7 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
@@ -69,24 +71,28 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         }
 
         if (material == Materials.Oilsands) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack))
-                .itemOutputs(new ItemStack(Blocks.sand, 1, 0))
-                .outputChances(tIsRich ? 2000 : 4000)
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, (int) (tIsRich ? 4000 : 2000)))
-                .duration(tIsRich ? 30 * SECONDS : 15 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(centrifugeRecipes);
+            addOilsandsRecipe(stack, tIsRich);
         } else {
-            registerStandardOreRecipes(prefix, material, GTUtility.copyAmount(1, stack), tIsRich ? 2 : 1);
+            addOreRecipes(prefix, material, stack, tIsRich ? 2 : 1, false);
         }
     }
 
-    private boolean registerStandardOreRecipes(OrePrefixes prefix, Material material, ItemStack oreStack,
-        int multiplier) {
-        if ((oreStack == null) || (material == null)) return false;
+    /// Centrifuges Oilsands ore into heavy oil and sand; a rich ore yields twice the oil over twice the time.
+    static void addOilsandsRecipe(ItemStack ore, boolean rich) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, ore))
+            .itemOutputs(new ItemStack(Blocks.sand, 1, 0))
+            .outputChances(rich ? 2000 : 4000)
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, rich ? 4000 : 2000))
+            .duration(rich ? 30 * SECONDS : 15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(centrifugeRecipes);
+    }
+
+    /// Adds the smelting, blast furnace, forge hammer and macerator recipes of an ore block, or of a raw ore when
+    /// `raw`, yielding `multiplier` times the usual amounts. A raw ore also gets a hammer crafting recipe and half the
+    /// macerator byproduct chance.
+    static void addOreRecipes(OrePrefixes prefix, Material material, ItemStack oreStack, int multiplier, boolean raw) {
         Material tPrimaryByMaterial = null;
         multiplier = Math.max(1, multiplier);
         oreStack = GTUtility.copyAmount(1, oreStack);
@@ -115,20 +121,9 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         }
 
         for (Material tMat : MaterialUtils.oreByProducts(material)) {
-            MaterialLibAPI.findStack(tMat, Shapes.dust, 1);
-            if (tPrimaryByProduct == null) {
-                tPrimaryByMaterial = tMat;
-                tPrimaryByProduct = MaterialLibAPI.findStack(tMat, Shapes.dust, 1);
-                if (MaterialLibAPI.findStack(tMat, Shapes.dustSmall, 1) == null) GTUtility.copyAmount(
-                    2L,
-                    MaterialLibAPI.findStack(tMat, Shapes.dustTiny, 1),
-                    MaterialLibAPI.findStack(tMat, Shapes.nugget, 2));
-            }
-            MaterialLibAPI.findStack(tMat, Shapes.dust, 1);
-            if (MaterialLibAPI.findStack(tMat, Shapes.dustSmall, 1) == null) GTUtility.copyAmount(
-                2L,
-                MaterialLibAPI.findStack(tMat, Shapes.dustTiny, 1),
-                MaterialLibAPI.findStack(tMat, Shapes.nugget, 2));
+            if (tPrimaryByProduct != null) break;
+            tPrimaryByMaterial = tMat;
+            tPrimaryByProduct = MaterialLibAPI.findStack(tMat, Shapes.dust, 1);
         }
 
         if (tPrimaryByMaterial == null) tPrimaryByMaterial = material;
@@ -208,7 +203,13 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                         MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.gem, 1))));
         }
 
-        if (tCrushed != null && material != Materials.Knightmetal) {
+        if (tCrushed != null && (raw || material != Materials.Knightmetal)) {
+            if (raw) {
+                GTModHandler.addShapelessCraftingRecipe(
+                    GTUtility.mul(1, tCrushed),
+                    new Object[] { oreStack, ToolDictNames.craftingToolHardHammer });
+            }
+
             GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)
                 .itemOutputs(
@@ -223,29 +224,30 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 GTUtility.copyAmount(1, tPrimaryByProduct));
 
             ItemStack stoneDust = null;
-
-            try (OreInfo info = OreManager.getOreInfo(oreStack)) {
-                if (info != null) {
-                    stoneDust = info.stoneType.getDust(true, 1);
+            if (!raw) {
+                try (OreInfo info = OreManager.getOreInfo(oreStack)) {
+                    if (info != null) {
+                        stoneDust = info.stoneType.getDust(true, 1);
+                    }
                 }
             }
-
             if (stoneDust == null) {
                 stoneDust = MaterialParts.dustOf(prefix.mSecondaryMaterial);
             }
 
             int chanceOre2 = tPrimaryByProduct == null ? 0
-                : tPrimaryByProduct.stackSize * 10 * multiplier * MaterialUtils.byProductMultiplier(material);
+                : tPrimaryByProduct.stackSize * (raw ? 5 : 10)
+                    * multiplier
+                    * MaterialUtils.byProductMultiplier(material);
             chanceOre2 = 100 * chanceOre2; // converting to the GT format, 100% is 10000
-            GTValues.RA.stdBuilder()
+            GTRecipeBuilder macerator = GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)
                 .itemOutputs(convertOre(material, GTUtility.mul(2, tCrushed), byproduct, stoneDust))
                 .outputChances(10000, chanceOre2, 5000)
                 .duration(20 * SECONDS)
-                .nbtSensitive()
-                .eut(2)
-                .addTo(maceratorRecipes);
+                .eut(2);
+            if (!raw) macerator.nbtSensitive();
+            macerator.addTo(maceratorRecipes);
         }
-        return true;
     }
 }
