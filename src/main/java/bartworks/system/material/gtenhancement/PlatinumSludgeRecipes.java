@@ -468,7 +468,7 @@ public final class PlatinumSludgeRecipes {
                 MaterialLibAPI.getStack(Materials.SodiumRuthenate, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.RarestMetalResidue, Shapes.dust, 6))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(MaterialUtils.gas(Materials.Steam, 1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 775)

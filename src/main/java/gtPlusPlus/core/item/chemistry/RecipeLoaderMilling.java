@@ -24,7 +24,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -433,7 +432,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, 5),
                 MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 5),
                 MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 5))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 5_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)

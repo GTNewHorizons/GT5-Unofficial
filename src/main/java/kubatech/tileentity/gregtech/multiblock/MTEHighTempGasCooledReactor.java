@@ -746,7 +746,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
 
             if (drainedAmount > 0) {
-                addOutputToHatch(steamOutputHatch, MaterialUtils.gas(Materials.Steam, drainedAmount * 160L));
+                addOutputToHatch(
+                    steamOutputHatch,
+                    MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, drainedAmount * 160));
 
                 double eff = drainedAmount / ((double) this.watertaking);
                 double addedTime = (int) (this.mMaxProgresstime * WATER_SPEEDUP

@@ -25,7 +25,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
 /*
@@ -125,7 +124,7 @@ public class BotRecipes {
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Tungsten, Shapes.dust, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 6_000))
-            .fluidOutputs(MaterialUtils.gas(Materials.Steam, 3_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 3_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1000)

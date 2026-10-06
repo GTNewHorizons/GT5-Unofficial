@@ -31,15 +31,16 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TAE;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -70,7 +71,7 @@ public class MTEThermalBoilerLegacy extends GTPPMultiBlockBase<MTEThermalBoilerL
     private static final Fluid fluidWater = FluidRegistry.WATER;
     private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1)
         .getFluid();
-    private static final Fluid fluidSteam = MaterialUtils.gas(Materials.Steam, 1)
+    private static final Fluid fluidSteam = MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1)
         .getFluid();
     private static final Fluid fluidSHSteam = GTModHandler.getSuperHeatedSteam(1)
         .getFluid();

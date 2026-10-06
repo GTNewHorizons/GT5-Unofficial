@@ -40,7 +40,6 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
@@ -467,7 +466,7 @@ public class BioRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.Sapphire, Shapes.crushedPurified, 5))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 10_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 10_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 300))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -478,7 +477,7 @@ public class BioRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.GreenSapphire, Shapes.crushedPurified, 5))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 10_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 10_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 300))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -489,7 +488,7 @@ public class BioRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.Ruby, Shapes.crushedPurified, 6))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 12_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 300))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -500,7 +499,7 @@ public class BioRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.Grossular, Shapes.crushedPurified, 20))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 40_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 40_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 300))
             .duration(60 * SECONDS)
             .eut(90)
@@ -511,7 +510,7 @@ public class BioRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.Pyrope, Shapes.crushedPurified, 20))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 40_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 40_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 300))
             .duration(60 * SECONDS)
             .eut(90)
@@ -522,7 +521,7 @@ public class BioRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.Sodalite, Shapes.crushedPurified, 11))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(5))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 22_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 22_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 500))
             .duration(60 * SECONDS)
             .eut(90)
@@ -533,7 +532,7 @@ public class BioRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.Spodumene, Shapes.crushedPurified, 10))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(2))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 20_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 20_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 200))
             .duration(60 * SECONDS)
             .eut(90)
@@ -544,7 +543,7 @@ public class BioRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.Bauxite, Shapes.crushedPurified, 39))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(23))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 78_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 78_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_300))
             .duration(60 * SECONDS)
             .eut(90)
@@ -555,7 +554,7 @@ public class BioRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.Lazurite, Shapes.crushedPurified, 14))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(5))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 28_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 28_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 500))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)

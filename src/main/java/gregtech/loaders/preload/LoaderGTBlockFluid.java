@@ -22,7 +22,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -1041,18 +1040,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .addLocalizedName(Materials.NitrogenDioxide)
             .addLocalizedName(Materials.NitrogenDioxide)
             .registerBContainers(MaterialParts.requireCell(Materials.NitrogenDioxide, 1), ItemList.Cell_Empty.get(1L));
-        GTFluidFactory.builder("Steam")
-            .withDefaultLocalName("Steam")
-            .withStateAndTemperature(GAS, 375)
-            .buildAndRegister()
-            .configureMaterials(Materials.Water)
-            .addLocalizedName(Materials.Water);
-
-        // The Steam material carries no LEGACY_FLUIDS gas row (see Materials.Steam), so its gas slot is wired
-        // straight to the "steam" Forge fluid registered above rather than through a material property.
-        Fluid steamFluid = FluidRegistry.getFluid("steam");
-        MaterialUtils.recordSlotFluid(Materials.Steam, MaterialUtils.FluidState.GAS, steamFluid);
-
         // Water's fluid is registered by vanilla rather than by a GTFluid, so nothing records its
         // fluid->material entry; record it here so the getFluidDisplayStack reverse lookup resolves it.
         MaterialUtils.recordFluidMaterial(FluidRegistry.getFluid("water"), Materials.Water);
@@ -1060,13 +1047,10 @@ public class LoaderGTBlockFluid implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getEmptyCell(1L))
             .itemOutputs(MetaGeneratedItem98.FluidCell.STEAM.get(1))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1_000))
             .duration(16 * TICKS)
             .eut(1)
             .addTo(cannerRecipes);
-
-        steamFluid.setTemperature(375)
-            .setGaseous(true);
 
         ItemList.sOilExtraHeavy = GTFluidFactory.builder("liquid_extra_heavy_oil")
             .withDefaultLocalName("Very Heavy Oil")

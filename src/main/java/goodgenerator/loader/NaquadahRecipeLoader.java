@@ -40,7 +40,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -554,7 +553,7 @@ public class NaquadahRecipeLoader {
             .circuit(24)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000),
-                MaterialUtils.gas(Materials.Steam, 2_000))
+                MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -563,7 +562,7 @@ public class NaquadahRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 1))
             .circuit(24)
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 2_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Ethanol, CellShapes.cell, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)

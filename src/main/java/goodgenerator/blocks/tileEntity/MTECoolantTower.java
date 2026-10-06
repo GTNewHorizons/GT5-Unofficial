@@ -19,9 +19,11 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -166,7 +168,9 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
 
     private int maybeDrainSteam(MTEHatchInput tHatch, FluidStack maybeSteam) {
         if (maybeSteam == null) return 0;
-        if (!GTUtility.areFluidsEqual(maybeSteam, MaterialUtils.gas(Materials.Steam, 1))) return 0;
+        if (!GTUtility
+            .areFluidsEqual(maybeSteam, MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1)))
+            return 0;
         FluidStack defoSteam = tHatch.drain(ForgeDirection.UNKNOWN, maybeSteam, true);
         return defoSteam.amount;
     }

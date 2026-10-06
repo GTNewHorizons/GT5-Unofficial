@@ -60,7 +60,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
@@ -1434,7 +1433,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.CeriumChloride, Shapes.dust, 4),
                 MaterialParts.requireCell(Materials.Ammonia, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
-            .fluidOutputs(MaterialUtils.gas(Materials.Steam, 2_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 2_000))
             .duration(15 * SECONDS)
             .eut(450)
             .addTo(UniversalChemical);
@@ -1566,7 +1565,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.MuddyBastnasiteRareEarthSolution, FluidShapes.fluidLiquid, 1_000),
-                MaterialUtils.gas(Materials.Steam, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.SteamCrackedBastnasiteMud, FluidShapes.fluidLiquid, 2_000))
             .duration(30 * SECONDS)

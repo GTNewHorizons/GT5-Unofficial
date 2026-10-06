@@ -38,6 +38,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -46,11 +47,11 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -418,7 +419,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 } else {
                     if (consumeWater(waterToConsume)) {
                         tickBurnTime();
-                        addOutputPartial(MaterialUtils.gas(Materials.Steam, tGeneratedEU));
+                        addOutputPartial(
+                            MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, tGeneratedEU));
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();

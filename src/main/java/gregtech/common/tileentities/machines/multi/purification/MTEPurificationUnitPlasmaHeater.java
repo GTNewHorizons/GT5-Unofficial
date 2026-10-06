@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -42,6 +43,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -393,8 +395,8 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         if (this.ruinedCycle && currentRecipe != null) {
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
             // Multiply by 60 since that's the water:steam ratio in GTNH
-            long steamAmount = insertedWater.amount * 60L;
-            addOutputPartial(MaterialUtils.gas(Materials.Steam, steamAmount));
+            int steamAmount = insertedWater.amount * 60;
+            addOutputPartial(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, steamAmount));
         }
     }
 

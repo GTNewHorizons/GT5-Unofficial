@@ -25,6 +25,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
@@ -32,10 +33,10 @@ import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredVariant;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
@@ -156,7 +157,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         int steamAmount = (int) getBaseMetaTileEntity().getStoredSteam() * 2;
         int steamCapacity = (int) getBaseMetaTileEntity().getSteamCapacity() * 2;
-        FluidStack steam = MaterialUtils.gas(Materials.Steam, steamAmount);
+        FluidStack steam = MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, steamAmount);
         return new FluidTankInfo[] { new FluidTankInfo(steam, steamCapacity) };
     }
 

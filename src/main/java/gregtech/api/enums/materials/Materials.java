@@ -13094,11 +13094,13 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeOrange")
             .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 1300)
             .build();
-        // Steam has no shapes. Its gas is the "steam" Forge fluid registered in LoaderGTBlockFluid.
         Materials.Steam = MaterialLibAPI.newMaterial("gregtech", "Steam", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
+            .generateShape(FluidShapes.fluidGas)
             .setProperty(GTMaterialProperties.MELTING_POINT, 27)
+            .setProperty(GTMaterialProperties.GAS_TEMPERATURE, 375)
+            .setProperty(GTMaterialProperties.FORMULA, "H₂O")
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Steam")
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.steam")
             .build();

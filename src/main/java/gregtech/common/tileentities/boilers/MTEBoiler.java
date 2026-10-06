@@ -26,6 +26,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -35,11 +36,11 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TieredVariant;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
@@ -233,7 +234,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         if (GTModHandler.isSteam(this.mSteam)) {
             this.mSteam.amount += aAmount;
         } else {
-            this.mSteam = MaterialUtils.gas(Materials.Steam, aAmount);
+            this.mSteam = MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, aAmount);
         }
     }
 
@@ -528,8 +529,11 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
-        return GTUtility.fillFluidContainer(MaterialUtils.gas(Materials.Steam, getSteamCapacity()), stack, false, true)
-            != null || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
+        return GTUtility.fillFluidContainer(
+            MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, getSteamCapacity()),
+            stack,
+            false,
+            true) != null || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
     }
 
     protected boolean isItemValidFuel(@NotNull ItemStack stack) {

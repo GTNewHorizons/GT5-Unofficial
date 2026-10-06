@@ -16,7 +16,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -30,7 +29,7 @@ public class RecipesSeleniumProcessing {
         // Liquify the Dried Dioxide
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.SeleniumDioxide, Shapes.dust, 1))
-            .fluidInputs(MaterialUtils.gas(Materials.Steam, 500))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 500))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SeleniumDioxide, FluidShapes.fluidLiquid, 1_000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)

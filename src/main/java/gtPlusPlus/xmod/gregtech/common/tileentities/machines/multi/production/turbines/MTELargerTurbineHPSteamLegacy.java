@@ -12,7 +12,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -130,7 +129,7 @@ public class MTELargerTurbineHPSteamLegacy extends MTELargerTurbineBaseLegacy {
                 MaterialLibAPI
                     .getFluidStack(Materials.DenseSteam, FluidShapes.fluidGas, (int) (steamFlowForNextSteam)));
         } else {
-            addOutputPartial(MaterialUtils.gas(Materials.Steam, totalFlow));
+            addOutputPartial(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

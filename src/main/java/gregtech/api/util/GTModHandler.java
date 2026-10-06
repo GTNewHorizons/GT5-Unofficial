@@ -81,7 +81,6 @@ import gregtech.api.interfaces.internal.IGTCraftingRecipe;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
@@ -254,7 +253,7 @@ public class GTModHandler {
      */
     public static boolean isSteam(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(MaterialUtils.gas(Materials.Steam, 1));
+        return aFluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1));
     }
 
     /**
@@ -274,11 +273,11 @@ public class GTModHandler {
     /**
      * Returns a Liquid Stack with given amount of Steam.
      *
-     * @deprecated Use {@link MaterialUtils#gas} with the desired material instead.
+     * @deprecated Use {@link MaterialLibAPI#getFluidStack} with {@link FluidShapes#fluidGas} instead.
      */
     @Deprecated
     public static FluidStack getSteam(long aAmount) {
-        return MaterialUtils.gas(Materials.Steam, aAmount);
+        return MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, (int) aAmount);
     }
 
     /**

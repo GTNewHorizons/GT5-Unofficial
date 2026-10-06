@@ -24,10 +24,13 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TieredVariant;
+import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -38,7 +41,6 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -193,7 +195,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
     public ArrayList<FluidStack> getAllSteamStacks() {
         ArrayList<FluidStack> aFluids = new ArrayList<>();
-        FluidStack aSteam = MaterialUtils.gas(Materials.Steam, 1);
+        FluidStack aSteam = MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1);
         for (FluidStack aFluid : this.getStoredFluids()) {
             if (aFluid.isFluidEqual(aSteam)) {
                 aFluids.add(aFluid);
@@ -222,7 +224,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         if (getTotalSteamStored() <= 0) {
             return false;
         } else {
-            return this.depleteInput(MaterialUtils.gas(Materials.Steam, aAmount));
+            return this.depleteInput(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, aAmount));
         }
     }
 
@@ -327,7 +329,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         if (aMetaTileEntity == null) return false;
 
         if (aMetaTileEntity instanceof MTEHatchCustomFluidBase fluidHatch && fluidHatch.mLockedFluid.equals(
-            MaterialUtils.gas(Materials.Steam, 1)
+            MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1)
                 .getFluid())
             && mSteamInputFluids.isEmpty()) {
             return addToMachineListInternal(mSteamInputFluids, fluidHatch, aBaseCasingIndex);

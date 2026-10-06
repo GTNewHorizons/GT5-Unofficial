@@ -1601,7 +1601,9 @@ public class RecipesGregTech {
         // Lava
         GTValues.RA.stdBuilder()
             .fluidInputs(GTUtility.getLava(1_000), GTUtility.getWater(16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(GTModHandler.getPahoehoeLava(1_000), MaterialUtils.gas(Materials.Steam, 16_000))
+            .fluidOutputs(
+                GTModHandler.getPahoehoeLava(1_000),
+                MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 16_000))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.ingot, 1),
                 MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),
@@ -1618,7 +1620,7 @@ public class RecipesGregTech {
         // Pahoehoe Lava
         GTValues.RA.stdBuilder()
             .fluidInputs(GTModHandler.getPahoehoeLava(1_000), GTUtility.getWater(16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(MaterialUtils.gas(Materials.Steam, 16_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 16_000))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, 1),
                 MaterialLibAPI.getStack(Materials.Electrum, Shapes.ingot, 1),
