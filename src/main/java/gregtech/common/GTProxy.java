@@ -195,7 +195,6 @@ public class GTProxy implements IFuelHandler {
     public int mFlintChance = 30;
     public int mItemDespawnTime = 6000;
     public int mUpgradeCount = 4;
-    public int[] mHarvestLevel = new int[1000];
     public int mGraniteHavestLevel = 3;
     public int mMaxHarvestLevel = 7;
     public double replicatorExponent = 1.2D;

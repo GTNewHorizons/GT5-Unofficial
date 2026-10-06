@@ -47,7 +47,6 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
 import gregtech.nei.dumper.BatchModeSupportDumper;
 import gregtech.nei.dumper.InputSeparationSupportDumper;
-import gregtech.nei.dumper.MaterialDumper;
 import gregtech.nei.dumper.MetaItemDumper;
 import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
@@ -167,7 +166,6 @@ public class NEIGTConfig implements IConfigureNEI {
 
     private void registerDumpers() {
         API.addOption(new MetaTileEntityDumper());
-        API.addOption(new MaterialDumper());
         API.addOption(new MetaItemDumper(MetaGeneratedItem01.INSTANCE, "metaitem01"));
         API.addOption(new MetaItemDumper(MetaGeneratedItem02.INSTANCE, "metaitem02"));
         API.addOption(new MetaItemDumper(MetaGeneratedItem03.INSTANCE, "metaitem03"));

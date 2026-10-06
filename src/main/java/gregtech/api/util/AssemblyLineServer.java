@@ -8,32 +8,17 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
-import org.jetbrains.annotations.Nullable;
-
-import com.ruling_0.materiallib.api.Material;
-
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gregtech.api.enums.materials.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.MaterialUtils;
 
 public class AssemblyLineServer {
 
     public static LinkedHashMap<String, String> lServerNames = new LinkedHashMap<>();
 
-    /// The material-name token substituted into a generated item or ore block's server-side name, or null when
-    /// the id slot is empty. The token must be byte-identical to the legacy internal name.
-    private static @Nullable String generatedMaterialName(int id) {
-        return MaterialUtils.internalName(LegacyMaterialIDIndex.get(id));
-    }
-
     public static void fillMap(FMLPreInitializationEvent aEvent) {
         final Configuration conf = GTLanguageManager.sEnglishFile;
         final ConfigCategory cat = conf.getCategory("languagefile");
         final HashMap<String, Property> internal = new HashMap<>(cat.getValues());
-        final LinkedHashMap<String, String> internal2 = new LinkedHashMap<>();
-        final LinkedHashMap<String, String> internal3 = new LinkedHashMap<>();
-        final LinkedHashMap<String, String> internal4 = new LinkedHashMap<>();
+        final LinkedHashMap<String, String> machineNames = new LinkedHashMap<>();
         for (Map.Entry<String, Property> entry : internal.entrySet()) {
             try {
                 String s = entry.getValue()
@@ -41,40 +26,11 @@ public class AssemblyLineServer {
                     .replace("%", "");
 
                 if (entry.getKey()
-                    .contains("metaitem") && s.contains("material")) internal2.put(entry.getKey(), s);
-                else if (entry.getKey()
-                    .contains("blockmachines") && s.contains("material")) internal3.put(entry.getKey(), s);
-                else if ((entry.getKey()
-                    .contains("blockores")
-                    || (entry.getKey()
-                        .contains("blockmetal")
-                        || entry.getKey()
-                            .contains("blockgem")))
-                    && s.contains("material")) internal4.put(entry.getKey(), s);
+                    .contains("blockmachines") && s.contains("material")) machineNames.put(entry.getKey(), s);
                 else lServerNames.put(entry.getKey(), s);
             } catch (Exception ignored) {}
         }
-        for (Map.Entry<String, String> entry : internal2.entrySet()) {
-            try {
-                if (entry.getKey()
-                    .contains("name")) {
-                    int i = Integer.parseInt(
-                        entry.getKey()
-                            .substring(
-                                "gt.metaitem.01.".length(),
-                                entry.getKey()
-                                    .length() - ".name".length()));
-                    i = i % 1000;
-                    String materialName = generatedMaterialName(i);
-                    if (materialName != null) lServerNames.put(
-                        entry.getKey(),
-                        entry.getValue()
-                            .replace("material", materialName));
-                    else lServerNames.put(entry.getKey(), null);
-                }
-            } catch (Exception ignored) {}
-        }
-        for (Map.Entry<String, String> entry : internal3.entrySet()) {
+        for (Map.Entry<String, String> entry : machineNames.entrySet()) {
             try {
                 if (entry.getKey()
                     .contains("cable"))
@@ -189,112 +145,6 @@ public class AssemblyLineServer {
                                             entry.getKey()
                                                 .length() - ".01.name".length())));
                 else lServerNames.put(entry.getKey(), entry.getValue());
-            } catch (Exception ignored) {}
-        }
-        for (Map.Entry<String, String> entry : internal4.entrySet()) {
-            try {
-                if (entry.getKey()
-                    .contains("blockores")) {
-                    int i = Integer.parseInt(
-                        entry.getKey()
-                            .substring(
-                                "gt.blockores.".length(),
-                                entry.getKey()
-                                    .length() - ".name".length()));
-                    i = i % 1000;
-                    String materialName = generatedMaterialName(i);
-                    if (materialName != null) lServerNames.put(
-                        entry.getKey(),
-                        entry.getValue()
-                            .replace("material", materialName));
-                    else lServerNames.put(entry.getKey(), null);
-                } else if (entry.getKey()
-                    .contains("blockmetal")) {
-                        Material[] mMats = null;
-                        String t = entry.getKey()
-                            .substring("gt.blockmetal".length());
-                        t = t.substring(0, 1);
-                        int i = Integer.parseInt(t);
-                        switch (i) {
-                            case 1 -> mMats = new Material[] { Materials.Adamantium, Materials.Aluminium,
-                                Materials.Americium, Materials.AnnealedCopper, Materials.Antimony, Materials.Arsenic,
-                                Materials.AstralSilver, Materials.BatteryAlloy, Materials.Beryllium, Materials.Bismuth,
-                                Materials.BismuthBronze, Materials.BlackBronze, Materials.BlackSteel,
-                                Materials.BlueAlloy, Materials.BlueSteel, Materials.Brass };
-                            case 2 -> mMats = new Material[] { Materials.Bronze, Materials.Caesium, Materials.Cerium,
-                                Materials.Chrome, Materials.ChromiumDioxide, Materials.Cobalt, Materials.CobaltBrass,
-                                Materials.Copper, Materials.Cupronickel, Materials.DamascusSteel, Materials.DarkIron,
-                                Materials.DeepIron, Materials.Desh, Materials.Duranium, Materials.Dysprosium,
-                                Materials.Electrum };
-                            case 3 -> mMats = new Material[] { Materials.ElectrumFlux, Materials.Enderium,
-                                Materials.Erbium, Materials.Europium, Materials.FierySteel, Materials.Gadolinium,
-                                Materials.Gallium, Materials.Holmium, null, Materials.Indium, Materials.InfusedGold,
-                                Materials.Invar, Materials.Iridium, Materials.IronMagnetic, Materials.IronWood,
-                                Materials.Kanthal };
-                            case 4 -> mMats = new Material[] { Materials.Knightmetal, Materials.Lanthanum,
-                                Materials.Lead, Materials.Lutetium, Materials.Magnalium, Materials.Magnesium,
-                                Materials.Manganese, Materials.MeteoricIron, Materials.MeteoricSteel, Materials.Trinium,
-                                Materials.Mithril, Materials.Molybdenum, Materials.Naquadah, Materials.NaquadahAlloy,
-                                Materials.NaquadahEnriched, Materials.Naquadria };
-                            case 5 -> mMats = new Material[] { Materials.Neodymium, Materials.NeodymiumMagnetic,
-                                Materials.Neutronium, Materials.Nichrome, Materials.Nickel, Materials.Niobium,
-                                Materials.NiobiumNitride, Materials.NiobiumTitanium, Materials.Osmiridium,
-                                Materials.Osmium, Materials.Palladium, Materials.PigIron, Materials.Platinum,
-                                Materials.Plutonium, Materials.Plutonium241, Materials.Praseodymium };
-                            case 6 -> mMats = new Material[] { Materials.Promethium, Materials.RedAlloy,
-                                Materials.RedSteel, Materials.RoseGold, Materials.Rubidium, Materials.Samarium,
-                                Materials.Scandium, Materials.ShadowIron, Materials.ShadowSteel, Materials.Silicon,
-                                Materials.Silver, Materials.SolderingAlloy, Materials.StainlessSteel, Materials.Steel,
-                                Materials.SteelMagnetic, Materials.SterlingSilver };
-                            case 7 -> mMats = new Material[] { Materials.Sunnarium, Materials.Tantalum,
-                                Materials.Tellurium, Materials.Terbium, Materials.Thaumium, Materials.Thorium,
-                                Materials.Thulium, Materials.Tin, Materials.TinAlloy, Materials.Titanium,
-                                Materials.Tritanium, Materials.Tungsten, Materials.TungstenSteel, Materials.Ultimet,
-                                Materials.Uranium, Materials.Uranium235 };
-                            case 8 -> mMats = new Material[] { Materials.Vanadium, Materials.VanadiumGallium,
-                                Materials.CastIron, Materials.Ytterbium, Materials.Yttrium,
-                                Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
-                                Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE, Materials.HSSS,
-                                Materials.Steeleaf, Materials.Ichorium, Materials.Firestone };
-                        }
-                        t = entry.getKey()
-                            .substring(
-                                "gt.blockmetal1.".length(),
-                                entry.getKey()
-                                    .length() - ".name".length());
-                        i = Integer.parseInt(t);
-                        String name = MaterialUtils.internalName(mMats[i]);
-                        lServerNames.put(entry.getKey(), name == null ? null : "Block of " + name);
-                    } else if (entry.getKey()
-                        .contains("blockgem")) {
-                            Material[] mMats = null;
-                            String t = entry.getKey()
-                                .substring("gt.blockgem".length());
-                            t = t.substring(0, 1);
-                            int i = Integer.parseInt(t);
-                            switch (i) {
-                                case 1 -> mMats = new Material[] { Materials.InfusedAir, Materials.Amber,
-                                    Materials.Amethyst, Materials.InfusedWater, Materials.BlueTopaz,
-                                    Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
-                                    Materials.EnderPearl, Materials.FoolsRuby, Materials.Force, Materials.Forcicium,
-                                    Materials.Forcillium, Materials.GreenSapphire, Materials.InfusedFire,
-                                    Materials.Jasper, Materials.ManaDiamond, Materials.BotaniaDragonstone };
-                                case 2 -> mMats = new Material[] { Materials.Lazurite, Materials.Lignite,
-                                    Materials.Monazite, Materials.Niter, Materials.Olivine, Materials.Opal,
-                                    Materials.InfusedOrder, Materials.InfusedEntropy, Materials.Phosphorus,
-                                    Materials.Quartzite, Materials.GarnetRed, Materials.Ruby, Materials.Sapphire,
-                                    Materials.Sodalite, Materials.Tanzanite, Materials.InfusedEarth };
-                                case 3 -> mMats = new Material[] { Materials.Topaz, Materials.Vinteum,
-                                    Materials.GarnetYellow, Materials.NetherStar, Materials.Charcoal, Materials.Blaze };
-                            }
-                            t = entry.getKey()
-                                .substring(
-                                    "gt.blockgem1.".length(),
-                                    entry.getKey()
-                                        .length() - ".name".length());
-                            i = Integer.parseInt(t);
-                            lServerNames.put(entry.getKey(), "Block of " + MaterialUtils.internalName(mMats[i]));
-                        }
             } catch (Exception ignored) {}
         }
     }

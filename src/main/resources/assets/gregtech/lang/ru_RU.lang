@@ -6170,7 +6170,6 @@ GT5U.biomes.humidity=Влажность:
 nei.options.tools.dump.gt5u=GT5u
 nei.options.tools.dump.gt5u.metatileentity=MetaTileEntity
 nei.options.tools.dump.gt5u.metatileentitys=MetaTileEntities
-nei.options.tools.dump.gt5u.material=Материал
 nei.options.tools.dump.gt5u.materials=Материалы
 nei.options.tools.dump.gt5u.void_protection=Отсутствует поддержка защиты от переполнения
 nei.options.tools.dump.gt5u.void_protections=Отсутствует поддержка защиты от переполнения
