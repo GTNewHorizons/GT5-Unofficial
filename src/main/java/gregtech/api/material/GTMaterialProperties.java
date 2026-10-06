@@ -16,7 +16,6 @@ public class GTMaterialProperties {
     public static final Property<MaterialRef> ARC_SMELT_INTO = Property.of("gregtech", "arcSmeltInto");
     public static final Property<String> ARMOR_ENCHANTMENT = Property.of("gregtech", "armorEnchantment");
     public static final Property<Integer> ARMOR_ENCHANTMENT_LEVEL = Property.of("gregtech", "armorEnchantmentLevel");
-    public static final Property<List<String>> ADDED_PREFIXES = Property.of("gregtech", "addedPrefixes");
     public static final Property<List<AspectRefStack>> ASPECTS = Property.of("gregtech", "aspects");
     public static final Property<Boolean> AUTO_BLAST_FURNACE_RECIPES = Property
         .of("gregtech", "autoBlastFurnaceRecipes", true);
@@ -56,8 +55,6 @@ public class GTMaterialProperties {
     public static final Property<String> FLAVOR_TEXT = Property.of("gregtech", "flavorText");
     /// The light level of the material's fluids, in place of each fluid shape's own.
     public static final Property<Integer> FLUID_LUMINOSITY = Property.of("gregtech", "fluidLuminosity");
-    public static final Property<EnumSet<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
-        .of("gregtech", "generationFlags");
     public static final Property<MaterialRef> HANDLE_MATERIAL = Property.of("gregtech", "handleMaterial");
     /// Whether a chemical-reactor recipe assembles this material's dust from its [#COMPOSITION].
     public static final Property<Boolean> HAS_CHEMICAL_RECIPE = Property.of("gregtech", "hasChemicalRecipe");
@@ -127,7 +124,6 @@ public class GTMaterialProperties {
     public static final Property<Long> PROTONS = Property.of("gregtech", "protons");
     /// The radiation level a radioactive material's items and blocks inflict on the carrier. Absent when `0`.
     public static final Property<Integer> RADIATION_LEVEL = Property.of("gregtech", "radiationLevel");
-    public static final Property<List<String>> REMOVED_PREFIXES = Property.of("gregtech", "removedPrefixes");
     public static final Property<MaterialRef> SMELT_INTO = Property.of("gregtech", "smeltInto");
     public static final Property<Integer> SMELTING_MULTIPLIER = Property.of("gregtech", "smeltingMultiplier", 1);
     /// The Forge fluid name of the material's solid form, such as crushed ice.

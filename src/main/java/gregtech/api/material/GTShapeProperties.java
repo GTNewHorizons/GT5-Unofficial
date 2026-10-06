@@ -1,7 +1,6 @@
 package gregtech.api.material;
 
 import java.util.List;
-import java.util.Set;
 
 import com.ruling_0.materiallib.api.Property;
 
@@ -27,11 +26,6 @@ public class GTShapeProperties {
     public static final Property<MaterialStack> SECONDARY_MATERIAL = Property.of("gregtech", "secondaryMaterial");
 
     public static final Property<Integer> DEFAULT_STACK_SIZE = Property.of("gregtech", "defaultStackSize", 64);
-
-    /// The generation groups this shape accepts ([gregtech.api.enums.OrePrefixes#getGenerationFlags]). An item
-    /// generates for a material whose [GTMaterialProperties#GENERATION_FLAGS] share one of these groups.
-    public static final Property<Set<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
-        .of("gregtech", "shapeGenerationFlags", Set.of());
 
     /// Damage dealt per tick while an item of this shape is held, added to the material's own
     /// ([gregtech.api.enums.OrePrefixes#mHeatDamage]). Negative is frost damage.

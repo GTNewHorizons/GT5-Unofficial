@@ -1,9 +1,5 @@
 package gregtech.api.enums;
 
-import java.util.Set;
-
-import gregtech.api.material.GTMaterialGenerationFlag;
-
 public class OrePrefixBuilder {
 
     private final String name;
@@ -16,7 +12,6 @@ public class OrePrefixBuilder {
     private boolean isContainer = false;
     private boolean isRecyclable = false;
     private boolean isEnchantable = false;
-    private Set<GTMaterialGenerationFlag> generationFlags = Set.of();
     private long materialAmount = -1;
     private int defaultStackSize = 64;
 
@@ -37,7 +32,6 @@ public class OrePrefixBuilder {
             isContainer,
             isRecyclable,
             isEnchantable,
-            generationFlags,
             materialAmount,
             defaultStackSize
             // spotless:on
@@ -91,12 +85,6 @@ public class OrePrefixBuilder {
     /** Marks this prefix as enchantable. */
     public OrePrefixBuilder enchantable() {
         this.isEnchantable = true;
-        return this;
-    }
-
-    /// The material generation groups a material must belong to for this prefix to generate an item for it.
-    public OrePrefixBuilder generationFlags(GTMaterialGenerationFlag... generationFlags) {
-        this.generationFlags = Set.of(generationFlags);
         return this;
     }
 

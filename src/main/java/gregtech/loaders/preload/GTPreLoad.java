@@ -1,28 +1,20 @@
 package gregtech.loaders.preload;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
-import static gregtech.api.enums.Mods.CraftTweaker;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -33,9 +25,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
@@ -140,158 +129,6 @@ public class GTPreLoad {
         GTConfig.undergroundFluidsFile = new Configuration(tFile);
         GTConfig.undergroundFluidsFile.load();
         GTConfig.undergroundFluidsFile.save();
-    }
-
-    public static void runMineTweakerCompat() {
-        if (!CraftTweaker.isModLoaded()) return;
-
-        GT_FML_LOGGER.info("preReader");
-        final ArrayList<String> oreTags = new ArrayList<>();
-        final File globalDir = new File("scripts");
-        if (globalDir.exists()) {
-            final List<String> scripts = new ArrayList<>();
-            for (File file : Objects.requireNonNull(globalDir.listFiles())) {
-                if (file.getName()
-                    .endsWith(".zs")) {
-                    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            scripts.add(line);
-                        }
-                    } catch (Exception e) {
-                        GT_FML_LOGGER.error(e);;
-                    }
-                }
-            }
-
-            final Pattern p = Pattern.compile(Pattern.quote("<") + "(.*?)" + Pattern.quote(">"));
-            final String[] prefixes1 = { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed",
-                "crushedPurified", "crushedCentrifuged", "gem", "nugget", null, "ingot", "ingotHot", null, null, null,
-                null, "plate", "plateDouble", "plateTriple", "plateQuadruple", "plateQuintuple", "plateDense", "stick",
-                "lens", "round", "bolt", "screw", "ring", "foil", "cell", "cellPlasma", "cellMolten", "rawOre",
-                "plateSuperdense" };
-            final String[] prefixes2 = { "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe",
-                "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
-                "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
-                "toolHeadBuzzSaw", "turbineBlade", null, "itemCasing", "wireFine", "gearGtSmall", "rotor", "stickLong",
-                "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless",
-                "gemExquisite", "gearGt" };
-            final String[] prefixes3 = { "rawOre", "nanite", "plateSuperdense" };
-            for (String text : scripts) {
-                Matcher m = p.matcher(text);
-                while (m.find()) {
-                    String hit = m.group(1);
-                    if (hit.startsWith("ore:")) {
-                        hit = hit.substring(4);
-                        if (!oreTags.contains(hit)) oreTags.add(hit);
-                    } else if (hit.startsWith("gregtech:gt.metaitem.0")) {
-                        hit = hit.substring(22);
-                        int mIt = Integer.parseInt(hit.substring(0, 1));
-                        if (mIt > 0) {
-                            int meta = 0;
-                            try {
-                                hit = hit.substring(2);
-                                meta = Integer.parseInt(hit);
-                            } catch (Exception e) {
-                                GT_FML_LOGGER.info("parseError: {}", hit);
-                            }
-                            if (meta > 0 && meta < 32000) {
-                                int prefix = meta / 1000;
-                                int material = meta % 1000;
-                                String[] tags = null;
-                                if (mIt == 1) tags = prefixes1;
-                                if (mIt == 2) tags = prefixes2;
-                                if (mIt == 3) tags = prefixes3;
-                                if (tags == null) tags = GTValues.emptyStringArray;
-                                final Material mlMaterial = LegacyMaterialIDIndex.get(material);
-                                if (mlMaterial != null) {
-                                    final String tag;
-                                    if (tags.length > prefix) {
-                                        tag = tags[prefix] + MaterialUtils.internalName(mlMaterial);
-                                    } else {
-                                        tag = MaterialUtils.internalName(mlMaterial);
-                                    }
-                                    if (!oreTags.contains(tag)) oreTags.add(tag);
-                                } else if (material > 0) {
-                                    GT_FML_LOGGER.info("MaterialDisabled: {} {}", material, m.group(1));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (oreTags.isEmpty()) return;
-
-        final String[] preS = { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed", "crushedPurified",
-            "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "plate", "plateDouble", "plateTriple",
-            "plateQuadruple", "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring", "foil",
-            "cell", "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe",
-            "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
-            "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw",
-            "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
-            "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "nanite",
-            "cellMolten", "rawOre", "plateSuperdense" };
-
-        final ArrayList<String> mMTTags = new ArrayList<>();
-        // noinspection ForLoopReplaceableByForEach
-        for (int i = 0, size = oreTags.size(); i < size; i++) {
-            final String str = oreTags.get(i);
-            if (StringUtils.startsWithAny(str, preS)) {
-                mMTTags.add(str);
-                if (GTValues.D1) GT_FML_LOGGER.info("oretag: {}", str);
-            }
-        }
-
-        GT_FML_LOGGER.info("reenableMetaItems");
-
-        // noinspection ForLoopReplaceableByForEach
-        for (int i = 0, size = mMTTags.size(); i < size; i++) {
-            final String reEnable = mMTTags.get(i);
-            OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
-            if (tPrefix != null) {
-                // mGeneratedItems and mDisabledItems are both ML-keyed. An unresolved tag falls back to the
-                // _NULL placeholder -- harmless membership, doGenerateItem gates on _NULL first.
-                Material ml = MaterialUtils.byLegacyName(
-                    reEnable.substring(
-                        tPrefix.getName()
-                            .length()));
-                Material mlName = ml == null ? Materials.NULL : ml;
-                tPrefix.mDisabledItems.remove(mlName);
-                tPrefix.mGeneratedItems.add(mlName);
-                if (tPrefix == OrePrefixes.screw) {
-                    OrePrefixes.bolt.mDisabledItems.remove(mlName);
-                    OrePrefixes.bolt.mGeneratedItems.add(mlName);
-                    OrePrefixes.stick.mDisabledItems.remove(mlName);
-                    OrePrefixes.stick.mGeneratedItems.add(mlName);
-                }
-                if (tPrefix == OrePrefixes.round) {
-                    OrePrefixes.nugget.mDisabledItems.remove(mlName);
-                    OrePrefixes.nugget.mGeneratedItems.add(mlName);
-                }
-                if (tPrefix == OrePrefixes.spring) {
-                    OrePrefixes.stickLong.mDisabledItems.remove(mlName);
-                    OrePrefixes.stickLong.mGeneratedItems.add(mlName);
-                    OrePrefixes.stick.mDisabledItems.remove(mlName);
-                    OrePrefixes.stick.mGeneratedItems.add(mlName);
-                }
-                if (tPrefix == OrePrefixes.springSmall) {
-                    OrePrefixes.stick.mDisabledItems.remove(mlName);
-                    OrePrefixes.stick.mGeneratedItems.add(mlName);
-                }
-                if (tPrefix == OrePrefixes.stickLong) {
-                    OrePrefixes.stick.mDisabledItems.remove(mlName);
-                    OrePrefixes.stick.mGeneratedItems.add(mlName);
-                }
-                if (tPrefix == OrePrefixes.rotor) {
-                    OrePrefixes.ring.mDisabledItems.remove(mlName);
-                    OrePrefixes.ring.mGeneratedItems.add(mlName);
-                }
-            } else {
-                GT_FML_LOGGER.info("noPrefix {}", reEnable);
-            }
-        }
     }
 
     public static void adjustScrap() {

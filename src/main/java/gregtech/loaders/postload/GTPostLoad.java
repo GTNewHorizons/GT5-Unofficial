@@ -46,7 +46,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
@@ -439,10 +438,10 @@ public class GTPostLoad {
         String plateName = OrePrefixes.plate.oreDictName(ml)
             .toString();
         boolean noSmash = !MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_SMASHING);
-        if (MaterialUtils.generates(ml, GTMaterialGenerationFlag.METAL)) GTRecipeRegistrator
-            .registerUsagesForMaterials(plateName, noSmash, MaterialLibAPI.findStack(ml, Shapes.ingot, 1));
-        if (MaterialUtils.generates(ml, GTMaterialGenerationFlag.GEM)) GTRecipeRegistrator
-            .registerUsagesForMaterials(plateName, noSmash, MaterialLibAPI.findStack(ml, Shapes.gem, 1));
+        ItemStack ingot = MaterialLibAPI.findStack(ml, Shapes.ingot, 1);
+        if (ingot != null) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, ingot);
+        ItemStack gem = MaterialLibAPI.findStack(ml, Shapes.gem, 1);
+        if (gem != null) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, gem);
         ItemStack blocks = MaterialLibAPI.findStack(ml, BlockShapes.block, 1);
         if (blocks != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, blocks);
     }

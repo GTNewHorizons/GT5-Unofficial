@@ -122,13 +122,6 @@ public class MaterialUtils {
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// Returns whether the material's [GTMaterialProperties#GENERATION_FLAGS] carry `flag`.
-    public static boolean generates(@Nullable Material material, GTMaterialGenerationFlag flag) {
-        if (material == null) return false;
-        EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
-        return flags != null && flags.contains(flag);
-    }
-
     /// Returns the material's [GTMaterialProperties#SOLID_FLUID] as a stack of `amount`, or null when it declares
     /// none.
     public static @Nullable FluidStack solid(@Nullable Material material, long amount) {

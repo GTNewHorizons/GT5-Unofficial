@@ -10,49 +10,42 @@ import com.ruling_0.materiallib.api.ShapeBlock;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.OreDictUtils;
 
-/// Registers MaterialLib part stacks under their oredict names and associates unifiable ones with their material.
-/// Each pair [MaterialParts] maps to a shape is registered the way [gregtech.api.items.MetaGeneratedItemX32]'s
-/// constructor registers its own stacks, including the soldering-metal and toolbox lists.
+/// Registers MaterialLib part stacks under their oredict names, associates unifiable ones with their material,
+/// and registers the solder parts of Lead, Tin and Soldering Alloy as soldering metals.
 ///
-/// Wire, cable, pipe, frame and `sheetmetal` stacks come from each shape block's served materials instead, since
-/// [OrePrefixes#doGenerateItem] does not cover them. Each GregTech material's minted parts then get a pass of their
-/// own, since the oredict event cannot parse every name back to its pair. Names come from
-/// [OrePrefixes#oreDictName], the name [OreDictUtils] lookups ask for.
+/// Wire, cable, pipe, frame and `sheetmetal` stacks come from each shape block's served materials; every other
+/// GregTech part comes from the material's minted pairs. Names come from [OrePrefixes#oreDictName], the name
+/// [OreDictUtils] lookups ask for.
 ///
 /// The High Pressure fluid pipes of [TieredItems#ZPM] also register under the
 /// `pipeSmallUltimate`..`pipeLargeUltimate` names their recipes use.
-public class LoaderMaterialLibCutover implements Runnable {
+public class LoaderMaterialPartOredict implements Runnable {
 
     @Override
     public void run() {
-        for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            if (MaterialParts.shape(prefix) == null) continue;
-            for (int id = 0; id < 1000; id++) {
-                Material material = LegacyMaterialIDIndex.get(id);
-                if (material == null || !prefix.doGenerateItem(material)) continue;
-                if (!MaterialParts.isMinted(prefix, material)) continue;
-                ItemStack stack = MaterialParts.stack(prefix, material, 1);
-                if (stack == null) continue;
-                unify(prefix, material, stack);
-                if ((prefix == OrePrefixes.stick || prefix == OrePrefixes.wireFine || prefix == OrePrefixes.ingot)
-                    && (material == Materials.Lead || material == Materials.Tin
-                        || material == Materials.SolderingAlloy)) {
-                    GregTechAPI.sSolderingMetalList.add(stack);
-                    GTModHandler.registerBoxableItemToToolBox(stack);
-                }
-            }
-        }
-
+        registerSolderingMetals();
         unifyMembershipDriven();
         unifyMintedParts();
         registerHighPressureNames();
+    }
+
+    /// Registers the solder parts of Lead, Tin and Soldering Alloy as soldering metals and toolbox items.
+    private static void registerSolderingMetals() {
+        for (Material material : new Material[] { Materials.Lead, Materials.Tin, Materials.SolderingAlloy }) {
+            for (Shape shape : new Shape[] { Shapes.stick, Shapes.wireFine, Shapes.ingot }) {
+                ItemStack stack = MaterialLibAPI.findStack(material, shape, 1);
+                if (stack == null) continue;
+                GregTechAPI.sSolderingMetalList.add(stack);
+                GTModHandler.registerBoxableItemToToolBox(stack);
+            }
+        }
     }
 
     private static final OrePrefixes[] MEMBERSHIP_DRIVEN_PREFIXES = { OrePrefixes.wireGt01, OrePrefixes.wireGt02,

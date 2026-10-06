@@ -140,7 +140,7 @@ import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
 import gregtech.loaders.preload.LoaderGTItemData;
 import gregtech.loaders.preload.LoaderGTOreDictionary;
-import gregtech.loaders.preload.LoaderMaterialLibCutover;
+import gregtech.loaders.preload.LoaderMaterialPartOredict;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
 import gregtech.loaders.preload.LoaderPipeShapeEntities;
@@ -382,13 +382,11 @@ public class GTMod {
 
         AE2Compat.onPreInit();
 
-        GTPreLoad.runMineTweakerCompat();
-
         new LoaderOreProcessing().run();
         new LoaderGTOreDictionary().run();
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();
-        new LoaderMaterialLibCutover().run();
+        new LoaderMaterialPartOredict().run();
         new LoaderMetaTileEntities().run();
         new LoaderPipeShapeEntities().run();
 

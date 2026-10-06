@@ -6,24 +6,13 @@ import static gregtech.api.enums.StackSizeLimits.LOG_STACK_SIZE;
 import static gregtech.api.enums.StackSizeLimits.ORE_STACK_SIZE;
 import static gregtech.api.enums.StackSizeLimits.OTHER_STACK_SIZE;
 import static gregtech.api.enums.StackSizeLimits.PLANK_STACK_SIZE;
-import static gregtech.api.material.GTMaterialGenerationFlag.CELL;
-import static gregtech.api.material.GTMaterialGenerationFlag.EMPTY;
-import static gregtech.api.material.GTMaterialGenerationFlag.GEM;
-import static gregtech.api.material.GTMaterialGenerationFlag.METAL;
-import static gregtech.api.material.GTMaterialGenerationFlag.ORE;
-import static gregtech.api.material.GTMaterialGenerationFlag.TOOL_HEAD;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.item.ItemStack;
@@ -40,15 +29,10 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.GTLoggers;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialGenerationFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTShapeProperties;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialSubTagView;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTArrayList;
 import gregtech.api.objects.GTItemStack;
@@ -99,7 +83,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -110,7 +93,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -120,7 +102,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -130,7 +111,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -141,7 +121,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -151,7 +130,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -161,7 +139,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -171,7 +148,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -181,7 +157,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -195,7 +170,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -206,7 +180,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -216,7 +189,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -227,7 +199,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -238,7 +209,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -248,7 +218,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -259,7 +228,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -269,7 +237,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -279,7 +246,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -289,7 +255,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -299,7 +264,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -309,7 +273,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -320,7 +283,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -331,7 +293,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -342,7 +303,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -352,7 +312,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -362,7 +321,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -372,7 +330,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -382,7 +339,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -392,7 +348,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -402,7 +357,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -412,7 +366,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -423,7 +376,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -433,7 +385,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -443,7 +394,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -454,7 +404,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -464,7 +413,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -474,7 +422,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -485,7 +432,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -496,7 +442,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -506,7 +451,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -517,7 +461,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -528,7 +471,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -539,7 +481,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -550,7 +491,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -560,7 +500,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -571,7 +510,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
     // endregion
@@ -598,21 +536,18 @@ public class OrePrefixes {
     public static final OrePrefixes shard = new OrePrefixBuilder("shard").withDefaultLocalName("Crystallised Shards")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     public static final OrePrefixes clump = new OrePrefixBuilder("clump").withDefaultLocalName("Clumps")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     public static final OrePrefixes reduced = new OrePrefixBuilder("reduced").withDefaultLocalName("Reduced Gravels")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -620,7 +555,6 @@ public class OrePrefixes {
         .withDefaultLocalName("Crystallised Metals")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -628,7 +562,6 @@ public class OrePrefixes {
         .withDefaultLocalName("Clean Gravels")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -636,7 +569,6 @@ public class OrePrefixes {
         .withDefaultLocalName("Dirty Gravels")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
@@ -690,7 +622,6 @@ public class OrePrefixes {
         .withSuffix(" Dust")
         .unifiable()
         .materialBased()
-        .generationFlags(ORE)
         .materialAmount(M * 1)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
@@ -709,12 +640,10 @@ public class OrePrefixes {
     /** Special Alloys have this prefix. */
     public static final OrePrefixes plateAlloy = new OrePrefixBuilder("plateAlloy").withDefaultLocalName("Alloy Plates")
         .unifiable()
-        .generationFlags(METAL)
         .build();
 
     public static final OrePrefixes plateSteamcraft = new OrePrefixBuilder("plateSteamcraft")
         .withDefaultLocalName("Steamcraft Plates")
-        .generationFlags(METAL)
         .build();
 
     /** 9 Plates combined in one Item. */
@@ -770,7 +699,6 @@ public class OrePrefixes {
     /** contain dusts */
     public static final OrePrefixes comb = new OrePrefixBuilder("comb").withDefaultLocalName("Combs")
         .withSuffix(" Comb")
-        .generationFlags(METAL, GEM)
         .materialAmount(M)
         .build();
 
@@ -832,7 +760,6 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .recyclable()
-        .generationFlags(CELL, EMPTY)
         .materialAmount(M * 1)
         .build();
 
@@ -844,7 +771,6 @@ public class OrePrefixes {
         .selfReferencing()
         .container()
         .recyclable()
-        .generationFlags(CELL, EMPTY)
         .materialAmount(M * 1)
         .build();
 
@@ -855,7 +781,6 @@ public class OrePrefixes {
         .materialBased()
         .selfReferencing()
         .container()
-        .generationFlags(CELL, EMPTY)
         .defaultStackSize(1)
         .build();
 
@@ -864,7 +789,6 @@ public class OrePrefixes {
         .materialBased()
         .selfReferencing()
         .container()
-        .generationFlags(CELL, EMPTY)
         .materialAmount(M * 1)
         .build();
 
@@ -872,7 +796,6 @@ public class OrePrefixes {
         .withSuffix(" Crystal")
         .materialBased()
         .recyclable()
-        .generationFlags(GEM)
         .materialAmount(M * 1)
         .build();
 
@@ -884,7 +807,6 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD, EMPTY)
         .materialAmount(M / 9)
         .build();
 
@@ -896,7 +818,6 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD, EMPTY)
         .materialAmount(M / 6)
         .build();
 
@@ -908,7 +829,6 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD, EMPTY)
         .materialAmount(M / 3)
         .build();
 
@@ -938,7 +858,6 @@ public class OrePrefixes {
         .unifiable()
         .materialBased()
         .recyclable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 1)
         .build();
 
@@ -967,7 +886,6 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 2)
         .defaultStackSize(1)
         .build();
@@ -977,7 +895,6 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 3)
         .defaultStackSize(1)
         .build();
@@ -987,7 +904,6 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 1)
         .defaultStackSize(1)
         .build();
@@ -997,7 +913,6 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 3)
         .defaultStackSize(1)
         .build();
@@ -1007,7 +922,6 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 2)
         .defaultStackSize(1)
         .build();
@@ -1017,7 +931,6 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 2)
         .defaultStackSize(1)
         .build();
@@ -1028,7 +941,6 @@ public class OrePrefixes {
      */
     public static final OrePrefixes tool = new OrePrefixBuilder("tool").withDefaultLocalName("Tools")
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .defaultStackSize(1)
         .build();
 
@@ -1270,7 +1182,6 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 5)
         .defaultStackSize(1)
         .build();
@@ -1280,7 +1191,6 @@ public class OrePrefixes {
         .withDefaultLocalName("Chestplates")
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 8)
         .defaultStackSize(1)
         .build();
@@ -1290,7 +1200,6 @@ public class OrePrefixes {
         .withDefaultLocalName("Leggings")
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 7)
         .defaultStackSize(1)
         .build();
@@ -1300,14 +1209,12 @@ public class OrePrefixes {
         .materialBased()
         .recyclable()
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 4)
         .defaultStackSize(1)
         .build();
 
     public static final OrePrefixes armor = new OrePrefixBuilder("armor").withDefaultLocalName("Armor Parts")
         .enchantable()
-        .generationFlags(TOOL_HEAD)
         .defaultStackSize(1)
         .build();
 
@@ -1696,7 +1603,6 @@ public class OrePrefixes {
         .unifiable()
         .materialBased()
         .recyclable()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 6)
         .build();
 
@@ -1707,7 +1613,6 @@ public class OrePrefixes {
         .unifiable()
         .materialBased()
         .recyclable()
-        .generationFlags(METAL, GEM)
         .materialAmount(M / 2)
         .build();
 
@@ -1780,7 +1685,6 @@ public class OrePrefixes {
         .materialBased()
         .selfReferencing()
         .container()
-        .generationFlags(TOOL_HEAD)
         .materialAmount(M * 1)
         .build();
 
@@ -1819,7 +1723,6 @@ public class OrePrefixes {
     private boolean isContainer;
     private boolean isRecyclable;
     private boolean isEnchantable;
-    private Set<GTMaterialGenerationFlag> generationFlags;
     private long materialAmount;
     private int defaultStackSize;
 
@@ -1835,7 +1738,6 @@ public class OrePrefixes {
         boolean isContainer,
         boolean isRecyclable,
         boolean isEnchantable,
-        Set<GTMaterialGenerationFlag> generationFlags,
         long materialAmount,
         int defaultStackSize
         // spotless:on
@@ -1850,7 +1752,6 @@ public class OrePrefixes {
         this.isContainer = isContainer;
         this.isRecyclable = isRecyclable;
         this.isEnchantable = isEnchantable;
-        this.generationFlags = generationFlags;
         this.materialAmount = materialAmount;
         this.defaultStackSize = defaultStackSize;
 
@@ -1877,7 +1778,6 @@ public class OrePrefixes {
             }
             prefix.materialAmount = shape.getProperty(GTShapeProperties.MATERIAL_AMOUNT);
             prefix.defaultStackSize = shape.getProperty(GTShapeProperties.DEFAULT_STACK_SIZE);
-            prefix.generationFlags = shape.getProperty(GTShapeProperties.GENERATION_FLAGS);
             prefix.isUnifiable = shape.getProperty(GTShapeProperties.UNIFIABLE);
             prefix.isMaterialBased = shape.getProperty(GTShapeProperties.MATERIAL_BASED);
             prefix.isSelfReferencing = shape.getProperty(GTShapeProperties.SELF_REFERENCING);
@@ -1958,10 +1858,6 @@ public class OrePrefixes {
         return isEnchantable;
     }
 
-    public Set<GTMaterialGenerationFlag> getGenerationFlags() {
-        return generationFlags;
-    }
-
     public int getDefaultStackSize() {
         return defaultStackSize;
     }
@@ -2031,92 +1927,6 @@ public class OrePrefixes {
             }
         }
 
-        cell.disableComponent(Materials.GravitonShard);
-
-        dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
-        dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
-        dust.mGeneratedItems.addAll(dustRefined.mGeneratedItems);
-        dustTiny.mGeneratedItems.addAll(dust.mGeneratedItems);
-        dustSmall.mGeneratedItems.addAll(dust.mGeneratedItems);
-        // -----
-
-        toolHeadFile.mCondition = new ICondition.And<>(
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            new ICondition.Not<>(SubTag.BOUNCY));
-        toolHeadSaw.mCondition = new ICondition.And<>(
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            new ICondition.Not<>(SubTag.BOUNCY));
-        toolHeadDrill.mCondition = new ICondition.And<>(
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            new ICondition.Not<>(SubTag.BOUNCY));
-        toolHeadChainsaw.mCondition = new ICondition.And<>(
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            new ICondition.Not<>(SubTag.BOUNCY));
-        toolHeadWrench.mCondition = new ICondition.And<>(
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            new ICondition.Not<>(SubTag.BOUNCY));
-        toolHeadBuzzSaw.mCondition = new ICondition.And<>(
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            new ICondition.Not<>(SubTag.BOUNCY));
-        turbineBlade.mCondition = new ICondition.And<>(
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            new ICondition.Not<>(SubTag.BOUNCY));
-
-        rotor.mCondition = new ICondition.Nor<>(SubTag.CRYSTAL, SubTag.STONE, SubTag.BOUNCY);
-
-        spring.mCondition = new ICondition.Or<>(
-            SubTag.STRETCHY,
-            SubTag.BOUNCY,
-            new ICondition.Not<>(SubTag.NO_SMASHING));
-        springSmall.mCondition = new ICondition.Or<>(
-            SubTag.STRETCHY,
-            SubTag.BOUNCY,
-            new ICondition.Not<>(SubTag.NO_SMASHING));
-
-        gemChipped.mCondition = new ICondition.And<>(
-            SubTag.TRANSPARENT,
-            SubTag.CRYSTAL,
-            new ICondition.Not<>(SubTag.QUARTZ),
-            new ICondition.Not<>(SubTag.PEARL),
-            new ICondition.Not<>(SubTag.MAGICAL));
-        gemFlawed.mCondition = new ICondition.And<>(
-            SubTag.TRANSPARENT,
-            SubTag.CRYSTAL,
-            new ICondition.Not<>(SubTag.QUARTZ),
-            new ICondition.Not<>(SubTag.PEARL),
-            new ICondition.Not<>(SubTag.MAGICAL));
-        gemFlawless.mCondition = new ICondition.And<>(
-            SubTag.TRANSPARENT,
-            SubTag.CRYSTAL,
-            new ICondition.Not<>(SubTag.QUARTZ),
-            new ICondition.Not<>(SubTag.PEARL),
-            new ICondition.Not<>(SubTag.MAGICAL));
-        gemExquisite.mCondition = new ICondition.And<>(
-            SubTag.TRANSPARENT,
-            SubTag.CRYSTAL,
-            new ICondition.Not<>(SubTag.QUARTZ),
-            new ICondition.Not<>(SubTag.PEARL),
-            new ICondition.Not<>(SubTag.MAGICAL));
-
-        plateDouble.mCondition = new ICondition.Or<>(
-            SubTag.PAPER,
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            SubTag.STRETCHY);
-        plateTriple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
-        plateQuadruple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
-        plateQuintuple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
-
-        plateDense.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
-        plateSuperdense.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
-
-        wireFine.mCondition = SubTag.METAL;
-
-        sheetmetal.mCondition = new ICondition.And<>(
-            obj -> obj instanceof MaterialSubTagView view
-                && MaterialUtils.generates(view.material, GTMaterialGenerationFlag.METAL),
-            new ICondition.Nor<>(SubTag.STRETCHY, SubTag.SOFT, SubTag.BOUNCY, SubTag.NO_SMASHING));
-        // -----
-
         bucket.mSecondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
         bucketClay.mSecondaryMaterial = new MaterialStack(Materials.Clay, dust.materialAmount * 5);
         oreRedgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.materialAmount);
@@ -2141,66 +1951,19 @@ public class OrePrefixes {
     public final List<TC_AspectStack> mAspects = new ArrayList<>();
     public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
 
-    public final Collection<Material> mDisabledItems = new HashSet<>();
-    public final Collection<Material> mNotGeneratedItems = new HashSet<>(), mGeneratedItems = new HashSet<>();
     public final Collection<Material> mIgnoredMaterials = new HashSet<>();
     private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<>();
     private final List<IOreRecipeRegistrator> shapeRegistrators = new ArrayList<>();
     public ItemStack mContainerItem = null;
-    public ICondition<ISubTagContainer> mCondition = null;
     public MaterialStack mSecondaryMaterial = null;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
     private final ObjectSet<ItemStack> mContainsTestCache = new ObjectOpenCustomHashSet<>(
         512,
         0.5f,
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
-    public static final List<OrePrefixes> mPreventableComponents = new LinkedList<>(
-        Arrays.asList(
-            OrePrefixes.gem,
-            OrePrefixes.ingotHot,
-            OrePrefixes.plate,
-            OrePrefixes.plateDouble,
-            OrePrefixes.plateTriple,
-            OrePrefixes.plateQuadruple,
-            OrePrefixes.plateQuintuple,
-            OrePrefixes.plateDense,
-            OrePrefixes.plateSuperdense,
-            OrePrefixes.stick,
-            OrePrefixes.round,
-            OrePrefixes.bolt,
-            OrePrefixes.screw,
-            OrePrefixes.ring,
-            OrePrefixes.foil,
-            OrePrefixes.toolHeadHammer,
-            OrePrefixes.toolHeadFile,
-            OrePrefixes.toolHeadSaw,
-            OrePrefixes.toolHeadDrill,
-            OrePrefixes.toolHeadChainsaw,
-            OrePrefixes.toolHeadWrench,
-            OrePrefixes.toolHeadBuzzSaw,
-            OrePrefixes.turbineBlade,
-            OrePrefixes.wireFine,
-            OrePrefixes.gearGtSmall,
-            OrePrefixes.rotor,
-            OrePrefixes.stickLong,
-            OrePrefixes.springSmall,
-            OrePrefixes.spring,
-            OrePrefixes.gemChipped,
-            OrePrefixes.gemFlawed,
-            OrePrefixes.gemFlawless,
-            OrePrefixes.gemExquisite,
-            OrePrefixes.gearGt,
-            OrePrefixes.itemCasing,
-            OrePrefixes.nanite,
-            OrePrefixes.cell));
 
     public static boolean isInstanceOf(String oreName, OrePrefixes prefix) {
         return oreName != null && oreName.startsWith(prefix.toString());
-    }
-
-    /// Adds a [Material] to [#mDisabledItems] if not already present.
-    public void disableComponent(Material material) {
-        if (!this.mDisabledItems.contains(material)) this.mDisabledItems.add(material);
     }
 
     public static OrePrefixes getOrePrefix(String oreDictName) {
@@ -2330,11 +2093,6 @@ public class OrePrefixes {
         return replacement;
     }
 
-    /// Removes a [Material] from [#mDisabledItems] if present.
-    public void enableComponent(Material material) {
-        this.mDisabledItems.remove(material);
-    }
-
     public boolean add(ItemStack stack) {
         if (stack == null) return false;
         if (!contains(stack)) {
@@ -2357,23 +2115,6 @@ public class OrePrefixes {
             }
         }
         return false;
-    }
-
-    /// Whether this prefix generates an item for `material`. The material must carry a block-form metadata
-    /// index ([MaterialUtils#oldSubId]) and satisfy [#mCondition]. Its
-    /// [GTMaterialProperties#GENERATION_FLAGS] must overlap the groups this prefix accepts, or it must be listed
-    /// in [#mGeneratedItems]. [#mNotGeneratedItems] and [#mDisabledItems] both exclude it.
-    public boolean doGenerateItem(@Nullable Material material) {
-        if (MaterialUtils.oldSubId(material) == -1) return false;
-
-        EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
-        if (flags == null) flags = EnumSet.noneOf(GTMaterialGenerationFlag.class);
-
-        if (!mGeneratedItems.contains(material) && Collections.disjoint(generationFlags, flags)) return false;
-
-        if (mNotGeneratedItems.contains(material)) return false;
-        if (mDisabledItems.contains(material)) return false;
-        return mCondition == null || mCondition.isTrue(new MaterialSubTagView(material));
     }
 
     public boolean ignoreMaterials(Material... materials) {

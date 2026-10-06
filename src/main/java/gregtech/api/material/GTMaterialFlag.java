@@ -2,8 +2,8 @@ package gregtech.api.material;
 
 /// Boolean material flags, declared through [GTMaterialProperties#FLAGS].
 ///
-/// A constant named like a [gregtech.api.enums.SubTag] also answers prefix conditions written against that
-/// sub-tag (see [MaterialSubTagView]).
+/// A constant named like a [gregtech.api.enums.SubTag] also answers [MaterialUtils#hasSubTag] for that
+/// sub-tag.
 public enum GTMaterialFlag {
     BLASTFURNACE_CALCITE_DOUBLE,
     BLASTFURNACE_CALCITE_TRIPLE,
@@ -47,6 +47,8 @@ public enum GTMaterialFlag {
     ICE_ORE,
     MULTI_PLATE,
     TRANSMUTABLE_NUGGETS,
+    /// Materials Tinkers' Gregworks offers as tool materials.
+    TOOL_MATERIAL,
     /// Gems that never get an implosion recipe.
     NO_BLAST,
     /// Metals whose blast furnace recipes take any [gregtech.api.util.BlastFurnaceGasStat] gas.
