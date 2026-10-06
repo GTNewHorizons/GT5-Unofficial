@@ -61,10 +61,12 @@ import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
 import gregtech.api.interfaces.IOutputTransaction;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
@@ -73,22 +75,12 @@ import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable,
     ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEFluidStack> {
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            4,
-            new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
-                "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Partition the inserted Storage Cell to filter accepted outputs",
-                "Right click with screwdriver to toggle Cache Mode",
-                "Shift right click with screwdriver to toggle Check Mode" },
-            1);
+        super(aID, aName, aNameRegional, 4, null, 1);
     }
 
     private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack>(
@@ -97,6 +89,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.output_hatch_me.desc");
     }
 
     @Override
@@ -302,6 +299,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             translateToLocalFormatted(
                 "GT5U.waila.hatch.outputme.fluid_cache_capacity",
                 formatNumber(tag.getLong("cacheCapacity"))));
+        MTEHatchOutputMEBase.WailaHelper.getWailaCacheBody("fluid", ss, accessor);
     }
 
     @Override

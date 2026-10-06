@@ -1,21 +1,20 @@
-Insert electrode in the electrode hatch
-Speed, Parallel, OC and power use depend on the electrode
+Insert an electrode in the {green:Electrode Hatch}
+Speed, parallel, OC, and power usage depend on the electrode
 Some electrodes have special effects, check their tooltip
-Below {red:{var:surge_threshold}}% durability: {red:{var:surge_chance}}% chance for random arc surge
-Startup: machine ignites the arc before processing
-Startup power: based on electrode startup penalty and parallels
-Shutdown: machine powers down the arc after work ends
+Below {red:{var:surge_threshold}%} durability: {red:{var:surge_chance}%} chance for an {dark_red:Arc Surge}
+Ignites the arc before each recipe, ignition power scales with electrode penalty and parallels
+Powers down the arc after work ends
 {gray:{hr}}
-{gold:Blast mode:}
-Processes EBF recipes at {red:{var:blast_power_multiplier}}x power cost
+{gold:Blast Mode}:
+Processes {white:EBF} recipes at {green:{var:blast_power_multiplier}x} power cost
 {gray:{hr}}
-{gold:Ore mode:}
-Quickly process metallic ores!
-Startup time: {red:{var:ore_startup_seconds}} seconds
-Consumes all ores and raw ores from input buses
-Only furnace-smeltable ores, no blasting
-If queued ore exceeds capacity, startup ends immediately
-If no ores enter for {red:{var:ore_idle_ticks}} ticks, startup ends immediately
-Outputs molten metals
+{gold:Ore Mode}:
+Processes metallic ores into molten metal
+Startup time: {green:{var:ore_startup_seconds}} seconds
+Consumes ores and raw ores from {green:Input Buses}
+If all parallels are used up, startup ends immediately
+If no ores enter for {green:{var:ore_idle_ticks}} ticks, startup ends immediately
+Outputs {gold:Molten Metals}
+{yellow:Only furnace-smeltable ores, no blasting}
 {gray:{hr}}
-Right-click with Screwdriver to change mode
+Right-click the controller with a {white:Screwdriver} to change mode
