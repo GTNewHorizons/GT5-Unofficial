@@ -34,6 +34,7 @@ import org.joml.Math;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -163,20 +164,11 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Cutting Machine, ICF")
-            .addInfo(
-                "Requires a " + EnumChatFormatting.AQUA
-                    + "Sawblade"
-                    + EnumChatFormatting.GRAY
-                    + " in the controller slot to use")
-            .addInfo(
-                "Better " + EnumChatFormatting.AQUA + "Sawblades" + EnumChatFormatting.GRAY + " give increased bonuses")
-            .addInfo(
-                "With a " + EnumChatFormatting.DARK_GREEN
-                    + "Transcendent Metal Sawblade"
-                    + EnumChatFormatting.GRAY
-                    + ", one multi-amp hatch is allowed")
-            .addInfo("Use screwdriver to disable sawblade rendering")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-cutting-machine"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
             .addController("Front left, 2nd layer")
@@ -194,6 +186,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Auynonymous")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
