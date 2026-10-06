@@ -116,7 +116,6 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                     .put("eu_reduction", Math.round((1 - EU_MODIFIER) * 100))
                     .put("max_slices", MAX_LENGTH - 1)
                     .build())
-            .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(6, 36, 7, 7, 5, 5, false)
             .addController("Front left center, 2nd layer")
