@@ -30,13 +30,16 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTRecipeRegistrator;
@@ -387,7 +390,7 @@ public final class OreDictRegistrationHandler {
             OreDictUtils.registerOre(wildcard.oreDictName(prefix), stack);
         }
 
-        if (GregTechAPI.sThaumcraftCompat != null && prefix.doGenerateItem(material) && !prefix.isIgnored(material)) {
+        if (GregTechAPI.sThaumcraftCompat != null && carriesAspects(prefix, material) && !prefix.isIgnored(material)) {
             ArrayList<TC_AspectStack> aspects = new ArrayList<>();
             for (TC_AspectStack aspect : prefix.mAspects) {
                 aspect.addToAspectList(aspects);
@@ -434,5 +437,17 @@ public final class OreDictRegistrationHandler {
 
     public static boolean isRegisteredOre(ItemStack stack) {
         return registeredOres.contains(stack);
+    }
+
+    /// Whether items under `prefix` and `material` get Thaumcraft aspects: MaterialLib serves the pair, or the
+    /// prefix names an ore on one stone type and the material has ores.
+    private static boolean carriesAspects(OrePrefixes prefix, Material material) {
+        if (material == null) return false;
+        if (MaterialParts.isCutOver(prefix, material)) return true;
+        if (!material.hasShape(OreShapes.ore)) return false;
+        for (StoneType stoneType : StoneType.VALUES) {
+            if (stoneType.getPrefix() == prefix) return true;
+        }
+        return false;
     }
 }
