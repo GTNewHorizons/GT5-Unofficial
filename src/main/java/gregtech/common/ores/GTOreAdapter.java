@@ -1,14 +1,11 @@
 package gregtech.common.ores;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -17,22 +14,15 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
-import com.gtnewhorizons.postea.api.BlockReplacementManager;
-import com.gtnewhorizons.postea.api.IDExtenderCompat;
-import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
-import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
-import com.gtnewhorizons.postea.utility.BlockInfo;
 import com.ruling_0.materiallib.api.BlockMaterialInfo;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
-import codechicken.nei.api.API;
 import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IStoneType;
@@ -42,7 +32,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.OreDictUtils;
 import gregtech.common.GTProxy.OreDropSystem;
-import gregtech.common.blocks.GTBlockOre;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
 /// The [IOreAdapter] for every material carrying the [OreShapes#ore] or [OreShapes#oreSmall] shape: worldgen,
@@ -52,119 +41,17 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 /// Every material follows the same rules, driven by its declared data: its ore exists on the stones
 /// [MaterialUtils#isValidStone] accepts, its small ore on the same stones except ice ones, and only where it
 /// carries the shape. Its harvest level is [GTMaterialProperties#ORE_HARVEST_LEVEL], or else its tool quality.
-///
-/// [#init] constructs the six [GTBlockOre] instances (`gt.blockores2`..`gt.blockores7`), which stay registered
-/// so pre-migration saves have somewhere for their placed blocks to resolve to.
-/// [#registerCurrentGenTransformers] converts those placed blocks to the MaterialLib equivalent as their chunk
-/// loads.
 public final class GTOreAdapter implements IOreAdapter {
 
     public static GTOreAdapter INSTANCE = new GTOreAdapter();
 
     private GTOreAdapter() {}
 
-    private final Map<StoneType, GTBlockOre> oreBlocksByStoneType = new EnumMap<>(StoneType.class);
-
-    private GTBlockOre[] ores;
-
     private static final boolean[] BOOLEANS = { false, true };
-
-    // spotless:off
-    private static final StoneType[] LEGACY_STONES = {
-        StoneType.Stone,
-        StoneType.Netherrack,
-        StoneType.Endstone,
-        StoneType.BlackGranite,
-        StoneType.RedGranite,
-        StoneType.Marble,
-        StoneType.Basalt,
-    };
-    // spotless:on
-
-    public void init() {
-        // spotless:off
-        GTBlockOre ores1 = new GTBlockOre(2, new StoneType[] {
-            StoneType.Stone,
-            StoneType.Netherrack,
-            StoneType.Endstone,
-            GTMod.proxy.enableBlackGraniteOres ? StoneType.BlackGranite : null,
-            GTMod.proxy.enableRedGraniteOres ? StoneType.RedGranite : null,
-            GTMod.proxy.enableMarbleOres ? StoneType.Marble : null,
-            GTMod.proxy.enableBasaltOres ? StoneType.Basalt : null,
-            StoneType.Moon,
-        });
-        GTBlockOre ores2 = new GTBlockOre(3, new StoneType[] {
-            StoneType.Mars,
-            StoneType.Asteroid,
-            StoneType.Phobos,
-            StoneType.Deimos,
-            StoneType.Ceres,
-            StoneType.Io,
-            StoneType.Europa,
-            StoneType.Ganymede,
-        });
-        GTBlockOre ores3 = new GTBlockOre(4, new StoneType[] {
-            StoneType.Callisto,
-            StoneType.Enceladus,
-            StoneType.Titan,
-            StoneType.Miranda,
-            StoneType.Oberon,
-            StoneType.Proteus,
-            StoneType.Triton,
-            StoneType.Pluto,
-        });
-        GTBlockOre ores4 = new GTBlockOre(5, new StoneType[] {
-            StoneType.Venus,
-            StoneType.Mercury,
-        });
-        GTBlockOre ores5 = new GTBlockOre(6, new StoneType[] {
-            StoneType.Haumea,
-            StoneType.MakeMake,
-            StoneType.AlphaCentauri,
-            StoneType.TCetiE,
-            StoneType.VegaB,
-            StoneType.BarnardaE,
-            StoneType.BarnardaF,
-            StoneType.Horus,
-        });
-        GTBlockOre ores6 = new GTBlockOre(7, new StoneType[] {
-            StoneType.AnubisAndMaahes,
-            StoneType.PackedIce,
-            StoneType.SethIce,
-            StoneType.SethClay,
-            StoneType.Deepslate,
-            StoneType.Tuff,
-            StoneType.BlueIce,
-        });
-
-        ores = new GTBlockOre[] { ores1, ores2, ores3, ores4, ores5, ores6 };
-        // spotless:on
-
-        TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", (tag, world, chunk) -> {
-            int meta = tag.getInteger("m");
-
-            ImmutableBlockMeta bm = resolveLegacyMeta(meta);
-
-            return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
-        });
-
-        ItemStackReplacementManager.addTransformationHandler("gregtech:gt.blockores", (originalId, tag) -> {
-            int meta = tag.getInteger("Damage");
-            ImmutableBlockMeta bm = resolveLegacyMeta(meta);
-            if (bm.getBlock() == Blocks.air) return false;
-
-            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(Item.getItemFromBlock(bm.getBlock())));
-            tag.setShort("Damage", (short) bm.getBlockMeta());
-            return true;
-        });
-
-        registerCurrentGenTransformers();
-        registerOreNames();
-    }
 
     /// Registers every material's ore on every stone type under that stone type's ore-dictionary prefix,
     /// associating it with the material where the prefix unifies.
-    private void registerOreNames() {
+    public void registerOreNames() {
         for (Material material : MaterialLibAPI.getMaterials()) {
             for (StoneType stoneType : StoneType.VALUES) {
                 ItemStack stack = getVariantStack(material, stoneType, false);
@@ -175,116 +62,6 @@ public final class GTOreAdapter implements IOreAdapter {
                     OreDictUtils.registerAndAssociate(prefix, material, stack);
                 } else {
                     OreDictUtils.registerOre(prefix, stack);
-                }
-            }
-        }
-    }
-
-    /// Decodes the legacy 7-stone meta packing (see [#LEGACY_STONES]), or null when the meta names no ore this
-    /// adapter serves. The decoded ore is always marked natural. The returned [OreInfo] comes from the pool
-    /// and belongs to the caller (try-with-resources).
-    public @Nullable OreInfo getLegacyOreInfo(int meta) {
-        OreInfo info = OreInfo.getNewInfo();
-
-        info.stoneType = GTUtility.getIndexSafe(LEGACY_STONES, (meta % 16000) / 1000);
-        info.material = LegacyMaterialIDIndex.get(meta % 1000);
-        info.isSmall = meta >= 16000;
-        info.isNatural = true;
-
-        if (!this.supports(info)) {
-            info.release();
-            return null;
-        }
-
-        return info;
-    }
-
-    /// Resolves a legacy meta (see [#getLegacyOreInfo]) to the MaterialLib block/meta, or air when it names no
-    /// ore this adapter serves.
-    private ImmutableBlockMeta resolveLegacyMeta(int meta) {
-        try (OreInfo info = getLegacyOreInfo(meta)) {
-            if (info == null) return new BlockMeta(Blocks.air, 0);
-
-            ImmutableBlockMeta bm = this.getBlock(info);
-            return bm == null ? new BlockMeta(Blocks.air, 0) : bm;
-        }
-    }
-
-    /// Converts placed and inventory `gt.blockores2`..`gt.blockores7` into the MaterialLib equivalent as a
-    /// chunk or item loads.
-    private void registerCurrentGenTransformers() {
-        for (int i = 0; i < ores.length; i++) {
-            GTBlockOre oreBlock = ores[i];
-            String originalId = "gregtech:gt.blockores" + (i + 2);
-
-            BlockReplacementManager.addTransformationHandler(originalId, info -> {
-                ImmutableBlockMeta bm = resolveCurrentGenMeta(oreBlock, info.metadata);
-                if (bm == null) return false;
-                info.blockID = Block.getIdFromBlock(bm.getBlock());
-                info.metadata = bm.getBlockMeta();
-                return true;
-            });
-
-            ItemStackReplacementManager.addTransformationHandler(originalId, (originalId2, tag) -> {
-                ImmutableBlockMeta bm = resolveCurrentGenMeta(oreBlock, tag.getInteger("Damage"));
-                if (bm == null) return false;
-                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(Item.getItemFromBlock(bm.getBlock())));
-                tag.setShort("Damage", (short) bm.getBlockMeta());
-                return true;
-            });
-        }
-    }
-
-    private ImmutableBlockMeta resolveCurrentGenMeta(GTBlockOre oreBlock, int meta) {
-        Material mat = oreBlock.getMaterial(meta);
-        StoneType stoneType = oreBlock.getStoneType(meta);
-        if (mat == null || stoneType == null) return null;
-
-        try (OreInfo info = OreInfo.getNewInfo()) {
-            info.material = mat;
-            info.stoneType = stoneType;
-            info.isSmall = oreBlock.isSmallOre(meta);
-            info.isNatural = true;
-
-            return this.getBlock(info);
-        }
-    }
-
-    public void registerOre(StoneType stoneType, GTBlockOre oreBlock) {
-        oreBlocksByStoneType.put(stoneType, oreBlock);
-    }
-
-    /// Hides from NEI every `gt.blockores2`..`gt.blockores7` slot whose (material, stone, small-ore)
-    /// combination resolves to a MaterialLib block (see [#supports(OreInfo)]); combinations without a
-    /// MaterialLib counterpart stay visible. Meta 0 of each block is always hidden; see
-    /// [GTBlockOre#getSubBlocks] for why it exists as a dummy entry.
-    public void hideOres() {
-        for (GTBlockOre ore : ores) {
-            API.hideItem(new ItemStack(ore, 1, 0));
-
-            for (int matId = 0; matId < 1000; matId++) {
-                Material material = ore.getMaterial(matId);
-                if (material == null) continue;
-
-                for (int stoneIndex = 0; stoneIndex < ore.stoneTypes.size(); stoneIndex++) {
-                    StoneType stoneType = ore.stoneTypes.get(stoneIndex);
-                    if (stoneType == null) continue;
-
-                    for (boolean isSmall : BOOLEANS) {
-                        try (OreInfo info = OreInfo.getNewInfo()) {
-                            info.material = material;
-                            info.stoneType = stoneType;
-                            info.isSmall = isSmall;
-
-                            if (!supports(info)) continue;
-                        }
-
-                        int baseMeta = matId + stoneIndex * 1000 + (isSmall ? GTBlockOre.SMALL_ORE_META_OFFSET : 0);
-                        for (boolean natural : BOOLEANS) {
-                            int meta = baseMeta + (natural ? GTBlockOre.NATURAL_ORE_META_OFFSET : 0);
-                            API.hideItem(new ItemStack(ore, 1, meta));
-                        }
-                    }
                 }
             }
         }

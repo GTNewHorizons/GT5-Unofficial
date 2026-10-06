@@ -17,6 +17,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
 import com.gtnewhorizons.postea.api.IBlockTransformationHandler;
 import com.gtnewhorizons.postea.api.IDExtenderCompat;
@@ -84,7 +87,7 @@ public class PosteaTransformers implements Runnable {
         GT_FML_LOGGER.debug("PosteaTransformers: claimed missing mappings for {} legacy ids", transformedIds.size());
     }
 
-    private static void addBlockTransformer(String legacyId, IBlockTransformationHandler handler) {
+    static void addBlockTransformer(String legacyId, IBlockTransformationHandler handler) {
         transformedIds.add(legacyId);
         BlockReplacementManager.addTransformationHandler(legacyId, handler);
     }
@@ -99,7 +102,7 @@ public class PosteaTransformers implements Runnable {
         BlockReplacementManager.addSimpleReplacement(legacyId, legacyMeta, block, newMeta);
     }
 
-    private static void addItemTransformer(String legacyId, IItemStackTransformationHandler handler) {
+    static void addItemTransformer(String legacyId, IItemStackTransformationHandler handler) {
         transformedIds.add(legacyId);
         ItemStackReplacementManager.addTransformationHandler(legacyId, handler);
     }
@@ -189,6 +192,7 @@ public class PosteaTransformers implements Runnable {
         registerRailcraftCreosoteCellCutoverTransformer();
         registerIC2ItemCasingCutoverTransformers();
         registerGtppThermalDustCutoverTransformers();
+        LegacyOreTransformers.register();
     }
 
     /// Migrates saved IC2 item casings (`IC2:itemCasing`, metas 0-6) onto the MaterialLib casing of the same
@@ -475,8 +479,7 @@ public class PosteaTransformers implements Runnable {
     /// werkstoff id) into the equivalent MaterialLib stack, resolved through [LegacyWerkstoffIndex] exactly
     /// like the live item path ([MaterialParts#stack]), with cells resolving through [MaterialParts#cell].
     /// Damages of werkstoffe unknown to MaterialLib (a third-party mod's own werkstoff ids) pass through
-    /// unchanged. Ore and small ore migrate through [gregtech.common.ores.BWOreAdapter] instead (block-kind,
-    /// with no `bw.bwMetaGenerated<prefix>` item); storage blocks and the two casing slots
+    /// unchanged. Ore and small ore migrate through [LegacyOreTransformers]; storage blocks and the two casing slots
     /// (`blockCasing`/`blockCasingAdvanced`) migrate through [#registerWerkstoffBlockCutoverTransformer].
     private static void registerWerkstoffItemCutoverTransformers() {
         for (OrePrefixes prefix : LEGACY_WERKSTOFF_ITEM_PREFIXES) {
@@ -515,30 +518,32 @@ public class PosteaTransformers implements Runnable {
             OrePrefixes.blockCasingAdvanced);
     }
 
-    /// Migrates saved placed (TE-based) and inventory bartworks werkstoff storage-block stacks (`m`/`Damage` =
-    /// werkstoff id) into the equivalent MaterialLib block stack, resolved through [LegacyWerkstoffIndex]
-    /// exactly like the live item path ([MaterialParts#stack]). Third-party werkstoffe unknown to MaterialLib
-    /// pass through unchanged, leaving the legacy slot canonical for them. `bw.werkstoffblockTE` already has a
-    /// handler registered by [#removeWerkstoffTileEntities]; Postea tries each registered handler in turn
-    /// until one returns non-null, so the two coexist.
+    /// Migrates saved placed (tile-entity) and inventory bartworks werkstoff storage blocks and casings (`m`/`Damage` =
+    /// werkstoff id) into the equivalent MaterialLib block. A casing whose material has no MaterialLib casing becomes
+    /// the material's storage block, and a werkstoff removed from the pack becomes dirt.
     private static void registerWerkstoffBlockCutoverTransformer(String teId, String itemId, OrePrefixes prefix) {
         TileEntityReplacementManager.tileEntityTransformer(teId, (tag, world, chunk) -> {
-            Material material = LegacyWerkstoffIndex.get(tag.getShort("m"));
-            if (material == null) return null;
-            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
-            if (cutover == null) return null;
+            int id = tag.getShort("m");
+            if (ArrayUtils.contains(WERKSTOFFS_REMOVED_IN_2_9, id)) return new BlockInfo(Blocks.dirt, 0);
+            ItemStack cutover = werkstoffBlockStack(prefix, id);
+            if (cutover == null) return new BlockInfo(Blocks.air, 0);
             return new BlockInfo(Block.getBlockFromItem(cutover.getItem()), cutover.getItemDamage());
         });
 
         addItemTransformer(itemId, (originalId, tag) -> {
-            Material material = LegacyWerkstoffIndex.get(tag.getInteger("Damage"));
-            if (material == null) return false;
-            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
+            ItemStack cutover = werkstoffBlockStack(prefix, tag.getInteger("Damage"));
             if (cutover == null) return false;
             IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
             tag.setShort("Damage", (short) cutover.getItemDamage());
             return true;
         });
+    }
+
+    private static @Nullable ItemStack werkstoffBlockStack(OrePrefixes prefix, int werkstoffId) {
+        Material material = LegacyWerkstoffIndex.get(werkstoffId);
+        if (material == null) return null;
+        ItemStack cutover = MaterialParts.stack(prefix, material, 1);
+        return cutover != null ? cutover : MaterialLibAPI.findStack(material, BlockShapes.block, 1);
     }
 
     private static void registerStorageBlockCutoverTransformer(String originalId, Material[] batch) {
@@ -710,7 +715,6 @@ public class PosteaTransformers implements Runnable {
     private void registerPTMEGTransformers() {
         removeWerkstoffMetaGeneratedItems();
         removeWerkstoffItems("bartworks:bw.werkstoffblocks.01");
-        removeWerkstoffTileEntities();
     }
 
     private static void removeWerkstoffMetaGeneratedItems() {
@@ -726,21 +730,6 @@ public class PosteaTransformers implements Runnable {
         for (int removedWerkstoff : WERKSTOFFS_REMOVED_IN_2_9) {
             addItemReplacement(originalId, removedWerkstoff, Item.getItemFromBlock(Blocks.dirt), 0);
         }
-    }
-
-    private static void removeWerkstoffTileEntities() {
-        TileEntityReplacementManager.tileEntityTransformer(
-            "bw.werkstoffblockTE",
-            (nbt, world, chunk) -> isWerkstoffRemoved(nbt.getShort("m")) ? new BlockInfo(Blocks.dirt, 0) : null);
-    }
-
-    private static boolean isWerkstoffRemoved(short meta) {
-        for (int j : WERKSTOFFS_REMOVED_IN_2_9) {
-            if (j == meta) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static int tieredGlassBlockId = -1;

@@ -8,7 +8,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTLoggers;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialProperties;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -65,13 +64,5 @@ public class LegacyWerkstoffIndex {
         if (material == null) return -1;
         List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
         return ids == null || ids.isEmpty() ? -1 : ids.get(0);
-    }
-
-    /// Returns whether [GTMaterialProperties#WERKSTOFF_PREFIXES] lists `prefix` for this material. Always false
-    /// for a material that also carries [GTMaterialProperties#OLD_SUB_ID].
-    public static boolean generatesPrefix(@Nullable Material material, OrePrefixes prefix) {
-        if (material == null || material.getProperty(GTMaterialProperties.OLD_SUB_ID) != null) return false;
-        List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
-        return prefixes != null && prefixes.contains(prefix.name());
     }
 }

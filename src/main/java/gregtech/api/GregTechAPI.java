@@ -80,7 +80,7 @@ public class GregTechAPI {
             public ItemStack getIconItemStack() {
                 return ItemList.Casing_RobustTungstenSteel.get(1);
             }
-        }, TAB_GREGTECH_ORES = new GTCreativeTab("Ores", "Ores");
+        };
 
     public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
 
@@ -161,7 +161,7 @@ public class GregTechAPI {
      */
     public static Block sBlockMachines;
 
-    public static Block sBlockOres1, sBlockReinforced;
+    public static Block sBlockReinforced;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
         sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sBlockCasings13,

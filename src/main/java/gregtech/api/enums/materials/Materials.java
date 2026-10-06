@@ -2002,7 +2002,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("SANO", 1), new AspectRefStack("TUTAMEN", 1)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(40))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Ca")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.TIER, 1)
@@ -2732,7 +2731,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("METALLUM", 2), new AspectRefStack("RADIO", 1)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(32))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Te")
             .setProperty(GTMaterialProperties.DURABILITY, 51200)
             .generateShape(TEBlockShapes.frameGt)
@@ -14354,7 +14352,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeWhite")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(20))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "NaCl")
             .build();
         Materials.HydratedCoal = MaterialLibAPI.newMaterial("gregtech", "HydratedCoal", TextureSet.of("gregtech", "ROUGH"))
@@ -15925,7 +15922,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeBrown")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(21))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "LiAlSi₂O₆")
             .build();
         Materials.Tantalite = MaterialLibAPI.newMaterial("gregtech", "Tantalite", TextureSet.of("gregtech", "METALLIC"))
@@ -16315,7 +16311,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyePink")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(22))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "KCl")
             .build();
         Materials.Stibnite = MaterialLibAPI.newMaterial("gregtech", "Stibnite", TextureSet.of("gregtech", "METALLIC"))
@@ -17295,7 +17290,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.AquaRegia), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(48))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 300)
             .setProperty(GTMaterialProperties.GAS_TEMPERATURE, 300)
             .build();
@@ -17749,7 +17743,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(1))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.CarbonDioxide), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "Bi₂O₂(CO₂)₂")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -17770,7 +17763,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(2))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Bi₂S₃")
             .build();
@@ -17809,7 +17801,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 480)
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Zr")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.TIER, 2)
@@ -17842,7 +17833,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "ZrO₂")
             .build();
@@ -17869,7 +17859,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeBlack")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(5))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Sodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Aluminium), 6L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 6L), new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 30L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "NaFe₃Al₆(Si₆O₁₈)(BO₃)₃O₃F")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -17891,7 +17880,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Yttrium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Y₂O₃")
             .build();
@@ -17918,7 +17906,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeCyan")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(7))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Sodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chrome), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Magnalium), 6L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 6L), new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 31L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "NaCr₃(Al₄Mg₂)(Si₆O₁₈)(BO₃)₃(OH)₃O")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -17947,7 +17934,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeCyan")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(8))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Sodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Vanadium), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Magnalium), 6L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 6L), new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 31L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "NaV₃(Al₄Mg₂)(Si₆O₁₈)(BO₃)₃(OH)₃O")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -17976,7 +17962,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeLightGray")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(9))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Sodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Aluminium), 9L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 6L), new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 31L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "NaAl₃Al₆(Si₆O₁₈)(BO₃)₃O₃OH")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -17999,7 +17984,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Arsenic), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "FeAsS")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18020,7 +18004,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "FeWO₃")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18042,7 +18025,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(12))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Arsenic), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "FeAs₂")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18063,7 +18045,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(13))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Indium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "CuInS₂")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18085,7 +18066,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(14))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "Cu₅FeS₄")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18106,7 +18086,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(15))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "Cu₅BiS₄")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18126,7 +18105,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(16))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 31L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 16L)))
             .setProperty(GTMaterialProperties.FORMULA, "Cu₃₁S₁₆")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18147,7 +18125,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(17))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Manganese), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "MnWO₃")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18168,7 +18145,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(18))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "ThO₂")
             .build();
@@ -18196,7 +18172,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeRed")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(19))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "ZrSiO₄")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18225,7 +18200,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeBlack")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(23))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "Fe₂SiO₄")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18254,7 +18228,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeWhite")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(24))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Magnesium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "Mg₂SiO₄")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18283,7 +18256,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeGreen")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(25))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 6L)))
             .setProperty(GTMaterialProperties.FORMULA, "CaFeSi₂O₆")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18304,7 +18276,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(26))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lead), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Zinc), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Vanadium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "PbZnVO₄")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18325,7 +18296,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(27))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lead), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Vanadium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "PbCuVO₄")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18343,7 +18313,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Alumina), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SiliconDioxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(28))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Aluminium), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 12L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "KAl₃Si₃O₁(OH)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -18363,7 +18332,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(29))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chrome), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 12L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "KCr₃Si₃O₁(OH)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -18407,7 +18375,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(30))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ISOTOPE")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Th")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.ELEMENT, "Th_232")
@@ -18433,7 +18400,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tellurium), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Bi₂Te₃")
             .build();
@@ -18454,7 +18420,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Bismuth), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Bi₂BH")
             .build();
@@ -18475,7 +18440,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.IndiumGalliumPhosphide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Dibismuthhydroborat), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.BismuthTelluride), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "InGaP(Bi₂BH)₃(Bi₂Te₃)₂")
             .build();
@@ -18503,7 +18467,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(35))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 10L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Si₅O₁Fe")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -18534,7 +18497,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Prasiolite), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.BismuthTelluride), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.CubicZirconia), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SteelMagnetic), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "(Si₅O₁Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅C")
             .build();
@@ -18561,7 +18523,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(37))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Xe")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18584,7 +18545,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(38))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Og")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18625,7 +18585,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(39))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Cf")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
@@ -18659,7 +18618,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(41))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Ne")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18686,7 +18644,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(42))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Kr")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18728,7 +18685,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "ingotHot", "ingot", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "nugget", "plate", "foil", "stickLong", "stick", "lens", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Argon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Titanium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Magic), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Europium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Neon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Are you serious?")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -18750,7 +18706,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(44))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "PtPd??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18767,7 +18722,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PlatinumSalt), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PlatinumSalt), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PlatinumSalt), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(45))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pt??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18784,7 +18738,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.RefinedPlatinumSalt), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RefinedPlatinumSalt), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RefinedPlatinumSalt), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(46))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pt??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18803,7 +18756,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PlatinumMetallicPowder), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PlatinumMetallicPowder), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PlatinumMetallicPowder), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(47))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Platinum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "PtPdIrOsRhRu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -18822,7 +18774,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PlatinumResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PlatinumResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PlatinumResidue), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(49))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "IrOsRhRu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18845,7 +18796,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(50))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Ammonium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HydrochloricAcidGT5U), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "NH₄Cl")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -18863,7 +18813,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ReprecipitatedPlatinum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ReprecipitatedPlatinum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ReprecipitatedPlatinum), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(51))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "PtCl")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18886,7 +18835,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(52))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Ammonium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Palladium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Pd??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -18906,7 +18854,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PalladiumMetallicPowder), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PalladiumMetallicPowder), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PalladiumMetallicPowder), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(53))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Palladium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "Pd??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -18925,7 +18872,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ReprecipitatedPalladium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ReprecipitatedPalladium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ReprecipitatedPalladium), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(54))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pd??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18942,7 +18888,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PalladiumSalt), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PalladiumSalt), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PalladiumSalt), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(55))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pd??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -18965,7 +18910,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(56))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SodiumHydroxideGT5U), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CarbonMonoxide), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "HCOONa")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -18985,7 +18929,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(57))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Sodium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "Na₂SO₄")
             .build();
@@ -19006,7 +18949,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(58))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "CH₂O₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -19030,7 +18972,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cellMolten"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 7L)))
             .setProperty(GTMaterialProperties.FORMULA, "K₂S₂O₇")
             .build();
@@ -19047,7 +18988,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.LeachResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LeachResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LeachResidue), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(60))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "IsOsRu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -19069,7 +19009,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(61))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RhKSO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19090,7 +19029,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(62))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RhSO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19114,7 +19052,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(63))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "CaCl₂")
             .build();
@@ -19151,7 +19088,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(64))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Ru")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.TIER, 2)
@@ -19173,7 +19109,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SodiumRuthenate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SodiumRuthenate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SodiumRuthenate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(65))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "NaRu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19196,7 +19131,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.MASS, 165L)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(66))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RuO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19217,7 +19151,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(67))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RuO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19238,7 +19171,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(68))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RuO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19257,7 +19189,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.RarestMetalResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RarestMetalResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RarestMetalResidue), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(69))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Osmiridium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "OsIr??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -19278,7 +19209,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.IridiumMetalResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.IridiumMetalResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.IridiumMetalResidue), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(70))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iridium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ir??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -19301,7 +19231,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(71))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SiliconDioxide), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Gold), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "(SiO₂)₃Au₂")
             .build();
@@ -19322,7 +19251,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(72))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "OsHCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19339,7 +19267,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.IridiumDioxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.IridiumDioxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.IridiumDioxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(73))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "IrO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19360,7 +19287,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(74))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "OsCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19381,7 +19307,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(75))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "IrCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19398,7 +19323,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.IridiumChloride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.IridiumChloride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.IridiumChloride), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(76))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "IrCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19418,7 +19342,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(77))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Nickel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "NiCu")
             .build();
@@ -19455,7 +19378,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(78))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Rh")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.TIER, 2)
@@ -19479,7 +19401,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.CrudeRhodiumMetal), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CrudeRhodiumMetal), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CrudeRhodiumMetal), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(79))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Rhodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Stone), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Rh??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -19498,7 +19419,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.RhodiumSalt), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RhodiumSalt), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RhodiumSalt), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(80))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "RhNaCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19519,7 +19439,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(81))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RhNaCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19539,7 +19458,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(82))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "NaNO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Sodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Nitrogen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
@@ -19557,7 +19475,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.RhodiumNitrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RhodiumNitrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RhodiumNitrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(83))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "RhNO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19576,7 +19493,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(84))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zinc), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "ZnSO₄")
             .build();
@@ -19593,7 +19509,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.RhodiumFilterCake), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RhodiumFilterCake), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RhodiumFilterCake), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(85))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "RhNO??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19614,7 +19529,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(86))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "RhN??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19636,7 +19550,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ReprecipitatedRhodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ReprecipitatedRhodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ReprecipitatedRhodium), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(87))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "RhNH??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -19671,7 +19584,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 1)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Palladium), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Rhodium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Pd₃Rh")
             .generateShape(TEBlockShapes.frameGt)
@@ -19713,7 +19625,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Tr")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
@@ -19751,7 +19662,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.MIX_CIRCUIT, 1)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Ruthenium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iridium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ru₂Ir")
             .generateShape(TEBlockShapes.frameGt)
@@ -19783,7 +19693,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(91))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "CaF₂")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -19818,7 +19727,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7680)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.TungstenSteel), 12L), new MaterialRefStack(MaterialRef.of(() -> Materials.HSSE), 9L), new MaterialRefStack(MaterialRef.of(() -> Materials.HSSG), 6L), new MaterialRefStack(MaterialRef.of(() -> Materials.Ruridit), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.MagnetoResonatic), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Plutonium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "((Fe₅C)W)₁₂((((Fe₅C)W)₅CrMo₂V)₆CoMnSi)₉(((Fe₅C)W)₅CrMo₂V)₆(Ru₂Ir)₃((Si₅O₁Fe)₃(Bi₂Te₃)₄ZrO₂Fe₅C)₂Pu")
             .generateShape(TEBlockShapes.frameGt)
@@ -19841,7 +19749,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(93))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PalladiumMetallicPowder), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Mercury), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Arsenic), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "(Pd,Hg)₃As")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -19863,7 +19770,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(94))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PalladiumMetallicPowder), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Mercury), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tellurium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Pd₃HgTe")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -19885,7 +19791,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(95))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Mercury), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Hg₂ClO")
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -19919,7 +19824,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 1920)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Steel), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.VanadiumSteel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.DamascusSteel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "The break in the line")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -19944,7 +19848,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Steel), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.VanadiumSteel), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.DamascusSteel), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "(Fe₅C)₂VCr(Fe₅C)₇Fe₅C")
             .build();
@@ -19966,7 +19869,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(98))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 6L)))
             .setProperty(GTMaterialProperties.FORMULA, "H₂SiF₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -19986,7 +19888,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(99))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silicon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 6L)))
             .setProperty(GTMaterialProperties.FORMULA, "K₂SiF₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -20006,7 +19907,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(101))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Potassium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "K₂CO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -20024,7 +19924,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.RawFluorophlogopite), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RawFluorophlogopite), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RawFluorophlogopite), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(102))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "K₄Al₂(SiO₂)F₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20045,7 +19944,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(103))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "KMg₃(Si₃Al)O₁F₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20075,7 +19973,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorophlogopite), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorophlogopite), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorophlogopite), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(104))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "KMg₃(Si₃Al)O₁F₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20095,7 +19992,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11500))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "He")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20115,7 +20011,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.MASS, 192L)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11501))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "HfC")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20132,7 +20027,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.TantalumCarbideHafniumCarbideMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TantalumCarbideHafniumCarbideMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TantalumCarbideHafniumCarbideMixture), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11502))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "(TaC)₄HfC")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20169,7 +20063,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.MASS, 962L)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11503))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Ta₄HfC₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20189,7 +20082,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10001))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Graphite), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Uranium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "C₃U")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -20216,7 +20108,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10002))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "U₃₆K₈Qt₄Rn")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20242,7 +20133,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10003))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "*(U₃₆K₈Qt₄Rn)*")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20264,7 +20154,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10004))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "PbBiBaXe")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20285,7 +20174,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium), 11L), new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium232), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Uranium235), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Th₁₁ThU-235C₃")
             .build();
@@ -20311,7 +20199,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10006))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Th₄₃₂Li₄D₂Hg")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20337,7 +20224,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10007))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "*(Th₄₃₂Li₄D₂Hg)*")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20359,7 +20245,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10008))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "ThPrBIn")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20380,7 +20265,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Plutonium), 10L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 12L), new MaterialRefStack(MaterialRef.of(() -> Materials.Uranium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 8L)))
             .setProperty(GTMaterialProperties.FORMULA, "Pu₁O₁₂U₂C₈")
             .build();
@@ -20406,7 +20290,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10010))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Pu₄₅Nt₈Cs₁₆Nq₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20432,7 +20315,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10011))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "*(Pu₄₅Nt₈Cs₁₆Nq₂)*")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20454,7 +20336,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10012))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "TnCeAuKr")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20476,7 +20357,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10013))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "BIOLOGICAL")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "H₂C₂O₄")
             .build();
@@ -20495,7 +20375,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10014))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Vanadium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 5L)))
             .setProperty(GTMaterialProperties.FORMULA, "V₂O₅")
             .build();
@@ -20516,7 +20395,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10015))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Th(NO₃)₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20533,7 +20411,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumOxalate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumOxalate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumOxalate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10016))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Th(C₂O₄)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20550,7 +20427,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumHydroxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumHydroxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumHydroxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10017))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Th(OH)₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20567,7 +20443,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SodiumOxalate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SodiumOxalate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SodiumOxalate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10018))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Na₂C₂O₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20588,7 +20463,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10019))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "ThCl₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20613,7 +20487,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10020))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "ThF₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.DURABILITY, 500000)
@@ -20638,7 +20511,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10021))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium232), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "ThF₄")
             .build();
@@ -20669,7 +20541,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeRed")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10023))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust", "plate", "foil", "stickLong", "stick", "lens", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Or")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -20703,7 +20574,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10022))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Orundum), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Plutonium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadah), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "The melting core...")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -20745,7 +20615,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION, 400)
             .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 30720)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Nq☆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
@@ -20779,7 +20648,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Far from enough")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20806,7 +20674,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Still needs processing")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20833,7 +20700,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Who needs it?")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20860,7 +20726,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Atomic runoff")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20882,7 +20747,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10029))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 10L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "CH₃CH₂OCH₂CH₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -20904,7 +20768,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10030))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SbCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20925,7 +20788,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10031))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SbCl₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20946,7 +20808,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10032))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SbCl₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20967,7 +20828,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10033))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SbF₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -20988,7 +20848,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10034))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "HSbF₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21010,7 +20869,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10035))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, ">>> DANGER <<<")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21036,7 +20894,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10036))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??Nq??H⁺")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21062,7 +20919,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10037))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??Nq??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21088,7 +20944,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10038))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~Nq~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21114,7 +20969,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10039))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE FIRST STEP")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21136,7 +20990,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10040))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE FIRST STEP (taken)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21162,7 +21015,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10041))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SIXTY BILLION KILOWATT-HOURS")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21184,7 +21036,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10042))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SIXTY BILLION KILOWATT-HOURS (spent)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21210,7 +21061,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10046))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "POWER OVERWHELMING")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21232,7 +21082,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10047))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "POWER OVERWHELMING (no longer)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21258,7 +21107,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10048))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "STRIKE DOWN THE SUN")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21280,7 +21128,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10049))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "STRIKE DOWN THE SUN (done)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21306,7 +21153,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10050))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE END")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21328,7 +21174,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10051))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE END (literally)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21354,7 +21199,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10116))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE FUTURE")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21376,7 +21220,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10117))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "THE FUTURE (achieved)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21396,7 +21239,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10052))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zinc), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "ZnCl₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21433,7 +21275,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.TOOL_MATERIAL, GTMaterialFlag.METAL, GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10053))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zinc), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Thorium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "ZnTh")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21451,7 +21292,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NaquadahOxideMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NaquadahOxideMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NaquadahOxideMixture), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10054))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "NqTiGaAd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -21470,7 +21310,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.TitaniumTrifluoride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TitaniumTrifluoride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TitaniumTrifluoride), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10055))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Titanium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "TiF₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21492,7 +21331,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10056))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "NqGaAd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21509,7 +21347,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.GalliumHydroxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.GalliumHydroxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.GalliumHydroxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10057))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Gallium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ga(OH)₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21531,7 +21368,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10058))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~NqAd~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21553,7 +21389,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10059))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 18L)))
             .setProperty(GTMaterialProperties.FORMULA, "C₈H₁₈O")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21576,7 +21411,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10060))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 16L), new MaterialRefStack(MaterialRef.of(() -> Materials.Phosphorus), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 35L)))
             .setProperty(GTMaterialProperties.FORMULA, "(C₈H₁₇)₂PO₃H")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21598,7 +21432,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10061))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~NqAd~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21619,7 +21452,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10062))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~Nq~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21638,7 +21470,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadahine), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadahine), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadahine), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10063))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadah), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "NqO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21661,7 +21492,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10064))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??F??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21683,7 +21513,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10065))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "????")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21703,7 +21532,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10066))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Adamantium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ad₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21726,7 +21554,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10067))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "KeNq⁺")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -21745,7 +21572,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.TriniumSulphate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TriniumSulphate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TriniumSulphate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10068))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Trinium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "KeSO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21772,7 +21598,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10069))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~Nq⁺~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21794,7 +21619,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10070))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Nq⁺")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21823,7 +21647,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NaquadahEnriched), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 8L)))
             .setProperty(GTMaterialProperties.FORMULA, "Nq⁺(SO₄)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21847,7 +21670,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ore", "crushedCentrifuged", "crushedPurified", "crushed", "rawOre", "dustTiny", "dustSmall", "dustImpure", "dustPure", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Nq*BaIn")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.ORE_HARVEST_LEVEL, 3)
@@ -21867,7 +21689,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10073))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.TOXIC, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Indium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Phosphorus), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "InPO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21891,7 +21712,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "??Nq*₃(PO₄)₄??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21918,7 +21738,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "~Nq*~")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21946,7 +21765,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??Nq*(SO₄)₂??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -21971,7 +21789,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadria), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 8L)))
             .setProperty(GTMaterialProperties.FORMULA, "Nq*(SO₄)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -21993,7 +21810,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10079))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "NqTiGaAd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22019,7 +21835,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10080))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "KeNq⁺")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22046,7 +21861,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.TOXIC, true)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Nq*BaIn")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22081,7 +21895,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconium), 34L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tin), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chrome), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Zr₃₄Sn₅Fe₂Cr")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -22119,7 +21932,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconium), 34L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tin), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chrome), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Nickel), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Zr₃₄Sn₄FeCrNi")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -22157,7 +21969,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 12L), new MaterialRefStack(MaterialRef.of(() -> Materials.Nickel), 10L), new MaterialRefStack(MaterialRef.of(() -> Materials.Cobalt), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Titanium), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Molybdenum), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Aluminium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Fe₁₂Ni₁Co₈Ti₄Mo₂Al")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -22195,7 +22006,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Adamantium), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadah), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Lanthanum), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ad₅Nq₂La₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -22220,7 +22030,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10086))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.Cyclopentadiene = MaterialLibAPI.newMaterial("gregtech", "Cyclopentadiene", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFF6BD)
@@ -22239,7 +22048,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10087))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "C₅H₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22260,7 +22068,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10088))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "FeCl₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22281,7 +22088,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10089))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "C₄H₁₁N")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22302,7 +22108,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10090))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??Fe??C??H??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22323,7 +22128,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10091))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Fe(C₅H₅)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22344,7 +22148,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10092))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "??C??H??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22361,7 +22164,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Ferrocene), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Ferrocene), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Ferrocene), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10093))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Fe(C₅H₅)₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22382,7 +22184,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10094))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.JetFuelA = MaterialLibAPI.newMaterial("gregtech", "JetFuelA", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFF9800)
@@ -22401,7 +22202,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10095))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.MARM200Steel = MaterialLibAPI.newMaterial("gregtech", "MAR-M200Steel", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF515151)
@@ -22434,7 +22234,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Niobium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chrome), 9L), new MaterialRefStack(MaterialRef.of(() -> Materials.Aluminium), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Titanium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Cobalt), 10L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 13L), new MaterialRefStack(MaterialRef.of(() -> Materials.Nickel), 18L)))
             .setProperty(GTMaterialProperties.FORMULA, "Nb₂Cr₉Al₅Ti₂Co₁W₁₃Ni₁₈")
             .generateShape(TEBlockShapes.frameGt)
@@ -22470,7 +22269,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10097))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.MARM200Steel), 18L), new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "(Nb₂Cr₉Al₅Ti₂Co₁W₁₃Ni₁₈)₁₈Ce")
             .generateShape(TEBlockShapes.frameGt)
@@ -22511,7 +22309,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10098))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lithium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "LiCl")
             .build();
@@ -22543,7 +22340,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10099))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.AnnealedCopper), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Ardite), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.RedAlloy), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "Cu₄?₂(Cu(Si(FeS₂)₅(CrAl₂O₃)Hg₃)₄)₂")
             .generateShape(TEBlockShapes.frameGt)
@@ -22562,7 +22358,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lumiinessence), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Lumiinessence), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Lumiinessence), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10100))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "(Al??)₂(PO₄)₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22594,7 +22389,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10101))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.TinAlloy), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.SterlingSilver), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Lumiinessence), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "(SnFe)₄(CuAg₄)₂(Al??)₂(PO₄)₄₂")
             .generateShape(TEBlockShapes.frameGt)
@@ -22632,7 +22426,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.AdamantiumAlloy), 12L), new MaterialRefStack(MaterialRef.of(() -> Materials.Orundum), 9L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tin), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Arsenic), 7L), new MaterialRefStack(MaterialRef.of(() -> Materials.Caesium), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Osmiridium), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "(Ad₅Nq₂La₃)₁₂Or₉Sn₈As₇Cs₄(Ir₃Os)₃")
             .generateShape(TEBlockShapes.frameGt)
@@ -22670,7 +22463,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Titanium), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Molybdenum), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Vanadium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chrome), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.Aluminium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ti₅Mo₅V₂Cr₃Al")
             .generateShape(TEBlockShapes.frameGt)
@@ -22707,7 +22499,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.TanmolyiumBetaC), 14L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 10L), new MaterialRefStack(MaterialRef.of(() -> Materials.NiobiumTitanium), 9L), new MaterialRefStack(MaterialRef.of(() -> Materials.RhodiumPlatedPalladium), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Quantium), 7L), new MaterialRefStack(MaterialRef.of(() -> Materials.Erbium), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "(Ti₅Mo₅V₂Cr₃Al)₁₄W₁(NbTi)₉(Pd₃Rh)₈?₇Er₃")
             .generateShape(TEBlockShapes.frameGt)
@@ -22744,7 +22535,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lumiium), 18L), new MaterialRefStack(MaterialRef.of(() -> Materials.Silver), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sunnarium), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "((SnFe)₄(CuAg₄)₂(Al??)₂(PO₄)₄₂)₁₈Ag₈?₄")
             .generateShape(TEBlockShapes.frameGt)
@@ -22782,7 +22572,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadria), 7L), new MaterialRefStack(MaterialRef.of(() -> Materials.Bedrockium), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Vanadium), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.BlackPlutonium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "W₈?₇((SiO₂)₂₆₂₄₄C₉)₄C₄V₃?")
             .generateShape(TEBlockShapes.frameGt)
@@ -22806,7 +22595,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10107))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SbF₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -22825,7 +22613,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10108))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Magnesium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Sulfur), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "MgSO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -22861,7 +22648,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Ruthenium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Rhodium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Palladium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Platinum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Osmium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iridium), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "RuRhPdPtOsIr")
             .generateShape(TEBlockShapes.frameGt)
@@ -22899,7 +22685,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NaquadahEnriched), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tritanium), 5L), new MaterialRefStack(MaterialRef.of(() -> Materials.Californium), 3L), new MaterialRefStack(MaterialRef.of(() -> Materials.BlackPlutonium), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "?₈Tn₅Cf₃?₂")
             .generateShape(TEBlockShapes.frameGt)
@@ -22934,7 +22719,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10111))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Og*")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
@@ -22973,7 +22757,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10112))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES, false)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateQuintuple", "plateQuadruple", "plateTriple", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "cellMolten", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Sh⏧")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
@@ -22993,7 +22776,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.InertNaquadah), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.InertNaquadah), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.InertNaquadah), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10113))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadah), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Nq")
             .build();
@@ -23017,7 +22799,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10114))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NaquadahEnriched), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "?")
             .build();
@@ -23041,7 +22822,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(10115))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Naquadria), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "?")
             .build();
@@ -23077,7 +22857,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11000))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Hf")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.TIER, 2)
@@ -23102,7 +22881,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.LowPurityHafnium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LowPurityHafnium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LowPurityHafnium), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11001))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Hf")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23119,7 +22897,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Hafnia), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hafnia), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hafnia), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11002))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "HfO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23136,7 +22913,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.HafniumTetrachloride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HafniumTetrachloride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HafniumTetrachloride), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11003))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "HfCl₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23157,7 +22933,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11004))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "HfCl₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23174,7 +22949,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.HafniumIodide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HafniumIodide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HafniumIodide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11005))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "HfI₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23191,7 +22965,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.HafniumRunoff), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HafniumRunoff), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HafniumRunoff), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11006))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "??????")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23208,7 +22981,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconia), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconia), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Zirconia), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11008))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "ZrO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23225,7 +22997,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ZirconiumTetrachloride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ZirconiumTetrachloride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ZirconiumTetrachloride), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11009))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "ZrCl₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23246,7 +23017,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11010))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "ZrCl₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23263,7 +23033,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.HafniaZirconiaBlend), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HafniaZirconiaBlend), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HafniaZirconiaBlend), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11011))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "HfZr")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23300,7 +23069,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11012))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ELEMENT")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cell"))
             .setProperty(GTMaterialProperties.FORMULA, "I")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .generateShape(TEBlockShapes.frameGt)
@@ -23322,7 +23090,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11014))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmHfZr??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23343,7 +23110,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11015))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTiSi??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23364,7 +23130,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11016))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmThU??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23385,7 +23150,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11017))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeEu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23406,7 +23170,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11018))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmGdEu")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23423,7 +23186,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteSulfate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteSulfate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteSulfate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11019))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmThU??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23440,7 +23202,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.AcidicMonazitePowder), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.AcidicMonazitePowder), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.AcidicMonazitePowder), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11020))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmThU??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23457,7 +23218,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteRareEarthFiltrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteRareEarthFiltrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteRareEarthFiltrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11021))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeU??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23474,7 +23234,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NeutralizedMonaziteRareEarthFiltrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NeutralizedMonaziteRareEarthFiltrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NeutralizedMonaziteRareEarthFiltrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11022))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeU??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23491,7 +23250,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteRareEarthHydroxideConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteRareEarthHydroxideConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteRareEarthHydroxideConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11023))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeEu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23508,7 +23266,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.DriedMonaziteRareEarthConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.DriedMonaziteRareEarthConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.DriedMonaziteRareEarthConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11024))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeEu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23526,7 +23283,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11025))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "CeO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23543,7 +23299,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumChloride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumChloride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumChloride), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11026))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "CeCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23560,7 +23315,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumOxalate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumOxalate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumOxalate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11027))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Ce₂(C₂O₄)₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23580,7 +23334,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11028))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Cerium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ce₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -23598,7 +23351,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumRichMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumRichMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumRichMixture), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11029))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Ce")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23615,7 +23367,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.CooledMonaziteRareEarthConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CooledMonaziteRareEarthConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CooledMonaziteRareEarthConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11030))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmGdEu")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23632,7 +23383,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteRarerEarthSediment), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteRarerEarthSediment), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MonaziteRarerEarthSediment), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11031))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmGd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23649,7 +23399,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.HeterogenousHalogenicMonaziteRareEarthMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HeterogenousHalogenicMonaziteRareEarthMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HeterogenousHalogenicMonaziteRareEarthMixture), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11032))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmGd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23666,7 +23415,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SaturatedMonaziteRareEarth), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SaturatedMonaziteRareEarth), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SaturatedMonaziteRareEarth), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11033))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmGd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23683,7 +23431,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SamaricResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamaricResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamaricResidue), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11034))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm₂Gd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23704,7 +23451,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11036))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "NH₄NO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23721,7 +23467,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumPhosphateCake), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumPhosphateCake), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumPhosphateCake), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11037))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "ThP")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23738,7 +23483,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumPhosphateConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumPhosphateConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ThoriumPhosphateConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11038))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "ThP")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23755,7 +23499,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.UraniumFiltrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.UraniumFiltrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.UraniumFiltrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11039))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "U")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23772,7 +23515,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NeutralizedUraniumFiltrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NeutralizedUraniumFiltrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NeutralizedUraniumFiltrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11040))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "U")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23789,7 +23531,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SeaweedAsh), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SeaweedAsh), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SeaweedAsh), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11041))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "BIOLOGICAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "C?I?Ca?")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23810,7 +23551,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11042))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "BIOLOGICAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "I")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23827,7 +23567,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PotassiumPermanganate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PotassiumPermanganate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PotassiumPermanganate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11043))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "KMnO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23848,7 +23587,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11044))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "KMnO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23869,7 +23607,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11045))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "????")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23890,7 +23627,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11046))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCeEu??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23907,7 +23643,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumOxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11047))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "EuO")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23924,7 +23659,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumSulfide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumSulfide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumSulfide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11048))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "EuS")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23946,7 +23680,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.UnknownBlend), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.UnknownBlend), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.UnknownBlend), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11049))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23963,7 +23696,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumIIIOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumIIIOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumIIIOxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11050))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Eu₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -23984,7 +23716,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11100))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTiSi??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24005,7 +23736,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11102))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Na₂SiF₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24026,7 +23756,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11103))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTiSi??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24047,7 +23776,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11104))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTiSi??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24068,7 +23796,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11105))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTiSi??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24089,7 +23816,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11106))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24106,7 +23832,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.BastnasiteRareEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.BastnasiteRareEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.BastnasiteRareEarthOxides), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11107))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24123,7 +23848,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.AcidLeachedBastnasiteRareEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.AcidLeachedBastnasiteRareEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.AcidLeachedBastnasiteRareEarthOxides), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11108))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24141,7 +23865,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Gangue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Gangue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Gangue), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11109))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "block"))
             .setProperty(GTMaterialProperties.FORMULA, "Useless...")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24158,7 +23881,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.RoastedRareEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RoastedRareEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RoastedRareEarthOxides), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11110))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24175,7 +23897,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.WetRareEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.WetRareEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.WetRareEarthOxides), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11111))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24192,7 +23913,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumOxidisedRareEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumOxidisedRareEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.CeriumOxidisedRareEarthOxides), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11112))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLaCe??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24209,7 +23929,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.BastnasiteRarerEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.BastnasiteRarerEarthOxides), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.BastnasiteRarerEarthOxides), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11113))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLa??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24230,7 +23949,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11114))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLa??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24251,7 +23969,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11115))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmLa??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24268,7 +23985,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SamaricRareEarthConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamaricRareEarthConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamaricRareEarthConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11116))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmHoTb")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24285,7 +24001,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NeodymiumRareEarthConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NeodymiumRareEarthConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NeodymiumRareEarthConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11117))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "LaNd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24305,7 +24020,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11121))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lanthanum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "LaCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -24327,7 +24041,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11122))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Neodymium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Nd₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -24345,7 +24058,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.FluorinatedSamaricConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.FluorinatedSamaricConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.FluorinatedSamaricConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11123))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmHoTb??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24369,7 +24081,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11124))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Calcium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 2L)))
             .setProperty(GTMaterialProperties.FORMULA, "CaF₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -24387,7 +24098,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumTerbiumMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumTerbiumMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumTerbiumMixture), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11125))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTb??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24404,7 +24114,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NitrogenatedSamariumTerbiumMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NitrogenatedSamariumTerbiumMixture), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NitrogenatedSamariumTerbiumMixture), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11126))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmTbNH₄NO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24423,7 +24132,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11127))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Terbium), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Nitrogen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "TbNO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -24441,7 +24149,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11128))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24458,7 +24165,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.DephosphatedSamariumConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.DephosphatedSamariumConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.DephosphatedSamariumConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11129))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24479,7 +24185,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11301))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "HO(CH₂)₄OH")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24496,7 +24201,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.TelluriumMolybdenumOxideCatalyst), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TelluriumMolybdenumOxideCatalyst), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TelluriumMolybdenumOxideCatalyst), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11303))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "(MoO₂)(TeO₂)")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24513,7 +24217,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.TelluriumIVOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TelluriumIVOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TelluriumIVOxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11304))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "TeO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24530,7 +24233,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.MolybdenumIVOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MolybdenumIVOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MolybdenumIVOxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11305))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "MoO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24551,7 +24253,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11309))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "C₇H₆N₂O₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24572,7 +24273,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11310))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "C₆H₃(NH₂)₂CH₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24592,7 +24292,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11314))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cellMolten"))
             .setProperty(GTMaterialProperties.FORMULA, "KClO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24613,7 +24312,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11316))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "C₃H₆O")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24630,7 +24328,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.MolybdenumTrioxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MolybdenumTrioxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.MolybdenumTrioxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11317))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "MoO₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24651,7 +24348,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11461))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24672,7 +24368,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11462))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24693,7 +24388,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11463))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24710,7 +24404,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumIIIOxalate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumIIIOxalate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumIIIOxalate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11464))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Sm₂(C₂O₄)₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24730,7 +24423,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11465))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cellMolten"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24747,7 +24439,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumChlorideSodiumChlorideBlend), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumChlorideSodiumChlorideBlend), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.SamariumChlorideSodiumChlorideBlend), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11466))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCl₃NaCl")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24764,7 +24455,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ImpureLanthanumChloride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ImpureLanthanumChloride), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ImpureLanthanumChloride), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11467))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "LaCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24784,7 +24474,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11468))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Samarium), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "Sm₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -24811,7 +24500,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11469))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Cl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24832,7 +24520,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11470))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Cl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24853,7 +24540,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11471))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Cl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24870,7 +24556,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.RarestEarthResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RarestEarthResidue), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.RarestEarthResidue), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11472))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -24892,7 +24577,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11401))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledLanthanumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledLanthanumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF808050)
@@ -24912,7 +24596,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11402))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.PraseodymiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "PraseodymiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF50C082)
@@ -24932,7 +24615,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11403))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledPraseodymiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledPraseodymiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF8CC082)
@@ -24952,7 +24634,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11404))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.CeriumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "CeriumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF50F0A0)
@@ -24972,7 +24653,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11405))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledCeriumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledCeriumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0F0B4)
@@ -24992,7 +24672,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11406))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.NeodymiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "NeodymiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF808C80)
@@ -25012,7 +24691,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11407))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledNeodymiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledNeodymiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF969696)
@@ -25032,7 +24710,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11408))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.SamariumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "SamariumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFF064)
@@ -25052,7 +24729,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11411))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledSamariumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledSamariumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFF0C4)
@@ -25072,7 +24748,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11412))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.EuropiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "EuropiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFF0A0F0)
@@ -25092,7 +24767,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11413))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledEuropiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledEuropiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFF0C8F0)
@@ -25112,7 +24786,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11414))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.GadoliniumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "GadoliniumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF78FF50)
@@ -25132,7 +24805,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11415))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledGadoliniumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledGadoliniumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0FF8C)
@@ -25152,7 +24824,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11416))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.TerbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "TerbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFC8C8C8)
@@ -25172,7 +24843,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11417))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledTerbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledTerbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
@@ -25192,7 +24862,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11418))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.DysprosiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "DysprosiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6EF0B4)
@@ -25212,7 +24881,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11419))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledDysprosiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledDysprosiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF96F0B4)
@@ -25232,7 +24900,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11420))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.HolmiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "HolmiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF1010D8)
@@ -25252,7 +24919,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11421))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledHolmiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledHolmiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF3C5AFF)
@@ -25272,7 +24938,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11422))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.ErbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "ErbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFC8A050)
@@ -25292,7 +24957,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11423))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledErbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledErbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE9AA64)
@@ -25312,7 +24976,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11424))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.ThuliumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "ThuliumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF80B2FF)
@@ -25332,7 +24995,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11425))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledThuliumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledThuliumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0C8FF)
@@ -25352,7 +25014,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11426))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.YtterbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "YtterbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF00FF00)
@@ -25372,7 +25033,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11427))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledYtterbiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledYtterbiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF64FF64)
@@ -25392,7 +25052,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11428))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.LutetiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "LutetiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFE610E6)
@@ -25412,7 +25071,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11429))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.FilledLutetiumExtractingNanoResin = MaterialLibAPI.newMaterial("gregtech", "FilledLutetiumExtractingNanoResin", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFF064F0)
@@ -25432,7 +25090,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11430))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.LanthanumChlorideConcentrate = MaterialLibAPI.newMaterial("gregtech", "LanthanumChlorideConcentrate", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF808050)
@@ -25451,7 +25108,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11431))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "LaCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25472,7 +25128,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11432))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "PrCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25493,7 +25148,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11433))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "CeCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25514,7 +25168,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11434))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "NdCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25535,7 +25188,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11435))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "PmCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25556,7 +25208,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11436))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SmCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25577,7 +25228,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11437))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "EuCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25598,7 +25248,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11438))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "GdCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25619,7 +25268,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11439))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "TbCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25640,7 +25288,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11440))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "DyCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25661,7 +25308,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11441))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "HoCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25682,7 +25328,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11442))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "ErCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25703,7 +25348,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11443))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "TmCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25729,7 +25373,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11444))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "YbCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25750,7 +25393,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11445))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "LuCl??")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25767,7 +25409,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.LanthanumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LanthanumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LanthanumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11446))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "La")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25784,7 +25425,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PraseodymiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PraseodymiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PraseodymiumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11447))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pr")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25801,7 +25441,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.NeodymiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NeodymiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.NeodymiumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11449))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Nd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25818,7 +25457,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.PromethiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PromethiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.PromethiumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11450))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Pm")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25835,7 +25473,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.EuropiumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11451))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Eu")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25852,7 +25489,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.GadoliniumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.GadoliniumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.GadoliniumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11452))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Gd")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25869,7 +25505,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.TerbiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TerbiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.TerbiumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11453))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Tb")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25886,7 +25521,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.DysprosiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.DysprosiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.DysprosiumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11454))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Dy")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25903,7 +25537,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.HolmiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HolmiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.HolmiumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11455))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Ho")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25920,7 +25553,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ErbiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ErbiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ErbiumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11456))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Er")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25937,7 +25569,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.ThuliumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ThuliumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.ThuliumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11457))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Tm")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25954,7 +25585,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.YtterbiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.YtterbiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.YtterbiumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11458))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Yb")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25971,7 +25601,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.LutetiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LutetiumOreConcentrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LutetiumOreConcentrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11459))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Lu")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -25992,7 +25621,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.SMELTING_TO_FLUID))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11498))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust", "cellMolten"))
             .setProperty(GTMaterialProperties.FORMULA, "CeLu₃(Al₂O₃)₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -26019,7 +25647,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeGreen")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11499))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MATERIAL")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "CeLu₃(Al₂O₃)₅")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -26057,7 +25684,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
             .setProperty(GTMaterialProperties.HAS_MIXER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Nickel), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Iron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Molybdenum), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "Ni₄FeMo")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -26091,7 +25717,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
             .setProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, true)
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plateDense", "plateSuperdense", "plateDouble", "plate", "foil", "stickLong", "stick", "bolt", "screw", "ring", "springSmall", "spring", "wireFine", "rotor", "gearGtSmall", "gearGt", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Permalloy), 9L), new MaterialRefStack(MaterialRef.of(() -> Materials.Copper), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chrome), 1L)))
             .setProperty(GTMaterialProperties.FORMULA, "(Ni₄FeMo)₉CuCr")
             .generateShape(TEBlockShapes.frameGt)
@@ -26117,7 +25742,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11352))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "ISOTOPE")
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "Th")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .setProperty(GTMaterialProperties.ELEMENT, "Th_234")
@@ -26149,7 +25773,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11353))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("ingotHot", "ingot", "dustTiny", "dustSmall", "dust", "nugget", "plate", "foil", "stickLong", "stick", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.FORMULA, "Si₃N₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -26171,7 +25794,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11354))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Fluorine), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "CHF₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -26193,7 +25815,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11355))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "CHF₃/O₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -26211,7 +25832,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11356))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "B₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -26235,7 +25855,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11357))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "BCl₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -26263,7 +25882,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeRed")
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11358))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gem", "dustTiny", "dustSmall", "dust", "plate", "foil", "stickLong", "stick", "lens", "toolHeadHammer", "toolHeadSaw", "toolHeadWrench", "turbineBlade", "block", "blockCasing", "blockCasingAdvanced"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Lanthanum), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Boron), 6L)))
             .setProperty(GTMaterialProperties.FORMULA, "LaB₆")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
@@ -26281,7 +25899,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.LanthanumOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LanthanumOxide), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.LanthanumOxide), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11359))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.FORMULA, "La₂O₃")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -26302,7 +25919,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11360))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "SiH₄/N")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -26323,7 +25939,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(11361))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "MIXTURE")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .build();
         Materials.TungsticAcid = MaterialLibAPI.newMaterial("gregtech", "TungsticAcid", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFF5F116)
@@ -26340,7 +25955,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(29900))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 4L)))
             .setProperty(GTMaterialProperties.FORMULA, "H₂WO₄")
             .build();
@@ -26360,7 +25974,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(29901))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
             .setProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION, true)
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Tungsten), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "WO₃")
             .build();
@@ -26377,7 +25990,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.AmmoniumNitrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.AmmoniumNitrate), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.AmmoniumNitrate), 1L)))
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(29903))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("dustTiny", "dustSmall", "dust"))
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Nitrogen), 1L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 3L)))
             .setProperty(GTMaterialProperties.FORMULA, "NH₄NO₃")
             .build();
@@ -26398,7 +26010,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(29904))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "Na₂WO₄")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -26419,7 +26030,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(29905))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "COCl₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();
@@ -26440,7 +26050,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.WERKSTOFF_IDS, List.of(29914))
             .setProperty(GTMaterialProperties.WERKSTOFF_TYPE, "COMPOUND")
-            .setProperty(GTMaterialProperties.WERKSTOFF_PREFIXES, List.of("cell"))
             .setProperty(GTMaterialProperties.FORMULA, "CH₃NO₂")
             .setProperty(GTMaterialProperties.FORMULA_LOCALIZED, true)
             .build();

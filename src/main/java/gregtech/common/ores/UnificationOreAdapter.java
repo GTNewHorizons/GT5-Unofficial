@@ -23,7 +23,6 @@ import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.ruling_0.materiallib.api.Material;
 
-import bartworks.system.material.BWMetaGeneratedOres;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.GTLoggers;
 import gregtech.GTMod;
@@ -32,7 +31,6 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.GTMockWorld;
-import gregtech.common.blocks.GTBlockOre;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
@@ -112,9 +110,7 @@ public class UnificationOreAdapter implements IOreAdapter {
     /// Checks if the ore block is a GT block, which means that it should be supported by another adapter. These blocks
     /// will not be indexed when their ore dictionary names are added.
     private static boolean isGTOre(Block block) {
-        if (block instanceof GTBlockOre) return true;
-        if (GTOreAdapter.INSTANCE.supports(block, 0)) return true;
-        return block instanceof BWMetaGeneratedOres;
+        return GTOreAdapter.INSTANCE.supports(block, 0);
     }
 
     private static void init() {

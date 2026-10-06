@@ -72,7 +72,6 @@ import gregtech.api.util.CasingTier;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GlassTier;
 import gregtech.common.MaterialHazardHandler;
-import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import tectech.loader.recipe.Godforge;
 
 @Mod(
@@ -175,8 +174,6 @@ public final class MainMod {
             .bus()
             .register(serverEventHandler);
         BioLabLoader.run(event);
-
-        LoaderLegacyBartworksBlocks.register();
 
         ItemRegistry.run();
         GlassTier.RegisterGlassTiers.run();

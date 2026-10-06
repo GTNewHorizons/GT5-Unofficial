@@ -44,10 +44,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
-import gregtech.common.ores.BWOreAdapter;
-import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
-import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import gregtech.nei.dumper.BatchModeSupportDumper;
 import gregtech.nei.dumper.InputSeparationSupportDumper;
 import gregtech.nei.dumper.MaterialDumper;
@@ -218,9 +215,6 @@ public class NEIGTConfig implements IConfigureNEI {
     }
 
     private void hideItems() {
-        GTOreAdapter.INSTANCE.hideOres();
-        BWOreAdapter.INSTANCE.hideOres();
-        LoaderLegacyBartworksBlocks.hideSupersededSlots();
         hideFilledUniversalCells();
     }
 

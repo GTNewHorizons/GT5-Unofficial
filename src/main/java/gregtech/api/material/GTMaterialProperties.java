@@ -153,9 +153,6 @@ public class GTMaterialProperties {
     /// Every werkstoff id saved bartworks items and ore blocks address this material by. More than one when two
     /// same-name werkstoffe share this material. Permanent: saved worlds keep these ids indefinitely.
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
-    /// The frozen list of `OrePrefixes` names a werkstoff-backed material's saved parts can carry. `sheetmetal`
-    /// and `frameGt` never appear here, since they are MaterialLib shapes on the material itself.
-    public static final Property<List<String>> WERKSTOFF_PREFIXES = Property.of("gregtech", "werkstoffPrefixes");
     /// The bartworks material type name, such as `"ELEMENT"` or `"BIOLOGICAL"`.
     public static final Property<String> WERKSTOFF_TYPE = Property.of("gregtech", "werkstoffType");
 

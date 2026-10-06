@@ -1,6 +1,5 @@
 package gregtech.test;
 
-import static gregtech.api.GregTechAPI.sBlockOres1;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.ItemList.Circuit_Parts_Crystal_Chip_Master;
 import static gregtech.api.enums.ItemList.IC2_LapotronCrystal;
@@ -42,7 +41,9 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
@@ -92,7 +93,8 @@ class GTRecipeTest {
             .toArray(new GTRecipe[0])[0];
 
         RA.stdBuilder()
-            .itemInputs(new ItemStack(sBlockOres1, 1, 32))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.Iron, OreShapes.ore, OreShapes.variantOf(StoneType.Stone.name()), 1))
             .itemOutputs(new ItemStack(iron_ingot, 1))
             .duration(0)
             .eut(0)
@@ -262,7 +264,8 @@ class GTRecipeTest {
         // A recipe for one item under an ore-dictionary name does not accept another item under the same name
         // (https://github.com/GTNewHorizons/GT5-Unofficial/pull/2379).
         GTRecipe recipeCorrectOre = recipeMap.findRecipeQuery()
-            .items(new ItemStack(sBlockOres1, 1, 32))
+            .items(
+                MaterialLibAPI.getStack(Materials.Iron, OreShapes.ore, OreShapes.variantOf(StoneType.Stone.name()), 1))
             .find();
         assertNotNull(recipeCorrectOre);
 
