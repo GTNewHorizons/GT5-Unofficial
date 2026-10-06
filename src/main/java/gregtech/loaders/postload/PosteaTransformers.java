@@ -40,7 +40,6 @@ import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialParts;
-import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.common.items.MetaGeneratedItem98;
@@ -498,25 +497,10 @@ public class PosteaTransformers implements Runnable {
             LEGACY_WERKSTOFF_ITEM_PREFIXES.length);
     }
 
-    /// Migrates saved placed blocks and item stacks of a cut-over material's legacy storage-block slot (see
-    /// [BlockMetal], [MaterialParts]) into the equivalent MaterialLib block stack. `addSimpleReplacement`'s
-    /// block+meta overload registers a matching item replacement automatically, so no separate item-side call
-    /// is needed. Materials that did not cut over keep their legacy slot, which stays registered (see
-    /// [BlockMetal]'s javadoc).
+    /// Migrates saved placed blocks and item stacks of the legacy storage blocks ([LegacyStorageBlockTable] and
+    /// the bartworks werkstoff blocks) into the equivalent MaterialLib block stack.
     private static void registerStorageBlockCutoverTransformers() {
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal1", GregTechAPI.sBlockMetal1);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal2", GregTechAPI.sBlockMetal2);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal3", GregTechAPI.sBlockMetal3);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal4", GregTechAPI.sBlockMetal4);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal5", GregTechAPI.sBlockMetal5);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal6", GregTechAPI.sBlockMetal6);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal7", GregTechAPI.sBlockMetal7);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal8", GregTechAPI.sBlockMetal8);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal9", GregTechAPI.sBlockMetal9);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal10", GregTechAPI.sBlockMetal10);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockgem1", GregTechAPI.sBlockGem1);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockgem2", GregTechAPI.sBlockGem2);
-        registerStorageBlockCutoverTransformer("gregtech:gt.blockgem3", GregTechAPI.sBlockGem3);
+        LegacyStorageBlockTable.BATCHES.forEach(PosteaTransformers::registerStorageBlockCutoverTransformer);
         registerWerkstoffBlockCutoverTransformer(
             "bw.werkstoffblockTE",
             "bartworks:bw.werkstoffblocks.01",
@@ -557,10 +541,9 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
-    private static void registerStorageBlockCutoverTransformer(String originalId, Block legacyBlock) {
-        BlockMetal metal = (BlockMetal) legacyBlock;
-        for (int meta = 0; meta < metal.mMats.length; meta++) {
-            Material material = metal.mMats[meta];
+    private static void registerStorageBlockCutoverTransformer(String originalId, Material[] batch) {
+        for (int meta = 0; meta < batch.length; meta++) {
+            Material material = batch[meta];
             if (material == null || !material.hasShape(BlockShapes.block)) continue;
             ItemStack cutover = MaterialLibAPI.getStack(material, BlockShapes.block, 1);
             Block mlBlock = Block.getBlockFromItem(cutover.getItem());
