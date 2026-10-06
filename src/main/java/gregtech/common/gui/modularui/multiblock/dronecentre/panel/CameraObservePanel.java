@@ -158,7 +158,10 @@ public class CameraObservePanel extends ModularPanel {
             .child(
                 new ButtonWidget<>().fullWidth()
                     .height(RESCUE_BUTTON_HEIGHT)
-                    .overlay(IKey.lang("GT5U.gui.button.drone_rescue"))
+                    .overlay(
+                        IKey.lang("GT5U.gui.button.drone_rescue")
+                            .asIcon()
+                            .marginTop(2))
                     .onMousePressed(mouseButton -> {
                         if (mouseButton == 0) {
                             cameraManager.resetToSpawn();
