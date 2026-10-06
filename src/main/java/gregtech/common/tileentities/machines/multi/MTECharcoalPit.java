@@ -44,6 +44,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingTextureProvider {
 
     private boolean running = false;
