@@ -19,13 +19,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
@@ -118,7 +116,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Power.get(1),
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plateDense, 6),
-                MaterialParts.stack(OrePrefixes.foil, BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), 12),
+                MaterialLibAPI.findStack(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), Shapes.foil, 12),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, 24),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ring, 24),
                 ItemList.Field_Generator_IV.get(1))
@@ -268,9 +266,9 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Dynamo_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt04, 2),
-                        MaterialParts.stack(
-                            OrePrefixes.plate,
+                        MaterialLibAPI.findStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
+                            Shapes.plate,
                             2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_LuV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HSSG, FluidShapes.fluidMolten, 1 * INGOTS))
@@ -393,9 +391,9 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_ZPM_LuV.get(1),
                         CustomItemList.eM_dynamoMulti4_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt08, 2),
-                        MaterialParts.stack(
-                            OrePrefixes.plate,
+                        MaterialLibAPI.findStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
+                            Shapes.plate,
                             4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_LuV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HSSG, FluidShapes.fluidMolten, 4 * INGOTS))
@@ -525,9 +523,9 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_ZPM_LuV.get(1),
                         CustomItemList.eM_dynamoMulti16_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt12, 2),
-                        MaterialParts.stack(
-                            OrePrefixes.plate,
+                        MaterialLibAPI.findStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
+                            Shapes.plate,
                             6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_LuV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HSSG, FluidShapes.fluidMolten, 16 * INGOTS))
@@ -736,9 +734,9 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Energy_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt04, 2),
-                        MaterialParts.stack(
-                            OrePrefixes.plate,
+                        MaterialLibAPI.findStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
+                            Shapes.plate,
                             2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_LuV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HSSG, FluidShapes.fluidMolten, 1 * INGOTS))
@@ -861,9 +859,9 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_ZPM_LuV.get(1),
                         CustomItemList.eM_energyMulti4_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt08, 2),
-                        MaterialParts.stack(
-                            OrePrefixes.plate,
+                        MaterialLibAPI.findStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
+                            Shapes.plate,
                             4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_LuV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HSSG, FluidShapes.fluidMolten, 4 * INGOTS))
@@ -993,9 +991,9 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_ZPM_LuV.get(1),
                         CustomItemList.eM_energyMulti16_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt12, 2),
-                        MaterialParts.stack(
-                            OrePrefixes.plate,
+                        MaterialLibAPI.findStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
+                            Shapes.plate,
                             6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_LuV.get(1))
                     .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HSSG, FluidShapes.fluidMolten, 16 * INGOTS))
@@ -1116,9 +1114,9 @@ public class Assembler implements Runnable {
                 ItemList.Transformer_ZPM_LuV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
                 Circuits.LuV.get(2),
-                MaterialParts.stack(
-                    OrePrefixes.plate,
+                MaterialLibAPI.findStack(
                     BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
+                    Shapes.plate,
                     2),
                 MaterialLibAPI.getStack(Materials.NiobiumTitanium, TEBlockShapes.wireGt16, 4),
                 new ItemStack(bw_realglas, 2, 3))

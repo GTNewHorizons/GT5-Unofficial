@@ -124,7 +124,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         GTUtility.removeSimpleIC2MachineRecipe(
             GTUtility.copyAmount(9, stack),
             GTModHandler.getCompressorRecipeList(),
-            MaterialParts.stack(OrePrefixes.plateDense, material, 1L));
+            MaterialLibAPI.findStack(material, Shapes.plateDense, 1));
 
         if (MaterialUtils.fuelPower(material) > 0) {
             GTValues.RA.stdBuilder()
@@ -138,7 +138,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             && !(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
+                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
                 .fluidInputs(MaterialUtils.molten(material, 1 * INGOTS))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(calculateRecipeEU(material, 8))
@@ -147,9 +147,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
-                MaterialParts.stack(OrePrefixes.foil, material, 2L),
+                MaterialLibAPI.findStack(material, Shapes.foil, 2),
                 BITS_STD,
-                new Object[] { "hX", 'X', MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+                new Object[] { "hX", 'X', OrePrefixes.plate.ingredient(material) });
 
             if (material == Materials.Paper) {
                 GTModHandler.addCraftingRecipe(
@@ -167,16 +167,16 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
                 if (belowTierIV) {
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.plate, material, 1L),
+                        MaterialLibAPI.findStack(material, Shapes.plate, 1),
                         BITS_STD,
                         new Object[] { "h", // craftingToolHardHammer
-                            "X", "X", 'X', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
+                            "X", "X", 'X', OrePrefixes.ingot.ingredient(material) });
 
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.plate, material, 1L),
+                        MaterialLibAPI.findStack(material, Shapes.plate, 1),
                         BITS_STD,
                         new Object[] { "h", // craftingToolHardHammer
-                            "X", 'X', MaterialParts.craftIngredient(OrePrefixes.gem, material) });
+                            "X", 'X', OrePrefixes.gem.ingredient(material) });
                 }
             }
 
@@ -184,10 +184,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
                 if (belowTierIV) {
                     GTModHandler.addShapelessCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.dust, material, 1L),
+                        MaterialLibAPI.findStack(material, Shapes.dust, 1),
                         BITS_STD,
-                        new Object[] { ToolDictNames.craftingToolMortar,
-                            MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+                        new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.plate.ingredient(material) });
                 }
             }
         }
@@ -202,18 +201,18 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (!noSmashing || MaterialUtils.hasFlag(material, GTMaterialFlag.STRETCHY)) {
             // 2 double -> 1 quadruple plate
-            if (MaterialParts.stack(OrePrefixes.plateQuadruple, material, 1L) != null) {
+            if (MaterialLibAPI.findStack(material, Shapes.plateQuadruple, 1) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(2, stack))
                     .circuit(2)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.plateQuadruple, material, 1L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateQuadruple, 1))
                     .duration(Math.max(materialMass * 2L, 1L))
                     .eut(calculateRecipeEU(material, 96))
                     .addTo(benderRecipes);
             }
             // 2 plates -> 1 double plate
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 2L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 2))
                 .circuit(2)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 2L, 1L))
@@ -221,7 +220,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(benderRecipes);
         } else {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 2L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 2))
                 .circuit(2)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 10))
@@ -231,7 +230,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (!noSmashing) {
-            Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
+            Object plateStack = OrePrefixes.plate.ingredient(material);
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
@@ -250,19 +249,19 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
         if (!noSmashing || MaterialUtils.hasFlag(material, GTMaterialFlag.STRETCHY)) {
-            if (MaterialParts.stack(OrePrefixes.plateDense, material, 1L) != null) {
+            if (MaterialLibAPI.findStack(material, Shapes.plateDense, 1) != null) {
                 // 3 triple plates -> 1 dense plate
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(3, stack))
                     .circuit(3)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.plateDense, material, 1L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateDense, 1))
                     .duration(Math.max(materialMass * 3L, 1L))
                     .eut(calculateRecipeEU(material, 96))
                     .addTo(benderRecipes);
             }
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 3L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 3))
                 .circuit(3)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 3L, 1L))
@@ -270,7 +269,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(benderRecipes);
         } else {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 3L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 3))
                 .circuit(3)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 20))
@@ -281,12 +280,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (!noSmashing) {
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
-                Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
+                Object plateStack = OrePrefixes.plate.ingredient(material);
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
                     new Object[] { "I", "B", "h", // craftingToolHardHammer
-                        'I', MaterialParts.craftIngredient(OrePrefixes.plateDouble, material), 'B', plateStack });
+                        'I', OrePrefixes.plateDouble.ingredient(material), 'B', plateStack });
             }
         }
 
@@ -342,7 +341,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         if (!noSmashing || MaterialUtils.hasFlag(material, GTMaterialFlag.STRETCHY)) {
             // Quadruple plate
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 4L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 4))
                 .circuit(4)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 4L, 1L))
@@ -350,7 +349,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(benderRecipes);
         } else {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 4L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 4))
                 .circuit(4)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 30))
@@ -360,12 +359,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
         if (!noSmashing) {
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
-                Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
+                Object plateStack = OrePrefixes.plate.ingredient(material);
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
                     new Object[] { "I", "B", "h", // craftingToolHardHammer
-                        'I', MaterialParts.craftIngredient(OrePrefixes.plateTriple, material), 'B', plateStack });
+                        'I', OrePrefixes.plateTriple.ingredient(material), 'B', plateStack });
             }
         }
     }
@@ -380,7 +379,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         if (!noSmashing || MaterialUtils.hasFlag(material, GTMaterialFlag.STRETCHY)) {
             // quintuple plate
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 5L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 5))
                 .circuit(5)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 5L, 1L))
@@ -388,7 +387,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(benderRecipes);
         } else {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 5L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 5))
                 .circuit(5)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 40))
@@ -398,12 +397,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
         if (!noSmashing) {
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
-                Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
+                Object plateStack = OrePrefixes.plate.ingredient(material);
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
                     new Object[] { "I", "B", "h", // craftingToolHardHammer
-                        'I', MaterialParts.craftIngredient(OrePrefixes.plateQuadruple, material), 'B', plateStack });
+                        'I', OrePrefixes.plateQuadruple.ingredient(material), 'B', plateStack });
             }
         }
     }
@@ -418,7 +417,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         if (!noSmashing || MaterialUtils.hasFlag(material, GTMaterialFlag.STRETCHY)) {
             // Dense plate
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 9L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
                 .circuit(9)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 9L, 1L))
@@ -435,7 +434,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             int compression_tier = (MaterialUtils.processingMaterialTierEU(material) >= TierEU.RECIPE_UEV
                 || MaterialUtils.hasFlag(material, GTMaterialFlag.BLACK_HOLE)) ? 2 : 1;
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 64))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 64))
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(Math.max(materialMass * 32L, 1L))
                 .eut(calculateRecipeEU(material, 96))
@@ -453,7 +452,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             && !(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Casing.get(0L))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.itemCasing, material, 1L))
+                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.itemCasing, 1))
                 .fluidInputs(MaterialUtils.molten(material, 1 * HALF_INGOTS))
                 .duration(16 * TICKS)
                 .eut(calculateRecipeEU(material, 8))
@@ -464,15 +463,15 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
-                    MaterialParts.stack(OrePrefixes.itemCasing, material, 1L),
+                    MaterialLibAPI.findStack(material, Shapes.itemCasing, 1),
                     BITS_STD,
-                    new Object[] { "h X", 'X', MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+                    new Object[] { "h X", 'X', OrePrefixes.plate.ingredient(material) });
             }
         }
 
-        if (MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null) {
+        if (MaterialLibAPI.findStack(material, Shapes.ingot, 1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.ingot, material, 2L), ItemList.Shape_Mold_Casing.get(0L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.ingot, 2), ItemList.Shape_Mold_Casing.get(0L))
                 .itemOutputs(GTUtility.copyAmount(3, stack))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(calculateRecipeEU(material, 15))
@@ -480,19 +479,17 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(alloySmelterRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialParts.stack(OrePrefixes.ingot, material, 1L),
-                    ItemList.Shape_Extruder_Casing.get(0L))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.itemCasing, material, 2L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.ingot, 1), ItemList.Shape_Extruder_Casing.get(0L))
+                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.itemCasing, 2))
                 .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
                 .eut(calculateRecipeEU(material, 45))
                 .addTo(extruderRecipes);
         }
 
-        if (MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
+        if (MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.itemCasing, material, 2L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
+                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.itemCasing, 2))
                 .fluidInputs(
                     GTUtility.getWater(
                         Math.max(
@@ -506,8 +503,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.itemCasing, material, 2L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
+                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.itemCasing, 2))
                 .fluidInputs(
                     GTModHandler.getDistilledWater(
                         Math.max(
@@ -521,8 +518,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.itemCasing, material, 2L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
+                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.itemCasing, 2))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Lubricant,
@@ -538,8 +535,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.itemCasing, material, 2L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
+                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.itemCasing, 2))
                 .fluidInputs(
                     MaterialUtils.fluid(
                         Materials.dimensionallyshiftedsuperfluid,

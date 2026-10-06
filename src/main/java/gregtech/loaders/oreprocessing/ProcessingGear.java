@@ -10,12 +10,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -50,24 +52,22 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (MaterialUtils.unifiable(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     switch (MaterialUtils.internalName(material)) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
-                            MaterialParts.stack(OrePrefixes.gearGt, material, 1L),
+                            MaterialLibAPI.findStack(material, Shapes.gearGt, 1),
                             GTModHandler.RecipeBits.BITS_STD,
-                            new Object[] { "SPS", "PsP", "SPS", 'P',
-                                MaterialParts.craftIngredient(OrePrefixes.plank, material), 'S',
-                                MaterialParts.craftIngredient(OrePrefixes.stick, material) });
+                            new Object[] { "SPS", "PsP", "SPS", 'P', OrePrefixes.plank.ingredient(material), 'S',
+                                OrePrefixes.stick.ingredient(material) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
-                            MaterialParts.stack(OrePrefixes.gearGt, material, 1L),
+                            MaterialLibAPI.findStack(material, Shapes.gearGt, 1),
                             GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "SPS", "PfP", "SPS", 'P', OrePrefixes.stoneSmooth, 'S',
                                 new ItemStack(Blocks.stone_button, 1, 32767) });
                         default -> {
                             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialParts.stack(OrePrefixes.gearGt, material, 1L),
+                                    MaterialLibAPI.findStack(material, Shapes.gearGt, 1),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "SPS", "PwP", "SPS", 'P',
-                                        MaterialParts.craftIngredient(OrePrefixes.plate, material), 'S',
-                                        MaterialParts.craftIngredient(OrePrefixes.stick, material) });
+                                    new Object[] { "SPS", "PwP", "SPS", 'P', OrePrefixes.plate.ingredient(material),
+                                        'S', OrePrefixes.stick.ingredient(material) });
                             }
                         }
                     }
@@ -88,22 +88,20 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (MaterialUtils.unifiable(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     switch (MaterialUtils.internalName(material)) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
-                            MaterialParts.stack(OrePrefixes.gearGtSmall, material, 1L),
+                            MaterialLibAPI.findStack(material, Shapes.gearGtSmall, 1),
                             GTModHandler.RecipeBits.BITS_STD,
-                            new Object[] { "P ", " s", 'P',
-                                MaterialParts.craftIngredient(OrePrefixes.plank, material) });
+                            new Object[] { "P ", " s", 'P', OrePrefixes.plank.ingredient(material) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
-                            MaterialParts.stack(OrePrefixes.gearGtSmall, material, 1L),
+                            MaterialLibAPI.findStack(material, Shapes.gearGtSmall, 1),
                             GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "P ", " f", 'P', OrePrefixes.stoneSmooth });
                         default -> {
                             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialParts.stack(OrePrefixes.gearGtSmall, material, 1L),
+                                    MaterialLibAPI.findStack(material, Shapes.gearGtSmall, 1),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { " S ", "hPx", " S ", 'S',
-                                        MaterialParts.craftIngredient(OrePrefixes.stick, material), 'P',
-                                        MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+                                    new Object[] { " S ", "hPx", " S ", 'S', OrePrefixes.stick.ingredient(material),
+                                        'P', OrePrefixes.plate.ingredient(material) });
                             }
                         }
                     }

@@ -272,7 +272,7 @@ public class GTPostLoad {
             addElementScannerAndReplicatorRecipes(
                 scannerResult,
                 material,
-                MaterialParts.stack(OrePrefixes.dust, material, 1L),
+                MaterialLibAPI.findStack(material, Shapes.dust, 1),
                 MaterialParts.stack(OrePrefixes.cell, material, 1L));
         }
 
@@ -440,10 +440,10 @@ public class GTPostLoad {
             .toString();
         boolean noSmash = !MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_SMASHING);
         if (MaterialUtils.generates(ml, GTMaterialGenerationFlag.METAL)) GTRecipeRegistrator
-            .registerUsagesForMaterials(plateName, noSmash, MaterialParts.stack(OrePrefixes.ingot, ml, 1));
+            .registerUsagesForMaterials(plateName, noSmash, MaterialLibAPI.findStack(ml, Shapes.ingot, 1));
         if (MaterialUtils.generates(ml, GTMaterialGenerationFlag.GEM)) GTRecipeRegistrator
-            .registerUsagesForMaterials(plateName, noSmash, MaterialParts.stack(OrePrefixes.gem, ml, 1));
-        ItemStack blocks = MaterialParts.stack(OrePrefixes.block, ml, 1);
+            .registerUsagesForMaterials(plateName, noSmash, MaterialLibAPI.findStack(ml, Shapes.gem, 1));
+        ItemStack blocks = MaterialLibAPI.findStack(ml, BlockShapes.block, 1);
         if (blocks != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, blocks);
     }
 

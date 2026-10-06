@@ -8,12 +8,13 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
@@ -37,20 +38,20 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
             return;
         }
 
-        if (MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1) == null) {
+        if (MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1) == null) {
             return;
         }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
-            .itemOutputs(MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L))
+            .itemOutputs(MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
-            .itemOutputs(MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L))
+            .itemOutputs(MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);

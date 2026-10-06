@@ -25,9 +25,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.MaterialParts;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -171,7 +172,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-            && MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
+            && MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
 
             if (material == Materials.Livingrock || material == Materials.Livingwood
                 || material == Materials.Dreamwood) {
@@ -179,7 +180,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 9L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         GTUtility.getWater(
                             Math.max(
@@ -194,7 +195,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 9L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
                             Math.max(
@@ -209,7 +210,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 9L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Lubricant,
@@ -226,7 +227,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 9L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         MaterialUtils.fluid(
                             Materials.dimensionallyshiftedsuperfluid,
@@ -245,7 +246,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 9L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         GTUtility.getWater(
                             Math.max(
@@ -259,7 +260,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 9L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
                             Math.max(
@@ -273,7 +274,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 9L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Lubricant,
@@ -289,7 +290,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 9L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         MaterialUtils.fluid(
                             Materials.dimensionallyshiftedsuperfluid,
@@ -304,10 +305,10 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             }
         }
 
-        ItemStack ingot = MaterialParts.stack(OrePrefixes.ingot, material, 1L);
-        ItemStack gem = MaterialParts.stack(OrePrefixes.gem, material, 1L);
-        ItemStack dust = MaterialParts.stack(OrePrefixes.dust, material, 1L);
-        ItemStack block = MaterialParts.stack(OrePrefixes.block, material, 1L);
+        ItemStack ingot = MaterialLibAPI.findStack(material, Shapes.ingot, 1);
+        ItemStack gem = MaterialLibAPI.findStack(material, Shapes.gem, 1);
+        ItemStack dust = MaterialLibAPI.findStack(material, Shapes.dust, 1);
+        ItemStack block = MaterialLibAPI.findStack(material, BlockShapes.block, 1);
 
         if (BLOCK_RECIPE_REMOVALS.contains(itemStackKey(stack))
             || OWN_BLOCK_RECIPE_REMOVALS.contains(material) && GTUtility.areStacksEqual(stack, block)) {
@@ -353,7 +354,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             && material != Materials.Obsidian) {
             // 9 ingots -> 1 block
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.ingot, material, 9L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.ingot, 9))
                 .itemOutputs(block)
                 .duration(MaterialUtils.mass(material) * 2 * TICKS)
                 .eut(calculateRecipeEU(material, 2))

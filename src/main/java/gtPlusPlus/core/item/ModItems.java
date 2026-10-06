@@ -15,11 +15,9 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
@@ -355,7 +353,7 @@ public final class ModItems {
     }
 
     private static void hideMilledIfCutOver(Material material, GregtechItemList legacyItem) {
-        if (MaterialParts.isCutOver(OrePrefixes.milled, material)) {
+        if (material.hasShape(Shapes.milled)) {
             codechicken.nei.api.API.hideItem(legacyItem.get(1));
         }
     }

@@ -19,7 +19,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 
 /// Washes items in a water cauldron, either dropped in or used on it. Impure and purified dusts become clean dust,
 /// crushed ore becomes purified crushed ore, and wheat dust becomes dough. Each wash lowers the water by one level.
@@ -54,9 +53,9 @@ public final class CauldronWashing {
     public static ItemStack result(OrePrefixes prefix, Material material, int stackSize) {
         if (material == null || material == Materials.Empty || material == Materials.NULL) return null;
         return switch (prefix.getName()) {
-            case "dustImpure", "dustPure" -> MaterialParts
-                .stack(OrePrefixes.dust, CLEANED_DUSTS.getOrDefault(material, material), stackSize);
-            case "crushed" -> MaterialParts.stack(OrePrefixes.crushedPurified, material, stackSize);
+            case "dustImpure", "dustPure" -> MaterialLibAPI
+                .findStack(CLEANED_DUSTS.getOrDefault(material, material), Shapes.dust, stackSize);
+            case "crushed" -> MaterialLibAPI.findStack(material, Shapes.crushedPurified, stackSize);
             case "dust" -> material == Materials.Wheat ? ItemList.Food_Dough.get(stackSize) : null;
             default -> null;
         };

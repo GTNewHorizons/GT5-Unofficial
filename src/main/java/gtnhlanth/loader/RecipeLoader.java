@@ -59,7 +59,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
@@ -476,7 +475,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, 4_000))
-            .itemInputs(MaterialParts.requireCell(Materials.Silane, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Silane, CellShapes.cellGas, 2))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.SilaneNitrogenPlasmaMixture, FluidShapes.fluidLiquid, 6_000))
             .itemOutputs(GTUtility.getEmptyCell(2))
@@ -488,7 +487,7 @@ public class RecipeLoader {
         // Reactive Ion Etchant
         GTValues.RA.stdBuilder()
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Fluoroform, FluidShapes.fluidLiquid, 3_000))
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 4))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.ReactiveIonEtchingMixture, FluidShapes.fluidLiquid, 5_000))
             .itemOutputs(GTUtility.getEmptyCell(4))
@@ -501,7 +500,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getFluidStack(Materials.ReactiveIonEtchingMixture, FluidShapes.fluidLiquid, 5_000))
             .itemInputs(GTUtility.getEmptyCell(4))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Fluoroform, FluidShapes.fluidLiquid, 3_000))
-            .itemOutputs(MaterialParts.requireCell(Materials.Oxygen, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 4))
             .duration(5 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(centrifugeRecipes);
@@ -1116,7 +1115,7 @@ public class RecipeLoader {
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Phosgene, FluidShapes.fluidLiquid, 3_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.BoronTrichloride, FluidShapes.fluidLiquid, 2_000))
             .itemInputs(MaterialLibAPI.getStack(Materials.BoronTrioxide, Shapes.dust, 1), GTUtility.getEmptyCell(3))
-            .itemOutputs(MaterialParts.requireCell(Materials.CarbonMonoxide, 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 3))
             .duration(10 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -1431,7 +1430,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.AmmoniumChloride, CellShapes.cell, 3))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.CeriumChloride, Shapes.dust, 4),
-                MaterialParts.requireCell(Materials.Ammonia, 3))
+                MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 2_000))
             .duration(15 * SECONDS)
@@ -3462,7 +3461,7 @@ public class RecipeLoader {
 
         // Diaminotoluene
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 4))
             .itemOutputs()
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Dinitrotoluene, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Diaminotoluene, FluidShapes.fluidLiquid, 1_000))

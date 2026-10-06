@@ -31,7 +31,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
@@ -39,7 +38,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.XModMaterials;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -566,7 +564,7 @@ public class MixerRecipes implements Runnable {
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
                 MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.gem, 1))
-            .itemOutputs(MaterialParts.stack(OrePrefixes.gem, XModMaterials.Fluix, 2))
+            .itemOutputs(MaterialLibAPI.findStack(XModMaterials.Fluix, Shapes.gem, 2))
             .fluidInputs(GTUtility.getWater(500))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -577,7 +575,7 @@ public class MixerRecipes implements Runnable {
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
                 MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.gem, 1))
-            .itemOutputs(MaterialParts.stack(OrePrefixes.gem, XModMaterials.Fluix, 2))
+            .itemOutputs(MaterialLibAPI.findStack(XModMaterials.Fluix, Shapes.gem, 2))
             .fluidInputs(GTModHandler.getDistilledWater(500))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -1209,7 +1207,7 @@ public class MixerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.CarbonDioxide, 1))
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.CalciumAcetateSolution, FluidShapes.fluidLiquid, 1_000))
@@ -1222,7 +1220,7 @@ public class MixerRecipes implements Runnable {
             .circuit(11)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.CarbonDioxide, 1))
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(GTUtility.getWater(1_000))
             .duration(12 * SECONDS)
@@ -1244,7 +1242,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 5), GTUtility.getEmptyCell(1))
             .circuit(4)
-            .itemOutputs(MaterialParts.requireCell(Materials.CarbonDioxide, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.CalciumAcetateSolution, FluidShapes.fluidLiquid, 1_000))
@@ -1267,7 +1265,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Calcium, Shapes.dust, 1), GTUtility.getEmptyCell(2))
             .circuit(1)
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.CalciumAcetateSolution, FluidShapes.fluidLiquid, 1_000))
@@ -1387,8 +1385,10 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.Butene, 1))
-            .itemOutputs(MaterialParts.requireCell(Materials.MTBEReactionMixtureButene, 1), GTUtility.getEmptyCell(1))
+                MaterialLibAPI.getStack(Materials.Butene, CellShapes.cellGas, 1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.MTBEReactionMixtureButene, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -1396,8 +1396,10 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.Butane, 1))
-            .itemOutputs(MaterialParts.requireCell(Materials.MTBEReactionMixtureButane, 1), GTUtility.getEmptyCell(1))
+                MaterialLibAPI.getStack(Materials.Butane, CellShapes.cellGas, 1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.MTBEReactionMixtureButane, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -1405,7 +1407,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Naphtha, CellShapes.cell, 16),
-                MaterialParts.requireCell(Materials.Gas, 2),
+                MaterialLibAPI.getStack(Materials.Gas, CellShapes.cellGas, 2),
                 MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1),
                 MaterialLibAPI.getStack(Materials.Acetone, CellShapes.cell, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.RawGasoline, CellShapes.cell, 20))
@@ -1417,7 +1419,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Gasoline, CellShapes.cell, 20),
                 MaterialLibAPI.getStack(Materials.Octane, CellShapes.cell, 2),
-                MaterialParts.requireCell(Materials.NitrousOxide, 6),
+                MaterialLibAPI.getStack(Materials.NitrousOxide, CellShapes.cellGas, 6),
                 MaterialLibAPI.getStack(Materials.Toluene, CellShapes.cell, 1))
             .itemOutputs(GTUtility.getEmptyCell(29))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.EthylTertButylEther, FluidShapes.fluidLiquid, 3_000))

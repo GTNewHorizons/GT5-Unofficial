@@ -16,11 +16,13 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -90,7 +92,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
 
                         ItemStack tStack = GTUtility
-                            .copyAmount(tMat.mAmount, MaterialParts.stack(OrePrefixes.dust, tMat.mMaterial, 1));
+                            .copyAmount(tMat.mAmount, MaterialLibAPI.findStack(tMat.mMaterial, Shapes.dust, 1));
                         if (tStack == null) {
                             tStack = MaterialParts.stack(OrePrefixes.cell, tMat.mMaterial, Math.min(64L, tMat.mAmount));
                         }

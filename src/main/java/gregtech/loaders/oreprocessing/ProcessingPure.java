@@ -9,12 +9,13 @@ import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
@@ -36,7 +37,7 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                convert(material, MaterialParts.stack(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L)))
+                convert(material, MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1)))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
@@ -48,15 +49,15 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
                     material,
                     GTUtility.copyAmount(
                         1L,
-                        MaterialParts.stack(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1),
-                        MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
-                    MaterialParts.stack(
-                        OrePrefixes.dust,
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
+                    MaterialLibAPI.findStack(
                         GTUtility.selectItemInList(
                             1,
                             MaterialUtils.macerateInto(material),
                             MaterialUtils.oreByProducts(material)),
-                        1L)))
+                        Shapes.dust,
+                        1)))
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)
             .eut(2)

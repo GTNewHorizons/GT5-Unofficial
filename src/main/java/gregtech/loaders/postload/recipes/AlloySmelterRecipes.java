@@ -13,11 +13,9 @@ import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.objects.OreDictItemStack;
 
@@ -68,12 +66,14 @@ public class AlloySmelterRecipes implements Runnable {
     @Override
     public void run() {
         for (MaterialStack[] materials : mAlloySmelterList) {
-            ItemStack dust1 = MaterialParts.stack(OrePrefixes.dust, materials[0].mMaterial, materials[0].mAmount);
-            ItemStack dust2 = MaterialParts.stack(OrePrefixes.dust, materials[1].mMaterial, materials[1].mAmount);
-            ItemStack ingot1 = MaterialParts.stack(OrePrefixes.ingot, materials[0].mMaterial, materials[0].mAmount);
-            ItemStack ingot2 = MaterialParts.stack(OrePrefixes.ingot, materials[1].mMaterial, materials[1].mAmount);
-            ItemStack outputIngot = MaterialParts
-                .stack(OrePrefixes.ingot, materials[2].mMaterial, materials[2].mAmount);
+            ItemStack dust1 = MaterialLibAPI.findStack(materials[0].mMaterial, Shapes.dust, (int) materials[0].mAmount);
+            ItemStack dust2 = MaterialLibAPI.findStack(materials[1].mMaterial, Shapes.dust, (int) materials[1].mAmount);
+            ItemStack ingot1 = MaterialLibAPI
+                .findStack(materials[0].mMaterial, Shapes.ingot, (int) materials[0].mAmount);
+            ItemStack ingot2 = MaterialLibAPI
+                .findStack(materials[1].mMaterial, Shapes.ingot, (int) materials[1].mAmount);
+            ItemStack outputIngot = MaterialLibAPI
+                .findStack(materials[2].mMaterial, Shapes.ingot, (int) materials[2].mAmount);
             if (outputIngot != GTValues.NI) {
                 if (ingot1 != null) {
                     GTValues.RA.stdBuilder()

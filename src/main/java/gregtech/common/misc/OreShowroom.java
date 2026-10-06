@@ -22,11 +22,11 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.OreMixes;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.material.MaterialParts;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
@@ -206,7 +206,7 @@ final class OreShowroom {
 
                 if (smallOre == null) missingSmallOres++;
 
-                ItemStack rawOre = MaterialParts.stack(OrePrefixes.rawOre, material, 1);
+                ItemStack rawOre = MaterialLibAPI.findStack(material, Shapes.rawOre, 1);
                 if (GTUtility.isStackValid(rawOre)) {
                     if (!placeFrame(world, sampleX, floorY + 3, wallZ, 2, rawOre)) failedFrames++;
                     if (!placeFrame(world, sampleX, floorY + 3, wallZ, 0, rawOre)) failedFrames++;

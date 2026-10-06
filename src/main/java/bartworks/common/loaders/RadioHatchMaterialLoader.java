@@ -15,10 +15,9 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.recipe.Sievert;
 
@@ -147,9 +146,9 @@ public class RadioHatchMaterialLoader {
     }
 
     private static void addRods(Material material, int level) {
-        ItemStack stick = MaterialParts.stack(OrePrefixes.stick, material, 1);
+        ItemStack stick = MaterialLibAPI.findStack(material, Shapes.stick, 1);
         if (stick != null) radioHatchMaterialAdder(stick, level, 1);
-        ItemStack stickLong = MaterialParts.stack(OrePrefixes.stickLong, material, 1);
+        ItemStack stickLong = MaterialLibAPI.findStack(material, Shapes.stickLong, 1);
         if (stickLong != null) radioHatchMaterialAdder(stickLong, level, 2);
     }
 

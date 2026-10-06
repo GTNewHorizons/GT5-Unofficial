@@ -10,10 +10,10 @@ import net.minecraft.util.StatCollector;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.material.MaterialParts;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.GTOreAdapter;
 
@@ -81,7 +81,7 @@ public class AsteroidData {
     /// The stack a space mining recipe yields of `material`: its ore block in `stoneType`, or its dust when
     /// `stoneType` is null. Null when the material has no such stack.
     public static @Nullable ItemStack oreStack(Material material, @Nullable StoneType stoneType, int amount) {
-        if (stoneType == null) return MaterialParts.stack(OrePrefixes.dust, material, amount);
+        if (stoneType == null) return MaterialLibAPI.findStack(material, Shapes.dust, amount);
         ItemStack ore = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, false);
         return ore == null ? null : GTUtility.copyAmount(amount, ore);
     }

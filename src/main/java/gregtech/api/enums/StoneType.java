@@ -45,7 +45,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.render.TextureFactory;
 
 public enum StoneType implements IStoneType {
@@ -545,8 +544,8 @@ public enum StoneType implements IStoneType {
         }
 
         public StoneBuilder setDust(Material mat) {
-            pureDust = new LazyItem(Mods.GregTech, () -> MaterialParts.stack(OrePrefixes.dust, mat, 1));
-            impureDust = new LazyItem(Mods.GregTech, () -> MaterialParts.stack(OrePrefixes.dustImpure, mat, 1));
+            pureDust = new LazyItem(Mods.GregTech, () -> MaterialLibAPI.findStack(mat, Shapes.dust, 1));
+            impureDust = new LazyItem(Mods.GregTech, () -> MaterialLibAPI.findStack(mat, Shapes.dustImpure, 1));
 
             return this;
         }

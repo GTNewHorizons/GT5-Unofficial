@@ -18,11 +18,10 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
@@ -110,9 +109,9 @@ public class GregtechSimpleWasher {
     private static void generateDirtyDustRecipes() {
         for (Material ml : MaterialLibAPI.getMaterials()) {
             if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) continue;
-            ItemStack dustClean = convertDecomposition(MaterialParts.stack(OrePrefixes.dust, ml, 1L))[0];
-            addSimpleWashRecipe(MaterialParts.stack(OrePrefixes.dustImpure, ml, 1L), dustClean);
-            addSimpleWashRecipe(MaterialParts.stack(OrePrefixes.dustPure, ml, 1L), dustClean);
+            ItemStack dustClean = convertDecomposition(MaterialLibAPI.findStack(ml, Shapes.dust, 1))[0];
+            addSimpleWashRecipe(MaterialLibAPI.findStack(ml, Shapes.dustImpure, 1), dustClean);
+            addSimpleWashRecipe(MaterialLibAPI.findStack(ml, Shapes.dustPure, 1), dustClean);
         }
     }
 
@@ -121,8 +120,8 @@ public class GregtechSimpleWasher {
         for (Material ml : MaterialLibAPI.getMaterials()) {
             if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) continue;
             addSimpleWashRecipe(
-                MaterialParts.stack(OrePrefixes.crushed, ml, 1L),
-                MaterialParts.stack(OrePrefixes.crushedPurified, ml, 1L));
+                MaterialLibAPI.findStack(ml, Shapes.crushed, 1),
+                MaterialLibAPI.findStack(ml, Shapes.crushedPurified, 1));
         }
     }
 

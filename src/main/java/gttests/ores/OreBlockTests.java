@@ -23,14 +23,14 @@ import com.gtnewhorizons.horizonqa.api.annotation.GameTest;
 import com.gtnewhorizons.horizonqa.api.annotation.GameTestHolder;
 import com.mojang.authlib.GameProfile;
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.MaterialParts;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy.OreDropSystem;
@@ -78,7 +78,7 @@ public class OreBlockTests {
             StoneType stone = material == Materials.Bismutite ? StoneType.Moon : StoneType.Stone;
             place(helper, material, stone, false);
             List<ItemStack> drops = harvest(helper, miner);
-            ItemStack rawOre = MaterialParts.stack(OrePrefixes.rawOre, material, 1);
+            ItemStack rawOre = MaterialLibAPI.findStack(material, Shapes.rawOre, 1);
             if (rawOre == null || drops.size() != 1
                 || !GTUtility.areStacksEqual(drops.get(0), rawOre)
                 || drops.get(0).stackSize != 1) {
@@ -184,7 +184,7 @@ public class OreBlockTests {
     /// Harvests Iron ore on Stone [#SAMPLES] times and returns the total raw iron dropped, failing on any harvest that
     /// drops something else or a count outside `[min, max]`.
     private static int rawOreYield(GameTestHelper helper, EntityPlayer player, int min, int max) {
-        ItemStack rawIron = MaterialParts.stack(OrePrefixes.rawOre, Materials.Iron, 1);
+        ItemStack rawIron = MaterialLibAPI.getStack(Materials.Iron, Shapes.rawOre, 1);
         int total = 0;
         for (int i = 0; i < SAMPLES; i++) {
             place(helper, Materials.Iron, StoneType.Stone, false);

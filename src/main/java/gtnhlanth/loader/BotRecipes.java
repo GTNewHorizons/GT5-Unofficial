@@ -24,7 +24,6 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTUtility;
 
 /*
@@ -39,7 +38,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 5), GTUtility.getEmptyCell(1))
             .itemOutputs(
-                MaterialParts.requireCell(Materials.CarbonDioxide, 1),
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.CalciumChloride, Shapes.dust, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(GTUtility.getWater(1_000))
@@ -147,7 +146,7 @@ public class BotRecipes {
         // 2Cl + CO = COCl2
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.CarbonMonoxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 1))
             .circuit(12)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Phosgene, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 2_000))
@@ -155,7 +154,7 @@ public class BotRecipes {
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(12)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Phosgene, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
@@ -164,14 +163,14 @@ public class BotRecipes {
             .addTo(chemicalReactorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.CarbonMonoxide, 1),
-                MaterialParts.requireCell(Materials.Chlorine, 2))
+                MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 1),
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Phosgene, CellShapes.cell, 1), GTUtility.getEmptyCell(2))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(2)
             .itemOutputs(GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
@@ -195,7 +194,7 @@ public class BotRecipes {
         // NH4Cl = HCl + NH3
         GTValues.RA.stdBuilder()
             .itemInputs(cells)
-            .itemOutputs(MaterialParts.requireCell(Materials.Ammonia, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AmmoniumChloride, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .eut(TierEU.RECIPE_MV)

@@ -26,11 +26,11 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.Scanning;
@@ -907,8 +907,8 @@ public class RecipesMachinesCustom {
         // Research on Gas Sparging
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Helium, 8),
-                MaterialParts.requireCell(Materials.Fluorine, 8),
+                MaterialLibAPI.getStack(Materials.Helium, CellShapes.cellGas, 8),
+                MaterialLibAPI.getStack(Materials.Fluorine, CellShapes.cellGas, 8),
                 MaterialLibAPI.getStack(Materials.HS188A, Shapes.ingot, 8),
                 ItemList.Distillation_Tower.get(1))
             .circuit(8)

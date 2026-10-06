@@ -22,20 +22,19 @@ import com.ruling_0.materiallib.api.ShapeBlock;
 import com.ruling_0.materiallib.api.ShapeItem;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.GTShapeStore;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTUtility;
 
-/// Bridges GregTech's [OrePrefixes] and MaterialLib's [Shape]s.
+/// Bridges GregTech's [OrePrefixes] and MaterialLib's [Shape]s, for callers holding only a prefix, such as one read
+/// from NBT or an oredict name. Code that knows its shape calls [MaterialLibAPI] directly. There are more prefixes
+/// than shapes, so these lookups answer null for a pair with no MaterialLib backing.
 ///
-/// Code holding a shape calls [MaterialLibAPI#getStack] directly and lets it throw on an undeclared pair. This
-/// class serves callers holding only a prefix, such as one read from NBT or an oredict name. There are more
-/// prefixes than shapes, so these lookups answer null for a pair with no MaterialLib backing, and each caller
-/// decides what that means.
-///
-/// The oredict ingredient builders live here too, since their material amounts live on the prefix.
+/// Also holds GregTech's material-amount rules for turning an amount into dusts or metal.
 ///
 /// Amounts are `long` to match GregTech's recipe code. MaterialLib takes an `int`.
 public class MaterialParts {
@@ -99,7 +98,12 @@ public class MaterialParts {
     /// with no MaterialLib backing and for one a foreign item stands in for (`gem` Diamond is the vanilla diamond).
     public static boolean isMinted(OrePrefixes prefix, @Nullable Material material) {
         Shape shape = servedShape(prefix, material);
-        if (shape == null) return false;
+        return shape != null && isMinted(material, shape);
+    }
+
+    /// Same as [#isMinted(OrePrefixes, Material)] for a shape `material` generates. Never resolves a shape
+    /// override's item, so it answers before the overriding mod has registered it.
+    public static boolean isMinted(Material material, Shape shape) {
         return MINTED.computeIfAbsent(shape, MaterialParts::mintedMaterials)
             .contains(material);
     }
@@ -131,13 +135,13 @@ public class MaterialParts {
         if (materialAmount <= 0) return null;
         ItemStack stack = null;
         if (materialAmount % M == 0 || materialAmount >= M * 16) {
-            stack = amountPart(OrePrefixes.dust, material, materialAmount / M);
+            stack = amountPart(material, Shapes.dust, materialAmount / M);
         }
         if (stack == null && ((materialAmount * 4) % M == 0 || materialAmount >= M * 8)) {
-            stack = amountPart(OrePrefixes.dustSmall, material, (materialAmount * 4) / M);
+            stack = amountPart(material, Shapes.dustSmall, (materialAmount * 4) / M);
         }
         if (stack == null && materialAmount * 9 >= M) {
-            stack = amountPart(OrePrefixes.dustTiny, material, (materialAmount * 9) / M);
+            stack = amountPart(material, Shapes.dustTiny, (materialAmount * 9) / M);
         }
         return stack;
     }
@@ -154,13 +158,13 @@ public class MaterialParts {
         if (materialAmount <= 0) return null;
         ItemStack stack = null;
         if ((materialAmount % (M * 9) == 0 && materialAmount / (M * 9) > 1) || materialAmount >= M * 72) {
-            stack = amountPart(OrePrefixes.block, material, materialAmount / (M * 9));
+            stack = amountPart(material, BlockShapes.block, materialAmount / (M * 9));
         }
         if (stack == null && (materialAmount % M == 0 || materialAmount >= M * 8)) {
-            stack = amountPart(OrePrefixes.ingot, material, materialAmount / M);
+            stack = amountPart(material, Shapes.ingot, materialAmount / M);
         }
         if (stack == null && materialAmount * 9 >= M) {
-            stack = amountPart(OrePrefixes.nugget, material, (materialAmount * 9) / M);
+            stack = amountPart(material, Shapes.nugget, (materialAmount * 9) / M);
         }
         return stack;
     }
@@ -182,12 +186,9 @@ public class MaterialParts {
         return stack != null ? stack : ingotOf(material, materialAmount);
     }
 
-    /// Returns the pair's stack at `amount`, or null when the component config disables the pair.
-    private static @Nullable ItemStack amountPart(OrePrefixes prefix, @Nullable Material material, long amount) {
-        if (OrePrefixes.mPreventableComponents.contains(prefix) && prefix.mDisabledItems.contains(material)) {
-            return null;
-        }
-        return GTUtility.copyAmount((int) amount, stack(prefix, material, 1));
+    /// Returns the pair's stack at `amount`, capped at 64, or null when `material` lacks `shape`.
+    private static @Nullable ItemStack amountPart(@Nullable Material material, Shape shape, long amount) {
+        return GTUtility.copyAmount((int) amount, MaterialLibAPI.findStack(material, shape, 1));
     }
 
     /// Returns whether `stack`'s [MaterialData#getAssociation] names `material` as its primary material.
@@ -195,19 +196,6 @@ public class MaterialParts {
         if (material == null) return false;
         ItemData association = MaterialData.getAssociation(stack);
         return association != null && association.mMaterial.mMaterial == material;
-    }
-
-    /// Returns a crafting-table ingredient accepting any item under the oredict name of `prefix` and `material`.
-    /// It carries the material association, so reversible recipes generate recycling from it. Null when either
-    /// argument is null. For an ingredient without the association, see [#namedIngredient].
-    public static @Nullable ItemData craftIngredient(OrePrefixes prefix, @Nullable Material material) {
-        return prefix == null || material == null ? null : new ItemData(prefix, material);
-    }
-
-    /// [#craftIngredient(OrePrefixes,Material)] without the material association, so reversible recipes derive no
-    /// recycling from it.
-    public static @Nullable ItemData namedIngredient(OrePrefixes prefix, @Nullable Material material) {
-        return prefix == null || material == null ? null : new ItemData(prefix, MaterialUtils.internalName(material));
     }
 
     /// Returns the shapes serving each oredict prefix. Where several shapes share a prefix, the shape named after

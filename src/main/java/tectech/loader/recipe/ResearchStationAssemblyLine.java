@@ -45,7 +45,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Wildcard;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -742,7 +741,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             64,
             new Object[] { getModItem(ExtraUtilities.ID, "cobblestone_compressed", 1, 7),
                 getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0),
-                MaterialParts.stack(OrePrefixes.block, Materials.Infinity, 4),
+                MaterialLibAPI.getStack(Materials.Infinity, BlockShapes.block, 4),
                 new Object[] { Circuits.UIV.getIngredient(), 4 }, ItemList.Circuit_Wafer_APIC.get(32),
                 ItemList.Robot_Arm_UIV.get(4), ItemList.Emitter_UIV.get(4), ItemList.Sensor_UIV.get(4), },
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 50_000),

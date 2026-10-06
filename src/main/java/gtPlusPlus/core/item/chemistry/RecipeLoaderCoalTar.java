@@ -25,7 +25,6 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -58,7 +57,7 @@ public class RecipeLoaderCoalTar {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Cell_Empty.get(1))
                 .circuit(17)
-                .itemOutputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
                 .fluidInputs(bioEth1)
                 .fluidOutputs(GTUtility.getWater(1_000))
                 .eut(80)
@@ -69,7 +68,7 @@ public class RecipeLoaderCoalTar {
         if (bioEth2 != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Cell_Empty.get(1))
-                .itemOutputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
                 .fluidInputs(bioEth2)
                 .fluidOutputs(GTUtility.getWater(1_000))
                 .eut(80)
@@ -93,7 +92,7 @@ public class RecipeLoaderCoalTar {
     private static void recipeCreateEthylbenzene() {
         // C2H4 + C6H6 = C8H10
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 2))
             .circuit(3)
             .itemOutputs(ItemList.Cell_Empty.get(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 2_000))

@@ -14,6 +14,7 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -21,9 +22,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
@@ -64,7 +65,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.ingot, material, 1L))
+                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.ingot, 1))
                         .fluidInputs(MaterialUtils.molten(material, 1 * INGOTS))
                         .duration(1 * SECONDS + 12 * TICKS)
                         .eut(calculateRecipeEU(material, 8))
@@ -93,7 +94,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             null);
                     }
                 }
-                ItemStack tStack = MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L);
+                ItemStack tStack = MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1);
                 if ((tStack != null) && ((MaterialUtils.blastFurnaceRequired(material)) || noSmelting)) {
                     GTModHandler.removeFurnaceSmelting(tStack);
                 }
@@ -101,18 +102,17 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     && !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
                     && MaterialUtils.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE)) {
                     GTModHandler.addShapelessCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.dust, material, 1L),
+                        MaterialLibAPI.findStack(material, Shapes.dust, 1),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { ToolDictNames.craftingToolMortar,
-                            MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
+                        new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.ingredient(material) });
                 }
                 if (!noSmashing) {
                     // Forge hammer recipes
                     if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-                        && MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
+                        && MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(3, stack))
-                            .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 2L))
+                            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 2))
                             .duration(Math.max(materialMass, 1L))
                             .eut(calculateRecipeEU(material, 16))
                             .addTo(hammerRecipes);
@@ -122,71 +122,71 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                     // Bender recipes
                     {
-                        if (MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(1)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
                                 .duration(Math.max(materialMass, 1L))
                                 .eut(calculateRecipeEU(material, 24))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.plateDouble, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plateDouble, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(2, stack))
                                 .circuit(2)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plateDouble, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateDouble, 1))
                                 .duration(Math.max(materialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.plateTriple, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plateTriple, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(3, stack))
                                 .circuit(3)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plateTriple, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateTriple, 1))
                                 .duration(Math.max(materialMass * 3L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.plateQuadruple, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plateQuadruple, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(4, stack))
                                 .circuit(4)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plateQuadruple, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateQuadruple, 1))
                                 .duration(Math.max(materialMass * 4L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.plateQuintuple, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plateQuintuple, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(5, stack))
                                 .circuit(5)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plateQuintuple, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateQuintuple, 1))
                                 .duration(Math.max(materialMass * 5L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.plateDense, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plateDense, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(9, stack))
                                 .circuit(9)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plateDense, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateDense, 1))
                                 .duration(Math.max(materialMass * 9L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.foil, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.foil, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(10)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.foil, material, 4L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.foil, 4))
                                 .duration(Math.max(materialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(material, 24))
                                 .addTo(benderRecipes);
@@ -196,12 +196,12 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
             }
             case "ingotHot" -> {
                 if (MaterialUtils.autoGenerateVacuumFreezerRecipes(material)
-                    && MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null) {
+                    && MaterialLibAPI.findStack(material, Shapes.ingot, 1) != null) {
                     Integer duration = material.getProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION);
                     Integer voltage = material.getProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.ingot, material, 1L))
+                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.ingot, 1))
                         .duration(duration != null ? duration : Math.max(materialMass * 3L, 1L) * TICKS)
                         .eut(voltage != null ? voltage : TierEU.RECIPE_MV)
                         .addTo(vacuumFreezerRecipes);

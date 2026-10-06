@@ -43,7 +43,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Wildcard;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -169,7 +168,7 @@ public class CraftingRecipes implements Runnable {
         for (int i = 0; i < 9; i++) {
             try {
                 Material cable = cables[i];
-                ItemStack hull = MaterialParts.stack(OrePrefixes.plate, hulls[i], 1);
+                ItemStack hull = MaterialLibAPI.findStack(hulls[i], Shapes.plate, 1);
                 ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
 
                 GTModHandler.addCraftingRecipe(
@@ -566,14 +565,14 @@ public class CraftingRecipes implements Runnable {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "DCD", "PWP", "DCD", 'D', OrePrefixes.plateDense.ingredient(Materials.NeodymiumMagnetic),
                 'C', ItemList.HV_Coil, 'P', OrePrefixes.plate.ingredient(Materials.Silver), 'W',
-                MaterialParts.namedIngredient(OrePrefixes.wireGt12, Materials.SuperconductorIV) });
+                OrePrefixes.wireGt12.namedIngredient(Materials.SuperconductorIV) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Vajra_Core.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "wEh", "ITI", "SRS", 'E', OrePrefixes.plate.ingredient(Materials.Silver), 'I',
                 OrePrefixes.plateDense.ingredient(Materials.Iridium), 'T', ItemList.Transformer_EV_HV.get(1), 'S',
-                MaterialParts.namedIngredient(OrePrefixes.wireGt12, Materials.SuperconductorIV), 'R',
+                OrePrefixes.wireGt12.namedIngredient(Materials.SuperconductorIV), 'R',
                 ItemList.Transformer_IV_EV.get(1) });
     }
 }

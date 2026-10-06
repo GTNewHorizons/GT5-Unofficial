@@ -18,12 +18,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -77,7 +79,7 @@ public class ItemUtils {
                     .replace("dust", "");
                 final Material m = gregtech.api.material.MaterialUtils.byLegacyName(MaterialName);
                 if (m != null) {
-                    ItemStack returnValue = MaterialParts.stack(OrePrefixes.dust, m, 1);
+                    ItemStack returnValue = MaterialLibAPI.findStack(m, Shapes.dust, 1);
                     if (returnValue != null) {
                         return returnValue;
                     }

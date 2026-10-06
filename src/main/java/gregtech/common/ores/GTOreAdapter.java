@@ -34,9 +34,9 @@ import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.OreShapes;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -475,7 +475,7 @@ public final class GTOreAdapter implements IOreAdapter {
 
         switch (oreDropMode) {
             case Item -> drops
-                .add(MaterialParts.stack(OrePrefixes.rawOre, info.material, info.stoneType.isRich() ? 2 : 1));
+                .add(MaterialLibAPI.findStack(info.material, Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
             case FortuneItem -> {
                 if (fortune > 0) {
                     // Max applicable fortune
@@ -487,11 +487,11 @@ public final class GTOreAdapter implements IOreAdapter {
                     int amount = (info.stoneType.isRich() ? 2 : 1) * (addedDrops + 1);
 
                     for (int i = 0; i < amount; i++) {
-                        drops.add(MaterialParts.stack(OrePrefixes.rawOre, info.material, 1));
+                        drops.add(MaterialLibAPI.findStack(info.material, Shapes.rawOre, 1));
                     }
                 } else {
                     for (int i = 0; i < (info.stoneType.isRich() ? 2 : 1); i++) {
-                        drops.add(MaterialParts.stack(OrePrefixes.rawOre, info.material, 1));
+                        drops.add(MaterialLibAPI.findStack(info.material, Shapes.rawOre, 1));
                     }
                 }
             }

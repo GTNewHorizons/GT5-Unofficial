@@ -69,7 +69,7 @@ public final class ConsumerGemImplosion {
             OrePrefixes.gem,
             material -> !skipped.contains(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_BLAST)
                 && material.hasShape(Shapes.dust)
-                && (MaterialParts.isMinted(OrePrefixes.gem, material) || foreignGems.contains(material)),
+                && (MaterialParts.isMinted(material, Shapes.gem) || foreignGems.contains(material)),
             () -> ConsumerGemImplosion::implode);
     }
 

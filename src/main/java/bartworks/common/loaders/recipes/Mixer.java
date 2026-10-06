@@ -13,9 +13,9 @@ import bartworks.common.loaders.FluidLoader;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -35,7 +35,7 @@ public class Mixer implements Runnable {
 
         if (Gendustry.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.requireCell(Materials.Radon, 1))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Radon, CellShapes.cellGas, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.getEmptyCell(1))
                 .fluidInputs(GTModHandler.getLiquidDNA(1_000))

@@ -32,7 +32,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -259,7 +258,7 @@ public class RecipeLoaderGlueLine {
             .eut(100)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.SulfurTrioxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SulfurTrioxide, CellShapes.cellGas, 1))
             .circuit(2)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000))

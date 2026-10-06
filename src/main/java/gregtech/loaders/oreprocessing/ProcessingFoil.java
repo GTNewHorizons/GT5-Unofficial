@@ -6,15 +6,16 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialTextures;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
@@ -36,9 +37,9 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
 
     private void registerBenderRecipe(Material material) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, MaterialParts.stack(OrePrefixes.plate, material, 4L)))
+            .itemInputs(GTUtility.copyAmount(1, MaterialLibAPI.findStack(material, Shapes.plate, 4)))
             .circuit(1)
-            .itemOutputs(MaterialParts.stack(OrePrefixes.foil, material, 4L))
+            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.foil, 4))
             .duration((int) Math.max(MaterialUtils.mass(material), 1L))
             .eut(calculateRecipeEU(material, 24))
             .addTo(benderRecipes);

@@ -39,7 +39,6 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -173,7 +172,7 @@ public class NaquadahRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 1)),
-                MaterialParts.requireCell(Materials.Hydrogen, 8))
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 8))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SeedOil, FluidShapes.fluidLiquid, 3_000))
             .itemOutputs(ItemList.Cell_Empty.get(8))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials._2Ethyl1Hexanol, FluidShapes.fluidLiquid, 1_000))
@@ -560,7 +559,7 @@ public class NaquadahRecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .circuit(24)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 2_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Ethanol, CellShapes.cell, 1))

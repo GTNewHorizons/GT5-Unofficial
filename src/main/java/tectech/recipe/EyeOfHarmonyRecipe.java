@@ -24,12 +24,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
@@ -489,7 +487,7 @@ public class EyeOfHarmonyRecipe {
         for (Pair<Object, Long> pair : planetList) {
             final Object mat = pair.getLeft();
             final ItemStack dust;
-            if (mat instanceof Material ml) dust = MaterialParts.stack(OrePrefixes.dust, ml, 1L);
+            if (mat instanceof Material ml) dust = MaterialLibAPI.findStack(ml, Shapes.dust, 1);
             else dust = null;
             if (dust != null) {
                 dustList.merge(dust, pair.getRight(), Long::sum);

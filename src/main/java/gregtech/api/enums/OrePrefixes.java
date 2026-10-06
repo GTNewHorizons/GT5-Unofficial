@@ -2432,10 +2432,16 @@ public class OrePrefixes {
         }
     }
 
-    /// The crafting ingredient for this prefix and `material`. Stringifies to the ore-dictionary name, and
-    /// additionally carries the material composition that reversible crafting recipes account against.
-    public ItemData ingredient(Material material) {
-        return new ItemData(this, material);
+    /// Returns a crafting ingredient accepting any item under the oredict name of this prefix and `material`. It
+    /// carries the material association, so reversible recipes generate recycling from it. Null when `material` is
+    /// null. For an ingredient without the association, see [#namedIngredient].
+    public @Nullable ItemData ingredient(@Nullable Material material) {
+        return material == null ? null : new ItemData(this, material);
+    }
+
+    /// [#ingredient] without the material association, so reversible recipes derive no recycling from it.
+    public @Nullable ItemData namedIngredient(@Nullable Material material) {
+        return material == null ? null : new ItemData(this, MaterialUtils.internalName(material));
     }
 
     /// The ore-dictionary name for this prefix and `material`, carrying no composition.

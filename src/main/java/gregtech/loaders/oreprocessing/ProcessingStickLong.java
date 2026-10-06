@@ -17,8 +17,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -38,18 +38,17 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
             .addMeltMoldRecipe(OrePrefixes.stickLong, material, stack, ItemList.Shape_Mold_Rod_Long, 15 * SECONDS);
         if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
-                MaterialParts.stack(OrePrefixes.spring, material, 1L),
+                MaterialLibAPI.findStack(material, Shapes.spring, 1),
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                new Object[] { " s ", "fSx", " S ", 'S',
-                    MaterialParts.craftIngredient(OrePrefixes.stickLong, material) });
+                new Object[] { " s ", "fSx", " S ", 'S', OrePrefixes.stickLong.ingredient(material) });
         }
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
 
-            if (MaterialParts.stack(OrePrefixes.stick, material, 1L) != null) {
+            if (MaterialLibAPI.findStack(material, Shapes.stick, 1) != null) {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.stick, material, 2L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.stick, 2))
                     .fluidInputs(
                         GTUtility.getWater(
                             Math.max(
@@ -64,7 +63,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.stick, material, 2L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.stick, 2))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
                             Math.max(
@@ -79,7 +78,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.stick, material, 2L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.stick, 2))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Lubricant,
@@ -96,7 +95,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.stick, material, 2L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.stick, 2))
                     .fluidInputs(
                         MaterialUtils.fluid(
                             Materials.dimensionallyshiftedsuperfluid,
@@ -114,26 +113,24 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
             if (MaterialUtils.unifiable(material)) {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.stickLong, material, 1L),
+                        MaterialLibAPI.findStack(material, Shapes.stickLong, 1),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "sf", "G ", 'G',
-                            MaterialParts.craftIngredient(OrePrefixes.gemFlawless, material) });
+                        new Object[] { "sf", "G ", 'G', OrePrefixes.gemFlawless.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.stickLong, material, 2L),
+                        MaterialLibAPI.findStack(material, Shapes.stickLong, 2),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "sf", "G ", 'G',
-                            MaterialParts.craftIngredient(OrePrefixes.gemExquisite, material) });
+                        new Object[] { "sf", "G ", 'G', OrePrefixes.gemExquisite.ingredient(material) });
                 }
             }
         }
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
             // Bender recipes
             {
-                if (MaterialParts.stack(OrePrefixes.spring, material, 1L) != null) {
+                if (MaterialLibAPI.findStack(material, Shapes.spring, 1) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(1)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.spring, material, 1L))
+                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.spring, 1))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(material, 16))
                         .addTo(benderRecipes);
@@ -143,9 +140,9 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
             if (MaterialUtils.unifiable(material)) {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.stickLong, material, 1L),
+                        MaterialLibAPI.findStack(material, Shapes.stickLong, 1),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "ShS", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material) });
+                        new Object[] { "ShS", 'S', OrePrefixes.stick.ingredient(material) });
                 }
             }
         }

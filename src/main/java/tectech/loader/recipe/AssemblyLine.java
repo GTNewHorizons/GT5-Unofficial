@@ -14,13 +14,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.Scanning;
@@ -58,8 +56,8 @@ public class AssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Plutonium, Shapes.plateQuadruple, 4),
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDouble, 8),
                 MaterialLibAPI.getStack(Materials.Uranium, Shapes.plate, 16),
-                MaterialParts
-                    .stack(OrePrefixes.screw, BaseRecipeLoader.getOrDefault("Quantium", Materials.Europium), 16))
+                MaterialLibAPI
+                    .findStack(BaseRecipeLoader.getOrDefault("Quantium", Materials.Europium), Shapes.screw, 16))
             .fluidInputs(
                 MaterialUtils.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), 9 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 9 * INGOTS),

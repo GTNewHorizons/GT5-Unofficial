@@ -8,11 +8,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.material.MaterialParts;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -23,8 +24,8 @@ public class BaseItemMilledOre extends BaseOreComponent {
     public BaseItemMilledOre(final Material material, int materialEU) {
         super(material, BaseOreComponent.ComponentTypes.MILLED);
 
-        ItemStack rawStack = MaterialParts.stack(OrePrefixes.rawOre, material, 16);
-        ItemStack crushedStack = MaterialParts.stack(OrePrefixes.crushed, material, 16);
+        ItemStack rawStack = MaterialLibAPI.findStack(material, Shapes.rawOre, 16);
+        ItemStack crushedStack = MaterialLibAPI.findStack(material, Shapes.crushed, 16);
 
         ItemStack millingBall_Alumina = GregtechItemList.Milling_Ball_Alumina.get(0);
         ItemStack millingBall_Soapstone = GregtechItemList.Milling_Ball_Soapstone.get(0);
@@ -50,14 +51,14 @@ public class BaseItemMilledOre extends BaseOreComponent {
                 GTValues.RA.stdBuilder()
                     .itemInputs(oreStack, millingBall_Soapstone)
                     .circuit(11)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.milled, material, 48))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.milled, 48))
                     .duration(2 * MINUTES + 30 * SECONDS)
                     .eut(materialEU)
                     .addTo(millingRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(oreStack, millingBall_Alumina)
                     .circuit(10)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.milled, material, 64))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.milled, 64))
                     .duration(2 * MINUTES)
                     .eut(materialEU)
                     .addTo(millingRecipes);
@@ -67,28 +68,28 @@ public class BaseItemMilledOre extends BaseOreComponent {
         GTValues.RA.stdBuilder()
             .itemInputs(rawStack, millingBall_Soapstone)
             .circuit(12)
-            .itemOutputs(MaterialParts.stack(OrePrefixes.milled, material, 48))
+            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.milled, 48))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(materialEU)
             .addTo(millingRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(rawStack, millingBall_Alumina)
             .circuit(12)
-            .itemOutputs(MaterialParts.stack(OrePrefixes.milled, material, 64))
+            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.milled, 64))
             .duration(2 * MINUTES)
             .eut(materialEU)
             .addTo(millingRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(crushedStack, millingBall_Soapstone)
             .circuit(11)
-            .itemOutputs(MaterialParts.stack(OrePrefixes.milled, material, 16))
+            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.milled, 16))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(materialEU)
             .addTo(millingRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(crushedStack, millingBall_Alumina)
             .circuit(10)
-            .itemOutputs(MaterialParts.stack(OrePrefixes.milled, material, 32))
+            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.milled, 32))
             .duration(1 * MINUTES)
             .eut(materialEU)
             .addTo(millingRecipes);
@@ -105,7 +106,7 @@ public class BaseItemMilledOre extends BaseOreComponent {
         GTValues.RA.stdBuilder()
             .itemInputs(custom, millingBall_Alumina)
             .circuit(10)
-            .itemOutputs(MaterialParts.stack(OrePrefixes.milled, material, 32))
+            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.milled, 32))
             .duration(1 * MINUTES)
             .eut(materialEU)
             .addTo(millingRecipes);
@@ -113,7 +114,7 @@ public class BaseItemMilledOre extends BaseOreComponent {
         GTValues.RA.stdBuilder()
             .itemInputs(custom, millingBall_Soapstone)
             .circuit(11)
-            .itemOutputs(MaterialParts.stack(OrePrefixes.milled, material, 16))
+            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.milled, 16))
             .duration(1 * MINUTES)
             .eut(materialEU)
             .addTo(millingRecipes);

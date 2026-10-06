@@ -61,14 +61,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -256,13 +254,13 @@ public class RecipesGeneral {
     }
 
     private static void addCompressedObsidian() {
-        addCompressionRecipe(MaterialParts.stack(OrePrefixes.block, Obsidian, 9), CompressedObsidian.get(1));
+        addCompressionRecipe(MaterialLibAPI.findStack(Obsidian, BlockShapes.block, 9), CompressedObsidian.get(1));
         addCompressionRecipe(CompressedObsidian.get(9), DoubleCompressedObsidian.get(1));
         addCompressionRecipe(DoubleCompressedObsidian.get(9), TripleCompressedObsidian.get(1));
         addCompressionRecipe(TripleCompressedObsidian.get(9), QuadrupleCompressedObsidian.get(1));
         addCompressionRecipe(QuadrupleCompressedObsidian.get(9), QuintupleCompressedObsidian.get(1));
 
-        addDecompressionRecipe(CompressedObsidian.get(1), MaterialParts.stack(OrePrefixes.block, Obsidian, 9));
+        addDecompressionRecipe(CompressedObsidian.get(1), MaterialLibAPI.findStack(Obsidian, BlockShapes.block, 9));
         addDecompressionRecipe(DoubleCompressedObsidian.get(1), CompressedObsidian.get(9));
         addDecompressionRecipe(TripleCompressedObsidian.get(1), DoubleCompressedObsidian.get(9));
         addDecompressionRecipe(QuadrupleCompressedObsidian.get(1), TripleCompressedObsidian.get(9));

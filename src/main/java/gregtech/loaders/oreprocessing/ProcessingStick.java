@@ -24,6 +24,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -82,35 +83,35 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
         {
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
-                    MaterialParts.stack(OrePrefixes.springSmall, material, 1L),
+                    MaterialLibAPI.findStack(material, Shapes.springSmall, 1),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                    new Object[] { " s ", "fPx", 'P', MaterialParts.craftIngredient(OrePrefixes.stick, material) });
+                    new Object[] { " s ", "fPx", 'P', OrePrefixes.stick.ingredient(material) });
             }
         }
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
 
             if ((MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTAL)
-                ? MaterialParts.stack(OrePrefixes.gem, material, 1L)
-                : MaterialParts.stack(OrePrefixes.ingot, material, 1L)) != null
-                && MaterialParts.stack(OrePrefixes.dustSmall, MaterialUtils.macerateInto(material), 1L) != null) {
+                ? MaterialLibAPI.findStack(material, Shapes.gem, 1)
+                : MaterialLibAPI.findStack(material, Shapes.ingot, 1)) != null
+                && MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustSmall, 1) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTAL)
-                            ? MaterialParts.stack(OrePrefixes.gem, material, 1L)
-                            : MaterialParts.stack(OrePrefixes.ingot, material, 1L))
+                            ? MaterialLibAPI.findStack(material, Shapes.gem, 1)
+                            : MaterialLibAPI.findStack(material, Shapes.ingot, 1))
                     .itemOutputs(
-                        MaterialParts.stack(OrePrefixes.stick, material, 1L),
-                        MaterialParts.stack(OrePrefixes.dustSmall, MaterialUtils.macerateInto(material), 2L))
+                        MaterialLibAPI.findStack(material, Shapes.stick, 1),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustSmall, 2))
                     .duration(((int) Math.max(MaterialUtils.mass(material) * 5L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 16))
                     .addTo(latheRecipes);
             }
 
-            if (MaterialParts.stack(OrePrefixes.bolt, material, 1L) != null) {
+            if (MaterialLibAPI.findStack(material, Shapes.bolt, 1) != null) {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.bolt, material, 4L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.bolt, 4))
                     .fluidInputs(
                         GTUtility.getWater(
                             Math.max(
@@ -126,7 +127,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.bolt, material, 4L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.bolt, 4))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
                             Math.max(
@@ -142,7 +143,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.bolt, material, 4L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.bolt, 4))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Lubricant,
@@ -160,7 +161,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.bolt, material, 4L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.bolt, 4))
                     .fluidInputs(
                         MaterialUtils.fluid(
                             Materials.dimensionallyshiftedsuperfluid,
@@ -179,34 +180,34 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
             if (MaterialUtils.unifiable(material)) {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.stick, material, 2L),
+                        MaterialLibAPI.findStack(material, Shapes.stick, 2),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "s", "X", 'X', MaterialParts.craftIngredient(OrePrefixes.stickLong, material) });
+                        new Object[] { "s", "X", 'X', OrePrefixes.stickLong.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.stick, material, 1L),
+                        MaterialLibAPI.findStack(material, Shapes.stick, 1),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "f ", " X", 'X', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
+                        new Object[] { "f ", " X", 'X', OrePrefixes.ingot.ingredient(material) });
                 }
             }
         }
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
             // bender recipe
             {
-                if (MaterialParts.stack(OrePrefixes.springSmall, material, 1L) != null) {
+                if (MaterialLibAPI.findStack(material, Shapes.springSmall, 1) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(1)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.springSmall, material, 2L))
+                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.springSmall, 2))
                         .duration(5 * SECONDS)
                         .eut(calculateRecipeEU(material, 8))
                         .addTo(benderRecipes);
                 }
             }
 
-            if (MaterialParts.stack(OrePrefixes.stickLong, material, 1L) != null) {
+            if (MaterialLibAPI.findStack(material, Shapes.stickLong, 1) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(2, stack))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.stickLong, material, 1L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.stickLong, 1))
                     .duration(Math.max(MaterialUtils.mass(material), 1L))
                     .eut(calculateRecipeEU(material, 16))
                     .addTo(hammerRecipes);

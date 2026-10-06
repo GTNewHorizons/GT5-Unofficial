@@ -21,7 +21,6 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -50,8 +49,8 @@ public class RecipesRareEarthProcessing {
             .itemInputs(ItemList.Cell_Empty.get(2L))
             .circuit(1)
             .itemOutputs(
-                MaterialParts.requireCell(Materials.Chlorine, 1),
-                MaterialParts.requireCell(Materials.Hydrogen, 1),
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 1),
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1))
             .fluidInputs(new FluidStack(mBrine, 2_000))
             .duration(30 * SECONDS)
@@ -61,8 +60,8 @@ public class RecipesRareEarthProcessing {
         // Generate Special Laser Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Chlorine, 1),
-                MaterialParts.requireCell(Materials.Hydrogen, 1))
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 1),
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1))
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials.HydrogenChlorideMix, CellShapes.cell, 2))
             .duration(10 * SECONDS)

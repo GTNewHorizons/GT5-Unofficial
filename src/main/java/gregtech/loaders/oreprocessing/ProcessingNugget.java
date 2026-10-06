@@ -10,14 +10,15 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
@@ -37,21 +38,21 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
-            && MaterialParts.stack(OrePrefixes.gem, MaterialUtils.smeltInto(material), 1L) != null) {
+            && MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.gem, 1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ball.get(0L))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.gem, MaterialUtils.smeltInto(material), 1L))
+                .itemOutputs(MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.gem, 1))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(material, 2))
                 .addTo(alloySmelterRecipes);
         }
 
         if ((!MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM))
-            && MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L) != null
+            && MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.ingot, 1) != null
             && material != Materials.Aluminium) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ingot.get(0L))
-                .itemOutputs(MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L))
+                .itemOutputs(MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.ingot, 1))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(material, 2))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
@@ -62,7 +63,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
             if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.nugget, material, 1L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.nugget, 1))
                     .fluidInputs(MaterialUtils.molten(material, 1 * NUGGETS))
                     .duration(16 * TICKS)
                     .eut(calculateRecipeEU(material, 4))
@@ -74,9 +75,9 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         GTRecipeRegistrator
             .registerReverseMacerating(stack, material, prefix.getMaterialAmount(), null, null, null, false, true);
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)
-            && MaterialParts.stack(OrePrefixes.ingot, material, 1L) != null) {
+            && MaterialLibAPI.findStack(material, Shapes.ingot, 1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(OrePrefixes.ingot, material, 1L), ItemList.Shape_Mold_Nugget.get(0L))
+                .itemInputs(MaterialLibAPI.findStack(material, Shapes.ingot, 1), ItemList.Shape_Mold_Nugget.get(0L))
                 .itemOutputs(GTUtility.copyAmount(9, stack))
                 .duration(5 * SECONDS)
                 .eut(calculateRecipeEU(material, 1))
@@ -84,9 +85,9 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .addTo(alloySmelterRecipes);
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV && material != Materials.Unstable) {
                 GTModHandler.addCraftingRecipe(
-                    MaterialParts.stack(OrePrefixes.nugget, material, 8L),
+                    MaterialLibAPI.findStack(material, Shapes.nugget, 8),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                    new Object[] { "sI ", 'I', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
+                    new Object[] { "sI ", 'I', OrePrefixes.ingot.ingredient(material) });
             }
         }
     }

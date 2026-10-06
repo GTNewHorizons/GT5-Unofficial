@@ -20,8 +20,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import codechicken.nei.config.DataDumper;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.material.MaterialParts;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -110,7 +109,7 @@ public class TurbineRotorDumper extends DataDumper {
         List<Material> result = new ArrayList<>();
         for (Material mat : MaterialLibAPI.getMaterials()) {
             if (MaterialUtils.durability(mat) <= 0 || MaterialUtils.toolSpeed(mat) <= 0) continue;
-            if (!MaterialParts.isCutOver(OrePrefixes.turbineBlade, mat)) continue;
+            if (!mat.hasShape(Shapes.turbineBlade)) continue;
             result.add(mat);
         }
         result.sort(

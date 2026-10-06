@@ -37,7 +37,6 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -127,7 +126,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1), ItemList.Cell_Empty.get(3))
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.IronIIIChloride, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
@@ -194,9 +193,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .circuit(4)
-            .itemOutputs(MaterialParts.requireCell(Materials.HydricSulfide, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NatruralGas, FluidShapes.fluidGas, 16_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Gas, FluidShapes.fluidGas, 16_000))
             .duration(8 * SECONDS)
@@ -204,9 +205,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.NatruralGas, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NatruralGas, CellShapes.cellGas, 2))
             .circuit(4)
-            .itemOutputs(MaterialParts.requireCell(Materials.Gas, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Gas, CellShapes.cellGas, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 250))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydricSulfide, FluidShapes.fluidGas, 125))
             .duration(1 * SECONDS)
@@ -214,9 +215,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .circuit(4)
-            .itemOutputs(MaterialParts.requireCell(Materials.HydricSulfide, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricGas, FluidShapes.fluidGas, 16_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Gas, FluidShapes.fluidGas, 16_000))
             .duration(8 * SECONDS)
@@ -224,9 +227,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.SulfuricGas, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SulfuricGas, CellShapes.cellGas, 2))
             .circuit(4)
-            .itemOutputs(MaterialParts.requireCell(Materials.Gas, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Gas, CellShapes.cellGas, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 250))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydricSulfide, FluidShapes.fluidGas, 125))
             .duration(1 * SECONDS)
@@ -234,9 +237,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .circuit(4)
-            .itemOutputs(MaterialParts.requireCell(Materials.HydricSulfide, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricNaphtha, FluidShapes.fluidLiquid, 12_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Naphtha, FluidShapes.fluidLiquid, 12_000))
             .duration(8 * SECONDS)
@@ -254,9 +259,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .circuit(4)
-            .itemOutputs(MaterialParts.requireCell(Materials.HydricSulfide, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricLightFuel, FluidShapes.fluidLiquid, 12_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.LightFuel, FluidShapes.fluidLiquid, 12_000))
             .duration(8 * SECONDS)
@@ -274,9 +281,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .circuit(4)
-            .itemOutputs(MaterialParts.requireCell(Materials.HydricSulfide, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricHeavyFuel, FluidShapes.fluidLiquid, 8_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HeavyFuel, FluidShapes.fluidLiquid, 8_000))
             .duration(8 * SECONDS)
@@ -432,7 +441,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.Carbon, CellShapes.cellSolid, 2))
-            .itemOutputs(MaterialParts.requireCell(Materials.CarbonMonoxide, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 4_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Titaniumtetrachloride, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
@@ -703,7 +712,7 @@ public class ChemicalRecipes implements Runnable {
         // HSiCl3 + 2H = 3HCl + Si
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 1),
@@ -731,7 +740,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(1))
             .circuit(2)
-            .itemOutputs(MaterialParts.requireCell(Materials.Silane, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Silane, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Trichlorosilane, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SiliconTetrachloride, FluidShapes.fluidLiquid, 3_000))
             .duration(12 * SECONDS)
@@ -785,7 +794,7 @@ public class ChemicalRecipes implements Runnable {
         // H2S + H2O + (O2) = 0.5H2SO4(Diluted) ( S loss
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.HydricSulfide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1))
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 750))
@@ -807,7 +816,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, 1),
-                MaterialParts.requireCell(Materials.CarbonMonoxide, 4))
+                MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 4))
             .itemOutputs(ItemList.Cell_Empty.get(4))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.NickelTetracarbonyl, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
@@ -834,7 +843,7 @@ public class ChemicalRecipes implements Runnable {
         // C2H4O + H2O = C2H6O2
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.EthyleneOxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.EthyleneOxide, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(GTUtility.getWater(1_000))
@@ -846,7 +855,7 @@ public class ChemicalRecipes implements Runnable {
         // C2H4 + O = C2H4O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 2))
             .circuit(4)
             .itemOutputs(ItemList.Cell_Empty.get(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
@@ -856,7 +865,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .circuit(5)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 2_000))
@@ -885,7 +894,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, 1),
-                MaterialParts.requireCell(Materials.Oxygen, 1))
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.CupricOxide, Shapes.dust, 2), ItemList.Cell_Empty.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -905,7 +914,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Bismuth, Shapes.dust, 4),
-                MaterialParts.requireCell(Materials.Oxygen, 6))
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 6))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.BismuthIIIOxide, Shapes.dust, 10),
                 ItemList.Cell_Empty.get(6))
@@ -926,7 +935,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Methylamine, 1),
+                MaterialLibAPI.getStack(Materials.Methylamine, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.GammaButyrolactone, CellShapes.cell, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.NMethylpyrolidone, CellShapes.cell, 1),
@@ -948,7 +957,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.SulfurTrioxide, 1),
+                MaterialLibAPI.getStack(Materials.SulfurTrioxide, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.SulfurDichloride, CellShapes.cell, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.ThionylChloride, CellShapes.cell, 1),
@@ -974,7 +983,7 @@ public class ChemicalRecipes implements Runnable {
         // 2CH4 + C6H6 = C8H10 + 4H
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Methane, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Methane, CellShapes.cellGas, 2))
             .circuit(13)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials._13Dimethylbenzene, CellShapes.cell, 1),
@@ -998,7 +1007,7 @@ public class ChemicalRecipes implements Runnable {
         // 2CH4 + C6H6 = C8H10 + 4H
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Methane, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Methane, CellShapes.cellGas, 2))
             .circuit(15)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials._14Dimethylbenzene, CellShapes.cell, 1),
@@ -1046,7 +1055,7 @@ public class ChemicalRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.NitricAcid, CellShapes.cell, 2))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.CobaltIINitrate, Shapes.dust, 9),
-                MaterialParts.requireCell(Materials.Hydrogen, 2))
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
@@ -1402,7 +1411,7 @@ public class ChemicalRecipes implements Runnable {
         // CO + 4H = CH3OH
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.CarbonMonoxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 4_000))
@@ -1412,7 +1421,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 4))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(4))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
@@ -1422,7 +1431,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.CarbonMonoxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 1))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 4_000))
@@ -1431,7 +1440,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 4))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1), GTUtility.getEmptyCell(3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
@@ -1442,7 +1451,7 @@ public class ChemicalRecipes implements Runnable {
         // CO2 + 6H = CH3OH + H2O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.CarbonDioxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 6_000))
@@ -1452,7 +1461,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 6))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1), GTUtility.getEmptyCell(5))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000))
@@ -1462,7 +1471,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.CarbonDioxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cellGas, 1))
             .circuit(2)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 6_000))
@@ -1472,7 +1481,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 6))
             .circuit(2)
             .itemOutputs(GTUtility.getEmptyCell(6))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000))
@@ -1482,7 +1491,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.CarbonDioxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cellGas, 1))
             .circuit(12)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 6_000))
@@ -1491,7 +1500,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 6))
             .circuit(12)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1), GTUtility.getEmptyCell(5))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000))
@@ -1512,7 +1521,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.CarbonMonoxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 1_000))
@@ -1531,7 +1540,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.CarbonMonoxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 1))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.AceticAcid, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 1_000))
@@ -1542,7 +1551,7 @@ public class ChemicalRecipes implements Runnable {
         // CH2CH2 + 2O = CH3COOH
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .circuit(8)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
@@ -1552,7 +1561,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 2))
             .circuit(8)
             .itemOutputs(GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000))
@@ -1562,7 +1571,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .circuit(19)
             .itemOutputs(MaterialLibAPI.getStack(Materials.AceticAcid, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
@@ -1571,7 +1580,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 2))
             .circuit(19)
             .itemOutputs(MaterialLibAPI.getStack(Materials.AceticAcid, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000))
@@ -1596,7 +1605,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Ethylene, 1),
+                MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.AceticAcid, CellShapes.cell, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
@@ -1608,7 +1617,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.AceticAcid, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.Oxygen, 1))
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.VinylAcetate, FluidShapes.fluidLiquid, 1_000))
@@ -1618,8 +1627,8 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Oxygen, 1),
-                MaterialParts.requireCell(Materials.Ethylene, 1))
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1),
+                MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.VinylAcetate, FluidShapes.fluidLiquid, 1_000))
@@ -1632,7 +1641,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Ethanol, CellShapes.cell, 1))
             .circuit(1)
-            .itemOutputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(60 * SECONDS)
@@ -1642,7 +1651,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.SulfuricAcid, CellShapes.cell, 1))
             .circuit(1)
-            .itemOutputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(60 * SECONDS)
@@ -1708,7 +1717,7 @@ public class ChemicalRecipes implements Runnable {
         // H + Cl = HCl
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
@@ -1718,7 +1727,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 1_000))
@@ -1728,7 +1737,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 1))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
@@ -1737,7 +1746,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 1_000))
@@ -1772,7 +1781,7 @@ public class ChemicalRecipes implements Runnable {
         // C3H6 + 2Cl = HCl + C3H5Cl
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1),
@@ -1784,7 +1793,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Propene, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Propene, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 2_000))
@@ -1794,7 +1803,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(11)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.AllylChloride, CellShapes.cell, 1),
@@ -1806,7 +1815,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Propene, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Propene, CellShapes.cellGas, 1))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.AllylChloride, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 2_000))
@@ -1818,7 +1827,7 @@ public class ChemicalRecipes implements Runnable {
         // 2Cl + H2O = HCl + HClO (Intended loss)
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.DilutedHydrochloricAcidGT5U, CellShapes.cell, 1),
@@ -1840,7 +1849,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(11)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HypochlorousAcid, CellShapes.cell, 1),
@@ -1998,7 +2007,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 2))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Phenol, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Isopropylbenzene, FluidShapes.fluidLiquid, 1_000))
@@ -2018,7 +2027,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 2))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Acetone, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Isopropylbenzene, FluidShapes.fluidLiquid, 1_000))
@@ -2065,7 +2074,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.Chloromethane, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Chloromethane, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(GTUtility.getWater(1_000))
             .duration(8 * SECONDS)
@@ -2075,7 +2084,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.Chloromethane, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Chloromethane, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(GTUtility.getWater(1_000))
             .duration(8 * SECONDS)
@@ -2105,7 +2114,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1))
             .circuit(12)
-            .itemOutputs(MaterialParts.requireCell(Materials.Chloromethane, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Chloromethane, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -2114,14 +2123,14 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
             .circuit(12)
-            .itemOutputs(MaterialParts.requireCell(Materials.Chloromethane, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Chloromethane, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 1_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1),
@@ -2133,7 +2142,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Methane, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Methane, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 2_000))
@@ -2143,9 +2152,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.Chloromethane, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.Chloromethane, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(4 * SECONDS)
@@ -2153,9 +2164,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Methane, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Methane, CellShapes.cellGas, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.Chloromethane, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Chloromethane, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(4 * SECONDS)
@@ -2165,7 +2176,7 @@ public class ChemicalRecipes implements Runnable {
         // Cl6 + CH4 = CHCl3 + 3HCl
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 6))
             .circuit(3)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 3),
@@ -2177,7 +2188,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 6))
             .circuit(13)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Chloroform, CellShapes.cell, 1), GTUtility.getEmptyCell(5))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 1_000))
@@ -2187,7 +2198,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Methane, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Methane, CellShapes.cellGas, 1))
             .circuit(13)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Chloroform, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 6_000))
@@ -2199,7 +2210,7 @@ public class ChemicalRecipes implements Runnable {
         // H + F = HF
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Fluorine, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Fluorine, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
@@ -2209,7 +2220,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 1_000))
@@ -2219,7 +2230,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Fluorine, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Fluorine, CellShapes.cellGas, 1))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.HydrofluoricAcidGT5U, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
@@ -2228,7 +2239,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.HydrofluoricAcidGT5U, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 1_000))
@@ -2271,7 +2282,9 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.HydrofluoricAcidGT5U, CellShapes.cell, 4))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.Tetrafluoroethylene, 1), GTUtility.getEmptyCell(3))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.Tetrafluoroethylene, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chloroform, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 6_000))
             .duration(24 * SECONDS)
@@ -2281,7 +2294,9 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Chloroform, CellShapes.cell, 2))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.Tetrafluoroethylene, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.Tetrafluoroethylene, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 6_000))
             .duration(24 * SECONDS)
@@ -2432,7 +2447,7 @@ public class ChemicalRecipes implements Runnable {
         // C6H6 + 2CH4 = C8H10 + 4H
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Methane, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Methane, CellShapes.cellGas, 2))
             .circuit(11)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Dimethylbenzene, CellShapes.cell, 1),
@@ -2469,7 +2484,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Oxygen, 6),
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 6),
                 MaterialLibAPI.getStack(Materials.PotassiumDichromate, Shapes.dustTiny, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.phtalicacid, CellShapes.cell, 1), ItemList.Cell_Empty.get(5))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Dimethylbenzene, FluidShapes.fluidLiquid, 1_000))
@@ -2491,7 +2506,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Oxygen, 54),
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 54),
                 MaterialLibAPI.getStack(Materials.PotassiumDichromate, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.phtalicacid, CellShapes.cell, 9),
@@ -2569,7 +2584,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Ammonia, 2),
+                MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 2),
                 MaterialLibAPI.getStack(Materials.Zinc, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials._33Diaminobenzidine, CellShapes.cell, 1),
@@ -2618,7 +2633,9 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 2))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.Dimethylamine, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.Dimethylamine, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(GTUtility.getWater(1_000))
             .duration(12 * SECONDS)
@@ -2626,9 +2643,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ammonia, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.Dimethylamine, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Dimethylamine, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(GTUtility.getWater(1_000))
             .duration(12 * SECONDS)
@@ -2648,16 +2665,18 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 2))
             .circuit(12)
-            .itemOutputs(MaterialParts.requireCell(Materials.Dimethylamine, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.Dimethylamine, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 1_000))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ammonia, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
             .circuit(12)
-            .itemOutputs(MaterialParts.requireCell(Materials.Dimethylamine, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Dimethylamine, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 2_000))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -2666,7 +2685,7 @@ public class ChemicalRecipes implements Runnable {
         // NH3 + HClO = NH2Cl + H2O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ammonia, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HypochlorousAcid, FluidShapes.fluidLiquid, 1_000))
@@ -2686,7 +2705,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ammonia, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Chloramine, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HypochlorousAcid, FluidShapes.fluidLiquid, 1_000))
@@ -2706,7 +2725,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ammonia, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
             .circuit(2)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HypochlorousAcid, FluidShapes.fluidLiquid, 1_000))
@@ -2726,7 +2745,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ammonia, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
             .circuit(12)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Chloramine, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HypochlorousAcid, FluidShapes.fluidLiquid, 1_000))
@@ -2754,7 +2773,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.NitrogenDioxide, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NitrogenDioxide, CellShapes.cellGas, 2))
             .circuit(2)
             .itemOutputs(GTUtility.getEmptyCell(2))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.DinitrogenTetroxide, FluidShapes.fluidGas, 1_000))
@@ -2763,9 +2782,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.NitrogenDioxide, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NitrogenDioxide, CellShapes.cellGas, 2))
             .circuit(12)
-            .itemOutputs(MaterialParts.requireCell(Materials.DinitrogenTetroxide, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.DinitrogenTetroxide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .duration(32 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -2773,9 +2794,9 @@ public class ChemicalRecipes implements Runnable {
         // 2NH3 + 5O = 2NO + 3H2O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ammonia, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 4))
             .circuit(1)
-            .itemOutputs(MaterialParts.requireCell(Materials.NitricOxide, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.NitricOxide, CellShapes.cellGas, 4))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 10_000))
             .fluidOutputs(GTUtility.getWater(6_000))
             .duration(16 * SECONDS)
@@ -2783,9 +2804,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 10))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 10))
             .circuit(1)
-            .itemOutputs(MaterialParts.requireCell(Materials.NitricOxide, 4), GTUtility.getEmptyCell(6))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.NitricOxide, CellShapes.cellGas, 4),
+                GTUtility.getEmptyCell(6))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 4_000))
             .fluidOutputs(GTUtility.getWater(6_000))
             .duration(16 * SECONDS)
@@ -2793,7 +2816,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 10))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 10))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 6), GTUtility.getEmptyCell(4))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 4_000))
@@ -2803,25 +2826,27 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ammonia, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 4))
             .circuit(2)
-            .itemOutputs(MaterialParts.requireCell(Materials.NitricOxide, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.NitricOxide, CellShapes.cellGas, 4))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 10_000))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 10))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 10))
             .circuit(2)
-            .itemOutputs(MaterialParts.requireCell(Materials.NitricOxide, 4), GTUtility.getEmptyCell(6))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.NitricOxide, CellShapes.cellGas, 4),
+                GTUtility.getEmptyCell(6))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 4_000))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 10))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 10))
             .circuit(12)
             .itemOutputs(GTUtility.getEmptyCell(10))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 4_000))
@@ -2833,7 +2858,7 @@ public class ChemicalRecipes implements Runnable {
         // NO + O = NO2
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.NitricOxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NitricOxide, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
@@ -2843,7 +2868,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricOxide, FluidShapes.fluidGas, 1_000))
@@ -2853,18 +2878,18 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.NitricOxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NitricOxide, CellShapes.cellGas, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.NitrogenDioxide, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.NitrogenDioxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.NitrogenDioxide, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.NitrogenDioxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricOxide, FluidShapes.fluidGas, 1_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -2875,7 +2900,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1))
             .circuit(1)
-            .itemOutputs(MaterialParts.requireCell(Materials.NitricOxide, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.NitricOxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitrogenDioxide, FluidShapes.fluidGas, 3_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 2_000))
             .duration(12 * SECONDS)
@@ -2883,9 +2908,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.NitrogenDioxide, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NitrogenDioxide, CellShapes.cellGas, 3))
             .circuit(1)
-            .itemOutputs(MaterialParts.requireCell(Materials.NitricOxide, 1), GTUtility.getEmptyCell(2))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.NitricOxide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(2))
             .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 2_000))
             .duration(12 * SECONDS)
@@ -2893,7 +2920,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.NitrogenDioxide, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NitrogenDioxide, CellShapes.cellGas, 3))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.NitricAcid, CellShapes.cell, 2), GTUtility.getEmptyCell(1))
             .fluidInputs(GTUtility.getWater(1_000))
@@ -2927,7 +2954,7 @@ public class ChemicalRecipes implements Runnable {
         // H2S + 3O = SO2 + H2O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.HydricSulfide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 3_000))
@@ -2937,7 +2964,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 3))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1), GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydricSulfide, FluidShapes.fluidGas, 1_000))
@@ -2947,9 +2974,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.HydricSulfide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.SulfurDioxide, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SulfurDioxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 3_000))
             .fluidOutputs(GTUtility.getWater(1_000))
             .duration(6 * SECONDS)
@@ -2957,9 +2984,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 3))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.SulfurDioxide, 1), GTUtility.getEmptyCell(2))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.SulfurDioxide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydricSulfide, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(GTUtility.getWater(1_000))
             .duration(6 * SECONDS)
@@ -2967,7 +2996,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.HydricSulfide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1))
             .circuit(2)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 3_000))
@@ -2977,7 +3006,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 3))
             .circuit(2)
             .itemOutputs(GTUtility.getEmptyCell(3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydricSulfide, FluidShapes.fluidGas, 1_000))
@@ -2987,18 +3016,20 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.HydricSulfide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1))
             .circuit(12)
-            .itemOutputs(MaterialParts.requireCell(Materials.SulfurDioxide, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SulfurDioxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 3_000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 3))
             .circuit(12)
-            .itemOutputs(MaterialParts.requireCell(Materials.SulfurDioxide, 1), GTUtility.getEmptyCell(2))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.SulfurDioxide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydricSulfide, FluidShapes.fluidGas, 1_000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3007,7 +3038,7 @@ public class ChemicalRecipes implements Runnable {
         // 2H2S + SO2 = 3S + 2H2O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.SulfurDioxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SulfurDioxide, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 3), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydricSulfide, FluidShapes.fluidGas, 2_000))
@@ -3017,7 +3048,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.HydricSulfide, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 2))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 3), GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, 1_000))
@@ -3027,7 +3058,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.SulfurDioxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SulfurDioxide, CellShapes.cellGas, 1))
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 3), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydricSulfide, FluidShapes.fluidGas, 2_000))
@@ -3036,7 +3067,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.HydricSulfide, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 2))
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 3), GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, 1_000))
@@ -3047,7 +3078,7 @@ public class ChemicalRecipes implements Runnable {
         // SO2 + O = SO3
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, 1_000))
@@ -3057,7 +3088,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.SulfurDioxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SulfurDioxide, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
@@ -3067,18 +3098,18 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.SulfurTrioxide, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SulfurTrioxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.SulfurDioxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SulfurDioxide, CellShapes.cellGas, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.SulfurTrioxide, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SulfurTrioxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3097,7 +3128,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.SulfurTrioxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SulfurTrioxide, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(GTUtility.getWater(1_000))
@@ -3116,7 +3147,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.SulfurTrioxide, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SulfurTrioxide, CellShapes.cellGas, 1))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.SulfuricAcid, CellShapes.cell, 1))
             .fluidInputs(GTUtility.getWater(1_000))
@@ -3127,7 +3158,7 @@ public class ChemicalRecipes implements Runnable {
         // C2H4 + 2Cl = C2H3Cl + HCl
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1),
@@ -3139,7 +3170,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 2_000))
@@ -3149,9 +3180,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.VinylChloride, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.VinylChloride, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(8 * SECONDS)
@@ -3159,9 +3192,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.VinylChloride, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.VinylChloride, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(8 * SECONDS)
@@ -3173,7 +3206,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.AceticAcid, CellShapes.cell, 1))
             .circuit(1)
-            .itemOutputs(MaterialParts.requireCell(Materials.Ethenone, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ethenone, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(8 * SECONDS)
@@ -3183,7 +3216,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.SulfuricAcid, CellShapes.cell, 1))
             .circuit(1)
-            .itemOutputs(MaterialParts.requireCell(Materials.Ethenone, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ethenone, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(8 * SECONDS)
@@ -3214,7 +3247,7 @@ public class ChemicalRecipes implements Runnable {
         // Chemically this recipe is wrong, but kept for minimizing breaking change.
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethenone, 1), GTUtility.getEmptyCell(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethenone, CellShapes.cellGas, 1), GTUtility.getEmptyCell(1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Tetranitromethane, CellShapes.cell, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 8_000))
             .fluidOutputs(GTUtility.getWater(9_000))
@@ -3223,7 +3256,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethenone, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethenone, CellShapes.cellGas, 1))
             .circuit(12)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 8_000))
@@ -3276,7 +3309,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Ethenone, 1),
+                MaterialLibAPI.getStack(Materials.Ethenone, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.NitricAcid, CellShapes.cell, 8))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 9))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Tetranitromethane, FluidShapes.fluidLiquid, 2_000))
@@ -3287,8 +3320,8 @@ public class ChemicalRecipes implements Runnable {
         // C3H6 + C2H4 = C5H8 + 2H
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Propene, 1), GTUtility.getEmptyCell(1))
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Propene, CellShapes.cellGas, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Isoprene, FluidShapes.fluidLiquid, 1_000))
             .duration(6 * SECONDS)
@@ -3296,8 +3329,8 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 1), GTUtility.getEmptyCell(1))
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Propene, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Isoprene, FluidShapes.fluidLiquid, 1_000))
             .duration(6 * SECONDS)
@@ -3305,7 +3338,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Propene, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Propene, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Isoprene, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000))
@@ -3315,7 +3348,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Isoprene, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Propene, FluidShapes.fluidGas, 1_000))
@@ -3327,7 +3360,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getEmptyCell(1))
             .circuit(5)
-            .itemOutputs(MaterialParts.requireCell(Materials.Methane, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Methane, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Propene, FluidShapes.fluidGas, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Isoprene, FluidShapes.fluidLiquid, 1_000))
             .duration(6 * SECONDS)
@@ -3335,9 +3368,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Propene, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Propene, CellShapes.cellGas, 2))
             .circuit(5)
-            .itemOutputs(MaterialParts.requireCell(Materials.Methane, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Methane, CellShapes.cellGas, 1), GTUtility.getEmptyCell(1))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Isoprene, FluidShapes.fluidLiquid, 1_000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3354,7 +3387,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Propene, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Propene, CellShapes.cellGas, 2))
             .circuit(15)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Isoprene, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 1_000))
@@ -3372,7 +3405,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 2))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, 3), GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Isoprene, FluidShapes.fluidLiquid, 288))
@@ -3409,7 +3442,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Styrene, CellShapes.cell, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 1_000))
@@ -3441,7 +3474,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 4))
             .circuit(2)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Dichlorobenzene, CellShapes.cell, 1),
@@ -3453,7 +3486,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 4))
             .circuit(12)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 2),
@@ -3476,7 +3509,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.SodiumSulfide, Shapes.dust, 3),
-                MaterialParts.requireCell(Materials.Oxygen, 8))
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 8))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, 4), GTUtility.getEmptyCell(8))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Dichlorobenzene, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PolyphenyleneSulfide, FluidShapes.fluidMolten, 1_500))
@@ -3771,7 +3804,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Chlorobenzene, CellShapes.cell, 1),
@@ -3783,7 +3816,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Chlorine, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 2))
             .circuit(11)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1),
@@ -3954,7 +3987,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Acetaldehyde, 1),
+                MaterialLibAPI.getStack(Materials.Acetaldehyde, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Pentaerythritol, Shapes.dust, 21), GTUtility.getEmptyCell(1))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 4_000))
@@ -4097,7 +4130,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(new FluidStack(aBasicMaterial, 1 * INGOTS))
@@ -4117,7 +4150,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 8))
             .circuit(9)
             .itemOutputs(GTUtility.getEmptyCell(8))
             .fluidInputs(new FluidStack(aBasicMaterial, 8 * INGOTS))
@@ -4192,7 +4225,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Benzene, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Styrene, FluidShapes.fluidLiquid, 1_000))
             .duration(6 * SECONDS)
@@ -4200,8 +4233,8 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ethylene, 1), GTUtility.getEmptyCell(1))
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Styrene, FluidShapes.fluidLiquid, 1_000))
             .duration(6 * SECONDS)
@@ -4209,7 +4242,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Methane, 1), GTUtility.getEmptyCell(2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Methane, CellShapes.cellGas, 1), GTUtility.getEmptyCell(2))
             .itemOutputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 6_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Chloroform, FluidShapes.fluidLiquid, 1_000))
@@ -4220,7 +4253,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1),
-                MaterialParts.requireCell(Materials.Chloromethane, 2))
+                MaterialLibAPI.getStack(Materials.Chloromethane, CellShapes.cellGas, 2))
             .itemOutputs(GTUtility.getEmptyCell(2))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Dimethyldichlorosilane, FluidShapes.fluidLiquid, 1_000))
@@ -4282,9 +4315,9 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Chlorine, 10),
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 10),
                 MaterialLibAPI.getStack(Materials.Mercury, CellShapes.cell, 1))
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 10), GTUtility.getEmptyCell(1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 10), GTUtility.getEmptyCell(1))
             .fluidInputs(GTUtility.getWater(10_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HypochlorousAcid, FluidShapes.fluidLiquid, 10_000))
             .duration(30 * SECONDS)
@@ -4295,7 +4328,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 10),
                 MaterialLibAPI.getStack(Materials.Mercury, CellShapes.cell, 1))
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 10), GTUtility.getEmptyCell(1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 10), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 10_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HypochlorousAcid, FluidShapes.fluidLiquid, 10_000))
             .duration(30 * SECONDS)
@@ -4304,9 +4337,9 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Chlorine, 1),
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1))
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, 100))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HypochlorousAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(3 * SECONDS)
@@ -4318,7 +4351,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Phosphorus, Shapes.dust, 1),
-                MaterialParts.requireCell(Materials.Chlorine, 3))
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 3))
             .itemOutputs(ItemList.Cell_Empty.get(3))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PhosphorusTrichloride, FluidShapes.fluidLiquid, 1_000))
             .duration(10 * SECONDS)
@@ -4327,7 +4360,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.EthyleneOxide, 1),
+                MaterialLibAPI.getStack(Materials.EthyleneOxide, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 5))
             .itemOutputs(ItemList.Cell_Empty.get(6))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Dimethyldichlorosilane, FluidShapes.fluidLiquid, 4_000))
@@ -4338,7 +4371,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.EthyleneOxide, 1),
+                MaterialLibAPI.getStack(Materials.EthyleneOxide, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.Dimethyldichlorosilane, CellShapes.cell, 4))
             .itemOutputs(ItemList.Cell_Empty.get(5))
             .fluidInputs(GTUtility.getWater(5_000))
@@ -4383,7 +4416,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1),
-                MaterialParts.requireCell(Materials.Chlorine, 4))
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 4))
             .itemOutputs(ItemList.Cell_Empty.get(4))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SiliconTetrachloride, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
@@ -4402,7 +4435,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1), GTUtility.getEmptyCell(1))
-            .itemOutputs(MaterialParts.requireCell(Materials.Methane, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Methane, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 4_000))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -4411,7 +4444,7 @@ public class ChemicalRecipes implements Runnable {
         // O + 2H = H2O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .circuit(22)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000))
@@ -4421,7 +4454,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1))
             .circuit(22)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 500))
@@ -4434,7 +4467,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1), ItemList.Cell_Empty.get(2))
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Trichlorosilane, FluidShapes.fluidLiquid, 1_000))
             .duration(15 * SECONDS)
@@ -4442,7 +4475,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Silane, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Silane, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 1),
@@ -4453,10 +4486,10 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Silane, 1), ItemList.Cell_Empty.get(3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Silane, CellShapes.cellGas, 1), ItemList.Cell_Empty.get(3))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 1),
-                MaterialParts.requireCell(Materials.Hydrogen, 4))
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 4))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
@@ -4466,7 +4499,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 8),
-                MaterialParts.requireCell(Materials.Chlorine, 16))
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 16))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SulfurDichloride, CellShapes.cell, 8),
                 ItemList.Cell_Empty.get(8))
@@ -4486,7 +4519,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Propene, 8),
+                MaterialLibAPI.getStack(Materials.Propene, CellShapes.cellGas, 8),
                 MaterialLibAPI.getStack(Materials.PhosphoricAcidGT5U, CellShapes.cell, 1))
             .itemOutputs(GTUtility.getEmptyCell(9))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 8_000))
@@ -4509,7 +4542,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Benzene, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.Propene, 1))
+                MaterialLibAPI.getStack(Materials.Propene, CellShapes.cellGas, 1))
             .itemOutputs(GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, 125))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Isopropylbenzene, FluidShapes.fluidLiquid, 1_000))
@@ -4555,7 +4588,7 @@ public class ChemicalRecipes implements Runnable {
         // N + 3H = NH3
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Nitrogen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Nitrogen, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 3_000))
@@ -4565,7 +4598,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 3))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 1_000))
@@ -4575,25 +4608,25 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Nitrogen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Nitrogen, CellShapes.cellGas, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.Ammonia, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 3_000))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_HV * 4 / 5)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 3))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.Ammonia, 1), GTUtility.getEmptyCell(2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1), GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 1_000))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_HV * 4 / 5)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ammonia, 1), GTUtility.getEmptyCell(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1), GTUtility.getEmptyCell(1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Dimethylamine, FluidShapes.fluidGas, 1_000))
@@ -4602,7 +4635,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Ammonia, 4), GTUtility.getEmptyCell(2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 4), GTUtility.getEmptyCell(2))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 6))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 10_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.NitricOxide, FluidShapes.fluidGas, 4_000))
@@ -4623,8 +4656,8 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.NitrogenDioxide, 2),
-                MaterialParts.requireCell(Materials.Oxygen, 1))
+                MaterialLibAPI.getStack(Materials.NitrogenDioxide, CellShapes.cellGas, 2),
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .itemOutputs(GTUtility.getEmptyCell(3))
             .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 2_000))
@@ -4634,7 +4667,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Oxygen, 1),
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1))
             .itemOutputs(GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitrogenDioxide, FluidShapes.fluidGas, 2_000))
@@ -4646,7 +4679,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.NitrogenDioxide, 2))
+                MaterialLibAPI.getStack(Materials.NitrogenDioxide, CellShapes.cellGas, 2))
             .itemOutputs(GTUtility.getEmptyCell(3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 2_000))
@@ -4656,7 +4689,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1), GTUtility.getEmptyCell(1))
-            .itemOutputs(MaterialParts.requireCell(Materials.HydricSulfide, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
@@ -4666,7 +4699,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Ethylene, 1),
+                MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
@@ -4678,7 +4711,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.Oxygen, 1))
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.VinylChloride, FluidShapes.fluidGas, 1_000))
@@ -4688,8 +4721,8 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Oxygen, 1),
-                MaterialParts.requireCell(Materials.Ethylene, 1))
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1),
+                MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1), GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.VinylChloride, FluidShapes.fluidGas, 1_000))
@@ -4698,7 +4731,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Butadiene, 1), ItemList.Cell_Air.get(10))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Butadiene, CellShapes.cellGas, 1), ItemList.Cell_Air.get(10))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.RawStyreneButadieneRubber, Shapes.dust, 9),
                 GTUtility.getEmptyCell(11))
@@ -4709,8 +4742,8 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Butadiene, 1),
-                MaterialParts.requireCell(Materials.Oxygen, 5))
+                MaterialLibAPI.getStack(Materials.Butadiene, CellShapes.cellGas, 1),
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 5))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.RawStyreneButadieneRubber, Shapes.dust, 13),
                 GTUtility.getEmptyCell(6))
@@ -4732,7 +4765,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Styrene, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.Oxygen, 15))
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 15))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.RawStyreneButadieneRubber, Shapes.dust, 41),
                 GTUtility.getEmptyCell(16))
@@ -4744,7 +4777,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Styrene, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.Butadiene, 3))
+                MaterialLibAPI.getStack(Materials.Butadiene, CellShapes.cellGas, 3))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.RawStyreneButadieneRubber, Shapes.dust, 27),
                 GTUtility.getEmptyCell(4))
@@ -4756,7 +4789,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Styrene, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.Butadiene, 3))
+                MaterialLibAPI.getStack(Materials.Butadiene, CellShapes.cellGas, 3))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.RawStyreneButadieneRubber, Shapes.dust, 41),
                 GTUtility.getEmptyCell(4))
@@ -4811,15 +4844,17 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.requireCell(Materials.Nitrogen, 2),
-                MaterialParts.requireCell(Materials.Oxygen, 1))
-            .itemOutputs(MaterialParts.requireCell(Materials.NitrousOxide, 1), GTUtility.getEmptyCell(2))
+                MaterialLibAPI.getStack(Materials.Nitrogen, CellShapes.cellGas, 2),
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.NitrousOxide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Nitrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Nitrogen, CellShapes.cellGas, 2))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
@@ -4829,16 +4864,18 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Nitrogen, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Nitrogen, CellShapes.cellGas, 2))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.NitrousOxide, 1), GTUtility.getEmptyCell(1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials.NitrousOxide, CellShapes.cellGas, 1),
+                GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 2_000))
@@ -4848,9 +4885,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
             .circuit(11)
-            .itemOutputs(MaterialParts.requireCell(Materials.NitrousOxide, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.NitrousOxide, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 2_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -4861,7 +4898,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Ethanol, CellShapes.cell, 1),
-                MaterialParts.requireCell(Materials.Butene, 1))
+                MaterialLibAPI.getStack(Materials.Butene, CellShapes.cellGas, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.EthylTertButylEther, CellShapes.cell, 1),
                 GTUtility.getEmptyCell(1))

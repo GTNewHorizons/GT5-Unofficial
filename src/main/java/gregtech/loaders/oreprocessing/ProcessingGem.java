@@ -23,6 +23,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
@@ -73,13 +74,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 }
 
                 if (!OrePrefixes.block.isIgnored(material)
-                    && MaterialParts.stack(OrePrefixes.block, material, 1L) != null) {
+                    && MaterialLibAPI.findStack(material, BlockShapes.block, 1) != null) {
                     // Compressor recipes
                     // need to avoid iridium exploit
                     if (material != Materials.Iridium) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, stack))
-                            .itemOutputs(MaterialParts.stack(OrePrefixes.block, material, 1L))
+                            .itemOutputs(MaterialLibAPI.findStack(material, BlockShapes.block, 1))
                             .duration(15 * SECONDS)
                             .eut(2)
                             .addTo(compressorRecipes);
@@ -90,16 +91,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (!noSmelting) {
                     GTModHandler.addSmeltingRecipe(
                         GTUtility.copyAmount(1, stack),
-                        MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L));
+                        MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.ingot, 1));
                 }
 
                 if (noSmashing) {
                     // Forge hammer recipes
                     {
-                        if (MaterialParts.stack(OrePrefixes.gemFlawed, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.gemFlawed, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(stack)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.gemFlawed, material, 2L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemFlawed, 2))
                                 .duration(3 * SECONDS + 4 * TICKS)
                                 .eut(TierEU.RECIPE_LV / 2)
                                 .addTo(hammerRecipes);
@@ -109,11 +110,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     // Forge hammer recipes
                     {
                         // need to avoid iridium exploit
-                        if (MaterialParts.stack(OrePrefixes.plate, material, 1L) != null
+                        if (MaterialLibAPI.findStack(material, Shapes.plate, 1) != null
                             && material != Materials.Iridium) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
                                 .duration(Math.max(materialMass, 1L))
                                 .eut(calculateRecipeEU(material, 16))
                                 .addTo(hammerRecipes);
@@ -122,67 +123,67 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                     // Bender recipes
                     if (material != Materials.Iridium) {
-                        if (MaterialParts.stack(OrePrefixes.plate, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
                             // Plate
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(1)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plate, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
                                 .duration((int) Math.max(materialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(material, 24))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.plateDouble, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plateDouble, 1) != null) {
                             // Double plates
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(2, stack))
                                 .circuit(2)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plateDouble, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateDouble, 1))
                                 .duration(Math.max(materialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.plateTriple, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plateTriple, 1) != null) {
                             // Triple plate
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(3, stack))
                                 .circuit(3)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plateTriple, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateTriple, 1))
                                 .duration(Math.max(materialMass * 3L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.plateQuadruple, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plateQuadruple, 1) != null) {
                             // Quadruple plate
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(4, stack))
                                 .circuit(4)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plateQuadruple, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateQuadruple, 1))
                                 .duration(Math.max(materialMass * 4L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.plateQuintuple, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plateQuintuple, 1) != null) {
                             // Quintuple plate
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(5, stack))
                                 .circuit(5)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plateQuintuple, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateQuintuple, 1))
                                 .duration(Math.max(materialMass * 5L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialParts.stack(OrePrefixes.plateDense, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.plateDense, 1) != null) {
                             // dense plate
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(9, stack))
                                 .circuit(9)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.plateDense, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateDense, 1))
                                 .duration(Math.max(materialMass * 9L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
@@ -192,13 +193,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (noWorking) {
                     if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                         // Lathe recipes
-                        if (MaterialParts.stack(OrePrefixes.stick, material, 1L) != null
-                            && MaterialParts.stack(OrePrefixes.dustSmall, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.stick, 1) != null
+                            && MaterialLibAPI.findStack(material, Shapes.dustSmall, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .itemOutputs(
-                                    MaterialParts.stack(OrePrefixes.stick, material, 1L),
-                                    MaterialParts.stack(OrePrefixes.dustSmall, material, 2L))
+                                    MaterialLibAPI.findStack(material, Shapes.stick, 1),
+                                    MaterialLibAPI.findStack(material, Shapes.dustSmall, 2))
                                 .duration(((int) Math.max(materialMass, 1L)) * TICKS)
                                 .eut(calculateRecipeEU(material, 16))
                                 .addTo(latheRecipes);
@@ -207,11 +208,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 } else {
                     if (unifiable) {
                         // Implosion compressor recipes
-                        if (implodable && MaterialParts.stack(OrePrefixes.gemFlawless, material, 1) != null) {
+                        if (implodable && MaterialLibAPI.findStack(material, Shapes.gemFlawless, 1) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(3, stack))
                                 .itemOutputs(
-                                    MaterialParts.stack(OrePrefixes.gemFlawless, material, 1),
+                                    MaterialLibAPI.findStack(material, Shapes.gemFlawless, 1),
                                     MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 2))
                                 .duration(1 * SECONDS)
                                 .eut(TierEU.RECIPE_LV)
@@ -221,25 +222,22 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                MaterialParts.stack(OrePrefixes.gem, material, 2L),
+                                MaterialLibAPI.findStack(material, Shapes.gem, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X',
-                                    MaterialParts.craftIngredient(OrePrefixes.gemFlawless, material) });
+                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawless.ingredient(material) });
 
                             if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
                                 GTModHandler.addCraftingRecipe(
                                     GTUtility.copyAmount(1, stack),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "XXX", "XXX", "XXX", 'X',
-                                        MaterialParts.craftIngredient(OrePrefixes.nugget, material) });
+                                    new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.nugget.ingredient(material) });
                             }
 
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialParts.stack(OrePrefixes.dust, material, 1L),
+                                    MaterialLibAPI.findStack(material, Shapes.dust, 1),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X',
-                                        MaterialParts.craftIngredient(OrePrefixes.gem, material) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gem.ingredient(material) });
                             }
                         }
                     }
@@ -250,12 +248,12 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     // Laser engraver recipes
                     {
 
-                        if (MaterialParts.stack(OrePrefixes.gemFlawless, material, 1L) != null) {
+                        if (MaterialLibAPI.findStack(material, Shapes.gemFlawless, 1) != null) {
                             is.stackSize = 0;
 
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(3, stack), is)
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.gemFlawless, material, 1L))
+                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemFlawless, 1))
                                 .duration(60 * SECONDS)
                                 .eut(TierEU.RECIPE_HV)
                                 .addTo(laserEngraverRecipes);
@@ -276,13 +274,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 if (!noWorking) {
                     // Lathe recipes
-                    if (MaterialParts.stack(OrePrefixes.bolt, material, 1L) != null
-                        && MaterialParts.stack(OrePrefixes.dustTiny, material, 1L) != null) {
+                    if (MaterialLibAPI.findStack(material, Shapes.bolt, 1) != null
+                        && MaterialLibAPI.findStack(material, Shapes.dustTiny, 1) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
-                                MaterialParts.stack(OrePrefixes.bolt, material, 1L),
-                                MaterialParts.stack(OrePrefixes.dustTiny, material, 1L))
+                                MaterialLibAPI.findStack(material, Shapes.bolt, 1),
+                                MaterialLibAPI.findStack(material, Shapes.dustTiny, 1))
                             .duration(((int) Math.max(materialMass, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(latheRecipes);
@@ -291,11 +289,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (unifiable) {
                         // Implosion compressor recipes
                         {
-                            if (implodable && MaterialParts.stack(OrePrefixes.gemFlawed, material, 1) != null) {
+                            if (implodable && MaterialLibAPI.findStack(material, Shapes.gemFlawed, 1) != null) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(3, stack))
                                     .itemOutputs(
-                                        MaterialParts.stack(OrePrefixes.gemFlawed, material, 1),
+                                        MaterialLibAPI.findStack(material, Shapes.gemFlawed, 1),
                                         MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
@@ -307,16 +305,14 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                MaterialParts.stack(OrePrefixes.gemChipped, material, 2L),
+                                MaterialLibAPI.findStack(material, Shapes.gemChipped, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X',
-                                    MaterialParts.craftIngredient(OrePrefixes.gemFlawed, material) });
+                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawed.ingredient(material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialParts.stack(OrePrefixes.dustSmall, material, 1L),
+                                    MaterialLibAPI.findStack(material, Shapes.dustSmall, 1),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X',
-                                        MaterialParts.craftIngredient(OrePrefixes.gemChipped, material) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemChipped.ingredient(material) });
                             }
                         }
                     }
@@ -327,7 +323,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(3, stack), is)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.gemFlawed, material, 1L))
+                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemFlawed, 1))
                         .duration(30 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
                         .addTo(laserEngraverRecipes);
@@ -350,10 +346,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         {
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialParts.stack(OrePrefixes.dust, material, 4L),
+                                    MaterialLibAPI.findStack(material, Shapes.dust, 4),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X',
-                                        MaterialParts.craftIngredient(OrePrefixes.gemExquisite, material) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemExquisite.ingredient(material) });
                             }
                         }
                     }
@@ -363,7 +358,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 {
                     GTValues.RA.stdBuilder()
                         .itemInputs(stack)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.gemFlawless, material, 2L))
+                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemFlawless, 2))
                         .duration(3 * SECONDS + 4 * TICKS)
                         .eut(TierEU.RECIPE_LV / 2)
                         .addTo(hammerRecipes);
@@ -381,13 +376,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 if (!noWorking) {
                     // Lathe recipes
-                    if (MaterialParts.stack(OrePrefixes.bolt, material, 1L) != null
-                        && MaterialParts.stack(OrePrefixes.dustSmall, material, 1L) != null) {
+                    if (MaterialLibAPI.findStack(material, Shapes.bolt, 1) != null
+                        && MaterialLibAPI.findStack(material, Shapes.dustSmall, 1) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
-                                MaterialParts.stack(OrePrefixes.bolt, material, 2L),
-                                MaterialParts.stack(OrePrefixes.dustSmall, material, 1L))
+                                MaterialLibAPI.findStack(material, Shapes.bolt, 2),
+                                MaterialLibAPI.findStack(material, Shapes.dustSmall, 1))
                             .duration(((int) Math.max(materialMass, 1L)) * TICKS)
                             .eut(12)
                             .addTo(latheRecipes);
@@ -396,11 +391,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (unifiable) {
                         // Implosion compressor recipes
                         {
-                            if (implodable && MaterialParts.stack(OrePrefixes.gem, material, 1) != null) {
+                            if (implodable && MaterialLibAPI.findStack(material, Shapes.gem, 1) != null) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(3, stack))
                                     .itemOutputs(
-                                        MaterialParts.stack(OrePrefixes.gem, material, 1),
+                                        MaterialLibAPI.findStack(material, Shapes.gem, 1),
                                         MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
@@ -412,23 +407,21 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                MaterialParts.stack(OrePrefixes.gemFlawed, material, 2L),
+                                MaterialLibAPI.findStack(material, Shapes.gemFlawed, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X',
-                                    MaterialParts.craftIngredient(OrePrefixes.gem, material) });
+                                new Object[] { "h", "X", 'X', OrePrefixes.gem.ingredient(material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialParts.stack(OrePrefixes.dustSmall, material, 2L),
+                                    MaterialLibAPI.findStack(material, Shapes.dustSmall, 2),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X',
-                                        MaterialParts.craftIngredient(OrePrefixes.gemFlawed, material) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawed.ingredient(material) });
                             }
                         }
                     }
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.gemChipped, material, 2L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemChipped, 2))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
@@ -440,7 +433,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(3, stack), is)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.gem, material, 1L))
+                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gem, 1))
                         .duration(30 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(laserEngraverRecipes);
@@ -461,12 +454,12 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (!noWorking) {
                     // Lathe recipes; LatheRecipes turns Lanthanum Hexaboride on its own, slower recipe
                     if (material != Materials.LanthanumHexaboride
-                        && MaterialParts.stack(OrePrefixes.stickLong, material, 1L) != null
-                        && MaterialParts.stack(OrePrefixes.dust, material, 1L) != null) {
+                        && MaterialLibAPI.findStack(material, Shapes.stickLong, 1) != null
+                        && MaterialLibAPI.findStack(material, Shapes.dust, 1) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
-                                MaterialParts.stack(OrePrefixes.stickLong, material, 1L),
+                                MaterialLibAPI.findStack(material, Shapes.stickLong, 1),
                                 MaterialParts.dustOf(
                                     material,
                                     prefix.getMaterialAmount() - OrePrefixes.stickLong.getMaterialAmount()))
@@ -478,11 +471,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (unifiable) {
                         // Implosion compressor recipes
                         {
-                            if (implodable && MaterialParts.stack(OrePrefixes.gemExquisite, material, 1) != null) {
+                            if (implodable && MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1) != null) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(3, stack))
                                     .itemOutputs(
-                                        MaterialParts.stack(OrePrefixes.gemExquisite, material, 1),
+                                        MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1),
                                         MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
@@ -494,23 +487,21 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                MaterialParts.stack(OrePrefixes.gemFlawless, material, 2L),
+                                MaterialLibAPI.findStack(material, Shapes.gemFlawless, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X',
-                                    MaterialParts.craftIngredient(OrePrefixes.gemExquisite, material) });
+                                new Object[] { "h", "X", 'X', OrePrefixes.gemExquisite.ingredient(material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialParts.stack(OrePrefixes.dust, material, 2L),
+                                    MaterialLibAPI.findStack(material, Shapes.dust, 2),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X',
-                                        MaterialParts.craftIngredient(OrePrefixes.gemFlawless, material) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawless.ingredient(material) });
                             }
                         }
                     }
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.gem, material, 2L))
+                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gem, 2))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
@@ -521,7 +512,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     is.stackSize = 0;
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(3, stack), is)
-                        .itemOutputs(MaterialParts.stack(OrePrefixes.gemExquisite, material, 1L))
+                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1))
                         .duration(2 * MINUTES)
                         .eut(TierEU.RECIPE_EV)
                         .addTo(laserEngraverRecipes);

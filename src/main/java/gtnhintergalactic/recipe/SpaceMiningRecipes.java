@@ -22,12 +22,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import akka.japi.Pair;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -566,17 +565,17 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 600, 400, 1500, 1500, 1000, 400, 1000, 600, 1000, 1000, 1000 },
-            new ItemStack[] { MaterialParts.stack(OrePrefixes.ore, Materials.Koboldite, 64),
-                MaterialParts.stack(OrePrefixes.ore, Materials.Crocoite, 64),
-                MaterialParts.stack(OrePrefixes.ore, Materials.GadoliniteY, 64),
-                MaterialParts.stack(OrePrefixes.ore, Materials.Lepersonnite, 64),
-                MaterialParts.stack(OrePrefixes.ore, Materials.Zircon, 64),
-                MaterialParts.stack(OrePrefixes.ore, Materials.Lautarite, 64),
-                MaterialParts.stack(OrePrefixes.ore, Materials.Honeaite, 64),
-                MaterialParts.stack(OrePrefixes.ore, Materials.Alburnite, 64),
-                MaterialParts.stack(OrePrefixes.ore, Materials.RareEarthI, 64),
-                MaterialParts.stack(OrePrefixes.ore, Materials.RareEarthII, 64),
-                MaterialParts.stack(OrePrefixes.ore, Materials.RareEarthIII, 64) },
+            new ItemStack[] { MaterialLibAPI.getStack(Materials.Koboldite, OreShapes.ore, 64),
+                MaterialLibAPI.getStack(Materials.Crocoite, OreShapes.ore, 64),
+                MaterialLibAPI.getStack(Materials.GadoliniteY, OreShapes.ore, 64),
+                MaterialLibAPI.getStack(Materials.Lepersonnite, OreShapes.ore, 64),
+                MaterialLibAPI.getStack(Materials.Zircon, OreShapes.ore, 64),
+                MaterialLibAPI.getStack(Materials.Lautarite, OreShapes.ore, 64),
+                MaterialLibAPI.getStack(Materials.Honeaite, OreShapes.ore, 64),
+                MaterialLibAPI.getStack(Materials.Alburnite, OreShapes.ore, 64),
+                MaterialLibAPI.getStack(Materials.RareEarthI, OreShapes.ore, 64),
+                MaterialLibAPI.getStack(Materials.RareEarthII, OreShapes.ore, 64),
+                MaterialLibAPI.getStack(Materials.RareEarthIII, OreShapes.ore, 64) },
             10,
             20,
             110,

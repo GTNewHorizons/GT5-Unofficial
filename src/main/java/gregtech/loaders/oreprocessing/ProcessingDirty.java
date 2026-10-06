@@ -52,9 +52,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                convert(
-                    material,
-                    MaterialParts.stack(OrePrefixes.dustImpure, MaterialUtils.macerateInto(material), 1L)))
+                convert(material, MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1)))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
@@ -66,15 +64,15 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     material,
                     GTUtility.copyAmount(
                         1L,
-                        MaterialParts.stack(OrePrefixes.dustImpure, MaterialUtils.macerateInto(material), 1),
-                        MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
-                    MaterialParts.stack(
-                        OrePrefixes.dust,
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
+                    MaterialLibAPI.findStack(
                         GTUtility.selectItemInList(
                             0,
                             MaterialUtils.macerateInto(material),
                             MaterialUtils.oreByProducts(material)),
-                        1L)))
+                        Shapes.dust,
+                        1)))
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)
             .eut(2)
@@ -89,13 +87,13 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                         orePrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,
                         material,
                         1L),
-                    MaterialParts.stack(
-                        OrePrefixes.dust,
+                    MaterialLibAPI.findStack(
                         GTUtility.selectItemInList(
                             0,
                             MaterialUtils.macerateInto(material),
                             MaterialUtils.oreByProducts(material)),
-                        1L),
+                        Shapes.dust,
+                        1),
                     MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1)))
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GTUtility.getWater(1_000))
@@ -112,13 +110,13 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                         orePrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,
                         material,
                         1L),
-                    MaterialParts.stack(
-                        OrePrefixes.dust,
+                    MaterialLibAPI.findStack(
                         GTUtility.selectItemInList(
                             0,
                             MaterialUtils.macerateInto(material),
                             MaterialUtils.oreByProducts(material)),
-                        1L),
+                        Shapes.dust,
+                        1),
                     MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1)))
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GTModHandler.getDistilledWater(200))
@@ -134,13 +132,13 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 convertOre(
                     material,
                     MaterialParts.stack(prefix, material, 1L),
-                    MaterialParts.stack(
-                        OrePrefixes.dust,
+                    MaterialLibAPI.findStack(
                         GTUtility.selectItemInList(
                             1,
                             MaterialUtils.macerateInto(material),
                             MaterialUtils.oreByProducts(material)),
-                        1L),
+                        Shapes.dust,
+                        1),
                     MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1)))
             .outputChances(10000, 1111, 10000)
             .duration(25 * SECONDS)
@@ -169,7 +167,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     convert(
                         material,
                         MaterialParts.stack(chemicalBathPrefix, material, 1L),
-                        MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(byproduct), 1L),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
                         MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1)))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, 1_000))
@@ -186,7 +184,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     convert(
                         material,
                         MaterialParts.stack(chemicalBathPrefix, material, 1L),
-                        MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(byproduct), 1L),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
                         MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1)))
                 .outputChances(10000, 9900, 4000)
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, 1_000))
@@ -203,7 +201,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     convert(
                         material,
                         MaterialParts.stack(chemicalBathPrefix, material, 1L),
-                        MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(byproduct), 1L),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
                         MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1)))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SodiumPersulfate, FluidShapes.fluidLiquid, 100))

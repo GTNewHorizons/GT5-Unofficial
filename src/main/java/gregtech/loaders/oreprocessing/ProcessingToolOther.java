@@ -11,7 +11,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.IDMetaTool01;
@@ -40,8 +39,8 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.PLUNGER.ID, 1, material, material, null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "xRR", " SR", "S f", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material),
-                        'R', Wildcard.AnyRubber.ingredient(OrePrefixes.plate) });
+                    new Object[] { "xRR", " SR", "S f", 'S', OrePrefixes.stick.ingredient(material), 'R',
+                        Wildcard.AnyRubber.ingredient(OrePrefixes.plate) });
             }
         }
 
@@ -53,13 +52,12 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.WRENCH.ID, 1, material, material, null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "IhI", "III", " I ", 'I',
-                        MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
+                    new Object[] { "IhI", "III", " I ", 'I', OrePrefixes.ingot.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.CROWBAR.ID, 1, material, material, null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "hDS", "DSD", "SDf", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material),
-                        'D', Dyes.dyeBlue });
+                    new Object[] { "hDS", "DSD", "SDf", 'S', OrePrefixes.stick.ingredient(material), 'D',
+                        Dyes.dyeBlue });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SCREWDRIVER.ID,
@@ -68,38 +66,36 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         MaterialUtils.handleMaterial(material),
                         null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { " fS", " Sh", "W  ", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material),
-                        'W', OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
+                    new Object[] { " fS", " Sh", "W  ", 'S', OrePrefixes.stick.ingredient(material), 'W',
+                        OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE
                         .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PfP", "hPd", "STS", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material),
-                        'P', MaterialParts.craftIngredient(OrePrefixes.plate, material), 'T',
-                        MaterialParts.craftIngredient(OrePrefixes.screw, material) });
+                    new Object[] { "PfP", "hPd", "STS", 'S', OrePrefixes.stick.ingredient(material), 'P',
+                        OrePrefixes.plate.ingredient(material), 'T', OrePrefixes.screw.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.SCOOP.ID, 1, material, material, null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SWS", "SSS", "xSh", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material),
-                        'W', new ItemStack(Blocks.wool, 1, 32767) });
+                    new Object[] { "SWS", "SSS", "xSh", 'S', OrePrefixes.stick.ingredient(material), 'W',
+                        new ItemStack(Blocks.wool, 1, 32767) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE
                         .getToolWithStats(IDMetaTool01.BRANCHCUTTER.ID, 1, material, material, null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PfP", "PdP", "STS", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material),
-                        'P', MaterialParts.craftIngredient(OrePrefixes.plate, material), 'T',
-                        MaterialParts.craftIngredient(OrePrefixes.screw, material) });
+                    new Object[] { "PfP", "PdP", "STS", 'S', OrePrefixes.stick.ingredient(material), 'P',
+                        OrePrefixes.plate.ingredient(material), 'T', OrePrefixes.screw.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, material, material, null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "fPh", " S ", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material), 'P',
-                        MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+                    new Object[] { "fPh", " S ", 'S', OrePrefixes.stick.ingredient(material), 'P',
+                        OrePrefixes.plate.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE
                         .getToolWithStats(IDMetaTool01.BUTCHERYKNIFE.ID, 1, material, material, null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PPf", "PP ", "Sh ", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material),
-                        'P', MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+                    new Object[] { "PPf", "PP ", "Sh ", 'S', OrePrefixes.stick.ingredient(material), 'P',
+                        OrePrefixes.plate.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SOLDERING_IRON_LV.ID,
@@ -108,10 +104,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         Wildcard.AnyRubber.representative(),
                         new long[] { 100000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "LBf", "Sd ", "P  ", 'B', MaterialParts.craftIngredient(OrePrefixes.bolt, material),
-                        'P', Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
-                        MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Iron), 'L',
-                        ItemList.Battery_RE_LV_Lithium.get(1L) });
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.ingredient(material), 'P',
+                        Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
+                        OrePrefixes.stick.ingredient(Materials.Iron), 'L', ItemList.Battery_RE_LV_Lithium.get(1L) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SOLDERING_IRON_LV.ID,
@@ -120,10 +115,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         Wildcard.AnyRubber.representative(),
                         new long[] { 75000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "LBf", "Sd ", "P  ", 'B', MaterialParts.craftIngredient(OrePrefixes.bolt, material),
-                        'P', Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
-                        MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Iron), 'L',
-                        ItemList.Battery_RE_LV_Cadmium.get(1L) });
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.ingredient(material), 'P',
+                        Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
+                        OrePrefixes.stick.ingredient(Materials.Iron), 'L', ItemList.Battery_RE_LV_Cadmium.get(1L) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SOLDERING_IRON_LV.ID,
@@ -132,10 +126,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         Wildcard.AnyRubber.representative(),
                         new long[] { 50000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "LBf", "Sd ", "P  ", 'B', MaterialParts.craftIngredient(OrePrefixes.bolt, material),
-                        'P', Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
-                        MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Iron), 'L',
-                        ItemList.Battery_RE_LV_Sodium.get(1L) });
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.ingredient(material), 'P',
+                        Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
+                        OrePrefixes.stick.ingredient(Materials.Iron), 'L', ItemList.Battery_RE_LV_Sodium.get(1L) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SOLDERING_IRON_MV.ID,
@@ -144,10 +137,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         Wildcard.AnyRubber.representative(),
                         new long[] { 400000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "LBf", "Sd ", "P  ", 'B', MaterialParts.craftIngredient(OrePrefixes.bolt, material),
-                        'P', Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
-                        MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Steel), 'L',
-                        ItemList.Battery_RE_MV_Lithium.get(1L) });
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.ingredient(material), 'P',
+                        Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
+                        OrePrefixes.stick.ingredient(Materials.Steel), 'L', ItemList.Battery_RE_MV_Lithium.get(1L) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SOLDERING_IRON_MV.ID,
@@ -156,10 +148,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         Wildcard.AnyRubber.representative(),
                         new long[] { 300000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "LBf", "Sd ", "P  ", 'B', MaterialParts.craftIngredient(OrePrefixes.bolt, material),
-                        'P', Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
-                        MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Steel), 'L',
-                        ItemList.Battery_RE_MV_Cadmium.get(1L) });
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.ingredient(material), 'P',
+                        Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
+                        OrePrefixes.stick.ingredient(Materials.Steel), 'L', ItemList.Battery_RE_MV_Cadmium.get(1L) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SOLDERING_IRON_MV.ID,
@@ -168,10 +159,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         Wildcard.AnyRubber.representative(),
                         new long[] { 200000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "LBf", "Sd ", "P  ", 'B', MaterialParts.craftIngredient(OrePrefixes.bolt, material),
-                        'P', Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
-                        MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Steel), 'L',
-                        ItemList.Battery_RE_MV_Sodium.get(1L) });
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.ingredient(material), 'P',
+                        Wildcard.AnyRubber.ingredient(OrePrefixes.plate), 'S',
+                        OrePrefixes.stick.ingredient(Materials.Steel), 'L', ItemList.Battery_RE_MV_Sodium.get(1L) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
                         IDMetaTool01.SOLDERING_IRON_HV.ID,
@@ -180,9 +170,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         Wildcard.AnySyntheticRubber.representative(),
                         new long[] { 1600000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "LBf", "Sd ", "P  ", 'B', MaterialParts.craftIngredient(OrePrefixes.bolt, material),
-                        'P', Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 'S',
-                        MaterialParts.craftIngredient(OrePrefixes.stick, Materials.StainlessSteel), 'L',
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.ingredient(material), 'P',
+                        Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 'S',
+                        OrePrefixes.stick.ingredient(Materials.StainlessSteel), 'L',
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -192,9 +182,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         Wildcard.AnySyntheticRubber.representative(),
                         new long[] { 1200000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "LBf", "Sd ", "P  ", 'B', MaterialParts.craftIngredient(OrePrefixes.bolt, material),
-                        'P', Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 'S',
-                        MaterialParts.craftIngredient(OrePrefixes.stick, Materials.StainlessSteel), 'L',
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.ingredient(material), 'P',
+                        Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 'S',
+                        OrePrefixes.stick.ingredient(Materials.StainlessSteel), 'L',
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -204,22 +194,19 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         Wildcard.AnySyntheticRubber.representative(),
                         new long[] { 800000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "LBf", "Sd ", "P  ", 'B', MaterialParts.craftIngredient(OrePrefixes.bolt, material),
-                        'P', Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 'S',
-                        MaterialParts.craftIngredient(OrePrefixes.stick, Materials.StainlessSteel), 'L',
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.ingredient(material), 'P',
+                        Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.plate), 'S',
+                        OrePrefixes.stick.ingredient(Materials.StainlessSteel), 'L',
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
 
                 GTModHandler.addCraftingRecipe(
                     (MetaGeneratedTool01.INSTANCE
                         .getToolWithStats(IDMetaTool01.POCKET_MULTITOOL.ID, 1, material, material, null)),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "ABC", "DEF", "CFG", 'A',
-                        MaterialParts.craftIngredient(OrePrefixes.stickLong, material), 'B',
-                        MaterialParts.craftIngredient(OrePrefixes.toolHeadSaw, material), 'C',
-                        MaterialParts.craftIngredient(OrePrefixes.ring, material), 'D',
-                        MaterialParts.craftIngredient(OrePrefixes.toolHeadFile, material), 'E',
-                        MaterialParts.craftIngredient(OrePrefixes.plate, material), 'F',
-                        MaterialParts.craftIngredient(OrePrefixes.spring, material), 'G', Dyes.dyeBlue });
+                    new Object[] { "ABC", "DEF", "CFG", 'A', OrePrefixes.stickLong.ingredient(material), 'B',
+                        OrePrefixes.toolHeadSaw.ingredient(material), 'C', OrePrefixes.ring.ingredient(material), 'D',
+                        OrePrefixes.toolHeadFile.ingredient(material), 'E', OrePrefixes.plate.ingredient(material), 'F',
+                        OrePrefixes.spring.ingredient(material), 'G', Dyes.dyeBlue });
 
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -231,8 +218,7 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { "  d", "SSC", "fPP", 'S',
                         OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)), 'C',
-                        MaterialParts.craftIngredient(OrePrefixes.screw, material), 'P',
-                        MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+                        OrePrefixes.screw.ingredient(material), 'P', OrePrefixes.plate.ingredient(material) });
 
             }
         }

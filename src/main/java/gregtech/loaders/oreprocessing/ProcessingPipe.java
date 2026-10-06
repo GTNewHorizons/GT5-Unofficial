@@ -16,6 +16,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -75,8 +76,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.pipeHuge, material, 1L),
                         bits,
-                        new Object[] { "DhD", "D D", "DwD", 'D',
-                            MaterialParts.craftIngredient(OrePrefixes.plateDouble, material) });
+                        new Object[] { "DhD", "D D", "DwD", 'D', OrePrefixes.plateDouble.ingredient(material) });
                 }
             }
             case "pipeLarge" -> {
@@ -85,8 +85,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         MaterialParts.stack(OrePrefixes.pipeLarge, material, 1L),
                         bits,
                         new Object[] { "PHP", "P P", "PWP", 'P',
-                            material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
-                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
+                            material == Materials.Wood ? OrePrefixes.plank.ingredient(material)
+                                : OrePrefixes.plate.ingredient(material),
                             'H',
                             MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
@@ -100,8 +100,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         MaterialParts.stack(OrePrefixes.pipeMedium, material, 2L),
                         bits,
                         new Object[] { "PPP", "W H", "PPP", 'P',
-                            material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
-                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
+                            material == Materials.Wood ? OrePrefixes.plank.ingredient(material)
+                                : OrePrefixes.plate.ingredient(material),
                             'H',
                             MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
@@ -115,8 +115,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         MaterialParts.stack(OrePrefixes.pipeSmall, material, 6L),
                         bits,
                         new Object[] { "PWP", "P P", "PHP", 'P',
-                            material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
-                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
+                            material == Materials.Wood ? OrePrefixes.plank.ingredient(material)
+                                : OrePrefixes.plate.ingredient(material),
                             'H',
                             MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
@@ -129,8 +129,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTModHandler.addCraftingRecipe(
                         MaterialParts.stack(OrePrefixes.pipeTiny, material, 8L),
                         bits,
-                        new Object[] { "PPP", "h w", "PPP", 'P',
-                            MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+                        new Object[] { "PPP", "h w", "PPP", 'P', OrePrefixes.plate.ingredient(material) });
                 }
             }
             case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny" -> {
@@ -152,7 +151,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.pipeQuadruple, material, 1),
+                        MaterialLibAPI.findStack(material, TEBlockShapes.pipeQuadruple, 1),
                         bits,
                         new Object[] { "MM ", "MM ", "   ", 'M',
                             MaterialParts.stack(OrePrefixes.pipeMedium, material, 1) });
@@ -160,7 +159,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 GTValues.RA.stdBuilder()
                     .itemInputs(MaterialParts.stack(OrePrefixes.pipeMedium, material, 4))
                     .circuit(9)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.pipeQuadruple, material, 1))
+                    .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.pipeQuadruple, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(assemblerRecipes);
@@ -177,7 +176,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 GTValues.RA.stdBuilder()
                     .itemInputs(MaterialParts.stack(OrePrefixes.pipeSmall, material, 9))
                     .circuit(9)
-                    .itemOutputs(MaterialParts.stack(OrePrefixes.pipeNonuple, material, 1))
+                    .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.pipeNonuple, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);

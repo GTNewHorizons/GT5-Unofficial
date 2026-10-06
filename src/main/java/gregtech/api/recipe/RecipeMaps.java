@@ -59,6 +59,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
@@ -950,7 +951,7 @@ public final class RecipeMaps {
                     .setInputs(
                         aInput1,
                         aInput2,
-                        GTUtility.copyAmount(aCoalAmount, MaterialParts.stack(OrePrefixes.gem, coal, 1)))
+                        GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.findStack(coal, Shapes.gem, 1)))
                     .setOutputs(
                         aOutput1,
                         aOutput2,
@@ -960,7 +961,7 @@ public final class RecipeMaps {
                     .setInputs(
                         aInput1,
                         aInput2,
-                        GTUtility.copyAmount(aCoalAmount, MaterialParts.stack(OrePrefixes.dust, coal, 1)))
+                        GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.findStack(coal, Shapes.dust, 1)))
                     .setOutputs(
                         aOutput1,
                         aOutput2,
@@ -1029,7 +1030,7 @@ public final class RecipeMaps {
                         .setInputs(
                             aInput1,
                             aInput2,
-                            GTUtility.copyAmount(aCoalAmount, MaterialParts.stack(OrePrefixes.block, coal, 1)))
+                            GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.findStack(coal, BlockShapes.block, 1)))
                         .setOutputs(
                             aOutput1,
                             aOutput2,

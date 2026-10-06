@@ -33,8 +33,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 
 public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
     implements com.gtnewhorizon.structurelib.structure.ICustomBlockSetting {
@@ -96,11 +96,10 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
 
             boolean biologicalCasing = "BIOLOGICAL".equals(material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE))
                 && LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.blockCasing);
-            boolean fullyPartedCasing = MaterialParts.isCutOver(OrePrefixes.plate, material)
-                && MaterialParts.isCutOver(OrePrefixes.screw, material)
-                && MaterialParts.isCutOver(OrePrefixes.plateDouble, material)
-                && MaterialParts.isCutOver(OrePrefixes.gearGt, material)
-                && MaterialParts.isCutOver(OrePrefixes.gearGtSmall, material);
+            boolean fullyPartedCasing = material.hasShape(Shapes.plate) && material.hasShape(Shapes.screw)
+                && material.hasShape(Shapes.plateDouble)
+                && material.hasShape(Shapes.gearGt)
+                && material.hasShape(Shapes.gearGtSmall);
 
             if (biologicalCasing || fullyPartedCasing) {
                 aList.add(new ItemStack(aItem, 1, LegacyWerkstoffIndex.idOf(material)));

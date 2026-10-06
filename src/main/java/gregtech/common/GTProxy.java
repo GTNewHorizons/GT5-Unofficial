@@ -109,6 +109,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -528,7 +529,7 @@ public class GTProxy implements IFuelHandler {
         ItemList.Cell_Empty.set(CellShapes.emptyCell.getStack(1));
         ItemList.Cell_Water.set(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1));
         ItemList.Cell_Lava.set(MaterialLibAPI.getStack(Materials.Lava, CellShapes.cell, 1));
-        ItemList.Cell_Air.set(MaterialParts.requireCell(Materials.Air, 1));
+        ItemList.Cell_Air.set(MaterialLibAPI.getStack(Materials.Air, CellShapes.cellGas, 1));
 
         ItemList.IC2_Mixed_Metal_Ingot.set(GTModHandler.getIC2Item("mixedMetalIngot", 1L));
         ItemList.IC2_Resin.set(GTModHandler.getIC2Item("resin", 1L));
@@ -765,64 +766,64 @@ public class GTProxy implements IFuelHandler {
                     GTModHandler.addCraftingRecipe(
                         convertCrafting(
                             MaterialUtils.macerateInto(material),
-                            MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
+                            MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
                         convertCrafting(
                             MaterialUtils.macerateInto(material),
-                            MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
+                            MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystalline.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
                         convertCrafting(
                             MaterialUtils.macerateInto(material),
-                            MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
+                            MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystal.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedPurified.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.cleanGravel.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.reduced.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.dustImpure, MaterialUtils.macerateInto(material), 1L),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.clump.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.dustImpure, MaterialUtils.macerateInto(material), 1L),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.shard.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.dustImpure, MaterialUtils.macerateInto(material), 1L),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushed.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        MaterialParts.stack(OrePrefixes.dustImpure, MaterialUtils.macerateInto(material), 1L),
+                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.dirtyGravel.ingredient(material) });
                 }
                 GTModHandler.addCraftingRecipe(
-                    MaterialParts.stack(OrePrefixes.dustSmall, material, 4L),
+                    MaterialLibAPI.findStack(material, Shapes.dustSmall, 4),
                     GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { " X ", "   ", "   ", 'X', OrePrefixes.dust.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
-                    MaterialParts.stack(OrePrefixes.dustTiny, material, 9L),
+                    MaterialLibAPI.findStack(material, Shapes.dustTiny, 9),
                     GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "X  ", "   ", "   ", 'X', OrePrefixes.dust.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
-                    MaterialParts.stack(OrePrefixes.dust, material, 1L),
+                    MaterialLibAPI.findStack(material, Shapes.dust, 1),
                     GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "XX", "XX", 'X', OrePrefixes.dustSmall.ingredient(material) });
                 GTModHandler.addCraftingRecipe(
-                    MaterialParts.stack(OrePrefixes.dust, material, 1L),
+                    MaterialLibAPI.findStack(material, Shapes.dust, 1),
                     GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.dustTiny.ingredient(material) });
             }
@@ -1380,7 +1381,7 @@ public class GTProxy implements IFuelHandler {
                 .addTo(crackingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, (int) (hydrogenAmount)))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, (int) (hydrogenAmount)))
                 .circuit(i + 1)
                 .itemOutputs(GTUtility.getEmptyCell(hydrogenAmount))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000))

@@ -12,13 +12,14 @@ import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
@@ -40,7 +41,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
         switch (prefix.getName()) {
             case "crushedCentrifuged" -> {
                 // An ore material need not have a dust of its own -- ChargedCertusQuartz removes the dust shape.
-                ItemStack dust = MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L);
+                ItemStack dust = MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1);
                 if (dust == null) break;
 
                 GTValues.RA.stdBuilder()
@@ -55,14 +56,14 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     .itemOutputs(
                         convertOre(
                             material,
-                            MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
-                            MaterialParts.stack(
-                                OrePrefixes.dust,
+                            MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1),
+                            MaterialLibAPI.findStack(
                                 GTUtility.selectItemInList(
                                     2,
                                     MaterialUtils.macerateInto(material),
                                     MaterialUtils.oreByProducts(material)),
-                                1L)))
+                                Shapes.dust,
+                                1)))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -76,22 +77,22 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                             material,
                             GTUtility.copyAmount(
                                 1L,
-                                MaterialParts
-                                    .stack(OrePrefixes.crushedCentrifuged, MaterialUtils.macerateInto(material), 1),
-                                MaterialParts.stack(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
-                            MaterialParts.stack(
-                                OrePrefixes.dust,
+                                MaterialLibAPI
+                                    .findStack(MaterialUtils.macerateInto(material), Shapes.crushedCentrifuged, 1),
+                                MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
+                            MaterialLibAPI.findStack(
                                 GTUtility.selectItemInList(
                                     1,
                                     MaterialUtils.macerateInto(material),
                                     MaterialUtils.oreByProducts(material)),
-                                1L)))
+                                Shapes.dust,
+                                1)))
                     .outputChances(10000, 1111)
                     .duration(25 * SECONDS)
                     .eut(48)
                     .addTo(thermalCentrifugeRecipes);
 
-                ItemStack tGem = MaterialParts.stack(OrePrefixes.gem, material, 1L);
+                ItemStack tGem = MaterialLibAPI.findStack(material, Shapes.gem, 1);
                 if (tGem == null) {
                     break;
                 }
@@ -107,14 +108,14 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                             convert(
                                 material,
                                 GTUtility
-                                    .copyAmount(1L, MaterialParts.stack(OrePrefixes.gemExquisite, material, 1), tGem),
+                                    .copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1), tGem),
                                 GTUtility
-                                    .copyAmount(1L, MaterialParts.stack(OrePrefixes.gemFlawless, material, 1), tGem),
+                                    .copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.gemFlawless, 1), tGem),
                                 tGem,
-                                GTUtility.copyAmount(1L, MaterialParts.stack(OrePrefixes.gemFlawed, material, 1), tGem),
+                                GTUtility.copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.gemFlawed, 1), tGem),
                                 GTUtility
-                                    .copyAmount(1L, MaterialParts.stack(OrePrefixes.gemChipped, material, 1), tGem),
-                                GTUtility.copyAmount(1L, MaterialParts.stack(OrePrefixes.dust, material, 1), tGem)))
+                                    .copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.gemChipped, 1), tGem),
+                                GTUtility.copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.dust, 1), tGem)))
                         .outputChances(300, 1200, 4500, 1400, 2800, 3500)
                         .duration(40 * SECONDS)
                         .eut(TierEU.RECIPE_LV / 2)
@@ -125,14 +126,14 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                             convert(
                                 material,
                                 GTUtility
-                                    .copyAmount(1L, MaterialParts.stack(OrePrefixes.gemExquisite, material, 1), tGem),
+                                    .copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1), tGem),
                                 GTUtility
-                                    .copyAmount(1L, MaterialParts.stack(OrePrefixes.gemFlawless, material, 1), tGem),
+                                    .copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.gemFlawless, 1), tGem),
                                 tGem,
-                                GTUtility.copyAmount(1L, MaterialParts.stack(OrePrefixes.gemFlawed, material, 1), tGem),
+                                GTUtility.copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.gemFlawed, 1), tGem),
                                 GTUtility
-                                    .copyAmount(1L, MaterialParts.stack(OrePrefixes.gemChipped, material, 1), tGem),
-                                GTUtility.copyAmount(1L, MaterialParts.stack(OrePrefixes.dust, material, 1), tGem)))
+                                    .copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.gemChipped, 1), tGem),
+                                GTUtility.copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.dust, 1), tGem)))
                         .outputChances(100, 400, 1500, 2000, 4000, 5000)
                         .duration(40 * SECONDS)
                         .eut(TierEU.RECIPE_LV / 2)

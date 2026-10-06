@@ -16,10 +16,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -40,7 +40,7 @@ public class ArtificialMicaLine {
         // Si + 6HF = H2SiF6 + 4H
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1), GTUtility.getEmptyCell(4))
-            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 4))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 6_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
@@ -71,7 +71,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, 2),
-                MaterialParts.requireCell(Materials.CarbonDioxide, 1))
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cellGas, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 6),
                 GTUtility.getEmptyCell(1))
@@ -84,7 +84,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Potash, Shapes.dust, 3),
-                MaterialParts.requireCell(Materials.CarbonDioxide, 1))
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cellGas, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 6),
                 GTUtility.getEmptyCell(1))

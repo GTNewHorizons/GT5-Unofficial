@@ -372,7 +372,7 @@ public class GTStructureUtility {
             }
 
             private ItemStack getFrameStack() {
-                return MaterialParts.stack(OrePrefixes.frameGt, materialSupplier.get(), 1);
+                return MaterialLibAPI.findStack(materialSupplier.get(), TEBlockShapes.frameGt, 1);
             }
 
             @Override

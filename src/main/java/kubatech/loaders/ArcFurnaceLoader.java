@@ -17,12 +17,10 @@ import gregtech.GTMod;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
 import kubatech.api.utils.ModUtils;
 import kubatech.loaders.item.arcfurnace.ElectrodeItem;
 
@@ -71,7 +69,7 @@ public class ArcFurnaceLoader {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialParts.stack(OrePrefixes.dust, electrode.associatedMaterial, 64),
+                    MaterialLibAPI.findStack(electrode.associatedMaterial, Shapes.dust, 64),
                     ItemList.Shape_Mold_Rod_Long.get(0))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1152))
                 .itemOutputs(electrode.getElectrodeItem(1))

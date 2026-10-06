@@ -74,41 +74,41 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
         multiplier = Math.max(1, multiplier);
         oreStack = GTUtility.copyAmount(1, oreStack);
         oreStack.stackSize = 1;
-        ItemStack tIngot = MaterialParts.stack(OrePrefixes.ingot, MaterialUtils.directSmelting(material), 1L);
-        ItemStack tGem = MaterialParts.stack(OrePrefixes.gem, material, 1L);
+        ItemStack tIngot = MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1);
+        ItemStack tGem = MaterialLibAPI.findStack(material, Shapes.gem, 1);
         ItemStack tSmeltInto = tIngot == null ? null
             : MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM) ? GTUtility
-                .copyAmount(1L, MaterialParts.stack(OrePrefixes.gem, MaterialUtils.directSmelting(material), 1), tGem)
+                .copyAmount(1L, MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.gem, 1), tGem)
                 : tIngot;
-        ItemStack tDust = GTUtility.copyAmount(1L, MaterialParts.stack(OrePrefixes.dust, material, 1), tGem);
+        ItemStack tDust = GTUtility.copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.dust, 1), tGem);
         ItemStack tCleaned = GTUtility
-            .copyAmount(1L, MaterialParts.stack(OrePrefixes.crushedPurified, material, 1), tDust);
+            .copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.crushedPurified, 1), tDust);
         ItemStack tCrushed = GTUtility
-            .copyAmount(MaterialUtils.oreMultiplier(material), MaterialParts.stack(OrePrefixes.crushed, material, 1));
+            .copyAmount(MaterialUtils.oreMultiplier(material), MaterialLibAPI.findStack(material, Shapes.crushed, 1));
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
             tCrushed = GTUtility.copyAmount(
                 MaterialUtils.oreMultiplier(material),
-                MaterialParts.stack(OrePrefixes.dustImpure, material, 1),
+                MaterialLibAPI.findStack(material, Shapes.dustImpure, 1),
                 GTUtility.copyAmount(MaterialUtils.oreMultiplier(material), tCleaned, tDust, tGem));
         }
 
         for (Material tMat : MaterialUtils.oreByProducts(material)) {
-            MaterialParts.stack(OrePrefixes.dust, tMat, 1L);
+            MaterialLibAPI.findStack(tMat, Shapes.dust, 1);
             if (tPrimaryByProduct == null) {
                 tPrimaryByMaterial = tMat;
-                tPrimaryByProduct = MaterialParts.stack(OrePrefixes.dust, tMat, 1L);
-                if (MaterialParts.stack(OrePrefixes.dustSmall, tMat, 1L) == null) GTUtility.copyAmount(
+                tPrimaryByProduct = MaterialLibAPI.findStack(tMat, Shapes.dust, 1);
+                if (MaterialLibAPI.findStack(tMat, Shapes.dustSmall, 1) == null) GTUtility.copyAmount(
                     2L,
-                    MaterialParts.stack(OrePrefixes.dustTiny, tMat, 1),
-                    MaterialParts.stack(OrePrefixes.nugget, tMat, 2L));
+                    MaterialLibAPI.findStack(tMat, Shapes.dustTiny, 1),
+                    MaterialLibAPI.findStack(tMat, Shapes.nugget, 2));
             }
-            MaterialParts.stack(OrePrefixes.dust, tMat, 1L);
-            if (MaterialParts.stack(OrePrefixes.dustSmall, tMat, 1L) == null) GTUtility.copyAmount(
+            MaterialLibAPI.findStack(tMat, Shapes.dust, 1);
+            if (MaterialLibAPI.findStack(tMat, Shapes.dustSmall, 1) == null) GTUtility.copyAmount(
                 2L,
-                MaterialParts.stack(OrePrefixes.dustTiny, tMat, 1),
-                MaterialParts.stack(OrePrefixes.nugget, tMat, 2L));
+                MaterialLibAPI.findStack(tMat, Shapes.dustTiny, 1),
+                MaterialLibAPI.findStack(tMat, Shapes.nugget, 2));
         }
 
         if (tPrimaryByMaterial == null) tPrimaryByMaterial = material;
@@ -185,7 +185,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                     prefix,
                     GTUtility.copyAmount(
                         Math.max(1, MaterialUtils.smeltingMultiplier(material) / 2),
-                        MaterialParts.stack(OrePrefixes.gem, MaterialUtils.directSmelting(material), 1))));
+                        MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.gem, 1))));
         }
 
         if (tCrushed != null) {
@@ -206,7 +206,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
             chanceOre2 = 100 * chanceOre2; // converting to the GT format, 100% is 10000
             ItemStack secondary = GTUtility.copyAmount(
                 1L,
-                MaterialParts.stack(OrePrefixes.gem, tPrimaryByMaterial, 1),
+                MaterialLibAPI.findStack(tPrimaryByMaterial, Shapes.gem, 1),
                 GTUtility.copyAmount(1, tPrimaryByProduct));
             GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)
