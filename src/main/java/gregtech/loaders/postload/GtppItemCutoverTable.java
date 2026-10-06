@@ -135,6 +135,7 @@ public final class GtppItemCutoverTable {
         new Entry(OrePrefixes.bolt, "Potin", "miscutils:itemBoltPotin"),
         new Entry(OrePrefixes.bolt, "Quantum", "miscutils:itemBoltQuantum"),
         new Entry(OrePrefixes.bolt, "Rhenium", "miscutils:itemBoltRhenium"),
+        new Entry(OrePrefixes.bolt, "Rhugnor", "miscutils:itemBoltRhugnor"),
         new Entry(OrePrefixes.bolt, "Selenium", "miscutils:itemBoltSelenium"),
         new Entry(OrePrefixes.bolt, "SiliconCarbide", "miscutils:itemBoltSiliconCarbide"),
         new Entry(OrePrefixes.bolt, "Staballoy", "miscutils:itemBoltStaballoy"),
