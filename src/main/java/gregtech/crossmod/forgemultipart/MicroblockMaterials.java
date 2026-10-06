@@ -75,6 +75,13 @@ public final class MicroblockMaterials {
         if (name != null) MicroMaterialRegistry.remapName(BlockMicroMaterial.materialKey(legacyBlock, meta), name);
     }
 
+    /// Points the microblock material saves recorded for a legacy block slot at another block's slot.
+    public static void remapLegacy(String legacyBlock, int legacyMeta, String block, int meta) {
+        MicroMaterialRegistry.remapName(
+            BlockMicroMaterial.materialKey(legacyBlock, legacyMeta),
+            BlockMicroMaterial.materialKey(block, meta));
+    }
+
     /// The microblock material name of `material`'s storage block, or null when it has none.
     public static String name(Material material) {
         for (Material registered : MATERIALS) {

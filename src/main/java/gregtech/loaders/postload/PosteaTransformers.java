@@ -550,7 +550,7 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Points the microblock materials saves recorded for the legacy storage blocks at the MaterialLib blocks'
-    /// names; see [MicroblockMaterials].
+    /// names (see [MicroblockMaterials]), and those of the deprecated bartworks glass at the glass that replaced it.
     private static void remapLegacyMicroblockMaterials() {
         LegacyStorageBlockTable.BATCHES.forEach((block, batch) -> {
             for (int meta = 0; meta < batch.length; meta++) {
@@ -560,6 +560,10 @@ public class PosteaTransformers implements Runnable {
         for (Material material : MaterialLibAPI.getMaterials()) {
             int id = LegacyWerkstoffIndex.idOf(material);
             if (id >= 0) MicroblockMaterials.remapLegacy("bartworks:bw.werkstoffblocks.01", id, material);
+        }
+        for (int meta = 0; meta <= 12; meta++) {
+            String glass = meta == 12 ? "bartworks:BW_ExtraGlass" : "bartworks:BW_TieredGlass";
+            MicroblockMaterials.remapLegacy("bartworks:BW_GlasBlocks", meta, glass, meta <= 5 ? meta : 0);
         }
     }
 
