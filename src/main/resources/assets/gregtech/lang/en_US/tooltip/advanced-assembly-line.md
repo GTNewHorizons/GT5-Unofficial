@@ -1,11 +1,8 @@
-Assembly Line with item pipelining
-All fluids are consumed at the start of the recipe
-Recipe tier is limited by the lowest Energy Hatch tier
-{gold:{hr:67}}
-Runs imperfect overclocks until Energy Hatch tier
-Additional overclocks are increasingly more expensive
-{aqua:Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)}
-{aqua:Power usage = Multiplier × (Active Slices) × (Recipe EU/t)}
-Overclocking assumes all recipe slices are active
-{gold:{hr:67}}
-Constructed identically to the Assembly Line
+Recipe tier is limited by the lowest {white:Energy Hatch} tier
+{gray:{hr}}
+Runs imperfect overclocks until {white:Energy Hatch} tier
+Multiplier = {aqua:4^(Regular Overclocks) × 4.3 * 4.6 * ... * (4 + 0.3 * Extra Overclocks)}
+Power usage = {aqua:Multiplier * (Active Slices) * (Recipe EU/t)}
+{yellow:Additional overclocks are increasingly more expensive}
+{yellow:Overclocking assumes all recipe slices are active}
+{gray:{hr}}

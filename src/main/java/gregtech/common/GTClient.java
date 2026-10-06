@@ -129,6 +129,7 @@ import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MHDCSMBlockRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
+import gregtech.common.render.NEIFluidRenderer;
 import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.RenderInit;
 import gregtech.common.render.WormholeRenderer;
@@ -307,6 +308,7 @@ public class GTClient extends GTProxy {
             });
         RenderInit.register();
         Pollution.onPostInitClient();
+        NEIFluidRenderer.register();
 
         ModuleRegistrar.instance()
             .registerTooltipRenderer("waila.gt.progress", new TTRenderGTProgressBar());
@@ -637,9 +639,7 @@ public class GTClient extends GTProxy {
             || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
             || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
             || CoverRegistry.isCover(stack)
-            || (stack.getItem() instanceof ItemMachines
-                && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
-                && player.isSneaking());
+            || (ItemMachines.getMetaTileEntity(stack) instanceof MetaPipeEntity && player.isSneaking());
     }
 
     public void processChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {

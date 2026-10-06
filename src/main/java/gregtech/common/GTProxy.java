@@ -130,7 +130,6 @@ import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTClientPreference;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTOreDictUnificator;
@@ -319,8 +318,8 @@ public class GTProxy implements IFuelHandler {
      */
     public int tooltipFinisherStyle = 1;
     /**
-     * Enables scrolling up while hovering the ghost circuit of a machine UI to increment the circuit number instead of
-     * decrement
+     * Enables scrolling up while hovering over the ghost circuit of a machine UI to decrement the circuit number
+     * instead of incrementing it.
      */
     public boolean invertCircuitScrollDirection = false;
     /** Whether to show seconds or ticks on NEI */
@@ -736,7 +735,6 @@ public class GTProxy implements IFuelHandler {
                 break;
             }
         }
-        GTLanguageManager.writePlaceholderStrings();
     }
 
     public void onPostInitialization(FMLPostInitializationEvent event) {

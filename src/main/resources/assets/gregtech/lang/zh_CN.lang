@@ -1789,7 +1789,6 @@ gt.metatool.01.file.name=锉（%s）
 gt.metatool.01.file.tooltip=手持式电动锉
 
 # Side names
-gt.lang.face.any=任意面
 gt.lang.face.back=背面
 gt.lang.face.bottom=底面
 gt.lang.face.front=正面
@@ -1816,8 +1815,8 @@ gt.metaitem.01.32708.with.WithPunchCardData.name=存有穿孔卡片数据
 gt.metaitem.01.32708.with.WithScannedBookData.name=存有扫描的书本数据
 gt.metaitem.01.32708.with.WithScannedMapData.name=存有扫描的地图数据
 gt.metaitem.01.32708.with.WritesResearchResult.name=写入研究结果
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=免费！在侧面放置岩浆
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=免费！在顶部放置岩浆
+gt.recipe.rockbreaker.fakeitem.side=免费！在侧面放置岩浆
+gt.recipe.rockbreaker.fakeitem.top=免费！在顶部放置岩浆
 
 # Chat messages
 GT5U.chat.cover.connectable=可连接：%s
@@ -1851,3 +1850,35 @@ GT5U.nei.solar_factory.tier_required=所需多方块等级：%s
 
 # Item tooltips
 GT5U.tooltip.switch_metadata.sneak_right_click=Shift+右键以切换模式
+
+# Material flavor text
+Material.amalgatite.flavorText=本来可以更好！
+Material.antimatter.flavorText=狄拉克犯过的错
+Material.bedrockium.flavorText=覆盖了那痛苦深渊的一层沉积物
+Material.blackdwarfmatter.flavorText=死亡恒星的影子
+Material.dimensionallytranscendentresidue.flavorText=黏糊糊
+Material.hexanite.flavorText=疯狂与意志，具象成形
+Material.ichorium.flavorText=异界凝聚之布
+Material.infinity.flavorText=汝掌心中者，寰宇之力也。
+Material.magmatter.flavorText=磁单极子物质
+Material.magnetohydrodynamicallyconstrainedstarmatter.flavorText=死星的稳定核心
+Material.prismaticnaquadah.flavorText=吸收所有辐射
+Material.protohalkonite.flavorText=铸造成型便无法摧毁，大概
+Material.protomatter.flavorText=他们家鸡块就是用这个炸的
+Material.quarkgluonplasma.flavorText=失却结构的物质
+Material.rawstarmatter.flavorText=主序星的血肉
+Material.sixphasedcopper.flavorText=古老FTB模组中各种不同的铜的混合物
+Material.spacetime.flavorText=熔炼为流体的时空
+Material.spatialfluid.flavorText=扩张并摊薄
+Material.temporalfluid.flavorText=永恒而遍在
+Material.transcendentmetal.flavorText=三维生物所无法理解的
+Material.universium.flavorText=撕裂空间之外的空间
+Material.uuamplifier.flavorText=加速质量发生器
+Material.uumatter.flavorText=万用物质
+Material.whitedwarfmatter.flavorText=死亡恒星的心脏
+
+# Material pipe names
+Material.plastic.fluidpipe.newname=塑料
+Material.polytetrafluoroethylene.fluidpipe.newname=聚四氟乙烯
+Material.redstone.fluidpipe.newname=高压
+Material.wood.fluidpipe.newname=木

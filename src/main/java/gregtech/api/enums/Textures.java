@@ -2231,10 +2231,10 @@ public class Textures {
             OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE = createOptional("OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE"),
             OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW = createOptional("OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW"),
             OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE_GLOW"),
-            OVERLAY_FRONT_SMD_PROCESSOR = createOptional("OVERLAY_FRONT_SMD_PROCESSOR"),
-            OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE = createOptional("OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE"),
-            OVERLAY_FRONT_SMD_PROCESSOR_GLOW = createOptional("OVERLAY_FRONT_SMD_PROCESSOR_GLOW"),
-            OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE_GLOW"),
+            OVERLAY_FRONT_PART_PROCESSOR = createOptional("OVERLAY_FRONT_PART_PROCESSOR"),
+            OVERLAY_FRONT_PART_PROCESSOR_ACTIVE = createOptional("OVERLAY_FRONT_PART_PROCESSOR_ACTIVE"),
+            OVERLAY_FRONT_PART_PROCESSOR_GLOW = createOptional("OVERLAY_FRONT_PART_PROCESSOR_GLOW"),
+            OVERLAY_FRONT_PART_PROCESSOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_PART_PROCESSOR_ACTIVE_GLOW"),
             OVERLAY_FRONT_SPLITTER = createOptional("OVERLAY_FRONT_SPLITTER"),
             OVERLAY_FRONT_SPLITTER_ACTIVE = createOptional("OVERLAY_FRONT_SPLITTER_ACTIVE"),
             OVERLAY_FRONT_SPLITTER_GLOW = createOptional("OVERLAY_FRONT_SPLITTER_GLOW"),
@@ -2692,7 +2692,7 @@ public class Textures {
 
         /**
          * Registers a Custom Block {@link IIconContainer}
-         * 
+         *
          * @param domain    The resource domain
          * @param aIconName The colon-free resource path of the icon container
          * @return The {@link IIconContainer} instance
@@ -2860,6 +2860,11 @@ public class Textures {
             HALO = create("HALO"),
             HALO_FUZZY = create("HALO_FUZZY"),
             MASK_VOLTAGE_COIL = create("MASK_VOLTAGE_COIL"),
+            MASK_SUPERMASSIVE = create("MASK_SUPERMASSIVE"),
+            MASK_STRANDS = create("MASK_STRANDS"),
+            MASK_SPOOL = create("MASK_SPOOL"),
+            MASK_HARMONY = create("MASK_HARMONY"),
+            MASK_ENCASEMENT = create("MASK_ENCASEMENT"),
             JACKHAMMER_BASE = create("JACKHAMMER_BASE");
         // spotless:on
 
