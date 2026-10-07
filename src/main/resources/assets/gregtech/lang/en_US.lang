@@ -2009,7 +2009,7 @@ GT5U.MBTT.Structure.Slice=§9Each Additional §bSlice
 GT5U.MBTT.Structure.Layer=§9Each Additional §bLayer
 GT5U.MBTT.Structure.Projector=§fUse the Multiblock Structure §9Hologram §1Projector§f to visualize/build the structure!
 GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for §fLaser Hatches§7
-GT5U.MBTT.Structure.GlassEnergyLimit=§fEnergy Hatch§7 limited by §fGlass§7 Tier
+GT5U.MBTT.Structure.EnergyHatchGlassTier=§aEnergy Hatch limited by Glass Tier
 GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier unlocks all
 GT5U.MBTT.Structure.DynamoLimit=§cDynamo cannot be greater than 4A
 GT5U.MBTT.Structure.Rain=§cDon't forget to protect the machine from rain and/or meteors!
@@ -3573,9 +3573,9 @@ GT5U.tooltip.nac.module.board_processor.body.4=Set an ejection threshold in the 
 GT5U.tooltip.nac.module.board_processor.body.5=Supplying a redstone signal to a Nanochip Redstone Input Hatch will automatically flush the fluid tank
 GT5U.tooltip.nac.module.board_processor.body.output_hatch=Manual and automatic flushing require an Output Hatch
 GT5U.tooltip.nac.module.board_processor.body.6=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
-GT5U.tooltip.nac.module.board_processor.body.7=§b0%%-15%%§r - §aEU Discount = 30%% - 2 * y%%
+GT5U.tooltip.nac.module.board_processor.body.7=§b0%%-15%%§r - §aDuration Modifier = 70%% + (2 * y%%)
 GT5U.tooltip.nac.module.board_processor.body.8=§b15%%-65%%§r - Default behaviour
-GT5U.tooltip.nac.module.board_processor.body.9=§b65%%-100%%§r - §4Extra EU cost = 2%% * y%%
+GT5U.tooltip.nac.module.board_processor.body.9=§b65%%-100%%§r - §4Duration Modifier = 100%% + (2%% * y%%)
 GT5U.tooltip.nac.module.cutting_chamber.name=Cutting Chamber
 GT5U.tooltip.nac.module.cutting_chamber.flavor.1=Measure once, cut twice.
 GT5U.tooltip.nac.module.cutting_chamber.action=Cuts your Wafer %s
@@ -10147,6 +10147,15 @@ gt.alias.mechanical_armor=Mechanical Armor
 gt.alias.fibre=Fibre
 gt.alias.vci=VCI
 gt.alias.vco=VCO
+gt.alias.mhdcsm=MHDCSM
+gt.alias.ps=PS
+gt.alias.pps=PPS
+gt.alias.pvc=PVC
+gt.alias.sbr=SBR
+gt.alias.pbi=PBI
+gt.alias.ptfe=PTFE
+gt.alias.pe=PE
+gt.alias.pcl=PCL
 
 # Multiblocks
 gt.blockmachines.algaefarm.controller.tier.single.name=Algae Farm

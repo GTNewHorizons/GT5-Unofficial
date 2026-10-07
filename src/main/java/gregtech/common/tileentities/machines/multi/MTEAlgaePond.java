@@ -111,9 +111,9 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             .addMarkdown(
                 new ResourceLocation("gregtech", "algae-pond"),
                 ImmutableMap.<String, Object>builder().build())
-            .addGlassEnergyLimitInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 10, false)
+            .addEnergyHatchGlassTier()
             .addController("Front center, 3rd layer")
             .addCasing("64", "Any Tiered Glass", true)
             .addCasing("20-25", "Algae Casing", false)
