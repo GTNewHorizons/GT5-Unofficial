@@ -47,6 +47,8 @@ final class OreDictRegistration {
             return;
         }
 
+        // The ore dictionary holds this stack itself, and it can arrive here with another size
+        stack.stackSize = 1;
         ForeignPartRecipes.run(prefix, material, oreName, GTUtility.copyAmount(1, stack));
     }
 
