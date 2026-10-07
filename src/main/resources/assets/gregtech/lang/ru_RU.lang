@@ -1240,7 +1240,7 @@ item.gt.pollen.name=Пыльца
 item.gt.propolis.name=Прополис
 
 # GT Item Descriptions
-gt.item.desc.stored_heat=Накоплено тепла: %s
+gt.item.desc.stored_heat=Нагрев: %s
 gt.item.desc.durability=Прочность: §a%s / %s
 gt.item.desc.tier=%s:§e Тир %s
 gt.item.desc.level=%s§e уровень %s
@@ -3125,7 +3125,6 @@ GT5U.gui.text.structure_error.crib_not_allowed=Входные люки созд�
 GT5U.gui.text.structure_error.stocking_input_bus_not_allowed=Входные люки снабжения не допускаются
 GT5U.gui.text.structure_error.stocking_input_hatch_not_allowed=Входные шлюзы снабжения не допускаются
 GT5U.gui.text.structure_error.unknown=Неизвестная ошибка структуры
-GT5U.gui.text.structure_error.glass_tier_not_enough=Тир стекла слишком низкий для тира энерговвода
 GT5U.gui.text.structure_error.missing_energy_hatch=Нет энерговвода
 GT5U.gui.text.structure_error.missing_output_bus=Отсутствует выходной люк
 GT5U.gui.text.structure_error.dt_missing_output_hatch=Нет выходного шлюза на слое %s
@@ -3140,7 +3139,6 @@ GT5U.gui.text.structure_error.need_exactly_one_focus_input=Нужен ровно
 GT5U.gui.text.structure_error.missing_essentia_output_hatch=Нет выходного шлюза эссенции
 GT5U.gui.text.structure_error.missing_neutron_accelerator=Нет ускорителя нейтронов
 GT5U.gui.text.structure_error.missing_data_hatch=Нет шлюза для ввода данных
-GT5U.gui.text.structure_error.dt_missing_output_hatch=Missing Output Hatch on Layer %s
 GT5U.gui.text.structure_error.dt_missing_output_hatches=Нет выходных шлюзов на слоях %s
 GT5U.gui.text.structure_error.coil_level_not_enough=Уровень катушек недостаточен
 GT5U.gui.text.structure_error.exotic_hatch_insufficient_coil_tier=Coil tier too low for Multi-Amp Hatch
@@ -7780,8 +7778,6 @@ GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Бонус нагр
 GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Множитель общей скорости: %s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Общий множитель EU/t: %s%.0f%s %%
 
-GT5U.infodata.large_neutralization_engine=Большой двигатель сгорания
-
 GT5U.infodata.oil_drill.title=§9Помпа для Нефти/Жидкости§r
 GT5U.infodata.oil_drill.work_area=Рабочая область: §a%s x %s§r чанков
 GT5U.infodata.oil_drill.drilling_fluid=Буровой раствор: %s
@@ -9018,9 +9014,6 @@ gt.540k_Space_Coolantcell.name=Охлаждающий стержень Sp 540к
 gt.1080k_Space_Coolantcell.name=Охлаждающий стержень Sp 1080к
 gt.neutroniumHeatCapacitor.name=1G Нейтрониевый тепловой конденсатор
 
-# Coolant Cell shared tooltip key
-gt.item.desc.stored_heat=Нагрев: %s
-
 # Breeder Cells
 gt.rodLithium.name=Топливный стержень (Литий)
 gt.rodLithium.tooltip_main=Источник трития
@@ -9343,8 +9336,6 @@ GT5U.scanner.debug.machine_active=Механизм §aактивен§r
 GT5U.scanner.debug.machine_inactive=Механизм §cнеактивен§r
 GT5U.scanner.debug.needs_power=§cВНИМАНИЕ: Устройству не хватает питания.§r
 GT5U.scanner.debug.ic2_enet=Подключён к IC2 ENet
-GT5U.gui.text.shutdown_reason.fluid_output_failed=§4Не удалось вывести все жидкости.
-GT5U.gui.text.shutdown_reason.item_output_failed=§4Не удалось вывести все предметы.
 
 # Basic Generators - Shared
 gt.blockmachines.basicgenerator.fuel_efficiency=Эффективность топлива: %s%%
