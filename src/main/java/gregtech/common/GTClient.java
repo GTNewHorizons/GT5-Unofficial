@@ -44,7 +44,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizons.navigator.api.NavigatorApi;
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibClient;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -143,7 +142,6 @@ import gregtech.common.render.items.CircuitComponentItemRenderer;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
-import gregtech.common.render.items.GeneratedMaterialRenderer;
 import gregtech.common.render.items.GlitchEffectRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.render.items.InfinityRenderer;
@@ -231,28 +229,23 @@ public class GTClient extends GTProxy {
         NavigatorApi.registerLayerManager(PowerfailLayerManager.INSTANCE);
     }
 
-    /// Registers the special item renderers a handful of materials carry, into both stores that resolve them:
-    /// [MaterialLibClient] for MaterialLib's own shape items, and [MaterialRenderers] for everything else.
+    /// Registers the special item renderers a handful of materials carry.
     private static void registerMaterialItemRenderers() {
-        registerMaterialItemRenderer(Materials.TranscendentMetal, new TranscendentMetalRenderer());
-        registerMaterialItemRenderer(Materials.GaiaSpirit, new GaiaSpiritRenderer());
-        registerMaterialItemRenderer(Materials.Infinity, new InfinityRenderer());
-        registerMaterialItemRenderer(Materials.CosmicNeutronium, new CosmicNeutroniumRenderer());
-        registerMaterialItemRenderer(Materials.Universium, new UniversiumRenderer());
-        registerMaterialItemRenderer(Materials.Eternity, new InfinityRenderer());
-        registerMaterialItemRenderer(Materials.Magmatter, new InfinityRenderer());
-        registerMaterialItemRenderer(Materials.SixPhasedCopper, new GlitchEffectRenderer());
-        registerMaterialItemRenderer(Materials.GravitonShard, new InfinityRenderer());
-        registerMaterialItemRenderer(Materials.exohalkonite, new InfinityRenderer());
-        registerMaterialItemRenderer(Materials.hotexohalkonite, new InfinityRenderer());
-        registerMaterialItemRenderer(
+        MaterialLibClient.setItemRenderer(Materials.TranscendentMetal, new TranscendentMetalRenderer());
+        MaterialLibClient.setItemRenderer(Materials.GaiaSpirit, new GaiaSpiritRenderer());
+        MaterialLibClient.setItemRenderer(Materials.Infinity, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.CosmicNeutronium, new CosmicNeutroniumRenderer());
+        MaterialLibClient.setItemRenderer(Materials.Universium, new UniversiumRenderer());
+        MaterialLibClient.setItemRenderer(Materials.Eternity, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.Magmatter, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.SixPhasedCopper, new GlitchEffectRenderer());
+        MaterialLibClient.setItemRenderer(Materials.GravitonShard, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.exohalkonite, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.hotexohalkonite, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(
             Materials.prismaticnaquadah,
             new RainbowOverlayRenderer(MaterialUtils.rgba(Materials.prismaticnaquadah)));
-        registerMaterialItemRenderer(Materials.Amalgatite, new InfinityRenderer());
-    }
-
-    private static void registerMaterialItemRenderer(Material material, GeneratedMaterialRenderer renderer) {
-        MaterialLibClient.setItemRenderer(material, renderer);
+        MaterialLibClient.setItemRenderer(Materials.Amalgatite, new InfinityRenderer());
     }
 
     @Override

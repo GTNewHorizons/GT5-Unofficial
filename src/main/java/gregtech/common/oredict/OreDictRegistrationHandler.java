@@ -320,7 +320,7 @@ public final class OreDictRegistrationHandler {
             MaterialData.addAssociation(prefix, registeredMaterial, stack);
         }
 
-        OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, registeredMaterial, modId);
+        OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, registeredMaterial);
 
         if (bufferRegistrationProcessing) {
             registrations.add(registration);

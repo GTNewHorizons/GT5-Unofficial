@@ -47,8 +47,6 @@ public final class GTOreAdapter implements IOreAdapter {
 
     private GTOreAdapter() {}
 
-    private static final boolean[] BOOLEANS = { false, true };
-
     /// Registers every material's ore on every stone type under that stone type's ore-dictionary prefix,
     /// associating it with the material where the prefix unifies.
     public void registerOreNames() {
