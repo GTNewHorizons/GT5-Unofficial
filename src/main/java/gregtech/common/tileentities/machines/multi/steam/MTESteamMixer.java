@@ -41,8 +41,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -63,6 +65,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteam
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> implements ISurvivalConstructable {
 
     public MTESteamMixer(String aName) {
@@ -80,7 +83,7 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
 
     @Override
     public String getMachineType() {
-        return "Mixer";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.mixer");
     }
 
     // TODO: remove old structure after 2.9/next release cycle
@@ -381,27 +384,36 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyNormalCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_normal_casing");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
-            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
+            .addInfo(StatCollector.translateToLocal("GT5U.MBTT.Steam.HighPressure"))
             .beginStructureBlock(5, 4, 5, false)
-            .addController("Front center, 2nd layer")
-            .addSteamHatch("1", "Any normal casing", 1)
-            .addMiscHatch("1+", "Steam Input Bus or Regular Input Hatch", "Any normal casing", 1)
-            .addMiscHatch("1+", "Steam Output Bus or Regular Output Hatch", "Any normal casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addSteamHatch("1", anyNormalCasing, 1)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("gt.mbtt.structure.steam_input_bus_or_input_hatch"),
+                anyNormalCasing,
+                1)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("gt.mbtt.structure.steam_output_bus_or_output_hatch"),
+                anyNormalCasing,
+                1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
-            .addCasing("25-37", "Bronze Plated Bricks", false)
-            .addCasing("4", "Bronze Frame Box", false)
-            .addCasing("2", "Bronze Gear Box Casing", false)
-            .addCasing("1", "Bronze Pipe Casing", false)
+            .addCasing("25-37", Casings.BronzePlatedBricks.getLocalizedName(), false)
+            .addCasing("4", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bronze), false)
+            .addCasing("2", Casings.BronzeGearBoxCasing.getLocalizedName(), false)
+            .addCasing("1", Casings.BronzePipeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
-            .addCasing("25-37", "Solid Steel Machine Casing", false)
-            .addCasing("4", "Steel Frame Box", false)
-            .addCasing("2", "Steel Gear Box Casing", false)
-            .addCasing("1", "Steel Pipe Casing", false)
+            .addCasing("25-37", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("4", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("2", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addCasing("1", Casings.SteelPipeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addStructureAuthors(GTAuthors.AuthorJL2210)
