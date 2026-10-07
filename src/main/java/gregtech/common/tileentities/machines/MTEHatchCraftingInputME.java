@@ -1442,9 +1442,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             if (slot == null) continue;
             if (slot.getPatternDetails() == null) continue;
 
-            IAEItemStack[] outputs = slot.getPatternDetails()
-                .getCondensedOutputs();
-            list.add(outputs[0].getItemStack());
+            IAEStack<?> output = slot.getPatternDetails()
+                .getCondensedAEOutputs()[0];
+            ItemStack stack = output.getItemStackForNEI();
+            if (stack == null) continue;
+            stack.stackSize = (int) Math.min(Integer.MAX_VALUE, output.getStackSize());
+            list.add(stack);
         }
         return list;
     }
