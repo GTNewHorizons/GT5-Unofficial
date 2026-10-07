@@ -21,7 +21,7 @@ import gregtech.api.enums.materials.XModMaterials;
 
 /// The items of other mods, and of MaterialLib under another prefix's name, that [ForeignPartRecipes#registerTable]
 /// generates part recipes, covers and material data for. A row whose item is absent is skipped.
-final class ForeignPartTable {
+final class ForeignPartRecipeTable {
 
     /// One item, processed as `oreName` would be under `prefix` and `material`.
     record ForeignPart(OrePrefixes prefix, Material material, String oreName, Supplier<ItemStack> stack) {}
@@ -284,5 +284,5 @@ final class ForeignPartTable {
         return item == null ? null : new ItemStack(item, 1, meta);
     }
 
-    private ForeignPartTable() {}
+    private ForeignPartRecipeTable() {}
 }

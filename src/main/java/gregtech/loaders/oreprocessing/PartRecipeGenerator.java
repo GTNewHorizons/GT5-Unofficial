@@ -7,7 +7,8 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.OrePrefixes;
 
 /// Generates the recipes of one material part. [ShapeRecipeTable] runs a generator for each MaterialLib pair of a
-/// shape, [ForeignPartRecipes] for each foreign log, plank, slab and crop registration and each [ForeignPartTable]
+/// shape, [ForeignPartRecipes] for each foreign log, plank, slab and crop registration and each
+/// [ForeignPartRecipeTable]
 /// row.
 @FunctionalInterface
 public interface PartRecipeGenerator {

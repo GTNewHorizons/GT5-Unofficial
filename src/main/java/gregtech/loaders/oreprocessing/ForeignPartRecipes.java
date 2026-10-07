@@ -14,12 +14,12 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
-import gregtech.loaders.oreprocessing.ForeignPartTable.ForeignPart;
+import gregtech.loaders.oreprocessing.ForeignPartRecipeTable.ForeignPart;
 
 /// Recipes for items GregTech has no MaterialLib pair for. MaterialLib parts get theirs from [ShapeRecipeTable].
 ///
 /// Logs, planks, slabs and crops follow a rule: every ore-dictionary registration under those prefixes gets its
-/// recipes from [#run], whichever mod registers it. Every other foreign item is listed in [ForeignPartTable] and
+/// recipes from [#run], whichever mod registers it. Every other foreign item is listed in [ForeignPartRecipeTable] and
 /// processed once by [#registerTable].
 ///
 /// [gregtech.common.oredict.OreDictRegistration] decides which registrations reach [#run].
@@ -81,10 +81,11 @@ public final class ForeignPartRecipes {
         }
     }
 
-    /// Generates the recipes of every [ForeignPartTable] row whose item exists, and removes the foreign storage-block
+    /// Generates the recipes of every [ForeignPartRecipeTable] row whose item exists, and removes the foreign
+    /// storage-block
     /// recipes [ProcessingBlock#removeForeignBlockRecipes] replaces.
     public static void registerTable() {
-        for (ForeignPart part : ForeignPartTable.parts()) {
+        for (ForeignPart part : ForeignPartRecipeTable.parts()) {
             ItemStack stack = part.stack()
                 .get();
             if (!GTUtility.isStackValid(stack)) continue;
