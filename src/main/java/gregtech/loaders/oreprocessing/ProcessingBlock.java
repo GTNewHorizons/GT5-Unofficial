@@ -9,18 +9,19 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
-import static gregtech.loaders.oreprocessing.ProcessingUtils.itemStackKey;
 
-import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
@@ -148,17 +149,32 @@ public class ProcessingBlock implements PartRecipeGenerator {
         .put(Materials.Void, INGOT_RECIPE_REMOVAL)
         .build();
 
-    private final Set<GTUtility.ItemId> queuedPackingRemovals = new HashSet<>();
-
     private ProcessingBlock() {}
 
-    private void removePackingRecipe(ItemStack input) {
-        if (input == null || (GTModHandler.isBufferingCraftingRecipes()
-            && !queuedPackingRemovals.add(GTUtility.ItemId.createWithStackSize(input)))) {
-            return;
+    /// Removes other mods' recipes that unpack the storage blocks in [#BLOCK_RECIPE_REMOVALS], and the crafting
+    /// recipes that pack nine ingots, gems or dusts of the materials in [#PACKING_RECIPE_REMOVALS]. GregTech's own
+    /// block recipes replace both.
+    public static void removeForeignBlockRecipes() {
+        for (String key : BLOCK_RECIPE_REMOVALS) {
+            int at = key.lastIndexOf('@');
+            int colon = key.indexOf(':');
+            Item item = GameRegistry.findItem(key.substring(0, colon), key.substring(colon + 1, at));
+            if (item != null) {
+                GTModHandler.removeRecipeDelayed(new ItemStack(item, 1, Integer.parseInt(key.substring(at + 1))));
+            }
         }
+        PACKING_RECIPE_REMOVALS.forEach((material, removals) -> {
+            if ((removals & INGOT_RECIPE_REMOVAL) != 0) removePackingRecipe(material, Shapes.ingot);
+            if ((removals & GEM_RECIPE_REMOVAL) != 0) removePackingRecipe(material, Shapes.gem);
+            if ((removals & DUST_RECIPE_REMOVAL) != 0) removePackingRecipe(material, Shapes.dust);
+        });
+    }
 
-        GTModHandler.removeRecipeDelayed(input, input, input, input, input, input, input, input, input);
+    private static void removePackingRecipe(Material material, Shape shape) {
+        ItemStack input = MaterialLibAPI.findStack(material, shape, 1);
+        if (input != null) {
+            GTModHandler.removeRecipeDelayed(input, input, input, input, input, input, input, input, input);
+        }
     }
 
     @Override
@@ -306,15 +322,9 @@ public class ProcessingBlock implements PartRecipeGenerator {
         ItemStack dust = MaterialLibAPI.findStack(material, Shapes.dust, 1);
         ItemStack block = MaterialLibAPI.findStack(material, BlockShapes.block, 1);
 
-        if (BLOCK_RECIPE_REMOVALS.contains(itemStackKey(stack))
-            || OWN_BLOCK_RECIPE_REMOVALS.contains(material) && GTUtility.areStacksEqual(stack, block)) {
+        if (OWN_BLOCK_RECIPE_REMOVALS.contains(material) && GTUtility.areStacksEqual(stack, block)) {
             GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, stack));
         }
-
-        int packingRecipeRemovals = PACKING_RECIPE_REMOVALS.getOrDefault(material, 0);
-        if ((packingRecipeRemovals & INGOT_RECIPE_REMOVAL) != 0) removePackingRecipe(ingot);
-        if ((packingRecipeRemovals & GEM_RECIPE_REMOVAL) != 0) removePackingRecipe(gem);
-        if ((packingRecipeRemovals & DUST_RECIPE_REMOVAL) != 0) removePackingRecipe(dust);
 
         if (MaterialUtils.hasMolten(material) && block != null) {
             if (!(material == Materials.AnnealedCopper || material == Materials.CastIron

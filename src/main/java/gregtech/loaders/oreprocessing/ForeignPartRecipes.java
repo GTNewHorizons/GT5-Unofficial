@@ -14,60 +14,38 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
+import gregtech.loaders.oreprocessing.ForeignPartTable.ForeignPart;
 
-/// Recipes for items other mods register in the ore dictionary, and for MaterialLib items registered under a prefix
-/// alias. MaterialLib parts get theirs from [ShapeRecipeTable]; this covers what has no MaterialLib pair: crops, logs,
-/// planks, slabs, `item*` and `plateAlloy*` names, crystals, foreign blocks, ores, gems, nuggets, plates, sticks and
-/// crushed ores, and the stack-size clamp of every foreign block.
+/// Recipes for items GregTech has no MaterialLib pair for. MaterialLib parts get theirs from [ShapeRecipeTable].
+///
+/// Logs, planks, slabs and crops follow a rule: every ore-dictionary registration under those prefixes gets its
+/// recipes from [#run], whichever mod registers it. Every other foreign item is listed in [ForeignPartTable] and
+/// processed once by [#registerTable].
 ///
 /// [gregtech.common.oredict.OreDictRegistration] decides which registrations reach [#run].
 public final class ForeignPartRecipes {
 
-    private static final Map<OrePrefixes, PartRecipeGenerator> REGISTRATORS = new IdentityHashMap<>();
+    private static final Map<OrePrefixes, PartRecipeGenerator> RULES = new IdentityHashMap<>();
+    private static final Map<OrePrefixes, PartRecipeGenerator> TABLE_GENERATORS = new IdentityHashMap<>();
 
     static {
-        register(ProcessingBlock.INSTANCE, OrePrefixes.block);
-        register(ProcessingCompressed.INSTANCE, OrePrefixes.compressed);
-        register(ProcessingCrop.INSTANCE, OrePrefixes.crop);
-        register(ProcessingCrystallized.INSTANCE, OrePrefixes.crystal, OrePrefixes.crystalline);
+        register(RULES, ProcessingCrop.INSTANCE, OrePrefixes.crop);
+        register(RULES, ProcessingLog.INSTANCE, OrePrefixes.log);
+        register(RULES, ProcessingPlank.INSTANCE, OrePrefixes.plank);
+        register(RULES, ProcessingSlab.INSTANCE, OrePrefixes.slab);
+
+        register(TABLE_GENERATORS, ProcessingCompressed.INSTANCE, OrePrefixes.compressed);
+        register(TABLE_GENERATORS, ProcessingCrystallized.INSTANCE, OrePrefixes.crystal);
+        register(TABLE_GENERATORS, ProcessingDirty.INSTANCE, OrePrefixes.shard);
+        register(TABLE_GENERATORS, ProcessingItem.INSTANCE, OrePrefixes.item);
+        register(TABLE_GENERATORS, ProcessingNugget.INSTANCE, OrePrefixes.nugget);
+        register(TABLE_GENERATORS, ProcessingOre.INSTANCE, OrePrefixes.ore, OrePrefixes.oreDeepslate);
         register(
-            ProcessingDirty.INSTANCE,
-            OrePrefixes.clump,
-            OrePrefixes.shard,
-            OrePrefixes.crushed,
-            OrePrefixes.dirtyGravel);
-        register(
-            ProcessingGem.INSTANCE,
-            OrePrefixes.gem,
-            OrePrefixes.gemChipped,
-            OrePrefixes.gemExquisite,
-            OrePrefixes.gemFlawed,
-            OrePrefixes.gemFlawless);
-        register(ProcessingItem.INSTANCE, OrePrefixes.item);
-        register(ProcessingLog.INSTANCE, OrePrefixes.log);
-        register(ProcessingNugget.INSTANCE, OrePrefixes.nugget);
-        for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            if (!prefix.getName()
-                .startsWith("ore")) continue;
-            if (prefix == OrePrefixes.orePoor || prefix == OrePrefixes.oreSmall
-                || prefix == OrePrefixes.oreRich
-                || prefix == OrePrefixes.oreNormal) continue;
-            register(ProcessingOre.INSTANCE, prefix);
-        }
-        register(ProcessingPlank.INSTANCE, OrePrefixes.plank);
-        register(
+            TABLE_GENERATORS,
             ProcessingPlate.INSTANCE,
             OrePrefixes.plate,
-            OrePrefixes.plateDouble,
-            OrePrefixes.plateTriple,
-            OrePrefixes.plateQuadruple,
-            OrePrefixes.plateQuintuple,
             OrePrefixes.plateDense,
-            OrePrefixes.plateSuperdense,
-            OrePrefixes.plateAlloy,
-            OrePrefixes.itemCasing);
-        register(ProcessingSlab.INSTANCE, OrePrefixes.slab);
-        register(ProcessingStick.INSTANCE, OrePrefixes.stick);
+            OrePrefixes.plateAlloy);
     }
 
     private ForeignPartRecipes() {}
@@ -81,24 +59,38 @@ public final class ForeignPartRecipes {
         }
     }
 
-    private static void register(PartRecipeGenerator registrator, OrePrefixes... prefixes) {
+    private static void register(Map<OrePrefixes, PartRecipeGenerator> generators, PartRecipeGenerator generator,
+        OrePrefixes... prefixes) {
         for (OrePrefixes prefix : prefixes) {
-            REGISTRATORS.put(prefix, registrator);
+            generators.put(prefix, generator);
         }
     }
 
-    /// Generates the recipes for one ore-dictionary registration of `stack` under `prefix`. Does nothing for a
-    /// [GTMaterialFlag#NO_RECIPES] material or an invalid stack, or under a material-based prefix whose name named
-    /// no material.
+    /// Clamps the stack size of one ore-dictionary registration of `stack` under `prefix`, and generates its recipes
+    /// when `prefix` is a log, plank, slab or crop. Does nothing for a [GTMaterialFlag#NO_RECIPES] material or an
+    /// invalid stack, or under a material-based prefix whose name named no material.
     public static void run(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == null || MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
         if (material == Materials.NULL && !prefix.isSelfReferencing() && prefix.isMaterialBased()) return;
         if (!GTUtility.isStackValid(stack)) return;
 
         clampStackSize(prefix, stack);
-        PartRecipeGenerator registrator = REGISTRATORS.get(prefix);
-        if (registrator != null) {
-            registrator.generate(prefix, material, oreDictName, GTUtility.copyAmount(1, stack));
+        PartRecipeGenerator rule = RULES.get(prefix);
+        if (rule != null) {
+            rule.generate(prefix, material, oreDictName, GTUtility.copyAmount(1, stack));
         }
+    }
+
+    /// Generates the recipes of every [ForeignPartTable] row whose item exists, and removes the foreign storage-block
+    /// recipes [ProcessingBlock#removeForeignBlockRecipes] replaces.
+    public static void registerTable() {
+        for (ForeignPart part : ForeignPartTable.parts()) {
+            ItemStack stack = part.stack()
+                .get();
+            if (!GTUtility.isStackValid(stack)) continue;
+            TABLE_GENERATORS.get(part.prefix())
+                .generate(part.prefix(), part.material(), part.oreName(), stack);
+        }
+        ProcessingBlock.removeForeignBlockRecipes();
     }
 }

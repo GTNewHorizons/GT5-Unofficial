@@ -62,6 +62,7 @@ import gregtech.common.items.CauldronWashing;
 import gregtech.common.oredict.OreDictRegistrationHandler;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
+import gregtech.loaders.oreprocessing.ForeignPartRecipes;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -73,6 +74,7 @@ public class GTPostLoad {
         Stopwatch stopwatch = Stopwatch.createStarted();
 
         OreDictRegistrationHandler.processBufferedRegistrations();
+        ForeignPartRecipes.registerTable();
         GTRecipe.reInit();
 
         // noinspection UnstableApiUsage// Stable enough for this project
