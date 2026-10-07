@@ -34,7 +34,7 @@ public class GTBlockIconContainer extends AbstractBlockIconContainer implements 
         return INSTANCES.computeIfAbsent(aIconName, GTBlockIconContainer::new);
     }
 
-    /// This icon's domain-qualified resource path, e.g. `gregtech:iconsets/BLOCK_ADAMANTIUM`. Safe to read
+    /// This icon's domain-qualified resource path, e.g. `gregtech:iconsets/MARBLE_STONE`. Safe to read
     /// outside the client: it names a resource location, not a bound texture.
     public String getIconName() {
         return mIconName;
