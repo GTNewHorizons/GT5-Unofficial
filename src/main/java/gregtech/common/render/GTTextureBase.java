@@ -3,6 +3,8 @@ package gregtech.common.render;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 
+import org.lwjgl.opengl.GL11;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
 
@@ -21,7 +23,12 @@ public abstract class GTTextureBase implements ITexture {
 
     protected final void endDrawingQuads(RenderBlocks aRenderer, boolean startedDrawing) {
         if (aRenderer.useInventoryTint && startedDrawing) {
-            Tessellator.instance.draw();
+            GL11.glPushAttrib(GL11.GL_CURRENT_BIT);
+            try {
+                Tessellator.instance.draw();
+            } finally {
+                GL11.glPopAttrib();
+            }
         }
     }
 }

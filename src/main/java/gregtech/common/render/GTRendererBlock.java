@@ -269,8 +269,6 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         final ISBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
         final boolean enableAO = aRenderer.enableAO;
         final boolean useInventoryTint = aRenderer.useInventoryTint;
-        final Tessellator tessellator = Tessellator.instance;
-        final boolean startedDrawing = !((TesselatorAccessor) tessellator).gt5u$isDrawing();
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
 
@@ -278,19 +276,14 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         try {
-            if (startedDrawing) tessellator.startDrawingQuads();
-            try {
-                if (imte != null && !imte.renderInInventory(ctx)) {
-                    renderNormalInventoryMetaTileEntity(ctx, imte);
-                } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
-                    ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
-                    if (texture != null) {
-                        aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
-                        renderInventoryTextures(ctx, texture);
-                    }
+            if (imte != null && !imte.renderInInventory(ctx)) {
+                renderNormalInventoryMetaTileEntity(ctx, imte);
+            } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
+                ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
+                if (texture != null) {
+                    aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+                    renderInventoryTextures(ctx, texture);
                 }
-            } finally {
-                if (startedDrawing && ((TesselatorAccessor) tessellator).gt5u$isDrawing()) tessellator.draw();
             }
         } finally {
             aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
