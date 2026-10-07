@@ -1063,7 +1063,8 @@ public class GTModHandler {
             + aOnlyAddIfThereIsAnyRecipeOutputtingThis
             + Arrays.toString(aEnchantmentsAdded)
             + Arrays.toString(aEnchantmentLevelsAdded);
-        if (isRepeatedCraftingRecipe(flags, aResult, aRecipe)) return true;
+        String recipeKey = craftingRecipeKey(flags, aResult, aRecipe);
+        if (isAddedCraftingRecipe(recipeKey)) return true;
 
         StringBuilder shape = new StringBuilder(E);
         int idx = 0;
@@ -1261,22 +1262,14 @@ public class GTModHandler {
         GTUtility.updateItemStack(aResult);
 
         if (tThereWasARecipe || !aOnlyAddIfThereIsAnyRecipeOutputtingThis) {
-            if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
-                new GTShapedRecipe(
-                    GTUtility.copyOrNull(aResult),
-                    aRemovable,
-                    aKeepNBT,
-                    aEnchantmentsAdded,
-                    aEnchantmentLevelsAdded,
-                    aRecipe).setMirrored(aMirrored));
-            else GameRegistry.addRecipe(
-                new GTShapedRecipe(
-                    GTUtility.copyOrNull(aResult),
-                    aRemovable,
-                    aKeepNBT,
-                    aEnchantmentsAdded,
-                    aEnchantmentLevelsAdded,
-                    aRecipe).setMirrored(aMirrored));
+            IRecipe recipe = new GTShapedRecipe(
+                GTUtility.copyOrNull(aResult),
+                aRemovable,
+                aKeepNBT,
+                aEnchantmentsAdded,
+                aEnchantmentLevelsAdded,
+                aRecipe).setMirrored(aMirrored);
+            addCraftingRecipe(recipe, recipeKey, aBuffered);
         }
         return true;
     }
@@ -1316,11 +1309,26 @@ public class GTModHandler {
             aRecipe);
     }
 
-    private static final Set<String> sAddedCraftingRecipes = new HashSet<>();
+    private static final Map<String, IRecipe> sAddedCraftingRecipes = new HashMap<>();
 
-    /// Records a crafting recipe GregTech adds and returns whether an identical one, with the same `flags`, result
-    /// and normalized ingredients, was added before.
-    private static boolean isRepeatedCraftingRecipe(String flags, ItemStack result, Object[] recipe) {
+    /// Returns whether GregTech added a recipe under `key` that is still registered or buffered. A null `key` is never
+    /// added.
+    private static boolean isAddedCraftingRecipe(String key) {
+        IRecipe added = key == null ? null : sAddedCraftingRecipes.get(key);
+        return added != null && (sBufferRecipeList.contains(added) || CraftingManager.getInstance()
+            .getRecipeList()
+            .contains(added));
+    }
+
+    private static void addCraftingRecipe(IRecipe recipe, String key, boolean buffered) {
+        if (sBufferCraftingRecipes && buffered) sBufferRecipeList.add(recipe);
+        else GameRegistry.addRecipe(recipe);
+        if (key != null) sAddedCraftingRecipes.put(key, recipe);
+    }
+
+    /// The identity of a crafting recipe: its `flags`, result and normalized ingredients. Null when an ingredient has
+    /// no stable name.
+    private static String craftingRecipeKey(String flags, ItemStack result, Object[] recipe) {
         StringBuilder key = new StringBuilder(flags).append('|')
             .append(craftingKey(result));
         for (Object part : recipe) {
@@ -1329,14 +1337,14 @@ public class GTModHandler {
                 key.append(craftingKey(stack));
             } else if (part instanceof ItemData data) {
                 String name = data.toString();
-                if (name.isEmpty()) return false;
+                if (name.isEmpty()) return null;
                 key.append('#')
                     .append(name);
             } else {
                 key.append(part);
             }
         }
-        return !sAddedCraftingRecipes.add(key.toString());
+        return key.toString();
     }
 
     private static String craftingKey(ItemStack stack) {
@@ -1365,6 +1373,7 @@ public class GTModHandler {
                 || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
         }
 
+        String recipeKey = null;
         if (inputValidator == null) {
             String flags = "shapeless" + aBuffered
                 + aCheckForCollisions
@@ -1373,7 +1382,8 @@ public class GTModHandler {
                 + overwriteNBT
                 + Arrays.toString(aEnchantmentsAdded)
                 + Arrays.toString(aEnchantmentLevelsAdded);
-            if (isRepeatedCraftingRecipe(flags, aResult, aRecipe)) return true;
+            recipeKey = craftingRecipeKey(flags, aResult, aRecipe);
+            if (isAddedCraftingRecipe(recipeKey)) return true;
         }
 
         ItemStack[] tRecipe = new ItemStack[9];
@@ -1409,26 +1419,16 @@ public class GTModHandler {
 
         GTUtility.updateItemStack(aResult);
 
-        if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
-            new GTShapelessRecipe(
-                GTUtility.copyOrNull(aResult),
-                aRemovable,
-                aKeepNBT,
-                overwriteNBT,
-                aEnchantmentsAdded,
-                aEnchantmentLevelsAdded,
-                inputValidator,
-                aRecipe));
-        else GameRegistry.addRecipe(
-            new GTShapelessRecipe(
-                GTUtility.copyOrNull(aResult),
-                aRemovable,
-                aKeepNBT,
-                overwriteNBT,
-                aEnchantmentsAdded,
-                aEnchantmentLevelsAdded,
-                inputValidator,
-                aRecipe));
+        IRecipe recipe = new GTShapelessRecipe(
+            GTUtility.copyOrNull(aResult),
+            aRemovable,
+            aKeepNBT,
+            overwriteNBT,
+            aEnchantmentsAdded,
+            aEnchantmentLevelsAdded,
+            inputValidator,
+            aRecipe);
+        addCraftingRecipe(recipe, recipeKey, aBuffered);
         return true;
     }
 
