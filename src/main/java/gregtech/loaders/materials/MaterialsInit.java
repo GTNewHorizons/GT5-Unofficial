@@ -15868,6 +15868,7 @@ public class MaterialsInit {
                     + CustomGlyphs.ARROW_CORNER_NORTH_WEST
                     + "⇱")
             .setFlavorText("Stabilised core of a dead star")
+            .setAliasKey("gt.alias.mhdcsm")
             .setIconSet(TextureSet.SET_MHDCSM)
             .setARGB(0x00ffffff)
             .setMeltingPoint(0)
