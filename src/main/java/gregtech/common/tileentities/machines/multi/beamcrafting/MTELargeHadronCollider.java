@@ -785,8 +785,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 } else {
 
-                    lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
-
                     if (checkIfNotEnoughBoosterFluid()) {
                         stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
                         return CheckRecipeResultRegistry.NO_RECIPE;
@@ -798,6 +796,9 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                     } else {
                         machineMode = MACHINEMODE_COLLIDER;
                     }
+
+                    lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
+
                 }
             }
         } else {
