@@ -1,9 +1,6 @@
 package gregtech.api.material;
 
 /// Boolean material flags, declared through [GTMaterialProperties#FLAGS].
-///
-/// A constant named like a [gregtech.api.enums.SubTag] also answers [MaterialUtils#hasSubTag] for that
-/// sub-tag.
 public enum GTMaterialFlag {
     BLASTFURNACE_CALCITE_DOUBLE,
     BLASTFURNACE_CALCITE_TRIPLE,

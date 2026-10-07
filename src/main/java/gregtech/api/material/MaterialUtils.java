@@ -33,7 +33,6 @@ import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFluidNames;
 import gregtech.api.enums.materials.Materials;
@@ -719,14 +718,6 @@ public class MaterialUtils {
         return stoneType.getCategory() == category;
     }
 
-    /// Whether a [Material] carries the [GTMaterialFlag] matching `subTag` (see [#flagForSubTag]). False for a null
-    /// material.
-    public static boolean hasSubTag(@Nullable Material material, SubTag subTag) {
-        if (material == null) return false;
-        GTMaterialFlag flag = flagForSubTag(subTag);
-        return flag != null && hasFlag(material, flag);
-    }
-
     /// Appends the material's [#addHazardTooltips] lines and, when `Client.tooltip.showFormula` is on, its
     /// [#chemicalTooltip] to `list`.
     ///
@@ -751,15 +742,6 @@ public class MaterialUtils {
         if (radioactive) list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
         if (toxic) list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Toxic"));
         if (radioactive || toxic) list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
-    }
-
-    /// Returns the [GTMaterialFlag] matching `subTag`'s name, or null when none does.
-    private static @Nullable GTMaterialFlag flagForSubTag(SubTag subTag) {
-        try {
-            return GTMaterialFlag.valueOf(subTag.mName);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
     }
 
     /// The crushed-ore yield multiplier for a material, or `1` if unset -- see [GTMaterialProperties#ORE_MULTIPLIER].
