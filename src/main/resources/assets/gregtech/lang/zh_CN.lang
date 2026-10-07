@@ -52,9 +52,25 @@ gt.mbtt.structure.top_or_bottom_side=结构顶面或底面
 gt.mbtt.structure.around_inner_ring=中心环周围
 gt.mbtt.structure.any_bottom_leg_casing=任意底部立柱机械方块
 gt.mbtt.structure.either_center_side_casing=中央侧面机械方块
+gt.mbtt.structure.any_normal_casing=任意机械方块
+gt.mbtt.structure.front_center_small_cube_2nd_layer=第二层，小立方体部分的正面中央
+gt.mbtt.structure.steam_input_bus_or_input_hatch=输入总线（蒸汽）或普通输入仓
+gt.mbtt.structure.steam_output_bus_or_output_hatch=输出总线（蒸汽）或普通输出仓
 gt.mbtt.machine_type.fusion_reactor=聚变反应堆
 gt.mbtt.machine_type.antimatter_forge=反物质锻炉，SSASS
 gt.mbtt.machine_type.antimatter_generator=反物质发电机，SLAM
+gt.mbtt.machine_type.alloy_smelter=合金炉
+gt.mbtt.machine_type.centrifuge=离心机
+gt.mbtt.machine_type.compressor=压缩机
+gt.mbtt.machine_type.forge_hammer=锻造锤
+gt.mbtt.machine_type.furnace_blaster_smoker=熔炉、高炉、烟熏炉
+gt.mbtt.machine_type.macerator=研磨机
+gt.mbtt.machine_type.mixer=搅拌机
+gt.mbtt.machine_type.ore_washer_simple_washer=洗矿机，简易洗矿池
+gt.mbtt.machine_type.water_pump=水泵
+
+GT5U.MBTT.Steam.HighPressure=高压等级§a处理速度§7与§b蒸汽消耗§7翻倍
+GT5U.MBTT.Steam.ScrewdriverMode=用螺丝刀右键点击控制器方块可以切换模式
 
 GT5U.cracker.io_side=输入/输出仓必须处在对侧！
 
