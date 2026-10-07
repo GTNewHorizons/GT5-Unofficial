@@ -187,7 +187,6 @@ public class GTProxy implements IFuelHandler {
     public boolean mNerfedWoodPlank = true;
     public boolean mChangeWoodenVanillaTools = true;
     public boolean mAchievements = true;
-    public boolean mChangeHarvestLevels = false;
     public boolean mGTBees = true;
     public boolean mPollution = true;
     public boolean mExplosionItemDrop = false;
@@ -195,7 +194,6 @@ public class GTProxy implements IFuelHandler {
     public int mFlintChance = 30;
     public int mItemDespawnTime = 6000;
     public int mUpgradeCount = 4;
-    public int mGraniteHavestLevel = 3;
     public int mMaxHarvestLevel = 7;
     public double replicatorExponent = 1.2D;
     public int mPollutionSmogLimit = 550000;
@@ -442,8 +440,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     /// Registers oredict entries other mods (or Forge itself) already registered before this proxy was
-    /// constructed. Must run after [gregtech.loaders.materials.LoaderGTMaterialPasses#run], whose material
-    /// data [#registerOre] resolves against.
+    /// constructed. Must run after [gregtech.api.enums.OrePrefixes#lateStaticInit].
     public void catchUpPreExistingOreDictEntries() {
         for (String tOreName : OreDictionary.getOreNames()) {
             for (ItemStack itemStack : OreDictionary.getOres(tOreName)) {

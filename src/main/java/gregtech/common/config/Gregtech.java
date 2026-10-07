@@ -393,20 +393,10 @@ public class Gregtech {
     @Config.LangKey("GT5U.gui.config.gregtech.harvest_level")
     public static class HarvestLevel {
 
-        @Config.Comment("Activate Harvest Level Change")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean activateHarvestLevelChange;
-
         @Config.Comment("Maximum harvest level")
         @Config.DefaultInt(7)
         @Config.RequiresMcRestart
         public int maxHarvestLevel;
-
-        @Config.Comment("GraniteHarvestLevel harvest level")
-        @Config.DefaultInt(3)
-        @Config.RequiresMcRestart
-        public int graniteHarvestLevel;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.machines")

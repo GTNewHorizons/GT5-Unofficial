@@ -191,6 +191,7 @@ public class GTPreLoad {
         GTMod.proxy.mAMHInteraction = Gregtech.general.autoMaintenaceHatchesInteraction;
         GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = Gregtech.general.mixedOreOnlyYieldsTwoThirdsOfPureOre;
         GTMod.proxy.mNetherOreYieldMultiplier = Gregtech.general.netherOreYieldMultiplier;
+        GTMod.proxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
         GTMod.proxy.mEndOreYieldMultiplier = Gregtech.general.endOreYieldMultiplier;
         GTMod.proxy.gt6Pipe = Gregtech.general.gt6Pipe;
         GTMod.proxy.gt6Cable = Gregtech.general.gt6Cable;

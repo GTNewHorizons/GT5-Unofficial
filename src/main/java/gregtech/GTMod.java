@@ -118,7 +118,6 @@ import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
 import gregtech.loaders.materialrecipes.LoaderMaterialRecipes;
-import gregtech.loaders.materials.LoaderGTMaterialPasses;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
 import gregtech.loaders.misc.GTBees;
@@ -261,8 +260,7 @@ public class GTMod {
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
-    /// Set once [gregtech.loaders.materials.LoaderGTMaterialPasses#run] and
-    /// [gregtech.api.enums.OrePrefixes#lateStaticInit] have completed during preInit. An `OreRegisterEvent`
+    /// Set once [gregtech.api.enums.OrePrefixes#lateStaticInit] has completed during preInit. An `OreRegisterEvent`
     /// listener must skip instead of touching material state while this is false.
     public static volatile boolean sMaterialsReady = false;
 
@@ -369,7 +367,6 @@ public class GTMod {
         new EnchantmentEnderDamage();
         new EnchantmentRadioactivity();
 
-        LoaderGTMaterialPasses.run();
         OrePrefixes.lateStaticInit();
         sMaterialsReady = true;
         proxy.catchUpPreExistingOreDictEntries();
