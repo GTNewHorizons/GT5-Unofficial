@@ -601,7 +601,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         int outRate = inputRate;
 
         // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV so player can type '2G eV' instead of '2M keV'
-        if (inputEnergy <= playerTargetBeamEnergyeV / 1000) {
+        if (inputEnergy < playerTargetBeamEnergyeV / 1000) {
             outEnergy += (float) perCycleEnergyGainKeV(accelerationCycleCounter, this.mMaxProgresstime);
             if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
                 return new BeamInformation(
@@ -682,7 +682,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         long EUtCost = 0;
 
         for (int c = 0; c < numCycles; c++) {
-            if (outEnergy <= targetEnergyKeV) {
+            if (outEnergy < targetEnergyKeV) {
                 outEnergy += perCycleEnergyGainKeV(c, progressTime);
                 if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
                     outEnergy = MAXIMUM_PARTICLE_ENERGY_keV;
