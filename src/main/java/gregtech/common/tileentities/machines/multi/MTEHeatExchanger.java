@@ -288,13 +288,9 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                 if (depleteInput(distilledStack)) // Consume the distilled water
                 {
                     if (superheated) {
-                        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate
-                                                                                                     // superheated
-                                                                                                     // steam
+                        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU));
                     } else {
-                        addOutput(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, tGeneratedEU)); // Generate
-                                                                                                                      // regular
-                                                                                                                      // steam
+                        addOutput(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, tGeneratedEU));
                     }
                     dryHeatCounter = 0;
                 } else {

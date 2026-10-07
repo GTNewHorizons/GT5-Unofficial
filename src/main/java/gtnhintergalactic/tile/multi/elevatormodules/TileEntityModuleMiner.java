@@ -731,17 +731,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         generateOreConfigurationList();
     }
 
-    /**
-     * Get the string that represents the input ore stack (name:itemDamage)
-     *
-     * @param oreStack Ore stack of which the string will be gotten
-     * @return String that represents the input ore stack
-     */
+    /// The filter key of `oreStack`: `ore:<material key>` for a GregTech ore, so one entry matches every stone type
+    /// and size, else `<unlocalized name>:<damage>`. Null for an empty stack.
     protected String getOreString(ItemStack oreStack) {
         if (oreStack == null || oreStack.getItem() == null) {
             return null;
         }
-        // GT ores are keyed by material alone, so a filter entry matches every stone type and size
         StackMaterialInfo ore = MaterialLibAPI.lookupStack(oreStack);
         if (ore != null && ore.material() != null
             && (ore.shape() == OreShapes.ore || ore.shape() == OreShapes.oreSmall)) {

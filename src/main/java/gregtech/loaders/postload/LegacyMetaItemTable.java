@@ -115,7 +115,8 @@ final class LegacyMetaItemTable {
     static @Nullable OrePrefixes metaItemPrefix(String itemName, int damage) {
         OrePrefixes[] prefixes = META_ITEM_PREFIXES.get(itemName);
         if (prefixes == null || damage < 0 || damage >= 32000) return null;
-        return prefixes[damage / 1000];
+        OrePrefixes prefix = prefixes[damage / 1000];
+        return prefix == PLACEHOLDER ? null : prefix;
     }
 
     /// Returns the prefix a `gt.metaitem.99` damage stood for: molten cells below 1000, then the cracked cells

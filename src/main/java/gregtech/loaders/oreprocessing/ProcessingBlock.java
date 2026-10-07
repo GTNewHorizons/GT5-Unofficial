@@ -42,7 +42,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
     private static final int GEM_RECIPE_REMOVAL = 1 << 1;
     private static final int DUST_RECIPE_REMOVAL = 1 << 2;
 
-    // List of effective blocks that had a previous recipe
+    /// Other mods' storage blocks whose unpacking recipes GregTech's own block recipes replace.
     private static final ImmutableSet<String> BLOCK_RECIPE_REMOVALS = ImmutableSet.of(
         "Avaritia:Resource_Block@0",
         "Avaritia:Resource_Block@1",
@@ -98,11 +98,11 @@ public class ProcessingBlock implements PartRecipeGenerator {
         "Thaumcraft:blockCosmeticSolid@4",
         "thaumicbases:voidBlock@0");
 
-    // Materials whose own storage block another mod unpacks by crafting
+    /// Materials whose own storage block another mod unpacks by crafting.
     private static final Set<Material> OWN_BLOCK_RECIPE_REMOVALS = Set
         .of(Materials.Lead, Materials.Olivine, Materials.Silver);
 
-    // Map that tells which item recipe to remove. If not in this map, no previous recipes exist so skipping
+    /// The materials whose nine-item packing recipe is removed, and whether that recipe takes ingots, gems or dusts.
     private static final ImmutableMap<Material, Integer> PACKING_RECIPE_REMOVALS = ImmutableMap
         .<Material, Integer>builder()
         .put(Materials.AluminiumBrass, INGOT_RECIPE_REMOVAL)

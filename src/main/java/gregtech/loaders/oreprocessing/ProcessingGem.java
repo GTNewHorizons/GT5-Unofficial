@@ -34,8 +34,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingGem implements PartRecipeGenerator { // TODO COMPARE WITH GEM???
-                                                            // generators
+public class ProcessingGem implements PartRecipeGenerator {
 
     public static final ProcessingGem INSTANCE = new ProcessingGem();
 
@@ -269,10 +268,7 @@ public class ProcessingGem implements PartRecipeGenerator { // TODO COMPARE WITH
                     }
 
                     if (unifiable) {
-                        // Implosion compressor recipes
-                        {
-                            if (implodable) addTierImplosion(material, stack, Shapes.gemFlawed);
-                        }
+                        if (implodable) addTierImplosion(material, stack, Shapes.gemFlawed);
 
                         // Crafting recipes
                         {
@@ -361,10 +357,7 @@ public class ProcessingGem implements PartRecipeGenerator { // TODO COMPARE WITH
                     }
 
                     if (unifiable) {
-                        // Implosion compressor recipes
-                        {
-                            if (implodable) addTierImplosion(material, stack, Shapes.gem);
-                        }
+                        if (implodable) addTierImplosion(material, stack, Shapes.gem);
 
                         // Crafting recipes
                         {
@@ -431,10 +424,7 @@ public class ProcessingGem implements PartRecipeGenerator { // TODO COMPARE WITH
                     }
 
                     if (unifiable) {
-                        // Implosion compressor recipes
-                        {
-                            if (implodable) addTierImplosion(material, stack, Shapes.gemExquisite);
-                        }
+                        if (implodable) addTierImplosion(material, stack, Shapes.gemExquisite);
 
                         // Crafting recipes
                         {
