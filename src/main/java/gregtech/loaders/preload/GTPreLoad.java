@@ -190,7 +190,6 @@ public class GTPreLoad {
         GTMod.proxy.mLowGravProcessing = GalacticraftCore.isModLoaded() && Gregtech.general.lowGravProcessing;
         GTMod.proxy.mAMHInteraction = Gregtech.general.autoMaintenaceHatchesInteraction;
         GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = Gregtech.general.mixedOreOnlyYieldsTwoThirdsOfPureOre;
-        GTMod.proxy.mRichOreYieldMultiplier = Gregtech.general.richOreYieldMultiplier;
         GTMod.proxy.mNetherOreYieldMultiplier = Gregtech.general.netherOreYieldMultiplier;
         GTMod.proxy.mEndOreYieldMultiplier = Gregtech.general.endOreYieldMultiplier;
         GTMod.proxy.gt6Pipe = Gregtech.general.gt6Pipe;

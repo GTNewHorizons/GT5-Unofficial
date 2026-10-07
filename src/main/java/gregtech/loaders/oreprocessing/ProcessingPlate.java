@@ -2,10 +2,6 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.enums.GTValues.RA;
-import static gregtech.api.enums.Mods.GalacticraftAmunRa;
-import static gregtech.api.enums.Mods.GalacticraftCore;
-import static gregtech.api.enums.Mods.GalacticraftMars;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
@@ -13,7 +9,6 @@ import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BITS_STD;
 import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
@@ -23,14 +18,10 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
-import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -43,7 +34,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
@@ -64,10 +54,6 @@ import gregtech.api.util.GTUtility;
 public class ProcessingPlate implements PartRecipeGenerator {
 
     public static final ProcessingPlate INSTANCE = new ProcessingPlate();
-
-    private record CompressedPlate(Mods mod, String itemName, int meta) {}
-
-    private static Map<Material, CompressedPlate> compressedPlates;
 
     private ProcessingPlate() {}
 
@@ -266,47 +252,6 @@ public class ProcessingPlate implements PartRecipeGenerator {
                         'I', OrePrefixes.plateDouble.ingredient(material), 'B', plateStack });
             }
         }
-
-        ItemStack compressedPlate = compressedPlate(material);
-        if (compressedPlate != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack))
-                .itemOutputs(compressedPlate, MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 1))
-                .duration(1 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .metadata(ADDITIVE_AMOUNT, 2)
-                .addTo(implosionRecipes);
-        }
-    }
-
-    /// The compressed plate another mod makes of `material`, which an imploded triple plate turns into. Null for a
-    /// material with no such plate, or when the mod owning it is absent.
-    private static ItemStack compressedPlate(Material material) {
-        if (compressedPlates == null) {
-            Map<Material, CompressedPlate> plates = new HashMap<>();
-            plates.put(Materials.Aluminium, new CompressedPlate(GalacticraftCore, "item.basicItem", 8));
-            plates.put(Materials.Bronze, new CompressedPlate(GalacticraftCore, "item.basicItem", 10));
-            plates.put(Materials.Copper, new CompressedPlate(GalacticraftCore, "item.basicItem", 6));
-            plates.put(Materials.Iron, new CompressedPlate(GalacticraftCore, "item.basicItem", 11));
-            plates.put(Materials.Steel, new CompressedPlate(GalacticraftCore, "item.basicItem", 9));
-            plates.put(Materials.Tin, new CompressedPlate(GalacticraftCore, "item.basicItem", 7));
-            plates.put(Materials.MeteoricIron, new CompressedPlate(GalacticraftCore, "item.meteoricIronIngot", 1));
-            plates.put(Materials.Desh, new CompressedPlate(GalacticraftMars, "item.null", 5));
-            plates.put(Materials.Titanium, new CompressedPlate(GalacticraftMars, "item.itemBasicAsteroids", 6));
-            plates.put(Materials.Gold, new CompressedPlate(GalacticraftAmunRa, "item.baseItem", 19));
-            plates.put(Materials.CallistoIce, new CompressedPlate(NewHorizonsCoreMod, "CallistoIceCompressedPlate", 0));
-            plates.put(Materials.Ledox, new CompressedPlate(NewHorizonsCoreMod, "LedoxCompressedPlate", 0));
-            plates.put(
-                Materials.MysteriousCrystal,
-                new CompressedPlate(NewHorizonsCoreMod, "MysteriousCrystalCompressedPlate", 0));
-            plates.put(Materials.Mytryl, new CompressedPlate(NewHorizonsCoreMod, "MytrylCompressedPlate", 0));
-            plates.put(Materials.Quantium, new CompressedPlate(NewHorizonsCoreMod, "QuantinumCompressedPlate", 0));
-            compressedPlates = plates;
-        }
-        CompressedPlate plate = compressedPlates.get(material);
-        if (plate == null || !plate.mod()
-            .isModLoaded()) return null;
-        return GTModHandler.getModItem(plate.mod().ID, plate.itemName(), 1, plate.meta());
     }
 
     private void registerPlateQuadruple(final Material material, final ItemStack stack, final boolean noSmashing,
@@ -572,10 +517,6 @@ public class ProcessingPlate implements PartRecipeGenerator {
                     .eut(4)
                     .addTo(alloySmelterRecipes);
             }
-            case "plateAlloyIridium" ->
-
-                // Remove IC2 Shaped recipe for Iridium Reinforced Plate
-                GTModHandler.removeRecipeByOutputDelayed(stack);
             default -> {}
         }
     }

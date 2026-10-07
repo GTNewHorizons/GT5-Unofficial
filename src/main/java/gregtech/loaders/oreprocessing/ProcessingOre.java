@@ -10,8 +10,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
-import java.util.ArrayList;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -37,41 +35,23 @@ import gregtech.common.ores.OreManager;
 
 public class ProcessingOre implements PartRecipeGenerator {
 
-    private final ArrayList<Material> mAlreadyListedOres = new ArrayList<>(1000);
-
     public static final ProcessingOre INSTANCE = new ProcessingOre();
 
     private ProcessingOre() {}
 
     @Override
     public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
-        if (material == null) return;
-
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
-        boolean tIsRich = false;
-
-        // For Sake of god of balance!
-
-        // Dense ore
-        if (GTMod.proxy.mRichOreYieldMultiplier) {
-            tIsRich = (prefix == OrePrefixes.oreRich) || (prefix == OrePrefixes.oreDense);
-        }
-        // NetherOre
-        if (GTMod.proxy.mNetherOreYieldMultiplier && !tIsRich) {
-            tIsRich = (prefix == OrePrefixes.oreNetherrack) || (prefix == OrePrefixes.oreNether);
-        }
-        // EndOre
-        if (GTMod.proxy.mEndOreYieldMultiplier && !tIsRich) {
-            tIsRich = (prefix == OrePrefixes.oreEndstone) || (prefix == OrePrefixes.oreEnd);
-        }
+        boolean rich = prefix == OrePrefixes.oreNetherrack && GTMod.proxy.mNetherOreYieldMultiplier
+            || prefix == OrePrefixes.oreEndstone && GTMod.proxy.mEndOreYieldMultiplier;
 
         if (material == Materials.Oilsands) {
-            addOilsandsRecipe(stack, tIsRich);
+            addOilsandsRecipe(stack, rich);
         } else {
-            addOreRecipes(prefix, material, stack, tIsRich ? 2 : 1, false);
+            addOreRecipes(prefix, material, stack, rich ? 2 : 1, false);
         }
     }
 

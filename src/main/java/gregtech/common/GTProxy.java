@@ -233,7 +233,6 @@ public class GTProxy implements IFuelHandler {
     public boolean mAMHInteraction = true;
     public boolean mForceFreeFace = true;
     public boolean mMixedOreOnlyYieldsTwoThirdsOfPureOre = false;
-    public boolean mRichOreYieldMultiplier = true;
     public boolean mNetherOreYieldMultiplier = true;
     public boolean mEndOreYieldMultiplier = true;
     public boolean enableBlackGraniteOres = true;

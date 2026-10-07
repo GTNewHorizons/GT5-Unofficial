@@ -1150,7 +1150,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         OrePrefixes.ring.ingredient(Materials.Steel), 'W',
                         OrePrefixes.screw.ingredient(Materials.Steel) });
             }
-            case "toolHeadHammer", "toolHeadMallet" -> {
+            case "toolHeadHammer" -> {
                 if (MaterialLibAPI.findStack(MaterialUtils.handleMaterial(material), Shapes.stick, 1) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
@@ -1204,7 +1204,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                                 : OrePrefixes.gem.ingredient(material),
                             'S', OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
                 }
-                if (prefix == OrePrefixes.toolHeadHammer) if (specialRecipeReq1) GTModHandler.addCraftingRecipe(
+                if (specialRecipeReq1) GTModHandler.addCraftingRecipe(
                     MaterialLibAPI.findStack(material, Shapes.toolHeadHammer, 1),
                     GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "II ", "IIh", "II ", 'P', OrePrefixes.plate.ingredient(material), 'I',

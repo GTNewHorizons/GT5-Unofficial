@@ -98,7 +98,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
         "Thaumcraft:blockCosmeticSolid@4",
         "thaumicbases:voidBlock@0");
 
-    // Materials whose own storage block has another mod's crafting recipe, which is removed
+    // Materials whose own storage block another mod unpacks by crafting
     private static final Set<Material> OWN_BLOCK_RECIPE_REMOVALS = Set
         .of(Materials.Lead, Materials.Olivine, Materials.Silver);
 
@@ -151,9 +151,9 @@ public class ProcessingBlock implements PartRecipeGenerator {
 
     private ProcessingBlock() {}
 
-    /// Removes other mods' recipes that unpack the storage blocks in [#BLOCK_RECIPE_REMOVALS], and the crafting
-    /// recipes that pack nine ingots, gems or dusts of the materials in [#PACKING_RECIPE_REMOVALS]. GregTech's own
-    /// block recipes replace both.
+    /// Removes other mods' recipes that unpack the storage blocks in [#BLOCK_RECIPE_REMOVALS] and those of the
+    /// materials in [#OWN_BLOCK_RECIPE_REMOVALS], and that pack nine ingots, gems or dusts of the materials in
+    /// [#PACKING_RECIPE_REMOVALS]. GregTech's own block recipes replace them.
     public static void removeForeignBlockRecipes() {
         for (String key : BLOCK_RECIPE_REMOVALS) {
             int at = key.lastIndexOf('@');
@@ -162,6 +162,10 @@ public class ProcessingBlock implements PartRecipeGenerator {
             if (item != null) {
                 GTModHandler.removeRecipeDelayed(new ItemStack(item, 1, Integer.parseInt(key.substring(at + 1))));
             }
+        }
+        for (Material material : OWN_BLOCK_RECIPE_REMOVALS) {
+            ItemStack block = MaterialLibAPI.findStack(material, BlockShapes.block, 1);
+            if (block != null) GTModHandler.removeRecipeDelayed(block);
         }
         PACKING_RECIPE_REMOVALS.forEach((material, removals) -> {
             if ((removals & INGOT_RECIPE_REMOVAL) != 0) removePackingRecipe(material, Shapes.ingot);
@@ -321,10 +325,6 @@ public class ProcessingBlock implements PartRecipeGenerator {
         ItemStack gem = MaterialLibAPI.findStack(material, Shapes.gem, 1);
         ItemStack dust = MaterialLibAPI.findStack(material, Shapes.dust, 1);
         ItemStack block = MaterialLibAPI.findStack(material, BlockShapes.block, 1);
-
-        if (OWN_BLOCK_RECIPE_REMOVALS.contains(material) && GTUtility.areStacksEqual(stack, block)) {
-            GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, stack));
-        }
 
         if (MaterialUtils.hasMolten(material) && block != null) {
             if (!(material == Materials.AnnealedCopper || material == Materials.CastIron

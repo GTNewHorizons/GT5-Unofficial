@@ -26,8 +26,6 @@ public class ProcessingCrystallized implements PartRecipeGenerator {
 
     @Override
     public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
-        if (material == null) return;
-
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }

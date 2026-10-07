@@ -110,7 +110,7 @@ public class ProcessingOreSmelting implements PartRecipeGenerator {
                 }
 
             }
-            case "dustImpure", "dustPure", "dustRefined" -> {
+            case "dustImpure", "dustPure" -> {
                 if (MaterialUtils.directSmelting(material) == material) {
                     addSmeltingRecipe(material, stack, OrePrefixes.ingot, 1);
                 } else if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {

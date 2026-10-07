@@ -294,11 +294,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean mixedOreOnlyYieldsTwoThirdsOfPureOre;
 
-        @Config.Comment("if true, rich ores yield twice as much as normal ores.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean richOreYieldMultiplier;
-
         @Config.Comment("if true, nether ores yield twice as much as normal ores.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart

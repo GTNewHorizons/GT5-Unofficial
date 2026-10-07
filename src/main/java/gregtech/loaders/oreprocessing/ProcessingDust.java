@@ -403,7 +403,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                         .addTo(autoclaveRecipes);
                 }
                 switch (MaterialUtils.internalName(material)) {
-                    case "NULL", "Mercury", "Coal":
+                    case "Mercury", "Coal":
                         break;
                     case "Glass":
                         GTModHandler.addSmeltingRecipe(
@@ -436,14 +436,14 @@ public class ProcessingDust implements PartRecipeGenerator {
                         break;
                 }
             }
-            case "dustPure", "dustImpure", "dustRefined" -> {
+            case "dustPure", "dustImpure" -> {
                 if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     return;
                 }
 
                 boolean hasDust = hasDust(material);
                 Material tByProduct = GTUtility.selectItemInList(
-                    prefix == OrePrefixes.dustRefined ? 2 : prefix == OrePrefixes.dustPure ? 1 : 0,
+                    prefix == OrePrefixes.dustPure ? 1 : 0,
                     material,
                     MaterialUtils.oreByProducts(material));
                 if (hasDust && prefix == OrePrefixes.dustPure) {

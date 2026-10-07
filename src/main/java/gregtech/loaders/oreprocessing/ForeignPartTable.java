@@ -63,7 +63,7 @@ final class ForeignPartTable {
                 "MysteriousCrystalCompressedPlate",
                 0),
             // EnderIO
-            named(OrePrefixes.item, "itemSilicon", "EnderIO", "itemMaterial", 0),
+            part(OrePrefixes.item, Materials.Silicon, "EnderIO", "itemMaterial", 0),
             // etfuturum
             ore(Materials.Coal, "etfuturum", "deepslate_coal_ore", 0),
             part(OrePrefixes.oreDeepslate, Materials.Coal, "etfuturum", "deepslate_coal_ore", 0),
@@ -137,7 +137,7 @@ final class ForeignPartTable {
             part(OrePrefixes.compressed, Materials.Bronze, "GalacticraftCore", "item.basicItem", 10),
             part(OrePrefixes.compressed, Materials.Iron, "GalacticraftCore", "item.basicItem", 11),
             part(OrePrefixes.compressed, Materials.MeteoricIron, "GalacticraftCore", "item.meteoricIronIngot", 1),
-            named(OrePrefixes.item, "itemSilicon", "GalacticraftCore", "item.basicItem", 2),
+            part(OrePrefixes.item, Materials.Silicon, "GalacticraftCore", "item.basicItem", 2),
             // GalacticraftMars
             ore(Materials.Iron, "GalacticraftMars", "tile.asteroidsBlock", 5),
             ore(Materials.Iron, "GalacticraftMars", "tile.mars", 3),
@@ -177,7 +177,7 @@ final class ForeignPartTable {
             // gregtech
             alias(OrePrefixes.crystal, Materials.CertusQuartz, Shapes.gem),
             alias(OrePrefixes.crystal, Materials.Quartzite, Shapes.gem),
-            named(OrePrefixes.item, "itemSilicon", () -> MaterialLibAPI.getStack(Materials.Silicon, Shapes.plate, 1)),
+            alias(OrePrefixes.item, Materials.Silicon, Shapes.plate),
             named(OrePrefixes.plateAlloy, "plateAlloyAdvanced", () -> ItemList.AdvancedAlloyPlate.get(1)),
             named(OrePrefixes.plateAlloy, "plateAlloyCarbon", () -> ItemList.CarbonAlloyPlate.get(1)),
             // HardcoreEnderExpansion
@@ -207,7 +207,7 @@ final class ForeignPartTable {
             ore(Materials.Coal, "minecraft", "coal_ore", 0),
             part(OrePrefixes.crystal, Materials.NetherQuartz, "minecraft", "quartz", 0),
             ore(Materials.NetherQuartz, "minecraft", "quartz_ore", 0),
-            named(OrePrefixes.item, "itemWheat", "minecraft", "wheat", WILDCARD),
+            part(OrePrefixes.item, Materials.Wheat, "minecraft", "wheat", WILDCARD),
             // ProjRed|Exploration
             ore(Materials.Ruby, "ProjRed|Exploration", "projectred.exploration.ore", 0),
             ore(Materials.Sapphire, "ProjRed|Exploration", "projectred.exploration.ore", 1),
