@@ -13,6 +13,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ProgressManager;
@@ -249,7 +250,9 @@ public final class OreDictRegistrationHandler {
 
         OreDictAliases.registerAliases(oreName, stack);
         handleSpecialRegistration(stack, prefix, material, materialName);
-
+        if (material.hasAlias()) {
+            API.setAliases(stack, material.getAliasKey());
+        }
         if (!prefix.isIgnored(material)) {
             prefix.add(GTUtility.copyAmount(1, stack));
         }
