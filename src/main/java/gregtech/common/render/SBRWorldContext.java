@@ -405,7 +405,8 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      */
     @Override
     public boolean canRenderInPass(@NotNull IntPredicate predicate) {
-        return predicate.test(worldRenderPass) || isBlockRenderer6343DummyWorld(blockAccess);
+        return renderBlocks.hasOverrideBlockTexture() || predicate.test(worldRenderPass)
+            || isBlockRenderer6343DummyWorld(blockAccess);
     }
 
     /**
