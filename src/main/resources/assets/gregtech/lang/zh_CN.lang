@@ -55,6 +55,20 @@ gt.mbtt.structure.either_center_side_casing=中央侧面机械方块
 gt.mbtt.machine_type.fusion_reactor=聚变反应堆
 gt.mbtt.machine_type.antimatter_forge=反物质锻炉，SSASS
 gt.mbtt.machine_type.antimatter_generator=反物质发电机，SLAM
+gt.mbtt.machine_type.bacterial_vat=细菌培养缸，Bac Vat
+gt.mbtt.machine_type.geothermal_heat_pump=地源热泵，DEHP
+gt.mbtt.machine_type.transformer=变压器
+gt.mbtt.machine_type.windmill=风车，研磨机
+gt.mbtt.structure.any_top_casing=任意顶层机械方块
+
+GT5U.tooltip.manual_trafo.winding_layers=每改变一个电压等级一层
+GT5U.tooltip.manual_trafo.ferrite_position=位于%s的中间
+GT5U.tooltip.manual_trafo.tapped_mode=抽头模式：
+GT5U.tooltip.manual_trafo.touching_winding=紧贴%s
+GT5U.tooltip.manual_trafo.tapped_hatch_tiers=紧贴%s的仓室必须由下至上按电压等级排列
+GT5U.tooltip.windmill.any_color=%s（任意颜色）
+GT5U.tooltip.windmill.any_type=%s（任意）
+GT5U.tooltip.windmill.any_block=任意%s
 
 GT5U.cracker.io_side=输入/输出仓必须处在对侧！
 

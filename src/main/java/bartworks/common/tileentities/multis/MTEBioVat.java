@@ -46,7 +46,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -78,6 +78,7 @@ import bartworks.util.Coords;
 import bartworks.util.MathUtils;
 import bartworks.util.ResultWrongSievert;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -104,6 +105,7 @@ import gregtech.api.util.recipe.Sievert;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.GTplusplus;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -172,50 +174,25 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Bacterial Vat, Bac Vat")
-            .addInfo(EnumChatFormatting.AQUA + "Advanced Bio Processing")
-            .addSeparator()
-            .addInfo(
-                "Some recipes require " + EnumChatFormatting.GREEN
-                    + "R"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "A"
-                    + EnumChatFormatting.GREEN
-                    + "D"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "I"
-                    + EnumChatFormatting.GREEN
-                    + "A"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "T"
-                    + EnumChatFormatting.GREEN
-                    + "I"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "O"
-                    + EnumChatFormatting.GREEN
-                    + "N"
-                    + EnumChatFormatting.GRAY
-                    + " supplied with a "
-                    + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.GREEN
-                    + "Radio Hatch")
-            .addInfo("Radiation can be either a minimum requirement or an exact value")
-            .addInfo("Efficiency depends on Output Hatch fluid level")
-            .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
+        final String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bacterial_vat"))
+            .addMarkdown(new ResourceLocation("gregtech", "bio-vat"))
             .beginStructureBlock(5, 4, 5, false)
-            .addController("Front bottom center")
-            .addCasing("19-45", "Stainless Steel Machine Casing", false)
-            .addCasing("32", "Any Tiered Glass", true)
-            .addMiscHatch("0-1", StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("0+", "Any casing", 1)
-            .addInputHatch("1+", "Any casing", 1)
-            .addOutputBus("0+", "Any casing", 1)
-            .addOutputHatch("1", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("19-45", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("32", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addMiscHatch("0-1", StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), anyCasing, 1)
+            .addEnergyHatch("1+", anyCasing, 1)
+            .addMaintenanceHatch("1", anyCasing, 1)
+            .addInputBus("0+", anyCasing, 1)
+            .addInputHatch("1+", anyCasing, 1)
+            .addOutputBus("0+", anyCasing, 1)
+            .addOutputHatch("1", anyCasing, 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

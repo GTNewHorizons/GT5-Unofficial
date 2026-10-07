@@ -1,0 +1,14 @@
+由{aqua:动能}驱动的原始研磨机
+一次研磨{gold:16}个物品
+并行数由{aqua:风速}决定
+并行数决定每个配方处理的物品数量
+无论并行数多少，处理时间相同
+使用{white:{item:bartworks:BW_SimpleWindMeter}}来测量{aqua:风速}
+转子可放入{white:{item:bartworks:BWRotorBlock}}
+风力不足或过强则无法工作
+{green:12.5%}速度
+{gray:{hr}}
+{gold:2}并行：{white:低}
+{gold:4}并行：{dark_green:普通}
+{gold:8}并行：{gold:较强}
+{gold:16}并行：{dark_red:非常强}

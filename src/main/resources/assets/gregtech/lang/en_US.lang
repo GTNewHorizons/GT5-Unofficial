@@ -2088,6 +2088,7 @@ gt.mbtt.structure.any_bottom_casing_or_top_for_fluid_output=Any bottom casing, o
 gt.mbtt.structure.any_hearth_casing=Any hearth casing
 gt.mbtt.structure.any_heat_proof_machine_casing=Any Heat Proof Machine Casing
 gt.mbtt.structure.glass_tier_limits_energy_input=The glass tier limits the Energy Input tier
+gt.mbtt.structure.any_top_casing=Any top casing
 gt.mbtt.structure.mega_hologram_too_big=This multiblock is too big to have its structure hologram displayed fully.
 
 # Generic machine types
@@ -2118,6 +2119,20 @@ gt.mbtt.machine_type.blast_furnace_mebf=Blast Furnace, MEBF, MBF
 gt.mbtt.machine_type.blast_furnace_volcanus=Blast Furnace
 gt.mbtt.machine_type.vacuum_furnace_dehydrator=Vacuum Furnace, Dehydrator
 gt.mbtt.machine_type.alloy_smelter=Alloy Smelter
+gt.mbtt.machine_type.bacterial_vat=Bacterial Vat, Bac Vat
+gt.mbtt.machine_type.geothermal_heat_pump=Geothermal Heat Pump, DEHP
+gt.mbtt.machine_type.transformer=Transformer
+gt.mbtt.machine_type.windmill=Windmill, Macerator
+
+# BartWorks multiblock structure text
+GT5U.tooltip.manual_trafo.winding_layers=1 Layer for each tier transformed
+GT5U.tooltip.manual_trafo.ferrite_position=Middle of %s
+GT5U.tooltip.manual_trafo.tapped_mode=Tapped Mode :
+GT5U.tooltip.manual_trafo.touching_winding=Touching %s
+GT5U.tooltip.manual_trafo.tapped_hatch_tiers=Hatches touching %s must be tiered from bottom to top
+GT5U.tooltip.windmill.any_color=%s (any color)
+GT5U.tooltip.windmill.any_type=%s (any)
+GT5U.tooltip.windmill.any_block=Any %s
 
 # Tooltip flavor text
 gt.mbtt.flavor.exothermic_hearth=Never one...
