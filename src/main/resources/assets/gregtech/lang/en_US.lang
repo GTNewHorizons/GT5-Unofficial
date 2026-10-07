@@ -10147,7 +10147,15 @@ gt.alias.mechanical_armor=Mechanical Armor
 gt.alias.fibre=Fibre
 gt.alias.vci=VCI
 gt.alias.vco=VCO
-gt.alias.mhdcsm=mhdcsm
+gt.alias.mhdcsm=MHDCSM
+gt.alias.ps=PS
+gt.alias.pps=PPS
+gt.alias.pvc=PVC
+gt.alias.sbr=SBR
+gt.alias.pbi=PBI
+gt.alias.ptfe=PTFE
+gt.alias.pe=PE
+gt.alias.pcl=PCL
 
 # Multiblocks
 gt.blockmachines.algaefarm.controller.tier.single.name=Algae Farm
