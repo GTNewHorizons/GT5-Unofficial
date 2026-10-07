@@ -98,8 +98,10 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
 import ic2.core.item.ItemToolbox;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
+import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -570,6 +572,7 @@ public class GTModHandler {
         bulkRemoveRecipeByOutput();
         bulkRemoveByRecipe();
         sBufferRecipeList.forEach(GameRegistry::addRecipe);
+        reportRemovedRepeatedCraftingRecipes();
 
         delayedRemovalByOutput.clear();
         delayedRemovalByOutputFlags.clear();
@@ -1063,8 +1066,8 @@ public class GTModHandler {
             + aOnlyAddIfThereIsAnyRecipeOutputtingThis
             + Arrays.toString(aEnchantmentsAdded)
             + Arrays.toString(aEnchantmentLevelsAdded);
-        String recipeKey = craftingRecipeKey(flags, aResult, aRecipe);
-        if (isAddedCraftingRecipe(recipeKey)) return true;
+        long recipeKey = craftingRecipeKey(flags, aResult, aRecipe);
+        if (isRepeatedCraftingRecipe(recipeKey, aRecipe)) return true;
 
         StringBuilder shape = new StringBuilder(E);
         int idx = 0;
@@ -1309,52 +1312,87 @@ public class GTModHandler {
             aRecipe);
     }
 
-    private static final Map<String, IRecipe> sAddedCraftingRecipes = new HashMap<>();
+    /// Crafting recipes GregTech added, by their [#craftingRecipeKey]. Adding one again is skipped, and the repeat is
+    /// kept until [#reportRemovedRepeatedCraftingRecipes] checks that the earlier copy is still registered.
+    private static final Long2ObjectOpenHashMap<IRecipe> sAddedCraftingRecipes = new Long2ObjectOpenHashMap<>();
+    private static final List<RepeatedCraftingRecipe> sRepeatedCraftingRecipes = new ArrayList<>();
+    private static final long NO_CRAFTING_RECIPE_KEY = 0;
+    private static final long FNV_OFFSET_BASIS = 0xcbf29ce484222325L;
+    private static final long FNV_PRIME = 0x100000001b3L;
 
-    /// Returns whether GregTech added a recipe under `key` that is still registered or buffered. A null `key` is never
-    /// added.
-    private static boolean isAddedCraftingRecipe(String key) {
-        IRecipe added = key == null ? null : sAddedCraftingRecipes.get(key);
-        return added != null && (sBufferRecipeList.contains(added) || CraftingManager.getInstance()
-            .getRecipeList()
-            .contains(added));
+    private record RepeatedCraftingRecipe(IRecipe earlier, Object[] recipe, @Nullable Exception callSite) {}
+
+    /// Returns whether GregTech already added a recipe under `key`, recording the repeat if so.
+    private static boolean isRepeatedCraftingRecipe(long key, Object[] recipe) {
+        IRecipe earlier = key == NO_CRAFTING_RECIPE_KEY ? null : sAddedCraftingRecipes.get(key);
+        if (earlier == null) return false;
+        Exception callSite = GT_RECIPE_REMOVAL_LOGGER_ENABLED ? new Exception("Repeated crafting recipe") : null;
+        sRepeatedCraftingRecipes.add(new RepeatedCraftingRecipe(earlier, recipe, callSite));
+        return true;
     }
 
-    private static void addCraftingRecipe(IRecipe recipe, String key, boolean buffered) {
+    /// Logs an error for each repeated crafting recipe whose earlier copy is no longer registered, as the code adding
+    /// it conflicts with the code removing it.
+    private static void reportRemovedRepeatedCraftingRecipes() {
+        if (sRepeatedCraftingRecipes.isEmpty()) return;
+        Set<IRecipe> registered = new ReferenceOpenHashSet<>(
+            CraftingManager.getInstance()
+                .getRecipeList());
+        for (RepeatedCraftingRecipe repeat : sRepeatedCraftingRecipes) {
+            if (registered.contains(repeat.earlier)) continue;
+            GT_FML_LOGGER.error(
+                "Crafting recipe for {} is added more than once and removed: {}",
+                repeat.earlier.getRecipeOutput(),
+                Arrays.deepToString(repeat.recipe),
+                repeat.callSite);
+        }
+        sRepeatedCraftingRecipes.clear();
+    }
+
+    private static void addCraftingRecipe(IRecipe recipe, long key, boolean buffered) {
         if (sBufferCraftingRecipes && buffered) sBufferRecipeList.add(recipe);
         else GameRegistry.addRecipe(recipe);
-        if (key != null) sAddedCraftingRecipes.put(key, recipe);
+        if (key != NO_CRAFTING_RECIPE_KEY) sAddedCraftingRecipes.put(key, recipe);
     }
 
-    /// The identity of a crafting recipe: its `flags`, result and normalized ingredients. Null when an ingredient has
-    /// no stable name.
-    private static String craftingRecipeKey(String flags, ItemStack result, Object[] recipe) {
-        StringBuilder key = new StringBuilder(flags).append('|')
-            .append(craftingKey(result));
+    /// A 64-bit FNV-1a hash of a crafting recipe's `flags`, result and normalized ingredients, or
+    /// [#NO_CRAFTING_RECIPE_KEY] when an ingredient has no stable name.
+    private static long craftingRecipeKey(String flags, ItemStack result, Object[] recipe) {
+        long key = hashCraftingKey(hashCraftingKey(FNV_OFFSET_BASIS, flags), result);
         for (Object part : recipe) {
-            key.append('|');
             if (part instanceof ItemStack stack) {
-                key.append(craftingKey(stack));
+                key = hashCraftingKey(key, stack);
             } else if (part instanceof ItemData data) {
                 String name = data.toString();
-                if (name.isEmpty()) return null;
-                key.append('#')
-                    .append(name);
+                if (name.isEmpty()) return NO_CRAFTING_RECIPE_KEY;
+                key = hashCraftingKey(mixCraftingKey(key, '#'), name);
             } else {
-                key.append(part);
+                key = hashCraftingKey(key, String.valueOf(part));
             }
         }
-        return key.toString();
+        return key;
     }
 
-    private static String craftingKey(ItemStack stack) {
-        if (stack == null || stack.getItem() == null) return "null";
-        return Item.getIdFromItem(stack.getItem()) + "@"
-            + stack.getItemDamage()
-            + "x"
-            + stack.stackSize
-            + (stack.hasTagCompound() ? stack.getTagCompound()
-                .toString() : "");
+    private static long hashCraftingKey(long key, @Nullable ItemStack stack) {
+        if (stack == null || stack.getItem() == null) return mixCraftingKey(key, -1);
+        key = mixCraftingKey(key, Item.getIdFromItem(stack.getItem()));
+        key = mixCraftingKey(key, stack.getItemDamage());
+        key = mixCraftingKey(key, stack.stackSize);
+        return stack.hasTagCompound() ? hashCraftingKey(
+            key,
+            stack.getTagCompound()
+                .toString())
+            : mixCraftingKey(key, -1);
+    }
+
+    private static long hashCraftingKey(long key, String text) {
+        key = mixCraftingKey(key, text.length());
+        for (int i = 0; i < text.length(); i++) key = mixCraftingKey(key, text.charAt(i));
+        return key;
+    }
+
+    private static long mixCraftingKey(long key, int value) {
+        return (key ^ value) * FNV_PRIME;
     }
 
     /**
@@ -1373,7 +1411,7 @@ public class GTModHandler {
                 || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
         }
 
-        String recipeKey = null;
+        long recipeKey = NO_CRAFTING_RECIPE_KEY;
         if (inputValidator == null) {
             String flags = "shapeless" + aBuffered
                 + aCheckForCollisions
@@ -1383,7 +1421,7 @@ public class GTModHandler {
                 + Arrays.toString(aEnchantmentsAdded)
                 + Arrays.toString(aEnchantmentLevelsAdded);
             recipeKey = craftingRecipeKey(flags, aResult, aRecipe);
-            if (isAddedCraftingRecipe(recipeKey)) return true;
+            if (isRepeatedCraftingRecipe(recipeKey, aRecipe)) return true;
         }
 
         ItemStack[] tRecipe = new ItemStack[9];
