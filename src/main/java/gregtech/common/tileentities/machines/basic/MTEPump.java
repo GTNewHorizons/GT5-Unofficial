@@ -767,7 +767,7 @@ public class MTEPump extends MTEBasicMachine {
 
     private boolean consumeFluid(int aX, int aY, int aZ) {
         // Try to consume a fluid at a location
-        // Returns true if something was consumed, otherwise false
+        // Returns true if a source block was consumed, otherwise false
         if (!GTUtility.eraseBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), aX, aY, aZ, true)) return false;
 
         Block aBlock = getBaseMetaTileEntity().getBlock(aX, aY, aZ);
@@ -783,10 +783,13 @@ public class MTEPump extends MTEBasicMachine {
                 : !((IFluidBlock) aBlock).canDrain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ);
 
             if (isFlowingFluid) {
-                // Clear fluid that isn't a source block, set the block to air and consume energy
+                // Clear flowing fluid without consuming energy or stopping the pump queue.
                 if (debugBlockPump) {
                     GT_FML_LOGGER.debug("PUMP: Not a source block");
                 }
+                getBaseMetaTileEntity().getWorld()
+                    .setBlock(aX, aY, aZ, Blocks.air, 0, 2);
+                return false;
 
             } else if (getDrainableStack() == null) {
                 // The pump has no internal fluid
