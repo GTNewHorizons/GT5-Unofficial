@@ -217,20 +217,22 @@ public class CraftingRecipes implements Runnable {
 
         String[] stones = { "stone", "stoneSmooth" };
         String[] granites = { "blockGranite", "stoneGranite", "Granite", "granite" };
+        for (String stone : stones) {
+            GTModHandler.addCraftingRecipe(
+                new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 0),
+                GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED
+                    | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "SSS", "DfD", " h ", 'S', stone, 'D',
+                    new ItemStack(GregTechAPI.sBlockGranites, 1, OreDictionary.WILDCARD_VALUE), });
+            GTModHandler.addCraftingRecipe(
+                new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 1),
+                GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED
+                    | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "hDf", "SSS", 'S', stone, 'D',
+                    new ItemStack(GregTechAPI.sBlockGranites, 1, OreDictionary.WILDCARD_VALUE), });
+        }
         for (String granite : granites) {
             for (String stone : stones) {
-                GTModHandler.addCraftingRecipe(
-                    new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 0),
-                    GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED
-                        | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                    new Object[] { "SSS", "DfD", " h ", 'S', stone, 'D',
-                        new ItemStack(GregTechAPI.sBlockGranites, 1, OreDictionary.WILDCARD_VALUE), });
-                GTModHandler.addCraftingRecipe(
-                    new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 1),
-                    GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED
-                        | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                    new Object[] { "hDf", "SSS", 'S', stone, 'D',
-                        new ItemStack(GregTechAPI.sBlockGranites, 1, OreDictionary.WILDCARD_VALUE), });
                 GTModHandler.addCraftingRecipe(
                     new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 0),
                     GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED

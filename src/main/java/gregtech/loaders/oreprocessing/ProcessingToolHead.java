@@ -1191,7 +1191,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                             material == Materials.Wood ? OrePrefixes.plank.ingredient(Materials.Wood)
                                 : OrePrefixes.ingot.ingredient(material),
                             'S', OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
-                    GTModHandler.addCraftingRecipe(
+                    if (material != Materials.Wood) GTModHandler.addCraftingRecipe(
                         MetaGeneratedTool01.INSTANCE.getToolWithStats(
                             producesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
                             1,
@@ -1199,10 +1199,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                             MaterialUtils.handleMaterial(material),
                             null),
                         GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "XX ", "XXS", "XX ", 'X',
-                            material == Materials.Wood ? OrePrefixes.plank.ingredient(Materials.Wood)
-                                : OrePrefixes.gem.ingredient(material),
-                            'S', OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
+                        new Object[] { "XX ", "XXS", "XX ", 'X', OrePrefixes.gem.ingredient(material), 'S',
+                            OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
                 }
                 if (specialRecipeReq1) GTModHandler.addCraftingRecipe(
                     MaterialLibAPI.findStack(material, Shapes.toolHeadHammer, 1),
