@@ -255,6 +255,11 @@ public class Client {
         @Config.Name("Use Old Coil Textures")
         public boolean useOldCoils;
 
+        @Config.Comment("Hot and cold fluid pipes glow, frost over and give off heat haze or vapour")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Fluid Pipe Heat and Frost Effects")
+        public boolean renderFluidPipeThermalEffects;
+
         @Config.Comment("Render lines to MagLev Pylons when tethering")
         @Config.DefaultBoolean(true)
         @Config.Name("Render MagLev Tethers")

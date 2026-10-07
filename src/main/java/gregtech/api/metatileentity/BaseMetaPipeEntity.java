@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -62,6 +63,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     protected MetaPipeEntity mMetaTileEntity;
     private boolean mWorkUpdate = false, mWorks = true;
     private byte oldConnections = 0;
+    /** Block light the pipe gives off, set by the pipe itself (e.g. fluid pipes holding hot fluids). */
+    private byte mLightValue = 0;
     protected Node node;
     protected NodePath nodePath;
 
@@ -929,7 +932,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public void setLightValue(byte aLightValue) {
-        //
+        final byte lightValue = (byte) (aLightValue & 15);
+        if (lightValue == mLightValue) return;
+        mLightValue = lightValue;
+        // No world yet during NBT load, and the saved chunk light already matches
+        if (worldObj != null) worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+    }
+
+    public byte getLightValue() {
+        return mLightValue;
     }
 
     @Override

@@ -57,7 +57,19 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
 
     @Override
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
-        return getBaseTexture(getThickness(), mPipeAmount, pipeStats.iconSet, pipeStats.rgba, connected, colorIndex);
+        return getBaseTexture(getThickness(), mPipeAmount, connected, colorIndex);
+    }
+
+    @Override
+    protected ITexture getBaseTexture(float thickness, int pipeAmount, boolean connected, int colorIndex) {
+        return getBaseTexture(
+            thickness,
+            pipeAmount,
+            pipeStats.iconSet,
+            pipeStats.rgba,
+            connected,
+            colorIndex,
+            mRenderedThermal);
     }
 
     @Override

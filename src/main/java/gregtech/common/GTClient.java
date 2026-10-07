@@ -102,6 +102,7 @@ import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
+import gregtech.client.PipeThermalEffectsRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.client.renderer.entity.RenderDrone;
@@ -273,6 +274,12 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEDebugStructureWriter.EventHandler());
         MinecraftForge.EVENT_BUS.register(new GTWorkAreaRenderer());
+        final PipeThermalEffectsRenderer pipeThermalEffects = new PipeThermalEffectsRenderer();
+        MinecraftForge.EVENT_BUS.register(pipeThermalEffects);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(pipeThermalEffects);
+
         WorldOverlayRenderer.init();
         powerfailRenderer = new GTPowerfailRenderer();
         MinecraftForge.EVENT_BUS.register(powerfailRenderer);

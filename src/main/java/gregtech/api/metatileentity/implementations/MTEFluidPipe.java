@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -42,6 +42,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
+import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
@@ -70,11 +71,14 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.client.PipeThermalEffectsRenderer;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.config.Client;
 import gregtech.common.config.Other;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -123,6 +127,67 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
      * Bitmask for whether disable fluid input form each side.
      */
     public byte mDisableInput = 0;
+
+    /** Fluids above this temperature (K) burn on contact and give off heat haze. */
+    public static final int HEAT_DAMAGE_TEMPERATURE = 320;
+    /** Fluids below this temperature (K) freeze on contact and frost the pipe over. */
+    public static final int FROST_DAMAGE_TEMPERATURE = 260;
+    /** Fluids at or above this temperature (K) give the brightest glow. */
+    public static final int MAX_GLOW_TEMPERATURE = 4000;
+    /** Heat levels from {@link #HEAT_DAMAGE_TEMPERATURE} to {@link #MAX_GLOW_TEMPERATURE}. */
+    protected static final int HEAT_GLOW_LEVELS = 12;
+    /** Fluids at or above this temperature (K) make the pipe glow. */
+    public static final int GLOW_START_TEMPERATURE = 800;
+    /** Heat level of {@link #GLOW_START_TEMPERATURE}. */
+    private static final int GLOW_START_LEVEL = getHeatGlowLevel(GLOW_START_TEMPERATURE);
+    /** Glow colour from faintest to brightest: dull red, orange, then yellow-white. */
+    private static final short[][] HEAT_GLOW_COLORS = { { 150, 25, 8 }, { 225, 60, 12 }, { 255, 135, 30 },
+        { 255, 215, 130 } };
+    /** Tint for the pipe texture as it glows: {heat, red, green, blue, strength}, heat and strength in thousandths. */
+    private static final int[][] HEAT_TINT_STOPS = { { 364, 150, 35, 15, 450 }, { 550, 225, 80, 20, 500 },
+        { 1000, 255, 215, 130, 550 } };
+    /** Block light at the faintest and brightest glow. */
+    private static final int HEAT_LIGHT_MIN = 3, HEAT_LIGHT_MAX = 15;
+
+    /** Fluids at or below this temperature (K) give the heaviest frost. */
+    public static final int MIN_FROST_TEMPERATURE = 4;
+    /** Frost levels from {@link #FROST_DAMAGE_TEMPERATURE} to {@link #MIN_FROST_TEMPERATURE}. */
+    public static final int FROST_LEVELS = 4;
+    /** Tint for the pipe texture as it frosts over, and its strength at the lightest and heaviest frost. */
+    private static final short[] FROST_TINT_COLOR = { 215, 235, 255 };
+    private static final float FROST_TINT_MIN = 0.15F, FROST_TINT_MAX = 0.55F;
+
+    protected static final byte THERMAL_NONE = 0;
+    /** Updates (every 5 ticks) to wait before cooling or thawing, so intermittent flow doesn't flicker. */
+    private static final int THERMAL_HOLD_UPDATES = 8;
+    /** Updates the overheating warning stays up after the fluid leaves. */
+    private static final int OVERHEATING_HOLD_UPDATES = 20;
+    /**
+     * Levels per tick the pipe moves towards {@link #mThermalLevel}. Full glow takes 3s to heat up and 5s to cool;
+     * full frost takes 4s to form and 6s to thaw. As fluid moves along a line, this makes the change travel as a wave.
+     */
+    private static final float HEAT_UP_RATE = HEAT_GLOW_LEVELS / 60.0F, COOL_DOWN_RATE = HEAT_GLOW_LEVELS / 100.0F;
+    private static final float FREEZE_RATE = FROST_LEVELS / 80.0F, THAW_RATE = FROST_LEVELS / 120.0F;
+
+    /**
+     * Level the contents are taking the pipe towards: 1 to {@link #HEAT_GLOW_LEVELS} hot, -1 to -{@link #FROST_LEVELS}
+     * frosted, or {@link #THERMAL_NONE}. Synced to the client.
+     */
+    protected byte mThermalLevel = THERMAL_NONE;
+    private int mThermalHoldTimer = 0;
+    /** Current level, fading towards {@link #mThermalLevel}. Kept on both sides for damage and rendering. */
+    private float mShownThermal = 0F;
+    /** Client side: false until the first sync, which is shown without fading. */
+    private boolean mThermalSynced = false;
+    /** {@link #mShownThermal} rounded, used for the pipe texture and block light. */
+    protected byte mRenderedThermal = THERMAL_NONE;
+    /**
+     * Temperature that makes the pipe dangerous to touch, or null if safe. Kept while the pipe is still hot or frosted,
+     * since fluid only sits in a flowing pipe part of the time. Server side only.
+     */
+    private @Nullable Integer mContactHazardTemperature;
+    /** Updates left to keep showing the overheating warning. */
+    private int mOverheatingTimer = 0;
     private String mPrefixKey;
     private String materialKeyOverride;
     private boolean shouldSkipMaterialTooltip = false;
@@ -183,7 +248,10 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         boolean connected, boolean redstoneLevel) {
         List<ITexture> textures = new ArrayList<>();
 
-        textures.add(getBaseTexture(connected, colorIndex));
+        // Close the face down to a thinner neighbour's size, like a reducer
+        final float reducedTo = connected ? getThinnerNeighbourThickness(base, side) : 0;
+        textures.add(
+            reducedTo > 0 ? getBaseTexture(reducedTo, 1, true, colorIndex) : getBaseTexture(connected, colorIndex));
 
         if (mDisableInput != 0) {
             int borderMask = 0;
@@ -199,11 +267,32 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     }
 
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
-        return getBaseTexture(mThickNess, mPipeAmount, mMaterial.mIconSet, mMaterial.mRGBa, connected, colorIndex);
+        return getBaseTexture(mThickNess, mPipeAmount, connected, colorIndex);
+    }
+
+    /** Base texture as if this pipe were {@code thickness} thick and carried {@code pipeAmount} fluids. */
+    protected ITexture getBaseTexture(float thickness, int pipeAmount, boolean connected, int colorIndex) {
+        return getBaseTexture(
+            thickness,
+            pipeAmount,
+            mMaterial.mIconSet,
+            mMaterial.mRGBa,
+            connected,
+            colorIndex,
+            mRenderedThermal);
+    }
+
+    /** @return the thickness of the pipe on that side if it's thinner than this one, otherwise 0 */
+    private float getThinnerNeighbourThickness(IGregTechTileEntity base, ForgeDirection side) {
+        if (base == null || base.getWorld() == null) return 0;
+        if (!(base.getTileEntityAtSide(side) instanceof IGregTechTileEntity neighbour)
+            || !(neighbour.getMetaTileEntity() instanceof MetaPipeEntity neighbourPipe)) return 0;
+        final float theirs = neighbourPipe.getCollisionThickness();
+        return theirs < getCollisionThickness() - 0.01F ? theirs : 0;
     }
 
     protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, TextureSet textureSet, short[] rgba,
-        boolean connected, int colorIndex) {
+        boolean connected, int colorIndex, byte thermalLevel) {
         IIconContainer texture = textureSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()];
 
         if (!connected) {
@@ -226,7 +315,149 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
         rgba = Dyes.getModulation(colorIndex, rgba);
 
-        return TextureFactory.of(texture, rgba);
+        if (thermalLevel == THERMAL_NONE || !Client.render.renderFluidPipeThermalEffects) {
+            return TextureFactory.of(texture, rgba);
+        }
+        if (thermalLevel < THERMAL_NONE) return TextureFactory.of(texture, getFrostTint(rgba, thermalLevel));
+        // Hot but not glowing (e.g. steam) is left untinted; the heat haze shows it
+        if (getGlowFraction(thermalLevel) <= 0) return TextureFactory.of(texture, rgba);
+
+        // Glowing: tinted towards the glow colour; the pipe's own block light lights it up
+        return TextureFactory.of(texture, getHeatTint(rgba, getHeat(thermalLevel)));
+    }
+
+    /** @return 0 at the lowest heat level up to 1 at the highest */
+    private static float getHeat(byte thermalLevel) {
+        return (float) (Math.min(thermalLevel, HEAT_GLOW_LEVELS) - 1) / (HEAT_GLOW_LEVELS - 1);
+    }
+
+    /** @return block light given off at this level, 0 if not glowing */
+    protected static int getHeatLightLevel(byte thermalLevel) {
+        final float glow = getGlowFraction(thermalLevel);
+        if (glow <= 0) return 0;
+        return Math.round(HEAT_LIGHT_MIN + glow * (HEAT_LIGHT_MAX - HEAT_LIGHT_MIN));
+    }
+
+    /** @return glow strength from just above 0 (dull red) to 1 (yellow-white), or 0 if not hot enough to glow */
+    public static float getGlowFraction(float thermalLevel) {
+        final int start = GLOW_START_LEVEL;
+        return Math.max(0F, (Math.min(thermalLevel, HEAT_GLOW_LEVELS) - start + 1) / (HEAT_GLOW_LEVELS - start + 1));
+    }
+
+    /** Sets the pipe's block light from {@link #mRenderedThermal}. */
+    private void applyThermalLight() {
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null) base.setLightValue((byte) getHeatLightLevel(mRenderedThermal));
+    }
+
+    /** @param heat 0 to 1, see {@link #getHeat} */
+    private static short[] getHeatTint(short[] rgba, float heat) {
+        final int milli = Math.round(heat * 1000);
+        int index = 0;
+        while (index < HEAT_TINT_STOPS.length - 2 && milli > HEAT_TINT_STOPS[index + 1][0]) index++;
+        final int[] from = HEAT_TINT_STOPS[index], to = HEAT_TINT_STOPS[index + 1];
+        final float along = GTUtility.clamp(milli - from[0], 0, to[0] - from[0]) / (float) (to[0] - from[0]);
+        final float tint = (from[4] + (to[4] - from[4]) * along) / 1000.0F;
+        final short[] result = new short[] { 0, 0, 0, rgba[3] };
+        for (int i = 0; i < 3; i++) {
+            final float target = from[i + 1] + (to[i + 1] - from[i + 1]) * along;
+            result[i] = (short) Math.round(rgba[i] + (target - rgba[i]) * tint);
+        }
+        return result;
+    }
+
+    /** @return glow colour as {r, g, b} (0 to 255) for a glow from 0 to 1 */
+    private static float[] getGlowColorAt(float glow) {
+        final float position = glow * (HEAT_GLOW_COLORS.length - 1);
+        final int index = Math.min((int) position, HEAT_GLOW_COLORS.length - 2);
+        final float along = position - index;
+        final float[] result = new float[3];
+        for (int i = 0; i < 3; i++) {
+            result[i] = HEAT_GLOW_COLORS[index][i]
+                + (HEAT_GLOW_COLORS[index + 1][i] - HEAT_GLOW_COLORS[index][i]) * along;
+        }
+        return result;
+    }
+
+    /** @return glow colour as {r, g, b} (0 to 255) for a thermal level */
+    public static float[] getHeatGlowColor(float thermalLevel) {
+        final int start = GLOW_START_LEVEL;
+        final float level = GTUtility.clamp(thermalLevel, start, HEAT_GLOW_LEVELS);
+        return getGlowColorAt((level - start) / Math.max(1, HEAT_GLOW_LEVELS - start));
+    }
+
+    /** @return heat from 0 to 1, or 0 if not hot */
+    public static float getHeatFraction(float thermalLevel) {
+        if (thermalLevel <= THERMAL_NONE) return 0F;
+        return Math.max(0F, (Math.min(thermalLevel, HEAT_GLOW_LEVELS) - 1) / (HEAT_GLOW_LEVELS - 1));
+    }
+
+    /** @return frost from 0 (none) to {@link #FROST_LEVELS} (heaviest) */
+    public static float getFrostAmount(float thermalLevel) {
+        return thermalLevel >= THERMAL_NONE ? 0F : Math.min(-thermalLevel, FROST_LEVELS);
+    }
+
+    /** @see #mShownThermal */
+    public float getShownThermal() {
+        return mShownThermal;
+    }
+
+    /** @return whether the pipe is hot or frosted, or still fading in or out */
+    public boolean hasThermalEffect() {
+        return mThermalLevel != THERMAL_NONE || mShownThermal != 0F;
+    }
+
+    /**
+     * Moves {@link #mShownThermal} towards {@link #mThermalLevel} by {@code ticks} ticks. Going between hot and frosted
+     * passes through normal first. Redraws the pipe when the rounded level changes.
+     */
+    public void advanceThermalFade(int ticks) {
+        final float target = mThermalLevel;
+        float shown = mShownThermal;
+        if (shown == target) return;
+        if (target > shown) {
+            final boolean thawing = shown < 0;
+            final float step = (thawing ? THAW_RATE : HEAT_UP_RATE) * ticks;
+            shown = Math.min(shown + step, thawing ? Math.min(target, 0F) : target);
+        } else {
+            final boolean cooling = shown > 0;
+            final float step = (cooling ? COOL_DOWN_RATE : FREEZE_RATE) * ticks;
+            shown = Math.max(shown - step, cooling ? Math.max(target, 0F) : target);
+        }
+        mShownThermal = shown;
+
+        final byte rendered = (byte) Math.round(shown);
+        if (rendered == mRenderedThermal) return;
+        mRenderedThermal = rendered;
+        applyThermalLight();
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null && base.isClientSide() && base.getWorld() != null) {
+            final int x = base.getXCoord(), y = base.getYCoord(), z = base.getZCoord();
+            base.getWorld()
+                .markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+        }
+    }
+
+    /** Jumps straight to {@link #mThermalLevel} without fading. */
+    private void snapThermalFade() {
+        mShownThermal = mThermalLevel;
+        mRenderedThermal = mThermalLevel;
+    }
+
+    /** Pulls the pipe colour towards icy blue-white, more so the heavier the frost. */
+    private static short[] getFrostTint(short[] rgba, byte thermalLevel) {
+        final float frost = (float) (getFrostStage(thermalLevel) - 1) / (FROST_LEVELS - 1);
+        final float tint = FROST_TINT_MIN + frost * (FROST_TINT_MAX - FROST_TINT_MIN);
+        final short[] result = new short[] { 0, 0, 0, rgba[3] };
+        for (int i = 0; i < 3; i++) {
+            result[i] = (short) Math.round(rgba[i] + (FROST_TINT_COLOR[i] - rgba[i]) * tint);
+        }
+        return result;
+    }
+
+    /** @return frost stage from 1 to {@link #FROST_LEVELS}, or 0 if not frosted */
+    public static int getFrostStage(byte thermalLevel) {
+        return thermalLevel >= THERMAL_NONE ? 0 : Math.min(-thermalLevel, FROST_LEVELS);
     }
 
     protected static ITexture getRestrictorTexture(int borderMask) {
@@ -242,6 +473,29 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     @Override
     public byte getUpdateData() {
         return mDisableInput;
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeByte(mThermalLevel);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        mThermalLevel = buffer.readByte();
+        // Show the first sync as is; later changes fade
+        if (!mThermalSynced) {
+            mThermalSynced = true;
+            snapThermalFade();
+        }
+        applyThermalLight();
+        final IGregTechTileEntity base = getBaseMetaTileEntity();
+        // The renderer fades tracked pipes and drops them once back to normal
+        if (base != null && base.getWorld() != null && base.isClientSide() && hasThermalEffect()) {
+            PipeThermalEffectsRenderer.setTracked(base, true);
+        }
     }
 
     @Override
@@ -269,6 +523,9 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         for (int i = 0; i < mPipeAmount; i++) if (mFluids[i] != null)
             aNBT.setTag("mFluid" + (i == 0 ? "" : i), mFluids[i].writeToNBT(new NBTTagCompound()));
         aNBT.setByte("mLastReceivedFrom", mLastReceivedFrom);
+        // Saved so the pipe's light matches the chunk's saved light on load
+        aNBT.setByte("mThermalLevel", mThermalLevel);
+        aNBT.setFloat("mShownThermal", mShownThermal);
         if (GTMod.proxy.gt6Pipe) {
             aNBT.setByte("mConnections", mConnections);
             aNBT.setByte("mDisableInput", mDisableInput);
@@ -280,32 +537,131 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         for (int i = 0; i < mPipeAmount; i++)
             mFluids[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid" + (i == 0 ? "" : i)));
         mLastReceivedFrom = aNBT.getByte("mLastReceivedFrom");
+        mThermalLevel = aNBT.getByte("mThermalLevel");
+        mShownThermal = aNBT.hasKey("mShownThermal") ? aNBT.getFloat("mShownThermal") : mThermalLevel;
+        mRenderedThermal = (byte) Math.round(mShownThermal);
+        applyThermalLight();
         if (GTMod.proxy.gt6Pipe) {
             mConnections = aNBT.getByte("mConnections");
             mDisableInput = aNBT.getByte("mDisableInput");
         }
     }
 
-    @Override
-    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity aEntity) {
-        if ((((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections & -128) == 0
-            && aEntity instanceof EntityLivingBase) {
-            for (FluidStack tFluid : mFluids) {
-                if (tFluid != null) {
-                    final int tTemperature = tFluid.getFluid()
-                        .getTemperature(tFluid);
-                    if (tTemperature > 320
-                        && !isCoverOnSide((BaseMetaPipeEntity) getBaseMetaTileEntity(), (EntityLivingBase) aEntity)) {
-                        GTUtility.applyHeatDamage((EntityLivingBase) aEntity, (tTemperature - 300) / 50.0F);
-                        break;
-                    } else if (tTemperature < 260
-                        && !isCoverOnSide((BaseMetaPipeEntity) getBaseMetaTileEntity(), (EntityLivingBase) aEntity)) {
-                            GTUtility.applyFrostDamage((EntityLivingBase) aEntity, (270 - tTemperature) / 25.0F);
-                            break;
-                        }
-                }
-            }
+    /**
+     * Burns or freezes anything touching the pipe itself. {@code onEntityCollidedWithBlock} isn't used as it fires for
+     * anything in the block space (thin pipes hurt from a distance) and never for anything on the outside of it.
+     */
+    private void hurtTouchingEntities(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (!canHurtOnContact()) return;
+        final Integer temperature = mContactHazardTemperature;
+        if (temperature == null) return;
+        // Scales with how far the pipe has faded in
+        final float damage = getContactDamage(temperature) * getContactHazardScale(temperature);
+        if (damage <= 0) return;
+
+        final int x = aBaseMetaTileEntity.getXCoord(), y = aBaseMetaTileEntity.getYCoord(),
+            z = aBaseMetaTileEntity.getZCoord();
+        final List<EntityLivingBase> nearby = aBaseMetaTileEntity.getWorld()
+            .getEntitiesWithinAABB(
+                EntityLivingBase.class,
+                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1)
+                    .expand(CONTACT_MARGIN, CONTACT_MARGIN, CONTACT_MARGIN));
+        if (nearby.isEmpty()) return;
+
+        final List<AxisAlignedBB> shape = getContactShape(x, y, z);
+
+        final boolean hot = temperature > HEAT_DAMAGE_TEMPERATURE;
+        for (EntityLivingBase living : nearby) {
+            if (!isTouching(living.boundingBox, shape) || isBehindCover(aBaseMetaTileEntity, living.boundingBox))
+                continue;
+            if (hot) GTUtility.applyHeatDamage(living, damage);
+            else GTUtility.applyFrostDamage(living, damage);
         }
+    }
+
+    /** @return whether a cover sits between the pipe and this entity */
+    private static boolean isBehindCover(IGregTechTileEntity base, AxisAlignedBB entityBox) {
+        final int x = base.getXCoord(), y = base.getYCoord(), z = base.getZCoord();
+        final double eps = 1.0E-3D;
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (!base.hasCoverAtSide(side)) continue;
+            final boolean outside = switch (side) {
+                case DOWN -> entityBox.maxY <= y + eps;
+                case UP -> entityBox.minY >= y + 1 - eps;
+                case NORTH -> entityBox.maxZ <= z + eps;
+                case SOUTH -> entityBox.minZ >= z + 1 - eps;
+                case WEST -> entityBox.maxX <= x + eps;
+                case EAST -> entityBox.minX >= x + 1 - eps;
+                default -> false;
+            };
+            if (outside) return true;
+        }
+        return false;
+    }
+
+    /** Collision leaves entities exactly flush, which strict AABB intersection doesn't count as touching. */
+    private static final double CONTACT_MARGIN = 1.0E-3D;
+
+    private static boolean isTouching(AxisAlignedBB entityBox, List<AxisAlignedBB> shape) {
+        for (AxisAlignedBB part : shape) {
+            if (part.expand(CONTACT_MARGIN, CONTACT_MARGIN, CONTACT_MARGIN)
+                .intersectsWith(entityBox)) return true;
+        }
+        return false;
+    }
+
+    /** The pipe's visible shape: its centre plus an arm per connection (the collision box fills in bends). */
+    private List<AxisAlignedBB> getContactShape(int x, int y, int z) {
+        final List<AxisAlignedBB> shape = new ArrayList<>(7);
+        final double thickness = Math.min(1.0D, getCollisionThickness());
+        final double lo = (1.0D - thickness) / 2.0D, hi = 1.0D - lo;
+        shape.add(AxisAlignedBB.getBoundingBox(x + lo, y + lo, z + lo, x + hi, y + hi, z + hi));
+        if (thickness >= 1.0D) return shape;
+        final byte connections = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if ((connections & side.flag) == 0) continue;
+            shape.add(
+                AxisAlignedBB.getBoundingBox(
+                    x + (side.offsetX > 0 ? hi : side.offsetX < 0 ? 0 : lo),
+                    y + (side.offsetY > 0 ? hi : side.offsetY < 0 ? 0 : lo),
+                    z + (side.offsetZ > 0 ? hi : side.offsetZ < 0 ? 0 : lo),
+                    x + (side.offsetX > 0 ? 1 : side.offsetX < 0 ? lo : hi),
+                    y + (side.offsetY > 0 ? 1 : side.offsetY < 0 ? lo : hi),
+                    z + (side.offsetZ > 0 ? 1 : side.offsetZ < 0 ? lo : hi)));
+        }
+        return shape;
+    }
+
+    /** Updates {@link #mContactHazardTemperature} from the contents, clearing it once the pipe is back to normal. */
+    private void updateContactHazard() {
+        final Integer current = getContactHazardTemperature();
+        if (current != null) mContactHazardTemperature = current;
+        else if (!hasThermalEffect()) mContactHazardTemperature = null;
+    }
+
+    /** @return how far the pipe has faded in towards this temperature, from 0 to 1 */
+    private float getContactHazardScale(int temperature) {
+        final float full = temperature > HEAT_DAMAGE_TEMPERATURE ? getHeatGlowLevel(temperature)
+            : getFrostLevel(temperature);
+        return GTUtility.clamp(mShownThermal / full, 0F, 1F);
+    }
+
+    /** Pipes boxed in (e.g. by a frame) can't be touched. */
+    private boolean canHurtOnContact() {
+        return (((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections & -128) == 0;
+    }
+
+    /** @return the contents' temperature if touching the pipe would hurt, otherwise null */
+    private @Nullable Integer getContactHazardTemperature() {
+        final Integer temperature = getContentsTemperature();
+        return temperature != null && getContactDamage(temperature) > 0 ? temperature : null;
+    }
+
+    /** @return contact damage at this temperature before armour and difficulty scaling, 0 if safe */
+    public static float getContactDamage(int temperature) {
+        if (temperature > HEAT_DAMAGE_TEMPERATURE) return (temperature - 300) / 50.0F;
+        if (temperature < FROST_DAMAGE_TEMPERATURE) return (270 - temperature) / 25.0F;
+        return 0;
     }
 
     @Override
@@ -317,6 +673,15 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aTick % 5 == 0) {
+            updateThermalLevel(aBaseMetaTileEntity);
+            advanceThermalFade(5);
+            updateContactHazard();
+            if (isOverheating()) mOverheatingTimer = OVERHEATING_HOLD_UPDATES;
+            else if (mOverheatingTimer > 0) mOverheatingTimer--;
+            hurtTouchingEntities(aBaseMetaTileEntity);
+            // Every update, so a pipe swapped in for a hot one doesn't keep its light
+            applyThermalLight();
+
             mLastReceivedFrom &= 63;
             if (mLastReceivedFrom == 63) {
                 mLastReceivedFrom = 0;
@@ -340,6 +705,64 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
             oLastReceivedFrom = mLastReceivedFrom;
         }
+    }
+
+    /**
+     * Sets {@link #mThermalLevel} from the contents. Hotter or colder applies straight away; cooling or thawing waits
+     * {@link #THERMAL_HOLD_UPDATES} updates.
+     */
+    private void updateThermalLevel(IGregTechTileEntity aBaseMetaTileEntity) {
+        final byte current = getThermalLevelOfContents();
+
+        if (current == mThermalLevel) {
+            if (current != THERMAL_NONE) mThermalHoldTimer = THERMAL_HOLD_UPDATES;
+            return;
+        }
+
+        final boolean immediate = mThermalLevel == THERMAL_NONE || (current > THERMAL_NONE && current > mThermalLevel)
+            || (current < THERMAL_NONE && mThermalLevel < THERMAL_NONE && current < mThermalLevel);
+        if (!immediate && --mThermalHoldTimer > 0) return;
+
+        mThermalLevel = current;
+        mThermalHoldTimer = current == THERMAL_NONE ? 0 : THERMAL_HOLD_UPDATES;
+        aBaseMetaTileEntity.issueTileUpdate();
+    }
+
+    /** @return the thermal level for {@link #getContentsTemperature()} */
+    private byte getThermalLevelOfContents() {
+        final Integer temperature = getContentsTemperature();
+        if (temperature == null) return THERMAL_NONE;
+        if (temperature > HEAT_DAMAGE_TEMPERATURE) return getHeatGlowLevel(temperature);
+        if (temperature < FROST_DAMAGE_TEMPERATURE) return getFrostLevel(temperature);
+        return THERMAL_NONE;
+    }
+
+    /** @return the average temperature of the fluids in the pipe, each counted once, or null if empty */
+    private @Nullable Integer getContentsTemperature() {
+        long total = 0;
+        int count = 0;
+        for (FluidStack tFluid : mFluids) {
+            if (tFluid == null || tFluid.amount <= 0 || tFluid.getFluid() == null) continue;
+            total += tFluid.getFluid()
+                .getTemperature(tFluid);
+            count++;
+        }
+        return count == 0 ? null : (int) Math.round((double) total / count);
+    }
+
+    /** @return frost level, -1 to -{@link #FROST_LEVELS}, on a log scale below {@link #FROST_DAMAGE_TEMPERATURE} */
+    protected static byte getFrostLevel(int temperature) {
+        final double fraction = Math.log((double) FROST_DAMAGE_TEMPERATURE / Math.max(1, temperature))
+            / Math.log((double) FROST_DAMAGE_TEMPERATURE / MIN_FROST_TEMPERATURE);
+        return (byte) -(1 + GTUtility.clamp((int) (fraction * FROST_LEVELS), 0, FROST_LEVELS - 1));
+    }
+
+    /** @return heat level, 1 to {@link #HEAT_GLOW_LEVELS}, on a log scale above {@link #HEAT_DAMAGE_TEMPERATURE} */
+    protected static byte getHeatGlowLevel(int temperature) {
+        final int levels = HEAT_GLOW_LEVELS;
+        final double fraction = Math.log((double) temperature / HEAT_DAMAGE_TEMPERATURE)
+            / Math.log((double) MAX_GLOW_TEMPERATURE / HEAT_DAMAGE_TEMPERATURE);
+        return (byte) (1 + GTUtility.clamp((int) (fraction * levels), 0, levels - 1));
     }
 
     private boolean checkEnvironment(int index, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -368,7 +791,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
                 .isGaseous(tFluid)) {
                 tFluid.amount -= 5;
                 sendSound((byte) 9);
-                if (tTemperature > 320) {
+                if (tTemperature > HEAT_DAMAGE_TEMPERATURE) {
                     for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
                         .getEntitiesWithinAABB(
                             EntityLivingBase.class,
@@ -381,7 +804,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
                                 getBaseMetaTileEntity().getZCoord() + 3))) {
                         GTUtility.applyHeatDamage(tLiving, (tTemperature - 300) / 25.0F);
                     }
-                } else if (tTemperature < 260) {
+                } else if (tTemperature < FROST_DAMAGE_TEMPERATURE) {
                     for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
                         .getEntitiesWithinAABB(
                             EntityLivingBase.class,
@@ -1017,6 +1440,43 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             currenttip.add(
                 StatCollector.translateToLocal("GT5U.item.pipe.amount") + ": " + EnumChatFormatting.AQUA + mPipeAmount);
         }
+
+        // Overheating takes priority over the contact warning
+        final NBTTagCompound tag = accessor.getNBTData();
+        if (tag != null && tag.getBoolean(WAILA_OVERHEATING)) {
+            currenttip
+                .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.item.pipe.hazard.overheating"));
+        } else if (tag != null && tag.hasKey(WAILA_HAZARD_TEMPERATURE)) {
+            final int temperature = tag.getInteger(WAILA_HAZARD_TEMPERATURE);
+            final boolean hot = temperature > HEAT_DAMAGE_TEMPERATURE;
+            currenttip.add(
+                (hot ? EnumChatFormatting.RED : EnumChatFormatting.AQUA) + StatCollector
+                    .translateToLocal(hot ? "GT5U.item.pipe.hazard.burn" : "GT5U.item.pipe.hazard.freeze"));
+        }
+    }
+
+    private static final String WAILA_HAZARD_TEMPERATURE = "contactHazardTemperature";
+    private static final String WAILA_OVERHEATING = "overheating";
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        final Integer temperature = mContactHazardTemperature;
+        if (temperature != null && canHurtOnContact() && getContactHazardScale(temperature) > 0) {
+            tag.setInteger(WAILA_HAZARD_TEMPERATURE, temperature);
+        }
+        if (mOverheatingTimer > 0) tag.setBoolean(WAILA_OVERHEATING, true);
+    }
+
+    /** @return whether any fluid is hotter than the pipe's heat resistance */
+    private boolean isOverheating() {
+        for (FluidStack tFluid : mFluids) {
+            if (tFluid == null || tFluid.amount <= 0 || tFluid.getFluid() == null) continue;
+            if (tFluid.getFluid()
+                .getTemperature(tFluid) > mHeatResistance) return true;
+        }
+        return false;
     }
 
     private static EnumMap<Border, ForgeDirection> borderMap(ForgeDirection topSide, ForgeDirection bottomSide,
