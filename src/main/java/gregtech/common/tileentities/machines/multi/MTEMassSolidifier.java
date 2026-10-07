@@ -75,7 +75,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     private static final int VERTICAL_OFFSET = 5;
     private static final int DEPTH_OFFSET = 0;
 
-    private float speedup = 1;
+    private double speedup = 1;
     private int runningTickCounter = 0;
     private int glassTier = -1;
     private final static int MAX_CASINGS = 77;
@@ -155,7 +155,6 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
-            .addGlassEnergyLimitInfo()
             .addInfo(
                 "Can use " + EnumChatFormatting.YELLOW
                     + "Solidifier Hatches"
@@ -163,6 +162,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                     + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginStructureBlock(5, 6, 9, false)
+            .addEnergyHatchGlassTier()
             .addController("Front bottom center")
             .addCasing(MIN_CASINGS + "-73", "Solidifier Casing", false)
             .addCasing("42", "Any Tiered Glass", true)
@@ -184,13 +184,13 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setFloat("speedup", speedup);
+        aNBT.setDouble("speedup", speedup);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("speedup")) speedup = aNBT.getFloat("speedup");
+        if (aNBT.hasKey("speedup")) speedup = aNBT.getDouble("speedup");
     }
 
     @Override
@@ -198,7 +198,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         runningTickCounter++;
         if (runningTickCounter % 10 == 0 && speedup < 3) {
             runningTickCounter = 0;
-            speedup += 0.025F;
+            speedup += 0.025D;
         }
         return super.onRunningTick(aStack);
     }
@@ -286,7 +286,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                 return false;
             }
         }.setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.8F)
+            .setEuModifier(0.8D)
             .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
@@ -323,7 +323,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     }
 
     public double getSpeedBonus() {
-        return 1F / speedup;
+        return 1.0D / speedup;
     }
 
     @Override
@@ -354,7 +354,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        tag.setFloat("speedup", speedup);
+        tag.setFloat("speedup", (float) speedup);
     }
 
     @Override
