@@ -40,9 +40,9 @@ public class FuelBackend extends RecipeMapBackend {
 
     @Override
     public GTRecipe compileRecipe(GTRecipe recipe) {
-        super.compileRecipe(recipe);
-        addFuelToFluidInputIndex(recipe);
-        return recipe;
+        GTRecipe compiled = super.compileRecipe(recipe);
+        if (compiled == recipe) addFuelToFluidInputIndex(recipe);
+        return compiled;
     }
 
     @Override

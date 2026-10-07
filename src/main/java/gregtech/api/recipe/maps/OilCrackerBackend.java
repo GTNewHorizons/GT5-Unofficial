@@ -25,9 +25,9 @@ public class OilCrackerBackend extends RecipeMapBackend {
 
     @Override
     public GTRecipe compileRecipe(GTRecipe recipe) {
-        super.compileRecipe(recipe);
-        addRecipeCatalystFluid(recipe);
-        return recipe;
+        GTRecipe compiled = super.compileRecipe(recipe);
+        if (compiled == recipe) addRecipeCatalystFluid(recipe);
+        return compiled;
     }
 
     @Override
