@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,6 +31,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -59,6 +62,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -67,11 +71,11 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
-    protected final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
-    protected final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
-    protected final double EFFICIENCY_CEILING = 1.5D;
-    protected final int HEATING_TIMER = TickTime.SECOND * 10;
+    private static final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
+    private static final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
+    private static final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
+    private static final double EFFICIENCY_CEILING = 1.5D;
+    private static final int HEATING_TIMER = TickTime.SECOND * 10;
 
     private long tEff;
     private int heatingTicks;
@@ -155,31 +159,17 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Chemical Engine, UCFE")
-            .addInfo("BURNING BURNING BURNING")
-            .addInfo("Use combustible liquid to generate power")
-            .addInfo("You need to supply Combustion Promoter to keep it running")
-            .addInfo("It will consume all the fuel and combustion promoter in the hatch every second")
-            .addInfo("Energy output to the dynamo will be distributed over the next second")
-            .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop")
-            .addInfo(
-                "If the amount of energy to be produced is higher "
-                    + "than the dynamo hatch can handle then all produced energy will void")
-            .addInfo("When turned on, there is a 10-second period where the machine will not stop")
-            .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed")
-            .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
-            .addInfo("The higher the amount of promoter, the higher the efficiency")
-            .addInfo(
-                "Follows an exponential curve exp(-C/(p/x))*1.5, "
-                    + "where x is the amount of fuel in liters, p is the amount of promoter in liters")
-            .addInfo("and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
-            .addInfo("It creates sqrt(Current Output Power) pollution every second")
-            .addInfo(
-                "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
-                    + EnumChatFormatting.YELLOW
-                    + "without outputting energy")
-            .addInfo("The efficiency is up to 150%")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "universal-chemical-fuel-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("efficiency_ceiling", formatNumber(EFFICIENCY_CEILING, new FormatOptions().setDecimalPlaces(1)))
+                    .put("gas_coefficient", formatNumber(GAS_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+                    .put("rocket_coefficient", formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+                    .build())
             .addSupportAny()
+            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 13, true)
             .addController("Front center, 3rd layer")
             .addCasing("100-115", "Stable Titanium Machine Casing", false)
@@ -194,6 +184,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             .addInputHatch("1+", "Any machine casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "TimTems")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

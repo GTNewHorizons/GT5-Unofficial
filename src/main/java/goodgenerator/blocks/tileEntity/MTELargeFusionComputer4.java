@@ -26,7 +26,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
@@ -35,6 +34,8 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
+
+    private static final int MAX_ENERGY_HATCHES = 32;
 
     public MTELargeFusionComputer4(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
@@ -50,11 +51,14 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fusion_reactor"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "large-fusion-computer-mk4"),
-                ImmutableMap.of(
-                    "power", formatNumber(getSingleHatchPower()),
-                    "capacity", formatNumber(capableStartupCanonical() / 32 / M),
-                    "tier", GTUtility.getColoredTierNameFromTier((byte) tier())))
+                new ResourceLocation("gregtech", "large-fusion-computer"),
+                ImmutableMap.<String, Object>builder()
+                    .put("power", formatNumber(getSingleHatchPower()))
+                    .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
+                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
+                    .put("base_para", formatNumber(getMaxPara()))
+                    .put("per_tier_para", formatNumber(getMaxPara()))
+                    .build())
             .addSupportAny()
             .beginStructureBlock(47, 7, 47, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_center_4th_layer"))

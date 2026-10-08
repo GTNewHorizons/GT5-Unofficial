@@ -30,6 +30,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -45,11 +46,13 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -71,6 +74,17 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     private static final IIconContainer frontFaceActive = new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE5");
     private static final IIconContainer frontFace = new CustomIcon("iconsets/Grinder/GRINDER5");
+    private static final IIconContainer[] faceOverlay = new IIconContainer[9];
+    private static final IIconContainer[] faceOverlayActive = new IIconContainer[9];
+
+    static {
+        for (int i = 0; i < 9; i++) {
+            faceOverlay[i] = new CustomIcon("iconsets/Grinder/GRINDER" + (i + 1));
+            faceOverlayActive[i] = new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE" + (i + 1));
+        }
+    }
+
+    protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
 
     private final ArrayList<MTEHatchMillingBalls> mMillingBallBuses = new ArrayList<>();
     private static final DamageSource mIsaMillDamageSource = new DamageSource("gtpp.grinder").setDamageBypassesArmor();
@@ -230,6 +244,44 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    private void updateFaceOverlay() {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (tile == null || tile.isServerSide()) return;
+
+        GTUtilityClient.setTurbineOverlay(
+            tile.getWorld(),
+            tile.getXCoord(),
+            tile.getYCoord(),
+            tile.getZCoord(),
+            getExtendedFacing(),
+            tile.isActive() ? faceOverlayActive : faceOverlay,
+            overlayTickets);
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        updateFaceOverlay();
+    }
+
+    @Override
+    public void onTextureUpdate() {
+        updateFaceOverlay();
+    }
+
+    @Override
+    public void setExtendedFacing(ExtendedFacing newFacing) {
+        boolean changed = newFacing != getExtendedFacing();
+        super.setExtendedFacing(newFacing);
+        if (changed) updateFaceOverlay();
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
     private final ArrayList<BlockPos> mFrontBlockPosCache = new ArrayList<>();

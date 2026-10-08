@@ -2,8 +2,6 @@ package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.NW;
-import static gregtech.api.util.GTLanguageManager.FACES;
-import static gregtech.api.util.GTLanguageManager.getTranslation;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.ArrayList;
@@ -573,6 +571,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
+    // Indexed by ForgeDirection ordinal
+    private static final String[] FACES = { "gt.lang.face.bottom", "gt.lang.face.top", "gt.lang.face.left",
+        "gt.lang.face.front", "gt.lang.face.right", "gt.lang.face.back", "gt.lang.face.none" };
+
     /**
      * Add installed cover information, generally called from ItemBlock
      *
@@ -594,7 +596,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 aList.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.interface.coverTabs.cover_on",
-                        getTranslation(FACES[sideValue]),
+                        StatCollector.translateToLocal(FACES[sideValue]),
                         coverStack.getDisplayName()));
             }
         }

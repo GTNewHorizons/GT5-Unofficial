@@ -3,13 +3,18 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.a
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
+
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -25,7 +30,11 @@ import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAdvFusionMk4 extends MTEFusionComputer {
+
+    private static final int MAX_ENERGY_HATCHES = 16;
+    private static final int HATCH_POWER_DIVISOR = 16;
 
     public MTEAdvFusionMk4(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -43,12 +52,16 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Fusion Reactor")
-            .addInfo("HARNESSING THE POWER OF A BLUE GIANT")
-            .addInfo("§b131,072§7 EU/t and §b320M§7 EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .addInfo("Performs 4/4 overclocks")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "fusion-computer"),
+                ImmutableMap.<String, Object>builder()
+                    .put("power", formatNumber(GTValues.V[tier()] / HATCH_POWER_DIVISOR))
+                    .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
+                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
+                    .build())
+            .addSupportAny()
             .beginStructureBlock(15, 3, 15, false)
             .addController("Middle center, 2nd layer")
             .addCasing("79-123", "Fusion Machine Casing Mk-III", false)
@@ -57,6 +70,7 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
             .addInputHatch("1+", "Specific top or bottom casings on each side", 1)
             .addOutputHatch("1+", "Specific middle casings on each side", 3)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
