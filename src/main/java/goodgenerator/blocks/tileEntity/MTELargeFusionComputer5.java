@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import bartworks.common.loaders.ItemRegistry;
-import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputerPP;
+import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
@@ -17,14 +17,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.AdvancedFusionOverclockDescriber;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
+public class MTELargeFusionComputer5 extends MTELargeFusionComputer {
 
     public MTELargeFusionComputer5(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
@@ -32,6 +34,11 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
 
     public MTELargeFusionComputer5(String name) {
         super(name);
+    }
+
+    @Override
+    protected OverclockDescriber createOverclockDescriber() {
+        return new AdvancedFusionOverclockDescriber((byte) tier(), capableStartupCanonical());
     }
 
     @Override
