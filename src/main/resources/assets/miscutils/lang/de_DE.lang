@@ -92,9 +92,7 @@ item.itemUltimetShaft.name=Welle aus Ultimet
 
 
 //Misc Items
-item.itemPLACEHOLDER_Circuit.name=Quark-Manipulator (UV)
 item.itemPlateEnrichedSoularium.name=Platte aus angereichertem Soularium
-item.itemHeliumBlob.name=Geheimnisvolle Wasserstoffsubstanz
 item.itemAlkalusDisk.name=Alkalus-Schallplatte
 
 //Misc Blocks
@@ -116,13 +114,11 @@ item.SulfurDioxide.name=Hochwertige Schwefeldioxidzelle
 item.RaisinJuice.name=Rosinensaftzelle
 
 //Resources
-item.itemStickyRubber.name=Gumlet aus klebrigem Gummi
 item.itemCoalCoke.name=Verkokste Kohle
 item.itemHydrogenBlob.name=Mysteriöses Wasserstofftröpfchen
 item.itemHeliumBlob.name=Mysteriöse Wasserstoffsubstanz
 
 //Normal Items
-item.itemAlkalusDisk.name=Alkalus-Schallplatte
 item.itemSimpleFiremaker.name=Einfache Zündhilfe
 item.itemFiber.name=Pflanzenfaser
 item.itemRope.name=Tau
@@ -1671,19 +1667,16 @@ item.rfEUBattery.name=Universelle Ladbare Batterie
 item.personalCloakingDevice.name=§9Persönliches Drapiergerät§7
 item.personalHealingDevice.name=§9Persönliche Helungsnanobooster§r
 item.SlowBuildingRing.name=§eLangsamer Bau-Ring§7
-item.itemStaballoyPickaxe.name=Tunnelgräber
-item.itemStaballoyAxe.name=Baumfäller
-item.itemSandstoneHammer.name=Bruchsteinbrecher
-item.itemBufferCore.name=Pufferkern [ULV].
-item.itemBufferCore.name=Pufferkern [LV].
-item.itemBufferCore.name=Pufferkern [MV].
-item.itemBufferCore.name=Pufferkern [HV].
-item.itemBufferCore.name=Pufferkern [EV].
-item.itemBufferCore.name=Pufferkern [IV].
-item.itemBufferCore.name=Pufferkern [LuV].
-item.itemBufferCore.name=Pufferkern [ZPM].
-item.itemBufferCore.name=Pufferkern [UV].
-item.itemBufferCore.name=Pufferkern [MAX].
+item.itemBufferCore1.name=Pufferkern [ULV].
+item.itemBufferCore2.name=Pufferkern [LV].
+item.itemBufferCore3.name=Pufferkern [MV].
+item.itemBufferCore4.name=Pufferkern [HV].
+item.itemBufferCore5.name=Pufferkern [EV].
+item.itemBufferCore6.name=Pufferkern [IV].
+item.itemBufferCore7.name=Pufferkern [LuV].
+item.itemBufferCore8.name=Pufferkern [ZPM].
+item.itemBufferCore9.name=Pufferkern [UV].
+item.itemBufferCore10.name=Pufferkern [MAX].
 item.itemPLACEHOLDER_Circuit.name=Quarks Manipulator (UV)
 item.itembookgt.name=§oThermal-Boiler-Anleitung
 
@@ -1882,7 +1875,6 @@ tile.blockBlackGate.name=Witherkäfig
 tile.blockTankXpConverter.name=Erfahrungswandler(XP)
 
 //Everglades Blocks
-tile.fluidSludge.0.name=Stehendes Abwasser
 tile.blockDarkWorldPortal.name=Portalstein für die Dunkle Welt
 tile.blockDarkWorldGround.name=Grundstein der Dunklen Welt
 tile.blockDarkWorldGround2.name=Grundstein der Dunklen Welt
