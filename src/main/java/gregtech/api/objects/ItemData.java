@@ -33,6 +33,8 @@ public class ItemData {
     public final MaterialStack[] mByProducts;
     public final boolean hasExplicitComposition;
     private final String oreDictName;
+    /// The prefix-and-material name, built on first use since recipe matching reads it for every input.
+    private String pairName;
 
     public ItemData(OrePrefixes prefix, Material material) {
         this(prefix, material, null);
@@ -211,6 +213,7 @@ public class ItemData {
     public String toString() {
         if (oreDictName != null) return oreDictName;
         if (mPrefix == null || mMaterial == null || mMaterial.mMaterial == null) return "";
-        return mPrefix.getName() + MaterialUtils.internalName(mMaterial.mMaterial);
+        if (pairName == null) pairName = mPrefix.getName() + MaterialUtils.internalName(mMaterial.mMaterial);
+        return pairName;
     }
 }
