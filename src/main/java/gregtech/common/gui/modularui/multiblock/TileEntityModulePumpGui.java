@@ -41,7 +41,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
 
     public static final int EXPECTED_PUMPING_SLOTS = 40;
     // properly needs to use GenericListSync
-    private final List<Integer> indexQueue = new CopyOnWriteArrayList<>();
+    private final List<IndexGasMapping> indexQueue = new CopyOnWriteArrayList<>();
 
     public TileEntityModulePumpGui(TileEntityModulePump multiblock) {
         super(multiblock);
@@ -66,7 +66,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                 (p_syncManager, syncHandler) -> getSpacePumpUtilityPanel(parent, syncManager)));
     }
 
-    public List<Integer> getIndexQueue() {
+    public List<IndexGasMapping> getIndexQueue() {
         return indexQueue;
     }
 
@@ -146,42 +146,44 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             while (gasDelta > 1) {
                 // stack null
                 gasDelta--;
-                rowFluids.add(createFluidUtilityButton(syncManager, index, null));
+                rowFluids.add(createFluidUtilityButton(syncManager, index, null, 0, 0));
                 index++;
             }
             gas = planetGasPair.getRight();
-            rowFluids.add(createFluidUtilityButton(syncManager, index, fluid));
+            rowFluids.add(createFluidUtilityButton(syncManager, index, fluid, planet, gas));
             index++;
         }
         grid.row(rowFluids);
 
-        // grid.key('F', idx -> allFluids[idx]);
         return grid.coverChildren()
             .minElementMargin(1, 2);
     }
 
-    private ButtonWidget<?> createFluidUtilityButton(PanelSyncManager syncManager, int i, FluidStack fluid) {
+    private ButtonWidget<?> createFluidUtilityButton(PanelSyncManager syncManager, int i, FluidStack fluid, int planet,
+        int gas) {
 
         if (fluid == null) {
             return new ButtonWidget<>();
         }
 
+        var mapping = new IndexGasMapping(i, planet, gas);
+
         return new ButtonWidget<>()
-            .overlay(createButtonOverlay(syncManager, i, GTUtility.getFluidDisplayStack(fluid.getFluid())))
+            .overlay(createButtonOverlay(syncManager, mapping, GTUtility.getFluidDisplayStack(fluid.getFluid())))
             .tooltipBuilder(
                 t -> t.addLine(IKey.str(EnumChatFormatting.RED + fluid.getLocalizedName()))
-                    .addLine(IKey.lang("tt.spacepump.basicrate", fluid.amount))
-                    .addLine(IKey.lang("tt.spacepump.effectiverate", fluid.amount)))
+                    .addLine(IKey.lang("tt.spacepump.rate", fluid.amount))
+                    .addLine(IKey.lang("tt.spacepump.ratemax", fluid.amount * multiblock.getMaxParallelRecipes())))
             .onMousePressed(_ -> {
                 if (getIndexQueue().size() >= multiblock.getParallelRecipes()) {
                     getIndexQueue().removeFirst();
                 }
-                getIndexQueue().add(i);
+                getIndexQueue().add(mapping);
                 return true;
             });
     }
 
-    private IDrawable createButtonOverlay(PanelSyncManager syncManager, int i, ItemStack fluid) {
+    private IDrawable createButtonOverlay(PanelSyncManager syncManager, IndexGasMapping i, ItemStack fluid) {
         return new DynamicDrawable(() -> {
             if (getIndexQueue().contains(i)) {
                 return new DrawableStack(
@@ -222,15 +224,23 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
     }
 
     private ButtonWidget<?> createQueueButton(int i) {
-        return new ButtonWidget<>().overlay(queueButtonOverlay(i));
-        // .onMousePressed(_ -> null != getIndexQueue().remove(i));
+        return new ButtonWidget<>().overlay(queueButtonOverlay(i))
+            .onMousePressed(_ -> {
+                if (i >= getIndexQueue().size()) {
+                    return false;
+                }
+                return null != getIndexQueue().remove(i);
+            });
     }
 
     private IDrawable queueButtonOverlay(int i) {
         return new DynamicDrawable(() -> {
-            // if (getIndexQueue().size() > i) {
-            // var index = getIndexQueue().get(i);
-            // }
+            if (getIndexQueue().size() > i) {
+                var index = getIndexQueue().get(i);
+                FluidStack fluidStack = SpacePumpingRecipes.RECIPES.get(Pair.of(index.planet, index.gas));
+                return new ItemDrawable(GTUtility.getFluidDisplayStack(fluidStack.getFluid())).asIcon()
+                    .size(16);
+            }
             return new ItemDrawable().asIcon()
                 .size(16);
         });
@@ -256,8 +266,9 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             var parallelSync = syncManager.findSyncHandler("recipe" + i + ".parallel", IntSyncValue.class);
 
             parallelSync.setValue(64);
-            // planetTierSync.setValue();
-            // gasSync.setValue();
+            var index = getIndexQueue().get(i);
+            planetTierSync.setValue(index.planet);
+            gasSync.setValue(index.gas);
         }
         spacePumpUtilityPanel.closePanel();
     }
@@ -277,4 +288,6 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
         }
         return SORTED_PUMPING_RECIPES;
     }
+
+    private record IndexGasMapping(int index, int planet, int gas) {}
 }
