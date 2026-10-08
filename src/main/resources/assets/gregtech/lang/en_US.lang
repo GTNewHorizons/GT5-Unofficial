@@ -3294,7 +3294,6 @@ GT5U.gui.text.structure_error.crib_not_allowed=Crafting Inputs are not allowed
 GT5U.gui.text.structure_error.stocking_input_bus_not_allowed=Stocking Input Buses are not allowed
 GT5U.gui.text.structure_error.stocking_input_hatch_not_allowed=Stocking Input Hatches are not allowed
 GT5U.gui.text.structure_error.unknown=Unknown structure error
-GT5U.gui.text.structure_error.glass_tier_not_enough=Glass tier too low for energy hatch tier
 GT5U.gui.text.structure_error.missing_energy_hatch=Missing Energy Hatch
 GT5U.gui.text.structure_error.missing_output_bus=Missing Output Bus
 GT5U.gui.text.structure_error.dt_missing_output_hatch=Missing Output Hatch on layer %s
@@ -3309,7 +3308,6 @@ GT5U.gui.text.structure_error.need_exactly_one_focus_input=Needs exactly 1 Mask 
 GT5U.gui.text.structure_error.missing_essentia_output_hatch=Missing Essentia Output Hatch
 GT5U.gui.text.structure_error.missing_neutron_accelerator=Missing Neutron Accelerator
 GT5U.gui.text.structure_error.missing_data_hatch=Missing hatch for Data Input
-GT5U.gui.text.structure_error.dt_missing_output_hatch=Missing Output Hatch on Layer %s
 GT5U.gui.text.structure_error.dt_missing_output_hatches=Missing Output Hatch on Layers %s
 GT5U.gui.text.structure_error.coil_level_not_enough=The coil level is not enough
 GT5U.gui.text.structure_error.exotic_hatch_insufficient_coil_tier=Coil tier too low for Multi-Amp Hatch
@@ -3796,9 +3794,6 @@ gt.circuitcomponent.bolt.processed.copper=Filed Copper Bolt
 gt.circuitcomponent.bolt.processed.redalloy=Filed Red Alloy Bolt
 gt.circuitcomponent.bolt.processed.platinum=Filed Platinum Bolt
 gt.circuitcomponent.bolt.processed.niobiumtitanium=Filed Niobium Titanium Bolt
-gt.circuitcomponent.plate.processed.rhugnor=Stripped Rhugnor Plate
-gt.circuitcomponent.plate.processed.metastableoganesson=Stripped Metastable Oganesson Plate
-gt.circuitcomponent.plate.processed.hexanite=Stripped Hexanite Plate
 gt.circuitcomponent.unattunedcircuitry=Unattuned Circuitry
 gt.circuitcomponent.primedunattunedcircuitry=Primed Unattuned Circuitry
 
@@ -7948,15 +7943,6 @@ gt.locker.waila_armor_slot_charged=Slot %s: §e%s§r (%s%s%%§r)
 
 gt.db.metrics_cover.coords=§a%s§r, §a%s§r, §a%s§r
 
-gt.item.adv_sensor_card.dimension=Dimension: §a%s
-gt.item.adv_sensor_card.coords=Coordinates: %s
-gt.item.adv_sensor_card.tooltip.recipe_hint=Created by attaching a Metrics Transmitter cover, no standard recipe
-gt.item.adv_sensor_card.tooltip.fried.1=§o§dThis thing looks completely fried...
-gt.item.adv_sensor_card.tooltip.fried.2=§cDestroyed due to metrics transmitter being removed
-gt.item.adv_sensor_card.tooltip.fried.3=§cor the machine being destroyed
-gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
-gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
-gt.item.adv_sensor_card.error.no_data=No data found
 gt.item.redstone_sniffer.regular_wireless=Regular Wireless
 gt.item.redstone_sniffer.advanced_wireless=Advanced Wireless
 gt.item.redstone_sniffer.frequency=Frequency
@@ -9700,16 +9686,16 @@ gt.advancedsensorcard.name=GregTech Advanced Sensor Card
 gt.advancedsensorcard.tooltip=Nuclear Control not installed
 
 # Advanced Sensor Card
-gt.item.adv_sensor_card.error.deconstructed.1=Host machine has been deconstructed.
-gt.item.adv_sensor_card.error.deconstructed.2=Please re-insert the card to rebind.
-gt.item.adv_sensor_card.error.no_data=No data found.
-gt.item.adv_sensor_card.tooltip.fried.1=Card has been fried.
-gt.item.adv_sensor_card.tooltip.fried.2=Data is unrecoverable.
-gt.item.adv_sensor_card.tooltip.fried.3=Please replace the card.
+gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
+gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
+gt.item.adv_sensor_card.error.no_data=No data found
+gt.item.adv_sensor_card.tooltip.fried.1=§o§dThis thing looks completely fried...
+gt.item.adv_sensor_card.tooltip.fried.2=§cDestroyed due to metrics transmitter being removed
+gt.item.adv_sensor_card.tooltip.fried.3=§cor the machine being destroyed
 gt.item.adv_sensor_card.tooltip.machine=Machine: %s
 gt.item.adv_sensor_card.tooltip.frequency=Frequency: §n§e%s
-gt.item.adv_sensor_card.tooltip.recipe_hint=Insert into a Cover Metrics Transmitter to bind.
-gt.item.adv_sensor_card.dimension=Dimension: %s
+gt.item.adv_sensor_card.tooltip.recipe_hint=Created by attaching a Metrics Transmitter cover, no standard recipe
+gt.item.adv_sensor_card.dimension=Dimension: §a%s
 gt.item.adv_sensor_card.coords=Coordinates: %s
 
 # Neutron Reflector
