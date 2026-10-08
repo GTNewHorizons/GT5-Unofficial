@@ -25,6 +25,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -118,6 +119,11 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .childPadding(4)
                     .child(generateGridFromRecipes(syncManager))
+                    .child(
+                        new Widget<>().fullWidth()
+                            .height(2)
+                            .marginTop(2)
+                            .marginBottom(4))
                     .child(queueRowAndApply(syncManager)));
     }
 
@@ -248,10 +254,12 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
 
     private IWidget apply(PanelSyncManager syncManager) {
         return Flow.row()
+            .coverChildren()
             .mainAxisAlignment(Alignment.MainAxis.END)
             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
+            .child(new TextWidget<>(IKey.lang("tt.spacepump.utilityapply")))
             .child(
-                new ButtonWidget<>().overlay(IKey.lang("tt.spacepump.utilityapply"))
+                new ButtonWidget<>().overlay(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                     .onMousePressed(_ -> {
                         applyQueueToPumpParameters(syncManager);
                         return true;
@@ -266,9 +274,14 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             var parallelSync = syncManager.findSyncHandler("recipe" + i + ".parallel", IntSyncValue.class);
 
             parallelSync.setValue(64);
-            var index = getIndexQueue().get(i);
-            planetTierSync.setValue(index.planet);
-            gasSync.setValue(index.gas);
+            if (i >= getIndexQueue().size()) {
+                planetTierSync.setValue(0);
+                gasSync.setValue(0);
+            } else {
+                var index = getIndexQueue().get(i);
+                planetTierSync.setValue(index.planet);
+                gasSync.setValue(index.gas);
+            }
         }
         spacePumpUtilityPanel.closePanel();
     }
