@@ -1,6 +1,7 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -71,8 +72,8 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
             .beginStructureBlock(1, 5, 2, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("0-9", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-            .addInputAny("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addOutputAny("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("0+", anyCasingText(), 1)
+            .addOutputAny("0+", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
             .toolTipFinisher();

@@ -1,6 +1,8 @@
 More Power!!!!
-{aqua:{var:power}} EU/t and {aqua:{var:capacity}M} EU capacity per Energy Hatch
-If the recipe has a startup cost greater than the
-number of energy hatches * cap, you can't do it
-If the recipe requires a voltage tier over {var:tier}{gray:, you can't do it either}
-Has {white:(1 + }{light_purple:Machine Tier}{white: - }{green:Recipe Tier}{white:) * 64}{gold: Parallels}
+{gold:{var:base_para} + (Machine Tier - Recipe Tier) * {var:per_tier_para}} Parallels
+{aqua:{var:power}} EU/t and {aqua:{var:capacity}} EU capacity per {white:Energy Hatch}
+The total combined EU capacity must be greater than the recipe start cost to ignite
+Can only run {var:tier}§7 recipes and below
+{gray:{hr}}
+{yellow:Changing recipes consumes the start cost again}
+{light_purple:Performs 2/2 Perfect Overclocks}

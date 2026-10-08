@@ -1,13 +1,24 @@
 # Creative ItemGroup Tab
+itemGroup.GregTech.Casings=Корпуса
 itemGroup.GregTech.GTPP_BLOCKS=GT++: Блоки
 itemGroup.GregTech.GTPP_MACHINES=GT++: Механизмы
 itemGroup.GregTech.GTPP_MISC=GT++: Разное
 itemGroup.GregTech.GTPP_OTHER=GT++: Другое
 itemGroup.GregTech.GTPP_OTHER_2=GT++: Другое II
 itemGroup.GregTech.GTPP_TOOLS=GT++: Инструменты
+itemGroup.GregTech.GT_DETRAV_TAB=Detrav сканер
 itemGroup.GregTech.Main=Основное
 itemGroup.GregTech.Materials=Материалы
 itemGroup.GregTech.Ores=Руды
+
+# Enchantments
+enchantment.damage.endermen=Разъединение
+enchantment.damage.radioactivity=Радиоактивность
+enchantment.protection.hazmat=Защита от опасных веществ
+
+# GT++ bee combs
+gtplusplus.comb.dragonblood=Соты драконьей крови
+gtplusplus.comb.force=Форсовые соты
 
 # Components
 gt.oreprefix.block_of_material=%s [Блок]
@@ -189,7 +200,7 @@ gt.oreprefix.huge_restrictive_material_item_pipe=%s [Огромная огран
 
 gt.oreprefix.material_frame_box_tileentity=%s (TileEntity)
 
-gt.block.any_sub_block=Это любой заменяющий блок
+gt.block.any_sub_block=Любой подблок этого блока
 
 gt.author=Автор: %s
 gt.authors=Авторы: %s
@@ -955,7 +966,7 @@ gt.blockmachines.basicmachine.microtransmitter.05.name=IV Передатчик �
 gt.blockmachines.basicmachine.microtransmitter.06.name=LuV Передатчик микроволновой энергии
 gt.blockmachines.basicmachine.microtransmitter.07.name=ZPM Передатчик микроволновой энергии
 gt.blockmachines.basicmachine.microtransmitter.08.name=UV Передатчик микроволновой энергии
-gt.blockmachines.basicmachine.microtransmitter.tooltip=Передает энергию по беспроводной сети\nИспользует азотную плазму\nдля межпространственной передачи\n0,004EU потерь на 100 блоков
+gt.blockmachines.basicmachine.microtransmitter.tooltip=Передает энергию по беспроводной сети\nТребуется сигнал красного камня для активации\n0,004EU потерь на 100 блоков\nПри межмерной передаче\nИспользуется азотная плазма, и требуется яйцо дракона рядом\nТакже потерь умножаются на 100
 gt.blockmachines.basicmachine.microwave.tier.01.name=Базовая микроволновая печь
 gt.blockmachines.basicmachine.microwave.tier.02.name=Продвинутая микроволновая печь
 gt.blockmachines.basicmachine.microwave.tier.03.name=Продвинутая микроволновая печь II
@@ -1167,6 +1178,7 @@ gt.behaviour.lighter.uses=Осталось использований: %s
 gt.behaviour.cover_copy_paste=Может копировать и вставлять данные модулей.
 gt.behaviour.cover_copy_paste.store=Сохранённые данные модуля:
 gt.runfastertooltip=Вы можете идти быстрее по этому блоку
+gt.laserplate.name=Лазероустойчивая пластина
 gt.laserplatingtooltip=Разработан для работы в экстремальных температурах
 
 # Tooltip info of tile-entities
@@ -1228,7 +1240,7 @@ item.gt.pollen.name=Пыльца
 item.gt.propolis.name=Прополис
 
 # GT Item Descriptions
-gt.item.desc.stored_heat=Накоплено тепла: %s
+gt.item.desc.stored_heat=Нагрев: %s
 gt.item.desc.durability=Прочность: §a%s / %s
 gt.item.desc.tier=%s:§e Тир %s
 gt.item.desc.level=%s§e уровень %s
@@ -1889,8 +1901,10 @@ GT5U.MBTT.ExoticEnergyHatch=Лазер/Мультиамперный энерго
 GT5U.MBTT.ExoticEnergyDynamo=Лазер/Мультиамперный энерговывод
 GT5U.MBTT.InputBus=Входной люк
 GT5U.MBTT.InputHatch=Входной шлюз
+GT5U.MBTT.InputAny=Входной люк/шлюз
 GT5U.MBTT.OutputBus=Выходной люк
 GT5U.MBTT.OutputHatch=Выходной шлюз
+GT5U.MBTT.OutputAny=Выходной люк/шлюз
 GT5U.MBTT.TecTechMultiAmp=Поддерживает TecTech Мультиамперные энерговводы!
 GT5U.MBTT.TecTechHatch=Поддерживает TecTech Мультиамперные энерговводы и лазеры!
 GT5U.MBTT.Param=Параметрайзер
@@ -1942,6 +1956,8 @@ GT5U.MBTT.Tiers.FluidPipe=Полый корпус
 GT5U.MBTT.Tiers.Solenoid=Соленоид
 GT5U.MBTT.Tiers.Turbine=Сумма турбины
 GT5U.MBTT.Tiers.Glass=Стекло
+GT5U.MBTT.Tiers.One=§bТир 1
+GT5U.MBTT.Tiers.Two=§bТир 2
 GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Корпус компонентной сборочной линии
 GT5U.MBTT.Steam.Speed=На %s быстрее, чем при использовании одноблочных паровых машин того же давления
 GT5U.MBTT.Steam.Eff=Расход пара составляет %s от обычно требуемого расхода
@@ -1952,7 +1968,6 @@ GT5U.MBTT.Structure.MinGlassForLaser=-тировое §fстекло§7 треб
 GT5U.MBTT.Structure.GlassEnergyLimit=Энерговвод ограничен тиром §fстекла§7
 GT5U.MBTT.Structure.GlassEnergyLimitTier=-тир разблокирует всё
 GT5U.MBTT.Structure.NoTierSkips=Этот механизм может выполнять только те рецепты, которые соответствуют ее среднему тиру энерговвода
-GT5U.MBTT.Structure.MaxTierSkips=Этот механизм может выполнять рецепты на %d тиров выше своего среднего тира энерговвода
 GT5U.MBTT.Structure.UnlimitedTierSkips=Этот механизм может выполнять рецепты независимо от тира, если ей дать достаточно энергии
 
 gt.mbtt.structure.back_center=Сзади посередине
@@ -2004,6 +2019,12 @@ gt.mbtt.structure.any_steel_machine_casing=Любой стальной корп�
 gt.mbtt.structure.any_top_pump_casing=Любой насосный корпус сверху
 gt.mbtt.structure.top_of_reactor_triso=Сверху реактора (шарики TRISO)
 gt.mbtt.structure.bottom_of_reactor_burned_triso=Снизу реактора (отработанные шарики TRISO)
+gt.mbtt.structure.top_center_casing=Блок корпуса сверху по центру
+gt.mbtt.structure.any_bottom_casing_or_top_for_fluid_output=Любой нижний блок корпуса или любой верхний для вывода жидкостей
+gt.mbtt.structure.any_hearth_casing=Любой корпус горна
+gt.mbtt.structure.any_heat_proof_machine_casing=Любой жаропрочный корпус
+gt.mbtt.structure.glass_tier_limits_energy_input=Тир стекла ограничивает тир энерговвода
+gt.mbtt.structure.mega_hologram_too_big=Этот мультиблок слишком велик, чтобы показать голограмму структуры целиком.
 gt.mbtt.structure.htgr_input_hatches=Любой насосный корпус сверху (гелий), низ высокой башни (хладагент), верх низкой башни (дистиллированная вода)
 gt.mbtt.structure.htgr_output_hatches=Верх высокой башни (горячий хладагент), низ низкой башни (пар)
 gt.mbtt.machine_type.restorer=Восстановитель
@@ -2019,6 +2040,13 @@ gt.mbtt.machine_type.coolant_tower=Градирня
 gt.mbtt.machine_type.essentia_smeltery_les=Плавильня эссенции, LES
 gt.mbtt.machine_type.breeder_reactor_htgr=Реактор-размножитель, HTGR
 gt.mbtt.machine_type.arc_furnace_iaf=Дуговая печь, IAF
+gt.mbtt.machine_type.macerator_ims=Дробитель, IMS
+gt.mbtt.machine_type.blast_furnace_ebf=Доменная печь, EBF
+gt.mbtt.machine_type.blast_furnace_exh=Доменная печь, ExH, MEBF, MBF
+gt.mbtt.machine_type.blast_furnace_mebf=Доменная печь, MEBF, MBF
+gt.mbtt.machine_type.blast_furnace_volcanus=Доменная печь
+gt.mbtt.machine_type.vacuum_furnace_dehydrator=Вакуумная печь, Дегидратор
+gt.mbtt.machine_type.alloy_smelter=Сплавоплавильная печь
 
 gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s
@@ -2125,6 +2153,7 @@ gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : �
 gt.multiblock.VacuumFreezer.machine_type=Вакуумный морозильник, VF
 gt.multiblock.VacuumFreezer.desc1=Охлаждает раскалённые слитки и капсулы
 
+GT5U.MBTT.masterchannel=Размер стака проектора определяет §b%s
 GT5U.MBTT.subchannel=Подканал §b%s§7 определяет §b%s
 
 GT5U.MBTT.CokeOvenHatch=Шлюз коксовой печи
@@ -2764,6 +2793,7 @@ channels.gregtech.manipulator=Определяет тир блоков мани�
 channels.gregtech.shielding=Определяет тир блоков защиты QFT. Начинается с §6Нейтронное защитное ядро§r со значением 1 и заканчивается §6Пространственно-временное гибкое ядро§r со значением 4.
 channels.gregtech.coil=Определяет тир нагревательной катушки. Начинается с §6Катушки из мельхиора§r со значением 1 и заканчивается §6Катушки из вечности§r со значением 14.
 channels.gregtech.glass=Определяет тир стекла. У этого есть много тиров и много заменителей для различных тиров. Пожалуйста, обратитесь к tooltip отдельных блоков стекла.
+channels.gregtech.master.structuretier=Тир структуры
 channels.gregtech.casing=Определяет тир металлического корпуса машины.
 channels.gregtech.unit_casing=Определяет тир Корпуса электронного блока. Начинается с §6Грубого корпуса электронного блока§r со значением 1 и заканчивается на §6Mk-IV§r со значением 5.
 channels.gregtech.machine_casing=Определяет тир Обшивки механизма. Начинается с §6ULV Обшивка механизма§r со значением 1 и заканчивается §6UHV Обшивка механизма§r со значением 10.
@@ -2782,6 +2812,42 @@ channels.gregtech.time_dilation=Определяет тир Генератора
 channels.gregtech.gt_hatch=Включает автоматическую установку шлюзов
 channels.gregtech.field=Определяет тир TFFT блока хранения жидкостей.
 channels.gregtech.component_casing=Определяет тир корпуса компонентной сборочной линии. Начинается с §6LV§r со значением 1 и заканчивается на §6MAX§r со значением 14.
+channels.gregtech.super_chest=Определяет тир суперсундука или квантового сундука. Начинается с §6Суперсундук I§r со значением 1 и заканчивается на §6Квантовый сундук V§r со значением 10.
+channels.gregtech.chassis=Определяет тир магнитного шасси.
+channels.gregtech.coke_oven_casing=Определяет тир корпуса коксовой печи.
+channels.gregtech.construct=Определяет тир алхимической конструкции.
+channels.gregtech.essentia_cell=Определяет тир ячейки диффузии эссенции.
+channels.gregtech.piston_block=Определяет тир блока удержания.
+channels.gregtech.subchannel.qft_manipulator=тир манипулятора
+channels.gregtech.subchannel.qft_shielding=тир защиты
+channels.gregtech.subchannel.heating_coil=тир нагревательной катушки
+channels.gregtech.subchannel.boroglass=тир стекла
+channels.gregtech.subchannel.prass_unit_casing=тир корпуса точного электронного блока
+channels.gregtech.subchannel.metal_machine_casing=тир металлического корпуса механизма
+channels.gregtech.subchannel.tier_machine_casing=тир корпуса механизма
+channels.gregtech.subchannel.tier_casing=тир корпуса механизма
+channels.gregtech.subchannel.solenoid=тир соленоида
+channels.gregtech.subchannel.lsc_capacitor=тир конденсатора
+channels.gregtech.subchannel.structure_height=высоту структуры
+channels.gregtech.subchannel.structure_length=длину структуры
+channels.gregtech.subchannel.pipe_casing=тир полого корпуса
+channels.gregtech.subchannel.item_pipe_casing=тир предметного полого корпуса
+channels.gregtech.subchannel.pss_cell=тир ванадиевой редокс-энергоячейки
+channels.gregtech.subchannel.synchrotron_antenna=тир корпуса антенны
+channels.gregtech.subchannel.se_motor=тир мотора космического лифта
+channels.gregtech.subchannel.eoh_compression=тир генератора поля сжатия пространства-времени
+channels.gregtech.subchannel.eoh_stabilisation=тир генератора стабилизирующего поля
+channels.gregtech.subchannel.eoh_dilation=тир генератора поля замедления времени
+channels.gregtech.subchannel.hatch=размещение люков
+channels.gregtech.subchannel.tfft_field=тир поля хранения
+channels.gregtech.subchannel.eic_piston=тир блока удержания
+channels.gregtech.subchannel.alchemical_casing=тир алхимического корпуса
+channels.gregtech.subchannel.alchemical_construct=тир алхимической конструкции
+channels.gregtech.subchannel.super_chest=тир суперсундука
+channels.gregtech.subchannel.magnetic_chassis=тир магнитного шасси
+channels.gregtech.subchannel.component_assemblyline_casing=тир корпуса компонентной сборочной линии
+channels.gregtech.subchannel.les_essentia_cell=тир ячейки диффузии эссенции
+channels.gregtech.subchannel.coke_oven_casing=тир корпуса коксовой печи
 
 GT5U.gui.select.current=§8Состояние:
 GT5U.gui.button.liquid_filling=Заполнение жидкостью
@@ -2911,10 +2977,8 @@ GT5U.gui.text.recipe_result.backfiller_no_concrete=§7Нет жидкого бе
 GT5U.gui.text.backfiller_current_area=§7Заливка на уровне высоты: §a%s
 GT5U.gui.text.shutdown_reason.overheat_fail=Отключён из-за §cперегрева
 GT5U.gui.text.pump_fluid_type=Жидкость: §a%s
-GT5U.gui.text.pump_rate.1=Скорость откачки: §b%s§r
-GT5U.gui.text.pump_rate.2= Л/тик
-GT5U.gui.text.pump_recovery.1=Извлечение §b%s§r
-GT5U.gui.text.pump_recovery.2= Л за операцию
+GT5U.gui.text.pump_rate=Скорость откачки: §b%s§r Л/тик
+GT5U.gui.text.pump_recovery=Извлечение §b%s§r Л за операцию
 GT5U.gui.text.recipe_result.not_enough_energy=§7Недостаточно энергии
 GT5U.gui.text.recipe_result.power_overflow=§7Переполнение: подаваемая энергия слишком велика для этой машины.
 GT5U.gui.text.recipe_result.duration_overflow=§7Превышено время обработки
@@ -2964,16 +3028,15 @@ GT5U.gui.text.drone_observe_default=Камера дрона
 GT5U.gui.text.drone_metrics_header=§3[ ПОКАЗАТЕЛИ ДРОНА ]
 GT5U.gui.text.drone_cam_pos=§bКамера %c: §7%s
 GT5U.gui.text.drone_level_excellent=§7Уровень: §aОТЛИЧНЫЙ
-GT5U.gui.text.drone_locked_recipe=Блокировка рецепта
+GT5U.gui.text.drone_locked_recipe=Блокировка рецепта:
+GT5U.gui.text.drone_locked_recipe_unnamed=ВКЛ
+GT5U.gui.text.drone_max_parallel=Макс. параллель: %s%s
+GT5U.gui.text.drone_progress=§fПрогресс: %s
 GT5U.gui.text.recipe_metrics_header=§3[ ПОКАЗАТЕЛИ РЕЦЕПТА ]
 GT5U.gui.text.recipe_none=§7Нет активного рецепта.
-GT5U.gui.text.recipe_connecting_1=§7Подключение...
-GT5U.gui.text.recipe_connecting_2=§7Синхронизация потока
-GT5U.gui.text.recipe_connecting_3=§7данных рецепта...
-GT5U.gui.text.recipe_no_conn_1=§7НЕТ СВЯЗИ
-GT5U.gui.text.recipe_no_conn_2=§7Наведите прицел на
-GT5U.gui.text.recipe_no_conn_3=§7машину, чтобы увидеть
-GT5U.gui.text.recipe_no_conn_4=§7детали рецепта.
+GT5U.gui.text.recipe_connecting=§7Подключение... Синхронизация потока данных рецепта...
+GT5U.gui.text.recipe_no_conn=§7НЕТ СВЯЗИ
+GT5U.gui.text.recipe_no_conn_hint=§7Наведите прицел на машину, чтобы увидеть детали рецепта.
 GT5U.gui.text.drone_zoom=УВЕЛИЧЕНИЕ: %.1fx
 GT5U.gui.text.drone_flashlight=Фонарь ВКЛ
 GT5U.gui.text.shutdown_duration=§4Отключён §e%s §4ч §e%s §4м §e%s §4с назад.
@@ -3062,7 +3125,6 @@ GT5U.gui.text.structure_error.crib_not_allowed=Входные люки созд�
 GT5U.gui.text.structure_error.stocking_input_bus_not_allowed=Входные люки снабжения не допускаются
 GT5U.gui.text.structure_error.stocking_input_hatch_not_allowed=Входные шлюзы снабжения не допускаются
 GT5U.gui.text.structure_error.unknown=Неизвестная ошибка структуры
-GT5U.gui.text.structure_error.glass_tier_not_enough=Тир стекла слишком низкий для тира энерговвода
 GT5U.gui.text.structure_error.missing_energy_hatch=Нет энерговвода
 GT5U.gui.text.structure_error.missing_output_bus=Отсутствует выходной люк
 GT5U.gui.text.structure_error.dt_missing_output_hatch=Нет выходного шлюза на слое %s
@@ -3077,7 +3139,6 @@ GT5U.gui.text.structure_error.need_exactly_one_focus_input=Нужен ровно
 GT5U.gui.text.structure_error.missing_essentia_output_hatch=Нет выходного шлюза эссенции
 GT5U.gui.text.structure_error.missing_neutron_accelerator=Нет ускорителя нейтронов
 GT5U.gui.text.structure_error.missing_data_hatch=Нет шлюза для ввода данных
-GT5U.gui.text.structure_error.dt_missing_output_hatch=Missing Output Hatch on Layer %s
 GT5U.gui.text.structure_error.dt_missing_output_hatches=Нет выходных шлюзов на слоях %s
 GT5U.gui.text.structure_error.coil_level_not_enough=Уровень катушек недостаточен
 GT5U.gui.text.structure_error.exotic_hatch_insufficient_coil_tier=Coil tier too low for Multi-Amp Hatch
@@ -7078,6 +7139,7 @@ fluid.fluid.hydrogenperoxide=Перекись водорода
 fluid.fluid.impurelifbef2=Нечистая расплавленная солевая основа
 fluid.fluid.kerosene=Керосин
 fluid.fluid.liquidhydrogen=Жидкий водород
+fluid.fluid.lithiumperoxide=Пероксид лития
 fluid.fluid.monomethylhydrazine=Монометилгидразин
 fluid.fluid.naphthalene=Нафталин
 fluid.fluid.nitrogentetroxide=Тетраоксид азота
@@ -7113,6 +7175,7 @@ fluid.leadzincsolution=Свинцово-цинковый раствор
 fluid.liquid_drillingfluid=Буровой раствор
 fluid.liquid_sodium=Жидкий натрий
 fluid.liquidresin=Жидкая смола
+fluid.lithiumhydroxide=Гидроксид лития
 fluid.mobessence=Моб эссенция
 fluid.mud.red.slurry=Жидкий красный шлам
 fluid.nitrobenzene=Нитробензол
@@ -7304,16 +7367,6 @@ gt.locker.waila_armor_slot_charged=Слот %s: §e%s§r (%s%s%%§r)
 
 gt.db.metrics_cover.coords=§a%s§r, §a%s§r, §a%s§r
 
-gt.item.adv_sensor_card.dimension=Измерение: §a%s
-gt.item.adv_sensor_card.coords=Координаты: %s
-gt.item.adv_sensor_card.tooltip.recipe_hint=Создаётся установкой модуля передатчика показателей, обычного рецепта нет
-gt.item.adv_sensor_card.tooltip.fried.1=§o§dЭта штука выглядит полностью сгоревшей...
-gt.item.adv_sensor_card.tooltip.fried.2=§cУничтожена из-за снятия передатчика показателей
-gt.item.adv_sensor_card.tooltip.fried.3=§cили разрушения машины
-gt.item.adv_sensor_card.tooltip.machine=Машина: §b%s
-gt.item.adv_sensor_card.error.deconstructed.1=-ОШИБКА- Машина разобрана
-gt.item.adv_sensor_card.error.deconstructed.2=Поставьте машину заново, чтобы включить снова
-gt.item.adv_sensor_card.error.no_data=Данные не найдены
 gt.item.redstone_sniffer.regular_wireless=Обычная беспроводная связь
 gt.item.redstone_sniffer.advanced_wireless=Улучшенная беспроводная связь
 gt.item.redstone_sniffer.frequency=Частота
@@ -7724,8 +7777,6 @@ GT5U.infodata.large_fluid_extractor.max_parallels=Макс. параллелей
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Бонус нагревательной катушки к скорости: +%s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Множитель общей скорости: %s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Общий множитель EU/t: %s%.0f%s %%
-
-GT5U.infodata.large_neutralization_engine=Большой двигатель сгорания
 
 GT5U.infodata.oil_drill.title=§9Помпа для Нефти/Жидкости§r
 GT5U.infodata.oil_drill.work_area=Рабочая область: §a%s x %s§r чанков
@@ -8934,16 +8985,16 @@ gt.advancedsensorcard.name=Карта GregTech продвинутого дист
 gt.advancedsensorcard.tooltip=Не установлено
 
 # Advanced Sensor Card
-gt.item.adv_sensor_card.error.deconstructed.1=-ОШИБКА- Механизм разобран
-gt.item.adv_sensor_card.error.deconstructed.2=Установите механизм снова, чтобы включить её.
+gt.item.adv_sensor_card.error.deconstructed.1=-ОШИБКА- Машина разобрана
+gt.item.adv_sensor_card.error.deconstructed.2=Поставьте машину заново, чтобы включить снова
 gt.item.adv_sensor_card.error.no_data=Данные не найдены
-gt.item.adv_sensor_card.tooltip.fried.1=§o§dЭта штука выглядит полностью прожаренной...
-gt.item.adv_sensor_card.tooltip.fried.2=§cУничтожен в результате демонтажа модуля передатчика метрики
-gt.item.adv_sensor_card.tooltip.fried.3=§cили при уничтожении механизма
-gt.item.adv_sensor_card.tooltip.machine=Механизм: %s
+gt.item.adv_sensor_card.tooltip.fried.1=§o§dЭта штука выглядит полностью сгоревшей...
+gt.item.adv_sensor_card.tooltip.fried.2=§cУничтожена из-за снятия передатчика показателей
+gt.item.adv_sensor_card.tooltip.fried.3=§cили разрушения машины
+gt.item.adv_sensor_card.tooltip.machine=Машина: %s
 gt.item.adv_sensor_card.tooltip.frequency=Частота: §n§e%s
-gt.item.adv_sensor_card.tooltip.recipe_hint=Создано путем прикрепления Модуля передатчика метрики, нет стандартного рецепта
-gt.item.adv_sensor_card.dimension=Измерение: %s
+gt.item.adv_sensor_card.tooltip.recipe_hint=Создаётся установкой модуля передатчика показателей, обычного рецепта нет
+gt.item.adv_sensor_card.dimension=Измерение: §a%s
 gt.item.adv_sensor_card.coords=Координаты: %s
 
 # Neutron Reflector
@@ -8962,9 +9013,6 @@ gt.360k_Space_Coolantcell.name=Охлаждающий стержень Sp 360к
 gt.540k_Space_Coolantcell.name=Охлаждающий стержень Sp 540к
 gt.1080k_Space_Coolantcell.name=Охлаждающий стержень Sp 1080к
 gt.neutroniumHeatCapacitor.name=1G Нейтрониевый тепловой конденсатор
-
-# Coolant Cell shared tooltip key
-gt.item.desc.stored_heat=Нагрев: %s
 
 # Breeder Cells
 gt.rodLithium.name=Топливный стержень (Литий)
@@ -9288,8 +9336,6 @@ GT5U.scanner.debug.machine_active=Механизм §aактивен§r
 GT5U.scanner.debug.machine_inactive=Механизм §cнеактивен§r
 GT5U.scanner.debug.needs_power=§cВНИМАНИЕ: Устройству не хватает питания.§r
 GT5U.scanner.debug.ic2_enet=Подключён к IC2 ENet
-GT5U.gui.text.shutdown_reason.fluid_output_failed=§4Не удалось вывести все жидкости.
-GT5U.gui.text.shutdown_reason.item_output_failed=§4Не удалось вывести все предметы.
 
 # Basic Generators - Shared
 gt.blockmachines.basicgenerator.fuel_efficiency=Эффективность топлива: %s%%
@@ -9585,7 +9631,6 @@ gt.metatool.01.file.name=Напильник (%s)
 gt.metatool.01.file.tooltip=Ручной электрический напильник
 
 # Side names
-gt.lang.face.any=Любая сторона
 gt.lang.face.back=Задняя сторона
 gt.lang.face.bottom=Нижняя сторона
 gt.lang.face.front=Передняя сторона
@@ -9612,8 +9657,6 @@ gt.metaitem.01.32708.with.WithPunchCardData.name=С данными перфок�
 gt.metaitem.01.32708.with.WithScannedBookData.name=С отсканированными данными книги
 gt.metaitem.01.32708.with.WithScannedMapData.name=С отсканированными данными карты
 gt.metaitem.01.32708.with.WritesResearchResult.name=Записывает результат исследования
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=ЭТО БЕСПЛАТНО! Поместите лаву сбоку
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=ЭТО БЕСПЛАТНО! Поместите лаву сверху
 
 # Chat messages
 GT5U.chat.cover.connectable=Соединяемый: %s
@@ -9647,3 +9690,38 @@ GT5U.nei.solar_factory.tier_required=Требуется тир мульти: %s
 
 # Item tooltips
 GT5U.tooltip.switch_metadata.sneak_right_click=Shift+ПКМ, чтобы изменить режим
+
+# Material flavor text
+Material.amalgatite.flavorText=Всё могло бы быть замечательно!
+Material.antimatter.flavorText=Ошибка Дирака
+Material.bedrockium.flavorText=Слой осадочных пород, скрывающий мучительную бездну
+Material.blackdwarfmatter.flavorText=Тень мёртвой звезды
+Material.dimensionallyshiftedsuperfluid.flavorText=Гиперболическое усердие
+Material.dimensionallytranscendentresidue.flavorText=Липкий
+Material.hexanite.flavorText=Безумие и воля, обретшие форму
+Material.ichorium.flavorText=Ткань планарного слияния
+Material.infinity.flavorText=Вся мощь вселенной в твоей руке.
+Material.magmatter.flavorText=Материя магнитных монополей
+Material.magnetohydrodynamicallyconstrainedstarmatter.flavorText=Стабилизированная барионная материя
+Material.prismaticnaquadah.flavorText=Поглощает любое излучение
+Material.protohalkonite.flavorText=Создан, чтобы быть неразрушимым... ну, наверное
+Material.protomatter.flavorText=Вот из чего делают куриные наггетсы
+Material.quarkgluonplasma.flavorText=Материя вне структуры
+Material.rawstarmatter.flavorText=Плоть звезды главной последовательности
+Material.sixphasedcopper.flavorText=Смесь вариантов меди из архаичных FTB модов
+Material.spacetime.flavorText=Сама реальность, воплощённая в физической форме
+Material.spatialfluid.flavorText=Расширяется и сужается одновременно
+Material.temporalfluid.flavorText=Вечный и вездесущий
+Material.transcendentmetal.flavorText=Пространственно непостижимо
+Material.universium.flavorText=Разрыв в измерение за пределами нашей реальности
+Material.uuamplifier.flavorText=Ускоряет генератор материи
+Material.uumatter.flavorText=Универсальная материя
+Material.whitedwarfmatter.flavorText=Сердце мёртвой звезды
+
+# Material pipe names
+Material.plastic.fluidpipe.newname=Полиэтилен
+Material.polybenzimidazole.fluidpipe.newname=ПБИ
+Material.polytetrafluoroethylene.fluidpipe.newname=ПТФЭ
+Material.polyvinylchloride.itempipe.newname=ПВХ
+Material.redstone.fluidpipe.newname=Высокое давление
+Material.wood.fluidpipe.newname=Деревянная

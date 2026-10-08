@@ -258,7 +258,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
         GTChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
         workState = WorkState.UPWARD;
-        setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.drill_exhausted"));
+        setShutdownReason("GT5U.gui.text.drill_exhausted");
         return true;
     }
 
@@ -354,21 +354,18 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             return ImmutableList.of();
         }
 
-        final String failureReason = getFailureReason()
-            .map(reason -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_reason", reason))
-            .orElseGet(() -> StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_offline_generic"));
+        final String failureReason = getEncodedFailureReason()
+            .map(reason -> IGregTechDeviceInformation.encode("GT5U.gui.text.drill_offline_reason", reason))
+            .orElse("GT5U.gui.text.drill_offline_generic");
 
         if (workState == WorkState.AT_BOTTOM) {
             final ImmutableList.Builder<String> builder = ImmutableList.builder();
-            builder.add(StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", getFluidName()));
+            builder.add(IGregTechDeviceInformation.encode("GT5U.gui.text.pump_fluid_type", getFluidName()));
 
             if (base.isActive()) {
                 builder.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.pump_rate.1",
-                        numberFormat.format(getFlowRatePerTick()))
-                        + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"),
-                    mOilFlow + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"));
+                    IGregTechDeviceInformation.encode("GT5U.gui.text.pump_rate", formatNumber(getFlowRatePerTick())),
+                    IGregTechDeviceInformation.encode("GT5U.gui.text.pump_recovery", formatNumber(mOilFlow)));
             } else {
                 builder.add(failureReason);
             }
@@ -378,8 +375,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         if (base.isActive()) {
             return switch (workState) {
-                case DOWNWARD -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.deploying_pipe"));
-                case UPWARD, ABORT -> ImmutableList.of(StatCollector.translateToLocal("GT5U.gui.text.retracting_pipe"));
+                case DOWNWARD -> ImmutableList.of("GT5U.gui.text.deploying_pipe");
+                case UPWARD, ABORT -> ImmutableList.of("GT5U.gui.text.retracting_pipe");
                 default -> ImmutableList.of();
             };
         }
