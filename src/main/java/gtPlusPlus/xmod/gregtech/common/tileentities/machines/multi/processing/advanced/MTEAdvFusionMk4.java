@@ -55,7 +55,7 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
         // spotless:off
         tt.addMachineType("Fusion Reactor")
             .addMarkdown(
-                new ResourceLocation("gregtech", "fusion-computer-mk4"),
+                new ResourceLocation("gregtech", "fusion-computer"),
                 ImmutableMap.<String, Object>builder()
                     .put("power", formatNumber(GTValues.V[tier()] / HATCH_POWER_DIVISOR))
                     .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
