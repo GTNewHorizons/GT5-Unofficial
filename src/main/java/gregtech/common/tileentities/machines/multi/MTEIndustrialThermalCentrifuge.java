@@ -18,8 +18,10 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -44,7 +46,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -85,22 +86,25 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Thermal Centrifuge, LTR")
-            .addBulkMachineInfo(BASE_PARALLELS, (float) BASE_SPEED_BONUS, (float) BASE_EU_MULTIPLIER)
-            .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
             .addInfo(
-                String.format(
-                    "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
-                    TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
-                    TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER))))
-            .addInfo(
-                String.format(
-                    "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
-                    EnumChatFormatting.ITALIC,
-                    BASE_EU_MULTIPLIER,
-                    HEATING_COIL_EU_MULTIPLIER,
-                    EnumChatFormatting.GRAY))
+                EnumChatFormatting.GOLD + String.format(
+                        "%s%s * Voltage Tier + %s%s * Solenoid Tier %sParallels",
+                        TooltipHelper.parallelText(8), EnumChatFormatting.GOLD,
+                        TooltipHelper.parallelText(2), EnumChatFormatting.GOLD,
+                        EnumChatFormatting.GRAY))
+            .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
+            .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "thermal-centrifuge"),
+                ImmutableMap.<String, Object>builder()
+                    .put("coil_speed_bonus", TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL))
+                    .put("coil_eu_discount", TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER)))
+                    .put("base_eu_mult", BASE_EU_MULTIPLIER)
+                    .put("coil_eu_mult", HEATING_COIL_EU_MULTIPLIER)
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 8, 6, false)
             .addController("Front bottom center")
@@ -121,6 +125,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Oasis_Cactus")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
