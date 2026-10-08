@@ -196,10 +196,12 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
                 .find();
             if (recipe == null) continue;
 
-            int maxParallelsByInput = (int) Math.min(Integer.MAX_VALUE, recipe.maxParallelCalculatedByInputs(
+            int maxParallelsByInput = (int) Math.min(
                 Integer.MAX_VALUE,
-                new FluidStack[] { GTUtility.createFluidStack(fluid, totalAmount) },
-                GTValues.emptyItemStackArray));
+                recipe.maxParallelCalculatedByInputs(
+                    Integer.MAX_VALUE,
+                    new FluidStack[] { GTUtility.createFluidStack(fluid, totalAmount) },
+                    GTValues.emptyItemStackArray));
             if (maxParallelsByInput <= 0) continue;
 
             fluidCandidates.add(new FluidCandidate(recipe, maxParallelsByInput, fluid));
