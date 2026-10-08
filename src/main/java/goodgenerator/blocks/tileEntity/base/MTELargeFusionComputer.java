@@ -68,6 +68,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -126,7 +127,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                             .anyOf(HatchElement.EnergyMulti.or(gregtech.api.enums.HatchElement.Energy))
                             .adder(MTELargeFusionComputer::addEnergyInjector)
                             .casingIndex(x.textureIndex())
-                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.energyHatchTier(), Integer.MAX_VALUE))
+                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.tier(), Integer.MAX_VALUE))
                             .hint(2)
                             .buildAndChain(ofBlock(x.getCasingBlock(), x.getCasingMeta()))))
                 .addElement('F', lazy(x -> ofFrame(x.getFrameBox())))
@@ -260,11 +261,11 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         return ofBlock(glass, getGlassMeta());
     }
 
-    public abstract int energyHatchTier();
-
     public abstract Materials getFrameBox();
 
-    public abstract int getMaxPara();
+    public int getMaxPara() {
+        return 64;
+    }
 
     public abstract int extraPara(long startEnergy);
 
@@ -548,12 +549,12 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                 return false;
             }
             case MTEHatchEnergy tHatch -> {
-                if (tHatch.getTierForStructure() < energyHatchTier()) return false;
+                if (tHatch.getTierForStructure() < tier()) return false;
                 tHatch.updateTexture(aBaseCasingIndex);
                 return mEnergyHatches.add(tHatch);
             }
             case MTEHatchEnergyMulti tHatch -> {
-                if (tHatch.getTierForStructure() < energyHatchTier()) return false;
+                if (tHatch.getTierForStructure() < tier()) return false;
                 tHatch.updateTexture(aBaseCasingIndex);
                 return eEnergyMulti.add(tHatch);
             }

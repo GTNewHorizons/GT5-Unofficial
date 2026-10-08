@@ -78,18 +78,8 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
     }
 
     @Override
-    public int energyHatchTier() {
-        return 6;
-    }
-
-    @Override
     public Materials getFrameBox() {
         return Materials.NaquadahAlloy;
-    }
-
-    @Override
-    public int getMaxPara() {
-        return 64;
     }
 
     @Override

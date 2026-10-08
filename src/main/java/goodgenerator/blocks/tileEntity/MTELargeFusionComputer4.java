@@ -85,11 +85,6 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    public int energyHatchTier() {
-        return 9;
-    }
-
-    @Override
     public Materials getFrameBox() {
         return Materials.InfinityCatalyst;
     }
@@ -106,11 +101,6 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
                 .addIcon(TexturesGtBlock.Casing_Machine_Screen_1)
                 .extFacing()
                 .build());
-    }
-
-    @Override
-    public int getMaxPara() {
-        return 64;
     }
 
     @Override
