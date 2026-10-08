@@ -207,7 +207,8 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
         tt.addMachineType("Naquadah Fuel Refinery, NFR")
             .addInfo("Produces naquadah fuels")
             .addInfo(
-                "Gains " + TooltipHelper.parallelText(4) + " Parallels per " + EnumChatFormatting.WHITE + "Coil Tier")
+                "Gains " + TooltipHelper.parallelText(
+                    4) + " Parallels per " + EnumChatFormatting.WHITE + "Coil" + EnumChatFormatting.GRAY + " Tier")
             .addInfo("Needs field restriction coils to control the fatal radiation")
             .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
             .addSupportAny()
