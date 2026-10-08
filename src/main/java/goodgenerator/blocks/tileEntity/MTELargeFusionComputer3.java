@@ -54,7 +54,7 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fusion_reactor"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "large-fusion-computer-mk3"),
+                new ResourceLocation("gregtech", "large-fusion-computer"),
                 ImmutableMap.<String, Object>builder()
                     .put("power", formatNumber(getSingleHatchPower()))
                     .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
