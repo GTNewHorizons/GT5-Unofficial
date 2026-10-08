@@ -23,6 +23,7 @@ import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -39,6 +40,7 @@ import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModulePump;
 public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityModulePump> {
 
     public static final int EXPECTED_PUMPING_SLOTS = 40;
+    // properly needs to use GenericListSync
     private final List<Integer> indexQueue = new CopyOnWriteArrayList<>();
 
     public TileEntityModulePumpGui(TileEntityModulePump multiblock) {
@@ -88,7 +90,6 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             .overlay(
                 GTGuiTextures.TT_OVERLAY_BUTTON_TARGET_ASTEROID.asIcon()
                     .size(16))
-
             .onMousePressed(mouseData -> {
                 if (!spacePumpUtilityPanel.isPanelOpen()) {
                     spacePumpUtilityPanel.openPanel();
@@ -116,9 +117,11 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                     .coverChildren()
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .childPadding(4)
-                    .child(generateGridFromRecipes(syncManager)));
+                    .child(generateGridFromRecipes(syncManager))
+                    .child(queueRowAndApply(syncManager)));
     }
 
+    // Selection grid for fluids
     private IWidget generateGridFromRecipes(PanelSyncManager syncManager) {
         var grid = new Grid();
         int planet = 2;
@@ -147,7 +150,6 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                 index++;
             }
             gas = planetGasPair.getRight();
-            // to stack GTUtility.getFluidDisplayStack(fluid.getFluid())
             rowFluids.add(createFluidUtilityButton(syncManager, index, fluid));
             index++;
         }
@@ -180,7 +182,6 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
     }
 
     private IDrawable createButtonOverlay(PanelSyncManager syncManager, int i, ItemStack fluid) {
-
         return new DynamicDrawable(() -> {
             if (getIndexQueue().contains(i)) {
                 return new DrawableStack(
@@ -194,6 +195,71 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                     .size(14);
             }
         });
+    }
+
+    // selected fluids display
+    private IWidget queueRowAndApply(PanelSyncManager syncManager) {
+        return Flow.row()
+            .fullWidth()
+            .coverChildrenHeight()
+            .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN)
+            .child(queue(syncManager))
+            .child(apply(syncManager));
+    }
+
+    private IWidget queue(PanelSyncManager syncManager) {
+        List<IWidget> queueButtons = new ArrayList<>();
+        queueButtons.add(new TextWidget<>(IKey.lang("tt.spacepump.pendingqueue")));
+        for (int i = 0; i < multiblock.getParallelRecipes(); i++) {
+            queueButtons.add(createQueueButton(i));
+        }
+        return Flow.row()
+            .coverChildren()
+            .child(
+                new Grid().coverChildren()
+                    .minElementMargin(1, 1)
+                    .row(queueButtons));
+    }
+
+    private ButtonWidget<?> createQueueButton(int i) {
+        return new ButtonWidget<>().overlay(queueButtonOverlay(i));
+        // .onMousePressed(_ -> null != getIndexQueue().remove(i));
+    }
+
+    private IDrawable queueButtonOverlay(int i) {
+        return new DynamicDrawable(() -> {
+            // if (getIndexQueue().size() > i) {
+            // var index = getIndexQueue().get(i);
+            // }
+            return new ItemDrawable().asIcon()
+                .size(16);
+        });
+    }
+
+    private IWidget apply(PanelSyncManager syncManager) {
+        return Flow.row()
+            .mainAxisAlignment(Alignment.MainAxis.END)
+            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
+            .child(
+                new ButtonWidget<>().overlay(IKey.lang("tt.spacepump.utilityapply"))
+                    .onMousePressed(_ -> {
+                        applyQueueToPumpParameters(syncManager);
+                        return true;
+                    }));
+    }
+
+    private void applyQueueToPumpParameters(PanelSyncManager syncManager) {
+        IPanelHandler spacePumpUtilityPanel = panelMap.get("spacePumpUtility");
+        for (int i = 0; i < multiblock.getParallelRecipes(); i++) {
+            var planetTierSync = syncManager.findSyncHandler("recipe" + i + ".planetType", IntSyncValue.class);
+            var gasSync = syncManager.findSyncHandler("recipe" + i + ".gasType", IntSyncValue.class);
+            var parallelSync = syncManager.findSyncHandler("recipe" + i + ".parallel", IntSyncValue.class);
+
+            parallelSync.setValue(64);
+            // planetTierSync.setValue();
+            // gasSync.setValue();
+        }
+        spacePumpUtilityPanel.closePanel();
     }
 
     private static List<Map.Entry<Pair<Integer, Integer>, FluidStack>> getSortedPumpRecipes() {
