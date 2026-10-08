@@ -48,9 +48,9 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx);
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.field_152631_f = true;
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
-        ctx.reset()
-            .setupColor(ForgeDirection.EAST, 0xffffff);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, 1.0f, 0.0f, 0.0f);
+        ctx.setupColor(ForgeDirection.EAST, 0xffffff);
         renderBlocks.renderFaceXPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
         renderBlocks.field_152631_f = false;
@@ -60,10 +60,10 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
     public void renderXNeg(ISBRContext ctx) {
         if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx);
-        ctx.reset()
-            .setupColor(ForgeDirection.WEST, 0xffffff);
+        ctx.setupColor(ForgeDirection.WEST, 0xffffff);
         renderBlocks.renderFaceXNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
     }
@@ -72,10 +72,10 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
     public void renderYPos(ISBRContext ctx) {
         if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx);
-        ctx.reset()
-            .setupColor(ForgeDirection.UP, 0xffffff);
+        ctx.setupColor(ForgeDirection.UP, 0xffffff);
         renderBlocks.renderFaceYPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
     }
@@ -84,10 +84,10 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
     public void renderYNeg(ISBRContext ctx) {
         if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx);
-        ctx.reset()
-            .setupColor(ForgeDirection.DOWN, 0xffffff);
+        ctx.setupColor(ForgeDirection.DOWN, 0xffffff);
         renderBlocks.renderFaceYNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
     }
@@ -96,10 +96,10 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
     public void renderZPos(ISBRContext ctx) {
         if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx);
-        ctx.reset()
-            .setupColor(ForgeDirection.SOUTH, 0xffffff);
+        ctx.setupColor(ForgeDirection.SOUTH, 0xffffff);
         renderBlocks.renderFaceZPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
     }
@@ -108,11 +108,11 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
     public void renderZNeg(ISBRContext ctx) {
         if (!canRenderInPass(ctx)) return;
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
+        ctx.reset();
+        final boolean startedDrawing = beginDrawingQuads(ctx, 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx);
         renderBlocks.field_152631_f = true;
-        ctx.reset()
-            .setupColor(ForgeDirection.NORTH, 0xffffff);
+        ctx.setupColor(ForgeDirection.NORTH, 0xffffff);
         renderBlocks.renderFaceZNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         endDrawingQuads(renderBlocks, startedDrawing);
         renderBlocks.field_152631_f = false;

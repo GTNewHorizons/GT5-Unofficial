@@ -266,7 +266,8 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
     private void renderInventoryBlockImmediate(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer,
         IMetaTileEntity imte) {
-        final ISBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
+        final SBRInventoryContext ctx = (SBRInventoryContext) sbrContextHolder
+            .getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
         final boolean enableAO = aRenderer.enableAO;
         final boolean useInventoryTint = aRenderer.useInventoryTint;
         aRenderer.enableAO = false;
@@ -276,14 +277,19 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         try {
-            if (imte != null && !imte.renderInInventory(ctx)) {
-                renderNormalInventoryMetaTileEntity(ctx, imte);
-            } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
-                ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
-                if (texture != null) {
-                    aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
-                    renderInventoryTextures(ctx, texture);
+            final boolean startedDrawing = ctx.beginInventoryBatch();
+            try {
+                if (imte != null && !imte.renderInInventory(ctx)) {
+                    renderNormalInventoryMetaTileEntity(ctx, imte);
+                } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
+                    ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
+                    if (texture != null) {
+                        aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+                        renderInventoryTextures(ctx, texture);
+                    }
                 }
+            } finally {
+                if (startedDrawing) ctx.endInventoryBatch();
             }
         } finally {
             aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
