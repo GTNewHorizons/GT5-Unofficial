@@ -1868,6 +1868,11 @@ tt.spaceminer.calculator.asteroidChance= %s
 tt.spaceminer.filter.minableAsteroids=Currently minable asteroids for
 tt.spaceminer.filter.noValidInputs=No valid inputs!
 tt.spaceminer.filter.addOre=Click to add this ore to the filter
+# Space Pump
+tt.spacepump.basicrate=%dL / operation
+tt.spacepump.effectiverate=
+tt.spacepump.planettier=Tier %d:
+tt.spacepump.utilitypanelButtonTooltip=Open Space Pump Quick Picker
 
 # Gui
 tt.gui.tooltip.power_pass=Power Pass
