@@ -18,6 +18,8 @@ import static gregtech.api.util.GTUtility.getTier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
+import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,6 +30,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -38,6 +41,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
@@ -55,6 +60,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IRecipeMap;
+import gregtech.api.interfaces.internal.IGTCraftingRecipe;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialData;
@@ -66,6 +72,10 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.mixin.interfaces.accessors.ShapedOreRecipeAccessor;
 import ic2.api.reactor.IReactorComponent;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.LongIterator;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 
 /**
  * Class for Automatic Recipe registering.
@@ -127,7 +137,7 @@ public class GTRecipeRegistrator {
         new RecipeShape(null, sMt1, null, sMt1, null, null, null, null, null),
         new RecipeShape(sMt1, sMt1, null, sMt2, null, sMt1, sMt2, null, null),
         new RecipeShape(null, sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2) };
-    private static volatile Map<RecipeShape, List<IRecipe>> indexedRecipeListCache;
+    private static volatile Map<RecipeShape, ShapeCandidates> indexedRecipeListCache;
     private static final String[][] sShapesA = new String[][] { null, null, null,
         { "Helmet", s_P + s_P + s_P, s_P + s_H + s_P },
         { "ChestPlate", s_P + s_H + s_P, s_P + s_P + s_P, s_P + s_P + s_P },
@@ -589,7 +599,7 @@ public class GTRecipeRegistrator {
         }
     }
 
-    private static List<IRecipe> getRecipeList(RecipeShape shape) {
+    private static ShapeCandidates getRecipeCandidates(RecipeShape shape) {
         boolean force = !GregTechAPI.sPostloadStarted || GregTechAPI.sPostloadFinished;
         if (force || indexedRecipeListCache == null) {
             synchronized (GTRecipeRegistrator.class) {
@@ -601,7 +611,7 @@ public class GTRecipeRegistrator {
         return indexedRecipeListCache.get(shape);
     }
 
-    private static Map<RecipeShape, List<IRecipe>> createIndexedRecipeListCache() {
+    private static Map<RecipeShape, ShapeCandidates> createIndexedRecipeListCache() {
         Map<RecipeShape, List<IRecipe>> result = new IdentityHashMap<>();
         ArrayList<IRecipe> allRecipeList = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
@@ -659,7 +669,14 @@ public class GTRecipeRegistrator {
                 }
             }
         }
-        return result;
+        Set<Item> rodItems = Collections.newSetFromMap(new IdentityHashMap<>());
+        for (Material rod : sRodMaterialList) {
+            ItemStack stick = MaterialLibAPI.findStack(rod, Shapes.stick, 1);
+            if (stick != null) rodItems.add(stick.getItem());
+        }
+        Map<RecipeShape, ShapeCandidates> candidates = new IdentityHashMap<>();
+        result.forEach((shape, recipes) -> candidates.put(shape, new ShapeCandidates(recipes, rodItems)));
+        return candidates;
     }
 
     private static boolean checkRecipeShape(List<Integer> emptySlotIndexesBuffer, Object[] input, int tRecipeWidth,
@@ -692,11 +709,14 @@ public class GTRecipeRegistrator {
     private static synchronized void registerStickStuff(String plate, ItemData itemData, boolean recipeReplacing) {
         IdentityHashMap<IRecipe, Boolean> tKnownMatches = recipeReplacing && plate != null ? new IdentityHashMap<>()
             : null;
+        boolean firstRod = true;
         for (Material tMaterial : sRodMaterialList) {
             ItemStack tMt2 = MaterialLibAPI.findStack(tMaterial, Shapes.stick, 1);
             if (tMt2 == null) {
                 continue;
             }
+            boolean rodlessShapes = firstRod;
+            firstRod = false;
 
             sMt2.func_150996_a(tMt2.getItem());
             sMt2.stackSize = 1;
@@ -704,15 +724,16 @@ public class GTRecipeRegistrator {
 
             for (int i = 0; i < sShapes.length; i++) {
                 RecipeShape tRecipe = sShapes[i];
+                if (tRecipe.amount2 == 0 && !rodlessShapes) continue;
+                ShapeCandidates candidates = getRecipeCandidates(tRecipe);
+                if (candidates == null) continue;
+                ItemStack rod = tRecipe.amount2 == 0 ? null : tMt2;
                 boolean tCanReplace = recipeReplacing && plate != null && sShapesA[i] != null && sShapesA[i].length > 1;
                 if (tCanReplace) tKnownMatches.clear();
                 boolean tRemovalAttempted = false;
 
-                for (ItemStack tCrafted : GTModHandler.getRecipeOutputs(
-                    getRecipeList(tRecipe),
-                    true,
-                    tRecipe.shape,
-                    tCanReplace ? tKnownMatches : null)) {
+                for (ItemStack tCrafted : candidates
+                    .matchOutputs(rod, tRecipe.shape, tCanReplace ? tKnownMatches : null)) {
                     if (itemData != null && itemData.hasValidPrefixMaterialData()) {
                         MaterialData.add(
                             tCrafted,
@@ -726,6 +747,7 @@ public class GTRecipeRegistrator {
                         tRemovalAttempted = true;
                         assert itemData != null;
 
+                        candidates.addUntriedAsMismatches(rod, tKnownMatches);
                         ItemStack tStack = GTModHandler.removeRecipe(tRecipe.shape, tKnownMatches);
                         if (tStack == null) {
                             continue;
@@ -921,6 +943,111 @@ public class GTRecipeRegistrator {
 
     private static int getRecipeWidth(ShapedRecipes r) {
         return r.recipeWidth;
+    }
+
+    /// The recipes one [RecipeShape] may match, indexed by the rod stacks their inputs name, so a rod is only tried
+    /// against recipes that can take it. Recipes other than plain [ShapedOreRecipe]s and [ShapedRecipes], whose inputs
+    /// cannot be read, are tried with every rod, as are all recipes for a rod whose item was not a rod item when the
+    /// index was built. GregTech's own recipes are never tried, as [GTModHandler#getRecipeOutputs] skips them, and a
+    /// recipe that produced an output is not tried again.
+    private static final class ShapeCandidates {
+
+        private final List<IRecipe> recipes;
+        private final Set<Item> rodItems;
+        private final Long2ObjectOpenHashMap<IntArrayList> byRodInput = new Long2ObjectOpenHashMap<>();
+        private final BitSet readable = new BitSet();
+        private final BitSet unreadable = new BitSet();
+        private final BitSet matched = new BitSet();
+
+        private ShapeCandidates(List<IRecipe> recipes, Set<Item> rodItems) {
+            this.recipes = recipes;
+            this.rodItems = rodItems;
+            for (int i = 0; i < recipes.size(); i++) {
+                IRecipe recipe = recipes.get(i);
+                if (recipe instanceof IGTCraftingRecipe) continue;
+                Object[] inputs;
+                if (recipe.getClass() == ShapedOreRecipe.class) inputs = ((ShapedOreRecipe) recipe).getInput();
+                else if (recipe.getClass() == ShapedRecipes.class) inputs = ((ShapedRecipes) recipe).recipeItems;
+                else inputs = null;
+                if (inputs != null && indexRodInputs(i, inputs)) readable.set(i);
+                else unreadable.set(i);
+            }
+        }
+
+        /// Indexes the rod stacks among `inputs` under recipe `index`, returning false when an input is unreadable.
+        private boolean indexRodInputs(int index, Object[] inputs) {
+            LongOpenHashSet keys = new LongOpenHashSet();
+            for (Object input : inputs) {
+                if (input == null) continue;
+                if (input instanceof ItemStack stack) {
+                    addRodKey(keys, stack);
+                } else if (input instanceof List<?>options) {
+                    for (Object option : options) {
+                        if (!(option instanceof ItemStack stack)) return false;
+                        addRodKey(keys, stack);
+                    }
+                } else {
+                    return false;
+                }
+            }
+            LongIterator iterator = keys.iterator();
+            while (iterator.hasNext()) {
+                byRodInput.computeIfAbsent(iterator.nextLong(), k -> new IntArrayList())
+                    .add(index);
+            }
+            return true;
+        }
+
+        private void addRodKey(LongOpenHashSet keys, ItemStack stack) {
+            if (stack.getItem() != null && rodItems.contains(stack.getItem())) {
+                keys.add(key(stack.getItem(), stack.getItemDamage()));
+            }
+        }
+
+        private static long key(Item item, int damage) {
+            return (long) Item.getIdFromItem(item) << 32 | damage & 0xFFFFFFFFL;
+        }
+
+        private boolean indexes(@Nullable ItemStack rod) {
+            return rod != null && rodItems.contains(rod.getItem());
+        }
+
+        /// The readable recipes with an input naming `rod`.
+        private BitSet takingRod(ItemStack rod) {
+            BitSet result = new BitSet();
+            IntArrayList exact = byRodInput.get(key(rod.getItem(), rod.getItemDamage()));
+            if (exact != null) exact.forEach(result::set);
+            IntArrayList wildcard = byRodInput.get(key(rod.getItem(), OreDictionary.WILDCARD_VALUE));
+            if (wildcard != null) wildcard.forEach(result::set);
+            return result;
+        }
+
+        /// [GTModHandler#getRecipeOutputs] over the recipes to try for `rod`, or for a shape without rods when null,
+        /// marking each recipe that produced an output as matched.
+        private List<ItemStack> matchOutputs(@Nullable ItemStack rod, ItemStack[] shape,
+            @Nullable IdentityHashMap<IRecipe, Boolean> knownMatches) {
+            BitSet tried = indexes(rod) ? takingRod(rod) : (BitSet) readable.clone();
+            tried.or(unreadable);
+            tried.andNot(matched);
+            if (tried.isEmpty()) return Collections.emptyList();
+            List<IRecipe> candidates = new ArrayList<>(tried.cardinality());
+            for (int i = tried.nextSetBit(0); i >= 0; i = tried.nextSetBit(i + 1)) candidates.add(recipes.get(i));
+            return GTModHandler.getRecipeOutputs(candidates, false, shape, knownMatches, recipe -> {
+                for (int i = tried.nextSetBit(0); i >= 0; i = tried.nextSetBit(i + 1)) {
+                    if (recipes.get(i) == recipe) matched.set(i);
+                }
+            });
+        }
+
+        /// Records every readable recipe that cannot take `rod` as a mismatch in `knownMatches`.
+        private void addUntriedAsMismatches(@Nullable ItemStack rod, IdentityHashMap<IRecipe, Boolean> knownMatches) {
+            if (!indexes(rod)) return;
+            BitSet cannotTake = (BitSet) readable.clone();
+            cannotTake.andNot(takingRod(rod));
+            for (int i = cannotTake.nextSetBit(0); i >= 0; i = cannotTake.nextSetBit(i + 1)) {
+                knownMatches.putIfAbsent(recipes.get(i), false);
+            }
+        }
     }
 
     private static class RecipeShape {

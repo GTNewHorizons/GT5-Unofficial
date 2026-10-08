@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicIntegerArray;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -2004,11 +2005,13 @@ public class GTModHandler {
      */
     public static List<ItemStack> getRecipeOutputs(List<IRecipe> recipeList, boolean deleteFromList,
         ItemStack... shape) {
-        return getRecipeOutputs(recipeList, deleteFromList, shape, null);
+        return getRecipeOutputs(recipeList, deleteFromList, shape, null, null);
     }
 
+    /// [#getRecipeOutputs(List, boolean, ItemStack...)] that also records each match result in `knownMatches` and
+    /// passes each recipe that produced an output to `onOutput`, when given.
     static List<ItemStack> getRecipeOutputs(List<IRecipe> recipeList, boolean deleteFromList, ItemStack[] shape,
-        IdentityHashMap<IRecipe, Boolean> knownMatches) {
+        @Nullable IdentityHashMap<IRecipe, Boolean> knownMatches, @Nullable Consumer<IRecipe> onOutput) {
         final ArrayList<ItemStack> outputList = new ArrayList<>();
         if (shape == null || isAllNulls(shape)) return outputList;
 
@@ -2051,6 +2054,7 @@ public class GTModHandler {
             if (output.getMaxStackSize() != 1) continue;
 
             outputList.add(output);
+            if (onOutput != null) onOutput.accept(recipe);
             if (deleteFromList) iterator.remove();
         }
 
