@@ -3233,6 +3233,9 @@ public enum ItemList implements IItemContainer {
     MetaMaterial_FieldManipulator3,
     MetaMaterial_FieldManipulator4,
 
+    Scrap,
+    Scrapbox,
+
     Ice_Cream_Machine,
     Ice_Cream_Random,
     Ice_Cream_Acid,

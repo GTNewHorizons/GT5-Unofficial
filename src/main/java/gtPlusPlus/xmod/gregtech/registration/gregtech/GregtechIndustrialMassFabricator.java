@@ -35,7 +35,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Basic UUA1
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Scrap.get(9L))
+            .itemInputs(ItemList.Scrap.get(9L))
             .circuit(9)
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
@@ -44,7 +44,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Basic UUA2
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Scrapbox.get(1L))
+            .itemInputs(ItemList.Scrapbox.get(1L))
             .circuit(19)
             .fluidOutputs(Materials.UUAmplifier.getFluid(1))
             .duration(9 * SECONDS)
@@ -53,7 +53,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Boosted UUA1
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Scrap.get(9L))
+            .itemInputs(ItemList.Scrap.get(9L))
             .circuit(10)
             .fluidInputs(Materials.UUMatter.getFluid(1L))
             .fluidOutputs(Materials.UUAmplifier.getFluid(10L))
@@ -63,7 +63,7 @@ public class GregtechIndustrialMassFabricator {
 
         // Boosted UUA2
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Scrapbox.get(1L))
+            .itemInputs(ItemList.Scrapbox.get(1L))
             .circuit(20)
             .fluidInputs(Materials.UUMatter.getFluid(1L))
             .fluidOutputs(Materials.UUAmplifier.getFluid(10L))

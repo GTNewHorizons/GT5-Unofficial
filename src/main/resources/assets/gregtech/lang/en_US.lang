@@ -4925,6 +4925,13 @@ gt.item.compressed_fireclay.tooltip=Brick-shaped
 gt.item.firebrick.name=Firebrick
 gt.item.firebrick.tooltip=Heat resistant
 
+## Scrap
+gt.item.scrap.name=Scrap
+gt.item.scrap.tooltip=A pile of... something
+gt.Item_Scrapbox.name=Scrapbox
+gt.Item_Scrapboxtooltip=Recycled and boxed
+gt.recipe.scrapbox=Scrapbox
+
 ## Shape
 gt.item.shape_empty.name=Empty Shape Plate
 gt.item.shape_empty.tooltip=Raw Plate to make Molds and Extruder Shapes

@@ -29,12 +29,10 @@ import cpw.mods.fml.common.ModContainer;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
@@ -285,23 +283,6 @@ public class GTPreLoad {
                 GT_FML_LOGGER.info("noPrefix {}", reEnable);
             }
         }
-    }
-
-    public static void adjustScrap() {
-        GT_FML_LOGGER.info("GTMod: Removing all original Scrapbox Drops.");
-        try {
-            Objects.requireNonNull(GTUtility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true))
-                .set(null, 0);
-            ((List<?>) Objects
-                .requireNonNull(GTUtility.getFieldContent(ic2.api.recipe.Recipes.scrapboxDrops, "drops", true, true)))
-                    .clear();
-        } catch (Exception e) {
-            if (GTValues.D1) {
-                GT_FML_LOGGER.error(e);
-            }
-        }
-        GT_FML_LOGGER.debug("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
-        GTModHandler.addScrapboxDrop(200.0F, ItemList.IC2_Scrap.get(1L));
     }
 
     public static void loadConfig() {

@@ -99,6 +99,7 @@ import gregtech.api.recipe.maps.QuantumComputerFrontend;
 import gregtech.api.recipe.maps.QuantumForceTransformerFrontend;
 import gregtech.api.recipe.maps.RecyclerBackend;
 import gregtech.api.recipe.maps.ReplicatorBackend;
+import gregtech.api.recipe.maps.ScrapboxFrontend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
 import gregtech.api.recipe.maps.SpargeTowerFrontend;
 import gregtech.api.recipe.maps.TGSFrontend;
@@ -2225,6 +2226,16 @@ public final class RecipeMaps {
         .maxIO(3, 3, 2, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
         .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> scrapboxFakeRecipes = RecipeMapBuilder.of("gt.recipe.scrapbox")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .frontend(ScrapboxFrontend::new)
+        .neiRecipeBackgroundSize(170, 50)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Scrapbox.get(1))
+                .setMultipleWidgetsAllowed(true)
+                .setHeight(50))
         .build();
 
     private static void addElectricImplosionRecipe(GTRecipeBuilder sourceBuilder) {

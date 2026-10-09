@@ -557,6 +557,22 @@ public class AssemblerRecipes implements Runnable {
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
             }
+            // Conversion recipes for IC2 scrap & scrapbox
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.IC2_Scrap.get(1))
+                .circuit(15)
+                .itemOutputs(ItemList.Scrap.get(1L))
+                .duration(1 * TICKS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.IC2_Scrapbox.get(1))
+                .circuit(15)
+                .itemOutputs(ItemList.Scrapbox.get(1L))
+                .duration(1 * TICKS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(assemblerRecipes);
 
         }
 
