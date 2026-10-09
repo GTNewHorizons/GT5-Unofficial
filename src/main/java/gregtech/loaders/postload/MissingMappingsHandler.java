@@ -1,7 +1,5 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +22,6 @@ public class MissingMappingsHandler {
     private static final Remapper REMAPPER = new Remapper()
         // Block remappings
         .remapBlock("dreamcraft:gt.blockcasingsNH", GregTechAPI.sBlockCasingsNH)
-        .remapBlock("miscutils:oreCryolite", GameRegistry.findBlock(GTPlusPlus.ID, "oreCryoliteF"))
-        .remapBlock("miscutils:oreFluorite", GameRegistry.findBlock(GTPlusPlus.ID, "oreFluoriteF"))
         .remapBlock("EMT:EMT_GTBLOCK_CASEING", BlockLoader.defcCasingBlock)
         .remapBlock("GalaxySpace:spaceelevatorparts", GregTechAPI.sBlockCasingsSE)
         .remapBlock("GalaxySpace:spaceelevatormotors", GregTechAPI.sBlockCasingsSEMotor)
@@ -34,30 +30,7 @@ public class MissingMappingsHandler {
         .remapBlock("GalaxySpace:machineframes", GregTechAPI.sBlockCasingsSiphon)
 
         // Item remappings
-        .remapItem("miscutils:Ammonium", GameRegistry.findItem(GTPlusPlus.ID, "itemCellAmmonium"))
-        .remapItem("miscutils:BerylliumHydroxide", GameRegistry.findItem(GTPlusPlus.ID, "itemCellBerylliumHydroxide"))
-        .remapItem("miscutils:Bromine", GameRegistry.findItem(GTPlusPlus.ID, "itemCellBromine"))
-        .remapItem("miscutils:Krypton", GameRegistry.findItem(GTPlusPlus.ID, "itemCellKrypton"))
-        .remapItem("miscutils:Li2BeF4", GameRegistry.findItem(GTPlusPlus.ID, "itemCellLithiumTetrafluoroberyllate"))
         .remapItem("gregtech:gt.gt.fakecircuitcomponent", CircuitComponentFakeItem.INSTANCE)
-
-        .remapItem("miscutils:itemDustTinyCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustTinyCryoliteF"))
-        .remapItem("miscutils:itemDustSmallCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustSmallCryoliteF"))
-        .remapItem("miscutils:itemDustCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustCryoliteF"))
-        .remapItem("miscutils:dustPureCryolite", GameRegistry.findItem(GTPlusPlus.ID, "dustPureCryoliteF"))
-        .remapItem("miscutils:dustImpureCryolite", GameRegistry.findItem(GTPlusPlus.ID, "dustImpureCryoliteF"))
-        .remapItem("miscutils:crushedCryolite", GameRegistry.findItem(GTPlusPlus.ID, "crushedCryoliteF"))
-        .remapItem("miscutils:crushedPurifiedCryolite", GameRegistry.findItem(GTPlusPlus.ID, "crushedPurifiedCryoliteF"))
-        .remapItem("miscutils:crushedCentrifugedCryolite", GameRegistry.findItem(GTPlusPlus.ID, "crushedCentrifugedCryoliteF"))
-
-        .remapItem("miscutils:itemDustTinyFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustTinyFluoriteF"))
-        .remapItem("miscutils:itemDustSmallFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustSmallFluoriteF"))
-        .remapItem("miscutils:itemDustFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustFluoriteF"))
-        .remapItem("miscutils:dustPureFluorite", GameRegistry.findItem(GTPlusPlus.ID, "dustPureFluoriteF"))
-        .remapItem("miscutils:dustImpureFluorite", GameRegistry.findItem(GTPlusPlus.ID, "dustImpureFluoriteF"))
-        .remapItem("miscutils:crushedFluorite", GameRegistry.findItem(GTPlusPlus.ID, "crushedFluoriteF"))
-        .remapItem("miscutils:crushedPurifiedFluorite", GameRegistry.findItem(GTPlusPlus.ID, "crushedPurifiedFluoriteF"))
-        .remapItem("miscutils:crushedCentrifugedFluorite", GameRegistry.findItem(GTPlusPlus.ID, "crushedCentrifugedFluoriteF"))
 
         .remapItem("GalaxySpace:item.SpaceElevatorParts", ItemList.NanotubeSpool.getItem())
         .remapItem("GalaxySpace:item.MiningDrone", ItemList.MiningDroneLV.getItem())
