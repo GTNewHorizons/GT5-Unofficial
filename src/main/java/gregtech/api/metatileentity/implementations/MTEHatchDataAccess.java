@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
