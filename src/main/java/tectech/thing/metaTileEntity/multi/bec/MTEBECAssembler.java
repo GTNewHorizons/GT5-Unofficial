@@ -142,7 +142,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Assembler, Observation Array")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_assembler"))
             .addMarkdown(
                 new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"),
                 ImmutableMap.of("max-nanites", NumberFormatUtil.formatNumber(MAX_NANITES)))

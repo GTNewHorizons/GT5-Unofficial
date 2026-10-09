@@ -89,3 +89,22 @@ jobs:
             echo '::error title=Forbidden Scala dependency::test-scala-presence failed; see matching lines above.'
             exit 1
           fi
+
+      - name: Test duplicate lang keys
+        if: ${{ !cancelled() && steps.checkout.outcome == 'success' }}
+        shell: bash
+        run: |
+          # Minecraft keeps the last value of a duplicate key without a warning
+          if find src/main/resources/assets -name '*.lang' -exec awk '
+            FNR == 1 { delete seen }
+            { sub(/\r$/, "") }
+            /^#/ || !/=/ { next }
+            {
+              key = substr($0, 1, index($0, "=") - 1)
+              if (key in seen) print FILENAME ":" FNR ": " key " (first at line " seen[key] ")"
+              else seen[key] = FNR
+            }
+          ' {} + | grep .; then
+            echo '::error title=Duplicate lang keys::test-duplicate-lang-keys failed; see matching lines above.'
+            exit 1
+          fi
