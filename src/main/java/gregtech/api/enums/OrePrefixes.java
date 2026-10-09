@@ -1956,10 +1956,6 @@ public class OrePrefixes {
         0.5f,
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
 
-    public static boolean isInstanceOf(String oreName, OrePrefixes prefix) {
-        return oreName != null && oreName.startsWith(prefix.toString());
-    }
-
     public static OrePrefixes getOrePrefix(String oreDictName) {
         for (OrePrefixes prefix : VALUES) {
             if (!oreDictName.startsWith(prefix.name)) {
@@ -1979,12 +1975,6 @@ public class OrePrefixes {
         }
 
         return null;
-    }
-
-    public static String stripPrefix(String oreDictName) {
-        OrePrefixes prefix = getOrePrefix(oreDictName);
-        if (prefix == null) return oreDictName;
-        return oreDictName.substring(prefix.name.length());
     }
 
     public static class ParsedOreDictName {
@@ -2059,12 +2049,6 @@ public class OrePrefixes {
         }
 
         return prefixes;
-    }
-
-    public static String replacePrefix(String oreDictName, OrePrefixes replacement) {
-        OrePrefixes prefix = getOrePrefix(oreDictName);
-        if (prefix == null) return "";
-        return replacement.name + oreDictName.substring(prefix.name.length());
     }
 
     private static final Map<String, OrePrefixes> NAME_TO_OREPREFIX = new ConcurrentHashMap<>();

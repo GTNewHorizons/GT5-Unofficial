@@ -37,7 +37,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import com.ruling_0.materiallib.api.Material;
 
-import bartworks.MainMod;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.Materials;
@@ -45,7 +44,6 @@ import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTShapedRecipe;
@@ -80,72 +78,6 @@ public class BWUtil {
     public static Object get2DCoordFrom1DArray(int indexX, int indexY, int sizeY, Object[] array) {
         int index = indexX * sizeY + indexY;
         return array[index];
-    }
-
-    public static String subscriptNumbers(String b) {
-        char[] chars = b.toCharArray();
-        char[] nu = new char[chars.length];
-        for (int i = 0; i < chars.length; i++) {
-            nu[i] = switch (chars[i]) {
-                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
-                case '1' -> '\u2081';
-                case '2' -> '\u2082';
-                case '3' -> '\u2083';
-                case '4' -> '\u2084';
-                case '5' -> '\u2085';
-                case '6' -> '\u2086';
-                case '7' -> '\u2087';
-                case '8' -> '\u2088';
-                case '9' -> '\u2089';
-                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
-                default -> chars[i];
-            };
-        }
-        return new String(nu);
-    }
-
-    public static String subscriptNumber(Number b) {
-        char[] chars = Long.toString(b.longValue())
-            .toCharArray();
-        char[] nu = new char[chars.length];
-        for (int i = 0; i < chars.length; i++) {
-            nu[i] = switch (chars[i]) {
-                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
-                case '1' -> '\u2081';
-                case '2' -> '\u2082';
-                case '3' -> '\u2083';
-                case '4' -> '\u2084';
-                case '5' -> '\u2085';
-                case '6' -> '\u2086';
-                case '7' -> '\u2087';
-                case '8' -> '\u2088';
-                case '9' -> '\u2089';
-                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
-                default -> chars[i];
-            };
-        }
-        return new String(nu);
-    }
-
-    public static String superscriptNumbers(String b) {
-        char[] chars = b.toCharArray();
-        char[] nu = new char[chars.length];
-        for (int i = 0; i < chars.length; i++) {
-            nu[i] = switch (chars[i]) {
-                case '0' -> CustomGlyphs.SUPERSCRIPT0.charAt(0);
-                case '1' -> CustomGlyphs.SUPERSCRIPT1.charAt(0);
-                case '2' -> CustomGlyphs.SUPERSCRIPT2.charAt(0);
-                case '3' -> CustomGlyphs.SUPERSCRIPT3.charAt(0);
-                case '4' -> CustomGlyphs.SUPERSCRIPT4.charAt(0);
-                case '5' -> CustomGlyphs.SUPERSCRIPT5.charAt(0);
-                case '6' -> CustomGlyphs.SUPERSCRIPT6.charAt(0);
-                case '7' -> CustomGlyphs.SUPERSCRIPT7.charAt(0);
-                case '8' -> CustomGlyphs.SUPERSCRIPT8.charAt(0);
-                case '9' -> CustomGlyphs.SUPERSCRIPT9.charAt(0);
-                default -> chars[i];
-            };
-        }
-        return new String(nu);
     }
 
     @SuppressWarnings("unused") // Used in NHCoreMod
@@ -526,17 +458,5 @@ public class BWUtil {
             aEnchantmentsAdded,
             aEnchantmentLevelsAdded,
             aRecipe).setMirrored(aMirrored);
-    }
-
-    public static void shortSleep(long nanos) {
-        try {
-            long start = System.nanoTime();
-            long end;
-            do {
-                end = System.nanoTime();
-            } while (start + nanos >= end);
-        } catch (Exception e) {
-            MainMod.LOGGER.catching(e);
-        }
     }
 }

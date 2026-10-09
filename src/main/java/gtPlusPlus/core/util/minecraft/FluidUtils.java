@@ -320,24 +320,6 @@ public class FluidUtils {
         return fluid;
     }
 
-    public static Fluid generateGas(final String unlocalizedName, final String localizedName, final int MeltingPoint,
-        final short[] RGBA, final boolean aGenerateCell) {
-        Fluid fluid = FluidRegistry.getFluid(unlocalizedName.toLowerCase());
-        if (fluid == null) {
-            fluid = FluidUtils.addGtGas(
-                unlocalizedName,
-                localizedName,
-                RGBA,
-                3,
-                MeltingPoint,
-                null,
-                ItemList.Cell_Empty.get(1),
-                1000,
-                aGenerateCell);
-        }
-        return fluid;
-    }
-
     // Used in waila
     public static FluidStack getWildcardFluidStack(String aFluidName, int amount) {
         FluidStack tFStack = FluidRegistry.getFluidStack(aFluidName, amount);

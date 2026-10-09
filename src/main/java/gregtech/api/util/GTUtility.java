@@ -9,7 +9,6 @@ import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.Translocator;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -153,7 +152,6 @@ import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.Textures;
@@ -2334,13 +2332,6 @@ public class GTUtility {
     }
 
     /**
-     * Translates a Material Amount into an Amount of Fluid in Fluid Material Units.
-     */
-    public static long translateMaterialToFluidAmount(long aMaterialAmount, boolean aRoundUp) {
-        return translateMaterialToAmount(aMaterialAmount, 1 * INGOTS, aRoundUp);
-    }
-
-    /**
      * Translates a Material Amount into an Amount of Fluid. Second Parameter for things like Bucket Amounts (1000) and
      * similar
      */
@@ -3141,11 +3132,6 @@ public class GTUtility {
         return new String(chars);
     }
 
-    public static boolean isPartOfOrePrefix(ItemStack aStack, OrePrefixes aPrefix) {
-        return MaterialData.getAssociation(aStack) != null
-            && MaterialData.getAssociation(aStack).mPrefix.equals(aPrefix);
-    }
-
     public static boolean isOre(Block block, int meta) {
         OptionalBoolean isOre = OreManager.isOre(block, meta);
 
@@ -3748,22 +3734,6 @@ public class GTUtility {
         /**
          * This method copies NBT, as it is mutable.
          */
-        public static ItemId createWithStackSize(ItemStack itemStack) {
-            NBTTagCompound nbt = itemStack.getTagCompound();
-            if (nbt != null) {
-                nbt = (NBTTagCompound) nbt.copy();
-            }
-
-            return new AutoValue_GTUtility_ItemId(
-                itemStack.getItem(),
-                Items.feather.getDamage(itemStack),
-                nbt,
-                itemStack.stackSize);
-        }
-
-        /**
-         * This method copies NBT, as it is mutable.
-         */
         public static ItemId create(Item item, int metaData, @Nullable NBTTagCompound nbt) {
             if (nbt != null) {
                 nbt = (NBTTagCompound) nbt.copy();
@@ -3950,10 +3920,6 @@ public class GTUtility {
         public boolean matches(Fluid fluid) {
             return fluid() == fluid;
         }
-    }
-
-    public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Material material) {
-        return getPlasmaFuelValueInEUPerLiterFromFluid(MaterialUtils.plasma(material, 1));
     }
 
     public static int getPlasmaFuelValueInEUPerLiterFromFluid(FluidStack aLiquid) {

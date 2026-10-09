@@ -162,17 +162,4 @@ public class ItemFluidDisplay extends GTGenericItem {
         }
         return false;
     }
-
-    public static Material getMaterialFromCell(ItemStack tItemStack) {
-        for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
-            String tOreDictName = OreDictionary.getOreName(tOreDict);
-            if (tOreDictName.startsWith("cell")) {
-                return MaterialUtils.byLegacyName(
-                    tOreDictName.replace("cell", "")
-                        .replace("Molten", "")
-                        .replace("Plasma", ""));
-            }
-        }
-        return null;
-    }
 }

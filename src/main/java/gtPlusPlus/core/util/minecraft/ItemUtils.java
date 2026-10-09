@@ -1,7 +1,5 @@
 package gtPlusPlus.core.util.minecraft;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Minecraft;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -188,21 +186,6 @@ public class ItemUtils {
     }
 
     // Take 2 - GT/GT++ Dusts
-    public static ItemStack getGregtechDust(final String oredictName, final int amount) {
-        final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
-        if (!oreDictList.isEmpty()) {
-            ItemStack returnvalue;
-            for (ItemStack itemStack : oreDictList) {
-                final String modid = getModId(itemStack.getItem());
-                if (modid != null && (modid.equals(GregTech.ID) || modid.equals(GTPlusPlus.ID))) {
-                    returnvalue = itemStack.copy();
-                    returnvalue.stackSize = amount;
-                    return returnvalue;
-                }
-            }
-        }
-        return getNonTinkersDust(oredictName, amount);
-    }
 
     // Anything But Tinkers Dust
     public static ItemStack getNonTinkersDust(final String oredictName, final int amount) {

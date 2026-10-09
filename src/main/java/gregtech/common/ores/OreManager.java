@@ -147,28 +147,6 @@ public final class OreManager {
         }
     }
 
-    public static boolean setExistingOreStoneType(World world, int x, int y, int z, IStoneType newStoneType) {
-        Block block = world.getBlock(x, y, z);
-        int meta = world.getBlockMetadata(x, y, z);
-
-        try (OreInfo info = getOreInfo(block, meta)) {
-            if (info == null) return false;
-
-            info.stoneType = newStoneType;
-
-            IOreAdapter adapter = getAdapter(info);
-            if (adapter == null) return false;
-
-            ImmutableBlockMeta oreBlock = adapter.getBlock(info);
-
-            if (oreBlock == null) return false;
-
-            world.setBlock(x, y, z, oreBlock.getBlock(), oreBlock.getBlockMeta(), 2);
-
-            return true;
-        }
-    }
-
     public static List<ItemStack> mineBlock(Random random, World world, int x, int y, int z, boolean silktouch,
         int fortune, boolean simulate, boolean replaceWithCobblestone) {
         Block ore = world.getBlock(x, y, z);

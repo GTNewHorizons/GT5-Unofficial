@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.ShapeRegistry;
 
 import gregtech.GTLoggers;
 import gregtech.api.enums.OrePrefixes;
@@ -65,14 +64,6 @@ public final class GTMaterialIcons {
             name + "_" + variant,
             material,
             () -> new MLBlockIconContainer(name, variant, material, 1));
-    }
-
-    /// Returns whether any item art exists under `prefix`'s name. Safe to call on a dedicated server. False for a
-    /// block or fluid shape's name.
-    public static boolean hasItemIcon(OrePrefixes prefix) {
-        String name = prefix.name();
-        return GTMaterialIconSets.ITEM_NAMES.contains(name) || ShapeRegistry.instance()
-            .getItemShape(name) != null;
     }
 
     /// Returns the item-atlas icon identifier for `name` in the texture set `setName`, falling back to the `NONE`

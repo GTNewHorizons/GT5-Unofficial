@@ -3,10 +3,8 @@ package gregtech.api.material;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -75,7 +73,7 @@ public final class MaterialData {
     }
 
     /// Sets `data` for `stack`, scaled down to a single item and merged into any existing association.
-    public static void set(ItemStack stack, ItemData data) {
+    private static void set(ItemStack stack, ItemData data) {
         if (GTUtility.isStackInvalid(stack) || data == null) return;
 
         if (stack.stackSize > 1) {
@@ -131,12 +129,6 @@ public final class MaterialData {
     public static ItemData getAssociation(ItemStack stack) {
         ItemData data = get(stack);
         return data != null && data.hasValidPrefixMaterialData() ? data : null;
-    }
-
-    /// Returns an unmodifiable live view of every stack with data, as stored: single items, with wildcard damage for
-    /// wildcard entries.
-    public static Set<ItemStack> stacks() {
-        return Collections.unmodifiableSet(dataByStack.keySet());
     }
 
     private static void addAssociation(Supplier<ItemData> association, ItemStack stack) {

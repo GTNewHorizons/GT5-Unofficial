@@ -435,10 +435,6 @@ public final class OreDictRegistrationHandler {
         registrations.clear();
     }
 
-    public static boolean isRegisteredOre(ItemStack stack) {
-        return registeredOres.contains(stack);
-    }
-
     /// Whether items under `prefix` and `material` get Thaumcraft aspects: MaterialLib serves the pair, or the
     /// prefix names an ore on one stone type and the material has ores.
     private static boolean carriesAspects(OrePrefixes prefix, Material material) {

@@ -16,13 +16,10 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 import java.util.Arrays;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
@@ -32,8 +29,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IBlockWithTextures;
@@ -43,7 +38,6 @@ import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.objects.XSTR;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.RenderOverlay;
@@ -142,67 +136,6 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             ctx.renderPositiveXFacing(aTextures[SIDE_EAST]);
         }
         return true;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void addHitEffects(EffectRenderer effectRenderer, Block block, World world, int x, int y, int z,
-        int ordinalSide) {
-        double rX = x + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
-        double rY = y + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
-        double rZ = z + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
-        if (ordinalSide == 0) {
-            rY = y - 0.1;
-        } else if (ordinalSide == 1) {
-            rY = y + 1.1;
-        } else if (ordinalSide == 2) {
-            rZ = z - 0.1;
-        } else if (ordinalSide == 3) {
-            rZ = z + 1.1;
-        } else if (ordinalSide == 4) {
-            rX = x - 0.1;
-        } else if (ordinalSide == 5) {
-            rX = x + 1.1;
-        }
-        effectRenderer.addEffect(
-            (new EntityDiggingFX(
-                world,
-                rX,
-                rY,
-                rZ,
-                0.0,
-                0.0,
-                0.0,
-                block,
-                block.getDamageValue(world, x, y, z),
-                ordinalSide)).applyColourMultiplier(x, y, z)
-                    .multiplyVelocity(0.2F)
-                    .multipleParticleScaleBy(0.6F));
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void addDestroyEffects(EffectRenderer effectRenderer, Block block, World world, int x, int y, int z) {
-        for (int iX = 0; iX < 4; ++iX) {
-            for (int iY = 0; iY < 4; ++iY) {
-                for (int iZ = 0; iZ < 4; ++iZ) {
-                    final double bX = x + (iX + 0.5) / 4.0;
-                    final double bY = y + (iY + 0.5) / 4.0;
-                    final double bZ = z + (iZ + 0.5) / 4.0;
-                    effectRenderer.addEffect(
-                        (new EntityDiggingFX(
-                            world,
-                            bX,
-                            bY,
-                            bZ,
-                            bX - x - 0.5,
-                            bY - y - 0.5,
-                            bZ - z - 0.5,
-                            block,
-                            block.getDamageValue(world, x, y, z))).applyColourMultiplier(x, y, z));
-                }
-            }
-        }
     }
 
     private IMetaTileEntity getMTE(Block block, int meta) {

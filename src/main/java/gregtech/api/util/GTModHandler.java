@@ -566,10 +566,6 @@ public class GTModHandler {
         return Recipes.oreWashing.getRecipes();
     }
 
-    public static boolean isBufferingCraftingRecipes() {
-        return sBufferCraftingRecipes;
-    }
-
     /**
      * This was supposed to be called once, but since now there is a second buffering pass, this will now be called too
      * at the end of GT5U's load complete if NHCore isn't present, otherwise NHCore will call it in its own load
