@@ -22,7 +22,6 @@ import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
@@ -54,7 +53,6 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTTooltipDataCache;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gregtech.common.gui.modularui.util.MachineModularSlot;
 import gregtech.common.gui.modularui.util.UpgradeModularSlot;
@@ -62,8 +60,6 @@ import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 
 public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrialApiary> {
-
-    // TODO error widget
 
     private final int QUEEN_SLOT_OFFSET = machine.getInputSlot();
     private final int DRONE_SLOT_OFFSET = QUEEN_SLOT_OFFSET + 1;
@@ -317,16 +313,16 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                     .coverChildren()
                     .child(
                         IKey.str("x")
-                            .color(Color.GREY.darker(2))
                             .alignment(Alignment.CENTER)
                             .asWidget()
+                            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_GRAY)
                             .width(18)
                             .scale(0.9f))
                     .child(
                         IKey.dynamic(() -> String.valueOf(machine.getAcceleration()))
-                            .color(Color.GREY.darker(2))
                             .alignment(Alignment.CENTER)
                             .asWidget()
+                            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_GRAY)
                             .width(18)
                             .scale(0.9f))));
     }
