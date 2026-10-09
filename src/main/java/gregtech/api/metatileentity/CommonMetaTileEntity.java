@@ -34,11 +34,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.implementation.items.GTItemSink;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -57,6 +57,8 @@ import gregtech.common.covers.Cover;
  * ({@link MetaPipeEntity}).
  */
 public abstract class CommonMetaTileEntity implements IMetaTileEntity {
+
+    private volatile ITexture[][] inventoryTextureCache;
 
     /**
      * Inventory of this block.
@@ -159,20 +161,18 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {}
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
+    public void onClientSoundStateChanged() {}
+
+    @Override
     public void onPreTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     @Override
-    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
-            /*
-             * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
-             * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
-             * work and network traffic on different ticks, until it reaches 0.
-             */
-            baseMetaTileEntity.issueTextureUpdate();
-        }
-    }
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     public void onTickFail(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
@@ -560,6 +560,26 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @SideOnly(Side.CLIENT)
     public boolean renderInInventory(ISBRInventoryContext ctx) {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected final ITexture[][] getOrCreateInventoryTextures() {
+        ITexture[][] textures = inventoryTextureCache;
+        if (textures == null) {
+            final IGregTechTileEntity base = getBaseMetaTileEntity();
+            textures = new ITexture[][] { getTexture(base, ForgeDirection.DOWN, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.UP, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.NORTH, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.SOUTH, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.WEST, ForgeDirection.WEST, -1, true, false),
+                getTexture(base, ForgeDirection.EAST, ForgeDirection.WEST, -1, true, false) };
+            inventoryTextureCache = textures;
+        }
+        return textures;
+    }
+
+    public final void clearInventoryTextureCache() {
+        inventoryTextureCache = null;
     }
 
     @Override

@@ -8,13 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -38,11 +35,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import cpw.mods.fml.common.registry.RegistryDelegate;
 import gregtech.api.enums.Materials;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
@@ -51,7 +46,6 @@ import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.RecipeMetadataStorage;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -231,38 +225,25 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void runtimeTrieMissDoesNotUseDiagnosticFallbackOrWriteDiagnosticLog(@TempDir Path tempDir) throws Exception {
-        File previousLogFile = GTLog.mLogFile;
-        GTLog.mLogFile = tempDir.resolve("logs")
-            .resolve("GregTech.log")
-            .toFile();
+    void runtimeTrieMissDoesNotUseDiagnosticFallback() {
+        Item input = item("lookup.diagnostic.input");
+        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
+        GTRecipe recipe = recipe(input, item("lookup.diagnostic.output"), category);
+        RecipeMapBackend backend = new EmptyLookupBackend();
+        backend.compileRecipe(recipe);
 
-        try {
-            Item input = item("lookup.diagnostic.input");
-            RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
-            GTRecipe recipe = recipe(input, item("lookup.diagnostic.output"), category);
-            RecipeMapBackend backend = new EmptyLookupBackend();
-            backend.compileRecipe(recipe);
-
-            assertFalse(
-                backend
-                    .matchRecipeStream(
-                        new ItemStack[] { new ItemStack(input, 1, 0) },
-                        new FluidStack[0],
-                        null,
-                        null,
-                        false,
-                        false,
-                        false)
-                    .findAny()
-                    .isPresent());
-
-            Path missLog = tempDir.resolve("logs")
-                .resolve("RecipeLookupMisses.log");
-            assertFalse(Files.exists(missLog));
-        } finally {
-            GTLog.mLogFile = previousLogFile;
-        }
+        assertFalse(
+            backend
+                .matchRecipeStream(
+                    new ItemStack[] { new ItemStack(input, 1, 0) },
+                    new FluidStack[0],
+                    null,
+                    null,
+                    false,
+                    false,
+                    false)
+                .findAny()
+                .isPresent());
     }
 
     @Test
@@ -601,8 +582,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.HV));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.HV));
+            GTOreDictUnificator.addAssociation(circuit, Materials.HV, representative);
+            GTOreDictUnificator.addAssociation(circuit, Materials.HV, equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             backend.compileRecipe(
@@ -655,10 +636,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.MV));
-            ItemData equivalentData = new ItemData(circuit, Materials.MV);
-            equivalentData.mBlackListed = true;
-            GTOreDictUnificator.setItemData(equivalent, equivalentData);
+            GTOreDictUnificator.addAssociation(circuit, Materials.MV, representative);
+            GTOreDictUnificator.addAssociation(circuit, Materials.MV, equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             backend.compileRecipe(
@@ -799,8 +778,8 @@ class RecipeMapBackendLookupTest {
             .put(unificationName, representative);
 
         try {
-            GTOreDictUnificator.setItemData(representative, new ItemData(circuit, Materials.LV));
-            GTOreDictUnificator.setItemData(equivalent, new ItemData(circuit, Materials.LV));
+            GTOreDictUnificator.addAssociation(circuit, Materials.LV, representative);
+            GTOreDictUnificator.addAssociation(circuit, Materials.LV, equivalent);
             GTOreDictUnificator.resetUnificationEntries();
 
             List<GTRecipeLookupIngredient> group = new ArrayList<>();

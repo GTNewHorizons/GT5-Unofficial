@@ -23,7 +23,6 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -126,13 +125,12 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> r.isNotRotated() && f.isNotFlipped();
+        return (d, r, f) -> f.isNotFlipped();
     }
 
     @Override
     protected ExtendedFacing getCorrectedAlignment(ExtendedFacing aOldFacing) {
-        return aOldFacing.with(Flip.NONE)
-            .with(Rotation.NORMAL);
+        return aOldFacing.with(Flip.NONE);
     }
 
     @Override
@@ -142,7 +140,7 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public boolean isRotationChangeAllowed() {
-        return false;
+        return true;
     }
 
     @SuppressWarnings("unchecked")
@@ -425,7 +423,7 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
                 "GT5U.infodata.turbine.pollution",
                 EnumChatFormatting.GREEN + "" + getAveragePollutionPercentage() + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.multiblock.recipes_done",
+                "GT5U.multiblock.recipesDone.fmt",
                 EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) };
     }
 

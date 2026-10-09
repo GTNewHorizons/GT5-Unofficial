@@ -350,10 +350,13 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
      * Valid processing modes (types of output) for the Tree Growth Simulator.
      */
     public enum Mode {
+
         LOG,
         SAPLING,
         LEAVES,
-        FRUIT
+        FRUIT;
+
+        public static final Mode[] VALUES = values();
     }
 
     /**
@@ -725,7 +728,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                 .getYield() * 10;
 
             fruit = fruit.copy();
-            fruit.stackSize = (int) (fruit.stackSize * yield);
+            fruit.stackSize = Math.max(1, (int) (fruit.stackSize * yield));
             adjustedMap.put(Mode.FRUIT, fruit);
         }
 
@@ -853,11 +856,11 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
          * the mode multiplier, but not tool/tier multipliers as those can change dynamically. If the sapling has an
          * output in this mode, also add the tools usable for this mode as inputs.
          */
-        final Mode[] MODE_VALUES = Mode.values();
-        ItemStack[][] inputStacks = new ItemStack[MODE_VALUES.length][];
-        ItemStack[] outputStacks = new ItemStack[MODE_VALUES.length];
 
-        for (Mode mode : MODE_VALUES) {
+        ItemStack[][] inputStacks = new ItemStack[Mode.VALUES.length][];
+        ItemStack[] outputStacks = new ItemStack[Mode.VALUES.length];
+
+        for (Mode mode : Mode.VALUES) {
             ItemStack output = switch (mode) {
                 case LOG -> log;
                 case SAPLING -> saplingOut;

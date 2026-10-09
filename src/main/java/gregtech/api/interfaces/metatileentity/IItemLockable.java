@@ -35,7 +35,7 @@ public interface IItemLockable {
 
     boolean isLocked();
 
-    default boolean acceptsItemLock() {
+    default boolean acceptsConfigCopy() {
         return false;
     }
 }

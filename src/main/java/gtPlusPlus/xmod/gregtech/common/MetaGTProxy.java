@@ -9,6 +9,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TAE;
 import gregtech.api.util.GTLanguageManager;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
@@ -78,7 +79,7 @@ public class MetaGTProxy {
                 LangUtils.rewriteEntryForLanguageRegistry(aLangs[i], "ic2.fluidHotWater", aLangValues[i]);
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 }

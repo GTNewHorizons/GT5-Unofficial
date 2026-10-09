@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.StatCollector;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.net.GTPacketChat;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.Localized;
@@ -97,7 +97,7 @@ public enum ChatMessage {
                 try {
                     value = Integer.parseInt(sb.toString());
                 } catch (NumberFormatException e) {
-                    GTMod.GT_FML_LOGGER.warn(
+                    GTLoggers.GT_FML_LOGGER.warn(
                         "Could not parse ChatMessage value to check if the index is plural. Lang Key (Singular)={}, Index={}, Value={}",
                         singular,
                         pluralIndex,

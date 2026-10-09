@@ -23,6 +23,7 @@ public class LargeHadronColliderRecipes implements Runnable {
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
+            .ignoreCollision()
             .addTo(largeHadronColliderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -35,6 +36,7 @@ public class LargeHadronColliderRecipes implements Runnable {
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
+            .ignoreCollision()
             .addTo(largeHadronColliderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -47,6 +49,7 @@ public class LargeHadronColliderRecipes implements Runnable {
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
+            .ignoreCollision()
             .addTo(largeHadronColliderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -59,6 +62,7 @@ public class LargeHadronColliderRecipes implements Runnable {
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
+            .ignoreCollision()
             .addTo(largeHadronColliderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -71,6 +75,7 @@ public class LargeHadronColliderRecipes implements Runnable {
                     .build())
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UV)
+            .ignoreCollision()
             .addTo(largeHadronColliderRecipes);
 
     }

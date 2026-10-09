@@ -125,6 +125,7 @@ public class GTUtilityClient {
                 tABCCoord[0] = -1;
                 tABCCoord[1]++;
             }
+            ctx.finishLighting();
         }
 
         ctx.getRenderBlocks().field_152631_f = false;

@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -13,12 +14,16 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchExtrusionGui;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     public int shapeSlot = getSlots(mTier);
@@ -57,6 +62,13 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.hatch.extrusion.name", GTUtility.getRomanNumeral(mTier - 4));
+    }
+
+    @Override
     public int getCircuitSlotX() {
         return 152;
     }
@@ -69,10 +81,12 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Input Bus with Mold for " + EnumChatFormatting.YELLOW + "Extrusion Machine" + EnumChatFormatting.RESET,
-            "Capacity: " + formatNumber(getSlots(mTier)) + " Slots",
-            "Added by: " + EnumChatFormatting.BLUE + "VorTex" };
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.hatch.extrusion.desc",
+            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.blockmachines.hatch.extrusion.machine")
+                + EnumChatFormatting.RESET,
+            formatNumber(getSlots(mTier)),
+            EnumChatFormatting.BLUE + "VorTex");
     }
 
     public static ItemStack findMatchingShape(ItemStack stack) {

@@ -38,12 +38,8 @@ public class CoverConveyor extends CoverIOBase {
         GTItemTransfer transfer = new GTItemTransfer();
 
         switch (getIOMode()) {
-            case EXPORT -> {
-                transfer.push(coverable, coverSide, coverable.getTileEntityAtSide(coverSide));
-            }
-            case IMPORT -> {
-                transfer.pull(coverable, coverSide, coverable.getTileEntityAtSide(coverSide));
-            }
+            case EXPORT -> transfer.push(coverable, coverSide, coverable.getTileEntityAtSide(coverSide));
+            case IMPORT -> transfer.pull(coverable, coverSide, coverable.getTileEntityAtSide(coverSide));
         }
 
         transfer.setStacksToTransfer(stacksPerTransfer);

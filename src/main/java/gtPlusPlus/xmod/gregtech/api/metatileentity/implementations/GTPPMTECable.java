@@ -14,6 +14,7 @@ import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.material.Material;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class GTPPMTECable extends MTECable {
 
     private final short[] rgb;

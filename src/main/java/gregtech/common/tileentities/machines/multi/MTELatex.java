@@ -186,14 +186,14 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
                 for (int i = 0; i < inputFluids.length; i++) {
                     if (inputFluids[i] == null) continue;
                     copy[i] = inputFluids[i].copy();
-                    copy[i].amount = (int) Math.round(copy[i].amount / getRubberCostMult());
+                    copy[i].amount = (int) (Math.ceil((copy[i].amount + 0.5D) / getRubberCostMult()) - 1D);
                 }
 
                 return copy;
             }
-        }.setSpeedBonus(1F / 2F)
+        }.setSpeedBonus(1.0D / 2.0D)
             .setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.85F);
+            .setEuModifier(0.85D);
     }
 
     @Nullable

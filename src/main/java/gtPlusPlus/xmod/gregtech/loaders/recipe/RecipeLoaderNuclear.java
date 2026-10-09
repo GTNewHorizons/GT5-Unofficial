@@ -97,30 +97,6 @@ public class RecipeLoaderNuclear {
 
     private static void chemicalBathRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Tin.getDust(12))
-            .itemOutputs(
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 3),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 4),
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 5))
-            .outputChances(90_00, 60_00, 30_00)
-            .fluidInputs(Materials.Chlorine.getGas(2_400))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(chemicalBathRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Rutile.getDust(5))
-            .itemOutputs(
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 3),
-                Materials.Titanium.getDust(1),
-                MaterialsElements.getInstance().HAFNIUM.getDust(1))
-            .outputChances(90_00, 30_00, 10_00)
-            .fluidInputs(Materials.Chlorine.getGas(4_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_EV / 2)
-            .addTo(chemicalBathRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.LithiumCarbonateDust.get(3))
             .itemOutputs(MaterialsFluorides.LITHIUM_FLUORIDE.getDust(2))
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 500))

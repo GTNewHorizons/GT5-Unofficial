@@ -33,32 +33,38 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
 
         // recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
 
-        recipeInfo.drawText(getEUtDisplay(recipeInfo.calculator));
-        recipeInfo.drawText(getVoltageString(recipeInfo.calculator));
-        recipeInfo.drawText(getAmperageString(recipeInfo.calculator));
+        int amperage = recipeInfo.recipeMap.getAmperage();
+        recipeInfo.drawText(getEUtDisplay(recipeInfo.calculator, amperage));
+        if (amperage != 1) {
+            recipeInfo.drawText(getVoltageString(recipeInfo.calculator, amperage));
+        }
+        recipeInfo.drawText(getAmperageString(amperage));
 
     }
 
     // todo: use an OverclockDescriber here
-    private String getEUtDisplay(OverclockCalculator calculator) {
+    private String getEUtDisplay(OverclockCalculator calculator, int amperage) {
+        String tier = amperage == 1
+            ? GTUtility.getTierNameWithParentheses(computeVoltageForEURate(calculator.getConsumption(), amperage))
+            : "";
         return StatCollector
-            .translateToLocalFormatted("GT5U.nei.display.usage", formatNumber(calculator.getConsumption()), "");
+            .translateToLocalFormatted("GT5U.nei.display.usage", formatNumber(calculator.getConsumption()), tier);
     }
 
-    private String getVoltageString(OverclockCalculator calculator) {
-        long voltage = computeVoltageForEURate(calculator.getConsumption());
+    private String getVoltageString(OverclockCalculator calculator, int amperage) {
+        long voltage = computeVoltageForEURate(calculator.getConsumption(), amperage);
         return StatCollector.translateToLocalFormatted(
             "GT5U.nei.display.voltage",
             formatNumber(voltage),
             GTUtility.getTierNameWithParentheses(voltage));
     }
 
-    private long computeVoltageForEURate(long euPerTick) {
-        return euPerTick;
+    private long computeVoltageForEURate(long euPerTick, int amperage) {
+        return euPerTick / amperage;
     }
 
-    private String getAmperageString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", formatNumber(1));
+    private String getAmperageString(int amperage) {
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", formatNumber(amperage));
     }
 
 }

@@ -311,19 +311,16 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("heat", Math.round(heat));
         tag.setBoolean("cooling", overheated);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.hip_compressor.heat",
                 "" + (tag.getBoolean("cooling") ? EnumChatFormatting.RED : EnumChatFormatting.AQUA)
@@ -340,13 +337,13 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                setSpeedBonus(1F / 3.5F);
-                setEuModifier(0.75F);
+                setSpeedBonus(1.0D / 3.5D);
+                setEuModifier(0.75D);
 
                 // Nerf when heated
                 if (overheated) {
-                    setSpeedBonus(2.5F);
-                    setEuModifier(1.1F);
+                    setSpeedBonus(2.5D);
+                    setEuModifier(1.1D);
                 }
 
                 // If Black Hole required, no recipe

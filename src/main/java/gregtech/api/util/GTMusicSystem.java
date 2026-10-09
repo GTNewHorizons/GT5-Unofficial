@@ -37,7 +37,7 @@ import com.jcraft.jorbis.VorbisFile;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.client.ElectricJukeboxSound;
@@ -477,11 +477,11 @@ public final class GTMusicSystem {
                                 json.soundDurationsMs.put(res.toString(), (int) Math.ceil(totalSeconds * 1000.0f));
                             }
                         } catch (Exception e) {
-                            GTMod.GT_FML_LOGGER.warn("Skipping {}: {}", record.recordName, res, e);
+                            GTLoggers.GT_FML_LOGGER.warn("Skipping {}: {}", record.recordName, res, e);
                         }
                     }
                 }
-                GTMod.GT_FML_LOGGER.info(
+                GTLoggers.GT_FML_LOGGER.info(
                     "Sound durations json: \n{}",
                     new GsonBuilder().setPrettyPrinting()
                         .create()
@@ -668,7 +668,7 @@ public final class GTMusicSystem {
                                     .intValue());
                         }
                     } catch (Exception e) {
-                        GTMod.GT_FML_LOGGER.error("Could not parse sound durations from {}", url, e);
+                        GTLoggers.GT_FML_LOGGER.error("Could not parse sound durations from {}", url, e);
                     }
                 }
             } catch (IOException e) {

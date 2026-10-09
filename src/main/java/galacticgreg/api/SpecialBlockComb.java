@@ -64,7 +64,6 @@ public class SpecialBlockComb extends BlockMeta {
         if (!super.equals(obj)) return false;
         if (getClass() != obj.getClass()) return false;
         SpecialBlockComb other = (SpecialBlockComb) obj;
-        if (_mBlockPosition != other._mBlockPosition) return false;
-        return true;
+        return _mBlockPosition == other._mBlockPosition;
     }
 }

@@ -439,14 +439,17 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override
     public final TileEntity getTileEntityAtSide(ForgeDirection side) {
         final int ordinalSide = side.ordinal();
-        if (side == ForgeDirection.UNKNOWN || mBufferedTileEntities[ordinalSide] == this) return null;
+        if (side == ForgeDirection.UNKNOWN) return null;
         final int tX = getOffsetX(side, 1);
         final int tY = getOffsetY(side, 1);
         final int tZ = getOffsetZ(side, 1);
         if (crossedChunkBorder(tX, tZ)) {
+            // never trust the "nothing here" marker across a chunk border
+            // loading the neighbor chunk fires no block update
+            // the marker would stick forever and we would never see its tile entities.
             mBufferedTileEntities[ordinalSide] = null;
             if (ignoreUnloadedChunks && !worldObj.blockExists(tX, tY, tZ)) return null;
-        }
+        } else if (mBufferedTileEntities[ordinalSide] == this) return null;
         if (mBufferedTileEntities[ordinalSide] == null) {
             mBufferedTileEntities[ordinalSide] = worldObj.getTileEntity(tX, tY, tZ);
             if (mBufferedTileEntities[ordinalSide] == null) {
@@ -870,10 +873,13 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             }
 
             @Override
+            public boolean onMouseScroll(int direction) {
+                return super.onMouseScroll(GTMod.proxy.invertCircuitScrollDirection ? -direction : direction);
+            }
+
+            @Override
             protected void phantomScroll(int direction) {
-                if (GTMod.proxy.invertCircuitScrollDirection) {
-                    phantomClick(new ClickData(direction > 0 ? 0 : 1, false, false, false));
-                } else phantomClick(new ClickData(direction > 0 ? 1 : 0, false, false, false));
+                phantomClick(new ClickData(direction > 0 ? 0 : 1, false, false, false));
             }
 
             @Override

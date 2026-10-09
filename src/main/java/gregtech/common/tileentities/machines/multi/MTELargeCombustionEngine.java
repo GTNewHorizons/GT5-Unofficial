@@ -266,8 +266,8 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                     fuelConsumption = tLiquid.amount = getNominalOutput() / fuelValue;
                 }
 
-                // Deplete that amount
-                if (!depleteInput(tLiquid)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+                // Deplete that amount, try next fuel if this one is insufficient
+                if (!depleteInput(tLiquid)) continue;
                 boostEu = depleteInput(getBooster().getGas(2L * getAdditiveFactor()));
 
                 // Check to prevent burning HOG without consuming it, if not boosted

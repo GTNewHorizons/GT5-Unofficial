@@ -41,10 +41,7 @@ public class BlockFenceMetal extends BlockFence {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        return switch (aMeta) {
-            case 0 -> Textures.BlockIcons.BLOCK_IRON_FENCE.getIcon();
-            default -> Textures.BlockIcons.BLOCK_IRON_FENCE.getIcon();
-        };
+        return Textures.BlockIcons.BLOCK_IRON_FENCE.getIcon();
     }
 
     protected final void register(int meta, @Nullable IItemContainer container) {

@@ -1,5 +1,7 @@
 package gregtech.common.data.drone;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +27,12 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.net.PacketObserveMachine;
 import gregtech.api.objects.GTChunkManager;
-import gregtech.api.util.GTLog;
 import gregtech.common.entity.EntityDrone;
 import gregtech.common.items.ItemDroneRemoteInterface;
 
@@ -163,7 +167,7 @@ public class CameraViewportManager {
                 }
                 removePlayerMethod.setAccessible(true);
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -175,7 +179,7 @@ public class CameraViewportManager {
                     addPlayerMethod.invoke(playerInstance, player);
                 }
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -187,7 +191,7 @@ public class CameraViewportManager {
                     removePlayerMethod.invoke(playerInstance, player);
                 }
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -282,6 +286,7 @@ public class CameraViewportManager {
             if (te instanceof BaseMetaTileEntity gte) {
                 NBTTagCompound statusTag = new NBTTagCompound();
                 gte.getWailaNBTData(player, gte, statusTag, world, finalX, finalY, finalZ);
+                statusTag.setLong("mStoredEnergy", calculateStoredEnergy(gte));
                 statusTag.setLong("observePos", (hCoord != NULL_COORD) ? hCoord : machineCoord);
                 PacketObserveMachine reply = new PacketObserveMachine(
                     dim,
@@ -374,5 +379,43 @@ public class CameraViewportManager {
                 }
             }
         }
+    }
+
+    public static long calculateStoredEnergy(BaseMetaTileEntity gte) {
+        if (gte == null) return 0;
+        long storedEnergy = gte.getStoredEU();
+        if (gte.getMetaTileEntity() instanceof MTEMultiBlockBase mte) {
+            for (MTEHatch tHatch : mte.getExoticAndNormalEnergyHatchList()) {
+                IGregTechTileEntity hTe = tHatch.getBaseMetaTileEntity();
+                if (hTe != null) {
+                    long eu = hTe.getStoredEU();
+                    if (eu > 0) {
+                        if (Long.MAX_VALUE - storedEnergy < eu) {
+                            return Long.MAX_VALUE;
+                        } else {
+                            storedEnergy += eu;
+                        }
+                    }
+                }
+            }
+            if (mte.mDynamoHatches != null) {
+                for (MTEHatchDynamo dHatch : mte.mDynamoHatches) {
+                    if (dHatch != null) {
+                        IGregTechTileEntity dTe = dHatch.getBaseMetaTileEntity();
+                        if (dTe != null) {
+                            long eu = dTe.getStoredEU();
+                            if (eu > 0) {
+                                if (Long.MAX_VALUE - storedEnergy < eu) {
+                                    return Long.MAX_VALUE;
+                                } else {
+                                    storedEnergy += eu;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return storedEnergy;
     }
 }

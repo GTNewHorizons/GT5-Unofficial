@@ -46,6 +46,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
+import io.netty.buffer.ByteBuf;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link MTEMultiBlockBase}
@@ -549,43 +550,30 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-
-        if (data == null) data = new NBTTagCompound();
-
-        data.setFloat("centerX", center.x);
-        data.setFloat("centerY", center.y);
-        data.setFloat("centerZ", center.z);
-        data.setInteger("radius", structureRadius);
-
-        data.setByte(
-            "eRotation",
-            (byte) mExtendedFacing.getRotation()
-                .getIndex());
-        data.setByte(
-            "eFlip",
-            (byte) mExtendedFacing.getFlip()
-                .getIndex());
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeFloat(center.x);
+        buffer.writeFloat(center.y);
+        buffer.writeFloat(center.z);
+        buffer.writeInt(structureRadius);
+        buffer.writeByte(mExtendedFacing.getIndex());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void onDescriptionPacket(NBTTagCompound data) {
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        center.x = buffer.readFloat();
+        center.y = buffer.readFloat();
+        center.z = buffer.readFloat();
+
         int oldRadius = structureRadius;
-
-        center.set(data.getFloat("centerX"), data.getFloat("centerY"), data.getFloat("centerZ"));
-        structureRadius = data.getInteger("radius");
-
+        structureRadius = buffer.readInt();
         if (oldRadius != structureRadius) {
             restartActivitySound();
         }
 
-        mExtendedFacing = ExtendedFacing.of(
-            getBaseMetaTileEntity().getFrontFacing(),
-            Rotation.byIndex(data.getByte("eRotation")),
-            Flip.byIndex(data.getByte("eFlip")));
+        mExtendedFacing = ExtendedFacing.byIndex(buffer.readByte());
     }
 
     protected final void checkHatchMin(List<StructureError> errors, HatchElement element, int min) {

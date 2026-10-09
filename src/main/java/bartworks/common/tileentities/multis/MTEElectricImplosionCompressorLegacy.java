@@ -163,7 +163,7 @@ public class MTEElectricImplosionCompressorLegacy
                 Arrays.stream(transpose(shape))
                     .map(
                         sa -> Arrays.stream(sa)
-                            .map(s -> s.replaceAll("F", "H"))
+                            .map(s -> s.replace("F", "H"))
                             .toArray(String[]::new))
                     .toArray(String[][]::new))
             .addElement(
@@ -232,7 +232,6 @@ public class MTEElectricImplosionCompressorLegacy
             .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
             .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
             .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
-            .addMaxTierSkips(1)
             .addSupportAny()
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front center, 3rd layer")
@@ -290,6 +289,11 @@ public class MTEElectricImplosionCompressorLegacy
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         this.updateChunkCoordinates();
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override

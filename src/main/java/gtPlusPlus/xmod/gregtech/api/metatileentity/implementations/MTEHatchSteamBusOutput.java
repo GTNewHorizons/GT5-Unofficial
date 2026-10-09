@@ -14,7 +14,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
 import gtPlusPlus.core.util.Utils;
 
@@ -140,16 +139,6 @@ public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
             TextureFactory.of(
                 mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE),
             TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
-    }
-
-    @Override
-    public boolean isFiltered() {
-        return false;
-    }
-
-    @Override
-    public boolean isFilteredToItem(GTUtility.ItemId id) {
-        return false;
     }
 
     @Override

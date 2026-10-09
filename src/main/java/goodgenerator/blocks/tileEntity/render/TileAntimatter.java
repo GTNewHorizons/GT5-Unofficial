@@ -30,7 +30,7 @@ public class TileAntimatter extends TileEntity {
     public float coreScale = 1f;
     public float coreScaleSnapshot = 1f;
     public final float coreScaleTransitionTime = 2.5f;
-    public float timeSnapshot;
+    public long timeSnapshot;
     public float spikeFactor = .01f;
 
     // Protomatter Settings
@@ -46,7 +46,7 @@ public class TileAntimatter extends TileEntity {
         super.writeToNBT(compound);
         compound.setFloat("coreScale", coreScale);
         compound.setFloat("coreScaleSnapshot", coreScaleSnapshot);
-        compound.setFloat("currentTime", timeSnapshot);
+        compound.setLong("currentTime", timeSnapshot);
         compound.setFloat("spikeFactor", spikeFactor);
         compound.setBoolean("protomatterRender", protomatterRender);
 
@@ -61,7 +61,7 @@ public class TileAntimatter extends TileEntity {
         super.readFromNBT(compound);
         coreScale = compound.getFloat("coreScale");
         coreScaleSnapshot = compound.getFloat("coreScaleSnapshot");
-        timeSnapshot = compound.getFloat("currentTime");
+        timeSnapshot = compound.getLong("currentTime");
         spikeFactor = compound.getFloat("spikeFactor");
         protomatterRender = compound.getBoolean("protomatterRender");
 

@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.filterByMTEClass;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -333,36 +336,46 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         if (aTileEntity == null || aTileEntity.isDead()) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (!(aMetaTileEntity instanceof MTEHatch)) return false;
-        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
-                droneDownLink.registerMachineController(this);
+        switch (aMetaTileEntity) {
+            case MTEHatchMaintenance hatch -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                    droneDownLink.registerMachineController(this);
+                }
+                return MTELapotronicSuperCapacitor.this.mMaintenanceHatches.add(hatch);
             }
-            return MTELapotronicSuperCapacitor.this.mMaintenanceHatches.add(hatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergy tHatch) {
-            // Add GT hatches
-            processInputHatch(tHatch, aBaseCasingIndex);
-            return mEnergyHatches.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergyTunnel tHatch) {
-            // Add TT Laser hatches
-            processInputHatch(tHatch, aBaseCasingIndex);
-            return mEnergyTunnelsTT.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti tHatch) {
-            // Add TT hatches
-            processInputHatch(tHatch, aBaseCasingIndex);
-            return mEnergyHatchesTT.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchDynamoTunnel tDynamo) {
-            // Add TT Laser hatches
-            processOutputHatch(tDynamo, aBaseCasingIndex);
-            return mDynamoTunnelsTT.add(tDynamo);
-        } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti tDynamo) {
-            // Add TT hatches
-            processOutputHatch(tDynamo, aBaseCasingIndex);
-            return mDynamoHatchesTT.add(tDynamo);
-        } else if (aMetaTileEntity instanceof MTEHatchDynamo tDynamo) {
-            // Add GT hatches
-            processOutputHatch(tDynamo, aBaseCasingIndex);
-            return mDynamoHatches.add(tDynamo);
+            case MTEHatchEnergy tHatch -> {
+                // Add GT hatches
+                processInputHatch(tHatch, aBaseCasingIndex);
+                return mEnergyHatches.add(tHatch);
+            }
+            case MTEHatchEnergyTunnel tHatch -> {
+                // Add TT Laser hatches
+                processInputHatch(tHatch, aBaseCasingIndex);
+                return mEnergyTunnelsTT.add(tHatch);
+            }
+            case MTEHatchEnergyMulti tHatch -> {
+                // Add TT hatches
+                processInputHatch(tHatch, aBaseCasingIndex);
+                return mEnergyHatchesTT.add(tHatch);
+            }
+            case MTEHatchDynamoTunnel tDynamo -> {
+                // Add TT Laser hatches
+                processOutputHatch(tDynamo, aBaseCasingIndex);
+                return mDynamoTunnelsTT.add(tDynamo);
+            }
+            case MTEHatchDynamoMulti tDynamo -> {
+                // Add TT hatches
+                processOutputHatch(tDynamo, aBaseCasingIndex);
+                return mDynamoHatchesTT.add(tDynamo);
+            }
+            case MTEHatchDynamo tDynamo -> {
+                // Add GT hatches
+                processOutputHatch(tDynamo, aBaseCasingIndex);
+                return mDynamoHatches.add(tDynamo);
+            }
+            default -> {
+            }
         }
         return false;
     }
@@ -389,46 +402,25 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        final Map<String, Object> tooltipVars = Map.of(
+            "maxPassiveDrain",
+            formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
+            "tierColorName",
+            GTValues.TIER_COLORS[9] + GTValues.VN[9],
+            "rebalanceTicks",
+            formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks),
+            "wirelessEuCap",
+            formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap));
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc1"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kekztech.multiblock.LapotronicSuperCapacitor.desc2",
-                    formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
-                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc3"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc4"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc5"))
+            .addMarkdown(new ResourceLocation("gregtech", "lapotronic-super-capacitor"), tooltipVars)
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc6"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc7"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kekztech.multiblock.LapotronicSuperCapacitor.desc8",
-                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kekztech.multiblock.LapotronicSuperCapacitor.desc9",
-                    formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc10"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kekztech.multiblock.LapotronicSuperCapacitor.desc11",
-                    formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap),
-                    GTValues.TIER_COLORS[9] + GTValues.VN[9]))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc12"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc13"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc14"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc15"))
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
-            .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addDynamoHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch("0+", anyCasingText(), 1)
+            .addDynamoHatch("0+", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing(
@@ -1129,14 +1121,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     private enum LSCHatchElement implements IHatchElement<MTELapotronicSuperCapacitor> {
 
-        Energy(MTEHatchEnergyMulti.class, MTEHatchEnergy.class) {
+        Energy("GT5U.MBTT.AnyEnergyHatch", MTEHatchEnergyMulti.class, MTEHatchEnergy.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {
                 return t.mEnergyHatches.size() + t.mEnergyHatchesTT.size() + t.mEnergyTunnelsTT.size();
             }
         },
-        Dynamo(MTEHatchDynamoMulti.class, MTEHatchDynamo.class) {
+        Dynamo("GT5U.MBTT.AnyEnergyDynamo", MTEHatchDynamoMulti.class, MTEHatchDynamo.class) {
 
             @Override
             public long count(MTELapotronicSuperCapacitor t) {
@@ -1144,10 +1136,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             }
         },;
 
+        private final String name;
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         @SafeVarargs
-        LSCHatchElement(Class<? extends IMetaTileEntity>... mteClasses) {
+        LSCHatchElement(String name, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Arrays.asList(mteClasses);
         }
 
@@ -1159,6 +1153,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         @Override
         public IGTHatchAdder<? super MTELapotronicSuperCapacitor> adder() {
             return MTELapotronicSuperCapacitor::addBottomHatches;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

@@ -33,6 +33,8 @@ public interface IArmorPart {
 
     Collection<BehaviorName> getRequiredBehaviors();
 
+    Collection<BehaviorName> getRequiredBehaviorsOr();
+
     Collection<BehaviorName> getIncompatibleBehaviors();
 
     Collection<ItemList> getIncompatibleAugments();

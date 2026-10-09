@@ -15,14 +15,17 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -107,25 +110,26 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final Map<String, Object> vars = Map.of(
+            "euPerTickX20",
+            formatNumber(EU_PER_TICK * 20),
+            "euPerTick",
+            EU_PER_TICK,
+            "steamPerSec",
+            STEAM_PER_SEC,
+            "oxygenPerSec",
+            OXYGEN_PER_SEC);
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.desc1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc2", formatNumber(EU_PER_TICK * 20)))
-            .addInfo(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK1.desc3"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("kekztech.multiblock.SOFuelCellMK1.desc4", EU_PER_TICK, STEAM_PER_SEC))
-            .addInfo(StatCollector.translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc5", OXYGEN_PER_SEC))
+            .addMarkdown(new ResourceLocation("gregtech", "so-fuel-cell-mk1"), vars)
             .beginStructureBlock(3, 3, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("12-31", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
             .addCasing("6", Casings.ReinforcedGlass.getLocalizedName(), false)
             .addCasing("3", StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK1.electrolyte_unit"), false)
             .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addInputHatch("1+", anyCasingText(), 1)
+            .addOutputHatch("1+", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();

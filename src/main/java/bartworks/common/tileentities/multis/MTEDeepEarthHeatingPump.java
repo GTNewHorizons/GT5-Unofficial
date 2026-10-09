@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import bartworks.MainMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -309,7 +310,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         try {
             this.mEUt = this.isPickingPipes ? -60 : -((int) TierEU.RECIPE_HV);
         } catch (ArithmeticException e) {
-            e.printStackTrace();
+            MainMod.LOGGER.error(e);
             this.mEUt = Integer.MAX_VALUE - 7;
         }
         this.mProgresstime = 0;

@@ -48,7 +48,7 @@ public class BartsNoise implements INoiseGen {
             this.ampl = num;
         }
 
-        double ampl;
+        final double ampl;
 
         public BartsNoise getColoredNoise() {
             BartsNoise noise = new BartsNoise();

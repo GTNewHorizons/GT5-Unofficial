@@ -22,6 +22,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
@@ -81,8 +82,7 @@ public class BaseItemComponent extends Item {
         } else {
             aFormattedNameForFluids = unlocalName;
         }
-        Material aTempMaterial = Material.mMaterialCache.get(localName.toLowerCase());
-        this.componentMaterial = aTempMaterial;
+        this.componentMaterial = Material.mMaterialCache.get(localName.toLowerCase());
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
         this.materialKey = fluid.getUnlocalizedName();
@@ -187,7 +187,7 @@ public class BaseItemComponent extends Item {
                     }
                 }
             }
-        } catch (Exception t) {}
+        } catch (Exception ignored) {}
 
         super.addInformation(stack, aPlayer, list, bool);
     }
@@ -265,8 +265,11 @@ public class BaseItemComponent extends Item {
             }
         }
         metType = (metType == null ? "METALLIC" : metType);
-        IIconContainer container = Textures.ItemIcons
-            .textureSetWithRegister(metType, "/" + this.componentType.getOreDictName(), i);
+        IIconContainer container = Textures.ItemIcons.textureSetWithRegister(
+            Mods.GregTech.resourceDomain,
+            metType,
+            "/" + this.componentType.getOreDictName(),
+            i);
         iconBase = container.getIcon();
         iconOverlay = container.getOverlayIcon();
     }

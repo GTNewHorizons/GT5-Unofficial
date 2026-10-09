@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -23,6 +24,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -62,7 +65,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
@@ -72,11 +74,13 @@ import gregtech.common.gui.modularui.multiblock.MTEFusionComputerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFusionComputer>
     implements ISurvivalConstructable, IOverclockDescriptionProvider, ICasingTextureProvider {
 
     private final OverclockDescriber overclockDescriber;
 
+    private static final int MAX_ENERGY_HATCHES = 16;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<MTEFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
@@ -105,15 +109,15 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     'i',
                     lazy(
                         t -> buildHatchAdder(MTEFusionComputer.class)
-                            .atLeast(gregtech.api.enums.HatchElement.InputHatch.or(HatchElement.InputBus))
+                            .atLeast(HatchElement.InputHatch.or(HatchElement.InputBus))
                             .casingIndex(53)
                             .hint(1)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
                 .addElement(
                     'e',
                     lazy(
-                        t -> buildHatchAdder(MTEFusionComputer.class)
-                            .atLeast(ImmutableMap.of(Energy.withAdder(MTEFusionComputer::addEnergyInjector), 16))
+                        t -> buildHatchAdder(MTEFusionComputer.class).atLeast(
+                            ImmutableMap.of(Energy.withAdder(MTEFusionComputer::addEnergyInjector), MAX_ENERGY_HATCHES))
                             .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE))
                             .casingIndex(53)
                             .hint(2)
@@ -121,8 +125,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 .addElement(
                     'x',
                     lazy(
-                        t -> buildHatchAdder(MTEFusionComputer.class)
-                            .atLeast(gregtech.api.enums.HatchElement.OutputHatch)
+                        t -> buildHatchAdder(MTEFusionComputer.class).atLeast(HatchElement.OutputHatch)
                             .casingIndex(53)
                             .hint(3)
                             .buildAndChain(t.getCasing(), t.getCasingMeta())))
@@ -175,10 +178,42 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         return overclockDescriber;
     }
 
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final FusionOverclockDescriber fod = (FusionOverclockDescriber) getOverclockDescriber();
+        // spotless:off
+        tt.addMachineType("Fusion Reactor")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "fusion-computer"),
+                ImmutableMap.<String, Object>builder()
+                    .put("power", formatNumber(GTValues.V[tier()] / MAX_ENERGY_HATCHES))
+                    .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
+                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
+                    .put("eu_per_oc", formatNumber(fod.getEUtIncreasePerOC()))
+                    .put("time_per_oc", formatNumber(fod.getDurationDecreasePerOC()))
+                    .build())
+            .addSupportAny()
+            .beginStructureBlock(15, 3, 15, false)
+            .addController(translateToLocal("gt.mbtt.structure.middle_center_2nd_layer"))
+            .addCasing("79-123",  new ItemStack(getCasing(), 1, getCasingMeta()).getDisplayName(), false)
+            .addCasing("32", new ItemStack(getFusionCoil(), 1, getFusionCoilMeta()).getDisplayName(), false)
+            .addEnergyHatch("1-16", StatCollector.translateToLocalFormatted("gt.mbtt.structure.specific_casings_on_each_curve", GTValues.VN[tier()]), 2)
+            .addInputHatch("1+", translateToLocal("gt.mbtt.structure.specific_casings_on_each_top_or_bottom"), 1)
+            .addOutputHatch("1+", translateToLocal("gt.mbtt.structure.specific_casings_on_each_middle"), 3)
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
     public abstract int tier();
 
     @Override
-    public abstract long maxEUStore();
+    public long maxEUStore() {
+        return (capableStartupCanonical() + (3000L * Math.abs(tier() - 5)))
+            * (Math.min(((long) MAX_ENERGY_HATCHES), this.mEnergyHatches.size()))
+            / ((long) MAX_ENERGY_HATCHES);
+    }
 
     /**
      * Unlike {@link #maxEUStore()}, this provides theoretical limit of startup EU, without considering the amount of
@@ -200,17 +235,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     @Override
     public IStructureDefinition<MTEFusionComputer> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addController("Fusion Reactor")
-            .addInfo("Some kind of fusion reactor, maybe")
-            .addStructureInfo("Should probably be built similar to other fusions")
-            .addStructureInfo("See controller tooltip for details")
-            .toolTipFinisher();
-        return tt;
     }
 
     @Override
@@ -293,8 +317,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (!mRunningOnLoad
-                    && recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L) > maxEUStore()) {
+                if (!mRunningOnLoad && recipe.getMetadataOrDefault(FUSION_THRESHOLD, 0L) > maxEUStore()) {
                     return CheckRecipeResultRegistry.insufficientStartupPower(
                         BigInteger.valueOf(recipe.getMetadataOrDefault(FUSION_THRESHOLD, 0L)));
                 }
@@ -365,7 +388,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                     if (this.mEnergyHatches != null) {
                         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-                            long energyToMove = GTValues.V[tier()] / 16;
+                            long energyToMove = GTValues.V[tier()] / MAX_ENERGY_HATCHES;
                             if (aBaseMetaTileEntity.getStoredEU() + energyToMove < maxEUStore()
                                 && tHatch.getBaseMetaTileEntity()
                                     .decreaseStoredEnergyUnits(energyToMove, false)) {
@@ -385,6 +408,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             mEfficiency = Math
                                 .max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
                             mOutputItems = null;
+                            mOutputFluids = null;
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
@@ -427,9 +451,12 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             }
             setErrorDisplayID((getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
-        } else {
-            doActivitySound(getActivitySoundLoop());
         }
+    }
+
+    @Override
+    public void onClientSoundStateChanged() {
+        doActivitySound(getActivitySoundLoop());
     }
 
     @Override

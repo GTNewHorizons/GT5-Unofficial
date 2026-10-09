@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.ItemGTToolbox;
@@ -72,7 +72,7 @@ public class ToolboxUtil {
     public static void saveToolbox(final ItemStack toolbox, final ItemStackHandler handler,
         @Nullable Consumer<NBTTagCompound> additionalAction) {
         if (toolbox == null) {
-            GTMod.GT_FML_LOGGER.warn("[Toolbox Save Handler] Tried to save toolbox, but no toolbox was found.");
+            GTLoggers.GT_FML_LOGGER.warn("[Toolbox Save Handler] Tried to save toolbox, but no toolbox was found.");
             return;
         }
 
@@ -134,13 +134,12 @@ public class ToolboxUtil {
      * @return The {@link ToolboxSlot} of the current tool, or empty if no tool is selected
      */
     public static Optional<ToolboxSlot> getSelectedToolType(ItemStack toolbox) {
-        if (toolbox == null || !ItemStackNBT.hasKey(toolbox, ItemGTToolbox.CURRENT_TOOL_KEY)) {
-            return Optional.empty();
+        if (toolbox.getItem() instanceof ItemGTToolbox
+            && ItemStackNBT.hasKey(toolbox, ItemGTToolbox.CURRENT_TOOL_KEY)) {
+            return ToolboxSlot.getBySlot(ItemStackNBT.getInteger(toolbox, ItemGTToolbox.CURRENT_TOOL_KEY));
         }
 
-        return ToolboxSlot.getBySlot(
-            toolbox.getTagCompound()
-                .getInteger(ItemGTToolbox.CURRENT_TOOL_KEY));
+        return Optional.empty();
     }
 
     /**

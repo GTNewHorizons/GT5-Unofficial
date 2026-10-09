@@ -28,7 +28,7 @@ public enum GTPPPollenType {
     GTPPPollenType(int aID, String aName, boolean aShow, int... aColour) {
         this.mID = aID;
         this.mNameUnlocal = aName.toLowerCase()
-            .replaceAll(" ", "");
+            .replace(" ", "");
         this.mShowInList = aShow;
         this.mColour = aColour;
         map(aID, this);

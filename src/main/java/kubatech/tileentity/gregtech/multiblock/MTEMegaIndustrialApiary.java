@@ -40,6 +40,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofOreDictBlockMap;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
@@ -51,11 +52,13 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -102,6 +105,8 @@ import gregtech.api.recipe.check.ResultMissingApiaryFlowers;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -133,7 +138,21 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     protected static final int MODE_SECONDARY_NORMAL = 0;
     protected static final int MODE_SECONDARY_SWARMER = 1;
 
+    private static final int BEE_ACCELERATION = 64;
+    private static final int SWARMER_JELLY_COST = 100;
+    private static final int NORMAL_PROCESSING_TICKS = 100;
+    private static final int SWARMER_PROCESSING_TICKS = 1200;
+    private static final int MAX_JELLY_BONUS_PERCENT = 200;
+    private static final int JELLY_BONUS_PER_BEE_PERCENT = 5;
+
     protected static final ItemStack royalJelly = PluginApiculture.items.royalJelly.getItemStack(1);
+
+    // Only used to check and consume inputs; swarmer timing and outputs are handled in checkProcessing().
+    private static final GTRecipe SWARMER_JELLY_RECIPE = GTRecipeBuilder.empty()
+        .itemInputsUnsafe(GTUtility.copyAmountUnsafe(SWARMER_JELLY_COST, royalJelly))
+        .nbtSensitive()
+        .build()
+        .orElseThrow();
 
     protected static final int CASING_INDEX = 10;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -145,24 +164,24 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     private static final String[][] struct = transpose(
         new String[][] { // spotless:off
-        {"               ","               ","               ","      HHH      ","    HHAAAHH    ","    HAPLPAH    ","   HAPAAAPAH   ","   HALAAALAH   ","   HAPAAAPAH   ","    HAPLPAH    ","    HHAAAHH    ","      HHH      ","               ","               ","               "},
-        {"               ","               ","      GGG      ","    GG   GG    ","   G       G   ","   G       G   ","  G         G  ","  G         G  ","  G         G  ","   G       G   ","   G       G   ","    GG   GG    ","      GGG      ","               ","               "},
-        {"               ","      HHH      ","   HHH   HHH   ","  HG       GH  ","  H         H  ","  H         H  "," H           H "," H           H "," H           H ","  H         H  ","  H         H  ","  HG       GH  ","   HHH   HHH   ","      HHH      ","               "},
-        {"      GGG      ","   GGG   GGG   ","  G         G  "," G           G "," G           G "," G           G ","G             G","G             G","G             G"," G           G "," G           G "," G           G ","  G         G  ","   GGG   GGG   ","      GGG      "},
-        {"      AAA      ","   OLA   ALO   ","  P         P  "," O           O "," L           L "," A           A ","A             A","A             A","A             A"," A           A "," L           L "," O           O ","  P         P  ","   OLA   ALO   ","      AAA      "},
-        {"     AAAAA     ","   NA     AO   ","  P         P  "," N           O "," A           A ","A             A","A     III     A","A     III     A","A     III     A","A             A"," A           A "," N           N ","  P         P  ","   NA     AN   ","     AAAAA     "},
-        {"     AAAAA     ","   NA FFF AO   ","  PFF     FFP  "," NFF       FFO "," AF         FA ","A             A","AF    JJJ    FA","AF    JKJ    FA","AF    JJJ    FA","A             A"," AF         FA "," NFF       FFN ","  PFF     FFP  ","   NA FFF AN   ","     AAAAA     "},
-        {"      AAA      ","   OLAFFFALO   ","  PFFFFFFFFFP  "," OFFFF   FFFFO "," LFF       FFL "," AFF FFFFF  FA ","AFF  FKKKFF FFA","AFF FFKKKFF FFA","AFF FFKKKF  FFA"," AF  FFFFF  FA "," LFF   FF  FFL "," OFFFF    FFFO ","  PFFFFFFFFFP  ","   OLAFFFALO   ","      AAA      "},
-        {"      G~G      ","   GGGBBBGGG   ","  GBBFFFFFBBG  "," GBBFF   FFBBG "," GBF       FBG "," GFF FFFFF  FG ","GBF  FKKKFF FBG","GBF FFKJKFF FBG","GBF FFKKKF  FBG"," GF  FFFFF  FG "," GBF   FF  FBG "," GBBFF    FBBG ","  GBBFFFFFBBG  ","   GGGBBBGGG   ","      GGG      "},
-        {"      HHH      ","    HHBBBHH    ","  HHBBBBBBBHH  ","  HBBBWWWBBBH  "," HBBWWWWWWWBBH "," HBBWBBBBBWWBH ","HBBWWBBBBBBWBBH","HBBWBBBBBBBWBBH","HBBWBBBBBBWWBBH"," HBWWBBBBBWWBH "," HBBWWWBBWWBBH ","  HBBBWWWWBBH  ","  HHBBBBBBBHH  ","    HHBBBHH    ","      HHH      "},
-        {"               ","     GGGGG     ","   GGBBBBBGG   ","  GBBBBBBBBBG  ","  GBBBBBBBBBG  "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG ","  GBBBBBBBBBG  ","  GBBBBBBBBBG  ","   GGBBBBBGG   ","     GGGGG     ","               "},
-        {"               ","      HHH      ","    HHBBBHH    ","   HBBBBBBBH   ","  HBBBBBBBBBH  ","  HBBBBBBBBBH  "," HBBBBBBBBBBBH "," HBBBBBBBBBBBH "," HBBBBBBBBBBBH ","  HBBBBBBBBBH  ","  HBBBBBBBBBH  ","   HBBBBBBBH   ","    HHBBBHH    ","      HHH      ","               "},
-        {"               ","               ","      GGG      ","    GGBBBGG    ","   GBBBBBBBG   ","   GBBBBBBBG   ","  GBBBBBBBBBG  ","  GBBBBBBBBBG  ","  GBBBBBBBBBG  ","   GBBBBBBBG   ","   GBBBBBBBG   ","    GGBBBGG    ","      GGG      ","               ","               "},
-        {"               ","               ","       H       ","     HHBHH     ","    HBBBBBH    ","   HBBBBBBBH   ","   HBBBBBBBH   ","  HBBBBBBBBBH  ","   HBBBBBBBH   ","   HBBBBBBBH   ","    HBBBBBH    ","     HHBHH     ","       H       ","               ","               "},
-        {"               ","               ","               ","       G       ","     GGBGG     ","    GBBBBBG    ","    GBBBBBG    ","   GBBBBBBBG   ","    GBBBBBG    ","    GBBBBBG    ","     GGBGG     ","       G       ","               ","               ","               "},
-        {"               ","               ","               ","               ","      HHH      ","     HHHHH     ","    HHBBBHH    ","    HHBBBHH    ","    HHBBBHH    ","     HHHHH     ","      HHH      ","               ","               ","               ","               "},
-        {"               ","               ","               ","               ","               ","               ","      GGG      ","      GHG      ","      GGG      ","               ","               ","               ","               ","               ","               "}
-    }); // spotless:on
+            {"               ","               ","               ","      HHH      ","    HHAAAHH    ","    HAPLPAH    ","   HAPAAAPAH   ","   HALAAALAH   ","   HAPAAAPAH   ","    HAPLPAH    ","    HHAAAHH    ","      HHH      ","               ","               ","               "},
+            {"               ","               ","      GGG      ","    GG   GG    ","   G       G   ","   G       G   ","  G         G  ","  G         G  ","  G         G  ","   G       G   ","   G       G   ","    GG   GG    ","      GGG      ","               ","               "},
+            {"               ","      HHH      ","   HHH   HHH   ","  HG       GH  ","  H         H  ","  H         H  "," H           H "," H           H "," H           H ","  H         H  ","  H         H  ","  HG       GH  ","   HHH   HHH   ","      HHH      ","               "},
+            {"      GGG      ","   GGG   GGG   ","  G         G  "," G           G "," G           G "," G           G ","G             G","G             G","G             G"," G           G "," G           G "," G           G ","  G         G  ","   GGG   GGG   ","      GGG      "},
+            {"      AAA      ","   OLA   ALO   ","  P         P  "," O           O "," L           L "," A           A ","A             A","A             A","A             A"," A           A "," L           L "," O           O ","  P         P  ","   OLA   ALO   ","      AAA      "},
+            {"     AAAAA     ","   NA     AO   ","  P         P  "," N           O "," A           A ","A             A","A     III     A","A     III     A","A     III     A","A             A"," A           A "," N           N ","  P         P  ","   NA     AN   ","     AAAAA     "},
+            {"     AAAAA     ","   NA FFF AO   ","  PFF     FFP  "," NFF       FFO "," AF         FA ","A             A","AF    JJJ    FA","AF    JKJ    FA","AF    JJJ    FA","A             A"," AF         FA "," NFF       FFN ","  PFF     FFP  ","   NA FFF AN   ","     AAAAA     "},
+            {"      AAA      ","   OLAFFFALO   ","  PFFFFFFFFFP  "," OFFFF   FFFFO "," LFF       FFL "," AFF FFFFF  FA ","AFF  FKKKFF FFA","AFF FFKKKFF FFA","AFF FFKKKF  FFA"," AF  FFFFF  FA "," LFF   FF  FFL "," OFFFF    FFFO ","  PFFFFFFFFFP  ","   OLAFFFALO   ","      AAA      "},
+            {"      G~G      ","   GGGBBBGGG   ","  GBBFFFFFBBG  "," GBBFF   FFBBG "," GBF       FBG "," GFF FFFFF  FG ","GBF  FKKKFF FBG","GBF FFKJKFF FBG","GBF FFKKKF  FBG"," GF  FFFFF  FG "," GBF   FF  FBG "," GBBFF    FBBG ","  GBBFFFFFBBG  ","   GGGBBBGGG   ","      GGG      "},
+            {"      HHH      ","    HHBBBHH    ","  HHBBBBBBBHH  ","  HBBBWWWBBBH  "," HBBWWWWWWWBBH "," HBBWBBBBBWWBH ","HBBWWBBBBBBWBBH","HBBWBBBBBBBWBBH","HBBWBBBBBBWWBBH"," HBWWBBBBBWWBH "," HBBWWWBBWWBBH ","  HBBBWWWWBBH  ","  HHBBBBBBBHH  ","    HHBBBHH    ","      HHH      "},
+            {"               ","     GGGGG     ","   GGBBBBBGG   ","  GBBBBBBBBBG  ","  GBBBBBBBBBG  "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG "," GBBBBBBBBBBBG ","  GBBBBBBBBBG  ","  GBBBBBBBBBG  ","   GGBBBBBGG   ","     GGGGG     ","               "},
+            {"               ","      HHH      ","    HHBBBHH    ","   HBBBBBBBH   ","  HBBBBBBBBBH  ","  HBBBBBBBBBH  "," HBBBBBBBBBBBH "," HBBBBBBBBBBBH "," HBBBBBBBBBBBH ","  HBBBBBBBBBH  ","  HBBBBBBBBBH  ","   HBBBBBBBH   ","    HHBBBHH    ","      HHH      ","               "},
+            {"               ","               ","      GGG      ","    GGBBBGG    ","   GBBBBBBBG   ","   GBBBBBBBG   ","  GBBBBBBBBBG  ","  GBBBBBBBBBG  ","  GBBBBBBBBBG  ","   GBBBBBBBG   ","   GBBBBBBBG   ","    GGBBBGG    ","      GGG      ","               ","               "},
+            {"               ","               ","       H       ","     HHBHH     ","    HBBBBBH    ","   HBBBBBBBH   ","   HBBBBBBBH   ","  HBBBBBBBBBH  ","   HBBBBBBBH   ","   HBBBBBBBH   ","    HBBBBBH    ","     HHBHH     ","       H       ","               ","               "},
+            {"               ","               ","               ","       G       ","     GGBGG     ","    GBBBBBG    ","    GBBBBBG    ","   GBBBBBBBG   ","    GBBBBBG    ","    GBBBBBG    ","     GGBGG     ","       G       ","               ","               ","               "},
+            {"               ","               ","               ","               ","      HHH      ","     HHHHH     ","    HHBBBHH    ","    HHBBBHH    ","    HHBBBHH    ","     HHHHH     ","      HHH      ","               ","               ","               ","               "},
+            {"               ","               ","               ","               ","               ","               ","      GGG      ","      GHG      ","      GGG      ","               ","               ","               ","               ","               ","               "}
+        }); // spotless:on
 
     private static final IStructureDefinition<MTEMegaIndustrialApiary> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMegaIndustrialApiary>builder()
@@ -172,7 +191,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             Arrays.stream(struct)
                 .map(
                     sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("F", " "))
+                        .map(s -> s.replace("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
         .addShape(
@@ -227,8 +246,18 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     public void onRemoval() {
         super.onRemoval();
-        if (getBaseMetaTileEntity().isServerSide())
-            tryOutputAll(mStorage, s -> Collections.singletonList(s.queenStack));
+        IGregTechTileEntity bmte = getBaseMetaTileEntity();
+        for (BeeSimulator s : mStorage) {
+            EntityItem item = new EntityItem(
+                bmte.getWorld(),
+                bmte.getXCoord(),
+                bmte.getYCoord(),
+                bmte.getZCoord(),
+                s.queenStack);
+            item.delayBeforeCanPickup = 10;
+            bmte.getWorld()
+                .spawnEntityInWorld(item);
+        }
     }
 
     /**
@@ -333,46 +362,18 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        Map<String, Object> ttVars = new HashMap<>();
+        ttVars.put("voltageTier_LuV", voltageTooltipFormatted(6));
+        ttVars.put("voltageTier_IV", voltageTooltipFormatted(5));
+        ttVars.put("bee_acceleration", BEE_ACCELERATION);
+        ttVars.put("swarmer_jelly_cost", SWARMER_JELLY_COST);
+        ttVars.put("normal_seconds", NORMAL_PROCESSING_TICKS / 20);
+        ttVars.put("swarmer_seconds", SWARMER_PROCESSING_TICKS / 20);
+        ttVars.put("max_jelly_bonus", MAX_JELLY_BONUS_PERCENT);
+        ttVars.put("jelly_bonus", JELLY_BONUS_PER_BEE_PERCENT);
         tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc1"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc2"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc3"))
+            .addMarkdown(new ResourceLocation("gregtech", "mega-apiary"), ttVars)
             .addGlassEnergyLimitInfo()
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.input_mode"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc4"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc5"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.output_mode"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc4"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc6"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.operating_mode"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.normal_header"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc7"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.MegaIndustrialApiary.desc8",
-                    voltageTooltipFormatted(6)))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc9"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc10"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc11"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc12"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc13"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc14"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc15"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc16"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc17"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.swarmer_header"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc18"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc19"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc20"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc21"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.MegaIndustrialApiary.desc22",
-                    voltageTooltipFormatted(5)))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.desc23"))
             .beginStructureBlock(15, 17, 15, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
             .addCasing(
@@ -410,9 +411,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 "1+",
                 StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.any_casing_luv"),
                 1)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addInputBus("0+", anyCasingText(), 1)
+            .addOutputBus("1+", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.footer"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
@@ -495,6 +496,11 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
@@ -535,15 +541,19 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 World w = getBaseMetaTileEntity().getWorld();
                 float t = (float) getVoltageTierExact();
                 ArrayList<ItemStack> inputs = getStoredInputs();
+                boolean storageChanged = false;
                 for (ItemStack input : inputs) {
                     if (beeRoot.getType(input) == EnumBeeType.QUEEN) {
                         BeeSimulator bs = new BeeSimulator(input, w, t);
                         if (bs.isValid) {
                             mStorage.add(bs);
-                            onStorageContentChanged(false);
+                            storageChanged = true;
                         }
                     }
                     if (mStorage.size() >= mMaxSlots) break;
+                }
+                if (storageChanged) {
+                    onStorageContentChanged(false);
                 }
                 updateSlots();
             } else if (mPrimaryMode == MODE_PRIMARY_OUTPUT && !mStorage.isEmpty()) { // output mode
@@ -606,15 +616,16 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     this.lEUt = -(int) ((double) GTValues.V[6] * (double) mMaxSlots * 0.99d);
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
-                    this.mMaxProgresstime = 100;
+                    this.mMaxProgresstime = NORMAL_PROCESSING_TICKS;
                     this.mOutputItems = mergeOutputStacks(stacks);
                 } else { // SWARMER mode
-                    if (!depleteInput(PluginApiculture.items.royalJelly.getItemStack(64))
-                        || !depleteInput(PluginApiculture.items.royalJelly.getItemStack(36))) {
+                    boolean check_swarmer_jelly = SWARMER_JELLY_RECIPE
+                        .isRecipeInputEqual(true, null, getStoredInputs().toArray(new ItemStack[0]));
+                    if (!check_swarmer_jelly) {
                         this.updateSlots();
                         return CheckRecipeResultRegistry.NO_RECIPE;
                     }
-                    calculateOverclock(GTValues.V[5] - 2L, 1200);
+                    calculateOverclock(GTValues.V[5] - 2L, SWARMER_PROCESSING_TICKS);
                     if (this.lEUt > 0) this.lEUt = -this.lEUt;
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
@@ -791,16 +802,17 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             isValid = false;
             this.queenStack = queenStack.copy();
             this.queenStack.stackSize = 1;
-            generate(world, t);
-            isValid = true;
-            queenStack.stackSize--;
+            if (generate(world, t)) {
+                isValid = true;
+                queenStack.stackSize--;
+            }
         }
 
-        public void generate(World world, float t) {
+        public boolean generate(World world, float t) {
             if (mode == null) mode = beeRoot.getBeekeepingMode(world);
             drops.clear();
             specialDrops.clear();
-            if (beeRoot.getType(this.queenStack) != EnumBeeType.QUEEN) return;
+            if (beeRoot.getType(this.queenStack) != EnumBeeType.QUEEN) return false;
             IBee queen = beeRoot.getMember(this.queenStack);
             IBeeModifier beeModifier = mode.getBeeModifier();
             float mod = beeModifier.getLifespanModifier(null, null, 1.f);
@@ -826,6 +838,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .forEach((key, value) -> drops.add(new BeeDrop(key, value / 2.f, beeSpeed, t)));
             primary.getSpecialtyChances()
                 .forEach((key, value) -> specialDrops.add(new BeeDrop(key, value, beeSpeed, t)));
+            return true;
         }
 
         public BeeSimulator(NBTTagCompound tag) {

@@ -25,7 +25,7 @@ import gregtech.common.gui.modularui.item.RedstoneSnifferGui;
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
     public ItemRedstoneSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
-        super(aUnlocalized, aEnglish, aEnglishTooltip);;
+        super(aUnlocalized, aEnglish, aEnglishTooltip);
         setMaxStackSize(1);
     }
 

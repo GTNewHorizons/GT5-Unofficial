@@ -13,7 +13,7 @@ public class BlockCasingsBEC extends BlockCasingsAbstract {
 
     public BlockCasingsBEC() {
         super(ItemCasings.class, "gt.blockcasings.bec", MaterialCasings.INSTANCE, 16);
-        register(0, ItemList.SuperconductivePlasmaEnergyConduit, translatedText("gt.blockcasings.bec.0.tooltip"));
+        register(0, ItemList.CoherencePreservingPlasmaConduit, translatedText("gt.blockcasings.bec.0.tooltip"));
         register(1, ItemList.ElectromagneticallyIsolatedCasing, translatedText("gt.blockcasings.bec.1.tooltip"));
         register(2, ItemList.FineStructureConstantManipulator, translatedText("gt.blockcasings.bec.2.tooltip"));
         register(3, ItemList.ConflictInducementCasing, translatedText("gt.blockcasings.bec.3.tooltip"));

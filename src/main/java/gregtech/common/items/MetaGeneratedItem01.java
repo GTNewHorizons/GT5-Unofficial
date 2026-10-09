@@ -486,6 +486,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import codechicken.enderstorage.api.EnderStorageDyeTool;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverPlacer;
@@ -563,10 +564,15 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialCuttingMachine.S
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(
-    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
-    modid = Mods.ModIDs.RAILCRAFT)
-public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
+@Optional.InterfaceList(
+    value = {
+        @Optional.Interface(
+            iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+            modid = Mods.ModIDs.RAILCRAFT),
+        @Optional.Interface(
+            iface = "codechicken.enderstorage.api.EnderStorageDyeTool",
+            modid = Mods.ModIDs.ENDER_STORAGE), })
+public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning, EnderStorageDyeTool {
 
     public static MetaGeneratedItem01 INSTANCE;
     private static final String aTextEmptyRow = "   ";
@@ -745,13 +751,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Component_Minecart_Wheels_Iron.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
+                | GTModHandler.RecipeBits.REVERSIBLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " h ", "RSR", " w ", 'R', OrePrefixes.ring.get(Materials.AnyIron), 'S',
                 OrePrefixes.stick.get(Materials.AnyIron) });
         GTModHandler.addCraftingRecipe(
             ItemList.Component_Minecart_Wheels_Steel.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
+                | GTModHandler.RecipeBits.REVERSIBLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " h ", "RSR", " w ", 'R', OrePrefixes.ring.get(Materials.Steel), 'S',
                 OrePrefixes.stick.get(Materials.Steel) });
 
@@ -1973,6 +1981,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                     new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
             .setRender(new WireFrameTesseractRenderer(0, 0, 0));
+        setNoBaseIcon(Tesseract.ID);
         ItemList.GigaChad.set(
             addItemWithLocalizationKeys(
                 GigaChad.ID,
@@ -1989,6 +1998,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                     new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
             .setRender(new WireFrameTesseractRenderer(23, 129, 166));
+        setNoBaseIcon(EnergisedTesseract.ID);
 
         ItemList.Electric_Piston_LV.set(
             addItemWithLocalizationKeys(
@@ -2204,7 +2214,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.electric_pump.uhv.name",
                     null,
                     "gt.item.electric_pump.tooltip",
-                    new Object[] { formatNumber(8388608), formatNumber(8388608 * 20) },
+                    new Object[] { formatNumber(2097152), formatNumber(2097152 * 20) },
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 256L),
@@ -2217,7 +2227,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.electric_pump.uev.name",
                     null,
                     "gt.item.electric_pump.tooltip",
-                    new Object[] { formatNumber(16777216), formatNumber(16777216 * 20) },
+                    new Object[] { formatNumber(8388608), formatNumber(8388608 * 20) },
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2242,7 +2252,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.umv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(67108864), formatNumber(67108864 * 20) },
+                new Object[] { formatNumber(134217728), formatNumber(134217728 * 20L) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2253,7 +2263,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.uxv.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(134217728), formatNumber(134217728 * 20L) },
+                new Object[] { formatNumber(536870912), formatNumber(536870912 * 20L) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2264,7 +2274,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.electric_pump.max.name",
                 null,
                 "gt.item.electric_pump.tooltip",
-                new Object[] { formatNumber(268435456), formatNumber(268435456 * 20L) },
+                new Object[] { formatNumber(Integer.MAX_VALUE), formatNumber(Integer.MAX_VALUE * 20L) },
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2389,7 +2399,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.fluid_regulator.uhv.name",
                     null,
                     "gt.item.fluid_regulator.tooltip",
-                    new Object[] { formatNumber(8388608 * 20) }))
+                    new Object[] { formatNumber(2097152 * 20) }))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
         ItemList.FluidRegulator_UEV
             .set(
@@ -2398,7 +2408,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.fluid_regulator.uev.name",
                     null,
                     "gt.item.fluid_regulator.tooltip",
-                    new Object[] { formatNumber(16777216 * 20) }))
+                    new Object[] { formatNumber(8388608 * 20) }))
             .setRender(new InfinityMetaItemRenderer());
         ItemList.FluidRegulator_UIV
             .set(
@@ -2415,21 +2425,21 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.fluid_regulator.umv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(67108864 * 20) }));
+                new Object[] { formatNumber(134217728 * 20L) }));
         ItemList.FluidRegulator_UXV.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_UXV.ID,
                 "gt.item.fluid_regulator.uxv.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(134217728 * 20L) }));
+                new Object[] { formatNumber(536870912 * 20L) }));
         ItemList.FluidRegulator_MAX.set(
             addItemWithLocalizationKeysAndArgs(
                 FluidRegulator_MAX.ID,
                 "gt.item.fluid_regulator.max.name",
                 null,
                 "gt.item.fluid_regulator.tooltip",
-                new Object[] { formatNumber(268435456 * 20L) }));
+                new Object[] { formatNumber(Integer.MAX_VALUE * 20L) }));
 
         ItemList.FluidFilter.set(
             addItemWithLocalizationKeys(FluidFilter.ID, "gt.item.fluid_filter.name", "gt.item.fluid_filter.tooltip"));
@@ -4015,7 +4025,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             }
         }
 
-        return false;
+        return super.onItemUse(oldItemStack, player, world, x, y, z, ordinalSide, hitX, hitY, hitZ);
     }
 
     /**
@@ -4219,11 +4229,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UHV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 2097152, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 16777216, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UIV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_PUMP)),
@@ -4231,15 +4241,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UMV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 67108864, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 134217728, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UXV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 134217728, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 536870912, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_MAX.get(1L),
             TextureFactory.of(MACHINE_CASINGS[14][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 268435456, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, Integer.MAX_VALUE, TextureFactory.of(OVERLAY_PUMP)));
 
         CoverRegistry.registerCover(
             ItemList.Steam_Valve_LV.get(1L),
@@ -4297,11 +4307,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UHV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 2097152, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 16777216, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UIV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_PUMP)),
@@ -4309,15 +4319,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UMV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 67108864, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 134217728, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UXV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 134217728, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 536870912, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_MAX.get(1L),
             TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 268435456, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, Integer.MAX_VALUE, TextureFactory.of(OVERLAY_PUMP)));
 
         CoverRegistry.registerCover(
             ItemList.FluidFilter.get(1L),
@@ -4631,42 +4641,50 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Shape_Slicer_Flat.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
+                | GTModHandler.RecipeBits.REVERSIBLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "hXS", aTextShape, "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.screw.get(Materials.StainlessSteel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Shape_Slicer_Stripes.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
+                | GTModHandler.RecipeBits.REVERSIBLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.screw.get(Materials.StainlessSteel) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Polyethylene) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_1by1.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "d  ", aTextShape, aTextEmptyRow, 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_2by2.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " d ", aTextShape, aTextEmptyRow, 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_3by3.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "  d", aTextShape, aTextEmptyRow, 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_Dust.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextEmptyRow, aTextShape, "  d", 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_Dust_Small.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextEmptyRow, aTextShape, " d ", 'P', ItemList.Schematic });
 
         GTModHandler.addCraftingRecipe(
@@ -4954,6 +4972,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Coin_Chocolate.get(1L),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { OrePrefixes.dust.get(Materials.Cocoa), OrePrefixes.dust.get(Materials.Milk),
                 OrePrefixes.dust.get(Materials.Sugar), OrePrefixes.foil.get(Materials.Gold) });
 
@@ -5081,27 +5100,33 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_Crafting });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_1by1 });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_2by2 });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_3by3 });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_Dust });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_Dust_Small });
 
         GTModHandler.addShapelessCraftingRecipe(
@@ -5116,9 +5141,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.ItemFilter_Export.get(1L),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { ItemList.ItemFilter_Import.get(1L) });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.ItemFilter_Import.get(1L),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { ItemList.ItemFilter_Export.get(1L) });
 
     }
@@ -5289,5 +5316,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             || data.mPrefix == OrePrefixes.crushedPurified
             || data.mPrefix == OrePrefixes.crushedCentrifuged
             || data.mPrefix == OrePrefixes.gem;
+    }
+
+    @Override
+    public int getDye(final ItemStack itemStack) {
+        if (Mods.EnderStorage.isModLoaded()) {
+            final List<Integer> results = mapEachBehavior(itemStack, behavior -> {
+                if (behavior instanceof final EnderStorageDyeTool dyeTool) {
+                    return dyeTool.getDye(itemStack);
+                }
+
+                return null;
+            });
+
+            if (!results.isEmpty()) {
+                return results.getFirst();
+            }
+        }
+
+        return -1;
+    }
+
+    @Override
+    public void expendToolUse(final ItemStack itemStack) {
+        if (Mods.EnderStorage.isModLoaded()) {
+            forEachBehavior(itemStack, behavior -> {
+                if (behavior instanceof final EnderStorageDyeTool dyeTool) {
+                    dyeTool.expendToolUse(itemStack);
+                }
+                return false;
+            });
+        }
     }
 }

@@ -604,6 +604,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         this.residueIncrease = 0;
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
         for (MTEToxicResidueSensor toxicResidueSensorHatch : sensorHatches) { // done in onPostTick so it can update
                                                                               // even when multi is off
             toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, residueCapacity);
@@ -693,7 +694,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private enum SpecialHatchElement implements IHatchElement<MTELargeNeutralizationEngine> {
 
-        ToxicResidueSensor(MTELargeNeutralizationEngine::addSensorHatchToMachineList, MTEToxicResidueSensor.class) {
+        ToxicResidueSensor("GT5U.MBTT.ToxicResidueSensorHatch",
+            MTELargeNeutralizationEngine::addSensorHatchToMachineList, MTEToxicResidueSensor.class) {
 
             @Override
             public long count(MTELargeNeutralizationEngine gtMetaTileEntityLargeNeutralizationEngine) {
@@ -701,12 +703,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTELargeNeutralizationEngine> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTELargeNeutralizationEngine> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTELargeNeutralizationEngine> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -718,6 +722,16 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
         public IGTHatchAdder<? super MTELargeNeutralizationEngine> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

@@ -55,6 +55,7 @@ import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.SearchField;
 import forestry.api.apiculture.EnumBeeType;
+import gregtech.api.enums.Mods;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -70,8 +71,9 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     private static final int WARNING_ANIM_FRAMES = 63;
     private static final int WARNING_ANIM_TICK_MS = 50;
     private static final UITexture OVERLAY_INVENTORY_FULL_WARNING_SHEET = UITexture
-        .fullImage("kubatech", "gui/icons/inventory_full_warning");
-    private static final UITexture OVERLAY_BEE_LIST = UITexture.fullImage("kubatech", "gui/overlay_button/bee_list");
+        .fullImage(Mods.ModIDs.KUBA_TECH, "gui/icons/inventory_full_warning");
+    private static final UITexture OVERLAY_BEE_LIST = UITexture
+        .fullImage(Mods.ModIDs.KUBA_TECH, "gui/overlay_button/bee_list");
 
     private boolean isInInventory = true;
     private List<GTHelper.StackableItemSlot> beeSlots = new ArrayList<>();

@@ -17,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -119,10 +118,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
                 if (fluid == null) return;
                 // noinspection deprecation
-                tooltip.add(
-                    translateToLocalFormatted(
-                        "GT5U.item.tank.locked_to",
-                        EnumChatFormatting.YELLOW + fluid.getLocalizedName()));
+                tooltip.add(translateToLocalFormatted("GT5U.item.tank.locked_to", fluid.getLocalizedName()));
             }
         }
     }
@@ -262,6 +258,12 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
 
         return mFluid != null && mFluid.getFluid()
             .equals(fluid);
+    }
+
+    public void resetFluidLockOnShiftBreak() {
+        if (mLockFluid && getFluidAmount() == 0) {
+            lockFluid(false);
+        }
     }
 
     public boolean isOutputFluid() {

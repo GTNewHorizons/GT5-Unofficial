@@ -1,5 +1,7 @@
 package gregtech.client;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -48,7 +50,12 @@ public class GTWorkAreaRenderer {
         double cameraY = camera.lastTickPosY + (camera.posY - camera.lastTickPosY) * event.partialTicks;
         double cameraZ = camera.lastTickPosZ + (camera.posZ - camera.lastTickPosZ) * event.partialTicks;
 
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushAttrib(
+            GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT
+                | GL11.GL_DEPTH_BUFFER_BIT
+                | GL11.GL_CURRENT_BIT
+                | GL11.GL_LINE_BIT
+                | GL11.GL_TEXTURE_BIT);
         GL11.glPushMatrix();
 
         GL11.glTranslated(-cameraX, -cameraY, -cameraZ);
@@ -67,7 +74,9 @@ public class GTWorkAreaRenderer {
 
         GL11.glLineWidth(2.0F);
 
-        for (IWorkAreaProvider workAreaProvider : WorkAreaProviderRegistry.getActiveProvidersSnapshot()) {
+        final List<IWorkAreaProvider> providers = WorkAreaProviderRegistry.getActiveProvidersSnapshot();
+        for (int p = 0; p < providers.size(); p++) {
+            final IWorkAreaProvider workAreaProvider = providers.get(p);
             if (!workAreaProvider.isWorkAreaShown() || workAreaProvider.getWorkAreaWorld() != mc.theWorld) {
                 WorkAreaProviderRegistry.unregister(workAreaProvider);
                 continue;
@@ -83,7 +92,9 @@ public class GTWorkAreaRenderer {
             RenderGlobal.drawOutlinedBoundingBox(workArea, WORK_AREA_COLOR);
 
             if (workAreaProvider.shouldRenderWorkAreaChunkNumbers()) {
-                for (WorkAreaChunk chunk : workAreaProvider.getWorkAreaChunksInWorkOrder()) {
+                final List<WorkAreaChunk> chunks = workAreaProvider.getWorkAreaChunksInWorkOrder();
+                for (int c = 0; c < chunks.size(); c++) {
+                    final WorkAreaChunk chunk = chunks.get(c);
                     double numberX = (chunk.chunkX() << 4) + 8.0D;
                     double numberY = workAreaProvider.getWorkAreaNumberY();
                     double numberZ = (chunk.chunkZ() << 4) + 8.0D;
@@ -209,22 +220,29 @@ public class GTWorkAreaRenderer {
         };
     }
 
+    private final Vec3 rayStart = Vec3.createVectorHelper(0, 0, 0);
+    private final Vec3 rayEnd = Vec3.createVectorHelper(0, 0, 0);
+
     private boolean hasLineOfSightToText(@NotNull Minecraft mc, @NotNull Entity camera, double cameraX, double cameraY,
         double cameraZ, double textX, double textY, double textZ) {
         if (mc.theWorld == null) {
             return false;
         }
 
-        Vec3 start = Vec3.createVectorHelper(cameraX, cameraY + camera.getEyeHeight(), cameraZ);
+        rayStart.xCoord = cameraX;
+        rayStart.yCoord = cameraY + camera.getEyeHeight();
+        rayStart.zCoord = cameraZ;
 
-        Vec3 end = Vec3.createVectorHelper(textX, textY, textZ);
+        rayEnd.xCoord = textX;
+        rayEnd.yCoord = textY;
+        rayEnd.zCoord = textZ;
 
         /*
          * MCP name for rayTraceBlocks(
          * Vec3 start, Vec3 end, bool stopOnLiquid, bool ignoreBlockWithoutBoundingBox, bool returnLastUncollidableBlock
          * ) in MC 1.7.10.
          */
-        MovingObjectPosition hit = mc.theWorld.func_147447_a(start, end, false, true, false);
+        MovingObjectPosition hit = mc.theWorld.func_147447_a(rayStart, rayEnd, false, true, false);
 
         return hit == null;
     }

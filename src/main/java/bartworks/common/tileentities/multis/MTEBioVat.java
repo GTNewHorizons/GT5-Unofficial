@@ -102,6 +102,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.GTplusplus;
 
 public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -344,6 +345,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         if (!(aMetaTileEntity instanceof MTERadioHatch radioHatch)) {
             return false;
         } else {
+            addIfSmartInput(radioHatch);
             radioHatch.updateTexture(CasingIndex);
             return this.mRadHatches.add(radioHatch);
         }
@@ -600,7 +602,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                 this.mStack = aStack;
                 this.mCulture = lCulture;
                 if (this.needsVisualUpdate && aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER == 1) {
-                    if (aBaseMetaTileEntity.isClientSide()) new Throwable().printStackTrace();
+                    if (aBaseMetaTileEntity.isClientSide()) {
+                        GTplusplus.logger.error(new Throwable());
+                    }
+
                     this.placeFluid(xDir, zDir, offsetX_L, offsetY_L, offsetZ_L, offsetX_U, offsetY_U, offsetZ_U);
                     this.needsVisualUpdate = false;
                 }
@@ -639,9 +644,6 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (this.height != this.reCalculateHeight()) this.needsVisualUpdate = true;
-        this.doAllVisualThings();
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mRadHatches.size() == 1) {
                 this.mSievert = this.mRadHatches.get(0)
@@ -655,6 +657,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                 this.mMaxProgresstime = 0;
             }
         }
+
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (this.height != this.reCalculateHeight()) this.needsVisualUpdate = true;
+        this.doAllVisualThings();
     }
 
     @Override
@@ -786,7 +792,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
 
     private enum RadioHatchElement implements IHatchElement<MTEBioVat> {
 
-        RadioHatch(MTEBioVat::addRadiationInputToMachineList, MTERadioHatch.class) {
+        RadioHatch("GT5U.MBTT.RadioHatch", MTEBioVat::addRadiationInputToMachineList, MTERadioHatch.class) {
 
             @Override
             public long count(MTEBioVat mteBioVat) {
@@ -794,11 +800,13 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEBioVat> adder;
 
         @SafeVarargs
-        RadioHatchElement(IGTHatchAdder<MTEBioVat> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        RadioHatchElement(String name, IGTHatchAdder<MTEBioVat> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -811,6 +819,16 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         @Override
         public IGTHatchAdder<? super MTEBioVat> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

@@ -1,5 +1,6 @@
 package goodgenerator.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static goodgenerator.loader.Loaders.essentiaCell;
 import static goodgenerator.loader.Loaders.yottaFluidTankCell;
 import static goodgenerator.util.CharExchanger.tierName;
@@ -80,7 +81,8 @@ public class GGItemBlocks extends ItemBlock {
             StringBuilder cap = new StringBuilder();
             cap.append(" 1000000");
             for (int i = 0; i < stack.getItemDamage(); i++) cap.append("00");
-            cap.append(" L");
+            cap.append(" ")
+                .append(getFluidUnit());
             tooltip.add(translateToLocal("YOTTankCell.tooltip.0") + CharExchanger.formatNumber(cap.toString()));
             tooltip.add(translateToLocal("YOTTankCell.tooltip.1"));
         }

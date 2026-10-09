@@ -21,10 +21,12 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -62,6 +64,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -103,13 +106,14 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Algae Pond")
-            .addInfo("Grows Algae!")
-            .addInfo("Provide compost to boost production by one tier")
-            .addGlassEnergyLimitInfo()
-            .addInfo("Accepts exactly 1 Energy Hatch")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "algae-pond"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 10, false)
+            .addEnergyHatchGlassTier()
             .addController("Front center, 3rd layer")
             .addCasing("64", "Any Tiered Glass", true)
             .addCasing("20-25", "Algae Casing", false)
@@ -124,6 +128,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -229,6 +234,11 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
     @Override
     public ITexture getCasingTexture() {
         return Casings.AlgaeCasing.getCasingTexture();
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override

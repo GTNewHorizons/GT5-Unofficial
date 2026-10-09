@@ -120,7 +120,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
                     String aCurrentText = getText();
                     if (!aCurrentText.isEmpty()) {
                         this.mText.setText(aCurrentText.substring(0, aCurrentText.length() - 1));
-                        if (getText().length() == 0) {
+                        if (getText().isEmpty()) {
                             setText(0);
                         }
                         sendUpdateToServer();

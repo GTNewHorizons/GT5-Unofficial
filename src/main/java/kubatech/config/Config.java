@@ -24,7 +24,7 @@ import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 
-import kubatech.Tags;
+import gregtech.api.enums.Mods;
 
 public class Config {
 
@@ -88,8 +88,8 @@ public class Config {
     public static File configDirectory;
 
     public static void init(File configFile) {
-        configDirectory = new File(configFile, Tags.MODID);
-        Config.configFile = new File(configDirectory, Tags.MODID + ".cfg");
+        configDirectory = new File(configFile, Mods.ModIDs.KUBA_TECH);
+        Config.configFile = new File(configDirectory, Mods.ModIDs.KUBA_TECH + ".cfg");
     }
 
     public static File getConfigFile(String file) {

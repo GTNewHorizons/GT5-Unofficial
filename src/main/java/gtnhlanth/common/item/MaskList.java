@@ -113,44 +113,44 @@ public enum MaskList {
 
     ;
 
-    String name;
-    String englishName;
-    String spectrum;
+    final String name;
+    final String englishName;
+    final String spectrum;
 
-    int maxUses;
+    final int maxUses;
 
-    MaskList precursor;
-    Dyes lensColour;
+    final MaskList precursor;
+    final Dyes lensColour;
 
-    long engraverEUt;
+    final long engraverEUt;
 
-    float minEnergy;
-    float maxEnergy;
+    final float minEnergy;
+    final float maxEnergy;
 
-    float minFocus;
-    int baselineAmount;
+    final float minFocus;
+    final int baselineAmount;
 
-    ItemStack tcTargetItem;
-    ItemStack producedItem;
+    final ItemStack tcTargetItem;
+    final ItemStack producedItem;
 
-    ItemList[] forbiddenWafers;
+    final ItemList[] forbiddenWafers;
 
     MaskList(String name, String englishName, int maxUses, String spectrum, MaskList precursor, Dyes lensColour,
         long engraverEUt, float minEnergy, float maxEnergy, float minFocus, int baselineAmount, ItemStack producedItem,
         ItemStack tcTargetItem, ItemList... forbiddenWafers) {
         this.name = name;
         this.englishName = englishName;
-        this.spectrum = spectrum;
         this.maxUses = maxUses;
+        this.spectrum = spectrum;
         this.precursor = precursor;
         this.lensColour = lensColour;
         this.engraverEUt = engraverEUt;
-        this.minFocus = minFocus;
         this.minEnergy = minEnergy;
         this.maxEnergy = maxEnergy;
+        this.minFocus = minFocus;
         this.baselineAmount = baselineAmount;
-        this.tcTargetItem = tcTargetItem;
         this.producedItem = producedItem;
+        this.tcTargetItem = tcTargetItem;
         this.forbiddenWafers = forbiddenWafers;
     }
 
@@ -162,12 +162,12 @@ public enum MaskList {
         return this.englishName;
     }
 
-    public String getSpectrum() {
-        return this.spectrum;
-    }
-
     public int getMaxUses() {
         return this.maxUses;
+    }
+
+    public String getSpectrum() {
+        return this.spectrum;
     }
 
     public MaskList getPrecursor() {
@@ -198,16 +198,15 @@ public enum MaskList {
         return this.baselineAmount;
     }
 
-    public ItemStack getTCTargetItem() {
-        return this.tcTargetItem;
-    }
-
     public ItemStack getProducedItem() {
         return this.producedItem;
+    }
+
+    public ItemStack getTCTargetItem() {
+        return this.tcTargetItem;
     }
 
     public ItemList[] getForbiddenWafers() {
         return this.forbiddenWafers;
     }
-
 }

@@ -38,5 +38,10 @@ public class ItemsFoods {
         EntityUtils.registerDropsForMob(EntityWolf.class, GregtechItemList.RawWolfMeat.get(1), 2, 4000);
         EntityUtils.registerDropsForMob(EntityOcelot.class, GregtechItemList.RawOcelotMeat.get(1), 2, 4000);
         EntityUtils.registerDropsForMob(EntityBlaze.class, GregtechItemList.BlazeFlesh.get(1), 1, 500);
+
+        EntityUtils.registerDropsForBurningMob(EntityVillager.class, GregtechItemList.CookedHumanMeat.get(1), 2, 1500);
+        EntityUtils.registerDropsForBurningMob(EntityHorse.class, GregtechItemList.CookedHorseMeat.get(1), 4, 4000);
+        EntityUtils.registerDropsForBurningMob(EntityWolf.class, GregtechItemList.CookedWolfMeat.get(1), 2, 4000);
+        EntityUtils.registerDropsForBurningMob(EntityOcelot.class, GregtechItemList.CookedOcelotMeat.get(1), 2, 4000);
     }
 }

@@ -6,6 +6,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +31,7 @@ public class BaseItemDustUnique extends Item {
     protected final String typeLoc;
     protected final String materialName;
     protected final String chemicalNotation;
+    protected final String internalMaterialName;
 
     public BaseItemDustUnique(final String unlocalizedName, final String materialName, final int colour,
         final String pileSize) {
@@ -44,6 +46,8 @@ public class BaseItemDustUnique extends Item {
         this.setCreativeTab(tabMisc);
         this.colour = colour == 0 ? Dyes._NULL.toInt() : colour;
         this.materialName = materialName;
+        this.internalMaterialName = materialName.toLowerCase(Locale.ENGLISH)
+            .replaceAll("[^a-z0-9]", "");
         MaterialUtils.generateMaterialLocalizedName(materialName);
         if (mChemicalFormula == null || mChemicalFormula.isEmpty() || mChemicalFormula.equals("NullFormula")) {
             this.chemicalNotation = StringUtils.subscript(materialName);
@@ -98,6 +102,10 @@ public class BaseItemDustUnique extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack iStack) {
+        final String overrideKey = typeLoc + "." + internalMaterialName;
+        if (StatCollector.canTranslate(overrideKey)) {
+            return StatCollector.translateToLocal(overrideKey);
+        }
         return translateToLocalFormatted(typeLoc, MaterialUtils.getMaterialLocalizedName(this.materialName));
     }
 

@@ -23,22 +23,35 @@ import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_MAX;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_MAX;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ULV;
+import static mcp.mobius.waila.api.SpecialChars.BLUE;
+import static mcp.mobius.waila.api.SpecialChars.GOLD;
+
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEDiode extends MTEBasicHull {
 
     private long maxAmps;
@@ -97,6 +110,17 @@ public class MTEDiode extends MTEBasicHull {
         super.loadNBTData(aNBT);
     }
 
+    // Diodes only pass energy, the tank inherited from the hull has no use here.
+    @Override
+    public int getCapacity() {
+        return 0;
+    }
+
+    @Override
+    public boolean canTankBeFilled() {
+        return false;
+    }
+
     @Override
     public long maxAmperesOut() {
         return this.aAmps;
@@ -109,7 +133,11 @@ public class MTEDiode extends MTEBasicHull {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEDiode(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        MTEDiode diode = new MTEDiode(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        // The name is built from the amperage, so it has to be known before the first tick.
+        diode.maxAmps = this.maxAmps;
+        diode.aAmps = this.maxAmps;
+        return diode;
     }
 
     private long getAmpsfromMeta(int meta) {
@@ -119,6 +147,42 @@ public class MTEDiode extends MTEBasicHull {
         if (meta >= Diode12A_ULV.ID && meta <= Diode12A_MAX.ID) return 12L;
         if (meta >= Diode16A_ULV.ID && meta <= Diode16A_MAX.ID) return 16L;
         return 0L;
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+        final long voltage = tag.getLong("maxEUOutput");
+        final Object displayedVoltage = GTMod.proxy.mWailaTransformerVoltageTier
+            ? GTUtility.getColoredTierNameFromVoltage(voltage)
+            : voltage;
+
+        if (accessor.getSide() == getBaseMetaTileEntity().getFrontFacing()) {
+            currenttip.add(
+                BLUE + StatCollector
+                    .translateToLocalFormatted("GT5U.waila.transformer.output", displayedVoltage, tag.getLong("amps")));
+        } else {
+            currenttip.add(
+                GOLD + StatCollector
+                    .translateToLocalFormatted("GT5U.waila.transformer.input", displayedVoltage, tag.getLong("amps")));
+        }
+
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("maxEUOutput", maxEUOutput());
+        tag.setLong("amps", this.aAmps);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocal("tile.diode.name") + " " + this.maxAmps + "A " + GTValues.VN[this.mTier];
     }
 
     @Override

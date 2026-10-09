@@ -13,8 +13,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -26,6 +24,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -35,17 +34,20 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.hatch.MTEAtmosphericReconditionerGui;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     protected int mPollutionReduction = 0;
@@ -65,7 +67,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             aNameRegional,
             aTier,
             2,
-            "Making sure you don't live in Gwalior - Uses 2A",
+            (String) null,
             2,
             1,
             TextureFactory.of(
@@ -135,21 +137,10 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     @Override
     public String[] getDescription() {
-
-        boolean highTier = this.mTier >= 7;
-
-        String[] A = ArrayUtils.addAll(
-            this.mDescriptionArray,
-            highTier ? "Will attempt to remove 1/4 pollution from 8 surrounding chunks" : "",
-            highTier ? "If these chunks are not loaded, they will be ignored" : "",
-            "Requires a turbine rotor and an Air Filter [T1/T2] to run.",
-            "The turbine rotor must be manually inserted/replaced",
-            "Can be configured with a soldering iron to change modes",
-            "Low Efficiency: Removes half pollution, Turbine takes 50% dmg",
-            "High Efficiency: Removes full pollution, Turbine takes 100% dmg",
-            "Turbine Rotor will not break in LE mode",
-            "Insert an equal tier Conveyor Module to enable automation");
-        return TooltipHelper.pollutionDisabledTooltip(A);
+        final String[] description = mTier >= 7
+            ? GTSplit.splitLocalized("gt.blockmachines.pollutioncleaner.chunks.desc")
+            : GTSplit.splitLocalized("gt.blockmachines.pollutioncleaner.desc");
+        return TooltipHelper.pollutionDisabledTooltip(description);
     }
 
     @Override
@@ -460,7 +451,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 return false;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return false;
     }

@@ -34,7 +34,7 @@ public class FMLEventHandler {
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP)) return;
         PlayerDataManager.initializePlayer((EntityPlayerMP) event.player);
-        kubatech.info("Sending config to " + event.player.getDisplayName());
+        kubatech.LOG.info("Sending config to {}", event.player.getDisplayName());
         kubatech.NETWORK.sendTo(LoadConfigPacket.instance, (EntityPlayerMP) event.player);
     }
 }

@@ -13,7 +13,7 @@ public enum GTPPCombType {
     DRAGONBLOOD(0, "Dragonblood", true, Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20)),
     FORCE(1, "Force", true, Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5));
 
-    public boolean mShowInList;
+    public final boolean mShowInList;
     public final Material mMaterial;
     public final int mID;
 
@@ -31,13 +31,13 @@ public enum GTPPCombType {
     GTPPCombType(int aID, String aName, boolean aShow, int... aColour) {
         this.mID = aID;
         this.mNameUnlocal = aName.toLowerCase()
-            .replaceAll(" ", "");
+            .replace(" ", "");
         this.mShowInList = aShow;
         this.mColour = aColour;
         map(aID, this);
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(
             aName.toLowerCase()
-                .replaceAll(" ", ""));
+                .replace(" ", ""));
         GTLanguageManager.addStringLocalization("gtplusplus.comb." + this.mNameUnlocal, aName + " Comb");
     }
 

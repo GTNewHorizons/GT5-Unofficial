@@ -1,5 +1,6 @@
 package gregtech.common.misc;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergy;
 
 import java.io.ByteArrayInputStream;
@@ -94,8 +95,8 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
                 }
             }
         } catch (IOException | ClassNotFoundException exception) {
-            System.out.println(GlobalEnergyNBTTag + " FAILED");
-            exception.printStackTrace();
+            GT_FML_LOGGER.error(GlobalEnergyNBTTag + " FAILED");
+            GT_FML_LOGGER.error(exception);
         }
         try {
             if (!nbtTagCompound.hasKey(GlobalEnergyTeamNBTTag)) return;
@@ -113,8 +114,8 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
                 }
             }
         } catch (IOException | ClassNotFoundException exception) {
-            System.out.println(GlobalEnergyTeamNBTTag + " FAILED");
-            exception.printStackTrace();
+            GT_FML_LOGGER.error("{} FAILED", GlobalEnergyTeamNBTTag);
+            GT_FML_LOGGER.error(exception);
         }
     }
 
@@ -134,8 +135,8 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             nbtTagCompound.setByteArray(GlobalEnergyNBTTag, data);
             nbtTagCompound.setBoolean(DEPRECATED, true);
         } catch (IOException exception) {
-            System.out.println(GlobalEnergyNBTTag + " SAVE FAILED");
-            exception.printStackTrace();
+            GT_FML_LOGGER.error("{} SAVE FAILED", GlobalEnergyNBTTag);
+            GT_FML_LOGGER.error(exception);
         }
     }
 }

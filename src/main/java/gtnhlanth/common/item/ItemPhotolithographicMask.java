@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import gtnhlanth.Tags;
+import gregtech.api.enums.Mods;
 
 public class ItemPhotolithographicMask extends Item implements ICanFocus {
 
@@ -19,7 +19,7 @@ public class ItemPhotolithographicMask extends Item implements ICanFocus {
         this.setUnlocalizedName("photomask." + name);
         this.setMaxStackSize(64);
         this.setNoRepair();
-        this.setTextureName(Tags.MODID + ":photomask/" + name);
+        this.setTextureName(Mods.ModIDs.G_T_N_H_LANTHANIDES + ":photomask/" + name);
     }
 
     @Override

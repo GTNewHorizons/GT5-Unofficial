@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -78,6 +79,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import io.netty.buffer.ByteBuf;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<MTEQuantumForceTransformer>
@@ -389,11 +391,15 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 doFermium = false;
                 doNeptunium = false;
 
+                // prevents neptunium plasma being consumed if there is nothing to focus
+                int circuit = findProgrammedCircuitNumber();
+                int outputCount = recipe.mOutputs.length + recipe.mFluidOutputs.length;
                 if (recipe.getMetadataOrDefault(GTRecipeConstants.QFT_FOCUS_TIER, 1) <= getFocusingTier()) {
                     FluidStack[] fluids = inputFluids;
                     for (FluidStack fluid : fluids) {
                         if (fluid.getFluid()
-                            .equals(mNeptunium)) {
+                            .equals(mNeptunium) && circuit >= 0
+                            && circuit < outputCount) {
                             doNeptunium = true;
                         }
                         if (fluid.getFluid()
@@ -403,7 +409,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     }
                 }
 
-                chances = getOutputChances(recipe, doNeptunium ? findProgrammedCircuitNumber() : -1);
+                chances = getOutputChances(recipe, doNeptunium ? circuit : -1);
 
                 // Handle Fluid Mode. Add fluid that item can be turned into to fluidModeItems.
                 // null if Fluid Mode is disabled or item cannot be turned into fluid.
@@ -642,6 +648,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchBulkCatalystHousing catalystHousing) {
+            addIfSmartInput(catalystHousing);
             catalystHousing.updateTexture(baseCasingIndex);
             this.catalystHousings.add(catalystHousing);
             return true;
@@ -651,7 +658,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     private enum SpecialHatchElement implements IHatchElement<MTEQuantumForceTransformer> {
 
-        CatalystHousing(MTEQuantumForceTransformer::addCatalystHousingToMachineList,
+        CatalystHousing("GT5U.MBTT.BulkCatalystHousing", MTEQuantumForceTransformer::addCatalystHousingToMachineList,
             MTEHatchBulkCatalystHousing.class) {
 
             @Override
@@ -660,12 +667,14 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEQuantumForceTransformer> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEQuantumForceTransformer> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEQuantumForceTransformer> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -678,6 +687,16 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         @Override
         public IGTHatchAdder<? super MTEQuantumForceTransformer> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
@@ -716,17 +735,15 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        if (data == null) data = new NBTTagCompound();
-        data.setBoolean("renderDisabled", renderDisabled);
-        return data;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(renderDisabled);
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        renderDisabled = data.getBoolean("renderDisabled");
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        renderDisabled = buffer.readBoolean();
     }
 
     @Override

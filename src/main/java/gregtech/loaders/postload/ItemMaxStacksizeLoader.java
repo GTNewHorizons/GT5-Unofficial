@@ -1,5 +1,7 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -7,13 +9,12 @@ import net.minecraft.item.Item;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLog;
 
 public class ItemMaxStacksizeLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Changing maximum Stacksizes if configured.");
+        GT_FML_LOGGER.debug("GTMod: Changing maximum Stacksizes if configured.");
 
         ItemList.Upgrade_Overclocker.getItem()
             .setMaxStackSize(GTMod.proxy.mUpgradeCount);

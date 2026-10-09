@@ -118,7 +118,8 @@ public class MachineStats {
 
         @Config.Comment({ "Use StackWatcher for Stocking Inputs (ME).",
             "If this option is off, periodic recipe check will be enabled if stocking input is attached." })
-        @Config.DefaultBoolean(true)
+        @Config.DefaultBoolean(false)
+        @Config.Sync
         @Config.RequiresWorldRestart
         public boolean useStackWatcher;
     }

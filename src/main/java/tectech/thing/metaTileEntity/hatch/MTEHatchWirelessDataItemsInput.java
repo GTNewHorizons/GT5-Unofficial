@@ -17,6 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
@@ -27,6 +28,7 @@ import gregtech.common.misc.WirelessTeamData;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     private boolean forceUpdate = false;
