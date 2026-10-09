@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -232,7 +233,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Charcoal Pile Igniter, CPI")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.charcoal_pile_igniter"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "charcoal-pit"),
                 ImmutableMap.<String, Object>builder().build())
