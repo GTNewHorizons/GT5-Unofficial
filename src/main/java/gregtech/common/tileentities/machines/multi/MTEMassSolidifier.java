@@ -159,15 +159,18 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Fluid Solidifier")
-            .addVoltageParallelInfo(PARALLELS_PER_TIER)
-            .addMarkdown(
-                new ResourceLocation("gregtech", "mass-solidifier"),
-                ImmutableMap.<String, Object>builder()
-                    .put("max_speedup", formatNumber(MAX_SPEEDUP_PERCENT))
-                    .build())
-            .addGlassEnergyLimitInfo()
+            .addVoltageParallelInfo(10)
+            .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
+            .addInfo("Decays at double the rate that it speeds up at")
+            .addStaticEuEffInfo(0.8f)
+            .addInfo(
+                "Can use " + EnumChatFormatting.YELLOW
+                    + "Solidifier Hatches"
+                    + EnumChatFormatting.GRAY
+                    + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginStructureBlock(5, 6, 9, false)
+            .addEnergyHatchGlassTier()
             .addController("Front bottom center")
             .addCasing(MIN_CASINGS + "-73", "Solidifier Casing", false)
             .addCasing("42", "Any Tiered Glass", true)

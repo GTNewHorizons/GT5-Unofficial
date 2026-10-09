@@ -1240,7 +1240,7 @@ item.gt.pollen.name=Пыльца
 item.gt.propolis.name=Прополис
 
 # GT Item Descriptions
-gt.item.desc.stored_heat=Накоплено тепла: %s
+gt.item.desc.stored_heat=Нагрев: %s
 gt.item.desc.durability=Прочность: §a%s / %s
 gt.item.desc.tier=%s:§e Тир %s
 gt.item.desc.level=%s§e уровень %s
@@ -2047,6 +2047,31 @@ gt.mbtt.machine_type.blast_furnace_mebf=Доменная печь, MEBF, MBF
 gt.mbtt.machine_type.blast_furnace_volcanus=Доменная печь
 gt.mbtt.machine_type.vacuum_furnace_dehydrator=Вакуумная печь, Дегидратор
 gt.mbtt.machine_type.alloy_smelter=Сплавоплавильная печь
+gt.mbtt.machine_type.circuit_assembly_line=Сборщик электросхем/Сборочная линия электросхем, CAL
+gt.mbtt.machine_type.high_temperature_reactor=Высокотемпературный реактор, THTR
+gt.mbtt.machine_type.miner=Шахтёр, VM
+gt.mbtt.machine_type.air_filter=Воздушный фильтр, EAF
+gt.mbtt.machine_type.algae_pond=Пруд с водорослями
+gt.mbtt.machine_type.assembly_line=Сборочная линия, Assline, AL
+gt.mbtt.machine_type.charcoal_pile_igniter=Запал угольной ямы, CPI
+gt.mbtt.machine_type.cleanroom=Чистая комната
+gt.mbtt.machine_type.coke_oven=Коксовая печь
+gt.mbtt.machine_type.concrete_backfiller=Бетонный заполнитель
+gt.mbtt.machine_type.decay_warehouse=Промышленное радиоизотопное хранилище
+gt.mbtt.machine_type.distillation_tower=Дистиллятор, DT
+gt.mbtt.machine_type.centrifuge=Центрифуга
+gt.mbtt.machine_type.chemical_engine=Химический двигатель, UCFE
+gt.mbtt.machine_type.bec_assembler=Сборщик BEC, Матрица наблюдения
+gt.mbtt.machine_type.bec_diode=Диод BEC, Шина хранения
+gt.mbtt.machine_type.bec_generator=Генератор BEC, Аппарат запутывания конденсата, Входной шлюз
+gt.mbtt.machine_type.bec_io_node=Узел ввода-вывода BEC, Входной люк, Выходной люк
+gt.mbtt.machine_type.bec_storage=Хранилище BEC, Хранилище запутанного конденсата
+gt.mbtt.machine_type.nuclear_salt_processing_plant=Реакторное процессорное устройство, Холодная ловушка, NSPP
+gt.mbtt.machine_type.rocket_engine=Ракетный двигатель
+gt.mbtt.machine_type.molten_salt_reactor=Реактор на расплавленной соли, LFTR
+gt.mbtt.machine_type.fuel_refinery=Топливный завод, RFPP
+gt.mbtt.machine_type.chemical_plant=Химический завод
+gt.mbtt.machine_type.solar_tower=Солнечная башня
 
 gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s
@@ -3028,16 +3053,15 @@ GT5U.gui.text.drone_observe_default=Камера дрона
 GT5U.gui.text.drone_metrics_header=§3[ ПОКАЗАТЕЛИ ДРОНА ]
 GT5U.gui.text.drone_cam_pos=§bКамера %c: §7%s
 GT5U.gui.text.drone_level_excellent=§7Уровень: §aОТЛИЧНЫЙ
-GT5U.gui.text.drone_locked_recipe=Блокировка рецепта
+GT5U.gui.text.drone_locked_recipe=Блокировка рецепта:
+GT5U.gui.text.drone_locked_recipe_unnamed=ВКЛ
+GT5U.gui.text.drone_max_parallel=Макс. параллель: %s%s
+GT5U.gui.text.drone_progress=§fПрогресс: %s
 GT5U.gui.text.recipe_metrics_header=§3[ ПОКАЗАТЕЛИ РЕЦЕПТА ]
 GT5U.gui.text.recipe_none=§7Нет активного рецепта.
-GT5U.gui.text.recipe_connecting_1=§7Подключение...
-GT5U.gui.text.recipe_connecting_2=§7Синхронизация потока
-GT5U.gui.text.recipe_connecting_3=§7данных рецепта...
-GT5U.gui.text.recipe_no_conn_1=§7НЕТ СВЯЗИ
-GT5U.gui.text.recipe_no_conn_2=§7Наведите прицел на
-GT5U.gui.text.recipe_no_conn_3=§7машину, чтобы увидеть
-GT5U.gui.text.recipe_no_conn_4=§7детали рецепта.
+GT5U.gui.text.recipe_connecting=§7Подключение... Синхронизация потока данных рецепта...
+GT5U.gui.text.recipe_no_conn=§7НЕТ СВЯЗИ
+GT5U.gui.text.recipe_no_conn_hint=§7Наведите прицел на машину, чтобы увидеть детали рецепта.
 GT5U.gui.text.drone_zoom=УВЕЛИЧЕНИЕ: %.1fx
 GT5U.gui.text.drone_flashlight=Фонарь ВКЛ
 GT5U.gui.text.shutdown_duration=§4Отключён §e%s §4ч §e%s §4м §e%s §4с назад.
@@ -3126,7 +3150,6 @@ GT5U.gui.text.structure_error.crib_not_allowed=Входные люки созд�
 GT5U.gui.text.structure_error.stocking_input_bus_not_allowed=Входные люки снабжения не допускаются
 GT5U.gui.text.structure_error.stocking_input_hatch_not_allowed=Входные шлюзы снабжения не допускаются
 GT5U.gui.text.structure_error.unknown=Неизвестная ошибка структуры
-GT5U.gui.text.structure_error.glass_tier_not_enough=Тир стекла слишком низкий для тира энерговвода
 GT5U.gui.text.structure_error.missing_energy_hatch=Нет энерговвода
 GT5U.gui.text.structure_error.missing_output_bus=Отсутствует выходной люк
 GT5U.gui.text.structure_error.dt_missing_output_hatch=Нет выходного шлюза на слое %s
@@ -3141,7 +3164,6 @@ GT5U.gui.text.structure_error.need_exactly_one_focus_input=Нужен ровно
 GT5U.gui.text.structure_error.missing_essentia_output_hatch=Нет выходного шлюза эссенции
 GT5U.gui.text.structure_error.missing_neutron_accelerator=Нет ускорителя нейтронов
 GT5U.gui.text.structure_error.missing_data_hatch=Нет шлюза для ввода данных
-GT5U.gui.text.structure_error.dt_missing_output_hatch=Missing Output Hatch on Layer %s
 GT5U.gui.text.structure_error.dt_missing_output_hatches=Нет выходных шлюзов на слоях %s
 GT5U.gui.text.structure_error.coil_level_not_enough=Уровень катушек недостаточен
 GT5U.gui.text.structure_error.exotic_hatch_insufficient_coil_tier=Coil tier too low for Multi-Amp Hatch
@@ -7370,16 +7392,6 @@ gt.locker.waila_armor_slot_charged=Слот %s: §e%s§r (%s%s%%§r)
 
 gt.db.metrics_cover.coords=§a%s§r, §a%s§r, §a%s§r
 
-gt.item.adv_sensor_card.dimension=Измерение: §a%s
-gt.item.adv_sensor_card.coords=Координаты: %s
-gt.item.adv_sensor_card.tooltip.recipe_hint=Создаётся установкой модуля передатчика показателей, обычного рецепта нет
-gt.item.adv_sensor_card.tooltip.fried.1=§o§dЭта штука выглядит полностью сгоревшей...
-gt.item.adv_sensor_card.tooltip.fried.2=§cУничтожена из-за снятия передатчика показателей
-gt.item.adv_sensor_card.tooltip.fried.3=§cили разрушения машины
-gt.item.adv_sensor_card.tooltip.machine=Машина: §b%s
-gt.item.adv_sensor_card.error.deconstructed.1=-ОШИБКА- Машина разобрана
-gt.item.adv_sensor_card.error.deconstructed.2=Поставьте машину заново, чтобы включить снова
-gt.item.adv_sensor_card.error.no_data=Данные не найдены
 gt.item.redstone_sniffer.regular_wireless=Обычная беспроводная связь
 gt.item.redstone_sniffer.advanced_wireless=Улучшенная беспроводная связь
 gt.item.redstone_sniffer.frequency=Частота
@@ -7790,8 +7802,6 @@ GT5U.infodata.large_fluid_extractor.max_parallels=Макс. параллелей
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Бонус нагревательной катушки к скорости: +%s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Множитель общей скорости: %s%.0f%s %%
 GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Общий множитель EU/t: %s%.0f%s %%
-
-GT5U.infodata.large_neutralization_engine=Большой двигатель сгорания
 
 GT5U.infodata.oil_drill.title=§9Помпа для Нефти/Жидкости§r
 GT5U.infodata.oil_drill.work_area=Рабочая область: §a%s x %s§r чанков
@@ -9000,16 +9010,16 @@ gt.advancedsensorcard.name=Карта GregTech продвинутого дист
 gt.advancedsensorcard.tooltip=Не установлено
 
 # Advanced Sensor Card
-gt.item.adv_sensor_card.error.deconstructed.1=-ОШИБКА- Механизм разобран
-gt.item.adv_sensor_card.error.deconstructed.2=Установите механизм снова, чтобы включить её.
+gt.item.adv_sensor_card.error.deconstructed.1=-ОШИБКА- Машина разобрана
+gt.item.adv_sensor_card.error.deconstructed.2=Поставьте машину заново, чтобы включить снова
 gt.item.adv_sensor_card.error.no_data=Данные не найдены
-gt.item.adv_sensor_card.tooltip.fried.1=§o§dЭта штука выглядит полностью прожаренной...
-gt.item.adv_sensor_card.tooltip.fried.2=§cУничтожен в результате демонтажа модуля передатчика метрики
-gt.item.adv_sensor_card.tooltip.fried.3=§cили при уничтожении механизма
-gt.item.adv_sensor_card.tooltip.machine=Механизм: %s
+gt.item.adv_sensor_card.tooltip.fried.1=§o§dЭта штука выглядит полностью сгоревшей...
+gt.item.adv_sensor_card.tooltip.fried.2=§cУничтожена из-за снятия передатчика показателей
+gt.item.adv_sensor_card.tooltip.fried.3=§cили разрушения машины
+gt.item.adv_sensor_card.tooltip.machine=Машина: %s
 gt.item.adv_sensor_card.tooltip.frequency=Частота: §n§e%s
-gt.item.adv_sensor_card.tooltip.recipe_hint=Создано путем прикрепления Модуля передатчика метрики, нет стандартного рецепта
-gt.item.adv_sensor_card.dimension=Измерение: %s
+gt.item.adv_sensor_card.tooltip.recipe_hint=Создаётся установкой модуля передатчика показателей, обычного рецепта нет
+gt.item.adv_sensor_card.dimension=Измерение: §a%s
 gt.item.adv_sensor_card.coords=Координаты: %s
 
 # Neutron Reflector
@@ -9028,9 +9038,6 @@ gt.360k_Space_Coolantcell.name=Охлаждающий стержень Sp 360к
 gt.540k_Space_Coolantcell.name=Охлаждающий стержень Sp 540к
 gt.1080k_Space_Coolantcell.name=Охлаждающий стержень Sp 1080к
 gt.neutroniumHeatCapacitor.name=1G Нейтрониевый тепловой конденсатор
-
-# Coolant Cell shared tooltip key
-gt.item.desc.stored_heat=Нагрев: %s
 
 # Breeder Cells
 gt.rodLithium.name=Топливный стержень (Литий)
@@ -9354,8 +9361,6 @@ GT5U.scanner.debug.machine_active=Механизм §aактивен§r
 GT5U.scanner.debug.machine_inactive=Механизм §cнеактивен§r
 GT5U.scanner.debug.needs_power=§cВНИМАНИЕ: Устройству не хватает питания.§r
 GT5U.scanner.debug.ic2_enet=Подключён к IC2 ENet
-GT5U.gui.text.shutdown_reason.fluid_output_failed=§4Не удалось вывести все жидкости.
-GT5U.gui.text.shutdown_reason.item_output_failed=§4Не удалось вывести все предметы.
 
 # Basic Generators - Shared
 gt.blockmachines.basicgenerator.fuel_efficiency=Эффективность топлива: %s%%

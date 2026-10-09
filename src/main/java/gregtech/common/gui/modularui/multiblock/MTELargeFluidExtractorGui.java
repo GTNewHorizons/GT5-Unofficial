@@ -71,7 +71,7 @@ public class MTELargeFluidExtractorGui extends MTEMultiBlockBaseGui<MTELargeFlui
             .child(
                 IKey.dynamic(
                     () -> String.format(
-                        "%sEnergy hatch tier (%s) is too high\nfor the glass tier (%s).%s",
+                        "%sEnergy Hatch Tier (%s) is too high\nfor the Glass Tier (%s).%s",
                         EnumChatFormatting.DARK_RED,
                         VN[GTUtility.clamp(hatchTierSyncer.getIntValue(), 0, VN.length - 1)],
                         VN[GTUtility.clamp(glassTierSyncer.getIntValue(), 0, VN.length - 1)],
