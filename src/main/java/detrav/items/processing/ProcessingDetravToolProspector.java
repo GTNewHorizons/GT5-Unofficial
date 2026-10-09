@@ -14,14 +14,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.loaders.oreprocessing.PartRecipeGenerator;
 
@@ -90,7 +91,7 @@ public class ProcessingDetravToolProspector implements PartRecipeGenerator {
             DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(ProspectorScannerLuV.ID, 1, material, steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E',
-                MaterialParts.cell(Materials.IndustrialStrengthHydrofluoricAcid, 1), 'S',
+                MaterialLibAPI.getStack(Materials.IndustrialStrengthHydrofluoricAcid, CellShapes.cell, 1), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
                     .get(0),
                 'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
@@ -99,7 +100,7 @@ public class ProcessingDetravToolProspector implements PartRecipeGenerator {
             DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(ProspectorScannerZPM.ID, 1, material, steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E',
-                MaterialParts.cell(Materials.IndustrialStrengthHydrofluoricAcid, 1), 'S',
+                MaterialLibAPI.getStack(Materials.IndustrialStrengthHydrofluoricAcid, CellShapes.cell, 1), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
                     .get(0),
                 'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
@@ -108,7 +109,7 @@ public class ProcessingDetravToolProspector implements PartRecipeGenerator {
             DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(ProspectorScannerUV.ID, 1, material, steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E',
-                MaterialParts.cell(Materials.IndustrialStrengthHydrofluoricAcid, 1), 'S',
+                MaterialLibAPI.getStack(Materials.IndustrialStrengthHydrofluoricAcid, CellShapes.cell, 1), 'S',
                 OreDictionary.getOres("cellLithiumPeroxide")
                     .get(0),
                 'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',
@@ -118,7 +119,7 @@ public class ProcessingDetravToolProspector implements PartRecipeGenerator {
             DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(ProspectorScannerUHV.ID, 1, material, steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SHE", "CPC", "PXP", 'E',
-                MaterialParts.cell(Materials.IndustrialStrengthHydrofluoricAcid, 1), 'S',
+                MaterialLibAPI.getStack(Materials.IndustrialStrengthHydrofluoricAcid, CellShapes.cell, 1), 'S',
                 OreDictionary.getOres("cellHydrogenPeroxide")
                     .get(0),
                 'H', OrePrefixes.toolHeadDrill.ingredient(material), 'P', OrePrefixes.plate.ingredient(material), 'C',

@@ -21,18 +21,19 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
+import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.GTShapeProperties;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -334,33 +335,33 @@ public class FluidSolidifierRecipes implements Runnable {
     }
 
     private void HexaniteRecipes() {
-        this.addHexanitePartRecipe(OrePrefixes.frameGt, 1);
-        this.addHexanitePartRecipe(OrePrefixes.ingot, 1);
-        this.addHexanitePartRecipe(OrePrefixes.plate, 1);
-        this.addHexanitePartRecipe(OrePrefixes.plateDouble, 1);
-        this.addHexanitePartRecipe(OrePrefixes.plateDense, 1);
-        this.addHexanitePartRecipe(OrePrefixes.stick, 1);
-        this.addHexanitePartRecipe(OrePrefixes.round, 1);
-        this.addHexanitePartRecipe(OrePrefixes.bolt, 1);
-        this.addHexanitePartRecipe(OrePrefixes.screw, 1);
-        this.addHexanitePartRecipe(OrePrefixes.ring, 1);
-        this.addHexanitePartRecipe(OrePrefixes.foil, 1);
-        this.addHexanitePartRecipe(OrePrefixes.gearGtSmall, 1);
-        this.addHexanitePartRecipe(OrePrefixes.rotor, 1);
-        this.addHexanitePartRecipe(OrePrefixes.stickLong, 1);
-        this.addHexanitePartRecipe(OrePrefixes.gearGt, 1);
-        this.addHexanitePartRecipe(OrePrefixes.itemCasing, 1);
-        this.addHexanitePartRecipe(OrePrefixes.plateSuperdense, 1);
-        this.addHexanitePartRecipe(OrePrefixes.block, 1);
+        this.addHexanitePartRecipe(TEBlockShapes.frameGt, 1);
+        this.addHexanitePartRecipe(Shapes.ingot, 1);
+        this.addHexanitePartRecipe(Shapes.plate, 1);
+        this.addHexanitePartRecipe(Shapes.plateDouble, 1);
+        this.addHexanitePartRecipe(Shapes.plateDense, 1);
+        this.addHexanitePartRecipe(Shapes.stick, 1);
+        this.addHexanitePartRecipe(Shapes.round, 1);
+        this.addHexanitePartRecipe(Shapes.bolt, 1);
+        this.addHexanitePartRecipe(Shapes.screw, 1);
+        this.addHexanitePartRecipe(Shapes.ring, 1);
+        this.addHexanitePartRecipe(Shapes.foil, 1);
+        this.addHexanitePartRecipe(Shapes.gearGtSmall, 1);
+        this.addHexanitePartRecipe(Shapes.rotor, 1);
+        this.addHexanitePartRecipe(Shapes.stickLong, 1);
+        this.addHexanitePartRecipe(Shapes.gearGt, 1);
+        this.addHexanitePartRecipe(Shapes.itemCasing, 1);
+        this.addHexanitePartRecipe(Shapes.plateSuperdense, 1);
+        this.addHexanitePartRecipe(BlockShapes.block, 1);
     }
 
-    private void addHexanitePartRecipe(OrePrefixes prefix, final int multiplier) {
+    private void addHexanitePartRecipe(Shape shape, final int multiplier) {
 
-        final int partFraction = (int) (prefix.getMaterialAmount() * INGOTS / M);
+        final int partFraction = (int) (shape.getProperty(GTShapeProperties.MATERIAL_AMOUNT) * INGOTS / M);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(prefix, Materials.Netherite, multiplier))
-            .itemOutputs(MaterialParts.stack(prefix, Materials.Hexanite, multiplier))
+            .itemInputs(MaterialLibAPI.findStack(Materials.Netherite, shape, multiplier))
+            .itemOutputs(MaterialLibAPI.findStack(Materials.Hexanite, shape, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.UnformedHexanite,

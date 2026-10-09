@@ -65,7 +65,6 @@ import com.ruling_0.materiallib.api.Shape;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IHatchElement;
@@ -75,7 +74,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.material.GTMaterialIcons;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -205,35 +203,31 @@ public class GTStructureUtility {
     /// The storage block structure element, matching the `block` [gregtech.common.blocks.GTStorageShapeBlock] at
     /// the target material's index.
     public static <T> IStructureElement<T> ofStorageBlock(Material material) {
-        return ofMaterialBlock(material, BlockShapes.block, OrePrefixes.block, "block");
+        return ofMaterialBlock(material, BlockShapes.block, "block");
     }
 
     /// The sheetmetal structure element, matching the `sheetmetal` [gregtech.common.blocks.SheetmetalShapeBlock]
     /// at the target material's index.
     public static <T> IStructureElement<T> ofSheetMetal(Material material) {
-        return ofMaterialBlock(material, BlockShapes.sheetmetal, OrePrefixes.sheetmetal, "sheetmetal");
+        return ofMaterialBlock(material, BlockShapes.sheetmetal, "sheetmetal");
     }
 
     /// The bolted casing structure element, matching the `blockCasing` [gregtech.common.blocks.GTCasingShapeBlock]
     /// at the target material's index.
     public static <T> IStructureElement<T> ofBlockCasing(Material material) {
-        return ofMaterialBlock(material, BlockShapes.blockCasing, OrePrefixes.blockCasing, "blockCasing");
+        return ofMaterialBlock(material, BlockShapes.blockCasing, "blockCasing");
     }
 
     /// [#ofBlockCasing], for the rebolted `blockCasingAdvanced` shape.
     public static <T> IStructureElement<T> ofBlockCasingAdvanced(Material material) {
-        return ofMaterialBlock(
-            material,
-            BlockShapes.blockCasingAdvanced,
-            OrePrefixes.blockCasingAdvanced,
-            "blockCasingAdvanced");
+        return ofMaterialBlock(material, BlockShapes.blockCasingAdvanced, "blockCasingAdvanced");
     }
 
     /// A structure element matching the MaterialLib `shape` block at the target material's index, hinted with the
-    /// block art filed under `iconName` and placed from `prefix`'s unified stack.
-    private static <T> IStructureElement<T> ofMaterialBlock(Material material, Shape shape, OrePrefixes prefix,
-        String iconName) {
-        if (material == null) throw new IllegalArgumentException("material for " + prefix.name() + " can not be null!");
+    /// block art filed under `iconName` and placed from the pair's stack.
+    private static <T> IStructureElement<T> ofMaterialBlock(Material material, Shape shape, String iconName) {
+        if (material == null)
+            throw new IllegalArgumentException("material for " + shape.getName() + " can not be null!");
         return new IStructureElement<>() {
 
             @Override
@@ -274,7 +268,7 @@ public class GTStructureUtility {
             }
 
             private ItemStack getStack() {
-                return MaterialParts.stack(prefix, material, 1);
+                return MaterialLibAPI.findStack(material, shape, 1);
             }
 
             @Override

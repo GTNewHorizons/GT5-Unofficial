@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
@@ -23,7 +22,7 @@ public class WiremillRecipes implements Runnable {
     @Override
     public void run() {
 
-        registerWiremillRecipes(Materials.Graphene, 20 * SECONDS, 2, OrePrefixes.dust, OrePrefixes.stick, 1);
+        registerWiremillRecipes(Materials.Graphene, 20 * SECONDS, 2, Shapes.dust, Shapes.stick, 1);
 
         registerWiremillRecipes(Materials.SpaceTime, 8 * SECONDS + 8 * TICKS, (int) TierEU.RECIPE_LuV);
 

@@ -50,6 +50,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.SetMultimap;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import WayofTime.alchemicalWizardry.api.items.ShapedBloodOrbRecipe;
 import appeng.api.exceptions.MissingIngredientError;
@@ -795,8 +796,8 @@ public class GTRecipeRegistrator {
             material,
             baseDuration,
             (int) calculateRecipeEU(material, eut),
-            OrePrefixes.ingot,
-            OrePrefixes.stick,
+            Shapes.ingot,
+            Shapes.stick,
             2);
     }
 
@@ -806,16 +807,16 @@ public class GTRecipeRegistrator {
      * @param material     material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
      * @param eut          EU/t for recipe
-     * @param prefix1      prefix corresponds to ingot
-     * @param prefix2      prefix corresponds to stick
+     * @param shape1       shape corresponding to ingot
+     * @param shape2       shape corresponding to stick
      * @param multiplier   amount of wires created from 1 ingot
      */
-    public static void registerWiremillRecipes(Material material, int baseDuration, int eut, OrePrefixes prefix1,
-        OrePrefixes prefix2, int multiplier) {
-        if (MaterialParts.stack(prefix1, material, 1L) != null
+    public static void registerWiremillRecipes(Material material, int baseDuration, int eut, Shape shape1, Shape shape2,
+        int multiplier) {
+        if (MaterialLibAPI.findStack(material, shape1, 1) != null
             && MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(prefix1, material, 1L))
+                .itemInputs(MaterialLibAPI.findStack(material, shape1, 1))
                 .circuit(1)
                 .itemOutputs(
                     GTUtility.copyAmount(multiplier, MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 1)))
@@ -823,35 +824,35 @@ public class GTRecipeRegistrator {
                 .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(2L / multiplier, MaterialParts.stack(prefix1, material, 1)))
+                .itemInputs(GTUtility.copyAmount(2L / multiplier, MaterialLibAPI.findStack(material, shape1, 1)))
                 .circuit(2)
                 .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt02, 1))
                 .duration(((int) (baseDuration * 1.5f)) * TICKS)
                 .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(4L / multiplier, MaterialParts.stack(prefix1, material, 1)))
+                .itemInputs(GTUtility.copyAmount(4L / multiplier, MaterialLibAPI.findStack(material, shape1, 1)))
                 .circuit(4)
                 .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt04, 1))
                 .duration(baseDuration * 2 * TICKS)
                 .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(8L / multiplier, MaterialParts.stack(prefix1, material, 1)))
+                .itemInputs(GTUtility.copyAmount(8L / multiplier, MaterialLibAPI.findStack(material, shape1, 1)))
                 .circuit(8)
                 .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt08, 1))
                 .duration(((int) (baseDuration * 2.5f)) * TICKS)
                 .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(12L / multiplier, MaterialParts.stack(prefix1, material, 1)))
+                .itemInputs(GTUtility.copyAmount(12L / multiplier, MaterialLibAPI.findStack(material, shape1, 1)))
                 .circuit(12)
                 .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt12, 1))
                 .duration(baseDuration * 3 * TICKS)
                 .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(16L / multiplier, MaterialParts.stack(prefix1, material, 1)))
+                .itemInputs(GTUtility.copyAmount(16L / multiplier, MaterialLibAPI.findStack(material, shape1, 1)))
                 .circuit(16)
                 .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt16, 1))
                 .duration(((int) (baseDuration * 3.5f)) * TICKS)
@@ -859,10 +860,10 @@ public class GTRecipeRegistrator {
                 .addTo(wiremillRecipes);
         }
 
-        if (MaterialParts.stack(prefix2, material, 1L) != null
+        if (MaterialLibAPI.findStack(material, shape2, 1) != null
             && MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(prefix2, material, 1L))
+                .itemInputs(MaterialLibAPI.findStack(material, shape2, 1))
                 .circuit(1)
                 .itemOutputs(
                     GTUtility
@@ -871,45 +872,45 @@ public class GTRecipeRegistrator {
                 .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(4L / multiplier, MaterialParts.stack(prefix2, material, 1)))
+                .itemInputs(GTUtility.copyAmount(4L / multiplier, MaterialLibAPI.findStack(material, shape2, 1)))
                 .circuit(2)
                 .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt02, 1))
                 .duration(baseDuration * TICKS)
                 .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(8L / multiplier, MaterialParts.stack(prefix2, material, 1)))
+                .itemInputs(GTUtility.copyAmount(8L / multiplier, MaterialLibAPI.findStack(material, shape2, 1)))
                 .circuit(4)
                 .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt04, 1))
                 .duration(((int) (baseDuration * 1.5f)) * TICKS)
                 .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(16L / multiplier, MaterialParts.stack(prefix2, material, 1)))
+                .itemInputs(GTUtility.copyAmount(16L / multiplier, MaterialLibAPI.findStack(material, shape2, 1)))
                 .circuit(8)
                 .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt08, 1))
                 .duration(baseDuration * 2 * TICKS)
                 .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(24L / multiplier, MaterialParts.stack(prefix2, material, 1)))
+                .itemInputs(GTUtility.copyAmount(24L / multiplier, MaterialLibAPI.findStack(material, shape2, 1)))
                 .circuit(12)
                 .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt12, 1))
                 .duration(((int) (baseDuration * 2.5f)) * TICKS)
                 .eut(eut)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(32L / multiplier, MaterialParts.stack(prefix2, material, 1)))
+                .itemInputs(GTUtility.copyAmount(32L / multiplier, MaterialLibAPI.findStack(material, shape2, 1)))
                 .circuit(16)
                 .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt16, 1))
                 .duration(baseDuration * 3 * TICKS)
                 .eut(eut)
                 .addTo(wiremillRecipes);
         }
-        if (MaterialParts.stack(prefix1, material, 1L) != null
+        if (MaterialLibAPI.findStack(material, shape1, 1) != null
             && MaterialLibAPI.findStack(material, Shapes.wireFine, 1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(prefix1, material, 1L))
+                .itemInputs(MaterialLibAPI.findStack(material, shape1, 1))
                 .circuit(3)
                 .itemOutputs(
                     GTUtility.copyAmount(4L * multiplier, MaterialLibAPI.findStack(material, Shapes.wireFine, 1)))
@@ -917,10 +918,10 @@ public class GTRecipeRegistrator {
                 .eut(eut)
                 .addTo(wiremillRecipes);
         }
-        if (MaterialParts.stack(prefix2, material, 1L) != null
+        if (MaterialLibAPI.findStack(material, shape2, 1) != null
             && MaterialLibAPI.findStack(material, Shapes.wireFine, 1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(prefix2, material, 1L))
+                .itemInputs(MaterialLibAPI.findStack(material, shape2, 1))
                 .circuit(3)
                 .itemOutputs(
                     GTUtility.copyAmount(2L * multiplier, MaterialLibAPI.findStack(material, Shapes.wireFine, 1)))

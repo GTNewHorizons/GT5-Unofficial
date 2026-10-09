@@ -22,16 +22,18 @@ import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
+import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.GTShapeProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
@@ -140,40 +142,40 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
     private void addMagnetohydrodynamicallyConstrainedStarMatterPartRecipes() {
         if (!SuperSolarPanels.isModLoaded() || !OpenComputers.isModLoaded()) return;
 
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.frameGt, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.nugget, 9, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.ingot, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.plate, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.plateDense, 1, 3);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.stick, 2, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.round, 8, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.bolt, 8, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.screw, 8, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.ring, 4, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.foil, 8, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.itemCasing, 2, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.gearGtSmall, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.rotor, 1, 2);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.stickLong, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.springSmall, 2, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.spring, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.gearGt, 1, 2);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.wireFine, 8, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.block, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(TEBlockShapes.frameGt, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.nugget, 9, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.ingot, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.plate, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.plateDense, 1, 3);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.stick, 2, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.round, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.bolt, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.screw, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.ring, 4, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.foil, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.itemCasing, 2, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.gearGtSmall, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.rotor, 1, 2);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.stickLong, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.springSmall, 2, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.spring, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.gearGt, 1, 2);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.wireFine, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(BlockShapes.block, 1, 1);
     }
 
-    private void addWhiteDwarfMagnetoEICRecipe(final OrePrefixes part, final int multiplier,
-        final int circuitMultiplier) {
+    private void addWhiteDwarfMagnetoEICRecipe(final Shape part, final int multiplier, final int circuitMultiplier) {
 
-        final int partFraction = (int) (part.getMaterialAmount() * INGOTS / M);
+        final int partFraction = (int) (part.getProperty(GTShapeProperties.MATERIAL_AMOUNT) * INGOTS / M);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new Object[] { Circuits.UHV.getIngredient(), circuitMultiplier },
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                 getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
-                MaterialParts.stack(part, Materials.Eternity, multiplier))
-            .itemOutputs(MaterialParts.stack(part, Materials.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
+                MaterialLibAPI.findStack(Materials.Eternity, part, multiplier))
+            .itemOutputs(
+                MaterialLibAPI.findStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, part, multiplier))
             .fluidInputs(
                 MaterialUtils
                     .molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, (long) partFraction * multiplier))

@@ -16,13 +16,13 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.MaterialParts;
+import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.GTShapeProperties;
 import gregtech.api.util.GTModHandler;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -275,23 +275,23 @@ public class VacuumFreezerRecipes implements Runnable {
             .addTo(vacuumFreezerRecipes);
 
         // Proto-Halkonite
-        this.addProtoHalkonitePartRecipe(OrePrefixes.frameGt, 1);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.ingot, 1);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.plate, 1);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.plateDouble, 1);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.plateDense, 1);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.stick, 2);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.round, 8);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.bolt, 8);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.screw, 8);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.ring, 4);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.foil, 8);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.gearGtSmall, 1);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.rotor, 1);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.stickLong, 1);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.gearGt, 1);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.wireFine, 8);
-        this.addProtoHalkonitePartRecipe(OrePrefixes.plateSuperdense, 1);
+        this.addProtoHalkonitePartRecipe(TEBlockShapes.frameGt, 1);
+        this.addProtoHalkonitePartRecipe(Shapes.ingot, 1);
+        this.addProtoHalkonitePartRecipe(Shapes.plate, 1);
+        this.addProtoHalkonitePartRecipe(Shapes.plateDouble, 1);
+        this.addProtoHalkonitePartRecipe(Shapes.plateDense, 1);
+        this.addProtoHalkonitePartRecipe(Shapes.stick, 2);
+        this.addProtoHalkonitePartRecipe(Shapes.round, 8);
+        this.addProtoHalkonitePartRecipe(Shapes.bolt, 8);
+        this.addProtoHalkonitePartRecipe(Shapes.screw, 8);
+        this.addProtoHalkonitePartRecipe(Shapes.ring, 4);
+        this.addProtoHalkonitePartRecipe(Shapes.foil, 8);
+        this.addProtoHalkonitePartRecipe(Shapes.gearGtSmall, 1);
+        this.addProtoHalkonitePartRecipe(Shapes.rotor, 1);
+        this.addProtoHalkonitePartRecipe(Shapes.stickLong, 1);
+        this.addProtoHalkonitePartRecipe(Shapes.gearGt, 1);
+        this.addProtoHalkonitePartRecipe(Shapes.wireFine, 8);
+        this.addProtoHalkonitePartRecipe(Shapes.plateSuperdense, 1);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Harmonic_Compound.get(2))
@@ -311,9 +311,8 @@ public class VacuumFreezerRecipes implements Runnable {
             .addTo(vacuumFreezerRecipes);
     }
 
-    private void addProtoHalkonitePartRecipe(OrePrefixes prefix, final int multiplier) {
-        final int partFraction = (int) (prefix.getMaterialAmount() * INGOTS / M);
-        final Shape shape = MaterialParts.shape(prefix);
+    private void addProtoHalkonitePartRecipe(Shape shape, final int multiplier) {
+        final int partFraction = (int) (shape.getProperty(GTShapeProperties.MATERIAL_AMOUNT) * INGOTS / M);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, shape, multiplier))
