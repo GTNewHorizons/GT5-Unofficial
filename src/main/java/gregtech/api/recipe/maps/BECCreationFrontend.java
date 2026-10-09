@@ -34,6 +34,6 @@ public class BECCreationFrontend extends RecipeMapFrontend {
         recipeInfo.drawText(
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.bec-quota-required",
-                NumberFormatUtil.formatEnergy(recipeInfo.recipe.mEUt)));
+                NumberFormatUtil.formatNumber(recipeInfo.recipe.mEUt)));
     }
 }
