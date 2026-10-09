@@ -96,6 +96,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
                 if (tier == null) continue;
 
+                if (hatch.getItemCount() == 0) continue;
+
                 if (this.currentNaniteTier == null || tier.ordinal() < this.currentNaniteTier.ordinal()) {
                     this.currentNaniteTier = tier;
                 }
