@@ -182,10 +182,10 @@ public class GregTechAPI {
      * Getting assigned by the Config
      */
     public static boolean sTimber = true, sDrinksAlwaysDrinkable = false, sMultiThreadedSounds = false,
-        sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sMachineExplosions = true,
-        sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true,
-        sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true, mOutputRF = false,
-        mInputRF = false, mRFExplosions = false, mServerStarted = false;
+        sColoredGUI = true, sMachineMetalGUI = false, sMachineExplosions = true, sMachineFlammable = true,
+        sMachineNonWrenchExplosions = true, sMachineRainExplosions = true, sMachineThunderExplosions = true,
+        sMachineFireExplosions = true, sMachineWireFire = true, mOutputRF = false, mInputRF = false,
+        mRFExplosions = false, mServerStarted = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 

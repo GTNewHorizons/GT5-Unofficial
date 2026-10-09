@@ -171,7 +171,6 @@ public class GTPreLoad {
         GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = Gregtech.general.millisecondThesholdUntilLagWarning;
         GregTechAPI.sTimber = Gregtech.general.timber;
         GregTechAPI.sDrinksAlwaysDrinkable = Gregtech.general.drinksAlwaysDrinkable;
-        GregTechAPI.sDoShowAllItemsInCreative = Gregtech.general.doShowAllItemsInCreative;
         GregTechAPI.sMultiThreadedSounds = Gregtech.general.multiThreadedSounds;
         GTMod.proxy.mMaxEqualEntitiesAtOneSpot = Gregtech.general.maxEqualEntitiesAtOneSpot;
         GTMod.proxy.mFlintChance = Gregtech.general.flintChance;
