@@ -3,14 +3,9 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.a
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableMap;
-
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -26,16 +21,12 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AdvancedFusionOverclockDescriber;
-import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEAdvFusionMk5 extends MTEFusionComputer {
-
-    private static final int MAX_ENERGY_HATCHES = 16;
-    private static final int HATCH_POWER_DIVISOR = 16;
 
     public MTEAdvFusionMk5(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -48,31 +39,6 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
     @Override
     protected OverclockDescriber createOverclockDescriber() {
         return new AdvancedFusionOverclockDescriber((byte) tier(), capableStartupCanonical());
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fusion_reactor"))
-            .addMarkdown(
-                new ResourceLocation("gregtech", "fusion-computer"),
-                ImmutableMap.<String, Object>builder()
-                    .put("power", formatNumber(GTValues.V[tier()] / HATCH_POWER_DIVISOR))
-                    .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
-                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
-                    .build())
-            .addSupportAny()
-            .beginStructureBlock(15, 3, 15, false)
-            .addController("Middle center, 2nd layer")
-            .addCasing("79-123", "Fusion Machine Casing Mk-IV", false)
-            .addCasing("32", "Advanced Fusion Coil II", false)
-            .addEnergyHatch("1-16", "Specific middle casings on each curve (UEV+)", 2)
-            .addInputHatch("1+", "Specific top or bottom casings on each side", 1)
-            .addOutputHatch("1+", "Specific middle casings on each side", 3)
-            .toolTipFinisher();
-        // spotless:on
-        return tt;
     }
 
     @Override
