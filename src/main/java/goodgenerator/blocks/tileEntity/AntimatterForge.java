@@ -11,6 +11,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -56,7 +57,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.ExoticEnergyInputHelper;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -68,15 +68,14 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
-    private static final FluidStack[] magneticUpgrades = { Materials.TengamPurified.getMolten(1L),
+    private static final FluidStack[] MAGNETIC_UPGRADES = { Materials.TengamPurified.getMolten(1L),
         Materials.Time.getMolten(1L), Materials.MagMatter.getMolten(1L) };
-    private static final FluidStack[] gravityUpgrades = { Materials.SpaceTime.getMolten(1L),
+    private static final FluidStack[] GRAVITY_UPGRADES = { Materials.SpaceTime.getMolten(1L),
         Materials.Space.getMolten(1L), Materials.Eternity.getMolten(1L) };
-    private static final FluidStack[] containmentUpgrades = { GGMaterial.shirabon.getMolten(1),
+    private static final FluidStack[] CONTAINMENT_UPGRADES = { GGMaterial.shirabon.getMolten(1),
         Materials.MHDCSM.getMolten(1L) };
-    private static final FluidStack[] activationUpgrades = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
+    private static final FluidStack[] ACTIVATION_UPGRADES = { GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(1),
         GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1) };
-    private static final FluidStack ZERO_ANTIMATTER = Materials.Antimatter.getFluid(0);
 
     public static final String MAIN_NAME = "antimatterForge";
 
@@ -101,7 +100,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private final int speed = 20;
     private long rollingCost = 0L;
     private boolean isLoadedChunk;
-    public GTRecipe mLastRecipe;
     public int para;
     private final Random r = new Random();
     // Values for displaying cycle data
@@ -310,41 +308,29 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public CheckRecipeResult checkProcessing() {
-        FluidStack[] antimatterStored = new FluidStack[16];
         long totalAntimatterAmount = 0;
         long minAntimatterAmount = Long.MAX_VALUE;
-        boolean hatchEmpty = false;
         // Calculate the total amount of antimatter in all 16 hatches and the minimum amount found in any individual
         // hatch
-        for (int i = 0; i < amOutputHatches.size(); i++) {
-            hatchEmpty = false;
-            if (amOutputHatches.get(i) == null || !amOutputHatches.get(i)
-                .isValid()) continue;
+        for (AntimatterOutputHatch outputHatch : amOutputHatches) {
+            if (outputHatch == null || !outputHatch.isValid()) continue;
 
-            if (amOutputHatches.get(i)
-                .getFluid() == null) hatchEmpty = true;
-
-            antimatterStored[i] = hatchEmpty ? ZERO_ANTIMATTER.copy()
-                : amOutputHatches.get(i)
-                    .getFluid()
-                    .copy();
-            totalAntimatterAmount += antimatterStored[i].amount;
-            minAntimatterAmount = Math.min(minAntimatterAmount, antimatterStored[i].amount);
+            FluidStack fluid = outputHatch.getFluid();
+            long amount = (fluid == null) ? 0 : fluid.amount;
+            totalAntimatterAmount += amount;
+            minAntimatterAmount = Math.min(minAntimatterAmount, amount);
         }
         int ratioLosses = 0;
         // Reduce the amount of antimatter in each hatch by half of the difference between the lowest amount and current
         // hatch contents
         for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
             if (amOutputHatch != null && amOutputHatch.isValid() && amOutputHatch.getFluid() != null) {
-                FluidStack fluid = amOutputHatch.getFluid()
-                    .copy();
+                FluidStack fluid = amOutputHatch.getFluid();
                 ratioLosses -= amOutputHatch.drain((int) ((fluid.amount - minAntimatterAmount) * 0.5), true).amount;
             }
         }
 
         // Check for upgrade fluids
-        long containedProtomatter = 0;
-
         fluidConsumptions[MAGNETIC_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
         fluidConsumptions[GRAVITY_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
         fluidConsumptions[CONTAINMENT_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 2.0f / 7.0f));
@@ -357,10 +343,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
         List<FluidStack> inputFluids = getStoredFluids();
         for (FluidStack inputFluid : inputFluids) {
-            setModifiers(inputFluid, -0.1f, magneticUpgrades, MAGNETIC_ID);
-            setModifiers(inputFluid, -0.05f, gravityUpgrades, GRAVITY_ID);
-            setModifiers(inputFluid, 0.05f, containmentUpgrades, CONTAINMENT_ID);
-            setModifiers(inputFluid, 0.05f, activationUpgrades, ACTIVATION_ID);
+            setModifiers(inputFluid, -0.1f, MAGNETIC_UPGRADES, MAGNETIC_ID);
+            setModifiers(inputFluid, -0.05f, GRAVITY_UPGRADES, GRAVITY_ID);
+            setModifiers(inputFluid, 0.05f, CONTAINMENT_UPGRADES, CONTAINMENT_ID);
+            setModifiers(inputFluid, 0.05f, ACTIVATION_UPGRADES, ACTIVATION_ID);
         }
 
         long energyCost = calculateEnergyCost(totalAntimatterAmount);
@@ -387,10 +373,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             }
         }
 
-        int antimatterChange = distributeAntimatterToHatch(
-            amOutputHatches,
-            totalAntimatterAmount,
-            containedProtomatter);
+        int antimatterChange = distributeAntimatterToHatch(amOutputHatches, totalAntimatterAmount);
 
         // We didn't have enough protomatter, reduce antimatter by 10% and stop the machine.
         if (!this.depleteInput(Materials.Protomatter.getFluid(Math.abs(antimatterChange)))) {
@@ -446,15 +429,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private void decimateAntimatter() {
         for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
             if (amOutputHatch != null && amOutputHatch.isValid() && amOutputHatch.getFluid() != null) {
-                FluidStack fluid = amOutputHatch.getFluid()
-                    .copy();
+                FluidStack fluid = amOutputHatch.getFluid();
                 amOutputHatch.drain((int) Math.floor(fluid.amount * 0.1), true);
             }
         }
     }
 
-    private int distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount,
-        long protomatterAmount) {
+    private int distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount) {
         double coeff = Math.pow((totalAntimatterAmount), 0.5 + modifiers[CONTAINMENT_ID]);
         int difference = 0;
 
@@ -618,7 +599,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     @Override
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
-        destroyAntimatterRender();
+        updateAntimatterRender(false);
     }
 
     @Override
@@ -658,19 +639,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         this.canRender = !this.canRender;
         if (!this.canRender) {
             aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.antimatter_forge.disableRender"));
-            destroyAntimatterRender();
+            updateAntimatterRender(false);
         } else aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.antimatter_forge.enableRender"));
     }
 
     public void updateAntimatterSize(float antimatterAmount) {
         if (antimatterAmount <= 0 || !this.canRender) {
-            destroyAntimatterRender();
+            updateAntimatterRender(false);
             return;
         }
 
         TileAntimatter render = getAntimatterRender();
         if (render == null) {
-            createAntimatterRender();
+            updateAntimatterRender(true);
             render = getAntimatterRender();
             if (render == null) return;
         }
@@ -721,7 +702,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return null;
     }
 
-    public void destroyAntimatterRender() {
+    /**
+     * @param createOrDestroy true for creating, false for destroying
+     */
+    public void updateAntimatterRender(boolean createOrDestroy) {
         IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
         if (gregTechTileEntity == null) return;
 
@@ -732,25 +716,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         final int y = getTargetY(gregTechTileEntity);
         final int z = getTargetZ(gregTechTileEntity);
 
-        if (world.getBlock(x, y, z)
-            .equals(Loaders.antimatterRenderBlock)) {
-            world.setBlock(x, y, z, Blocks.air);
+        Block opposite = createOrDestroy ? Blocks.air : Loaders.antimatterRenderBlock;
+        Block target = createOrDestroy ? Loaders.antimatterRenderBlock : Blocks.air;
+
+        if (createOrDestroy) {
+            if (world.isAirBlock(x, y, z)) {
+                world.setBlock(x, y, z, target);
+            }
+        } else {
+            if (world.getBlock(x, y, z)
+                .equals(opposite)) {
+                world.setBlock(x, y, z, target);
+            }
         }
-    }
 
-    public void createAntimatterRender() {
-        IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
-        if (gregTechTileEntity == null) return;
-
-        World world = gregTechTileEntity.getWorld();
-        if (world == null) return;
-
-        final int x = getTargetX(gregTechTileEntity);
-        final int y = getTargetY(gregTechTileEntity);
-        final int z = getTargetZ(gregTechTileEntity);
-
-        if (world.isAirBlock(x, y, z)) {
-            world.setBlock(x, y, z, Loaders.antimatterRenderBlock);
-        }
     }
 }
