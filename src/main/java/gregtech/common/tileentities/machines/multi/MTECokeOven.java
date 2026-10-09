@@ -64,6 +64,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.gui.modularui.multiblock.MTECokeOvenGui;
 import gregtech.common.pollution.Pollution;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
