@@ -27732,6 +27732,8 @@ public class Materials {
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
             .generateShape(Shapes.dust)
+            .generateShape(Shapes.dustSmall)
+            .generateShape(Shapes.dustTiny)
             .generateShape(Shapes.stick)
             .generateShape(Shapes.stickLong)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Lithium Tetrafluoroberyllate (LFTB)")

@@ -417,12 +417,6 @@ public final class ModItems {
         GregtechItemList.SmallLi2CO3CaOH2Dust.set(Li2CO3CaOH2[1]);
         GregtechItemList.TinyLi2CO3CaOH2Dust.set(Li2CO3CaOH2[2]);
 
-        ItemUtils.generateSpecialUseDusts(
-            "Li2BeF4",
-            "Lithium Tetrafluoroberyllate Fuel Compound",
-            "Li2BeF4",
-            Utils.rgbtoHexValue(255, 255, 255));
-
         Item[] phthalicAnhydride = ItemUtils.generateSpecialUseDusts(
             "PhthalicAnhydride",
             "Phthalic Anhydride",
