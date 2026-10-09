@@ -64,8 +64,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -79,10 +79,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -92,7 +90,6 @@ import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -102,6 +99,7 @@ import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStr
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static IIconContainer ScreenON;
@@ -236,7 +234,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenON = Textures.BlockIcons.custom("iconsets/GODFORGE_CONTROLLER");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/GODFORGE_CONTROLLER");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -306,17 +304,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
             }
         }
-        checkHatchExact(errors, InputBus, 1);
-        checkHatchExact(errors, InputHatch, 1);
-
-        // Check there is 1 me output bus
-        {
-            if (mOutputBusses.size() != 1) {
-                errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, OutputBus, mOutputBusses.size(), 1));
-            } else if (!(mOutputBusses.get(0) instanceof MTEHatchOutputBusME)) {
-                errors.add(StructureErrors.missingHatch(ItemList.Hatch_Output_Bus_ME.get(1)));
-            }
-        }
+        checkOneInputBus(errors);
+        checkOneInputHatch(errors);
+        checkOneOutputBus(errors);
 
         if (!errors.isEmpty()) return;
 
@@ -549,7 +539,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
     public enum moduleElement implements IHatchElement<MTEForgeOfGods> {
 
-        Module(MTEForgeOfGods::addModuleToMachineList, MTEBaseModule.class) {
+        Module("GT5U.MBTT.AnyModule", MTEForgeOfGods::addModuleToMachineList, MTEBaseModule.class) {
 
             @Override
             public long count(MTEForgeOfGods tileEntity) {
@@ -557,13 +547,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             }
         };
 
+        private final String name;
+
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEForgeOfGods> adder;
 
         @SafeVarargs
-        moduleElement(IGTHatchAdder<MTEForgeOfGods> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        moduleElement(String name, IGTHatchAdder<MTEForgeOfGods> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
+            this.name = name;
         }
 
         @Override
@@ -574,6 +568,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         @Override
         public IGTHatchAdder<? super MTEForgeOfGods> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
@@ -810,7 +814,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_15th_layer"))
             .addInputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
             .addInputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
-            .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.output-bus-pos"), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
             .addCasing("3949", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)

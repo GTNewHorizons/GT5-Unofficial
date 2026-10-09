@@ -24,7 +24,7 @@ float getAngle(int quadID, int localID){
 void main() {
 
     int id = gl_VertexID;
-    const int segments = u_SegmentArray.length()-1;
+    int segments = u_SegmentArray.length()-1;
     int quads = int(u_SegmentQuads);
 
     int localID = id % 6; // Local id of the vertex within a face

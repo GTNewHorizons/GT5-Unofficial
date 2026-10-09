@@ -39,7 +39,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         register(6, ItemList.Spinmatron_Chamber_Grate);
         register(7, ItemList.Glass_ExoFoundry);
         register(8, ItemList.ComplexNanochipGlass);
-        register(9, ItemList.ElectromagneticWaveguide);
+        register(9, ItemList.ElectromagneticWaveguide, translatedText("gt.blockglass1.em-glass-bec.tooltip"));
         register(10, ItemList.ReinforcedGlass);
         ItemList.ReinforcedGlass.registerOre("glassReinforced");
         ItemList.ReinforcedGlass.set(new ItemStack(this.setResistance(108.0f), 1, 10));

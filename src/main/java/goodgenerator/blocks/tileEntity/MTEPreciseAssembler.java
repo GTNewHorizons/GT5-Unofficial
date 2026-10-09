@@ -22,7 +22,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -31,6 +31,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -49,6 +50,8 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -79,15 +82,18 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons
+        .custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST");
     private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
-        .customOptional("iconsets/OVERLAY_QCHEST_GLOW");
+        .customOptional(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEPreciseAssembler> multiDefinition = null;
     protected int casingAmount;
@@ -278,52 +284,30 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Precise Assembler, Assembler, PrAss")
-            .addInfo("No more than 7nm of error")
-            .addInfo("Has Two Modes: Precise and Normal")
-            .addInfo("Use a Screwdriver to change modes")
-            .addSeparator()
-            .addInfo("Precise Mode unlocks the ability to assemble precise components")
-            .addInfo("Casing Tier determines Maximum Recipe Tier")
-            .addSeparator()
-            .addInfo("Normal Mode allows standard assembler recipes")
-            .addInfo(
-                EnumChatFormatting.WHITE + "Precise Casing"
-                    + EnumChatFormatting.GRAY
-                    + " Tier determines "
-                    + TooltipHelper.parallelText("Parallels"))
-            .addInfo(
-                tieredTextLine("Imprecise", "Mk-I", "MK-II", "MK-III", "MK-IV") + "->"
-                    + tieredTextLine("16", "32", "64", "128", "256")
-                    + " Parallels")
-            .addStaticSpeedInfo(2f)
-            .addSeparator()
-            .addInfo(
-                "Machine Casing limits the voltage tier the machine can work on, "
-                    + GTValues.TIER_COLORS[VoltageIndex.UHV]
-                    + "UHV"
-                    + EnumChatFormatting.GRAY
-                    + "-tier Machine Casing unlocks all.")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.precise_assembler"))
+            .addMarkdown(new ResourceLocation("gregtech", "precise-assembler"), ImmutableMap.of("speed", TooltipHelper.speedText(2f)))
             .addSupportAny()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 5, true)
-            .addController("Front bottom center")
-            .addCasing("42-81", "Precise Electronic Unit Casing", true)
-            .addCasing("42", "EV+ Tiered Glass", false)
-            .addCasing("21", "Machine Casing", true)
-            .addCasing("12", "Tungstensteel Frame Box", false)
-            .addEnergyHatch("1+", "Any unit casing", 1)
-            .addMaintenanceHatch("1", "Any unit casing", 1)
-            .addMufflerHatch("1", "Any unit casing", 1)
-            .addInputBus("1+", "Any unit casing", 1)
-            .addInputHatch("0+", "Any unit casing", 1)
-            .addOutputBus("1+", "Any unit casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("42-81", StatCollector.translateToLocal("preciseUnitCasing.name"), true)
+            .addCasing("42", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]), false)
+            .addCasing("21", StatCollector.translateToLocal("GT5U.MBTT.Tiers.MachineCasing"), true)
+            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenSteel), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_unit_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_unit_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_unit_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_unit_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_unit_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_unit_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -513,24 +497,4 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         super.drawTexts(screenElements, inventorySlot);
     }
 
-    private String tieredTextLine(String mk0, String mk1, String mk2, String mk3, String mk4) {
-        return EnumChatFormatting.GREEN + mk0
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.BLUE
-            + mk1
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + mk2
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.GOLD
-            + mk3
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.RED
-            + mk4
-            + EnumChatFormatting.GRAY;
-    }
 }

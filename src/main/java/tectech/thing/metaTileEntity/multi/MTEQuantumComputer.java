@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -37,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -403,8 +405,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_COMPUTER");
-        ScreenON = Textures.BlockIcons.custom("iconsets/EM_COMPUTER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_COMPUTER");
+        ScreenON = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_COMPUTER_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -554,7 +556,13 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     private enum RackHatchElement implements IHatchElement<MTEQuantumComputer> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.ComputerRackHatch");
+
+        private final String name;
+
+        RackHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -570,11 +578,27 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         public long count(MTEQuantumComputer t) {
             return t.eRacks.size();
         }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
     private enum WirelessComputationHatchElement implements IHatchElement<MTEQuantumComputer> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.WirelessComputationOutput");
+
+        private final String name;
+
+        WirelessComputationHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -589,6 +613,16 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         @Override
         public long count(MTEQuantumComputer gtMetaTileEntityEmComputer) {
             return gtMetaTileEntityEmComputer.eWirelessComputationOutputs.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

@@ -30,6 +30,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
@@ -134,6 +135,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                 return true;
             }
 
+            if (block == Blocks.stained_hardened_clay) {
+                t.mHardenedClay++;
+                return true;
+            }
+
             return false;
         }
 
@@ -174,26 +180,57 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             { " bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb " }}))
         // spotless:on
         .addElement('p', ofBlockAnyMeta(Blocks.planks))
-        .addElement(
-            'c',
-            ofChain(
-                onElementPass(t -> t.mHardenedClay++, ofBlock(Blocks.hardened_clay, 0)),
-                ofTileAdder(MTEWindmill::addDispenserToOutputSet, Blocks.hardened_clay, 0),
-                onElementPass(t -> t.mDoor++, new IStructureElementNoPlacement<MTEWindmill>() {
+        .addElement('c', ofChain(onElementPass(t -> t.mHardenedClay++, new IStructureElement<MTEWindmill>() {
 
-                    private final IStructureElement<MTEWindmill> delegate = ofBlock(Blocks.wooden_door, 0);
+            @Override
+            public boolean check(MTEWindmill t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+                return block == Blocks.hardened_clay || block == Blocks.stained_hardened_clay;
+            }
 
-                    @Override
-                    public boolean check(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z) {
-                        return this.delegate.check(gt_tileEntity_windmill, world, x, y, z);
-                    }
+            @Override
+            public boolean couldBeValid(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
+            }
 
-                    @Override
-                    public boolean spawnHint(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z,
-                        ItemStack trigger) {
-                        return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
-                    }
-                })))
+            @Override
+            public boolean spawnHint(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticle(world, x, y, z, Blocks.hardened_clay, 0);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+                return world.setBlock(x, y, z, Blocks.hardened_clay, 0, 3);
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                Item plainItem = Item.getItemFromBlock(Blocks.hardened_clay);
+                Item stainedItem = Item.getItemFromBlock(Blocks.stained_hardened_clay);
+                return BlocksToPlace.create(is -> {
+                    Item item = is.getItem();
+                    return item == plainItem || item == stainedItem;
+                });
+            }
+        }),
+            ofTileAdder(MTEWindmill::addDispenserToOutputSet, Blocks.hardened_clay, 0),
+            onElementPass(t -> t.mDoor++, new IStructureElementNoPlacement<MTEWindmill>() {
+
+                private final IStructureElement<MTEWindmill> delegate = ofBlock(Blocks.wooden_door, 0);
+
+                @Override
+                public boolean check(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z) {
+                    return this.delegate.check(gt_tileEntity_windmill, world, x, y, z);
+                }
+
+                @Override
+                public boolean spawnHint(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z,
+                    ItemStack trigger) {
+                    return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
+                }
+            })))
         .addElement('d', DISPENSER_OR_CLAY)
         .addElement('b', ofBlock(Blocks.brick_block, 0))
         .addElement('r', new IStructureElement<>() {
@@ -286,7 +323,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .beginStructureBlock(7, 12, 7, true)
             .addController("Front bottom center")
             .addCasing("44", "Bricks", false)
-            .addCasing("40-47", "Terracotta", false)
+            .addCasing("40-47", "Terracotta (any color)", false)
             .addCasing("100", "Wooden Planks (any)", false)
             .addCasing("1", "Primitive Kinetic Shaftbox", false)
             .addOtherStructurePart("Dispenser", "Any Terracotta", 1)

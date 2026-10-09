@@ -175,14 +175,14 @@ public class ItemRegistry {
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TitaniumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":TungstenSteelReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":LuVTierMaterialReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":RhodiumPlatedPalladiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":IridiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":OsmiumReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock1", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock2",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock3", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock4",
             MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock5", MainMod.MOD_ID + ":ColoredBoronSilicateGlassBlock6",
             MainMod.MOD_ID + ":ThoriumYttriumGlass", MainMod.MOD_ID + ":NeutroniumReinforcedBoronSilicateGlassBlock",
-            MainMod.MOD_ID + ":CosmicNeutroniumReinforcedBoronSilicateGlassBlock",
+            MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock", },
         MainMod.BIO_TAB);
     public static final Block bw_deprecatedglass2 = new BWBlocksGlass2(
@@ -309,68 +309,30 @@ public class ItemRegistry {
             EnergyDistributor_MAX.ID };
 
         for (int i = 0; i < GTValues.VN.length - 1; i++) {
-            ItemRegistry.diode2A[i] = new MTEDiode(
-                Diode2A[i],
-                "diode" + "2A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 2A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode4A[i] = new MTEDiode(
-                Diode4A[i],
-                "diode" + "4A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 4A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode8A[i] = new MTEDiode(
-                Diode8A[i],
-                "diode" + "8A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 8A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode12A[i] = new MTEDiode(
-                Diode12A[i],
-                "diode" + "12A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 12A " + GTValues.VN[i],
-                i).getStackForm(1L);
-            ItemRegistry.diode16A[i] = new MTEDiode(
-                Diode16A[i],
-                "diode" + "16A" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.diode.name") + " 16A " + GTValues.VN[i],
-                i).getStackForm(1L);
+            ItemRegistry.diode2A[i] = new MTEDiode(Diode2A[i], "diode" + "2A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode4A[i] = new MTEDiode(Diode4A[i], "diode" + "4A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode8A[i] = new MTEDiode(Diode8A[i], "diode" + "8A" + GTValues.VN[i], "", i).getStackForm(1L);
+            ItemRegistry.diode12A[i] = new MTEDiode(Diode12A[i], "diode" + "12A" + GTValues.VN[i], "", i)
+                .getStackForm(1L);
+            ItemRegistry.diode16A[i] = new MTEDiode(Diode16A[i], "diode" + "16A" + GTValues.VN[i], "", i)
+                .getStackForm(1L);
             ItemRegistry.energyDistributor[i] = new MTEEnergyDistributor(
                 EnergyDistributors[i],
                 "energydistributor" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[i],
+                "",
                 i).getStackForm(1L);
         }
 
-        ItemRegistry.acidGens[0] = new MTEAcidGenerator(
-            AcidGeneratorMV.ID,
-            "acidgenerator" + GTValues.VN[2],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[2],
-            2,
-            94).getStackForm(1);
-        ItemRegistry.acidGens[1] = new MTEAcidGenerator(
-            AcidGeneratorHV.ID,
-            "acidgenerator" + GTValues.VN[3],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[3],
-            3,
-            91).getStackForm(1);
-        ItemRegistry.acidGens[2] = new MTEAcidGenerator(
-            AcidGeneratorEV.ID,
-            "acidgenerator" + GTValues.VN[4],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[4],
-            4,
-            88).getStackForm(1);
-        ItemRegistry.acidGens[3] = new MTEAcidGenerator(
-            AcidGeneratorIV.ID,
-            "acidgenerator" + GTValues.VN[5],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[5],
-            5,
-            50).getStackForm(1);
-        ItemRegistry.acidGensLV = new MTEAcidGenerator(
-            AcidGeneratorLV.ID,
-            "acidgenerator" + GTValues.VN[1],
-            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[1],
-            1,
-            97).getStackForm(1L);
+        ItemRegistry.acidGens[0] = new MTEAcidGenerator(AcidGeneratorMV.ID, "acidgenerator" + GTValues.VN[2], "", 2, 94)
+            .getStackForm(1);
+        ItemRegistry.acidGens[1] = new MTEAcidGenerator(AcidGeneratorHV.ID, "acidgenerator" + GTValues.VN[3], "", 3, 91)
+            .getStackForm(1);
+        ItemRegistry.acidGens[2] = new MTEAcidGenerator(AcidGeneratorEV.ID, "acidgenerator" + GTValues.VN[4], "", 4, 88)
+            .getStackForm(1);
+        ItemRegistry.acidGens[3] = new MTEAcidGenerator(AcidGeneratorIV.ID, "acidgenerator" + GTValues.VN[5], "", 5, 50)
+            .getStackForm(1);
+        ItemRegistry.acidGensLV = new MTEAcidGenerator(AcidGeneratorLV.ID, "acidgenerator" + GTValues.VN[1], "", 1, 97)
+            .getStackForm(1L);
 
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);

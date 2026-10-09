@@ -9,7 +9,9 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.SolidifierHatch;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE;
@@ -35,6 +37,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -66,11 +69,13 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -101,11 +106,14 @@ import gregtech.common.render.shader.Uniform;
 import gregtech.common.render.shader.VertexAttribute;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
+import io.netty.buffer.ByteBuf;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
-    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer, ICasingTextureProvider {
+    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer, ICasingTextureProvider, IDataCopyable {
+
+    private static final String COPY_PASTE_IDENTIFIER = "exofoundry";
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
@@ -218,7 +226,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement(
             'H',
-            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
+            buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch.or(SolidifierHatch), OutputBus, InputBus, Energy.or(ExoticEnergy), Maintenance)
                 .hint(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
@@ -460,7 +468,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "overclocks"
                     + EnumChatFormatting.GRAY
-                    + " over the hatch tier without modules")
+                    + " over the Hatch Tier without modules")
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD
                     + "not"
@@ -470,7 +478,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.UNDERLINE
                     + "UIV+"
                     + EnumChatFormatting.GRAY
-                    + " voltage tier recipes without modules")
+                    + " Voltage Tier recipes without modules")
             .addInfo(
                 "Has " + EnumChatFormatting.GOLD
                     + "3 Tiers"
@@ -480,7 +488,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 "Has " + EnumChatFormatting.GOLD
                     + "2/3/4"
                     + EnumChatFormatting.GRAY
-                    + " Module Slots, based on machine tier")
+                    + " Module Slots, based on Machine Tier")
             .addInfo(
                 "Each Module Slot has " + EnumChatFormatting.GOLD
                     + "7"
@@ -668,8 +676,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         foundryData.checkSolidifierModules();
         logic.setSpeedBonus(1F / foundryData.speedModifierAdj);
-        logic.setMaxParallel(
-            (int) (Math.floor(foundryData.parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage())));
+        logic.setMaxParallelSupplier(this::getTrueParallel);
         logic.setEuModifier(foundryData.euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
@@ -817,7 +824,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     public void setModule(int index, int ordinal) {
-        foundryData.setModule(index, ordinal);
+        foundryData.setModule(index, ordinal, false);
         // structure check on module set, to prevent cheesing
         getBaseMetaTileEntity().issueTileUpdate(); // tile update to sync to client
         this.setStructureUpdateTime(1);
@@ -1017,9 +1024,59 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
      * Sends on world load, on module set, on screwdriver right click, and on structure check
      */
     @Override
-    public NBTTagCompound getDescriptionData() {
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(foundryData.tier);
+        buffer.writeInt(foundryData.modules[0].ordinal());
+        buffer.writeInt(foundryData.modules[1].ordinal());
+        buffer.writeInt(foundryData.modules[2].ordinal());
+        buffer.writeInt(foundryData.modules[3].ordinal());
+        buffer.writeBoolean(shouldRender);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        foundryData.tier = buffer.readInt();
+        foundryData.modules[0] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[1] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[2] = FoundryModule.values()[buffer.readInt()];
+        foundryData.modules[3] = FoundryModule.values()[buffer.readInt()];
+        shouldRender = buffer.readBoolean();
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, ForgeDirection side,
+        float x, float y, float z) {
+        if (!baseMetaTileEntity.isServerSide()) return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        }
+
+        if (!pasteCopiedData(player, dataStick.stackTagCompound)) return false;
+
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.loaded"));
+        return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player) {
+        if (!baseMetaTileEntity.isServerSide()) return;
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            super.onLeftclick(baseMetaTileEntity, player);
+            return;
+        }
+        dataStick.stackTagCompound = getCopiedData(player);
+        dataStick.setStackDisplayName("Exo-Foundry Data");
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.saved"));
+    }
+
+    @Override
+    public @Nullable NBTTagCompound getCopiedData(EntityPlayer player) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("multiTier", foundryData.tier);
+        tag.setString("type", COPY_PASTE_IDENTIFIER);
         tag.setInteger("module1OR", foundryData.modules[0].ordinal());
         tag.setInteger("module2OR", foundryData.modules[1].ordinal());
         tag.setInteger("module3OR", foundryData.modules[2].ordinal());
@@ -1029,14 +1086,22 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        foundryData.tier = data.getInteger("multiTier");
-        foundryData.modules[0] = FoundryModule.values()[data.getInteger("module1OR")];
-        foundryData.modules[1] = FoundryModule.values()[data.getInteger("module2OR")];
-        foundryData.modules[2] = FoundryModule.values()[data.getInteger("module3OR")];
-        foundryData.modules[3] = FoundryModule.values()[data.getInteger("module4OR")];
-        shouldRender = data.getBoolean("shouldRender");
+    public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
+        if (nbt == null) return false;
+        if (!COPY_PASTE_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        this.shouldRender = nbt.getBoolean("shouldRender");
+        if (this.foundryData.tier == 0) return true; // nothing to paste, but paste is successful
+
+        for (int i = 0; i <= foundryData.tier; i++) {
+            String key = "module" + (i + 1) + "OR";
+            this.foundryData.modules[i] = FoundryModule.values()[nbt.getInteger(key)];
+        }
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPY_PASTE_IDENTIFIER;
     }
 
     // data class

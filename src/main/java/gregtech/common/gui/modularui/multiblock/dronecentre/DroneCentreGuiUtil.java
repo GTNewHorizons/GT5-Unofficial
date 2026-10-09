@@ -5,14 +5,19 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.MCHelper;
@@ -34,12 +39,14 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import appeng.api.util.DimensionalCoord;
 import appeng.client.render.highlighter.BlockPosHighlighter;
+import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.dronecentre.sync.DroneConnectionListSyncHandler;
 import gregtech.common.gui.modularui.multiblock.dronecentre.sync.ProductionStatsSyncHandler;
 import gregtech.common.tileentities.machines.multi.drone.DroneConnection;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
+import mcp.mobius.waila.api.SpecialChars;
 
 public class DroneCentreGuiUtil {
 
@@ -307,6 +314,101 @@ public class DroneCentreGuiUtil {
                 .allowC2S();
         syncManager.syncValue("selectTime", selectTimeSyncHandler);
         syncManager.syncValue("productionStats", productionStatsSyncHandler);
+    }
+
+    private static final int SHORT_RECIPE_MAX_TICKS = 2 * TickTime.SECOND;
+
+    /** WAILA formatting */
+    private static final Pattern STRAY_WAILA_CHARACTERS = Pattern.compile(
+        "[" + SpecialChars.WailaStyle
+            + SpecialChars.WailaIcon
+            + SpecialChars.WailaRenderer
+            + SpecialChars.WailaRendererComma
+            + "\u0001-\u0004]");
+
+    public static String cleanWailaLine(String line) {
+        if (line == null) return "";
+
+        int contentStart = 0;
+        while (contentStart < line.length()) {
+            char c = line.charAt(contentStart);
+            if (c == ' ' || c == ' ') {
+                contentStart++;
+            } else if (line.startsWith(SpecialChars.MCStyle, contentStart) && contentStart + 1 < line.length()) {
+                contentStart += 2;
+            } else {
+                break;
+            }
+        }
+        String prefix = line.substring(0, contentStart);
+        String content = line.substring(contentStart);
+
+        Matcher renderer = SpecialChars.patternRender.matcher(content);
+        if (renderer.matches()) {
+            String rendererText = rendererToText(
+                renderer.group("name"),
+                renderer.group("args")
+                    .split(SpecialChars.WailaRendererComma));
+            if (rendererText != null) {
+                return prefix + rendererText;
+            }
+        }
+
+        content = SpecialChars.patternRender.matcher(content)
+            .replaceAll("");
+        content = SpecialChars.patternWaila.matcher(content)
+            .replaceAll("");
+        content = STRAY_WAILA_CHARACTERS.matcher(content)
+            .replaceAll("");
+        return prefix + content.trim();
+    }
+
+    private static String rendererToText(String rendererName, String[] args) {
+        try {
+            return switch (rendererName) {
+                case "waila.gt.progress" -> formatProgress(Long.parseLong(args[0]), Long.parseLong(args[1]));
+                case "waila.stack" -> formatStack(args);
+                default -> null;
+            };
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
+    private static String formatProgress(long progressTicks, long maxProgressTicks) {
+        String progressText;
+        if (maxProgressTicks <= SHORT_RECIPE_MAX_TICKS) {
+            progressText = StatCollector
+                .translateToLocalFormatted("GT5U.waila.machine.progress_tick", progressTicks, maxProgressTicks);
+        } else {
+            double ratio = (double) progressTicks / maxProgressTicks;
+            progressText = StatCollector.translateToLocalFormatted(
+                "GT5U.waila.machine.in_progress",
+                (double) progressTicks / TickTime.SECOND,
+                (double) maxProgressTicks / TickTime.SECOND,
+                Math.round(ratio * 1000) / 10.0);
+        }
+        return StatCollector.translateToLocalFormatted("GT5U.gui.text.drone_progress", progressText);
+    }
+
+    private static String formatStack(String[] args) {
+        String registryName = args[1];
+        int amount = Integer.parseInt(args[2]);
+        int meta = Integer.parseInt(args[3]);
+        ItemStack stack = switch (args[0]) {
+            case "0" -> Block.blockRegistry.getObject(registryName) instanceof Block block
+                ? new ItemStack(block, amount, meta)
+                : null;
+            case "1" -> Item.itemRegistry.getObject(registryName) instanceof Item item
+                ? new ItemStack(item, amount, meta)
+                : null;
+            default -> null;
+        };
+        if (stack == null) {
+            return null;
+        }
+        return StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.drone_output_item", stack.getDisplayName(), amount);
     }
 
     public static boolean matchesSearchFilter(DroneConnection conn, MTEDroneCentre centre) {

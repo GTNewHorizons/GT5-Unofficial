@@ -312,13 +312,12 @@ public class HatchElementBuilder<T> {
         return this;
     }
 
-    private String getHint() {
+    public String getHatchItemTypeName() {
         if (mHatchItemType != null) {
             return mHatchItemType.get();
         }
         return "unspecified GT hatch";
     }
-    // endregion
 
     public HatchElementBuilder<T> continueIfSuccess() {
         mNoStop = true;
@@ -329,6 +328,55 @@ public class HatchElementBuilder<T> {
         mNoStop = false;
         return this;
     }
+
+    public IGTHatchAdder<? super T> getAdder() {
+        return mAdder;
+    }
+
+    public int getCasingIndex() {
+        return mCasingIndex;
+    }
+
+    public int getHint() {
+        return mHint;
+    }
+
+    public BiPredicate<? super T, ? super IGregTechTileEntity> getShouldSkip() {
+        return mShouldSkip;
+    }
+
+    public BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> getHatchItemFilter() {
+        return mHatchItemFilter;
+    }
+
+    public Supplier<String> getHatchItemType() {
+        return mHatchItemType;
+    }
+
+    public Predicate<? super T> getReject() {
+        return mReject;
+    }
+
+    public Supplier<List<String>> getDescriptionNames() {
+        return mDescriptionNames;
+    }
+
+    public boolean isCacheHint() {
+        return mCacheHint;
+    }
+
+    public boolean isNoStop() {
+        return mNoStop;
+    }
+
+    public boolean isExclusive() {
+        return mExclusive;
+    }
+
+    public EnumSet<ForgeDirection> getDisallowedDirection() {
+        return mDisallowedDirection;
+    }
+    // endregion
 
     /**
      * Help automatic hatch side determination code by ruling out some directions. Note the automatic hatch side
@@ -548,8 +596,8 @@ public class HatchElementBuilder<T> {
                     && mAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) mCasingIndex);
             }
 
-            private String getHint() {
-                return HatchElementBuilder.this.getHint();
+            private String getHatchItemTypeName() {
+                return HatchElementBuilder.this.getHatchItemTypeName();
             }
 
             @Override
@@ -604,7 +652,7 @@ public class HatchElementBuilder<T> {
                 if (mDescriptionNames != null) {
                     return mDescriptionNames.get();
                 }
-                return Collections.singletonList(getHint());
+                return Collections.singletonList(getHatchItemTypeName());
             }
 
             @Deprecated
@@ -633,7 +681,7 @@ public class HatchElementBuilder<T> {
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
                 if (!GTStructureChannels.HATCH.hasValue(trigger) && !mExclusive) {
-                    String type = getHint();
+                    String type = getHatchItemTypeName();
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_placeable", type));
                     return PlaceResult.REJECT;
@@ -641,7 +689,7 @@ public class HatchElementBuilder<T> {
                 ItemStack taken = env.getSource()
                     .takeOne(mHatchItemFilter.apply(t, trigger), true);
                 if (GTUtility.isStackInvalid(taken)) {
-                    String type = getHint();
+                    String type = getHatchItemTypeName();
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;

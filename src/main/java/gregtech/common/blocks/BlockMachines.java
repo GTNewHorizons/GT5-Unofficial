@@ -56,6 +56,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
@@ -157,7 +158,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
-        return GregTechAPI.sMachineFlammable && (aWorld.getBlockMetadata(aX, aY, aZ) == 0) ? 100 : 0;
+        return !isHatchAt(aWorld, aX, aY, aZ) && GregTechAPI.sMachineFlammable
+            && aWorld.getBlockMetadata(aX, aY, aZ) == 0 ? 100 : 0;
     }
 
     @Override
@@ -167,12 +169,20 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public boolean isFireSource(World aWorld, int aX, int aY, int aZ, ForgeDirection side) {
-        return GregTechAPI.sMachineFlammable && (aWorld.getBlockMetadata(aX, aY, aZ) == 0);
+        return !isHatchAt(aWorld, aX, aY, aZ) && GregTechAPI.sMachineFlammable
+            && aWorld.getBlockMetadata(aX, aY, aZ) == 0;
     }
 
     @Override
     public boolean isFlammable(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
-        return GregTechAPI.sMachineFlammable && (aWorld.getBlockMetadata(aX, aY, aZ) == 0);
+        return !isHatchAt(aWorld, aX, aY, aZ) && GregTechAPI.sMachineFlammable
+            && aWorld.getBlockMetadata(aX, aY, aZ) == 0;
+    }
+
+    private static boolean isHatchAt(IBlockAccess aWorld, int aX, int aY, int aZ) {
+        if (!(aWorld instanceof World world)) return false;
+        TileEntity te = world.getTileEntity(aX, aY, aZ);
+        return te instanceof BaseMetaTileEntity bmte && bmte.getMetaTileEntity() instanceof MTEHatch;
     }
 
     @Override

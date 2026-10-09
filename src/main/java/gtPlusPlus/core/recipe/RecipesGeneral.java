@@ -76,13 +76,6 @@ public class RecipesGeneral {
 
     public static void loadRecipes() {
 
-        // Workbench Blueprint
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.BlueprintBase.get(2),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PL ", "PL ", "LL ", 'P', new ItemStack(Items.paper), 'L',
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lazurite, 1) });
-
         // Rainforest Oak Sapling
         GTModHandler.addCraftingRecipe(
             new ItemStack(BOPBlockRegistrator.sapling_Rainforest),

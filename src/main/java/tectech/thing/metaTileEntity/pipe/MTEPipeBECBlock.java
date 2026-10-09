@@ -12,6 +12,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPipeBECBlock extends MTEPipeBEC {
 
     public MTEPipeBECBlock(int aID, String aName) {

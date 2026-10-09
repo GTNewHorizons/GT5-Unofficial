@@ -38,6 +38,7 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -50,6 +51,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     public final String blockName;
     public final StoneType stoneType;
     public final boolean isSmall, isNatural;
+    private final BoundedTextureCache textureCache = new BoundedTextureCache();
 
     public BWMetaGeneratedOres(String blockName, StoneType stoneType, boolean small, boolean natural) {
         super(Material.rock);
@@ -180,6 +182,16 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     @Override
     @Nullable
     public ITexture[][] getTextures(int metadata) {
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+        return cacheTextures(metadata);
+    }
+
+    private synchronized ITexture[][] cacheTextures(int metadata) {
+        // Another render thread may have populated the cache while this thread waited for the monitor
+        ITexture[][] cached = textureCache.get(metadata);
+        if (cached != null) return cached;
+
         Werkstoff material = Werkstoff.werkstoffHashMap.get((short) metadata);
 
         OrePrefixes prefix = getPrefix();
@@ -199,6 +211,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
             out[i] = new ITexture[] { stoneType.getTexture(i), oreTexture };
         }
 
+        textureCache.put(metadata, out);
         return out;
     }
 
