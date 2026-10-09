@@ -256,8 +256,8 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 4F)
-            .setEuModifier(0.8F)
+            .setSpeedBonus(1.0D / 4.0D)
+            .setEuModifier(0.8D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

@@ -223,8 +223,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         tt.addMachineType("Laser Engraver, HILE")
             .addStaticSpeedInfo(3.5F)
             .addStaticEuEffInfo(0.8F)
-            .addInfo("Laser source hatch determines maximum recipe tier and parallels")
-            .addInfo("Recipe tier and overclocks limited to laser source tier + 1")
+            .addInfo("Laser Source Hatch determines maximum Recipe Tier and parallels")
+            .addInfo("Recipe Tier and overclocks limited to Laser Source Tier + 1")
             .addInfo(
                 "When using a " + GTValues.TIER_COLORS[VoltageIndex.UEV]
                     + GTValues.VN[VoltageIndex.UEV]
@@ -234,7 +234,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(
                 EnumChatFormatting.WHITE + "Glass "
                     + EnumChatFormatting.GRAY
-                    + "tier determines maximum laser source tier")
+                    + "Tier determines maximum Laser Source Tier")
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
             .beginStructureBlock(5, 5, 5, false)
@@ -368,8 +368,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 if (renderer != null) renderer.setShouldRender(false);
                 return super.clear();
             }
-        }.setSpeedBonus(1F / 3.5F)
-            .setEuModifier(0.8F)
+        }.setSpeedBonus(1.0D / 3.5D)
+            .setEuModifier(0.8D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

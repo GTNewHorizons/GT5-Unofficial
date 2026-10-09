@@ -194,11 +194,11 @@ ig.button.projects=Projects
 # Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.name=Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.type=Pump, PGS
-gt.blockmachines.multimachine.ig.siphon.desc0=Every coil tier gives a §a+%s%%§7 speed bonus per coil tier
+gt.blockmachines.multimachine.ig.siphon.desc0=Every Coil Tier gives a §a+%s%%§7 speed bonus per Coil Tier
 gt.blockmachines.multimachine.ig.siphon.desc1=Build on a Space Station orbiting a Gas Planet
 gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
-gt.blockmachines.multimachine.ig.siphon.desc4=Power cost depends on planet tier and depth. See NEI page for more details.
+gt.blockmachines.multimachine.ig.siphon.desc4=Power cost depends on Planet Tier and depth. See NEI page for more details.
 gt.blockmachines.multimachine.ig.siphon.desc5=Can load the chunk it is in (toggle using a Soldering Iron)
 gt.blockmachines.multimachine.ig.siphon.lore0=Taking Space-Mining to another Level!
 gt.blockmachines.multimachine.ig.siphon.lore1=It's time to SUCC!
@@ -311,6 +311,9 @@ ig.nei.siphon.baserate=Rate
 ig.nei.siphon.name=Planetary Gas Siphon
 ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
+nei.options.tools.dump.ig=GTNH Intergalactic
+nei.options.tools.dump.ig.asteroid=Space Miner Asteroids
+nei.options.tools.dump.ig.asteroids=Space Miner Asteroids
 
 # Structure and Tooltip
 ig.siphon.structure.ControllerPos=Front center of the main body, 16th layer

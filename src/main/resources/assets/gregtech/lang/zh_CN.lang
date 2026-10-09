@@ -55,6 +55,31 @@ gt.mbtt.structure.either_center_side_casing=中央侧面机械方块
 gt.mbtt.machine_type.fusion_reactor=聚变反应堆
 gt.mbtt.machine_type.antimatter_forge=反物质锻炉，SSASS
 gt.mbtt.machine_type.antimatter_generator=反物质发电机，SLAM
+gt.mbtt.machine_type.circuit_assembly_line=电路组装机，CAL
+gt.mbtt.machine_type.high_temperature_reactor=高温反应堆，THTR
+gt.mbtt.machine_type.miner=采矿机，VM
+gt.mbtt.machine_type.air_filter=空气过滤器，EAF
+gt.mbtt.machine_type.algae_pond=藻类农场
+gt.mbtt.machine_type.assembly_line=装配线，AL
+gt.mbtt.machine_type.charcoal_pile_igniter=木炭堆点火器，CPI
+gt.mbtt.machine_type.cleanroom=超净间
+gt.mbtt.machine_type.coke_oven=焦炉
+gt.mbtt.machine_type.concrete_backfiller=混凝土回填机
+gt.mbtt.machine_type.decay_warehouse=放射物衰变库
+gt.mbtt.machine_type.distillation_tower=蒸馏塔，DT
+gt.mbtt.machine_type.centrifuge=离心机
+gt.mbtt.machine_type.chemical_engine=化学引擎，UCFE
+gt.mbtt.machine_type.bec_assembler=BEC组装机，观测阵列
+gt.mbtt.machine_type.bec_diode=BEC二极管，存储总线
+gt.mbtt.machine_type.bec_generator=BEC发生器，凝聚态纠缠器，输入仓
+gt.mbtt.machine_type.bec_io_node=BEC输入/输出节点，输入总线，输出总线
+gt.mbtt.machine_type.bec_storage=BEC存储，纠缠凝聚态存储
+gt.mbtt.machine_type.nuclear_salt_processing_plant=反应堆处理单元，冷阱，NSPP
+gt.mbtt.machine_type.rocket_engine=火箭引擎
+gt.mbtt.machine_type.molten_salt_reactor=熔盐反应堆，LFTR
+gt.mbtt.machine_type.fuel_refinery=燃料精炼厂，RFPP
+gt.mbtt.machine_type.chemical_plant=化工厂
+gt.mbtt.machine_type.solar_tower=太阳能塔
 
 GT5U.cracker.io_side=输入/输出仓必须处在对侧！
 
@@ -1789,7 +1814,6 @@ gt.metatool.01.file.name=锉（%s）
 gt.metatool.01.file.tooltip=手持式电动锉
 
 # Side names
-gt.lang.face.any=任意面
 gt.lang.face.back=背面
 gt.lang.face.bottom=底面
 gt.lang.face.front=正面
@@ -1816,8 +1840,8 @@ gt.metaitem.01.32708.with.WithPunchCardData.name=存有穿孔卡片数据
 gt.metaitem.01.32708.with.WithScannedBookData.name=存有扫描的书本数据
 gt.metaitem.01.32708.with.WithScannedMapData.name=存有扫描的地图数据
 gt.metaitem.01.32708.with.WritesResearchResult.name=写入研究结果
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnSide.name=免费！在侧面放置岩浆
-gt.metaitem.02.32765.with.ItSFreePlaceLavaOnTop.name=免费！在顶部放置岩浆
+gt.recipe.rockbreaker.fakeitem.side=免费！在侧面放置岩浆
+gt.recipe.rockbreaker.fakeitem.top=免费！在顶部放置岩浆
 
 # Chat messages
 GT5U.chat.cover.connectable=可连接：%s
@@ -1851,3 +1875,35 @@ GT5U.nei.solar_factory.tier_required=所需多方块等级：%s
 
 # Item tooltips
 GT5U.tooltip.switch_metadata.sneak_right_click=Shift+右键以切换模式
+
+# Material flavor text
+Material.amalgatite.flavorText=本来可以更好！
+Material.antimatter.flavorText=狄拉克犯过的错
+Material.bedrockium.flavorText=覆盖了那痛苦深渊的一层沉积物
+Material.blackdwarfmatter.flavorText=死亡恒星的影子
+Material.dimensionallytranscendentresidue.flavorText=黏糊糊
+Material.hexanite.flavorText=疯狂与意志，具象成形
+Material.ichorium.flavorText=异界凝聚之布
+Material.infinity.flavorText=汝掌心中者，寰宇之力也。
+Material.magmatter.flavorText=磁单极子物质
+Material.magnetohydrodynamicallyconstrainedstarmatter.flavorText=死星的稳定核心
+Material.prismaticnaquadah.flavorText=吸收所有辐射
+Material.protohalkonite.flavorText=铸造成型便无法摧毁，大概
+Material.protomatter.flavorText=他们家鸡块就是用这个炸的
+Material.quarkgluonplasma.flavorText=失却结构的物质
+Material.rawstarmatter.flavorText=主序星的血肉
+Material.sixphasedcopper.flavorText=古老FTB模组中各种不同的铜的混合物
+Material.spacetime.flavorText=熔炼为流体的时空
+Material.spatialfluid.flavorText=扩张并摊薄
+Material.temporalfluid.flavorText=永恒而遍在
+Material.transcendentmetal.flavorText=三维生物所无法理解的
+Material.universium.flavorText=撕裂空间之外的空间
+Material.uuamplifier.flavorText=加速质量发生器
+Material.uumatter.flavorText=万用物质
+Material.whitedwarfmatter.flavorText=死亡恒星的心脏
+
+# Material pipe names
+Material.plastic.fluidpipe.newname=塑料
+Material.polytetrafluoroethylene.fluidpipe.newname=聚四氟乙烯
+Material.redstone.fluidpipe.newname=高压
+Material.wood.fluidpipe.newname=木
