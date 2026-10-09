@@ -1,0 +1,223 @@
+package gregtech.api.graphs;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.MockedStatic;
+
+import gregtech.api.graphs.paths.PowerNodePath;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.metatileentity.implementations.MTECable;
+
+class EnergyGraphConstructionTest {
+
+    @BeforeEach
+    @AfterEach
+    void clearManagedCables() {
+        BaseMetaPipeEntity.clearManagedCables();
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 64, 16384 })
+    void longRunKeepsOrderedCompressionAndCanBeCleared(int length) {
+        try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
+            servers.when(MinecraftServer::getServer)
+                .thenReturn(mock(MinecraftServer.class));
+            World world = mock(World.class);
+            BaseMetaPipeEntity[] pipes = new BaseMetaPipeEntity[length];
+            long loss = 0;
+            for (int i = 0; i < length; i++) {
+                BaseMetaPipeEntity base = new BaseMetaPipeEntity();
+                base.xCoord = i;
+                base.yCoord = 64;
+                base.setWorldObj(world);
+                MTECable cable = new MTECable("long-run", 0.5f, null, 1 + i % 3, 4, 128, false, false);
+                cable.mConnections = (byte) (ForgeDirection.WEST.flag
+                    | (i + 1 < length ? ForgeDirection.EAST.flag : 0));
+                cable.setBaseMetaTileEntity(base);
+                pipes[i] = base;
+                if (i > 0 && i + 1 < length) loss += cable.mCableLossPerMeter;
+            }
+            when(world.blockExists(anyInt(), anyInt(), anyInt())).thenReturn(true);
+            when(world.getTileEntity(anyInt(), eq(64), eq(0))).thenAnswer(call -> {
+                int x = call.getArgument(0);
+                return x < 0 || x >= length ? null : pipes[x];
+            });
+            assertDoesNotThrow(() -> new GenerateNodeMapPower(pipes[0]));
+            verify(world, times(length)).getTileEntity(anyInt(), eq(64), eq(0));
+            Node root = pipes[0].getNode();
+            assertEquals(2, root.mHighestNodeValue);
+            assertEquals(1, root.mConsumers.size());
+            assertSame(pipes[length - 1], root.mConsumers.get(0).mTileEntity);
+            PowerNodePath path = (PowerNodePath) root.mNodePaths[ForgeDirection.EAST.ordinal()];
+            assertEquals(length - 2, path.getPipes().length);
+            assertEquals(loss, path.getLoss());
+            for (int i = 1; i + 1 < length; i++) {
+                assertSame(pipes[i].getMetaTileEntity(), path.getPipes()[i - 1]);
+                assertSame(path, pipes[i].getNodePath());
+            }
+            GenerateNodeMap.clearNodeMap(root, -1);
+            for (BaseMetaPipeEntity pipe : pipes) {
+                assertNull(pipe.getNode());
+                assertNull(pipe.getNodePath());
+            }
+        }
+    }
+
+    @Test
+    void bentWalkKeepsMembersAndTerminalSideForEveryStoppingCondition() throws Exception {
+        // Exercise the walk directly so stopping at a branch cannot be hidden by later DFS work.
+        GenerateNodeMap map = mock(GenerateNodeMap.class, CALLS_REAL_METHODS);
+        BaseMetaPipeEntity first = pipe(1, ForgeDirection.WEST, ForgeDirection.UP);
+        BaseMetaPipeEntity bend = pipe(2, ForgeDirection.DOWN, ForgeDirection.NORTH);
+        BaseMetaPipeEntity end = pipe(3, ForgeDirection.SOUTH, ForgeDirection.EAST);
+        when(first.getTileEntityAtSide(ForgeDirection.UP)).thenReturn(bend);
+        when(bend.getTileEntityAtSide(ForgeDirection.NORTH)).thenReturn(end);
+        TileEntity consumer = mock(TileEntity.class);
+        for (int stop = 0; stop < 5; stop++) {
+            MTECable cable = (MTECable) end.getMetaTileEntity();
+            when(cable.isConnectedAtSide(ForgeDirection.SOUTH)).thenReturn(stop != 3);
+            when(cable.isConnectedAtSide(ForgeDirection.UP)).thenReturn(stop == 2);
+            when(end.getTileEntityAtSide(ForgeDirection.EAST)).thenReturn(stop == 0 ? consumer : null);
+            HashSet<Node> visited = new HashSet<>();
+            if (stop == 4) {
+                Node existing = mock(Node.class);
+                when(end.getNode()).thenReturn(existing);
+                visited.add(existing);
+            }
+            ArrayList<MetaPipeEntity> members = new ArrayList<>();
+            Object result = map.getNextValidTileEntity(first, members, ForgeDirection.EAST, visited);
+            assertArrayEquals(new Object[] { first.getMetaTileEntity(), bend.getMetaTileEntity() }, members.toArray());
+            if (stop >= 3) {
+                assertNull(result);
+            } else {
+                assertNotNull(result);
+                var tileField = result.getClass()
+                    .getField("mTileEntity");
+                var sideField = result.getClass()
+                    .getField("mSide");
+                tileField.setAccessible(true);
+                sideField.setAccessible(true);
+                assertSame(end, tileField.get(result));
+                assertEquals(ForgeDirection.NORTH, sideField.get(result));
+            }
+        }
+    }
+
+    @Test
+    void connectedRunKeepsOrderedMembersAndLossAcrossChunkBorder() {
+        try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
+            servers.when(MinecraftServer::getServer)
+                .thenReturn(mock(MinecraftServer.class));
+            BaseMetaPipeEntity root = pipe(1, ForgeDirection.DOWN, ForgeDirection.EAST);
+            BaseMetaPipeEntity dead = pipe(2, ForgeDirection.UP);
+            BaseMetaPipeEntity run = pipe(3, ForgeDirection.WEST, ForgeDirection.EAST);
+            BaseMetaPipeEntity end = pipe(4, ForgeDirection.WEST, ForgeDirection.EAST);
+            BaseMetaTileEntity receiver = mock(BaseMetaTileEntity.class);
+            when(receiver.inputEnergyFrom(ForgeDirection.WEST, false)).thenReturn(true);
+            root.xCoord = 15;
+            run.xCoord = 16;
+            when(root.getTileEntityAtSide(ForgeDirection.DOWN)).thenReturn(dead);
+            when(root.getTileEntityAtSide(ForgeDirection.EAST)).thenReturn(run);
+            when(run.getTileEntityAtSide(ForgeDirection.EAST)).thenReturn(end);
+            when(end.getTileEntityAtSide(ForgeDirection.EAST)).thenReturn(receiver);
+            new GenerateNodeMapPower(root);
+            Node node = root.getNode();
+            assertEquals(2, node.mConsumers.size());
+            assertSame(dead, node.mConsumers.get(0).mTileEntity);
+            assertSame(receiver, node.mConsumers.get(1).mTileEntity);
+            assertEquals(4, node.mHighestNodeValue);
+            PowerNodePath path = (PowerNodePath) node.mNodePaths[ForgeDirection.EAST.ordinal()];
+            assertArrayEquals(new Object[] { run.getMetaTileEntity() }, path.getPipes());
+            assertEquals(3, path.getLoss());
+            assertEquals(4, ((PowerNodePath) end.getNode().mSelfPath).getLoss());
+            GenerateNodeMap.clearNodeMap(node, -1);
+            assertNull(root.getNode());
+            assertNull(end.getNode());
+        }
+    }
+
+    @Test
+    void disconnectedSideLookupCount() {
+        GenerateNodeMap map = mock(GenerateNodeMap.class, CALLS_REAL_METHODS);
+        BaseMetaPipeEntity base = pipe(1, ForgeDirection.EAST);
+        map.generateNextNode(base, null, ForgeDirection.UNKNOWN, 1, new ArrayList<>(), new HashSet<>());
+        verify(base, times(1)).getTileEntityAtSide(any());
+        verify(base).getTileEntityAtSide(ForgeDirection.EAST);
+    }
+
+    private static BaseMetaPipeEntity pipe(long loss, ForgeDirection... sides) {
+        BaseMetaPipeEntity base = mock(BaseMetaPipeEntity.class);
+        MTECable cable = spy(new MTECable("test", 0.5f, null, loss, 4, 128, false, false));
+
+        when(base.getMetaTileEntity()).thenReturn(cable);
+        when(cable.getBaseMetaTileEntity()).thenReturn(base);
+        for (ForgeDirection side : sides) when(cable.isConnectedAtSide(side)).thenReturn(true);
+        doAnswer(call -> {
+            when(base.getNode()).thenReturn(call.getArgument(0));
+            return null;
+        }).when(base)
+            .setNode(any());
+        return base;
+    }
+
+    @Test
+    void branchAndLoopKeepDfsIdsCompressionAndLossesAtChunkBorder() {
+        try (MockedStatic<MinecraftServer> servers = mockStatic(MinecraftServer.class)) {
+            servers.when(MinecraftServer::getServer)
+                .thenReturn(mock(MinecraftServer.class));
+            BaseMetaPipeEntity root = pipe(1, ForgeDirection.DOWN, ForgeDirection.UP, ForgeDirection.EAST);
+            BaseMetaPipeEntity down = pipe(2, ForgeDirection.UP);
+            BaseMetaPipeEntity up = pipe(3, ForgeDirection.DOWN);
+            BaseMetaPipeEntity run = pipe(4, ForgeDirection.WEST, ForgeDirection.EAST);
+            BaseMetaPipeEntity loop = pipe(5, ForgeDirection.WEST, ForgeDirection.NORTH);
+            root.xCoord = 15;
+            run.xCoord = 16;
+            when(root.getTileEntityAtSide(ForgeDirection.DOWN)).thenReturn(down);
+            when(root.getTileEntityAtSide(ForgeDirection.UP)).thenReturn(up);
+            when(root.getTileEntityAtSide(ForgeDirection.EAST)).thenReturn(run);
+            when(run.getTileEntityAtSide(ForgeDirection.EAST)).thenReturn(loop);
+            when(loop.getTileEntityAtSide(ForgeDirection.NORTH)).thenReturn(root);
+            new GenerateNodeMapPower(root);
+            Node node = root.getNode();
+            assertEquals(1, node.mNodeValue);
+            assertEquals(2, node.mConsumers.size());
+            assertSame(down, node.mConsumers.get(0).mTileEntity);
+            assertSame(up, node.mConsumers.get(1).mTileEntity);
+            assertEquals(2, down.getNode().mNodeValue);
+            assertEquals(3, up.getNode().mNodeValue);
+            assertEquals(3, node.mHighestNodeValue);
+            assertEquals(1, ((PowerNodePath) node.mSelfPath).getLoss());
+            assertEquals(2, ((PowerNodePath) down.getNode().mSelfPath).getLoss());
+            assertEquals(3, ((PowerNodePath) up.getNode().mSelfPath).getLoss());
+            assertNull(node.mNeighbourNodes[ForgeDirection.EAST.ordinal()]);
+            assertEquals(0, node.mNodePaths[ForgeDirection.DOWN.ordinal()].getPipes().length);
+        }
+    }
+
+    @Test
+    void nullMetaStillLooksUpEveryNonExcludedSide() {
+        GenerateNodeMap map = mock(GenerateNodeMap.class, CALLS_REAL_METHODS);
+        BaseMetaPipeEntity base = mock(BaseMetaPipeEntity.class);
+        map.generateNextNode(base, null, ForgeDirection.DOWN, 1, new ArrayList<>(), new HashSet<>());
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            verify(base, times(side == ForgeDirection.DOWN ? 0 : 1)).getTileEntityAtSide(side);
+        }
+        verify(base).reloadLocks();
+    }
+}

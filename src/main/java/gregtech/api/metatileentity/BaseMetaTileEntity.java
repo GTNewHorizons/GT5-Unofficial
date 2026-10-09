@@ -69,6 +69,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -602,8 +603,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
      * Handles cable power node updates
      */
     private void handleCableUpdates() {
+        if (mTickTimer == 1) invalidatePowerNodeMaps();
         if (mTickTimer > 20 && cableUpdateDelay == 0) {
-            generatePowerNodes();
+            generatePowerNodes(false);
         }
         cableUpdateDelay--;
     }
@@ -839,7 +841,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             mMetaTileEntity.onFacingChange();
 
             doEnetUpdate();
-            cableUpdateDelay = 10;
+            requestCableUpdate();
 
             if (mMetaTileEntity.shouldTriggerBlockUpdate()) {
                 // If we're triggering a block update this will call onMachineBlockUpdate()
@@ -912,6 +914,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public void invalidate() {
         tileEntityInvalid = false;
         leaveEnet();
+        invalidatePowerNodeMaps(true);
         if (canAccessData()) {
             invalidateAE();
             mMetaTileEntity.onRemoval();
@@ -922,6 +925,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public void onUnload() {
+        invalidatePowerNodeMaps(true);
         if (canAccessData()) {
             onCoverUnload();
             mMetaTileEntity.onUnload();
@@ -1119,6 +1123,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     public void generatePowerNodes() {
+        generatePowerNodes(true);
+    }
+
+    private void generatePowerNodes(boolean forceRefresh) {
         if (isServerSide() && (isEnetInput() || isEnetOutput())) {
             final int time = MinecraftServer.getServer()
                 .getTickCounter();
@@ -1127,10 +1135,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     final IGregTechTileEntity TE = getIGregTechTileEntityAtSide(side);
                     if (TE instanceof BaseMetaPipeEntity pipe
                         && (pipe.getConnections() & side.getOpposite().flag) != 0) {
-                        final Node node = pipe.getNode();
+                        final Node node = pipe.getNodeMap();
                         if (node == null) {
                             new GenerateNodeMapPower(pipe);
-                        } else if (node.mCreationTime != time) {
+                        } else if ((!node.isNodeMapValid() || forceRefresh) && node.mCreationTime != time) {
                             GenerateNodeMap.clearNodeMap(node, -1);
                             new GenerateNodeMapPower(pipe);
                         }
@@ -1142,6 +1150,31 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     public void setCableUpdateDelay(int delay) {
         cableUpdateDelay = delay;
+    }
+
+    private void requestCableUpdate() {
+        invalidatePowerNodeMaps();
+        setCableUpdateDelay(10);
+    }
+
+    private void invalidatePowerNodeMaps() {
+        invalidatePowerNodeMaps(false);
+    }
+
+    private void invalidatePowerNodeMaps(boolean scheduleRebuild) {
+        if (worldObj == null || worldObj.isRemote) return;
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (!worldObj.blockExists(getOffsetX(side, 1), getOffsetY(side, 1), getOffsetZ(side, 1))) continue;
+            final IGregTechTileEntity tileEntity = getIGregTechTileEntityAtSide(side);
+            if (tileEntity instanceof BaseMetaPipeEntity pipe && pipe.getMetaTileEntity() instanceof MTECable
+                && (pipe.getConnections() & side.getOpposite().flag) != 0) {
+                final Node node = pipe.getNodeMap();
+                if (node != null) node.invalidateNodeMap();
+                if (scheduleRebuild) {
+                    GregTechAPI.causeCableUpdate(worldObj, pipe.xCoord, pipe.yCoord, pipe.zCoord);
+                }
+            }
+        }
     }
 
     @Override
@@ -1443,12 +1476,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                             && ((MTEBasicMachine) mMetaTileEntity).setMainFacing(wrenchingSide)) {
                             GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                             sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                            cableUpdateDelay = 10;
+                            requestCableUpdate();
                         } else if (mMetaTileEntity
                             .onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                                 GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                                 sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                                cableUpdateDelay = 10;
+                                requestCableUpdate();
                             }
 
                         if (tCurrentItem.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
@@ -1545,7 +1578,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                         }
                         if (tCurrentItem.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         doEnetUpdate();
-                        cableUpdateDelay = 10;
+                        requestCableUpdate();
                         return true;
                     }
 
@@ -1558,7 +1591,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
                         doEnetUpdate();
-                        cableUpdateDelay = 10;
+                        requestCableUpdate();
                         return true;
                     }
 

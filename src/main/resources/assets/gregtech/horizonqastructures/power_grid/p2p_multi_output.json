@@ -1,0 +1,38 @@
+{
+  "format_version": 2,
+  "size": [11, 1, 7],
+  "palette": {
+    "A": {"name": "appliedenergistics2:tile.BlockCableBus", "meta": 0, "label": "AE2 Cable and/or Bus"},
+    "B": {"name": "appliedenergistics2:tile.BlockCreativeEnergyCell", "meta": 0, "label": "Creative Energy Cell"},
+    "C": {"name": "gregtech:gt.blockmachines", "meta": 1, "label": "Bronze Hull"},
+    "D": {"name": "gregtech:gt.blockmachines", "meta": 3, "label": "Steel Hull"},
+    "E": {"name": "gregtech:gt.blockmachines", "meta": 9, "label": ".name"}
+  },
+  "layers": [
+    [
+      "......C....",
+      "......E....",
+      "......A....",
+      ".DEAAAAB...",
+      "......A....",
+      "......E....",
+      "......C...."
+    ]
+  ],
+  "annotations": {
+    "labels": {
+      "ae_energy": [7, 0, 3],
+      "ae_trunk_branch": [6, 0, 3],
+      "ae_trunk_start": [4, 0, 3],
+      "generator_a": [1, 0, 3],
+      "input_cable": [2, 0, 3],
+      "output_cable_a": [6, 0, 1],
+      "output_cable_b": [6, 0, 5],
+      "p2p_input": [3, 0, 3],
+      "p2p_output_a": [6, 0, 2],
+      "p2p_output_b": [6, 0, 4],
+      "probe_a": [6, 0, 0],
+      "probe_b": [6, 0, 6]
+    }
+  }
+}
