@@ -1,8 +1,8 @@
 package gtPlusPlus.core.material;
 
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -10,6 +10,7 @@ import java.util.Set;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -74,8 +75,8 @@ public class MaterialGenerator {
             final boolean hotIngot = matInfo.requiresBlastFurnace();
 
             int sRadiation = 0;
-            if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
-                sRadiation = matInfo.vRadiationLevel;
+            if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.radiationLevel != 0)) {
+                sRadiation = matInfo.radiationLevel;
             }
 
             if (matInfo.getState() == MaterialState.SOLID) {
@@ -168,7 +169,7 @@ public class MaterialGenerator {
             new RecipeGenFluids(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         // RecipeGen_Recycling.generateRecipes(matInfo);
     }
@@ -184,8 +185,8 @@ public class MaterialGenerator {
                 .circuit(20)
                 .itemOutputs(matInfo.getDust(1))
                 .fluidInputs(matInfo.getFluidStack(1 * INGOTS))
-                .eut(matInfo.vVoltageMultiplier)
-                .duration(10 * (matInfo.vVoltageMultiplier / 5))
+                .eut(matInfo.voltageMultiplier)
+                .duration(10 * (matInfo.voltageMultiplier / 5))
                 .addTo(chemicalDehydratorRecipes);
         }
     }
@@ -293,7 +294,7 @@ public class MaterialGenerator {
             }
 
         } catch (final Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 
@@ -333,7 +334,7 @@ public class MaterialGenerator {
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
         } catch (final Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 }

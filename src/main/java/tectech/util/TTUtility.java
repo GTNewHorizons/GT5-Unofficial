@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.StringUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 
 /**
@@ -50,9 +50,10 @@ public final class TTUtility {
     public static void setTier(int tier, Object o) {
         // TODO why is it using reflection to change a final field from GREGTECH ?
         if (!(o instanceof MTETieredMachineBlock)) {
-            GTMod.GT_FML_LOGGER.error(
-                "Could not set tier as object " + o.getClass()
-                    .getName() + " isn't instance of MTETieredMachineBlock");
+            GTLoggers.GT_FML_LOGGER.error(
+                "Could not set tier as object {} isn't instance of MTETieredMachineBlock",
+                o.getClass()
+                    .getName());
             return;
         }
         try {
@@ -60,8 +61,9 @@ public final class TTUtility {
             field.setAccessible(true);
             field.set(o, (byte) tier);
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error(
-                "Could not set tier of " + o.getClass()
+            GTLoggers.GT_FML_LOGGER.error(
+                "Could not set tier of {}",
+                o.getClass()
                     .getName(),
                 e);
         }

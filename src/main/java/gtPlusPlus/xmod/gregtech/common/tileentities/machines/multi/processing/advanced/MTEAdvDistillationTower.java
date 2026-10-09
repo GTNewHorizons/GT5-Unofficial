@@ -191,19 +191,19 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addInfo("Right click the controller with screwdriver to change mode")
             .addSeparator()
             .addInfo(EnumChatFormatting.WHITE + "Distillery Mode")
-            .addInfo("Outputs only one fluid and requires max height tower")
+            .addInfo("Outputs only one fluid")
             .addInfo(TooltipHelper.parallelText("(2 * floor(Height / 3)) * Voltage Tier") + " Parallels")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(0.15f)
             .addSeparator()
             .addInfo(EnumChatFormatting.WHITE + "Distillation Tower Mode")
-            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Fluids are output one per layer based on the slot number in NEI")
             .addInfo("Increase the height to output more fluid types")
             .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)
-            .addStaticSpeedInfo(3.5f)
+            .addStaticSpeedInfo(3f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(3, 3, 3, 3, 3, 12, true)
+            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom center")
             .addCasing("7-82", "Clean Stainless Steel Machine Casing", false)
             .addEnergyHatch("1+", "Any casing", 1, 2)
@@ -213,6 +213,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addInputHatch("1+", "Any bottom casing", 1)
             .addOutputBus("0+", "Any bottom casing", 1)
             .addOutputHatch("2-11", "One per layer, except the bottom layer", 2)
+            .addAir("Interior of the structure")
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
@@ -393,8 +394,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setEuModifier(machineMode == MACHINEMODE_DISTILLERY ? 0.15F : 1F);
-        logic.setSpeedBonus(machineMode == MACHINEMODE_DISTILLERY ? 1F / 2F : 1F / 3.5F);
+        logic.setEuModifier(machineMode == MACHINEMODE_DISTILLERY ? 0.15D : 1.0D);
+        logic.setSpeedBonus(machineMode == MACHINEMODE_DISTILLERY ? 1.0D / 2.0D : 1.0D / 3.0D);
     }
 
     @Override
@@ -434,9 +435,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
     }
 

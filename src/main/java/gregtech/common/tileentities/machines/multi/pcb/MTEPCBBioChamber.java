@@ -96,8 +96,8 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("PCB Factory Upgrade")
-            .addInfo(EnumChatFormatting.GRAY + "It enables nanites to construct organic circuitry.")
-            .addInfo(EnumChatFormatting.GRAY + "Required for Bioware and Wetware boards.")
+            .addInfo(EnumChatFormatting.GRAY + "Enables nanites to construct organic circuitry")
+            .addInfo(EnumChatFormatting.GRAY + "Unlocks the recipes for Wetware and Bioware circuit boards")
             .addInfo(
                 EnumChatFormatting.GRAY + "Place the controller block within "
                     + EnumChatFormatting.RED
@@ -107,7 +107,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
             .addInfo(EnumChatFormatting.GRAY + "Left click the PCB Factory controller with a data stick,")
             .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
-            .beginStructureBlock(12, 5, 7, true)
+            .beginStructureBlock(5, 7, 12, true)
             .addController("Front bottom center")
             .addCasing("72", "Any Tiered Glass", false)
             .addCasing("67", "Clean Stainless Steel Machine Casing", false)

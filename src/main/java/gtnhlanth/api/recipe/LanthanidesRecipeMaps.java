@@ -51,8 +51,8 @@ public class LanthanidesRecipeMaps {
         .minInputs(0, 0)
         .maxIO(1, 2, 1, 0)
         .amperage(1)
+        .neiHandlerInfo(builder -> builder.setHeight(178))
         .frontend(SourceChamberFrontend::new)
-        .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
         .neiSpecialInfoFormatter((recipeInfo) -> {
 
             SourceChamberMetadata metadata = recipeInfo.recipe.getMetadata(SOURCE_CHAMBER_METADATA);
@@ -88,7 +88,7 @@ public class LanthanidesRecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> targetChamberRecipes = RecipeMapBuilder.of("gtnhlanth.recipe.tc")
         .minInputs(0, 0)
-        .maxIO(3, 4, 0, 0)
+        .maxIO(3, 1, 0, 0)
         .frontend(TargetChamberFrontend::new)
         .neiSpecialInfoFormatter(((recipeInfo) -> {
 
@@ -111,15 +111,13 @@ public class LanthanidesRecipeMaps {
         .neiItemInputsGetter(recipe -> {
             TargetChamberMetadata metadata = recipe.getMetadata(TARGET_CHAMBER_METADATA);
             if (metadata == null) return GTValues.emptyItemStackArray;
-            ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID);
+            ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM, 0, metadata.particleID);
             List<ItemStack> ret = new ArrayList<>();
             ret.add(particleStack);
             ret.addAll(Arrays.asList(recipe.mInputs));
             return ret.toArray(new ItemStack[0]);
         })
         .neiHandlerInfo(builder -> builder.setHeight(140))
-        .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
-        .progressBarPos(108, 22)
-        .neiTransferRect(100, 22, 28, 18)
+
         .build();
 }

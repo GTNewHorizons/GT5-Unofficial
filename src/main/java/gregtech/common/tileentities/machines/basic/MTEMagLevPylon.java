@@ -14,7 +14,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEMagLevPylon extends MTETieredMachineBlock {
@@ -33,7 +33,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return GTUtility.translateMultiline(
+        return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.basicmachine.maglev.tooltip",
             getPylonRange(mTier, false),
             getPylonRange(mTier, true),

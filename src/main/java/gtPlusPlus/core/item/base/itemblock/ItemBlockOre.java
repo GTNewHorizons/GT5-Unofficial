@@ -36,7 +36,7 @@ public class ItemBlockOre extends ItemBlock {
         if (block instanceof BlockBaseOre) {
             this.mThisOre = (BlockBaseOre) block;
             this.mThisMaterial = this.mThisOre.getMaterialEx();
-            this.mThisRadiation = this.mThisMaterial.vRadiationLevel;
+            this.mThisRadiation = this.mThisMaterial.radiationLevel;
         } else {
             this.mThisOre = null;
             this.mThisMaterial = null;
@@ -130,7 +130,7 @@ public class ItemBlockOre extends ItemBlock {
         if (this.mThisMaterial != null && this.mThisRadiation > 0) {
             EntityUtils.applyRadiationDamageToEntity(
                 iStack.stackSize,
-                this.mThisMaterial.vRadiationLevel,
+                this.mThisMaterial.radiationLevel,
                 world,
                 entityHolding);
         }

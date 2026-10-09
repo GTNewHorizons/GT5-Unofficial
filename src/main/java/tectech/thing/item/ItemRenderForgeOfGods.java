@@ -8,6 +8,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import gregtech.GTMod;
+import tectech.rendering.EOH.EOHRenderingUtils;
 
 public class ItemRenderForgeOfGods implements IItemRenderer {
 
@@ -25,10 +26,12 @@ public class ItemRenderForgeOfGods implements IItemRenderer {
     @Override
     public void renderItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
         GL11.glPushMatrix();
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushAttrib(
+            GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_CURRENT_BIT);
 
         enableOpaqueColorInversion();
         renderGORGEStar(
+            EOHRenderingUtils.IDENTITY,
             type,
             GTMod.clientProxy()
                 .getAnimationRenderTicks(),

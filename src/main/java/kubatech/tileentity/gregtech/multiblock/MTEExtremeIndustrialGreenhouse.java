@@ -40,6 +40,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
 import java.util.ArrayList;
@@ -59,6 +60,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -67,6 +70,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -110,27 +114,13 @@ import kubatech.api.enums.EIGModes;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.CropRenderer;
 import kubatech.gui.modularui2.MTEExtremeIndustrialGreenhouseGui;
-import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 
 @SuppressWarnings("unused")
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTEExtremeIndustrialGreenhouse>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
-    /***
-     * BALANCE OF THE IC2 MODE: (let T = EIG_BALANCE_IC2_ACCELERATOR_TIER) All IC2 crops are simulated and all drops are
-     * generated based on the real crop drops. T is a tick accelerator tier for the IC2 crops, Each crop in the EIG is
-     * accelerated using T tier accelerator (Accelerators in the game are defined as 2^T acceleration, 8*(4^T) voltage,
-     * 6 amps) IC2 mode is unlocked at T+1 tier (glass and power) And each amp of T gives one crop slot, EIG only
-     * consumes 1 AMP of a tier that it is at (EIG starts at 4 crops (T+1 tier) and each tier quadruples the amount of
-     * slots) Each crop is accelerated 2^T times Summary: Accelerators in EIG are a bit cheaper than on the crop field
-     * (4 amps instead of 6 amps) There are 4 crops touching the accelerator (1 AMP for 1 accelerated crop)
-     * <p>
-     * Changing T one number down will buff the EIG twice, as well as changing it up will nerf the EIG twice (That is
-     * because accelerators are imperfectly scaled in game LV = 2x, MV = 4x, ...)
-     */
-    public static final int EIG_BALANCE_IC2_ACCELERATOR_TIER = VoltageIndex.IV;
     public static final int EIG_BALANCE_REGULAR_MODE_MIN_TIER = VoltageIndex.EV;
-    public static final int EIG_BALANCE_IC2_MODE_MIN_TIER = EIG_BALANCE_IC2_ACCELERATOR_TIER + 1;
     public static final double EIG_BALANCE_MAX_FERTILIZER_BOOST = 4.0d;
     public static final int EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT = 1000;
     public static final int EIG_BALANCE_WATER_USAGE_PER_SEED = 1000;
@@ -183,20 +173,12 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * The mode that the EIG is in.
      */
     private EIGMode mode = EIGModes.Normal;
-    /**
-     * Determines whether new IC2 buckets will use no humidity for their growth speed calculation.
-     */
-    private boolean useNoHumidity = false;
     private boolean isCheckingDirtWater = false;
     // TODO: Remove after 2.9
     private boolean isOldStructure = false;
 
     public boolean isOldStructure() {
         return this.isOldStructure;
-    }
-
-    public boolean isInNoHumidityMode() {
-        return this.useNoHumidity;
     }
 
     public int getSetupPhase() {
@@ -211,18 +193,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     public EIGMode getEIGMode() {
         return this.mode;
-    }
-
-    public void setModeByUIIndex(int uiIndex) {
-        if (this.mMaxProgresstime > 0) return;
-        if (!this.buckets.isEmpty()) return;
-        if (uiIndex == 0) this.mode = EIGModes.Normal;
-        else this.mode = EIGModes.IC2;
-        this.updateSeedLimits();
-    }
-
-    public void setNoHumidity(boolean val) {
-        this.useNoHumidity = val;
     }
 
     public int getMaxSeedTypes() {
@@ -379,42 +349,39 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
-        tt.addMachineType("Crop Farm, EIG")
-            .addInfo("Grow your crops like a chad!")
-            .addInfo("Use screwdriver to enable/change/disable setup mode")
-            .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
-            .addInfo("Use wire cutters to give incoming IC2 seeds 0 humidity")
-            .addInfo("Uses " + EIG_BALANCE_WATER_USAGE_PER_SEED + "L of water per seed per operation")
-            .addInfo(
-                "Uses 1L of " + new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()
-                    + " per operation per seed if it contains more than "
-                    + EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT
-                    + " seeds")
-            .addInfo("Otherwise, around 1% of seeds will be voided each operation")
-            .addInfo("You can insert fertilizer each operation to get more drops (max + " + fertilizerBoostMax + ")")
-            .addGlassEnergyLimitInfo()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Setup Mode:")
-            .addInfo("Does not take power")
-            .addInfo("There are two modes: input / output")
-            .addInfo("Input mode: machine will take seeds from input bus and plant them")
-            .addInfo("[IC2] You need to also input block that is required under the crop")
-            .addInfo("Output mode: machine will take planted seeds and output them");
+        tt.addMachineType(
+            StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.machine_type"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "extreme-industrial-greenhouse"),
+                ImmutableMap.of("weedexName", new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()));
         EIGModes.addTooltipInfo(tt);
-        tt.beginStructureBlock(9, 7, 7, true)
-            .addController("Front bottom center")
-            .addCasing("102", "Any Tiered Glass", true)
-            .addCasing("70-86", "Sterile Farm Casing", false)
-            .addCasing("33", "Tunstensteel Frame Box", false)
-            .addCasing("21", "Fertilized Dirt (RandomThings)", false)
-            .addCasing("3", "Purple Lamp (ProjectRed Illumination, regular or inverted)", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+        tt.beginStructureBlock(7, 7, 9, true)
+            .addEnergyHatchGlassTier()
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("102", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing(
+                "70-86",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.sterile_farm_casing"),
+                false)
+            .addCasing(
+                "33",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.frame_box"),
+                false)
+            .addCasing(
+                "21",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt"),
+                false)
+            .addCasing(
+                "3",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp"),
+                false)
+            .addEnergyHatch("1+", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addInputAny("1+", anyCasingText(), 1)
+            .addOutputBus("1+", anyCasingText(), 1)
             .addStructureInfo("")
-            .addStructureFooter("The dirt is tilled and the water is spawned for free once formed")
+            .addStructureFooter(
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.footer"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addAuthors(GTAuthors.AuthorKuba)
             .addStructureAuthors("HydroCN")
@@ -451,25 +418,16 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         if (this.toMigrate != null) {
-            // Create the new buckets respectively.
-            if (this.mode == EIGModes.IC2) {
-                for (EIGMigrationHolder holder : toMigrate) {
-                    // We will have to revalidate the seeds on the next cycle.
-                    this.buckets.add(new EIGIC2Bucket(holder.seed, holder.count, holder.supportBlock));
-                }
-            } else {
-                this.mode = EIGModes.Normal;
-                for (EIGMigrationHolder holder : toMigrate) {
+            this.mode = EIGModes.Normal;
+            for (EIGMigrationHolder holder : toMigrate) {
+                holder.seed.stackSize = holder.count;
+                EIGBucket bucket = this.mode.tryCreateNewBucket(this, holder.seed, Integer.MAX_VALUE, false);
+                if (bucket == null) {
                     holder.seed.stackSize = holder.count;
-                    EIGBucket bucket = this.mode.tryCreateNewBucket(this, holder.seed, Integer.MAX_VALUE, false);
-                    if (bucket == null) {
-                        // if we somehow can't grow the seed, try ejecting it at least.
-                        holder.seed.stackSize = holder.count;
-                        this.addOutputPartial(holder.seed);
-                        continue;
-                    }
-                    this.buckets.add(bucket);
+                    this.addOutputPartial(holder.seed);
+                    continue;
                 }
+                this.buckets.add(bucket);
             }
         }
     }
@@ -507,26 +465,12 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     // region tool interactions
 
     /**
-     * Right click = change setup phase Shift+Right Click = change EIG Mode
+     * Right click = change setup phase
      */
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            tryChangeMode(aPlayer);
-        } else {
-            tryChangeSetupPhase(aPlayer);
-        }
-    }
-
-    /**
-     * Right-Clicking with wire cutters toggle no hydration mode.
-     */
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        this.tryChangeHumidityMode(aPlayer);
-        return true;
+        tryChangeSetupPhase(aPlayer);
     }
 
     // endregion tool interactions
@@ -565,41 +509,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         GTUtility.sendChatToPlayer(aPlayer, phaseChangeMessage);
     }
 
-    /**
-     * Attempts to change the mode of the EIG to the next mode.
-     *
-     * @param aPlayer The player to notify of success and errors
-     */
-    private void tryChangeMode(EntityPlayer aPlayer) {
-        // TODO: Create l10n entries for the mode change messages.
-        if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "You can't change mode if the machine is working!");
-            return;
-        }
-        if (!this.buckets.isEmpty()) {
-            GTUtility.sendChatToPlayer(aPlayer, "You can't change mode if there are seeds inside!");
-            return;
-        }
-        this.mode = EIGModes.getNextMode(this.mode);
-        this.updateSeedLimits();
-        GTUtility.sendChatToPlayer(aPlayer, "Changed mode to: " + this.mode.getName());
-    }
-
-    /**
-     * Attempts to toggle the hydration mode of the EIG.
-     *
-     * @param aPlayer The player to notify for success and errors
-     */
-    private void tryChangeHumidityMode(EntityPlayer aPlayer) {
-        // TODO: Create l10n entries for the humidity status interactions.
-        this.useNoHumidity = !this.useNoHumidity;
-        if (this.useNoHumidity) {
-            GTUtility.sendChatToPlayer(aPlayer, "No Humidity mode enabled.");
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, "No Humidity mode disabled.");
-        }
-    }
-
     // endregion mode change standardisation
 
     // region (de)serialisations
@@ -611,7 +520,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         aNBT.setByte("glassTier", this.glassTier);
         aNBT.setInteger("setupPhase", this.setupPhase);
         aNBT.setString("mode", this.mode.getName());
-        aNBT.setBoolean("isNoHumidity", this.useNoHumidity);
         NBTTagList bucketListNBT = new NBTTagList();
         for (EIGBucket b : this.buckets) {
             bucketListNBT.appendTag(b.save());
@@ -629,7 +537,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         public final ItemStack seed;
         public final ItemStack supportBlock;
-        public final boolean useNoHumidity;
         public int count;
         public boolean isValid = false;
 
@@ -639,7 +546,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             this.seed.stackSize = 1;
             this.supportBlock = nbt.hasKey("undercrop", 10) ? readItemStackFromNBT(nbt.getCompoundTag("undercrop"))
                 : null;
-            this.useNoHumidity = nbt.getBoolean("noHumidity");
             this.isValid = true;
         }
 
@@ -655,11 +561,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         super.loadNBTData(aNBT);
         int revision = aNBT.hasKey("version", 3) ? aNBT.getInteger("version") : 0;
         if (revision <= 0) {
-            // migrate old EIG with greenhouse slots to new Bucker mode and fix variable names
+            // migrate old EIG with greenhouse slots to new mode and fix variable names
             this.glassTier = aNBT.getByte("glasTier");
             this.setupPhase = aNBT.getInteger("setupphase");
-            this.mode = aNBT.getBoolean("isIC2Mode") ? EIGModes.IC2 : EIGModes.Normal;
-            this.useNoHumidity = aNBT.getBoolean("isNoHumidity");
+            this.mode = EIGModes.Normal;
             // aggregate all seed types
             HashMap<String, EIGMigrationHolder> toMigrate = new HashMap<>();
             for (int i = 0; i < aNBT.getInteger("mStorageSize"); i++) {
@@ -678,7 +583,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             this.glassTier = aNBT.getByte("glassTier");
             this.setupPhase = aNBT.getInteger("setupPhase");
             this.mode = EIGModes.getModeFromName(aNBT.getString("mode"));
-            this.useNoHumidity = aNBT.getBoolean("isNoHumidity");
+            if (this.mode == null) this.mode = EIGModes.Normal;
             this.mode.restoreBuckets(aNBT.getTagList("buckets", 10), this.buckets);
             new EIGDropTable(aNBT.getTagList("progress", 10)).addTo(this.dropTracker);
         }
@@ -705,6 +610,11 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         boolean isOldStructure) {
         CropRenderer crop = new CropRenderer(world, x, y, z, facing, age, isOldStructure);
         Minecraft.getMinecraft().effectRenderer.addEffect(crop);
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override
@@ -918,9 +828,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             this.mEfficiencyIncrease = 10000;
             return CheckRecipeResultRegistry.SUCCESSFUL;
         }
-        if (this.mode == EIGModes.IC2) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
         if (this.maxSeedTypes < this.buckets.size()) {
             return SimpleCheckRecipeResult.ofFailure("EIG_slotoverflow");
         }
@@ -974,10 +881,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             }
         }
 
-        // OVERCLOCK
-        // FERTILIZER IDEA:
-        // NORMAL +200% per fertilizer per crop per operation
-
         int consumedFertilizer = 0;
         int maxFertilizerToConsume = 0;
         for (EIGBucket bucket : this.buckets)
@@ -997,11 +900,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         // compute drops based on the drop tracker
         this.guiDropTracker = new EIGDropTable();
-        if (this.mode == EIGModes.Normal) {
-            this.mMaxProgresstime = Math.max(20, 100 / (tier - 3)); // Min 1 s
-            for (EIGBucket bucket : this.buckets) {
-                bucket.addProgress(multiplier, this.guiDropTracker);
-            }
+        this.mMaxProgresstime = Math.max(20, 100 / (tier - 3)); // Min 1 s
+        for (EIGBucket bucket : this.buckets) {
+            bucket.addProgress(multiplier, this.guiDropTracker);
         }
 
         this.guiDropTracker.addTo(this.dropTracker);

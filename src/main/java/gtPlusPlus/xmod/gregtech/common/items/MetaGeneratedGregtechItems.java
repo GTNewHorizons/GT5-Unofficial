@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import static gregtech.api.recipe.RecipeMaps.rtgFuels;
 import static gregtech.api.util.GTRecipeConstants.RTG_DURATION_IN_DAYS;
 import static gregtech.client.GTTooltipHandler.Tier.EV;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.rtgFuels;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_1;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_2;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_Casing_Gem_3;
@@ -40,6 +40,8 @@ import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Transmi
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_UV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_ZPM;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -59,6 +61,9 @@ import gtPlusPlus.xmod.gregtech.common.covers.CoverOverflowValve;
 public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
 
     public static final MetaGeneratedGregtechItems INSTANCE;
+
+    private static final String OVERFLOW_VALVE_NAME_KEY = "MU-metaitem.01.overflow_valve.name";
+    private static final String TRANSMISSION_COMPONENT_NAME_KEY = "MU-metaitem.01.transmission_component.name";
 
     static {
         INSTANCE = new MetaGeneratedGregtechItems();
@@ -137,36 +142,40 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
 
         // RTG Pellet
         GregtechItemList.Pellet_RTG_PU238.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Pellet_RTG_PU238.ID,
-                StringUtils.superscript("238") + "Pu Pellet",
+                "MU-metaitem.01.rtg_pellet_pu238.name",
+                new Object[] { StringUtils.superscript("238") },
                 "",
                 new TC_AspectStack(TCAspects.RADIO, 4L),
                 new TC_AspectStack(TCAspects.POTENTIA, 2L),
                 new TC_AspectStack(TCAspects.METALLUM, 2L)));
 
         GregtechItemList.Pellet_RTG_SR90.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Pellet_RTG_SR90.ID,
-                StringUtils.superscript("90") + "Sr Pellet",
+                "MU-metaitem.01.rtg_pellet_sr90.name",
+                new Object[] { StringUtils.superscript("90") },
                 "",
                 new TC_AspectStack(TCAspects.RADIO, 4L),
                 new TC_AspectStack(TCAspects.POTENTIA, 2L),
                 new TC_AspectStack(TCAspects.METALLUM, 2L)));
 
         GregtechItemList.Pellet_RTG_PO210.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Pellet_RTG_PO210.ID,
-                StringUtils.superscript("210") + "Po Pellet",
+                "MU-metaitem.01.rtg_pellet_po210.name",
+                new Object[] { StringUtils.superscript("210") },
                 "",
                 new TC_AspectStack(TCAspects.RADIO, 4L),
                 new TC_AspectStack(TCAspects.POTENTIA, 2L),
                 new TC_AspectStack(TCAspects.METALLUM, 2L)));
 
         GregtechItemList.Pellet_RTG_AM241.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Pellet_RTG_AM241.ID,
-                StringUtils.superscript("241") + "Am Pellet",
+                "MU-metaitem.01.rtg_pellet_am241.name",
+                new Object[] { StringUtils.superscript("241") },
                 "",
                 new TC_AspectStack(TCAspects.RADIO, 4L),
                 new TC_AspectStack(TCAspects.POTENTIA, 2L),
@@ -183,9 +192,10 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 new TC_AspectStack(TCAspects.POTENTIA, 8L)));
 
         GregtechItemList.Cover_Overflow_Valve_LV.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Cover_Overflow_Valve_LV.ID,
-                "Overflow Valve (LV)",
+                OVERFLOW_VALVE_NAME_KEY,
+                new Object[] { GTValues.VN[1] },
                 "Maximum void amount: 64,000",
                 new TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TC_AspectStack(TCAspects.MACHINA, 1L),
@@ -193,9 +203,10 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 new TC_AspectStack(TCAspects.AQUA, 1L)));
 
         GregtechItemList.Cover_Overflow_Valve_MV.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Cover_Overflow_Valve_MV.ID,
-                "Overflow Valve (MV)",
+                OVERFLOW_VALVE_NAME_KEY,
+                new Object[] { GTValues.VN[2] },
                 "Maximum void amount: 512,000",
                 new TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TC_AspectStack(TCAspects.MACHINA, 1L),
@@ -203,9 +214,10 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 new TC_AspectStack(TCAspects.AQUA, 1L)));
 
         GregtechItemList.Cover_Overflow_Valve_HV.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Cover_Overflow_Valve_HV.ID,
-                "Overflow Valve (HV)",
+                OVERFLOW_VALVE_NAME_KEY,
+                new Object[] { GTValues.VN[3] },
                 "Maximum void amount: 4,096,000",
                 new TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TC_AspectStack(TCAspects.MACHINA, 1L),
@@ -213,9 +225,10 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 new TC_AspectStack(TCAspects.AQUA, 1L)));
 
         GregtechItemList.Cover_Overflow_Valve_EV.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Cover_Overflow_Valve_EV.ID,
-                "Overflow Valve (EV)",
+                OVERFLOW_VALVE_NAME_KEY,
+                new Object[] { GTValues.VN[4] },
                 "Maximum void amount: 32,768,000",
                 new TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TC_AspectStack(TCAspects.MACHINA, 1L),
@@ -223,9 +236,10 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 new TC_AspectStack(TCAspects.AQUA, 1L)));
 
         GregtechItemList.Cover_Overflow_Valve_IV.set(
-            this.addItem(
+            this.addItemWithNameKey(
                 Cover_Overflow_Valve_IV.ID,
-                "Overflow Valve (IV)",
+                OVERFLOW_VALVE_NAME_KEY,
+                new Object[] { GTValues.VN[5] },
                 "Maximum void amount: 262,144,000",
                 new TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TC_AspectStack(TCAspects.MACHINA, 1L),
@@ -281,10 +295,11 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
             TransmissionComponent_ZPM.ID, TransmissionComponent_UV.ID, TransmissionComponent_UHV.ID, };
         for (int tier = 1; tier < aTransParts.length + 1; tier++) {
             aTransParts[tier - 1].set(
-                this.addItem(
+                this.addItemWithNameKey(
                     IDs[tier - 1],
-                    "Transmission Component (" + GTValues.VN[tier] + ")",
-                    "",
+                    TRANSMISSION_COMPONENT_NAME_KEY,
+                    new Object[] { GTValues.VN[tier] },
+                    EnumChatFormatting.RED + "DEPRECATED, Removal In Next Major Update",
                     new TC_AspectStack(TCAspects.ELECTRUM, tier),
                     new TC_AspectStack(TCAspects.MACHINA, tier),
                     new TC_AspectStack(TCAspects.MAGNETO, tier)));

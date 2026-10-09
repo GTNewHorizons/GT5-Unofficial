@@ -90,7 +90,7 @@ public class GTPacketOnPowerfail extends GTPacket {
         }
 
         if (Mods.Navigator.isModLoaded()) {
-            PowerfailLayerManager.INSTANCE.clearFullCache();
+            PowerfailLayerManager.INSTANCE.forceRefresh();
         }
     }
 }

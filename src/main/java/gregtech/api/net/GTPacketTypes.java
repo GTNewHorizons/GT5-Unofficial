@@ -28,6 +28,7 @@ public enum GTPacketTypes {
     UPDATE_ITEM(13, new GTPacketUpdateItem()),
     SEND_COVER_DATA(16, new GTPacketSendCoverData()),
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
+    REQUEST_OREGEN_PATTERN(18, new GTPacketRequestOregenPattern()),
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
     // ID 20 unused
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
@@ -56,6 +57,8 @@ public enum GTPacketTypes {
     NETWORK_ANALYZER(44, new GTPacketNetworkAnalyzer()),
     NETWORK_ANALYZER_MODE(45, new GTPacketNetworkAnalyzerMode()),
     SYNC_TILE_RENDER_DATA_TO_CLIENT(46, new GTPacketClientMTERendererData()),
+    OBSERVE_MACHINE(47, new PacketObserveMachine()),
+    OPEN_REMOTE_MTE_GUI(48, new PacketOpenRemoteMteGui()),
 
     // merge conflict prevention comment, keep a trailing comma above
     ;

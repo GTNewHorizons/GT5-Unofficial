@@ -1,11 +1,9 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2_GLOW;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.EnumChatFormatting;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
@@ -16,9 +14,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
 
     private static final ITexture textureOverlay = TextureFactory.of(
@@ -38,42 +35,6 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
 
     public MTELargeFusionComputer2(String name) {
         super(name);
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("More Power!!!!")
-            .addInfo(
-                EnumChatFormatting.AQUA + formatNumber(getSingleHatchPower())
-                    + EnumChatFormatting.GRAY
-                    + " EU/t and "
-                    + EnumChatFormatting.AQUA
-                    + formatNumber(capableStartupCanonical() / 32 / M)
-                    + "M"
-                    + EnumChatFormatting.GRAY
-                    + " EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .addInfo(
-                "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
-                    + EnumChatFormatting.GRAY
-                    + " , you can't do it either")
-            .addInfo(createParallelText())
-            .addSupportAny()
-            .beginStructureBlock(47, 47, 7, false)
-            .addCasing("1662-1695", "Fusion Machine Casing", false)
-            .addCasing("560", "Compact Fusion Coil", false)
-            .addCasing("128", "Duranium Frame Box", false)
-            .addCasing("63-93", "Iridium Reinforced Borosilicate Glass Block", false)
-            .addEnergyHatch("1-32", "Specified casings (ZPM+)", 2)
-            .addInputHatch("1+", "Specified casings", 1)
-            .addOutputHatch("1+", "Specified casings", 1)
-            .addStructureInfo("")
-            .addStructureFooter("Supports crafting input buffers")
-            .toolTipFinisher();
-        return tt;
     }
 
     @Override
@@ -117,18 +78,8 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
     }
 
     @Override
-    public int energyHatchTier() {
-        return 7;
-    }
-
-    @Override
     public Materials getFrameBox() {
         return Materials.Duranium;
-    }
-
-    @Override
-    public int getMaxPara() {
-        return 64;
     }
 
     @Override

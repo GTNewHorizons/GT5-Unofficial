@@ -253,7 +253,7 @@ public class MTEPurificationUnitBaryonicPerfection
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
+        tt.addMachineType("Purification Unit, BPU")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.BOLD
@@ -334,7 +334,7 @@ public class MTEPurificationUnitBaryonicPerfection
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "flavors are required, the unit will activate the catalysts, stabilizing the errant particles")
+                    + "flavors are required, the unit will activate the catalysts, stabilizing the errant particles.")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC

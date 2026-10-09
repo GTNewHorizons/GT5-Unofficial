@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import static gregtech.api.recipe.RecipeMaps.multiblockRockBreakerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.multiblockRockBreakerRecipes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

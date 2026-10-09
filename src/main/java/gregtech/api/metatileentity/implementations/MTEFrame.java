@@ -37,6 +37,11 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
     }
 
     @Override
+    public boolean needsClientTick() {
+        return false;
+    }
+
+    @Override
     public byte getTileEntityBaseType() {
         final int level = (mMaterial == null) ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3);
 

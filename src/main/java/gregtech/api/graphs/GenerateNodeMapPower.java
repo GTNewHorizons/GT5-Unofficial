@@ -13,6 +13,7 @@ import gregtech.api.graphs.consumers.EmptyPowerConsumer;
 import gregtech.api.graphs.consumers.NodeEnergyConnected;
 import gregtech.api.graphs.consumers.NodeEnergyReceiver;
 import gregtech.api.graphs.consumers.NodeEnergySink;
+import gregtech.api.graphs.consumers.NodeGCEnergyHandler;
 import gregtech.api.graphs.consumers.NodeGTBaseMetaTile;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.graphs.paths.PowerNodePath;
@@ -22,6 +23,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import ic2.api.energy.tile.IEnergySink;
+import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 
 // node map generator for power distribution
 public class GenerateNodeMapPower extends GenerateNodeMap {
@@ -51,6 +53,10 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
                 aConsumers.add(tConsumerNode);
                 return true;
             }
+        } else if (aTileEntity instanceof IEnergyHandlerGC handler) {
+            ConsumerNode tConsumerNode = new NodeGCEnergyHandler(aNodeValue, handler, side, aConsumers);
+            aConsumers.add(tConsumerNode);
+            return true;
         } else if (aTileEntity instanceof IEnergySink sink) {
             // ic2 wants the tilentity next to it of that side not going to add a bunch of arguments just for ic2
             // crossborder checks to not load chuncks just to make sure

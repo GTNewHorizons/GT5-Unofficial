@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -25,9 +26,12 @@ import gregtech.api.util.TurbineStatCalculator;
 
 public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
 
-    private static final IIconContainer[] TURBINE_ON = { Textures.BlockIcons.custom("icons/turbines/TURBINE_05") };
-    private static final IIconContainer[] TURBINE_OFF = { Textures.BlockIcons.custom("icons/turbines/TURBINE_15") };
-    private static final IIconContainer[] TURBINE_EMPTY = { Textures.BlockIcons.custom("icons/turbines/TURBINE_25") };
+    private static final IIconContainer[] TURBINE_ON = {
+        Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_05") };
+    private static final IIconContainer[] TURBINE_OFF = {
+        Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_15") };
+    private static final IIconContainer[] TURBINE_EMPTY = {
+        Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "icons/turbines/TURBINE_25") };
 
     public MTELargeTurbineSCSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -141,8 +145,8 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
             .addInfo("Outputs 1L of Superheated (SH) Steam for every 1L of Supercritical Steam")
             .addInfo("Use a screwdriver to adjust the fitting of the turbine")
             .addInfo("Loose fit increases flow in exchange for efficiency")
-            .beginStructureBlock(6, 3, 3, false)
-            .addController("Front center")
+            .beginStructureBlock(3, 3, 6, false)
+            .addController("Front center, 2nd layer")
             .addCasing("14", "PBI Frame Box", false)
             .addCasing("8-14", "SC Turbine Casing", false)
             .addCasing("12", "PBI Pipe Casing", false)

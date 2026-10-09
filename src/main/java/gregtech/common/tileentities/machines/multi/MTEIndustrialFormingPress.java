@@ -21,6 +21,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -86,7 +88,7 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
         tt.addMachineType("Forming Press, IFP")
             .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 5, false)
+            .beginStructureBlock(5, 5, 3, false)
             .addController("Front bottom center")
             .addCasing("5-20", "Metalworking Machine Casing", false)
             .addCasing("6", "Titanium Frame Box", false)
@@ -141,8 +143,9 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
         checkHasOutputBus(errors);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
@@ -190,7 +193,7 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 6F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 6.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -206,11 +209,6 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

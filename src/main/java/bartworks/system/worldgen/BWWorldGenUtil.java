@@ -49,9 +49,7 @@ public class BWWorldGenUtil {
                 randomIndex = rand.nextInt(Configuration.rossRuinMetas.ev.generators.length);
                 meta = Configuration.rossRuinMetas.ev.generators[randomIndex];
             }
-            default -> {
-                throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
-            }
+            default -> throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
         }
         if (GregTechAPI.METATILEENTITIES[meta] == null) {
             throw new IllegalStateException("MetaID " + meta + " is null, please remove it from the Ross Ruin config");
@@ -83,9 +81,7 @@ public class BWWorldGenUtil {
                 randomIndex = rand.nextInt(Configuration.rossRuinMetas.ev.buffers.length);
                 meta = Configuration.rossRuinMetas.ev.buffers[randomIndex];
             }
-            default -> {
-                throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
-            }
+            default -> throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
         }
         if (GregTechAPI.METATILEENTITIES[meta] == null) {
             throw new IllegalStateException("MetaID " + meta + " is null, please remove it from the Ross Ruin config");
@@ -117,9 +113,7 @@ public class BWWorldGenUtil {
                 randomIndex = rand.nextInt(Configuration.rossRuinMetas.ev.cables.length);
                 meta = Configuration.rossRuinMetas.ev.cables[randomIndex];
             }
-            default -> {
-                throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
-            }
+            default -> throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
         }
         if (GregTechAPI.METATILEENTITIES[meta] == null) {
             throw new IllegalStateException("MetaID " + meta + " is null, please remove it from the Ross Ruin config");
@@ -151,9 +145,7 @@ public class BWWorldGenUtil {
                 randomIndex = rand.nextInt(Configuration.rossRuinMetas.ev.machines.length);
                 meta = Configuration.rossRuinMetas.ev.machines[randomIndex];
             }
-            default -> {
-                throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
-            }
+            default -> throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
         }
         if (GregTechAPI.METATILEENTITIES[meta] == null) {
             throw new IllegalStateException("MetaID " + meta + " is null, please remove it from the Ross Ruin config");

@@ -14,6 +14,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,6 +30,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -40,18 +42,20 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -66,8 +70,21 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     private int mCasing;
     private static IStructureDefinition<MTEIsaMill> STRUCTURE_DEFINITION = null;
 
+    private static final Set<GTUtility.ItemId> MILLING_BALLS = new HashSet<>();
+
     private static final IIconContainer frontFaceActive = new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE5");
     private static final IIconContainer frontFace = new CustomIcon("iconsets/Grinder/GRINDER5");
+    private static final IIconContainer[] faceOverlay = new IIconContainer[9];
+    private static final IIconContainer[] faceOverlayActive = new IIconContainer[9];
+
+    static {
+        for (int i = 0; i < 9; i++) {
+            faceOverlay[i] = new CustomIcon("iconsets/Grinder/GRINDER" + (i + 1));
+            faceOverlayActive[i] = new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE" + (i + 1));
+        }
+    }
+
+    protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
 
     private final ArrayList<MTEHatchMillingBalls> mMillingBallBuses = new ArrayList<>();
     private static final DamageSource mIsaMillDamageSource = new DamageSource("gtpp.grinder").setDamageBypassesArmor();
@@ -88,7 +105,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
-            .beginStructureBlock(7, 3, 3, false)
+            .beginStructureBlock(3, 3, 7, false)
             .addController("Front center, 2nd layer")
             .addCasing("40-43", "IsaMill Exterior Casing", false)
             .addCasing("8", "IsaMill Piping", false)
@@ -213,7 +230,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.millingRecipes;
+        return RecipeMaps.millingRecipes;
     }
 
     @Override
@@ -222,11 +239,49 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
                 this.mMillingBallBuses.clear();
             }
-        }
-        if (aTick % 20 == 0 && isMachineRunning()) {
-            checkForEntities(aBaseMetaTileEntity, aTick);
+            if (aTick % 20 == 0 && isMachineRunning()) {
+                checkForEntities(aBaseMetaTileEntity, aTick);
+            }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    private void updateFaceOverlay() {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (tile == null || tile.isServerSide()) return;
+
+        GTUtilityClient.setTurbineOverlay(
+            tile.getWorld(),
+            tile.getXCoord(),
+            tile.getYCoord(),
+            tile.getZCoord(),
+            getExtendedFacing(),
+            tile.isActive() ? faceOverlayActive : faceOverlay,
+            overlayTickets);
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        updateFaceOverlay();
+    }
+
+    @Override
+    public void onTextureUpdate() {
+        updateFaceOverlay();
+    }
+
+    @Override
+    public void setExtendedFacing(ExtendedFacing newFacing) {
+        boolean changed = newFacing != getExtendedFacing();
+        super.setExtendedFacing(newFacing);
+        if (changed) updateFaceOverlay();
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
     private final ArrayList<BlockPos> mFrontBlockPosCache = new ArrayList<>();
@@ -392,11 +447,18 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         return ItemGenericChemBase.getMaxBallDurability(aStack);
     }
 
+    public static void registerMillingBall(ItemStack stack) {
+        if (stack == null) return;
+        MILLING_BALLS.add(GTUtility.ItemId.createWithoutNBT(stack));
+    }
+
     public static boolean isMillingBall(ItemStack aStack) {
-        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Alumina.get(1), true)) {
-            return true;
-        }
-        return GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true);
+        return aStack != null && MILLING_BALLS.contains(GTUtility.ItemId.createWithoutNBT(aStack));
+    }
+
+    static {
+        registerMillingBall(GregtechItemList.Milling_Ball_Alumina.get(1));
+        registerMillingBall(GregtechItemList.Milling_Ball_Soapstone.get(1));
     }
 
     @NotNull

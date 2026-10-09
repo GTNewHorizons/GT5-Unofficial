@@ -1,6 +1,7 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -63,6 +64,7 @@ import tectech.thing.gui.TecTechUITextures;
  *         RECIPE IS CURRENTLY TEMPORARILY COMMENTED OUT IN MachineLoader.java FYI
  *         BLOCK IS ALSO HIDDEN IN NEIGTNewHorizonsConfig.java IN COREMOD
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class TileEntityModuleManager extends TileEntityModuleBase {
 
     /** Voltage tier of this module */
@@ -122,21 +124,18 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.manager.desc0"))
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                    + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.manager.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT1"))
-            .beginStructureBlock(2, 1, 5, false)
-            .addController("Front center, 4th layer")
+            .addMarkdown(new ResourceLocation("gregtech", "space-project-manager"))
+            .beginStructureBlock(1, 5, 2, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("0-9", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-            .addInputAny("0+", "Any casing", 1)
-            .addOutputAny("0+", "Any casing", 1)
+            .addInputAny("0+", anyCasingText(), 1)
+            .addOutputAny("0+", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -1033,7 +1032,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         return customButton.setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 40))
             .setEnabled(
                 widget -> !button.getInternalName()
-                    .equals(""));
+                    .isEmpty());
     }
 
     /**
@@ -1080,11 +1079,11 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
      */
     private boolean isUpgradeButtonClickable() {
         if (projectMode) {
-            return upgradeFromProject != null && upgradeFromProject.size() > 0
+            return upgradeFromProject != null && !upgradeFromProject.isEmpty()
                 && selectedProject != null
                 && selectedProject.isFinished()
-                && selectedProject.getAllUpgrades()
-                    .size() > 0;
+                && !selectedProject.getAllUpgrades()
+                    .isEmpty();
         } else {
             return true;
         }

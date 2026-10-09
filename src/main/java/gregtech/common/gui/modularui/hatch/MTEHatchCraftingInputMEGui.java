@@ -3,6 +3,8 @@ package gregtech.common.gui.modularui.hatch;
 import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.common.tileentities.machines.MTEHatchCraftingInputME.SLOT_MANUAL_START;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -16,7 +18,6 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.util.PatternSlot;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
@@ -77,9 +78,13 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
 
         return new ToggleButton().value(optimizerSync)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_PATTERN_OPTIMIZE)
-            .addTooltipLine(GTUtility.translate("GT5U.infodata.hatch.crafting_input_me.optimize_pattern"))
-            .addTooltip(true, GTUtility.translate("GT5U.infodata.hatch.crafting_input_me.optimize_pattern.enable"))
-            .addTooltip(false, GTUtility.translate("GT5U.infodata.hatch.crafting_input_me.optimize_pattern.disabled"));
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.optimize_pattern"))
+            .addTooltip(
+                true,
+                StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.optimize_pattern.enable"))
+            .addTooltip(
+                false,
+                StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.optimize_pattern.disabled"));
     }
 
     private ToggleButton createShowPatternButton() {
@@ -90,8 +95,12 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
         return new ToggleButton().value(showPatternSync)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_WHITELIST)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
-            .addTooltip(true, GTUtility.translate("GT5U.infodata.hatch.crafting_input_me.show_pattern.enable"))
-            .addTooltip(false, GTUtility.translate("GT5U.infodata.hatch.crafting_input_me.show_pattern.disabled"));
+            .addTooltip(
+                true,
+                StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.show_pattern.enable"))
+            .addTooltip(
+                false,
+                StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.show_pattern.disabled"));
     }
 
     private ButtonWidget<?> createExportButton() {
@@ -103,7 +112,7 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
 
         return new ButtonWidget<>().syncHandler(exportSyncHandler)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_EXPORT)
-            .addTooltipLine(GTUtility.translate("GT5U.gui.tooltip.hatch.crafting_input_me.export"));
+            .addTooltipLine(StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.export"));
     }
 
     private ButtonWidget<?> createDoublePatternButton() {
@@ -117,7 +126,7 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
 
         return new ButtonWidget<>().syncHandler(doubleSyncHandler)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_X2)
-            .addTooltipLine(GTUtility.translate("gui.tooltips.appliedenergistics2.DoublePatterns"));
+            .addTooltipLine(StatCollector.translateToLocal("gui.tooltips.appliedenergistics2.DoublePatterns"));
     }
 
     private ButtonWidget<?> createManualItemsButton(PanelSyncManager syncManager) {
@@ -125,7 +134,8 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
             .syncedPanel("manual_slots_panel", true, (manager, handler) -> createManualSlotUI(manager));
 
         return new ButtonWidget<>().overlay(GTGuiTextures.OVERLAY_BUTTON_PLUS_LARGE)
-            .addTooltipLine(GTUtility.translate("GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items"))
+            .addTooltipLine(
+                StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items"))
             .onMousePressed(mouseButton -> {
                 popupPanel.openPanel();
                 return popupPanel.isPanelOpen();

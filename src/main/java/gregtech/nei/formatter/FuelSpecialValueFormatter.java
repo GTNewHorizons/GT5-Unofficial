@@ -1,6 +1,7 @@
 package gregtech.nei.formatter;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +22,9 @@ public class FuelSpecialValueFormatter implements INEISpecialInfoFormatter {
     @Override
     public List<String> format(RecipeDisplayInfo recipeInfo) {
         return Collections.singletonList(
-            StatCollector
-                .translateToLocalFormatted("GT5U.nei.fuel", formatNumber(recipeInfo.recipe.mSpecialValue * 1000L)));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.nei.fuel",
+                formatNumber(recipeInfo.recipe.mSpecialValue),
+                getFluidUnit()));
     }
 }

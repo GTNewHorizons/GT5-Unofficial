@@ -20,6 +20,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -84,7 +86,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
         tt.addMachineType("Bending Machine, IBM")
             .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 6, 3, false)
+            .beginStructureBlock(6, 3, 3, false)
             .addController("Front left, 2nd layer")
             .addCasing("4-15", "Metalworking Machine Casing", false)
             .addCasing("9", "Forming Core", false)
@@ -137,8 +139,9 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
         checkHasOutputBus(errors);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
@@ -173,7 +176,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 6F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 6.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -189,11 +192,6 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

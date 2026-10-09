@@ -134,6 +134,11 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide()) {
             if (aBaseMetaTileEntity.isActive()) {
@@ -358,7 +363,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
         tt.addMachineType("Research Completer")
             .addInfo("Completes Thaumcraft research notes using EU and Thaumcraft nodes")
             .addInfo("Place nodes in the center row")
-            .beginVariableStructureBlock(3, MAX_LENGTH, 3, 3, 3, 3, true)
+            .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
             .addController("Front center, 2nd layer")
             .addCasing("9-52", "Magical Machine Casing", false)
             .addCasing("7-27", "Warded Glass", false)

@@ -88,8 +88,8 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
         tt.addMachineType("Chemical Bath, ICB")
             .addBulkMachineInfo(4, 5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 4, 5, false)
-            .addController("Front center")
+            .beginStructureBlock(4, 5, 5, false)
+            .addController("Front center, 2nd layer")
             .addCasing("30-39", "Wash Plant Casing", false)
             .addCasing("20", "Watertight Steel Frame Box", false)
             .addCasing("14", "Water", false)
@@ -214,7 +214,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 5F)
+            .setSpeedBonus(1.0D / 5.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -247,11 +247,6 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

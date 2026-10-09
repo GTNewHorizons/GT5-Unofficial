@@ -616,7 +616,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
             .addUnlimitedTierSkips()
             .addSupportAny()
-            .beginStructureBlock(33, 33, 24, false)
+            .beginStructureBlock(33, 24, 33, false)
             .addController("Middle of the structure, 3rd layer")
             .addCasing("2121", "Dimensionally Transcendent Casing", false)
             .addCasing("2112", "Heating Coil", true)
@@ -1061,24 +1061,19 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setDouble("discount", discount);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         if (tag.hasKey("discount")) {
-            currentTip.add(
+            list.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.infodata.plasma_forge.fuel_discount",
-                    EnumChatFormatting.GOLD + formatNumber(100 * (1 - tag.getDouble("discount")))
-                        + EnumChatFormatting.RESET
-                        + "%"));
+                    formatNumber(100 * (1 - tag.getDouble("discount")))));
 
         }
     }

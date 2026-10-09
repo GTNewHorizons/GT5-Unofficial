@@ -10,7 +10,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -42,10 +41,8 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
-// todo look over and cleanup. the functionality is present
 public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTEOpticalOrganizerModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int OPTICAL_OFFSET_X = 3;
     protected static final int OPTICAL_OFFSET_Y = 7;
     protected static final int OPTICAL_OFFSET_Z = 0;
@@ -144,7 +141,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.7x"), TooltipHelper.EFF_COLOR))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.flavor.1")))
-            .beginStructureBlock(7, 7, 10, false)
+            .beginStructureBlock(7, 10, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
             .addCasing("56", translateToLocal("gt.blockcasings12.2.name"), false)
@@ -193,7 +190,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     }
 
     @Override
-    protected float getEUDiscountModifier() {
+    protected float getEUDiscountModifier(GTRecipe recipe) {
         return euMultiplier;
     }
 
@@ -213,7 +210,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
 
             final List<BoostingWater> fluid = WATER_LIST.stream()
                 .filter(candidate -> drain(hatch, candidate.water.getFluid(candidate.amount), false))
-                .collect(Collectors.toList());
+                .toList();
 
             if (fluid.size() >= 2) {
                 firstWater = fluid.get(0);

@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -68,6 +67,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -81,6 +81,7 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputMEGui;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -108,7 +109,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this hatch. Only valid while processing a recipe. This avoids several
      * operations.
@@ -149,11 +149,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
                 if (justHadNewFluids) {
-                    // Auto-pull only exists on advanced stocking inputs and is already rate-limited by
-                    // autoPullRefreshTime, so a refresh that found new fluids warrants an immediate check.
-                    for (var multi : watchers) {
-                        multi.scheduleRecipeCheckImmediate();
-                    }
+                    // Advanced hatch auto pull always have immediate check, to not break automations
+                    scheduleRecipeCheck(RecipeCheckReason.IMMEDIATE);
                     justHadNewFluids = false;
                 }
             }
@@ -175,9 +172,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (igte == null || !igte.isAllowedToWork()) return false;
 
         this.proxyCheckup();
-        if (!getProxy().isActive()) return false;
-
-        return true;
+        return getProxy().isActive();
     }
 
     @Override
@@ -358,6 +353,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
+    public boolean needsPeriodicChecks() {
+        return !MachineStats.machines.useStackWatcher;
+    }
+
+    @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluid, boolean doDrain) {
         return drain(side, fluid, fluid == null ? 0 : fluid.amount, doDrain);
     }
@@ -386,6 +386,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             // Outside of processing a recipe, we need to extract everything manually
             Slot slot = getMatchingSlot(fluid, false);
             if (slot == null) return null;
+            // AE can't use 0 for exist check, just assume exist
+            // Other hatch also don't have existence check
+            if (amount == 0) return new FluidStack(fluid, 0);
 
             IAEFluidStack request = AEFluidStack.create(fluid);
             request.setStackSize(amount);
@@ -566,26 +569,32 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         return getProxy().isActive();
     }
 
+    @OCMethod
     public int getMinAutoPullAmount() {
         return minAutoPullAmount;
     }
 
+    @OCMethod
     public void setMinAutoPullAmount(int minAutoPullAmount) {
         this.minAutoPullAmount = minAutoPullAmount;
     }
 
+    @OCMethod
     public int getAutoPullRefreshTime() {
         return autoPullRefreshTime;
     }
 
+    @OCMethod
     public void setAutoPullRefreshTime(int autoPullRefreshTime) {
         this.autoPullRefreshTime = autoPullRefreshTime;
     }
 
+    @OCMethod
     public boolean isAutoPullFluidList() {
         return autoPullFluidList;
     }
 
+    @OCMethod
     public void setAutoPullFluidList(boolean pullFluidList) {
         if (!autoPullAvailable) {
             return;
@@ -619,6 +628,31 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public void setSlotConfig(int index, FluidStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
+        // Keep the AE stack watcher in sync, or a hatch configured after joining the grid never gets onStackChange for
+        // the new fluid and a machine idling on it never wakes when the network restocks.
+        configureWatchers();
+    }
+
+    @OCMethod
+    public FluidStack getSlotConfig(int index) {
+        Slot slot = GTDataUtils.getIndexSafe(slots, index);
+
+        return slot == null || slot.config == null ? null : slot.config.copy();
+    }
+
+    @OCMethod
+    public boolean setSlotConfigAndUpdate(int index, FluidStack config) {
+        if (index < 0 || index >= slots.length) return false;
+
+        setSlotConfig(index, config);
+
+        try {
+            updateInformationSlot(index);
+        } catch (GridAccessException e) {
+            // :)
+        }
+
+        return true;
     }
 
     /**
@@ -649,6 +683,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     protected void clearSlotConfigs() {
         Arrays.fill(slots, null);
+        configureWatchers();
     }
 
     protected void clearExtractedStacks() {
@@ -857,6 +892,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 if (fs == null) continue;
                 slots[i] = new Slot(fs);
             }
+            // The writes above bypass setSlotConfig, so re-sync the AE stack watcher with the pasted config.
+            configureWatchers();
         }
 
         updateValidGridProxySides();
@@ -1053,11 +1090,14 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            for (Slot slot : slots) {
-                if (slot != null && slot.config != null) {
-                    watcher.add(AEFluidStack.create(slot.config));
+            if (MachineStats.machines.useStackWatcher) {
+                for (Slot slot : slots) {
+                    if (slot != null && slot.config != null) {
+                        watcher.add(AEFluidStack.create(slot.config));
+                    }
                 }
             }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
         }
     }
 
@@ -1072,11 +1112,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         StorageChannel chan) {
         if (diffStack.getStackSize() > 0) {
             justHadNewFluids = true;
-            // Push directly: a configured (non-auto-pull) hatch may have its GT ticking disabled, so the onPostTick
-            // consume above would never run. The AE watcher callback still fires regardless.
-            for (var multi : watchers) {
-                multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
-            }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+        }
+    }
+
+    private void scheduleRecipeCheck(RecipeCheckReason reason) {
+        for (var multi : watchers) {
+            multi.scheduleRecipeCheck(reason);
         }
     }
 }

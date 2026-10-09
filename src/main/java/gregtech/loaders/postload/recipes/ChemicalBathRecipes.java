@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
@@ -429,6 +430,47 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
+            .addTo(chemicalBathRecipes);
+
+        // Borosilicate Dirtying
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 1))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 6))
+            .fluidInputs(Materials.NitricAcid.getFluid(4_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 2))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 7))
+            .fluidInputs(Materials.NitricAcid.getFluid(4_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 3))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 8))
+            .fluidInputs(Materials.NitricAcid.getFluid(4_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 4))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
+            .fluidInputs(Materials.NitricAcid.getFluid(4_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 5))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 10))
+            .fluidInputs(Materials.NitricAcid.getFluid(4_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
             .addTo(chemicalBathRecipes);
 
         this.protoHalkoniteRecipes();

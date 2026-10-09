@@ -209,7 +209,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
-            .beginStructureBlock(9, 7, 7, true)
+            .beginStructureBlock(7, 7, 9, true)
             .addController("Front bottom center")
             .addCasing("128-148", "Pressure Containment Casing", false)
             .addCasing("42", "PTFE Frame Box", false)
@@ -292,12 +292,12 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return new MTEMultiAutoclave(this.mName);
     }
 
-    public float euModifier(int fluidPipeTier) {
-        return (float) (12 - fluidPipeTier) / 12;
+    public double euModifier(int fluidPipeTier) {
+        return (double) (12 - fluidPipeTier) / 12;
     }
 
-    public float speedBoost(int coilTier) {
-        return (float) 1 / (1 + 0.25f * coilTier);
+    public double speedBoost(int coilTier) {
+        return 1.0D / (1.0D + 0.25D * coilTier);
     }
 
     @Override
@@ -320,9 +320,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("fluidPipeTier", getFluidPipeTier());
         tag.setInteger("itemPipeTier", getItemPipeTier());
         tag.setInteger("coilTier", getCoilTier());
@@ -332,28 +331,26 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     private static final DecimalFormat dfNone = new DecimalFormat("#");
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.fluidPipeTier") + ": "
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("fluidPipeTier")));
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.euModifier") + ": "
                 + EnumChatFormatting.WHITE
                 + dfTwo.format(Math.max(0, euModifier(tag.getInteger("fluidPipeTier")) * 100))
                 + "%");
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("itemPipeTier")));
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.coilLevel") + ": "
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("coilTier")));
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + dfNone.format(Math.max(0, 100 / speedBoost(tag.getInteger("coilTier"))))

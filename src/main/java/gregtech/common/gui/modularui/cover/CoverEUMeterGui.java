@@ -23,6 +23,9 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
+        var thresholdSyncValue = new LongSyncValue(cover::fetchMaxthreshold, cover::setMaxThreshold);
+        syncManager.syncValue("max_threshold", thresholdSyncValue);
+        cover.setMaxThreshold(thresholdSyncValue.getLongValue());
         column.child(
             makeRowLayout().child(positionRow(makeEnergyTypeRow()))
                 .child(positionRow(RowHelper.makeInvertRedstoneRow(cover)))
@@ -58,10 +61,7 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
         return makeNamedColumn(IKey.lang("gt.interact.desc.EnergyThreshold"))
             .child(
                 makeNumberField(120).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold).allowC2S())
-                    .numbersLong(
-                        () -> 0L,
-                        () -> cover.getType()
-                            .getTileEntityEnergyCapacity(cover.getTile()))
+                    .numbersLong(() -> 0L, cover::getMaxThreshold)
                     .setFocusOnGuiOpen(true))
             .paddingRight(TICK_RATE_BUTTON_SIZE);
     }

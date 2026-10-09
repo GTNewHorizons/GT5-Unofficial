@@ -95,7 +95,7 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .addInfo("Regular Bus: Use a programmed circuit to select a variant (see NEI)")
             .addInfo("Also supports ArchitectureCraft shapes as target blocks")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 7, 5, false)
+            .beginStructureBlock(7, 5, 5, false)
             .addController("Front left, 3rd layer")
             .addCasing("40-48", "Sturdy Printer Casing", false)
             .addCasing("37", "Steel Frame Box", false)
@@ -219,8 +219,8 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
                 return super.validateRecipe(recipe);
             }
         }.noRecipeCaching()
-            .setSpeedBonus(1F / 3F)
-            .setEuModifier(0.75F)
+            .setSpeedBonus(1.0D / 3.0D)
+            .setEuModifier(0.75D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

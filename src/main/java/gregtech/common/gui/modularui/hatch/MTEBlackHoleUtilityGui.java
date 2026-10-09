@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.hatch;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -9,7 +11,6 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 
@@ -33,7 +34,7 @@ public class MTEBlackHoleUtilityGui extends MTEHatchBaseGui<MTEBlackHoleUtility>
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_ANALOG))
             .child(
                 IKey.dynamic(
-                    () -> GTUtility.translate(
+                    () -> StatCollector.translateToLocal(
                         invertedSyncer.getValue() ? "GT5U.gui.text.static_mode" : "GT5U.gui.text.pulse_mode"))
                     .asWidget())
             .coverChildren()

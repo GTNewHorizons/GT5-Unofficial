@@ -3,8 +3,6 @@ package gregtech.api.items.armor.behaviors;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTUtility;
-
 /// Represents a category of [IArmorBehavior]. Primarily used to check behavior equality and presence. Behaviors have a
 /// separate set of rarities from augments because they're completely decoupled from augments. Any part can provide a
 /// behavior, so they need to have their own rarities defined.
@@ -16,7 +14,6 @@ public enum BehaviorName {
     OmniMovement(EnumRarity.rare),
     Jetpack(EnumRarity.uncommon),
     JetpackHover(EnumRarity.uncommon),
-    JetpackPerfectHover(EnumRarity.rare),
     FireImmunity(EnumRarity.common),
     StepAssist(EnumRarity.common),
     GogglesOfRevealing(EnumRarity.uncommon),
@@ -34,7 +31,9 @@ public enum BehaviorName {
     SpaceSuit(EnumRarity.rare),
     MilkInfusion(EnumRarity.uncommon),
     HoloInventory(EnumRarity.uncommon),
-    Terrasteel(EnumRarity.uncommon)
+    Terrasteel(EnumRarity.uncommon),
+    Soulbound(EnumRarity.common),
+    Levitation(EnumRarity.epic)
     //
     ;
 
@@ -53,6 +52,6 @@ public enum BehaviorName {
     }
 
     public String getDisplayName() {
-        return "§s" + rarity.rarityColor + GTUtility.translate("GT5U.armor.behavior." + name()) + "§t";
+        return "§s" + rarity.rarityColor + StatCollector.translateToLocal("GT5U.armor.behavior." + name()) + "§t";
     }
 }

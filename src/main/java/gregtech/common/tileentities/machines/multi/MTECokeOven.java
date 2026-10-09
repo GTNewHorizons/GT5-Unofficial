@@ -21,6 +21,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -28,6 +29,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -82,8 +84,12 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Coke Oven")
-            .addInfo("Turns coal into coke and produces creosote oil")
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType("Coke Oven")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "coke-oven"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
@@ -94,6 +100,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
             .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
             .toolTipFinisher(AuthorJulia);
+        // spotless:on
+        return tt;
     }
 
     // spotless:off
@@ -110,7 +118,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
         .addElement(
             'C',
-            buildHatchAdder(MTECokeOven.class).atLeast(new HatchElement())
+            buildHatchAdder(MTECokeOven.class).atLeast(CokeHatchElement.CokeHatch)
                 .casingIndex(1)
                 .hint(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings12, 0)))
@@ -152,13 +160,19 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.COKE_OVEN;
     }
 
     @Override
     protected @NotNull MTECokeOvenGui getGui() {
         return new MTECokeOvenGui(this);
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        hatches.clear();
     }
 
     @Override
@@ -302,15 +316,16 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide()) onPostTickClient(baseMetaTileEntity, tick);
         if (baseMetaTileEntity.isServerSide()) onPostTickServer(baseMetaTileEntity, tick);
     }
 
-    private void onPostTickClient(IGregTechTileEntity baseMetaTileEntity, long tick) {
+    @Override
+    public void onClientSoundStateChanged() {
         doActivitySound(SoundResource.GTCEU_LOOP_FURNACE);
     }
 
     private void onPostTickServer(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        mTotalRunTime++;
         checkRecipeProgress(baseMetaTileEntity);
 
         // Polling updates.
@@ -338,6 +353,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             mOutputFluids = null;
             mProgresstime = 0;
             mMaxProgresstime = 0;
+            recipesDone++;
+            mLastWorkingTick = mTotalRunTime;
         }
 
         if (mMaxProgresstime == 0 && baseMetaTileEntity.isAllowedToWork()) {
@@ -418,9 +435,15 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         this.fluid = fluid;
     }
 
-    private static class HatchElement implements IHatchElement<MTECokeOven> {
+    private enum CokeHatchElement implements IHatchElement<MTECokeOven> {
 
-        public HatchElement() {}
+        CokeHatch("GT5U.MBTT.CokeOvenHatch");
+
+        private final String name;
+
+        CokeHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -433,13 +456,18 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         }
 
         @Override
-        public String name() {
-            return "Coke Oven Hatch";
+        public long count(MTECokeOven cokeOven) {
+            return cokeOven.hatches.size();
         }
 
         @Override
-        public long count(MTECokeOven cokeOven) {
-            return cokeOven.hatches.size();
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
@@ -488,7 +516,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity == null) return false;
-        if (metaTileEntity instanceof MTEHatchCokeOven hatch) {
+        if (metaTileEntity instanceof MTEHatchCokeOven hatch && !hatches.contains(hatch)) {
             hatch.addController(this);
             return hatches.add(hatch);
         }

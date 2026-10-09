@@ -42,15 +42,6 @@ public class GTNEIMacerationStackConversion extends ShapelessRecipeHandler {
     }
 
     @Override
-    public void loadUsageRecipes(String inputId, Object... ingredients) {
-        if (inputId.equals("crafting") || inputId.equals(getOverlayIdentifier())) {
-            loadAllRecipes();
-        } else {
-            super.loadUsageRecipes(inputId, ingredients);
-        }
-    }
-
-    @Override
     public void loadCraftingRecipes(ItemStack result) {
         if (!isNewMacerationStack(result)) return;
         loadRecipeForTier(result);

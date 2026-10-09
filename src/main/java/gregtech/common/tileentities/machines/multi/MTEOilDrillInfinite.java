@@ -112,7 +112,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                 "Base cycle time: "
                     + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + (baseCycleTime == 1 ? " tick" : " ticks")
                         : formatNumber(baseCycleTime / 20.0) + " seconds"))
-            .beginStructureBlock(9, 9, 14, false)
+            .beginStructureBlock(9, 14, 9, false)
             .addController("Front bottom center")
             .addCasing("90-103", "Mining Neutronium Casing", false)
             .addCasing("38", "Neutronium Frame Box", false)

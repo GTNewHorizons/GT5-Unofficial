@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemCasings;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 
@@ -38,10 +37,11 @@ public class ItemCasingSpaceElevatorMotor extends ItemCasings {
      */
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean f3_h) {
-        tooltip.add(GTUtility.translate("gt.blockcasings.ig.motor.desc0"));
+        tooltip.add(StatCollector.translateToLocal("gt.blockcasings.ig.motor.desc0"));
         tooltip.add(
             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                + GTUtility.translate("gt.blockcasings.ig.motor.t" + (stack.getItemDamage() + 1) + ".desc1"));
+                + StatCollector
+                    .translateToLocal("gt.blockcasings.ig.motor.t" + (stack.getItemDamage() + 1) + ".desc1"));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "gt.blockcasings.ig.motor.desc2",

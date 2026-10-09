@@ -17,6 +17,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -45,7 +46,6 @@ import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -124,32 +124,35 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo(GTUtility.translate("gt.multiblock.AdvHeatExchanger.desc1"))
-            .addInfo(GTUtility.translate("gt.multiblock.AdvHeatExchanger.desc2"))
-            .addInfo(GTUtility.translate("gt.multiblock.AdvHeatExchanger.desc3"))
-            .addInfo(GTUtility.translate("gt.multiblock.AdvHeatExchanger.desc4"))
-            .addInfo(GTUtility.translate("gt.multiblock.AdvHeatExchanger.desc5"))
-            .addInfo(GTUtility.translate("gt.multiblock.AdvHeatExchanger.desc6"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc3"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc5"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.desc6"))
             .addSeparator()
             .addInfo(
-                GTUtility
-                    .translate("gt.multiblock.AdvHeatExchanger.lava", getFluidUnit(), getFluidUnit(), getFluidUnit()))
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.AdvHeatExchanger.lava",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
             .addInfo(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "gt.multiblock.AdvHeatExchanger.hotcoolant",
                     getFluidUnit(),
                     getFluidUnit(),
                     getFluidUnit()))
             .addInfo(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "gt.multiblock.AdvHeatExchanger.hotsolarsalt",
                     getFluidUnit(),
                     getFluidUnit(),
                     getFluidUnit()))
             .addSeparator()
-            .addInfo(GTUtility.translate("gt.multiblock.AdvHeatExchanger.throttle1"))
-            .addInfo(GTUtility.translate("gt.multiblock.AdvHeatExchanger.throttle2"))
-            .beginStructureBlock(5, 5, 9, false)
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.throttle1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.throttle2"))
+            .beginStructureBlock(5, 9, 5, false)
             .addController("Front center, 4th layer")
             .addCasing("90-96", "Reinforced Heat Exchanger Casing", false)
             .addCasing("45", "Tungstensteel Pipe Casing", false)
@@ -339,6 +342,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             mOutputColdFluidHatch = (MTEHatchOutput) aMetaTileEntity;
             return true;
@@ -351,6 +355,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((MTEHatchInput) aMetaTileEntity).mRecipeMap = getRecipeMap();
             mInputHotFluidHatch = (MTEHatchInput) aMetaTileEntity;
@@ -416,7 +421,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
     private enum AdvHEHatches implements IHatchElement<MTEAdvHeatExchanger> {
 
-        HotInputHatch(MTEAdvHeatExchanger::addHotFluidInputToMachineList, MTEHatchInput.class) {
+        HotInputHatch("GT5U.MBTT.InputHatch", MTEAdvHeatExchanger::addHotFluidInputToMachineList, MTEHatchInput.class) {
 
             @Override
             public long count(MTEAdvHeatExchanger t) {
@@ -424,7 +429,8 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                 return 1;
             }
         },
-        ColdOutputHatch(MTEAdvHeatExchanger::addColdFluidOutputToMachineList, MTEHatchOutput.class) {
+        ColdOutputHatch("GT5U.MBTT.OutputHatch", MTEAdvHeatExchanger::addColdFluidOutputToMachineList,
+            MTEHatchOutput.class) {
 
             @Override
             public long count(MTEAdvHeatExchanger t) {
@@ -433,11 +439,14 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEAdvHeatExchanger> adder;
 
         @SafeVarargs
-        AdvHEHatches(IGTHatchAdder<MTEAdvHeatExchanger> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        AdvHEHatches(String name, IGTHatchAdder<MTEAdvHeatExchanger> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -450,6 +459,16 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         @Override
         public IGTHatchAdder<? super MTEAdvHeatExchanger> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

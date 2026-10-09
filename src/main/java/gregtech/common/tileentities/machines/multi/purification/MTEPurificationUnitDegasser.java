@@ -277,7 +277,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
+        tt.addMachineType("Purification Unit, DPU")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.BOLD
@@ -450,7 +450,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processes listed above.")
-            .beginStructureBlock(17, 17, 25, true)
+            .beginStructureBlock(17, 25, 17, true)
             .addController("Front center, 2nd layer")
             .addCasing(MIN_CASING + "-800", "Heat-Resistant Trinium Plated Casing", false)
             .addCasing("622", "Omni-Purpose Infinity Fused Glass", false)
@@ -787,25 +787,23 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     private enum SpecialHatchElement implements IHatchElement<MTEPurificationUnitDegasser> {
 
-        ControlHatch(MTEPurificationUnitDegasser::addControlHatchToMachineList, MTEHatchDegasifierControl.class) {
+        ControlHatch("GT5U.MBTT.ControlHatch", MTEPurificationUnitDegasser::addControlHatchToMachineList,
+            MTEHatchDegasifierControl.class) {
 
             @Override
             public long count(MTEPurificationUnitDegasser mte) {
                 return mte.controlHatch == null ? 0 : 1;
             }
-
-            @Override
-            public String getDisplayName() {
-                return StatCollector.translateToLocal("GT5U.MBTT.ControlHatch");
-            }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEPurificationUnitDegasser> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEPurificationUnitDegasser> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEPurificationUnitDegasser> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -818,6 +816,16 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         @Override
         public IGTHatchAdder<? super MTEPurificationUnitDegasser> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

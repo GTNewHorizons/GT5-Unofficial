@@ -86,7 +86,7 @@ public class MTEVoidMiners {
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = super.createTooltip();
-            tt.beginStructureBlock(7, 7, 9, false)
+            tt.beginStructureBlock(7, 9, 7, false)
                 .addController("Front center, 2nd layer")
                 .addCasing("42", "Osmiridium Frame Box", false)
                 .addCasing("12-17", "Mining Osmiridium Casing", false)
@@ -198,7 +198,7 @@ public class MTEVoidMiners {
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = super.createTooltip();
-            tt.beginStructureBlock(8, 9, 13, false)
+            tt.beginStructureBlock(9, 13, 8, false)
                 .addController("Front center, 3rd layer")
                 .addCasing("72", "Naquadah Alloy Frame Box", false)
                 .addCasing("13-26", "Mining Black Plutonium Casing", false)
@@ -306,7 +306,7 @@ public class MTEVoidMiners {
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = super.createTooltip();
-            tt.beginStructureBlock(9, 9, 16, false)
+            tt.beginStructureBlock(9, 16, 9, false)
                 .addController("Front center, 3rd layer")
                 .addCasing("72", "Adamantium Frame Box", false)
                 .addCasing("31-44", "Mining Neutronium Casing", false)

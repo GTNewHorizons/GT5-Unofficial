@@ -12,6 +12,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.gtnewhorizon.gtnhlib.client.renderer.DirectTessellator;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.VertexBufferType;
+import com.gtnewhorizon.gtnhlib.client.renderer.vertex.VertexFormat;
 
 public class StructureVBO {
 
@@ -71,8 +72,8 @@ public class StructureVBO {
         return visibility;
     }
 
-    public IVertexArrayObject build() {
-        final DirectTessellator tess = DirectTessellator.startCapturing();
+    public IVertexArrayObject build(VertexFormat format) {
+        final DirectTessellator tess = DirectTessellator.startCapturing(format);
         FaceCulledRenderBlocks renderer = new FaceCulledRenderBlocks(Minecraft.getMinecraft().theWorld);
         renderer.enableAO = false;
 

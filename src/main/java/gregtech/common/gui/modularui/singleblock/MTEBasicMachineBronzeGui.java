@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.singleblock;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -46,8 +48,8 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
             .backgroundOverlay(
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
             .tooltip(
-                t -> t.addLine(GTUtility.translate(tooltipKeys[0]))
-                    .addLine(GTUtility.translate(tooltipKeys[1])))
+                t -> t.addLine(StatCollector.translateToLocal(tooltipKeys[0]))
+                    .addLine(StatCollector.translateToLocal(tooltipKeys[1])))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
@@ -72,10 +74,16 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
             powerfailSyncer,
             () -> machine.mTooltipCache.getData(
                 "GT5U.machines.stalled_stuttering.tooltip",
-                GTUtility.translate("GT5U.machines.powersource.steam")));
+                StatCollector.translateToLocal("GT5U.machines.powersource.steam")));
 
         BooleanSyncValue ventingSyncer = new BooleanSyncValue(machine::needsSteamVenting);
         syncManager.syncValue("venting", ventingSyncer);
         errorMap.put(ventingSyncer, () -> machine.mTooltipCache.getData("GT5U.machines.stalled_vent.tooltip"));
+    }
+
+    @Override
+    protected String createTooltipForProgressBar() {
+        String tierName = GTUtility.getColoredTierNameFromTier((byte) 1);
+        return StatCollector.translateToLocalFormatted("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
     }
 }

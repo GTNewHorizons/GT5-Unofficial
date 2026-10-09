@@ -8,7 +8,6 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMaps;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -37,7 +36,7 @@ public class NEIGTPPConfig implements IConfigureNEI {
         // Moved to its own handler
         API.removeRecipeCatalyst(
             GregtechItemList.Controller_Vacuum_Furnace.get(1),
-            GTPPRecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
+            RecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
 
         API.removeRecipeCatalyst(
             GregtechItemList.Controller_IndustrialRockBreaker.get(1),

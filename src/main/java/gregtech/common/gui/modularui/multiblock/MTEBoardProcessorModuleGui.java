@@ -17,7 +17,6 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -45,7 +44,6 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
 
         syncManager.syncValue("processedItems", new IntSyncValue(multiblock::getProcessedItems));
         syncManager.syncValue("impurity", new DoubleSyncValue(multiblock::getImpurityPercentage));
-        syncManager.syncValue("euMult", new FloatSyncValue(multiblock::getEuMultiplier));
         syncManager.syncValue(
             "automationPercentage",
             new IntSyncValue(multiblock::getAutoFlushPercentage, multiblock::setAutoFlushPercentage).allowC2S());
@@ -93,23 +91,22 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                             + EnumChatFormatting.GRAY
                             + fluidTank.getFluid()
                                 .getLocalizedName());
+                    t.addLine(
+                        EnumChatFormatting.GREEN + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.impurity")
+                            + ": "
+                            + numberFormat.format(impurity.getDoubleValue() * 100)
+                            + "%");
                 } else {
                     t.addLine(
                         EnumChatFormatting.BLUE + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.empty"));
                 }
-                t.addLine(
-                    EnumChatFormatting.GREEN + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.impurity")
-                        + ": "
-                        + numberFormat.format(impurity.getDoubleValue() * 100)
-                        + "%");
+
             })
             .background(IDrawable.EMPTY)
             .pos(151, 0);
 
         return Flow.row()
             .size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
-            .paddingTop(4)
-            .paddingBottom(4)
             .paddingLeft(4)
             .paddingRight(0)
             .childPadding(3)

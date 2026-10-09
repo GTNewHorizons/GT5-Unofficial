@@ -44,7 +44,7 @@ public class GT5UndergroundFluidHelper {
                 }
             }
             if (dimension == null) {
-                GTNEIOrePlugin.LOG.warn("Unknown dimension found in GT5 config: " + rawDimension);
+                GTNEIOrePlugin.LOG.warn("Unknown dimension found in GT5 config: {}", rawDimension);
                 continue;
             }
 
@@ -103,7 +103,7 @@ public class GT5UndergroundFluidHelper {
             case "BarnardaF" -> "BF";
             case "TCetiE" -> "TE";
             default -> {
-                GTNEIOrePlugin.LOG.warn("Unknown dimension name while parsing: " + rawDimension);
+                GTNEIOrePlugin.LOG.warn("Unknown dimension name while parsing: {}", rawDimension);
                 yield null;
             }
         };

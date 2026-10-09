@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import bartworks.MainMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -110,7 +111,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInfo("Each maintenance issue lowers output efficiency by " + EnumChatFormatting.GREEN + "10%")
             .addInfo("Explodes when it runs out of Distilled Water/Coolant")
             .addInfo("Base cycle time: 1 tick")
-            .beginStructureBlock(3, 3, 7, false)
+            .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
             .addCasing("15", "Tungsten Frame Box", false)
             .addCasing("3-7", "Heat Proof Machine Casing", false)
@@ -309,7 +310,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         try {
             this.mEUt = this.isPickingPipes ? -60 : -((int) TierEU.RECIPE_HV);
         } catch (ArithmeticException e) {
-            e.printStackTrace();
+            MainMod.LOGGER.error(e);
             this.mEUt = Integer.MAX_VALUE - 7;
         }
         this.mProgresstime = 0;

@@ -168,9 +168,9 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
             .addSeparator()
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(13, 7, 9, true)
+            .addEnergyHatchGlassTier()
             .addController("Front bottom center")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)
             .addCasingInfoExactly("Coil", 92, true)
@@ -358,6 +358,7 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
+            addIfSmartInput(aMetaTileEntity);
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = this.getRecipeMap();
             return this.mMiddleInputHatches.add(tHatch);

@@ -160,7 +160,6 @@ public class PlasmaForgeRecipes implements Runnable {
         // Chipped Amalgatite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                // this is very gross
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
                 GTOreDictUnificator.get(OrePrefixes.round, Materials.Eternity, 64),
                 GTOreDictUnificator.get(OrePrefixes.round, Materials.MagMatter, 64),

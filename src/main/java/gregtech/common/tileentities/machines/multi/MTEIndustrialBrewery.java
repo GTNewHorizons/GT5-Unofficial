@@ -127,7 +127,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Brewery, BBB")
             .addBulkMachineInfo(4, 1.5F, 1F)
-            .beginStructureBlock(3, 3, 5, true)
+            .beginStructureBlock(3, 5, 3, true)
             .addController("Front center, 3rd layer")
             .addCasing("14-22", "Reinforced Wooden Casing", false)
             .addCasing("6", "Any Tiered Glass", false)
@@ -174,7 +174,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.5F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 1.5D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

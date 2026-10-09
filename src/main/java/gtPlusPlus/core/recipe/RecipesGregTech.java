@@ -3,11 +3,15 @@ package gtPlusPlus.core.recipe;
 import static gregtech.api.enums.Mods.Backpack;
 import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.cyclotronRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
@@ -20,6 +24,8 @@ import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.thermalBoilerRecipes;
+import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
@@ -41,11 +47,6 @@ import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cyclotronRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -111,6 +112,7 @@ public class RecipesGregTech {
         extruderRecipes();
         breweryRecipes();
         laserEngraverRecipes();
+        unpackagerRecipes();
         assemblyLineRecipes();
         fluidHeaterRecipes();
         chemplantRecipes();
@@ -235,7 +237,7 @@ public class RecipesGregTech {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2))
-            .circuit(20)
+            .circuit(1)
             .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.GeneticMutagen, 8_000))
             .duration(30 * SECONDS)
@@ -728,81 +730,83 @@ public class RecipesGregTech {
             .addTo(AssemblyLine);
     }
 
-    private static void laserEngraverRecipes() {
-        // Transmission Components
+    private static void unpackagerRecipes() {
+        // Reclaim the parts from deprecated Transmission Components.
 
         // LV
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Emitter_LV.get(2), ItemList.Sensor_LV.get(2))
-            .itemOutputs(GregtechItemList.TransmissionComponent_LV.get(1))
+            .itemInputs(GregtechItemList.TransmissionComponent_LV.get(1))
+            .itemOutputs(ItemList.Sensor_LV.get(2), ItemList.Emitter_LV.get(2))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(laserEngraverRecipes);
+            .addTo(unpackagerRecipes);
 
         // MV
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Emitter_MV.get(2), ItemList.Sensor_MV.get(2))
-            .itemOutputs(GregtechItemList.TransmissionComponent_MV.get(1))
+            .itemInputs(GregtechItemList.TransmissionComponent_MV.get(1))
+            .itemOutputs(ItemList.Sensor_MV.get(2), ItemList.Emitter_MV.get(2))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(laserEngraverRecipes);
+            .eut(TierEU.RECIPE_LV)
+            .addTo(unpackagerRecipes);
 
         // HV
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Emitter_HV.get(2), ItemList.Sensor_HV.get(2))
-            .itemOutputs(GregtechItemList.TransmissionComponent_HV.get(1))
+            .itemInputs(GregtechItemList.TransmissionComponent_HV.get(1))
+            .itemOutputs(ItemList.Sensor_HV.get(2), ItemList.Emitter_HV.get(2))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(laserEngraverRecipes);
+            .eut(TierEU.RECIPE_LV)
+            .addTo(unpackagerRecipes);
 
         // EV
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Emitter_EV.get(2), ItemList.Sensor_EV.get(2))
-            .itemOutputs(GregtechItemList.TransmissionComponent_EV.get(1))
+            .itemInputs(GregtechItemList.TransmissionComponent_EV.get(1))
+            .itemOutputs(ItemList.Sensor_EV.get(2), ItemList.Emitter_EV.get(2))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(laserEngraverRecipes);
+            .eut(TierEU.RECIPE_LV)
+            .addTo(unpackagerRecipes);
 
         // IV
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Emitter_IV.get(2), ItemList.Sensor_IV.get(2))
-            .itemOutputs(GregtechItemList.TransmissionComponent_IV.get(1))
+            .itemInputs(GregtechItemList.TransmissionComponent_IV.get(1))
+            .itemOutputs(ItemList.Sensor_IV.get(2), ItemList.Emitter_IV.get(2))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(laserEngraverRecipes);
+            .eut(TierEU.RECIPE_LV)
+            .addTo(unpackagerRecipes);
 
         // LuV
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Emitter_LuV.get(2), ItemList.Sensor_LuV.get(2))
-            .itemOutputs(GregtechItemList.TransmissionComponent_LuV.get(1))
+            .itemInputs(GregtechItemList.TransmissionComponent_LuV.get(1))
+            .itemOutputs(ItemList.Sensor_LuV.get(2), ItemList.Emitter_LuV.get(2))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(laserEngraverRecipes);
+            .eut(TierEU.RECIPE_LV)
+            .addTo(unpackagerRecipes);
 
         // ZPM
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Emitter_ZPM.get(2), ItemList.Sensor_ZPM.get(2))
-            .itemOutputs(GregtechItemList.TransmissionComponent_ZPM.get(1))
+            .itemInputs(GregtechItemList.TransmissionComponent_ZPM.get(1))
+            .itemOutputs(ItemList.Sensor_ZPM.get(2), ItemList.Emitter_ZPM.get(2))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(laserEngraverRecipes);
+            .eut(TierEU.RECIPE_LV)
+            .addTo(unpackagerRecipes);
 
         // UV
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Emitter_UV.get(2), ItemList.Sensor_UV.get(2))
-            .itemOutputs(GregtechItemList.TransmissionComponent_UV.get(1))
+            .itemInputs(GregtechItemList.TransmissionComponent_UV.get(1))
+            .itemOutputs(ItemList.Sensor_UV.get(2), ItemList.Emitter_UV.get(2))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(laserEngraverRecipes);
+            .eut(TierEU.RECIPE_LV)
+            .addTo(unpackagerRecipes);
 
         // UHV
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Emitter_UHV.get(2), ItemList.Sensor_UHV.get(2))
-            .itemOutputs(GregtechItemList.TransmissionComponent_UHV.get(1))
+            .itemInputs(GregtechItemList.TransmissionComponent_UHV.get(1))
+            .itemOutputs(ItemList.Sensor_UHV.get(2), ItemList.Emitter_UHV.get(2))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(laserEngraverRecipes);
+            .eut(TierEU.RECIPE_LV)
+            .addTo(unpackagerRecipes);
+    }
 
+    private static void laserEngraverRecipes() {
         // Celestial Tungsten Dust
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -2090,7 +2094,10 @@ public class RecipesGregTech {
             nbt.setInteger("mCapacity", capacity);
             nbt.setBoolean("capacityInit", true);
             pumpWithNBT.setTagCompound(nbt);
-            GTModHandler.addShapelessCraftingRecipe(pumpWithNBT, new Object[] { handPump, tank });
+            GTModHandler.addShapelessCraftingRecipe(
+                pumpWithNBT,
+                GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { handPump, tank });
         }
     }
 }

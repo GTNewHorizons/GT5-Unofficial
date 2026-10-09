@@ -122,7 +122,7 @@ public enum BioDataEnum {
     }
 
     public static ItemStack getPlasmidCell(@Nonnull BioData plasmid) {
-        return BioDataEnum.LOOKUPS_BY_BIODATA.getOrDefault(plasmid, BioDataEnum.NullBioData).DNASampleFlask.get(1);
+        return BioDataEnum.LOOKUPS_BY_BIODATA.getOrDefault(plasmid, BioDataEnum.NullBioData).plasmidCell.get(1);
     }
 
     public BioData getBioData() {

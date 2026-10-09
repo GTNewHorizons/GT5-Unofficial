@@ -2,7 +2,7 @@ package gregtech.common.tileentities.machines.multi.xlturbines;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -181,8 +181,8 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
             .addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
             .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)")
             .addSupportAny()
-            .beginStructureBlock(26, 9, 9, true)
-            .addController("Front center")
+            .beginStructureBlock(9, 9, 26, true)
+            .addController("Front center, 5th layer")
             .addCasing(minCasingAmount() + "-352", "Reinforced Plasma Turbine Casing", false)
             .addCasing("100", "Naquadah Coil Block", false)
             .addCasing("72", "Tungstensteel Pipe Casing", false)

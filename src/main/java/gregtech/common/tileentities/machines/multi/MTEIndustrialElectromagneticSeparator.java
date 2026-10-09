@@ -69,25 +69,25 @@ public class MTEIndustrialElectromagneticSeparator
 
     public enum MagnetTiers {
 
-        Iron(8, 0.8F, 1.1F, false),
-        Steel(24, 0.75F, 1.25F, false),
-        Neodymium(48, 0.7F, 1.5F, false),
-        Samarium(96, 0.6F, 2F, false),
-        Tengam(256, 0.5F, 2.5F, true);
+        Iron(8, 0.8D, 1.1D, false),
+        Steel(24, 0.75D, 1.25D, false),
+        Neodymium(48, 0.7D, 1.5D, false),
+        Samarium(96, 0.6D, 2.0D, false),
+        Tengam(256, 0.5D, 2.5D, true);
 
         final int maxParallel;
-        final float euModifier, speedBoost;
+        final double euModifier, speedBoost;
         final boolean supportsExotic;
 
-        MagnetTiers(int maxParallel, float euModifier, float speedBoost, boolean supportsExotic) {
+        MagnetTiers(int maxParallel, double euModifier, double speedBoost, boolean supportsExotic) {
             this.maxParallel = maxParallel;
             this.euModifier = euModifier;
-            this.speedBoost = 1F / speedBoost;
+            this.speedBoost = 1.0D / speedBoost;
             this.supportsExotic = supportsExotic;
         }
 
         public static String buildMagnetTooltip(MagnetTiers m) {
-            String tooltip = GTUtility.translate(
+            String tooltip = StatCollector.translateToLocalFormatted(
                 "gt.magnet.tooltip.base",
                 EnumChatFormatting.LIGHT_PURPLE,
                 Math.round((1F / m.speedBoost * 100) - 100),
@@ -98,7 +98,7 @@ public class MTEIndustrialElectromagneticSeparator
 
             if (m.supportsExotic) {
                 tooltip = tooltip + "\\n"
-                    + GTUtility.translate(
+                    + StatCollector.translateToLocalFormatted(
                         "gt.magnet.tooltip.exotic",
                         EnumChatFormatting.BOLD,
                         EnumChatFormatting.GREEN,
@@ -148,6 +148,7 @@ public class MTEIndustrialElectromagneticSeparator
                 .hatchId(MetaTileEntityIDs.MAG_HATCH.ID)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                 .hint(2)
+                .exclusive()
                 .build())
         .build();
 
@@ -194,10 +195,22 @@ public class MTEIndustrialElectromagneticSeparator
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Electromagnetic Separator/Polarizer, MFE")
             .addInfo("Use screwdriver to switch mode")
-            .addInfo("Insert an electromagnet into the electromagnet housing to use")
-            .addInfo("Better electromagnets give further bonuses")
-            .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
-            .beginStructureBlock(7, 7, 6, true)
+            .addInfo(
+                "Insert an " + EnumChatFormatting.AQUA
+                    + "Electromagnet"
+                    + EnumChatFormatting.GRAY
+                    + " into the electromagnet housing to use")
+            .addInfo(
+                "Better " + EnumChatFormatting.AQUA
+                    + "Electromagnets"
+                    + EnumChatFormatting.GRAY
+                    + " give increased bonuses")
+            .addInfo(
+                "With a " + EnumChatFormatting.DARK_GREEN
+                    + "Tengam Electromagnet"
+                    + EnumChatFormatting.GRAY
+                    + ", one multi-amp hatch is allowed")
+            .beginStructureBlock(7, 6, 7, true)
             .addController("Front bottom center")
             .addCasing(MIN_CASING + "-73", "MagTech Casing", false)
             .addCasing("37", "Magnetic Neodymium Frame Box", false)
@@ -339,9 +352,8 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
     }
 

@@ -48,10 +48,11 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -59,7 +60,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -143,20 +143,21 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         .build();
 
     private static IStructureElement<MTEMegaAlloyBlastSmelter> getCoilElement() {
-        IStructureElement<MTEMegaAlloyBlastSmelter> heatingCoilElem = GTStructureChannels.HEATING_COIL
-            .use(activeCoils(ofCoil(MTEMegaAlloyBlastSmelter::setCoilLevel, MTEMegaAlloyBlastSmelter::getCoilLevel)));
+        IStructureElement<MTEMegaAlloyBlastSmelter> heatingCoilElem = activeCoils(
+            ofCoil(MTEMegaAlloyBlastSmelter::setCoilLevel, MTEMegaAlloyBlastSmelter::getCoilLevel));
         IStructureElement<MTEMegaAlloyBlastSmelter> basicCoilElem = ofBlock(ModBlocks.blockCasingsMisc, 14);
-        return partitionBy(
-            te -> te.coilType,
-            ImmutableMap.of(
-                CoilType.Unknown,
-                ofChain(
-                    onElementPass(te -> te.coilType = CoilType.HeatingCoil, heatingCoilElem),
-                    onElementPass(te -> te.coilType = CoilType.BasicCoil, basicCoilElem)),
-                CoilType.HeatingCoil,
-                heatingCoilElem,
-                CoilType.BasicCoil,
-                basicCoilElem));
+        return GTStructureChannels.HEATING_COIL.use(
+            partitionBy(
+                te -> te.coilType,
+                ImmutableMap.of(
+                    CoilType.Unknown,
+                    ofChain(
+                        onElementPass(te -> te.coilType = CoilType.HeatingCoil, heatingCoilElem),
+                        onElementPass(te -> te.coilType = CoilType.BasicCoil, basicCoilElem)),
+                    CoilType.HeatingCoil,
+                    heatingCoilElem,
+                    CoilType.BasicCoil,
+                    basicCoilElem)));
     }
 
     public MTEMegaAlloyBlastSmelter(int aID, String aName, String aNameRegional) {
@@ -226,7 +227,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         if (glassTier < VoltageIndex.UV) {
             for (MTEHatch hatchEnergy : getExoticEnergyHatches()) {
                 if (hatchEnergy.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
                     break;
                 }
             }
@@ -289,7 +290,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(11, 11, 20, true)
+            .beginStructureBlock(11, 20, 11, true)
             .addController("Front center, 4th layer")
             .addCasing("360", "Heating Coil", true)
             .addCasing("339", "Any Tiered Glass", true)
@@ -371,7 +372,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.alloyBlastSmelterRecipes;
+        return RecipeMaps.alloyBlastSmelterRecipes;
     }
 
     public HeatingCoilLevel getCoilLevel() {

@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -25,7 +26,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
-import gregtech.api.util.GTUtility;
 import gregtech.common.WirelessDataStore;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -44,8 +44,8 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
             aTier,
             0,
             new String[] { CommonValues.TEC_MARK_EM,
-                GTUtility.translate("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
-                GTUtility.translate("gt.blockmachines.hatch.wirelessdataoutass.desc.1"), });
+                StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
+                StatCollector.translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.1"), });
     }
 
     public MTEHatchWirelessDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

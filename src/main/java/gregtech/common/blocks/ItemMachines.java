@@ -1,7 +1,7 @@
 package gregtech.common.blocks;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.util.GTUtility.translate;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -20,9 +20,12 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
@@ -60,6 +63,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.config.Client;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
 import gregtech.crossmod.backhand.Backhand;
@@ -76,7 +80,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     public static IMetaTileEntity getMetaTileEntity(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return null;
         if (!(aStack.getItem() instanceof ItemMachines)) return null;
-        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() > GregTechAPI.METATILEENTITIES.length) return null;
+        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= GregTechAPI.METATILEENTITIES.length) return null;
         return GregTechAPI.METATILEENTITIES[aStack.getItemDamage()];
     }
 
@@ -100,27 +104,29 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     if (!(metaTileEntity instanceof IHideTooltipEnergyInfo)) {
                         if (gtTileEntity.getInputVoltage() > 0L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.eup_in",
                                     TooltipHelper.voltageText(gtTileEntity.getInputVoltage())));
                         }
                         if (gtTileEntity.getOutputVoltage() > 0L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.eup_out",
                                     TooltipHelper.voltageText(gtTileEntity.getOutputVoltage())));
                         }
                         if (gtTileEntity.getOutputAmperage() > 1L) {
                             aList.add(
-                                translate(
+                                StatCollector.translateToLocalFormatted(
                                     "gt.tileentity.amperage",
                                     TooltipHelper.ampText(gtTileEntity.getOutputAmperage())));
                         }
                     }
-                    aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
-                            TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
+                    if (Client.tooltip.showEnergyCapacity) {
+                        aList.add(
+                            translateToLocalFormatted(
+                                "gt.tileentity.eup_store",
+                                TooltipHelper.euCapacityText(gtTileEntity.getEUCapacity())));
+                    }
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
@@ -223,15 +229,15 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
         final short aDamage = (short) getDamage(aStack);
-        final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
-        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length && metaTE != null) {
-            if (metaTE instanceof ILocalizedMetaPipeEntity localMetaTE) {
-                return localMetaTE.getLocalizedName();
+        if (aDamage == WILDCARD) return translateToLocal("gt.block.any_sub_block");
+        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length) {
+            final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
+            if (metaTE != null) {
+                return metaTE.getLocalName();
             }
         }
-        return aName;
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override
@@ -265,7 +271,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 throw new GTItsNotMyFaultException(
                     "Failed to set the MetaValue of the Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
-            final IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aWorld.getTileEntity(aX, aY, aZ);
+            final TileEntity tile = aWorld.getTileEntity(aX, aY, aZ);
+            final IGregTechTileEntity tTileEntity = (IGregTechTileEntity) tile;
             if (tTileEntity != null) {
                 tTileEntity.setInitialValuesAsNBT(tTileEntity.isServerSide() ? aStack.getTagCompound() : null, tDamage);
                 if (aPlayer != null) {
@@ -296,6 +303,16 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
                 tTileEntity.getMetaTileEntity()
                     .initDefaultModes(aStack.getTagCompound());
+                // Backhand and fast swap fix:
+                // Due to markBlockForUpdate will delay a full tick (50ms), we need to send this packet earlier to
+                // prevent desync.
+                if (aPlayer instanceof EntityPlayerMP player && player.playerNetServerHandler != null) {
+                    player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(aX, aY, aZ, aWorld));
+                    Packet tePacket = tile.getDescriptionPacket();
+                    if (tePacket != null) {
+                        player.playerNetServerHandler.sendPacket(tePacket);
+                    }
+                }
             }
         } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
             return false;
@@ -329,6 +346,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     public void onUpdate(ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand) {
         super.onUpdate(aStack, aWorld, aPlayer, aTimer, aIsInHand);
         final short tDamage = (short) getDamage(aStack);
+        if (tDamage < 0 || tDamage >= GregTechAPI.METATILEENTITIES.length) return;
         final EntityLivingBase tPlayer = (EntityPlayer) aPlayer;
         if (GregTechAPI.METATILEENTITIES[tDamage] instanceof MTESuperChest
             || GregTechAPI.METATILEENTITIES[tDamage] instanceof MTESuperTank) {

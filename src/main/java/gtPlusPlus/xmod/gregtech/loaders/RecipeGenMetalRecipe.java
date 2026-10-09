@@ -39,7 +39,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
                 .itemInputs(material.getIngot(9))
                 .itemOutputs(material.getBlock(1))
                 .duration(15 * SECONDS)
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(compressorRecipes);
         }
 
@@ -48,7 +48,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
                 .itemInputs(material.getIngot(1))
                 .itemOutputs(material.getRod(1), material.getSmallDust(2))
                 .duration(Math.max(material.getMass() / 8L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(latheRecipes);
         }
 
@@ -57,7 +57,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
                 .itemInputs(material.getRod(1))
                 .itemOutputs(material.getBolt(4))
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(cutterRecipes);
         }
 

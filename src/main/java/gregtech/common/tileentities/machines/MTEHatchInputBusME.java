@@ -64,7 +64,10 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -79,13 +82,14 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusMEGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProcessingAwareHatch, IPowerChannelState,
-    ISmartInputHatch, IDataCopyable, IMEConnectable, IGridProxyable, IStackWatcherHost {
+    ISmartInputHatch, IDataCopyable, IMEConnectable, IGridProxyable, IStackWatcherHost, IPhysicalCircuitDisplay {
 
     public static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
@@ -99,7 +103,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     protected int autoPullRefreshTime = 100;
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this bus. Only valid while processing a recipe. This avoids several expensive operations.
      */
@@ -139,11 +142,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
                 refreshItemList();
                 if (justHadNewItems) {
-                    // Auto-pull only exists on advanced stocking inputs and is already rate-limited by
-                    // autoPullRefreshTime, so a refresh that found new items warrants an immediate check.
-                    for (var multi : watchers) {
-                        multi.scheduleRecipeCheckImmediate();
-                    }
+                    // Advanced hatch auto pull always have immediate check, to not break automations
+                    scheduleRecipeCheck(RecipeCheckReason.IMMEDIATE);
                     justHadNewItems = false;
                 }
             }
@@ -166,9 +166,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
         AENetworkProxy proxy = getProxy();
 
-        if (!proxy.isActive()) return false;
-
-        return true;
+        return proxy.isActive();
     }
 
     @Override
@@ -322,26 +320,32 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
     }
 
+    @OCMethod
     public int getMinAutoPullStackSize() {
         return minAutoPullStackSize;
     }
 
+    @OCMethod
     public void setMinAutoPullStackSize(int minAutoPullStackSize) {
         this.minAutoPullStackSize = minAutoPullStackSize;
     }
 
+    @OCMethod
     public int getAutoPullRefreshTime() {
         return autoPullRefreshTime;
     }
 
+    @OCMethod
     public void setAutoPullRefreshTime(int autoPullRefreshTime) {
         this.autoPullRefreshTime = autoPullRefreshTime;
     }
 
+    @OCMethod
     public boolean isAutoPullItemList() {
         return autoPullItemList;
     }
 
+    @OCMethod
     public void setAutoPullItemList(boolean pullItemList) {
         if (!autoPullAvailable) {
             return;
@@ -532,6 +536,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             for (int i = 0; i < stockingItems.tagCount(); i++) {
                 slots[i] = new Slot(GTUtility.loadItem(stockingItems.getCompoundTagAt(i)));
             }
+            // The writes above bypass setSlotConfig, so re-sync the AE stack watcher with the pasted config.
+            configureWatchers();
         }
 
         updateValidGridProxySides();
@@ -589,6 +595,39 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     }
 
     @Override
+    public List<Integer> getPhysicalCircuitNumbers() {
+        List<Integer> numbers = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot == null || slot.config == null) continue;
+            if (GTUtility.isAnyIntegratedCircuit(slot.config)) {
+                numbers.add(slot.config.getItemDamage());
+            }
+        }
+        return numbers;
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        List<ItemStack> result = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot == null) continue;
+            if (INonConsumedItemDisplay.isDisplayableItem(mRecipeMap, slot.config)) {
+                result.add(slot.config);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<ItemStack> getItemsForHoloGlasses() {
+        List<ItemStack> result = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot != null && slot.extracted != null) result.add(slot.extracted);
+        }
+        return result;
+    }
+
+    @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
         if (processingRecipe) {
             return true;
@@ -604,6 +643,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     @Override
     public void removeWatcher(IHatchWatcher watcher) {
         watchers.remove(watcher);
+    }
+
+    @Override
+    public boolean needsPeriodicChecks() {
+        return !MachineStats.machines.useStackWatcher;
     }
 
     @Override
@@ -775,6 +819,29 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     public void setSlotConfig(int index, ItemStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
+        configureWatchers();
+    }
+
+    @OCMethod
+    public ItemStack getSlotConfig(int index) {
+        Slot slot = GTDataUtils.getIndexSafe(slots, index);
+
+        return slot == null || slot.config == null ? null : slot.config.copy();
+    }
+
+    @OCMethod
+    public boolean setSlotConfigAndUpdate(int index, ItemStack config) {
+        if (index < 0 || index >= slots.length) return false;
+
+        setSlotConfig(index, config);
+
+        try {
+            updateInformationSlot(index);
+        } catch (GridAccessException e) {
+            // :)
+        }
+
+        return true;
     }
 
     /**
@@ -804,6 +871,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     protected void clearSlotConfigs() {
         Arrays.fill(slots, null);
+        configureWatchers();
     }
 
     protected void clearExtractedStacks() {
@@ -1091,11 +1159,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            for (Slot slot : slots) {
-                if (slot != null && slot.config != null) {
-                    watcher.add(AEItemStack.create(slot.config));
+            if (MachineStats.machines.useStackWatcher) {
+                for (Slot slot : slots) {
+                    if (slot != null && slot.config != null) {
+                        watcher.add(AEItemStack.create(slot.config));
+                    }
                 }
             }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
         }
     }
 
@@ -1110,11 +1181,13 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         StorageChannel chan) {
         if (diffStack.getStackSize() > 0) {
             justHadNewItems = true;
-            // Push directly: a configured (non-auto-pull) bus may have its GT ticking disabled, so the onPostTick
-            // consume above would never run. The AE watcher callback still fires regardless.
-            for (var multi : watchers) {
-                multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
-            }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+        }
+    }
+
+    private void scheduleRecipeCheck(RecipeCheckReason reason) {
+        for (var multi : watchers) {
+            multi.scheduleRecipeCheck(reason);
         }
     }
 }

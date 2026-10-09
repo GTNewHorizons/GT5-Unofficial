@@ -7,13 +7,14 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler.FixedPositionedStack;
 import gregtech.nei.RecipeDisplayInfo;
@@ -37,7 +38,8 @@ public class BECAssemblyFrontend extends AssemblyLineFrontend {
             .getIndexSafe(pStack.recipe.mRecipe.getMetadata(GTRecipeConstants.NANITE_TIERS), slot);
 
         if (tier != null) {
-            currentTip.add(AQUA + GTUtility.translate("gt.tooltip.nanite-tier", tier.describe()) + GRAY);
+            currentTip
+                .add(AQUA + StatCollector.translateToLocalFormatted("gt.tooltip.nanite-tier", tier.describe()) + GRAY);
         }
 
         return currentTip;
@@ -56,7 +58,7 @@ public class BECAssemblyFrontend extends AssemblyLineFrontend {
                 if (tier.tier > maxTier.tier) maxTier = tier;
             }
 
-            recipeInfo.drawText(GTUtility.translate("gt.tooltip.max-nanite"));
+            recipeInfo.drawText(StatCollector.translateToLocal("gt.tooltip.max-nanite"));
             recipeInfo.drawText(maxTier.describe());
         }
     }

@@ -111,7 +111,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addInfo("Can perform several direct recipes that skip intermediate compounds")
             .addPerfectOCInfo()
             .beginStructureBlock(3, 3, 3, false)
-            .addController("Front center")
+            .addController("Front center, 2nd layer")
             .addCasing("8-22", "Chemically Inert Machine Casing", false)
             .addCasing("1", "PTFE Pipe Casing", false)
             .addCasing("1", "Heating Coil", false)

@@ -111,8 +111,8 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addInfo("Set the amount of parallels in the controller menu")
             .addInfo("All inputs scale, except time...")
             .addInfo("Power is only pulled from wireless networks")
-            .beginStructureBlock(5, 5, 7, true)
-            .addController("Front center")
+            .beginStructureBlock(5, 7, 5, true)
+            .addController("Front center, 4th layer")
             .addCasing("48", "Dimensionally Transcendent Casing", false)
             .addCasing("0-35", "Dimensional Injection Casing", false)
             .addCasing("16", "Dimensional Bridge", false)
@@ -296,13 +296,13 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
                 EnumChatFormatting.GREEN + formatNumber(mProgresstime / 20) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.usage",
+                "GT5U.multiblock.usage.fmt",
                 EnumChatFormatting.RED
                     + (mMaxProgresstime == 0 ? "0"
                         : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
                     + EnumChatFormatting.RESET),
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.multiblock.recipes_done",
+                "GT5U.multiblock.recipesDone.fmt",
                 EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) };
     }
 

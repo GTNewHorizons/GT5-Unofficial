@@ -39,7 +39,7 @@ import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
-import kubatech.Tags;
+import gregtech.api.enums.Mods;
 
 public class ItemProxy {
 
@@ -69,7 +69,7 @@ public class ItemProxy {
 
     public ItemProxy(String unlocalizedName, String texture) {
         this.unlocalizedName = "kubaitem." + unlocalizedName;
-        texturepath = Tags.MODID + ":" + texture;
+        texturepath = Mods.ModIDs.KUBA_TECH + ":" + texture;
     }
 
     public ItemProxy(String unlocalizedNameAndTexture) {

@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
@@ -133,7 +134,7 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
         voltageTextRow.child(IKey.dynamic(() -> {
             int clampedTier = GTUtility.clamp(voltageTierSyncer.getIntValue(), 0, TIER_COLORS.length - 1);
             String color = GTValues.TIER_COLORS[clampedTier];
-            return GTUtility.translate(
+            return StatCollector.translateToLocal(
                 "GT5U.gui.text.voltagetier") + " (" + color + GTValues.VN[clampedTier] + EnumChatFormatting.RESET + ")";
         })
             .asWidget());

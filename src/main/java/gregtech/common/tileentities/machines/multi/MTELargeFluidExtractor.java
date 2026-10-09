@@ -278,8 +278,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                     BASE_EU_MULTIPLIER,
                     HEATING_COIL_EU_MULTIPLIER,
                     EnumChatFormatting.GRAY))
-            .addGlassEnergyLimitInfo()
-            .beginStructureBlock(5, 5, 9, false)
+            .beginStructureBlock(5, 9, 5, false)
+            .addEnergyHatchGlassTier()
             .addController("Front bottom center")
             .addCasing(BASE_CASING_COUNT - MAX_HATCHES_ALLOWED + "-53", "Robust Tungstensteel Machine Casing", false)
             .addCasing("36", "Any Tiered Glass", true)
@@ -363,12 +363,12 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         return Math.max(1, solenoidLevel == null ? 0 : (PARALLELS_PER_SOLENOID * solenoidLevel));
     }
 
-    public float getCoilSpeedBonus() {
-        return (float) ((coilLevel == null ? 0 : SPEED_PER_COIL * coilLevel.getTier()));
+    public double getCoilSpeedBonus() {
+        return ((coilLevel == null ? 0 : SPEED_PER_COIL * coilLevel.getTier()));
     }
 
     public double getSpeedBonus() {
-        return 1F / (BASE_SPEED_BONUS + getCoilSpeedBonus());
+        return 1.0D / (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
     public double getEUMultiplier() {

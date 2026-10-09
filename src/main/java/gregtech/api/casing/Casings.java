@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -386,7 +387,7 @@ public enum Casings implements ICasing {
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.AlchemyCasingAny");
+            return StatCollector.translateToLocal("GT5U.MBTT.AlchemyCasingAny");
         }
 
         @Override
@@ -438,7 +439,7 @@ public enum Casings implements ICasing {
     AlchemicalConstructTiered(() -> GameRegistry.findBlock(Mods.Thaumcraft.ID, "blockMetalDevice"), 9, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.AlchemicalConstructAny");
+            return StatCollector.translateToLocal("GT5U.MBTT.AlchemicalConstructAny");
         }
 
         @Override
@@ -607,7 +608,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
 
     // BEC
-    SuperconductivePlasmaEnergyConduit
+    CoherencePreservingPlasmaConduit
         (() -> GregTechAPI.sBlockCasingsBEC, 0, gt(17, 0, 0)),
     ElectromagneticallyIsolatedCasing
         (() -> GregTechAPI.sBlockCasingsBEC, 1, gt(17, 0, 1)),
@@ -917,8 +918,6 @@ public enum Casings implements ICasing {
     RuggedBotmiumMachineCasing
         (() -> ModBlocks.blockCustomMachineCasings, 3, gtpp(3,4)),
 
-    // GregtechMetaCasingBlocksPipeGearbox - skipped, unused, uncraftable
-
     // ------------------ Tectech Casings -----------------
 
     // TT Block Casings
@@ -1044,23 +1043,23 @@ public enum Casings implements ICasing {
 
     // Godforge Casings
     SingularityReinforcedStellarShieldingCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 0, gt(7,64)),
+        (() -> TTCasingsContainer.GodforgeCasings, 0, gt(7,64)),
     CelestialMatterGuidanceCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 1, gt(7,65)),
+        (() -> TTCasingsContainer.GodforgeCasings, 1, gt(7,65)),
     BoundlessGravitationallySeveredStructureCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 2, gt(7,66)),
+        (() -> TTCasingsContainer.GodforgeCasings, 2, gt(7,66)),
     TranscendentallyAmplifiedMagneticConfinementCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 3, gt(7,67)),
+        (() -> TTCasingsContainer.GodforgeCasings, 3, gt(7,67)),
     StellarEnergySiphonCasing
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 4, gt(7,68)),
+        (() -> TTCasingsContainer.GodforgeCasings, 4, gt(7,68)),
     RemoteGravitonFlowModulator
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 5, gt(7,69)),
+        (() -> TTCasingsContainer.GodforgeCasings, 5, gt(7,69)),
     MedialGravitonFlowModulator
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 6, gt(7,70)),
+        (() -> TTCasingsContainer.GodforgeCasings, 6, gt(7,70)),
     CentralGravitonFlowModulator
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 7, gt(7,71)),
+        (() -> TTCasingsContainer.GodforgeCasings, 7, gt(7,71)),
     HarmonicPhononTransmissionConduit
-        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 8, gt(7,72)),
+        (() -> TTCasingsContainer.GodforgeCasings, 8, gt(7,72)),
 
     QuantumGlass
         (() -> BlockQuantumGlass.INSTANCE, 0, -1),
@@ -1092,7 +1091,7 @@ public enum Casings implements ICasing {
     BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.BoroGlassAny");
+            return StatCollector.translateToLocal("GT5U.MBTT.BoroGlassAny");
         }
 
         @Override
@@ -1104,7 +1103,7 @@ public enum Casings implements ICasing {
     BorosilicateGlassTiered(BorosilicateGlass::getGlassBlock, 0, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.BoroGlassTiered");
+            return StatCollector.translateToLocal("GT5U.MBTT.BoroGlassTiered");
         }
 
         @Override
@@ -1127,7 +1126,7 @@ public enum Casings implements ICasing {
     SuperChest(() -> GregTechAPI.sBlockMachines, 0, -1) {
         @Override
         public String getLocalizedName() {
-            return GTUtility.translate("GT5U.MBTT.SuperChest");
+            return StatCollector.translateToLocal("GT5U.MBTT.SuperChest");
         }
 
         @Override

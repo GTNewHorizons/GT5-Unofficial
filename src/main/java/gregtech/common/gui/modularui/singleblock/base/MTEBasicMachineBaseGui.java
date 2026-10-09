@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -106,7 +107,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             powerfailSyncer,
             () -> machine.mTooltipCache.getData(
                 "GT5U.machines.stalled_stuttering.tooltip",
-                GTUtility.translate("GT5U.machines.powersource.power")));
+                StatCollector.translateToLocal("GT5U.machines.powersource.power")));
     }
 
     @Override
@@ -174,13 +175,14 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .overlay(overlay);
 
-        if (isEnabled) button[0].addTooltipLine(GTUtility.translate(tooltipKey));
+        if (isEnabled) button[0].addTooltipLine(StatCollector.translateToLocal(tooltipKey));
         if (!isEnabled) button[0].tooltip(
-            t -> t.addLine(GTUtility.translate(BUTTON_FORBIDDEN_TOOLTIP))
+            t -> t.addLine(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP))
                 .addLine(
                     GTUtility.getColoredSecondaryTooltip(
-                        GTUtility
-                            .translate("GT5U.gui.button.forbidden.reason", GTUtility.translate(disabledTooltipKey)))))
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.button.forbidden.reason",
+                            StatCollector.translateToLocal(disabledTooltipKey)))))
             .widgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
 
         return button[0];
@@ -294,8 +296,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .backgroundOverlay(
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
             .tooltip(
-                t -> t.addLine(GTUtility.translate(tooltipKeys[0]))
-                    .addLine(GTUtility.translate(tooltipKeys[1])))
+                t -> t.addLine(StatCollector.translateToLocal(tooltipKeys[0]))
+                    .addLine(StatCollector.translateToLocal(tooltipKeys[1])))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
@@ -309,10 +311,10 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
-    private String createTooltipForProgressBar() {
+    protected String createTooltipForProgressBar() {
         final byte machineTier = machine.mTier;
         String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
-        return GTUtility.translate("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
+        return StatCollector.translateToLocalFormatted("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
     }
 
     protected Widget<?> createErrorWidget(ModularPanel panel, PanelSyncManager syncManager) {
@@ -329,16 +331,12 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .widgetTheme(GTWidgetThemes.PICTURE_ERROR)
             .setEnabledIf(_ -> hasErrorSyncer.getBoolValue())
             .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .tooltipBuilder(t -> {
-                if (hasErrorSyncer.getBoolValue()) addTooltipDataToRichTooltip(
-                    errorMap.get(
-                        errorMap.keySet()
-                            .stream()
-                            .filter(BooleanSyncValue::getBoolValue)
-                            .findFirst()
-                            .orElseThrow())).accept(t);
-                t.titleMargin();
-            });
+            .tooltipBuilder(
+                t -> errorMap.keySet()
+                    .stream()
+                    .filter(BooleanSyncValue::getBoolValue)
+                    .findFirst()
+                    .ifPresent(key -> addTooltipDataToRichTooltip(() -> errorMap.get(key)).accept(t)));
     }
 
     protected ParentWidget<?> createItemInputSlots(ModularPanel panel, PanelSyncManager syncManager) {
@@ -387,7 +385,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                                         new MachineModularSlot(
                                             machine.inventoryHandler,
                                             machine.getOutputSlot() + i,
-                                            baseMetaTileEntity).accessibility(false, true))
+                                            baseMetaTileEntity).slotGroup("item_inv")
+                                                .accessibility(false, true))
                                 : null)
                     .verticalCenter()
                     .leftRel(0));

@@ -200,7 +200,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     private enum SpecialHatchElement implements IHatchElement<MTEBlackHoleCompressor> {
 
-        UtilityHatch(MTEBlackHoleCompressor::addSensorHatchToMachineList, MTEBlackHoleUtility.class) {
+        UtilityHatch("GT5U.MBTT.UtilityHatch", MTEBlackHoleCompressor::addSensorHatchToMachineList,
+            MTEBlackHoleUtility.class) {
 
             @Override
             public long count(MTEBlackHoleCompressor bhc) {
@@ -208,12 +209,14 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEBlackHoleCompressor> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEBlackHoleCompressor> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEBlackHoleCompressor> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -226,6 +229,16 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         @Override
         public IGTHatchAdder<? super MTEBlackHoleCompressor> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
@@ -315,10 +328,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         IIconContainer MAIN_OVERLAY;
         IIconContainer GLOW_OVERLAY;
         switch (blackHoleStatus) {
-            default -> {
-                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
-                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
-            }
             case 2, 4 -> {
                 MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
                 GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
@@ -326,6 +335,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             case 3 -> {
                 MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
                 GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
+            }
+            default -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
             }
         }
 
@@ -418,13 +431,14 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 EnumChatFormatting.RED
                     + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier")
             .addInfo(EnumChatFormatting.RED + "Limited to one energy hatch if using a Multi-Amp or Laser hatch")
-            .beginStructureBlock(35, 33, 35, true)
-            .addController("Center of structure, 6th layer")
+            .beginStructureBlock(33, 35, 35, true)
+            .addController("Middle of structure, 6th layer")
             .addCasing("3667-3671", "Extreme Density Space-Bending Casing", false)
             .addCasing("950-985", "Background Radiation Absorbent Casing", false)
             .addCasing("144", "Naquadah Alloy Frame Box", false)
             .addCasing("64", "Hawking Radiation Realignment Focus", false)
             .addMiscHatch("0+", "Black Hole Utility Hatch", "Any absorbent casing", 1)
+            .addEnergyHatch("1+", "Any absorbent casing", 1)
             .addInputAny("1+", "Any absorbent casing (inputs), the casing behind each laser (spacetime)", 1, 2)
             .addOutputBus("1+", "Any absorbent casing", 1)
             .toolTipFinisher(Ollie, "BucketBrigade");
@@ -490,38 +504,30 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("blackHoleStatus", blackHoleStatus);
         tag.setFloat("blackHoleStability", blackHoleStability);
-        tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("parallels"));
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         if (tag.getByte("blackHoleStatus") != 1) {
             if (tag.getFloat("blackHoleStability") > 0) {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.DARK_PURPLE
                         + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.active"));
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
                         "GT5U.waila.black_hole_compressor.stability",
-                        "" + EnumChatFormatting.BOLD + Math.round(tag.getFloat("blackHoleStability"))));
+                        Math.round(tag.getFloat("blackHoleStability"))));
             } else {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.RED
                         + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.unstable"));
             }
-        } else currentTip.add(
+        } else list.add(
             EnumChatFormatting.DARK_PURPLE
                 + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.offline"));
     }
@@ -637,8 +643,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             }
         }.noRecipeCaching()
             .setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.7F)
-            .setSpeedBonus(0.2F);
+            .setEuModifier(0.7D)
+            .setSpeedBonus(0.2D);
     }
 
     @Override
@@ -662,8 +668,16 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private int collapseTimer = -1;
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        // Do not run black hole logic during startup where recipe do not progress
+        if (mStartUpCheck >= 0) return;
 
         if (collapseTimer != -1) {
             if (collapseTimer == 0) {
@@ -679,11 +693,19 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         }
 
         // Run stability checks once per second if a black hole is open
-        if (blackHoleStatus == 1 || aTick % 20 != 0) return;
+        if (blackHoleStatus == 1) return;
 
         // Update all the utility hatches
+        // Redstone pulse will be 5 ticks (0.25s)
+        if (aTick % 20 == 5) {
+            for (MTEBlackHoleUtility hatch : utilityHatches) {
+                hatch.cycleMiddle();
+            }
+        }
+
+        if (aTick % 20 != 0) return;
         for (MTEBlackHoleUtility hatch : utilityHatches) {
-            hatch.updateRedstoneOutput(true);
+            hatch.cycleStart();
         }
 
         // Black hole is superstable, just do rendering, no need for decay or drain logic
@@ -747,7 +769,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
         collapseTimer = 40;
         for (MTEBlackHoleUtility hatch : utilityHatches) {
-            hatch.updateRedstoneOutput(false);
+            hatch.blackHoleClosed();
         }
     }
 

@@ -144,11 +144,6 @@ public class MTEPyrolyseOvenLegacy extends MTEEnhancedMultiBlockBase<MTEPyrolyse
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.pyrolyseRecipes;
     }
@@ -172,7 +167,7 @@ public class MTEPyrolyseOvenLegacy extends MTEEnhancedMultiBlockBase<MTEPyrolyse
     }
 
     public double getSpeedBonus() {
-        return 2f / (1 + coilHeat.getTier());
+        return 2.0D / (1.0D + coilHeat.getTier());
     }
 
     private void setCoilLevel(HeatingCoilLevel aCoilLevel) {

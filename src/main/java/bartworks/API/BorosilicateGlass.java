@@ -73,6 +73,11 @@ public class BorosilicateGlass {
             doRegister((byte) 13, block, 10, ret); // Universium = uxv
             block = getGlassBlock2();
             doRegister((byte) 5, block, 0, ret); // Thorium Yttrium = iv
+            doRegister((byte) 9, block, 1, ret); // Neutronium = uhv = transparent
+            doRegister((byte) 10, block, 2, ret); // Infinity = uev = transparent
+            doRegister((byte) 11, block, 3, ret); // Transcendent = uiv = transparent
+            doRegister((byte) 12, block, 4, ret); // Hexanite = umv = transparent
+            doRegister((byte) 13, block, 5, ret); // Universium = uxv = transparent
             allLevels = ret;
         }
         return allLevels;

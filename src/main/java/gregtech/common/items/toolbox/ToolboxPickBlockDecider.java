@@ -16,6 +16,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import appeng.api.util.IOrientable;
 import appeng.tile.AEBaseTile;
@@ -82,7 +83,7 @@ public class ToolboxPickBlockDecider {
         new CoverableAction<>(IMetaTileEntity.class, ToolboxSlot.WRENCH),
 
         // Cross-mod support
-        new SimpleAction<>(AEBaseTile.class, ToolboxSlot.WRENCH),
+        new SimpleAction<>(AEBaseTile.class, ToolboxSlot.WRENCH, ToolboxSlot.WIRE_CUTTER),
         new SimpleAction<>(IOrientable.class, ToolboxSlot.WRENCH),
         new SimpleAction<>(IWrenchable.class, ToolboxSlot.WRENCH),
         new ProjectRedAction(),
@@ -108,14 +109,17 @@ public class ToolboxPickBlockDecider {
     public static PickResults getSuggestedTool(final EntityPlayer player, MovingObjectPosition position) {
         if (position != null && position.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
             final Block block = player.worldObj.getBlock(position.blockX, position.blockY, position.blockZ);
+            // Using packed coords here because all I need this for is a simple comparison, plus it stores more
+            // conveniently in NBT data.
+            final long packedCoordinates = CoordinatePacker.pack(position.blockX, position.blockY, position.blockZ);
 
             if (block != Blocks.air) {
                 if (WRENCH_BLOCKS.contains(block)) {
-                    return new PickResults(ToolboxSlot.WRENCH);
+                    return new PickResults(ToolboxSlot.WRENCH, packedCoordinates);
                 } else if (SOFT_MALLET_BLOCKS.contains(block)) {
-                    return new PickResults(ToolboxSlot.SOFT_MALLET);
+                    return new PickResults(ToolboxSlot.SOFT_MALLET, packedCoordinates);
                 } else if (CROWBAR_BLOCKS.contains(block)) {
-                    return new PickResults(ToolboxSlot.CROWBAR);
+                    return new PickResults(ToolboxSlot.CROWBAR, packedCoordinates);
                 }
 
                 if (block.hasTileEntity(
@@ -130,7 +134,7 @@ public class ToolboxPickBlockDecider {
                         if (chosen != null && FORCE_DESELECT.containsKey(chosen.getClass())
                             && FORCE_DESELECT.get(chosen.getClass())
                                 .test(chosen, side)) {
-                            return new PickResults(true);
+                            return new PickResults(true, packedCoordinates);
                         }
 
                         for (IDeciderAction action : CLASS_ACTIONS) {
@@ -142,7 +146,8 @@ public class ToolboxPickBlockDecider {
                                             side,
                                             (float) position.hitVec.xCoord,
                                             (float) position.hitVec.yCoord,
-                                            (float) position.hitVec.zCoord)));
+                                            (float) position.hitVec.zCoord)),
+                                    packedCoordinates);
                             }
                         }
                     }

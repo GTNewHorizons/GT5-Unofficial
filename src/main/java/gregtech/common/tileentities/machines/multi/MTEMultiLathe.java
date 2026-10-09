@@ -178,7 +178,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addDynamicParallelInfo(8, TooltipTier.PIPE_CASING)
             .addStaticSpeedInfo(4f)
             .addStaticEuEffInfo(0.8f)
-            .beginStructureBlock(5, 7, 5, true)
+            .beginStructureBlock(7, 5, 5, true)
             .addController("Front bottom center")
             .addCasing("42-55", "Solid Steel Machine Casing", false)
             .addCasing("32", "Any Tiered Glass", false)
@@ -256,8 +256,8 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / 4F)
-            .setEuModifier(0.8F)
+            .setSpeedBonus(1.0D / 4.0D)
+            .setEuModifier(0.8D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -267,9 +267,8 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("itemPipeTier", Math.max(0, getPipeTier()));
         tag.setFloat("speedBonus", 400);
     }
@@ -277,15 +276,13 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     private static final DecimalFormat dfNone = new DecimalFormat("#");
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.itemPipeTier") + ": "
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("itemPipeTier")));
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + dfNone.format((Math.max(0, tag.getInteger("speedBonus"))))

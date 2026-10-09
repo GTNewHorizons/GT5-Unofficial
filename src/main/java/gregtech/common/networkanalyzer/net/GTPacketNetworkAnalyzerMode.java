@@ -1,5 +1,7 @@
 package gregtech.common.networkanalyzer.net;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
@@ -42,7 +44,7 @@ public class GTPacketNetworkAnalyzerMode extends GTPacket {
         try {
             aOut.writeInt(this.mode.ordinal());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            GT_FML_LOGGER.error(ex);;
         }
     }
 

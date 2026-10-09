@@ -32,7 +32,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
 public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECuttingChamberModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int CUTTING_OFFSET_X = 3;
     protected static final int CUTTING_OFFSET_Y = 5;
     protected static final int CUTTING_OFFSET_Z = 0;
@@ -114,7 +113,7 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.cutting_chamber.action", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.cutting_chamber.flavor.1")))
-            .beginStructureBlock(7, 7, 8, false)
+            .beginStructureBlock(7, 8, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
             .addCasing("31", translateToLocal("gt.blockcasings12.2.name"), false)

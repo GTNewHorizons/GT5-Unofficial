@@ -31,11 +31,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -50,8 +50,8 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
     private static final int OFFSET_Z = 1;
 
     private static final int PARALLEL_PER_TIER = 4;
-    private static final float SPEED = 2.8f;
-    private static final float EU_EFFICIENCY = 0.9f;
+    private static final double SPEED = 2.8D;
+    private static final double EU_EFFICIENCY = 0.9D;
 
     public MTEIndustrialElectrolyzer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -146,10 +146,10 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Electrolyzer")
-            .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
+            .addBulkMachineInfo(PARALLEL_PER_TIER, (float) SPEED, (float) EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front center")
+            .addController("Front center, 3rd layer")
             .addCasing("6-43", "Electrolyzer Casing", false)
             .addCasing("12", "Potin Frame Box", false)
             .addCasing("4", "Tin Item Pipe Casing", false)
@@ -166,7 +166,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / SPEED)
+        return new ProcessingLogic().setSpeedBonus(1.0D / SPEED)
             .setEuModifier(EU_EFFICIENCY)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -221,16 +221,11 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.electrolyzerNonCellRecipes;
+        return RecipeMaps.electrolyzerNonCellRecipes;
     }
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

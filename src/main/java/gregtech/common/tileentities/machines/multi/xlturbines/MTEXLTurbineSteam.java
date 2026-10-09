@@ -9,8 +9,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
-import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTModHandler;
@@ -39,21 +37,6 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Casings getCasing() {
-        return Casings.ReinforcedSteamTurbineCasing;
-    }
-
-    @Override
-    protected Materials getFrameMaterial() {
-        return Materials.Steel;
-    }
-
-    @Override
-    protected Casings getRotorCasing() {
-        return Casings.SteelPipeCasing;
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine, XLST")
@@ -64,8 +47,8 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow")
             .addSupportAny()
-            .beginStructureBlock(29, 9, 9, true)
-            .addController("Front center")
+            .beginStructureBlock(9, 9, 29, true)
+            .addController("Front center, 5th layer")
             .addCasing(minCasingAmount() + "-440", "Reinforced Steam Turbine Casing", false)
             .addCasing("100", "Steel Pipe Casing", false)
             .addCasing("36", "Any Tiered Glass", false)

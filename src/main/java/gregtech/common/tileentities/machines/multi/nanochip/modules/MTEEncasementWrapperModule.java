@@ -26,7 +26,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
 public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MTEEncasementWrapperModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int ENCASEMENT_WRAPPER_OFFSET_X = 3;
     protected static final int ENCASEMENT_WRAPPER_OFFSET_Y = 6;
     protected static final int ENCASEMENT_WRAPPER_OFFSET_Z = 0;
@@ -108,7 +107,7 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
                     TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.encasement_wrapper.flavor.1")))
-            .beginStructureBlock(7, 7, 9, false)
+            .beginStructureBlock(7, 9, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Mesh Interface Casing
             .addCasing("47", translateToLocal("gt.blockcasings12.1.name"), false)
@@ -118,6 +117,7 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
             .addCasing("32", translateToLocal("gt.blockcasings12.2.name"), false)
             // Quantium Frame Box
             .addCasing("32", "Quantium Frame Box", false)
+            .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
             .addMiscHatch(
                 "0+",
                 TOOLTIP_VCI_LONG,
@@ -144,4 +144,8 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
         return RecipeMaps.nanochipEncasementWrapper;
     }
 
+    @Override
+    public boolean getDefaultInputSeparationMode() {
+        return false;
+    }
 }

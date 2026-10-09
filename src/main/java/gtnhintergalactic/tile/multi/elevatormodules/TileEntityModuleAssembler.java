@@ -1,6 +1,7 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -29,7 +31,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.ResultNoSpaceProject;
@@ -53,8 +54,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     implements IOverclockDescriptionProvider, IParametrized {
 
     /** Name of the parallel setting */
-    private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.assembler.cfgi.0"); // Parallels
+    private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.cfgi.0"); // Parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleAssembler> PARALLEL_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
@@ -229,7 +230,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_ASSEMBLER_MODULE");
+        engraving = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_SIDE_ASSEMBLER_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -266,6 +267,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
      *
      * @author minecraft7771
      */
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModuleAssemblerT1 extends TileEntityModuleAssembler {
 
         /** Voltage tier of this module */
@@ -326,21 +328,18 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t1.desc1"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t1.desc2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT1"))
-                .beginStructureBlock(2, 1, 5, false)
-                .addController("Front center, 4th layer")
+            // spotless:off
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
+                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk1"))
+                .beginStructureBlock(1, 5, 2, false)
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", "Any casing", 1)
-                .addOutputBus("1+", "Any casing", 1)
+                .addInputAny("1+", anyCasingText(), 1)
+                .addOutputBus("1+", anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
     }
@@ -350,6 +349,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
      *
      * @author minecraft7771
      */
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModuleAssemblerT2 extends TileEntityModuleAssembler {
 
         /** Voltage tier of this module */
@@ -410,21 +410,18 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t2.desc1"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t2.desc2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT3"))
-                .beginStructureBlock(2, 1, 5, false)
-                .addController("Front center, 4th layer")
+            // spotless:off
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
+                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk2"))
+                .beginStructureBlock(1, 5, 2, false)
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", "Any casing", 1)
-                .addOutputBus("1+", "Any casing", 1)
+                .addInputAny("1+", anyCasingText(), 1)
+                .addOutputBus("1+", anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
     }
@@ -434,6 +431,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
      *
      * @author minecraft7771
      */
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModuleAssemblerT3 extends TileEntityModuleAssembler {
 
         /** Voltage tier of this module */
@@ -494,21 +492,18 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t3.desc1"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t3.desc2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT5"))
-                .beginStructureBlock(2, 1, 5, false)
-                .addController("Front center, 4th layer")
+            // spotless:off
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
+                .addMarkdown(new ResourceLocation("gregtech", "space-assembler-module-mk3"))
+                .beginStructureBlock(1, 5, 2, false)
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addInputAny("1+", "Any casing", 1)
-                .addOutputBus("1+", "Any casing", 1)
+                .addInputAny("1+", anyCasingText(), 1)
+                .addOutputBus("1+", anyCasingText(), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
     }

@@ -1,10 +1,12 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.industrialCokeOvenRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.*;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -33,7 +35,7 @@ public class RecipesSeleniumProcessing {
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1_000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         // Produce Selenious Acid
         GTValues.RA.stdBuilder()
@@ -41,7 +43,7 @@ public class RecipesSeleniumProcessing {
             .fluidOutputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(1_000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         // Make Selenium
         GTValues.RA.stdBuilder()

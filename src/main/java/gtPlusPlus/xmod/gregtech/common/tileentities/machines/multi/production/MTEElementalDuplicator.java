@@ -19,16 +19,9 @@ import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -48,13 +41,12 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDuplicator>
     implements ISurvivalConstructable {
@@ -92,8 +84,8 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addInfo("The programmed circuit selects which Data Orb to use (1-16)")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 9, 6, true)
-            .addController("Top center")
+            .beginStructureBlock(9, 6, 9, true)
+            .addController("Top center, 6th layer")
             .addCasing("120-139", "Elemental Confinement Shell", false)
             .addCasing("24", "Particle Containment Casing", false)
             .addCasing("24", "Matter Fabricator Casing", false)
@@ -270,16 +262,11 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                 try {
                     return addToMachineListInternal(mReplicatorDataOrbHatches, hatch, aBaseCasingIndex);
                 } catch (Exception t) {
-                    t.printStackTrace();
+                    GTplusplus.logger.error(t);
                 }
             }
         }
         return false;
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d == ForgeDirection.UP;
     }
 
     @Override
@@ -314,7 +301,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 2.0D)
             .enablePerfectOverclock()
             .setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -360,23 +347,5 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         }
         tItems.removeAll(Collections.singleton(null));
         return tItems;
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("maxParallelRecipes"));
     }
 }

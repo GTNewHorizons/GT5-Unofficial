@@ -58,7 +58,7 @@ public class MTEDrillerBaseGui<T extends MTEDrillerBase> extends MTEMultiBlockBa
             .findSyncHandler("drillerShutdownReason", StringSyncValue.class);
 
         return super.createTerminalTextWidget(syncManager, parent).child(
-            IKey.dynamic(shutdownReasonSync::getValue)
+            IKey.dynamic(() -> StatCollector.translateToLocal(shutdownReasonSync.getValue()))
                 .asWidget()
                 .fullWidth()
                 .marginBottom(2)

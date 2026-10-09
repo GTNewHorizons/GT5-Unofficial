@@ -26,17 +26,20 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTELocker extends MTETieredMachineBlock {
 
     private static final String CHARGE_SLOT_WAILA_TAG = "charge_slot_";
     public byte mType = 0;
 
     public MTELocker(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 4, "Stores and recharges Armor");
+        super(aID, aName, aNameRegional, aTier, 4, (String) null);
     }
 
     public MTELocker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -44,11 +47,17 @@ public class MTELocker extends MTETieredMachineBlock {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.locker.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
+    }
+
+    @Override
     public String[] getDescription() {
-        String[] desc = new String[mDescriptionArray.length + 1];
-        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = "Click with Screwdriver to change Style";
-        return desc;
+        return GTSplit.splitLocalized("gt.blockmachines.locker.desc");
     }
 
     @Override

@@ -97,7 +97,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         registerCover(aMaterial, aStack);
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
-        GTModHandler.removeRecipeDelayed(aStack);
+        // The only plate that has a valid recipe to remove
+        if (aMaterial == Materials.Wood) GTModHandler.removeRecipeDelayed(aStack);
 
         GTUtility.removeSimpleIC2MachineRecipe(
             GTUtility.copyAmount(9, aStack),
@@ -123,16 +124,18 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        GTModHandler.addCraftingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
-            BITS_STD,
-            new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
-
-        if (aMaterial == Materials.Paper) {
+        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
-                GTUtility.copyAmount(2, aStack),
-                BUFFERED,
-                new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
+                GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
+                BITS_STD,
+                new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
+
+            if (aMaterial == Materials.Paper) {
+                GTModHandler.addCraftingRecipe(
+                    GTUtility.copyAmount(2, aStack),
+                    BUFFERED | DO_NOT_CHECK_FOR_COLLISIONS,
+                    new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
+            }
         }
 
         if (aMaterial.mUnifiable && aMaterial.mMaterialInto == aMaterial) {
@@ -393,7 +396,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
-        if (aMaterial.mStandardMoltenFluid != null) {
+        if (aMaterial.mStandardMoltenFluid != null
+            && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Casing.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L))

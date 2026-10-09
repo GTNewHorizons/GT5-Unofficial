@@ -513,17 +513,13 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (GTMod.clientProxy()
-                .changeDetected() == 4) {
-                /*
-                 * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next
-                 * client tick when reaching 4, with provision for 3 more update tasks, spreading client change
-                 * detection related work and network traffic on different ticks, until it reaches 0.
-                 */
-                aBaseMetaTileEntity.issueTextureUpdate();
-            }
             if (aBaseMetaTileEntity.isActive()) {
                 if (usedQueen != null) {
                     if (aTick % 2 == 0) {
@@ -765,7 +761,11 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     @Override
     public EnumTemperature getTemperature() {
         if (BiomeHelper.isBiomeHellish(getBiome())) return EnumTemperature.HELLISH;
-        return EnumTemperature.getFromValue(getBiome().temperature + temperatureMod);
+        float biomeTemperature = getBiome().getFloatTemperature(
+            getBaseMetaTileEntity().getXCoord(),
+            getBaseMetaTileEntity().getYCoord(),
+            getBaseMetaTileEntity().getZCoord());
+        return EnumTemperature.getFromValue(biomeTemperature + temperatureMod);
     }
 
     @Override
@@ -1124,13 +1124,13 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             currenttip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.industrial_apiary.current_queen",
-                    EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen"))));
+                    StatCollector.translateToLocal(tag.getString("queen"))));
         }
         if (tag.hasKey("dummyProduction")) {
             currenttip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.industrial_apiary.effective_production",
-                    EnumChatFormatting.AQUA + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction"))));
+                    String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction"))));
         }
         if (tag.hasKey("errors")) {
             NBTTagCompound errorNbt = tag.getCompoundTag("errors");
@@ -1138,7 +1138,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                 currenttip.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.waila.industrial_apiary.error",
-                        EnumChatFormatting.RED + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i))));
+                        StatCollector.translateToLocal("for." + errorNbt.getString("e" + i))));
             }
         }
     }

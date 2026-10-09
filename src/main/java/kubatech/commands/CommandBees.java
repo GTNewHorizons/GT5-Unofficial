@@ -77,7 +77,7 @@ public class CommandBees extends CommandBase {
 
             List<IBee> bees = beeRoot.getIndividualTemplates();
             for (IBee bee : bees) {
-                // System.out.println("Bee: " + bee.getDisplayName());
+
                 StringBuilder b = new StringBuilder(bee.getDisplayName());
                 b.append(",-,-,-,-,-,-,-,-,-,-\n");
                 IBeeGenome genome = bee.getGenome();

@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import static gregtech.api.recipe.RecipeMaps.algaePondRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ALGAE_POND_TIER;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.algaePondRecipes;
 
 import gregtech.api.enums.GTValues;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;

@@ -4,6 +4,8 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.List;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -21,7 +23,6 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gregtech.common.gui.modularui.util.MachineModularSlot;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
@@ -86,7 +87,7 @@ public class MTEBetterJukeboxGui extends MTEBasicMachineBaseGui<MTEBetterJukebox
         outputColumn.child(
             new ToggleButton().value(new BooleanSyncValue(machine::isLoopMode, machine::setLoopMode).allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltipLine(GTUtility.translate("GT5U.machines.betterjukebox.loop.tooltip"))
+                .addTooltipLine(StatCollector.translateToLocal("GT5U.machines.betterjukebox.loop.tooltip"))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         // output slot
@@ -100,7 +101,7 @@ public class MTEBetterJukeboxGui extends MTEBasicMachineBaseGui<MTEBetterJukebox
         outputColumn.child(
             new ToggleButton().value(new BooleanSyncValue(machine::isShuffleMode, machine::setShuffleMode).allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_SHUFFLE)
-                .addTooltipLine(GTUtility.translate("GT5U.machines.betterjukebox.shuffle.tooltip"))
+                .addTooltipLine(StatCollector.translateToLocal("GT5U.machines.betterjukebox.shuffle.tooltip"))
                 .tooltipShowUpTimer(TOOLTIP_DELAY));
 
         return outputColumn;
@@ -166,7 +167,7 @@ public class MTEBetterJukeboxGui extends MTEBasicMachineBaseGui<MTEBetterJukebox
                         .volumeToAttenuationDistance(MTEBetterJukebox.BalanceMath.listeningVolume(machine.mTier)))
                 .tooltipBuilder(
                     t -> t.addLine(
-                        GTUtility.translate(
+                        StatCollector.translateToLocalFormatted(
                             "GT5U.machines.betterjukebox.attenuationDistance.tooltip",
                             (int) machine.getPlaybackBlockRange())))
                 .tooltipAutoUpdate(true));
@@ -183,7 +184,7 @@ public class MTEBetterJukeboxGui extends MTEBasicMachineBaseGui<MTEBetterJukebox
                         .volumeToAttenuationDistance(MTEBetterJukebox.BalanceMath.listeningVolume(machine.mTier)))
                 .tooltipBuilder(
                     t -> t.addLine(
-                        GTUtility.translate(
+                        StatCollector.translateToLocalFormatted(
                             "GT5U.machines.betterjukebox.p2pAttenuationDistance.tooltip",
                             (int) machine.getP2PBlockRange())))
                 .tooltipAutoUpdate(true));

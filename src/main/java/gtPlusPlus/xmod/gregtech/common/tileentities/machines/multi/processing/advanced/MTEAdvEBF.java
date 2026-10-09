@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -12,12 +13,12 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.PyrotheumHatch;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,6 +35,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -41,6 +43,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -48,18 +51,17 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
@@ -71,15 +73,14 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
-    public static String mHotFuelName = "Blazing Pyrotheum";
-    public static String mCasingName = "Volcanus Casing";
-    public static String mHatchName = "Pyrotheum Hatch";
+    /** Pyrotheum drained every second while running */
+    private static final int PYROTHEUM_PER_SECOND = 10;
     private static IStructureDefinition<MTEAdvEBF> STRUCTURE_DEFINITION = null;
     private int mCasing;
-    private final ArrayList<MTEHatchCustomFluidBase> mPyrotheumHatches = new ArrayList<>();
 
     private HeatingCoilLevel mHeatingCapacity = HeatingCoilLevel.None;
 
@@ -95,7 +96,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
 
     @Override
     public String getMachineType() {
-        return "Blast Furnace";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace_volcanus");
     }
 
     @Override
@@ -106,46 +107,33 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(getMachineType())
-            .addInfo("Factory Grade Advanced Blast Furnace")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "volcanus"),
+                ImmutableMap.of(
+                    "pyrotheum", formatFluid(PYROTHEUM_PER_SECOND),
+                    "discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
+                    "perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
             .addStaticParallelInfo(8)
             .addStaticSpeedInfo(2.2f)
             .addStaticEuEffInfo(0.9f)
-            .addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
-            .addInfo("Constructed exactly the same as a normal EBF")
-            .addInfo(
-                "Reduces " + TooltipHelper.effText("EU Usage")
-                    + " by "
-                    + EnumChatFormatting.WHITE
-                    + "5%"
-                    + EnumChatFormatting.GRAY
-                    + " every "
-                    + EnumChatFormatting.RED
-                    + "900K"
-                    + EnumChatFormatting.GRAY
-                    + " above the recipe requirement")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "1800K"
-                    + EnumChatFormatting.GRAY
-                    + " over the recipe requirement grants 1 "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Perfect Overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 4, true)
-            .addController("Front bottom center")
-            .addCasing("16", "Heating Coil", true)
-            .addCasing("6-13", mCasingName, false)
-            .addMiscHatch("1", mHatchName, "Any casing", 1)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputAny("1+", "Any casing", 1)
-            .addAir("Interior of the structure")
+            .beginStructureBlock(3, 4, 3, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("16", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("6-13", Casings.VolcanusCasing.getLocalizedName(), false)
+            .addMiscHatch("1", GregtechItemList.Hatch_Input_Pyrotheum.getDisplayName(), StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -161,14 +149,16 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                 .addElement(
                     'C',
                     ofChain(
-                        buildHatchAdder(MTEAdvEBF.class).adder(MTEAdvEBF::addPyrotheumHatch)
-                            .hatchId(968)
-                            .shouldReject(x -> !x.mPyrotheumHatches.isEmpty())
-                            .casingIndex(CASING_TEXTURE_ID)
-                            .hint(1)
-                            .build(),
                         buildHatchAdder(MTEAdvEBF.class)
-                            .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                            .atLeast(
+                                PyrotheumHatch,
+                                InputBus,
+                                OutputBus,
+                                Maintenance,
+                                Energy,
+                                Muffler,
+                                InputHatch,
+                                OutputHatch)
                             .casingIndex(CASING_TEXTURE_ID)
                             .hint(1)
                             .build(),
@@ -196,7 +186,6 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        mPyrotheumHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(mName, 1, 3, 0, errors)) return;
         checkCasingMin(errors, mCasing, 6);
@@ -205,34 +194,13 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
 
-        if (mPyrotheumHatches.isEmpty()) {
-            errors.add(StructureErrors.missingHatch(GregtechItemList.Hatch_Input_Pyrotheum.get(1)));
-        }
+        checkHatchMin(errors, PyrotheumHatch, 1);
 
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-    }
-
-    private boolean addPyrotheumHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase hatch && aMetaTileEntity.getBaseMetaTileEntity()
-                .getMetaTileID() == 968) {
-                return addToMachineListInternal(mPyrotheumHatches, hatch, aBaseCasingIndex);
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void updateSlots() {
-        for (MTEHatchCustomFluidBase tHatch : validMTEList(mPyrotheumHatches)) tHatch.updateSlots();
-        super.updateSlots();
     }
 
     @Override
@@ -289,8 +257,8 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat((int) getCoilLevel().getHeat());
             }
-        }.setSpeedBonus(1F / 2.2F)
-            .setEuModifier(0.9F)
+        }.setSpeedBonus(1.0D / 2.2D)
+            .setEuModifier(0.9D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -308,14 +276,28 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                 .hasWorkJustBeenEnabled()) {
                 if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled()) {
-                    if (!this.depleteInputFromRestrictedHatches(this.mPyrotheumHatches, 10)) {
+                    if (!drainPyrotheum(PYROTHEUM_PER_SECOND)) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(
-                            ShutDownReasonRegistry.outOfFluid(new FluidStack(TFFluids.fluidPyrotheum, 10)));
+                            ShutDownReasonRegistry
+                                .outOfFluid(new FluidStack(TFFluids.fluidPyrotheum, PYROTHEUM_PER_SECOND)));
                     }
                 }
             }
         }
+    }
+
+    private boolean drainPyrotheum(int amount) {
+        FluidStack toDrain = new FluidStack(TFFluids.fluidPyrotheum, amount);
+        for (MTEHatch hatch : validMTEList(mPyrotheumHatches)) {
+            if (!(hatch instanceof MTEHatchCustomFluidBase pyroHatch)) continue;
+            if (pyroHatch.getBaseMetaTileEntity() == null) continue;
+            FluidStack drained = pyroHatch.drain(ForgeDirection.UNKNOWN, toDrain, true);
+            if (drained != null && drained.amount >= amount) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -359,18 +341,15 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("heatingCapacity", (int) mHeatingCapacity.getHeat());
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector
                 .translateToLocalFormatted("GT5U.multiblock.heat", formatNumber(tag.getInteger("heatingCapacity"))));
     }

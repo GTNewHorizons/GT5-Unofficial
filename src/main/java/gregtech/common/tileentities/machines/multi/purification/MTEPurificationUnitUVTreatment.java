@@ -212,7 +212,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit");
+        tt.addMachineType("Purification Unit, LPU");
         tt.addInfo(
             EnumChatFormatting.AQUA + ""
                 + EnumChatFormatting.BOLD
@@ -260,7 +260,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
-            .beginStructureBlock(9, 13, 9, true)
+            .beginStructureBlock(13, 9, 9, true)
             .addController("Front bottom center")
             .addCasing("144-153", "Naquadria-Reinforced Water Plant Casing", false)
             .addCasing("144", "Electron-Permeable Neutronium Coated Glass", false)
@@ -459,40 +459,34 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
 
     private enum SpecialHatchElement implements IHatchElement<MTEPurificationUnitUVTreatment> {
 
-        LensHousing(MTEPurificationUnitUVTreatment::addLensHousingToMachineList, MTEHatchLensHousing.class) {
+        LensHousing("GT5U.MBTT.LensHousing", MTEPurificationUnitUVTreatment::addLensHousingToMachineList,
+            MTEHatchLensHousing.class) {
 
             @Override
             public long count(MTEPurificationUnitUVTreatment gtMetaTileEntityPurificationUnitUVTreatment) {
                 if (gtMetaTileEntityPurificationUnitUVTreatment.lensInputBus == null) return 0;
                 else return 1;
             }
-
-            @Override
-            public String getDisplayName() {
-                return StatCollector.translateToLocal("GT5U.MBTT.LensHousing");
-            }
         },
 
-        LensIndicator(MTEPurificationUnitUVTreatment::addLensIndicatorToMachineList, MTEHatchLensIndicator.class) {
+        LensIndicator("GT5U.MBTT.LensIndicator", MTEPurificationUnitUVTreatment::addLensIndicatorToMachineList,
+            MTEHatchLensIndicator.class) {
 
             @Override
             public long count(MTEPurificationUnitUVTreatment gtMetaTileEntityPurificationUnitUVTreatment) {
                 if (gtMetaTileEntityPurificationUnitUVTreatment.lensIndicator == null) return 0;
                 else return 1;
             }
-
-            @Override
-            public String getDisplayName() {
-                return StatCollector.translateToLocal("GT5U.MBTT.LensIndicator");
-            }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEPurificationUnitUVTreatment> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEPurificationUnitUVTreatment> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEPurificationUnitUVTreatment> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -505,6 +499,16 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         @Override
         public IGTHatchAdder<? super MTEPurificationUnitUVTreatment> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

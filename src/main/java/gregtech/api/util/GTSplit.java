@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -42,6 +43,15 @@ public class GTSplit {
      */
     public static String[] splitLocalizedFormatted(String key, Object... objects) {
         return split(StatCollector.translateToLocalFormatted(key, objects));
+    }
+
+    /**
+     * split the translated and formatted text, adding each line directly into the provided collection.
+     */
+    public static void splitLocalizedFormatted(Collection<String> tooltip, String key, Object... objects) {
+        for (String line : splitLocalizedFormatted(key, objects)) {
+            tooltip.add(line);
+        }
     }
 
     /**

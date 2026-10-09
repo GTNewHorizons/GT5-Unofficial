@@ -65,6 +65,7 @@ public final class GTWidgetThemes {
 
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_POPUP = registerThemedTexture("backgroundPopup");
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TITLE = registerThemedTexture("backgroundTitle");
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_COLOR_SWATCH = registerThemedTexture("backgroundColorSwatch");
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TERMINAL = themeApi
         .widgetThemeKeyBuilder("backgroundTerminal", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TERMINAL, Color.WHITE.main, 0xFAFAFA, false, 0))
@@ -204,6 +205,121 @@ public final class GTWidgetThemes {
                 Color.rgb(55, 255, 55),
                 0xFFFAFAFA,
                 false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+
+    // Drone Centre camera screen
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_DRONE_CAMERA = themeApi
+        .widgetThemeKeyBuilder("backgroundDroneCamera", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_DRONE_CAMERA, Color.WHITE.main, 0xFF404040, false, 0))
+        .defaultHoverTheme(null)
+        .register();
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_FRAME = themeApi
+        .widgetThemeKeyBuilder("droneCameraFrame", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new Rectangle().color(Color.CYAN.main)
+                    .hollow(),
+                Color.WHITE.main,
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_SCREEN = themeApi
+        .widgetThemeKeyBuilder("droneCameraScreen", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new DrawableStack(
+                    new Rectangle().color(Color.withAlpha(Color.BLACK.brighter(1), 144)),
+                    new Rectangle().color(Color.CYAN.main)
+                        .hollow()),
+                Color.WHITE.main,
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_DIVIDER = themeApi
+        .widgetThemeKeyBuilder("droneCameraDivider", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new Rectangle().color(Color.withAlpha(Color.CYAN.main, 80)),
+                Color.WHITE.main,
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_TEXT = themeApi
+        .widgetThemeKeyBuilder("droneCameraText", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, Color.WHITE.darker(5), false, 0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_INDICATOR = themeApi
+        .widgetThemeKeyBuilder("droneCameraIndicator", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, Color.GREEN.main, true, 0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_INFO_BOX = themeApi
+        .widgetThemeKeyBuilder("droneCameraInfoBox", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new DrawableStack(
+                    new Rectangle().color(Color.withAlpha(Color.BLACK.brighter(1), 128)),
+                    new Rectangle().color(Color.withAlpha(Color.GREY.main, 96))
+                        .hollow()),
+                Color.WHITE.main,
+                Color.WHITE.main,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_SIGNAL_LOST = themeApi
+        .widgetThemeKeyBuilder("droneCameraSignalLost", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new Rectangle().color(Color.BLACK.main),
+                Color.WHITE.main,
+                Color.RED_ACCENT.main,
+                true,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
+        .register();
+
+    public static WidgetThemeKey<WidgetTheme> DRONE_CAMERA_SIGNAL_LOST_BLINK = themeApi
+        .widgetThemeKeyBuilder("droneCameraSignalLostBlink", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new Rectangle().color(Color.BLACK.main),
+                Color.WHITE.main,
+                Color.RED.darkerSafe(3),
+                true,
                 0))
         .defaultHoverTheme(null)
         .parser(noInheritanceParser(WidgetTheme.class))

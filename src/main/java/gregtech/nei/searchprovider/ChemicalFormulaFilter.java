@@ -25,7 +25,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
         Material.mComponentMap.forEach((name, components) -> {
             Material material = Material.mMaterialsByName.get(name);
             if (material != null) {
-                String chemicalFormula = material.vChemicalFormula;
+                String chemicalFormula = material.chemicalFormula;
                 String sanitizedFormula = isValidFormula(chemicalFormula) ? sanitizeFormula(chemicalFormula) : "";
                 components.forEach((orePrefix, stack) -> {
                     synchronized (formulaCache) {

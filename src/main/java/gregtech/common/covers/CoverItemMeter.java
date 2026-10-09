@@ -108,7 +108,7 @@ public class CoverItemMeter extends Cover {
             used = dc.getProgresstime();
         } else if (mte instanceof MTEHatchOutputBusME meoutputbus) {
             // todo for cache mode
-            if (meoutputbus.hasAvailableSpace()) {
+            if (meoutputbus.hasPhysicalSpace()) {
                 max = 64;
             }
         } else {

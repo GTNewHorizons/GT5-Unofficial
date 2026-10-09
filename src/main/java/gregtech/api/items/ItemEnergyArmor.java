@@ -191,7 +191,7 @@ public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
                 tTargetDechargeItem = aPlayer.inventory.armorInventory[2];
             }
 
-            if (tTargetChargeItem == null || !GTModHandler.isElectricItem(tTargetChargeItem)) {
+            if (!GTModHandler.isElectricItem(tTargetChargeItem)) {
                 tTargetChargeItem = null;
             }
 

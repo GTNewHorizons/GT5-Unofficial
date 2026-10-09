@@ -1,9 +1,9 @@
 package gregtech.api.gui.modularui;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
@@ -111,7 +111,7 @@ public class GTUITextures {
 
     public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 12)
         .mapToObj(i -> UITexture.fullImage(GregTech.ID, "gui/overlay_slot/number_" + i))
-        .collect(Collectors.toList())
+        .toList()
         .toArray(new UITexture[0]);
 
     // spotless:off
@@ -169,6 +169,7 @@ public class GTUITextures {
     public static final UITexture PROGRESSBAR_LHC_W = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_weak");
     public static final UITexture PROGRESSBAR_LHC_S = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_strong");
     public static final UITexture PROGRESSBAR_LHC_G = UITexture.fullImage(GregTech.ID, "gui/progressbar/lhc_gravity");
+    public static final UITexture PROGRESSBAR_FLUID_REACTOR = UITexture.fullImage(GTPlusPlus.ID, "gui/progressbar/fluid_reactor");
 
     public static final UITexture TAB_COVER_NORMAL = UITexture.fullImage(GregTech.ID, "gui/tab/cover_normal");
     public static final UITexture TAB_COVER_HIGHLIGHT = UITexture.fullImage(GregTech.ID, "gui/tab/cover_highlight");

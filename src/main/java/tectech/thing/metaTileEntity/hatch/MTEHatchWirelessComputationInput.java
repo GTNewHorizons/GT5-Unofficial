@@ -196,7 +196,7 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput implemen
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
     }
 }

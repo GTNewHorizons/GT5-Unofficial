@@ -54,7 +54,7 @@ public class UniversiumMetaItemRenderer implements IItemRenderer {
         }
     }
 
-    private void magicRenderMethod(ItemRenderType type, IIcon tIcon, IIcon mask, Object... data) {
+    public static void magicRenderMethod(ItemRenderType type, IIcon tIcon, IIcon mask, Object... data) {
         final UniversiumShader shader = UniversiumShader.getInstance();
 
         processLightLevel(type, shader, data);
@@ -112,7 +112,7 @@ public class UniversiumMetaItemRenderer implements IItemRenderer {
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    private void processLightLevel(ItemRenderType type, UniversiumShader shader, Object... data) {
+    private static void processLightLevel(ItemRenderType type, UniversiumShader shader, Object... data) {
         switch (type) {
             case ENTITY -> {
                 EntityItem ent = (EntityItem) (data[1]);
@@ -134,9 +134,7 @@ public class UniversiumMetaItemRenderer implements IItemRenderer {
                         MathHelper.floor_double(ent.posZ));
                 }
             }
-            default -> {
-                shader.setLightLevel(1.0f);
-            }
+            default -> shader.setLightLevel(1.0f);
         }
     }
 }

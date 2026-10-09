@@ -92,8 +92,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     @Override
-    protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        ColoredBlockContainer block = ColoredBlockContainer.getInstance(player, aX, aY, aZ, side);
+    protected boolean colorize(ColoredBlockContainer block) {
         if (mCurrentColor == REMOVE_COLOR) {
             return block.removeColor();
         }
@@ -145,20 +144,24 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     public static String getNameWithColor(ItemStack stack) {
-        final boolean isLocked = isLocked(stack);
-        final char lBracket = isLocked ? '[' : '(';
-        final char rBracket = isLocked ? ']' : ')';
-        final Dyes color = getDye(stack);
+        final Dyes color = getSpraycanDye(stack);
+        final String state = isLocked(stack) ? ".locked" : ".unlocked";
 
         if (color == Dyes.MACHINE_METAL) {
-            return GTUtility.translate("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket);
-        } else {
-            return GTUtility.translate(
-                "item.GT5U.infinite_spray_can.name.colored",
-                lBracket,
-                color.getLocalizedDyeName(),
-                rBracket);
+            return StatCollector.translateToLocal("item.GT5U.infinite_spray_can.name.solvent" + state);
         }
+        return StatCollector.translateToLocalFormatted(
+            "item.GT5U.infinite_spray_can.name.colored" + state,
+            color.getLocalizedDyeName());
+    }
+
+    @Override
+    public int getDye(final ItemStack itemStack) {
+        if (ItemStackNBT.hasKey(itemStack, COLOR_NBT_TAG)) {
+            return ItemStackNBT.getByte(itemStack, COLOR_NBT_TAG);
+        }
+
+        return -1;
     }
     // endregion
 
@@ -274,7 +277,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     // endregion
 
     // region Static Methods
-    public static Dyes getDye(ItemStack itemStack) {
+    public static Dyes getSpraycanDye(ItemStack itemStack) {
         if (itemStack.hasTagCompound()) {
             final byte color = itemStack.getTagCompound()
                 .getByte(COLOR_NBT_TAG);

@@ -4,8 +4,8 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.thing.CustomItemList.Machine_Multi_Switch;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
@@ -17,10 +17,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -44,7 +48,6 @@ import gregtech.api.structure.StructureWrapperInstanceInfo;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.Pair;
@@ -54,6 +57,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENetworkSwitchAdv extends TTMultiblockBase
     implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitchAdv> {
 
@@ -73,7 +77,9 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     protected final StructureWrapperInstanceInfo<MTENetworkSwitchAdv> structureInstanceInfo;
 
     private int length;
-    private long pendingComputation, wastedComputation;
+    private @Nullable QuantumDataPacket pendingPacket;
+    private long displayedComputation; // MUI1 stuff, remove this field and migrate to SyncValue in MUI2
+    private long wastedComputation;
 
     public MTENetworkSwitchAdv(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -270,36 +276,31 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTENetworkSwitchAdv> tt = new StructureWrapperTooltipBuilder<>(structure);
 
+        // spotless:off
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.type"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.0"))
-            .addSeparator()
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.1"))
-            .addSeparator()
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.2"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.3"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.4"))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.em.switch.adv.desc.5",
+            .addMarkdown(
+                new ResourceLocation("gregtech", "network-switch-adv"),
+                ImmutableMap.of(
+                    "switch-name",
                     Machine_Multi_Switch.get(1)
                         .getDisplayName()))
-            .addSeparator()
-            .beginVariableStructureBlock(3, 18, 3, 3, 3, 3, false)
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter"))
-            .addMiscHatch("1+", "Optical Reception Connector", "Any advanced computer casing", 1)
-            .addMiscHatch("1+", "Optical Transmission Connector", "Any casing", 1, 2)
-            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .beginVariableStructureBlock(3, 3, 3, 3, 3, 18, false)
+            .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"), 1)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), anyCasingText(), 1, 2)
+            .addEnergyHatch("1+", anyCasingText(), 1, 2)
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("0-18", "Computer Casing", false)
-            .addCasing("0-5", "Advanced Computer Casing", false)
+            .addCasing("0-18", translateToLocal("gt.blockcasingsTT.1.name"), false)
+            .addCasing("0-5", translateToLocal("gt.blockcasingsTT.3.name"), false)
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addCasing("0-5", "Advanced Computer Casing", false)
-            .addCasing("0-4", "Computer Casing", false)
+            .addCasing("0-5", translateToLocal("gt.blockcasingsTT.3.name"), false)
+            .addCasing("0-4", translateToLocal("gt.blockcasingsTT.1.name"), false)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -337,18 +338,25 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
 
-        pendingComputation = 0;
+        pendingPacket = new QuantumDataPacket(0L).unifyTraceWith(getPos());
+        if (pendingPacket == null) {
+            return SimpleCheckRecipeResult.ofFailure("no_routing");
+        }
 
         for (MTEHatchDataInput di : validMTEList(eInputData)) {
             if (di.q != null) {
-                pendingComputation += di.q.getContent();
+                if (di.q.contains(getPos())) {
+                    return SimpleCheckRecipeResult.ofFailure("no_routing");
+                }
+                pendingPacket = pendingPacket.unifyPacketWith(di.q);
+                if (pendingPacket == null) {
+                    return SimpleCheckRecipeResult.ofFailure("no_routing");
+                }
                 di.setContents(null);
             }
         }
 
-        if (pendingComputation < 0) pendingComputation = Long.MAX_VALUE;
-
-        if (pendingComputation == 0) {
+        if (pendingPacket.getContent() == 0) {
             return SimpleCheckRecipeResult.ofFailure("no_routing");
         }
 
@@ -363,10 +371,12 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     public void outputAfterRecipe_EM() {
         super.outputAfterRecipe_EM();
 
-        Vec3Impl pos = new Vec3Impl(
-            getBaseMetaTileEntity().getXCoord(),
-            getBaseMetaTileEntity().getYCoord(),
-            getBaseMetaTileEntity().getZCoord());
+        if (pendingPacket == null) {
+            wastedComputation = 0;
+            return;
+        }
+
+        long pendingComputation = pendingPacket.getContent();
 
         for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
             if (pendingComputation <= 0) break;
@@ -374,11 +384,16 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             long toConsume = Math.min(pendingComputation, output.requestedComputation);
             pendingComputation -= toConsume;
 
-            output.providePacket(new QuantumDataPacket(toConsume).unifyTraceWith(pos));
+            output.providePacket(new QuantumDataPacket(toConsume).unifyTraceWith(pendingPacket));
         }
 
         wastedComputation = pendingComputation;
-        pendingComputation = 0;
+        pendingPacket = null;
+    }
+
+    private long getPendingComputation() {
+        if (pendingPacket == null) return 0;
+        return pendingPacket.getContent();
     }
 
     @Override
@@ -386,21 +401,25 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements
-            .widget(new FakeSyncWidget.LongSyncer(() -> pendingComputation, value -> pendingComputation = value));
+            .widget(new FakeSyncWidget.LongSyncer(this::getPendingComputation, value -> displayedComputation = value));
         screenElements
             .widget(new FakeSyncWidget.LongSyncer(() -> wastedComputation, value -> wastedComputation = value));
 
         screenElements.widget(
-            TextWidget.dynamicString(
-                () -> GTUtility
-                    .translate("GT5U.machines.computation_hatch.pending_computation", formatNumber(pendingComputation)))
+            TextWidget
+                .dynamicString(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "GT5U.machines.computation_hatch.pending_computation",
+                        formatNumber(displayedComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));
         screenElements.widget(
-            TextWidget.dynamicString(
-                () -> GTUtility
-                    .translate("GT5U.machines.computation_hatch.wasted_computation", formatNumber(wastedComputation)))
+            TextWidget
+                .dynamicString(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "GT5U.machines.computation_hatch.wasted_computation",
+                        formatNumber(wastedComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));
