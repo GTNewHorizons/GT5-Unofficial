@@ -2,14 +2,14 @@ Creates a pocket of spacetime that is bigger on the inside using transdimensiona
 Certified Time Lord regulation compliant.
 {gold:{hr}}
 Comprised of three different Field Generators with {green:9} tiers each:
-{blue:Spacetime Compression}: Determines max recipe tier, {green:-3%} processing time per tier above recipe (multiplicative)
+{blue:Spacetime Compression}: Determines max Recipe Tier, {green:-3%} processing time per tier above recipe (multiplicative)
 {blue:Time Dilation}: {green:-50%} recipe duration per tier (multiplicative), {green:-9.25%} recipe success chance per tier (additive)
 {blue:Stabilisation}: {green:+5%} recipe success chance per tier (additive), {green:-5%} yield per tier (additive)
 Lower tier stabilisation generators also reduce the total output EU,
 starting at {green:-40%} with T1 Crude and increases by {green:+5%} per tier (additive)
 {gold:{hr}}
 Right-click the controller with a {blue:Planet Block} to insert it and set the recipe
-Base recipe success chance {green:(S)} depends on the planet tier
+Base recipe success chance {green:(S)} depends on the Planet Tier
 On success, outputs everything listed in NEI. The base yield for fluids starts at {green:100%} before any penalties
 On failure, outputs {white:Spacetime =} {green:S * 14,400 * 2^(Planet Tier)} and any output EU
 Pity guarantees a success after several consecutive failures but resets on success or recipe change
