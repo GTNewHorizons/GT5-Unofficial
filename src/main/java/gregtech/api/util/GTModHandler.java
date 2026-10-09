@@ -1072,7 +1072,7 @@ public class GTModHandler {
             + Arrays.toString(aEnchantmentsAdded)
             + Arrays.toString(aEnchantmentLevelsAdded);
         long recipeKey = craftingRecipeKey(flags, aResult, aRecipe);
-        if (isRepeatedCraftingRecipe(recipeKey, aRecipe)) return true;
+        if (isRepeatedCraftingRecipe(recipeKey, aResult, aRecipe)) return true;
 
         StringBuilder shape = new StringBuilder(E);
         int idx = 0;
@@ -1327,10 +1327,10 @@ public class GTModHandler {
 
     private record RepeatedCraftingRecipe(IRecipe earlier, Object[] recipe, @Nullable Exception callSite) {}
 
-    /// Returns whether GregTech already added a recipe under `key`, recording the repeat if so.
-    private static boolean isRepeatedCraftingRecipe(long key, Object[] recipe) {
+    /// Returns whether GregTech already added a recipe for `result` under `key`, recording the repeat if so.
+    private static boolean isRepeatedCraftingRecipe(long key, ItemStack result, Object[] recipe) {
         IRecipe earlier = key == NO_CRAFTING_RECIPE_KEY ? null : sAddedCraftingRecipes.get(key);
-        if (earlier == null) return false;
+        if (earlier == null || !GTUtility.areStacksEqual(earlier.getRecipeOutput(), result, true)) return false;
         Exception callSite = GT_RECIPE_REMOVAL_LOGGER_ENABLED ? new Exception("Repeated crafting recipe") : null;
         sRepeatedCraftingRecipes.add(new RepeatedCraftingRecipe(earlier, recipe, callSite));
         return true;
@@ -1406,7 +1406,7 @@ public class GTModHandler {
                     case 8 -> hashCraftingKey(key, list.getStringTagAt(i));
                     case 6 -> mixCraftingKey(key, Double.doubleToLongBits(list.func_150309_d(i)));
                     case 5 -> mixCraftingKey(key, Float.floatToIntBits(list.func_150308_e(i)));
-                    case 11 -> mixCraftingKey(key, Arrays.hashCode(list.func_150306_c(i)));
+                    case 11 -> hashCraftingKey(key, list.func_150306_c(i));
                     default -> hashCraftingKey(key, list.toString());
                 };
             }
@@ -1417,9 +1417,20 @@ public class GTModHandler {
             return mixCraftingKey(key, Double.doubleToLongBits(((NBTBase.NBTPrimitive) tag).func_150286_g()));
         }
         if (tag instanceof NBTBase.NBTPrimitive primitive) return mixCraftingKey(key, primitive.func_150291_c());
-        if (tag instanceof NBTTagByteArray bytes) return mixCraftingKey(key, Arrays.hashCode(bytes.func_150292_c()));
-        if (tag instanceof NBTTagIntArray ints) return mixCraftingKey(key, Arrays.hashCode(ints.func_150302_c()));
+        if (tag instanceof NBTTagByteArray bytes) {
+            byte[] values = bytes.func_150292_c();
+            key = mixCraftingKey(key, values.length);
+            for (byte value : values) key = mixCraftingKey(key, value);
+            return key;
+        }
+        if (tag instanceof NBTTagIntArray ints) return hashCraftingKey(key, ints.func_150302_c());
         return hashCraftingKey(key, tag.toString());
+    }
+
+    private static long hashCraftingKey(long key, int[] values) {
+        key = mixCraftingKey(key, values.length);
+        for (int value : values) key = mixCraftingKey(key, value);
+        return key;
     }
 
     private static long hashCraftingKey(long key, String text) {
@@ -1462,7 +1473,7 @@ public class GTModHandler {
                 + Arrays.toString(aEnchantmentsAdded)
                 + Arrays.toString(aEnchantmentLevelsAdded);
             recipeKey = craftingRecipeKey(flags, aResult, aRecipe);
-            if (isRepeatedCraftingRecipe(recipeKey, aRecipe)) return true;
+            if (isRepeatedCraftingRecipe(recipeKey, aResult, aRecipe)) return true;
         }
 
         ItemStack[] tRecipe = new ItemStack[9];
