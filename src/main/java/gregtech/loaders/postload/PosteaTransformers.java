@@ -673,7 +673,7 @@ public class PosteaTransformers implements Runnable {
             // Legacy per-material framebox IDs start at 4096; the offset is the index in the material list
             int indexInMaterialList = id - 4096;
             Material material = LegacyMaterialIDIndex.get(indexInMaterialList);
-            if (material == null) {
+            if (material == null || !material.hasShape(TEBlockShapes.frameGt)) {
                 // Do not modify this TE, so return null
                 return null;
             }
@@ -702,14 +702,14 @@ public class PosteaTransformers implements Runnable {
                 return false;
             }
             Material material = LegacyMaterialIDIndex.get(indexInMaterialList);
-            if (material == null) {
+            if (material == null || !material.hasShape(TEBlockShapes.frameGt)) {
                 return false;
             }
             Item frameItem = Item.getItemFromBlock(MaterialLibAPI.getBlock(TEBlockShapes.frameGt));
             int itemId = Item.getIdFromItem(frameItem);
             // Change this item into the correct frame item (make sure to keep amount)
-            tag.setInteger("id", itemId);
-            tag.setInteger("Damage", material.getIndex());
+            IDExtenderCompat.setItemStackID(tag, itemId);
+            tag.setShort("Damage", (short) material.getIndex());
             return true;
         });
     }
