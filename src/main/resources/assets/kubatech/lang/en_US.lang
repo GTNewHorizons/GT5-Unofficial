@@ -36,7 +36,7 @@ GT5U.gui.text.MegaApiary_noflowers=Missing flowers!
 GT5U.gui.text.recipe_result.EIG_slotoverflow=Too many seed types inside!
 GT5U.gui.text.recipe_result.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.recipe_result.EIG_missingwater=No water!
-GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
+GT5U.gui.text.EIG_ic2glass=Insufficient Glass Tier!
 
 GT5U.gui.text.recipe_result.arc_shutdown=Arc Furnace is shutting down!
 GT5U.gui.text.recipe_result.arc_ignition=Arc Furnace is starting up!
