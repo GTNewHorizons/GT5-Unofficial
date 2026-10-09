@@ -49,6 +49,14 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByteArray;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -1379,11 +1387,43 @@ public class GTModHandler {
         key = mixCraftingKey(key, Item.getIdFromItem(stack.getItem()));
         key = mixCraftingKey(key, stack.getItemDamage());
         key = mixCraftingKey(key, stack.stackSize);
-        return stack.hasTagCompound() ? hashCraftingKey(
-            key,
-            stack.getTagCompound()
-                .toString())
-            : mixCraftingKey(key, -1);
+        return stack.hasTagCompound() ? hashCraftingKey(key, stack.getTagCompound()) : mixCraftingKey(key, -1);
+    }
+
+    /// Hashes `tag` by structure. A compound's entries combine regardless of order, so equal compounds hash equal;
+    /// list elements of a type the list has no getter for hash through the list's text.
+    private static long hashCraftingKey(long key, NBTBase tag) {
+        key = mixCraftingKey(key, tag.getId());
+        if (tag instanceof NBTTagCompound compound) {
+            long entries = 0;
+            for (String name : compound.func_150296_c()) {
+                entries += hashCraftingKey(hashCraftingKey(FNV_OFFSET_BASIS, name), compound.getTag(name));
+            }
+            return mixCraftingKey(key, entries);
+        }
+        if (tag instanceof NBTTagList list) {
+            int count = list.tagCount();
+            key = mixCraftingKey(key, count);
+            for (int i = 0; i < count; i++) {
+                key = switch (list.func_150303_d()) {
+                    case 10 -> hashCraftingKey(key, list.getCompoundTagAt(i));
+                    case 8 -> hashCraftingKey(key, list.getStringTagAt(i));
+                    case 6 -> mixCraftingKey(key, Double.doubleToLongBits(list.func_150309_d(i)));
+                    case 5 -> mixCraftingKey(key, Float.floatToIntBits(list.func_150308_e(i)));
+                    case 11 -> mixCraftingKey(key, Arrays.hashCode(list.func_150306_c(i)));
+                    default -> hashCraftingKey(key, list.toString());
+                };
+            }
+            return key;
+        }
+        if (tag instanceof NBTTagString string) return hashCraftingKey(key, string.func_150285_a_());
+        if (tag instanceof NBTTagFloat || tag instanceof NBTTagDouble) {
+            return mixCraftingKey(key, Double.doubleToLongBits(((NBTBase.NBTPrimitive) tag).func_150286_g()));
+        }
+        if (tag instanceof NBTBase.NBTPrimitive primitive) return mixCraftingKey(key, primitive.func_150291_c());
+        if (tag instanceof NBTTagByteArray bytes) return mixCraftingKey(key, Arrays.hashCode(bytes.func_150292_c()));
+        if (tag instanceof NBTTagIntArray ints) return mixCraftingKey(key, Arrays.hashCode(ints.func_150302_c()));
+        return hashCraftingKey(key, tag.toString());
     }
 
     private static long hashCraftingKey(long key, String text) {
@@ -1394,6 +1434,10 @@ public class GTModHandler {
 
     private static long mixCraftingKey(long key, int value) {
         return (key ^ value) * FNV_PRIME;
+    }
+
+    private static long mixCraftingKey(long key, long value) {
+        return mixCraftingKey(mixCraftingKey(key, (int) value), (int) (value >>> 32));
     }
 
     /**
