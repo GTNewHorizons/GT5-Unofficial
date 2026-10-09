@@ -86,7 +86,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Coke Oven")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.coke_oven"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "coke-oven"),
                 ImmutableMap.<String, Object>builder().build())
