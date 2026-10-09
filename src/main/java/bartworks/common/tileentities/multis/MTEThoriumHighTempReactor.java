@@ -34,6 +34,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -154,7 +155,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("High Temperature Reactor, THTR")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.high_temperature_reactor_thtr"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "thorium-high-temp-reactor"),
                 ImmutableMap.<String, Object>builder()

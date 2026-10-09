@@ -17,6 +17,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -54,7 +55,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public String getMachineType() {
-        return "Fuel Refinery, RFPP";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.fuel_refinery_rfpp");
     }
 
     @Override
