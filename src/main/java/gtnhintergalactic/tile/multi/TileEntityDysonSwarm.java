@@ -22,10 +22,13 @@ import java.util.Map;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -57,6 +60,8 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -197,6 +202,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     private long euPerTick = 0;
     private double powerFactor = 0.0;
     private int moduleCount = 0;
+    private int modulesConsumedThisCycle = 0;
 
     public TileEntityDysonSwarm(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -278,7 +284,9 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         if (moduleCount > 0 && depleteInput(IGConfig.dysonSwarm.getCoolantStack())) {
             // With a certain chance (configurable), the size of the ItemStack(s) is reduced.
             // This has the effect that the player must constantly replace "broken" Modules.
+            final int modulesBeforeDestruction = moduleCount;
             destroyModules();
+            modulesConsumedThisCycle = modulesBeforeDestruction - moduleCount;
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 72000;
             return true;
@@ -496,11 +504,42 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET),
             IGregTechDeviceInformation.encode(
                 "ig.infodata.dyson_swarm.theoretical_output.fmt",
-                formatNumber((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)),
+                formatNumber(
+                    (long) (moduleCount + (mMaxProgresstime > 0 ? modulesConsumedThisCycle : 0))
+                        * IGConfig.dysonSwarm.euPerModule
+                        * powerFactor)),
             IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.current_output.fmt", formatNumber(euPerTick)),
+            IGregTechDeviceInformation
+                .encode("ig.infodata.dyson_swarm.modules_lost.fmt", formatNumber(modulesConsumedThisCycle)),
             IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.computation.fmt", formatNumber(eRequiredData)),
             IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             "---------------------------------------------" };
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("euPerTick", euPerTick);
+        tag.setInteger("modulesLost", modulesConsumedThisCycle);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        currenttip.add(
+            StatCollector.translateToLocalFormatted(
+                "ig.infodata.dyson_swarm.current_output.fmt",
+                formatNumber(
+                    accessor.getNBTData()
+                        .getLong("euPerTick"))));
+        currenttip.add(
+            StatCollector.translateToLocalFormatted(
+                "ig.infodata.dyson_swarm.modules_lost.fmt",
+                formatNumber(
+                    accessor.getNBTData()
+                        .getInteger("modulesLost"))));
     }
 
     /******************
@@ -545,6 +584,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         super.loadNBTData(aNBT);
         moduleCount = aNBT.getInteger("moduleCount");
         euPerTick = aNBT.getLong("euPerTick");
+        modulesConsumedThisCycle = aNBT.getInteger("modulesConsumedThisCycle");
     }
 
     @Override
@@ -552,6 +592,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         super.saveNBTData(aNBT);
         aNBT.setInteger("moduleCount", moduleCount);
         aNBT.setLong("euPerTick", euPerTick);
+        aNBT.setInteger("modulesConsumedThisCycle", modulesConsumedThisCycle);
     }
 
     @Override
