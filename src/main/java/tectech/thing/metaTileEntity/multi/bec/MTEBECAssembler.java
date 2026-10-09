@@ -47,6 +47,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.gui.bec.MTEBECAssemblerGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
@@ -75,19 +76,36 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     }
 
     public NaniteTier getCurrentNaniteTier() {
+        updateNaniteInfoIfDirty();
         return currentNaniteTier;
     }
 
-    public void setCurrentNaniteTier(NaniteTier currentNaniteTier) {
-        this.currentNaniteTier = currentNaniteTier;
-    }
-
     public int getAvailableNanites() {
+        updateNaniteInfoIfDirty();
         return availableNanites;
     }
 
-    public void setAvailableNanites(int availableNanites) {
-        this.availableNanites = availableNanites;
+    private void updateNaniteInfoIfDirty() {
+        if (this.nanitesDirty) {
+            this.nanitesDirty = false;
+            this.currentNaniteTier = null;
+            this.availableNanites = 0;
+
+            for (MTEHatchNanite hatch : this.naniteHatches) {
+                NaniteTier tier = NaniteTier.fromStack(hatch.getItemStack());
+
+                if (tier == null) continue;
+
+                if (this.currentNaniteTier == null || tier.ordinal() < this.currentNaniteTier.ordinal()) {
+                    this.currentNaniteTier = tier;
+                }
+
+                this.availableNanites += hatch.getItemCount();
+            }
+
+            this.availableNanites = Math.min(MAX_NANITES, this.availableNanites);
+
+        }
     }
 
     @Override
@@ -230,36 +248,9 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         super.onPostTick(igte, aTick);
 
         if (GTUtility.isServer()) {
-            for (MTEHatchNanite hatch : naniteHatches) {
-                if (hatch.hasChanged()) {
-                    this.nanitesDirty = true;
-                    hatch.unmarkChanged();
-                }
-            }
 
             List<MTEBECIONode> nodes = getIONodes();
-
-            if (this.nanitesDirty) {
-                this.nanitesDirty = false;
-                this.currentNaniteTier = null;
-                this.availableNanites = 0;
-
-                for (MTEHatchNanite hatch : this.naniteHatches) {
-                    NaniteTier tier = NaniteTier.fromStack(hatch.getItemStack());
-
-                    if (tier == null) continue;
-
-                    if (this.currentNaniteTier == null || tier.ordinal() < this.currentNaniteTier.ordinal()) {
-                        this.currentNaniteTier = tier;
-                    }
-
-                    this.availableNanites += hatch.getItemCount();
-                }
-
-                igte.setActive(!nodes.isEmpty());
-            }
-
-            this.availableNanites = Math.min(MAX_NANITES, this.availableNanites);
+            igte.setActive(!nodes.isEmpty());
 
             lEUt = 0;
 
@@ -277,6 +268,12 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
                 }
             }
         }
+    }
+
+    @Override
+    public void scheduleRecipeCheck(RecipeCheckReason reason) {
+        super.scheduleRecipeCheck(reason);
+        nanitesDirty = true;
     }
 
     @Override
@@ -326,6 +323,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         private static boolean adder(MTEBECAssembler assembler, IGregTechTileEntity igte, Short texture) {
             if (igte.getMetaTileEntity() instanceof MTEHatchNanite naniteHatch) {
                 assembler.naniteHatches.add(naniteHatch);
+                assembler.addIfSmartInput(naniteHatch);
                 naniteHatch.updateTexture(texture);
                 naniteHatch.updateCraftingIcon(assembler.getMachineCraftingIcon());
 

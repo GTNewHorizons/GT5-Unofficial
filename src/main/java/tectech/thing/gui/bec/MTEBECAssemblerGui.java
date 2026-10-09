@@ -26,12 +26,8 @@ public class MTEBECAssemblerGui extends MTEBECMultiblockBaseGui<MTEBECAssembler>
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        NaniteTierSyncValue naniteTierSyncer = new NaniteTierSyncValue(
-            multiblock::getCurrentNaniteTier,
-            multiblock::setCurrentNaniteTier);
-        IntSyncValue naniteCountSyncer = new IntSyncValue(
-            multiblock::getAvailableNanites,
-            multiblock::setAvailableNanites);
+        NaniteTierSyncValue naniteTierSyncer = new NaniteTierSyncValue(multiblock::getCurrentNaniteTier);
+        IntSyncValue naniteCountSyncer = new IntSyncValue(multiblock::getAvailableNanites);
 
         syncManager.syncValue("naniteTier", naniteTierSyncer);
         syncManager.syncValue("naniteCount", naniteCountSyncer);
