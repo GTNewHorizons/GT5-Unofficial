@@ -1145,7 +1145,7 @@ GT5U.gui.text.recipe_result.invalid_hysteresis=§7Invalid hysteresis settings
 GT5U.gui.text.recipe_result.invalid_transfer_radius=§7Invalid transfer radius settings
 GT5U.gui.text.recipe_result.invalid_voltage_setting=§7Invalid voltage setting
 GT5U.gui.text.recipe_result.invalid_current_setting=§7Invalid current setting
-GT5U.gui.text.recipe_result.invalid_primary_winding=§7Primary winding tier is too low!
+GT5U.gui.text.recipe_result.invalid_primary_winding=§7Primary Winding Tier is too low!
 GT5U.gui.text.recipe_result.invalid_time_setting=§7Invalid time setting
 GT5U.gui.text.recipe_result.invalid_overdrive_setting=§7Invalid overdrive setting
 GT5U.gui.text.recipe_result.insufficient_power_no_val=§7Insufficient power
@@ -1774,7 +1774,7 @@ tt.infodata.multi.divisor.recipe_time.non_perfect_oc=Recipe time divisor per non
 tt.infodata.multi.currently_using=Currently using: %s EU/t
 tt.infodata.multi.capacity.heat=Heat Capacity: %s
 tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
-tt.infodata.active_transformer.min_hatch_tier=Min hatch tier: %s
+tt.infodata.active_transformer.min_hatch_tier=Min Hatch Tier: %s
 tt.infodata.active_transformer.last_5s=Last 5 seconds: %s EU/t
 tt.infodata.active_transformer.last_30s=Last 30 seconds: %s EU/t
 tt.infodata.active_transformer.last_1min=Last minute: %s EU/t
@@ -1879,7 +1879,7 @@ tt.gui.parameter.header=Parameters
 
 tt.gui.tooltip.plasma_module.debug_window=Debug Window
 tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step
-tt.gui.tooltip.plasma_module.debug_window.fusion_tier=fusion tier
+tt.gui.tooltip.plasma_module.debug_window.fusion_tier=Fusion Tier
 tt.gui.tooltip.plasma_module.debug_window.parallel=parallel
 tt.gui.tooltip.uncertainty.value_assist=Color vision assist: overlay the value of each of the 16 cells
 

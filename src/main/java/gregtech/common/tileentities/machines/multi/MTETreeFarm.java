@@ -141,7 +141,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             .addInfo("Multiple tools can be used at the same time")
             .addSeparator()
             .addInfo("Work time is fixed at 5 seconds")
-            .addInfo("Energy input tier multiplies output further")
+            .addInfo("Energy Input Tier multiplies output further")
             .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, true)
