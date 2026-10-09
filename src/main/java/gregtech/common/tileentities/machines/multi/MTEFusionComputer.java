@@ -183,7 +183,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final FusionOverclockDescriber fod = (FusionOverclockDescriber) getOverclockDescriber();
         // spotless:off
-        tt.addMachineType("Fusion Reactor")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fusion_reactor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "fusion-computer"),
                 ImmutableMap.<String, Object>builder()
