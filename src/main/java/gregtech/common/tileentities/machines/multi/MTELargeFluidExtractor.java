@@ -25,11 +25,12 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -59,6 +60,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELargeFluidExtractor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -261,23 +263,20 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Fluid Extractor, LFE")
             .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
             .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
             .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
-            .addInfo(
-                String.format(
-                    "Every Coil Tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
-                    TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
-                    TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER))))
-            .addInfo(
-                String.format(
-                    "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
-                    EnumChatFormatting.ITALIC,
-                    BASE_EU_MULTIPLIER,
-                    HEATING_COIL_EU_MULTIPLIER,
-                    EnumChatFormatting.GRAY))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "large-fluid-extractor"),
+                ImmutableMap.<String, Object>builder()
+                    .put("coil_speed_bonus", TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL))
+                    .put("coil_eu_discount", TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER)))
+                    .put("base_eu_mult", BASE_EU_MULTIPLIER)
+                    .put("coil_eu_mult", HEATING_COIL_EU_MULTIPLIER)
+                    .build())
             .beginStructureBlock(5, 9, 5, false)
             .addEnergyHatchGlassTier()
             .addController("Front bottom center")
@@ -296,6 +295,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.SOLENOID)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
