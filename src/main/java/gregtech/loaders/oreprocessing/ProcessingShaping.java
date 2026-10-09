@@ -16,8 +16,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -28,7 +31,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
@@ -99,57 +101,77 @@ public class ProcessingShaping implements PartRecipeGenerator {
                         .eut(calculateRecipeEU(material, 4 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
-                if (MaterialParts.stack(OrePrefixes.pipeTiny, MaterialUtils.smeltInto(material), 1L) != null) {
+                if (pipe(MaterialUtils.smeltInto(material), TEBlockShapes.pipeTiny, TEBlockShapes.itemPipeTiny)
+                    != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Pipe_Tiny.get(0L))
                         .itemOutputs(
                             GTUtility.copyAmount(
                                 tAmount * 2,
-                                MaterialParts.stack(OrePrefixes.pipeTiny, MaterialUtils.smeltInto(material), 1)))
+                                pipe(
+                                    MaterialUtils.smeltInto(material),
+                                    TEBlockShapes.pipeTiny,
+                                    TEBlockShapes.itemPipeTiny)))
                         .duration((4 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
-                if (MaterialParts.stack(OrePrefixes.pipeSmall, MaterialUtils.smeltInto(material), 1L) != null) {
+                if (pipe(MaterialUtils.smeltInto(material), TEBlockShapes.pipeSmall, TEBlockShapes.itemPipeSmall)
+                    != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Pipe_Small.get(0L))
                         .itemOutputs(
                             GTUtility.copyAmount(
                                 tAmount,
-                                MaterialParts.stack(OrePrefixes.pipeSmall, MaterialUtils.smeltInto(material), 1)))
+                                pipe(
+                                    MaterialUtils.smeltInto(material),
+                                    TEBlockShapes.pipeSmall,
+                                    TEBlockShapes.itemPipeSmall)))
                         .duration((8 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
-                if (MaterialParts.stack(OrePrefixes.pipeMedium, MaterialUtils.smeltInto(material), 1L) != null) {
+                if (pipe(MaterialUtils.smeltInto(material), TEBlockShapes.pipeMedium, TEBlockShapes.itemPipeMedium)
+                    != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(3, stack), ItemList.Shape_Extruder_Pipe_Medium.get(0L))
                         .itemOutputs(
                             GTUtility.copyAmount(
                                 tAmount,
-                                MaterialParts.stack(OrePrefixes.pipeMedium, MaterialUtils.smeltInto(material), 1)))
+                                pipe(
+                                    MaterialUtils.smeltInto(material),
+                                    TEBlockShapes.pipeMedium,
+                                    TEBlockShapes.itemPipeMedium)))
                         .duration((24 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
-                if (MaterialParts.stack(OrePrefixes.pipeLarge, MaterialUtils.smeltInto(material), 1L) != null) {
+                if (pipe(MaterialUtils.smeltInto(material), TEBlockShapes.pipeLarge, TEBlockShapes.itemPipeLarge)
+                    != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(6, stack), ItemList.Shape_Extruder_Pipe_Large.get(0L))
                         .itemOutputs(
                             GTUtility.copyAmount(
                                 tAmount,
-                                MaterialParts.stack(OrePrefixes.pipeLarge, MaterialUtils.smeltInto(material), 1)))
+                                pipe(
+                                    MaterialUtils.smeltInto(material),
+                                    TEBlockShapes.pipeLarge,
+                                    TEBlockShapes.itemPipeLarge)))
                         .duration((48 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
                 }
-                if (MaterialParts.stack(OrePrefixes.pipeHuge, MaterialUtils.smeltInto(material), 1L) != null) {
+                if (pipe(MaterialUtils.smeltInto(material), TEBlockShapes.pipeHuge, TEBlockShapes.itemPipeHuge)
+                    != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(12, stack), ItemList.Shape_Extruder_Pipe_Huge.get(0L))
                         .itemOutputs(
                             GTUtility.copyAmount(
                                 tAmount,
-                                MaterialParts.stack(OrePrefixes.pipeHuge, MaterialUtils.smeltInto(material), 1)))
+                                pipe(
+                                    MaterialUtils.smeltInto(material),
+                                    TEBlockShapes.pipeHuge,
+                                    TEBlockShapes.itemPipeHuge)))
                         .duration((96 * tAmount) * TICKS)
                         .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
@@ -255,46 +277,46 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
-                        if (MaterialParts.stack(OrePrefixes.pipeTiny, material, 1L) != null) {
+                        if (pipe(material, TEBlockShapes.pipeTiny, TEBlockShapes.itemPipeTiny) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0L))
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.pipeTiny, material, 1L))
+                                .itemOutputs(pipe(material, TEBlockShapes.pipeTiny, TEBlockShapes.itemPipeTiny))
                                 .fluidInputs(MaterialUtils.molten(material, 1 * HALF_INGOTS))
                                 .duration(1 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
-                        if (MaterialParts.stack(OrePrefixes.pipeSmall, material, 1L) != null) {
+                        if (pipe(material, TEBlockShapes.pipeSmall, TEBlockShapes.itemPipeSmall) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0L))
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.pipeSmall, material, 1L))
+                                .itemOutputs(pipe(material, TEBlockShapes.pipeSmall, TEBlockShapes.itemPipeSmall))
                                 .fluidInputs(MaterialUtils.molten(material, 1 * INGOTS))
                                 .duration(2 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
-                        if (MaterialParts.stack(OrePrefixes.pipeMedium, material, 1L) != null) {
+                        if (pipe(material, TEBlockShapes.pipeMedium, TEBlockShapes.itemPipeMedium) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0L))
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.pipeMedium, material, 1L))
+                                .itemOutputs(pipe(material, TEBlockShapes.pipeMedium, TEBlockShapes.itemPipeMedium))
                                 .fluidInputs(MaterialUtils.molten(material, 3 * INGOTS))
                                 .duration(4 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
-                        if (MaterialParts.stack(OrePrefixes.pipeLarge, material, 1L) != null) {
+                        if (pipe(material, TEBlockShapes.pipeLarge, TEBlockShapes.itemPipeLarge) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0L))
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.pipeLarge, material, 1L))
+                                .itemOutputs(pipe(material, TEBlockShapes.pipeLarge, TEBlockShapes.itemPipeLarge))
                                 .fluidInputs(MaterialUtils.molten(material, 6 * INGOTS))
                                 .duration(8 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
                         }
-                        if (MaterialParts.stack(OrePrefixes.pipeHuge, material, 1L) != null) {
+                        if (pipe(material, TEBlockShapes.pipeHuge, TEBlockShapes.itemPipeHuge) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0L))
-                                .itemOutputs(MaterialParts.stack(OrePrefixes.pipeHuge, material, 1L))
+                                .itemOutputs(pipe(material, TEBlockShapes.pipeHuge, TEBlockShapes.itemPipeHuge))
                                 .fluidInputs(MaterialUtils.molten(material, 1728L))
                                 .duration(16 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
@@ -534,5 +556,11 @@ public class ProcessingShaping implements PartRecipeGenerator {
                 }
             }
         }
+    }
+
+    /// The material's fluid pipe of `fluidPipe`'s size, else its item pipe of that size. Null when it has neither.
+    private static @Nullable ItemStack pipe(Material material, Shape fluidPipe, Shape itemPipe) {
+        ItemStack stack = MaterialLibAPI.findStack(material, fluidPipe, 1);
+        return stack != null ? stack : MaterialLibAPI.findStack(material, itemPipe, 1);
     }
 }

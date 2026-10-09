@@ -146,7 +146,7 @@ public final class ShapeRecipeTable {
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
             if (prefix.getMaterialAmount() <= 0 || prefix.isContainer() || prefix.isEnchantable()) continue;
             for (Shape shape : MaterialParts.shapes(prefix)) {
-                on(shape, prefix, () -> ProcessingTransforming.INSTANCE);
+                on(shape, prefix, () -> new ProcessingTransforming(shape));
             }
         }
     }

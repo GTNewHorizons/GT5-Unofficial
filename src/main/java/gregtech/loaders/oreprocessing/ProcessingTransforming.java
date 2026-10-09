@@ -16,21 +16,21 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
+/// Chemical-bath and polarizer recipes for one shape, turning a material's part into the same shape of its treated
+/// or magnetic counterpart.
 public class ProcessingTransforming implements PartRecipeGenerator {
 
-    public static final ProcessingTransforming INSTANCE = new ProcessingTransforming();
+    private final Shape shape;
 
-    private ProcessingTransforming() {}
+    public ProcessingTransforming(Shape shape) {
+        this.shape = shape;
+    }
 
     @Override
     public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
-        Shape shape = MaterialParts.shape(prefix);
-        if (shape == null) return;
-
         switch (MaterialUtils.internalName(material)) {
             case "Wood" ->
             // Chemical bath recipes
