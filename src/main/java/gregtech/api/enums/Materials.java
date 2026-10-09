@@ -976,6 +976,17 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials PoisonousSlurry;
     // endregion
 
+    // region n-BuLi Line
+    public static Materials PhosphoricAcidMixture;
+    public static Materials nButylChlorideMixture;
+    public static Materials nButylChloridePurified;
+    public static Materials nButylChloride;
+    public static Materials nButylChlorideSolution;
+    public static Materials nButylLithiumSlurry;
+    public static Materials nButylLithiumSolutionMixture;
+    public static Materials nButylLithiumSolutionConcentrated;
+    // endregion
+
     // region Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
