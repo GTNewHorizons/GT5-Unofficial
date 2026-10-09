@@ -155,7 +155,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.high_temperature_reactor_thtr"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.high_temperature_reactor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "thorium-high-temp-reactor"),
                 ImmutableMap.<String, Object>builder()

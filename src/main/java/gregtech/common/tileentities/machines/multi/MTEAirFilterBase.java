@@ -198,7 +198,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.air_filter_eaf"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.air_filter"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "air-filter"),
                 ImmutableMap.<String, Object>builder()

@@ -55,7 +55,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public String getMachineType() {
-        return StatCollector.translateToLocal("gt.mbtt.machine_type.fuel_refinery_rfpp");
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.fuel_refinery");
     }
 
     @Override

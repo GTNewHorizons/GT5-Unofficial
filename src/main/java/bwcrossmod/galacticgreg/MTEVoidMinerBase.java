@@ -173,7 +173,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.miner_vm"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.miner"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "void-miner"),
                 ImmutableMap.<String, Object>builder()

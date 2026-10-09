@@ -161,7 +161,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_engine_ucfe"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_engine"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "universal-chemical-fuel-engine"),
                 ImmutableMap.<String, Object>builder()
