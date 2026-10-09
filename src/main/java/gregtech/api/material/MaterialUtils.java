@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
@@ -154,11 +153,6 @@ public class MaterialUtils {
         return resolveSlotFluid(material, FluidState.GAS, FluidNames::gas);
     }
 
-    /// Same as [#fluidOf], for the `plasma()` slot.
-    public static @Nullable Fluid plasmaOf(@Nullable Material material) {
-        return resolveSlotFluid(material, FluidState.PLASMA, FluidNames::plasma);
-    }
-
     /// Same as [#fluidOf], for the `molten()` slot. Unlike [#molten], null when a material listed in
     /// [MaterialFluidNames] declares no `molten()` slot, even if it carries the [FluidShapes#fluidMolten] shape.
     public static @Nullable Fluid moltenOf(@Nullable Material material) {
@@ -259,23 +253,6 @@ public class MaterialUtils {
         int argb = MaterialLibAPI.getTint(material);
         return new short[] { (short) ((argb >>> 16) & 0xFF), (short) ((argb >>> 8) & 0xFF), (short) (argb & 0xFF),
             (short) ((argb >>> 24) & 0xFF) };
-    }
-
-    /// Returns a new `[r, g, b, a]` array for the material's molten and plasma fluid color:
-    /// [GTMaterialProperties#MOLTEN_ARGB], else [#rgba], else `{255, 255, 255, 0}`. Never null. Like [#rgba], it
-    /// honors resource pack overrides, so a value cached at load misses them.
-    public static short[] moltenRgba(@Nullable Material material) {
-        Integer declared = material == null ? null : material.getProperty(GTMaterialProperties.MOLTEN_ARGB);
-        if (declared == null) {
-            short[] rgba = rgba(material);
-            return rgba != null ? rgba : new short[] { 255, 255, 255, 0 };
-        }
-        int moltenArgb = moltenColors.computeIfAbsent(
-            material,
-            key -> new ColorResource("gregtech", key.getName() + ".molten", String.format("0x%08X", declared), true))
-            .getColor();
-        return new short[] { (short) ((moltenArgb >>> 16) & 0xFF), (short) ((moltenArgb >>> 8) & 0xFF),
-            (short) (moltenArgb & 0xFF), (short) ((moltenArgb >>> 24) & 0xFF) };
     }
 
     /// The strong references [ColorResource]'s weak instance registry needs to keep re-resolving these colors
@@ -396,14 +373,6 @@ public class MaterialUtils {
         return total > 1 ? (int) (sum / total) : declared;
     }
 
-    /// A material's gas registration temperature in Kelvin: room temperature (295 K) when
-    /// [GTMaterialProperties#GAS_TEMP] is unset or zero, otherwise its [#meltingPoint]. The `GAS_TEMP` value
-    /// itself is not used.
-    public static int gasTemperature(@Nullable Material material) {
-        Integer gasTemp = material == null ? null : material.getProperty(GTMaterialProperties.GAS_TEMP);
-        return gasTemp == null || gasTemp == 0 ? 295 : meltingPoint(material);
-    }
-
     /// The Kelvin blast furnace temperature for a material -- [GTMaterialProperties#BLAST_TEMP], or `0` if
     /// unset.
     public static int blastFurnaceTemp(@Nullable Material material) {
@@ -459,42 +428,6 @@ public class MaterialUtils {
     /// [#durability], for [GTMaterialProperties#TOOL_SPEED] -- absent defaults to `1.0f`.
     public static float toolSpeed(@Nullable Material material) {
         return material == null ? 1.0f : material.getProperty(GTMaterialProperties.TOOL_SPEED);
-    }
-
-    /// Returns the tool [Enchantment] whose `getName` matches [GTMaterialProperties#TOOL_ENCHANTMENT]. Null when
-    /// the material has none or no enchantment matches.
-    public static @Nullable Enchantment getToolEnchantment(@Nullable Material material) {
-        if (material == null) return null;
-        return findEnchantment(material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT));
-    }
-
-    /// The tool enchantment level for a material -- [GTMaterialProperties#TOOL_ENCHANTMENT_LEVEL], `1` when
-    /// absent, and `1` whenever [GTMaterialProperties#TOOL_ENCHANTMENT] itself is absent.
-    public static int getToolEnchantmentLevel(@Nullable Material material) {
-        if (material == null || material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT) == null) return 1;
-        Integer level = material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL);
-        return level == null ? 1 : level;
-    }
-
-    /// [#getToolEnchantment], for [GTMaterialProperties#ARMOR_ENCHANTMENT].
-    public static @Nullable Enchantment getArmorEnchantment(@Nullable Material material) {
-        if (material == null) return null;
-        return findEnchantment(material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT));
-    }
-
-    /// [#getToolEnchantmentLevel], for [GTMaterialProperties#ARMOR_ENCHANTMENT_LEVEL].
-    public static int getArmorEnchantmentLevel(@Nullable Material material) {
-        if (material == null || material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT) == null) return 1;
-        Integer level = material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT_LEVEL);
-        return level == null ? 1 : level;
-    }
-
-    private static @Nullable Enchantment findEnchantment(@Nullable String unlocalizedName) {
-        if (unlocalizedName == null) return null;
-        for (Enchantment enchantment : Enchantment.enchantmentsList) {
-            if (enchantment != null && unlocalizedName.equals(enchantment.getName())) return enchantment;
-        }
-        return null;
     }
 
     /// The heat damage for a material -- [GTMaterialProperties#HEAT_DAMAGE], or `0` if unset.

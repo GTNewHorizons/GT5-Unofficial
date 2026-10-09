@@ -9,13 +9,11 @@ import com.ruling_0.materiallib.api.Property;
 /// Typed property keys GregTech attaches to MaterialLib materials. Values referencing other materials use
 /// [MaterialRef], since registration order across mods is unspecified.
 ///
-/// The `WERKSTOFF_*` keys carry the identity saved `bw.*` blocks and items address a material by. They describe no
+/// The `WERKSTOFF_IDS` key carries the identity saved `bw.*` blocks and items address a material by. It describes no
 /// behaviour of the material itself.
 public class GTMaterialProperties {
 
     public static final Property<MaterialRef> ARC_SMELT_INTO = Property.of("gregtech", "arcSmeltInto");
-    public static final Property<String> ARMOR_ENCHANTMENT = Property.of("gregtech", "armorEnchantment");
-    public static final Property<Integer> ARMOR_ENCHANTMENT_LEVEL = Property.of("gregtech", "armorEnchantmentLevel");
     public static final Property<List<AspectRefStack>> ASPECTS = Property.of("gregtech", "aspects");
     public static final Property<Boolean> AUTO_BLAST_FURNACE_RECIPES = Property
         .of("gregtech", "autoBlastFurnaceRecipes", true);
@@ -43,7 +41,6 @@ public class GTMaterialProperties {
     public static final Property<String> ELEMENT = Property.of("gregtech", "element");
     public static final Property<EnumSet<GTMaterialFlag>> FLAGS = Property.of("gregtech", "flags");
     public static final Property<Float> GAS_MULTIPLIER = Property.of("gregtech", "gasMultiplier");
-    public static final Property<Integer> GAS_TEMP = Property.of("gregtech", "gasTemp");
     public static final Property<Integer> FUEL_POWER = Property.of("gregtech", "fuelPower", 0);
     public static final Property<Integer> FUEL_TYPE = Property.of("gregtech", "fuelType", 0);
     /// The chemical formula display string, read through [MaterialFormulas].
@@ -152,8 +149,6 @@ public class GTMaterialProperties {
     /// Every werkstoff id saved bartworks items and ore blocks address this material by. More than one when two
     /// same-name werkstoffe share this material. Permanent: saved worlds keep these ids indefinitely.
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
-    /// The bartworks material type name, such as `"ELEMENT"` or `"BIOLOGICAL"`.
-    public static final Property<String> WERKSTOFF_TYPE = Property.of("gregtech", "werkstoffType");
 
     private GTMaterialProperties() {}
 }

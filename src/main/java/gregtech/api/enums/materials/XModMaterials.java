@@ -40,8 +40,7 @@ public class XModMaterials {
                     GTMaterialFlag.CRYSTAL,
                     GTMaterialFlag.CRYSTALLISABLE,
                     GTMaterialFlag.NO_SMASHING,
-                    GTMaterialFlag.NO_SMELTING,
-                    GTMaterialFlag.QUARTZ))
+                    GTMaterialFlag.NO_SMELTING))
             .build();
         applyForeignShapes(
             Fluix,
