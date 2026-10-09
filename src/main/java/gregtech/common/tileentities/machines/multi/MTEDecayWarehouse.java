@@ -208,7 +208,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Decay Warehouse")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.decay_warehouse"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "decay-warehouse"),
                 ImmutableMap.<String, Object>builder()
