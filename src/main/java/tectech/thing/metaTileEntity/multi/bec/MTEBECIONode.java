@@ -77,7 +77,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECIONodeGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.Mode;
@@ -206,7 +205,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECIONode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_io_node"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode"));
 
         tt.beginStructureBlock(7, 23, 13, true)
@@ -995,16 +994,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     public enum NaniteHatch implements IHatchElement<MTEBECIONode> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.NaniteTierDetectorHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Collections.singletonList(MTEHatchNaniteDetector.class);
         }
 
+        NaniteHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_BEC_Nanites.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -1034,16 +1044,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     public enum ControllerHatch implements IHatchElement<MTEBECIONode> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.TeleportationControllerHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Collections.singletonList(MTEHatchIONodeController.class);
         }
 
+        ControllerHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_BEC_IOController.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -1072,16 +1093,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     public enum IONodeLineOfSightHatch implements IHatchElement<MTEBECIONode> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.LineOfSightHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return List.of(MTEHatchLoS.class);
         }
 
+        IONodeLineOfSightHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_LineOfSight_Connector.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override

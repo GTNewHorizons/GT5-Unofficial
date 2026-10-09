@@ -1,5 +1,5 @@
 Can be equipped with up to §a12 §7Space Elevator Modules
-Motor tier limits module tier and amount of possible modules
+Motor Tier limits module Tier and amount of possible modules
 Each module has its own space for IO, except energy
 Energy is supplied to this controller and gets distributed
 Starting from §dMotor Mk-III §7the structure can be expanded to fit §a24 §7modules

@@ -51,7 +51,6 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBoardProcessorModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int BOARD_OFFSET_X = 3;
     protected static final int BOARD_OFFSET_Y = 4;
     protected static final int BOARD_OFFSET_Z = 0;
@@ -240,11 +239,11 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     @Override
-    protected float getEUDiscountModifier(GTRecipe recipe) {
-        return euMultiplier;
+    protected float getModuleDurationModifier() {
+        return durationMultiplier;
     }
 
-    float euMultiplier = 1;
+    float durationMultiplier = 1;
 
     protected FluidStack storedFluidStack;
     protected int fluidAmount;
@@ -270,7 +269,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     @NotNull
     @Override
     public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-        euMultiplier = 1;
+        durationMultiplier = 1;
 
         if (storedFluidStack == null) {
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
@@ -309,9 +308,9 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         }
 
         if (getImpurityPercentage() <= 0.15) {
-            euMultiplier = (float) (1 - 0.3 + getImpurityPercentage() * 2);
+            durationMultiplier = (float) (0.7 + getImpurityPercentage() * 2);
         } else if (getImpurityPercentage() >= 0.65) {
-            euMultiplier = (float) (1 + 2 * (getImpurityPercentage() - 0.65));
+            durationMultiplier = (float) (1 + 2 * (getImpurityPercentage() - 0.65));
         }
 
         return super.validateRecipe(recipe);
@@ -445,10 +444,6 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     public double getImpurityPercentage() {
         return (double) impurityFluidAmount / fluidAmount;
-    }
-
-    public float getEuMultiplier() {
-        return euMultiplier;
     }
 
     public int getAutoFlushPercentage() {

@@ -18,9 +18,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
+
+import com.google.common.collect.ImmutableMap;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
@@ -41,6 +45,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingTextureProvider {
 
     private boolean running = false;
@@ -227,9 +232,11 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Charcoal Pile Igniter, CPI")
-            .addInfo("Converts Logs into Brittle Charcoal blocks")
-            .addInfo("Automatically starts when formed")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.charcoal_pile_igniter"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "charcoal-pit"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
             .addController("Top layer, centered and touching a log")
@@ -240,6 +247,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
             .addStructureFooter("Can be anywhere up to 13x13x7 in size (including the dirt) but all logs")
             .addStructureFooter("must be within 6 x/z of the controller and there cannot be any air gaps.")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
