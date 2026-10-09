@@ -109,16 +109,20 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
 
     public void setRequiredTier(@Nullable NaniteTier requiredTier) {
         this.requiredTier = requiredTier;
+
+        if (comparison == ComparisonWithAnalog.ANALOG) {
+            setOutput(requiredTier == null ? 0 : requiredTier.tier);
+        } else {
+            setOutput(requiredTier != null && comparison.test(requiredTier.tier, configuredTier));
+        }
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         super.onPostTick(baseMetaTileEntity, tick);
 
-        if (comparison == ComparisonWithAnalog.ANALOG) {
-            setOutput(requiredTier == null ? 0 : requiredTier.tier);
-        } else {
-            setOutput(requiredTier != null && comparison.test(requiredTier.tier, configuredTier));
+        if (baseMetaTileEntity.isServerSide() && tick > 1) {
+            baseMetaTileEntity.tryDisableTicking();
         }
     }
 

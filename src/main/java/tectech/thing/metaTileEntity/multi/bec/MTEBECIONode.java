@@ -660,6 +660,13 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     return;
                 }
             }
+        } else {
+            RecipeStep nextStep = getCurrentStep();
+            if (nextStep == null) {
+                state = NodeState.InternalError;
+                return;
+            }
+            setRequiredTier(nextStep.nanite);
         }
     }
 
