@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.outputme;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -20,6 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -299,7 +301,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             translateToLocalFormatted(
                 "GT5U.waila.hatch.outputme.fluid_cache_capacity",
                 formatNumber(tag.getLong("cacheCapacity"))));
-        MTEHatchOutputMEBase.WailaHelper.getWailaCacheBody("fluid", ss, accessor);
+        provider.getWailaCacheBody(ss, accessor);
     }
 
     @Override
@@ -313,7 +315,23 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaAdvancedBody(itemStack, ss, accessor, config);
-        MTEHatchOutputMEBase.WailaHelper.getWailaAdvancedBody("fluid", ss, accessor);
+        provider.getWailaAdvancedBody(ss, accessor);
+    }
+
+    @Override
+    public @NotNull String getTypePrefix() {
+        return "fluid";
+    }
+
+    @Override
+    public @NotNull String getUnitSuffix() {
+        return " " + getFluidUnit();
+    }
+
+    @Override
+    public @Nullable String getLocalizedName(NBTTagCompound nbt) {
+        FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt);
+        return fluid == null ? null : fluid.getLocalizedName();
     }
 
     @Override
