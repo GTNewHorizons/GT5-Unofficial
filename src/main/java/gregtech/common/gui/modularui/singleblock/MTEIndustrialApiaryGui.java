@@ -125,7 +125,8 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                         .itemSlotSupplier(
                             () -> new ItemSlot().backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_APIARY_UPGRADE)
                                 .addTooltipLine(
-                                    GTUtility.translate("GT5U.machines.industrialapiary.upgradeslot.tooltip"))
+                                    StatCollector
+                                        .translateToLocal("GT5U.machines.industrialapiary.upgradeslot.tooltip"))
                                 .tooltipShowUpTimer(TOOLTIP_DELAY))
                         .indexOffset(UPGRADE_SLOT_OFFSET)
                         .modularSlotSupplier(UpgradeModularSlot.supplier(machine))

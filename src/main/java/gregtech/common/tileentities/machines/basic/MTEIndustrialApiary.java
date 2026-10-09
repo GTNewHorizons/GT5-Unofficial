@@ -80,7 +80,6 @@ import forestry.apiculture.genetics.Bee;
 import forestry.apiculture.genetics.alleles.AlleleEffectThrottled;
 import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
-import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

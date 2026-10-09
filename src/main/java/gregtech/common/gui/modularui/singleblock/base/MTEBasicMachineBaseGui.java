@@ -336,7 +336,10 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                     .stream()
                     .filter(BooleanSyncValue::getBoolValue)
                     .findFirst()
-                    .ifPresent(key -> addTooltipDataToRichTooltip(() -> errorMap.get(key)).accept(t)));
+                    .ifPresent(
+                        key -> addTooltipDataToRichTooltip(
+                            () -> errorMap.get(key)
+                                .get()).accept(t)));
     }
 
     protected ParentWidget<?> createItemInputSlots(ModularPanel panel, PanelSyncManager syncManager) {
