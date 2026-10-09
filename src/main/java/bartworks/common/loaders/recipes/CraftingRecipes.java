@@ -44,7 +44,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CraftingRecipes implements Runnable {
 
@@ -547,13 +546,6 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plate, 1), 'L',
                 MaterialLibAPI.getStack(Materials.GarnetYellow, Shapes.lens, 1), 'S', ItemList.Sensor_IV.get(1), 'R',
                 Wildcard.AnySyntheticRubber.ingredient(OrePrefixes.foil) });
-
-        GTModHandler.addCraftingRecipe(
-            ItemList.Item_Redstone_Sniffer.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { " M ", "STS", "dPw", 'M', ItemList.Cover_Screen.get(1L), 'S',
-                OrePrefixes.screw.ingredient(Materials.Titanium), 'T', GregtechItemList.TransmissionComponent_EV.get(1),
-                'P', OrePrefixes.plate.ingredient(Materials.Titanium) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Tool_Vajra.get(1),

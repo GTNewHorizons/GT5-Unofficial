@@ -476,7 +476,8 @@ public class MechArmorAugmentRegistries {
                 new SpeedBoostBehavior(3.0F),
                 new JumpBoostBehavior(3.0F),
                 StepAssistBehavior.INSTANCE,
-                new VisDiscountBehavior(4)
+                new VisDiscountBehavior(4),
+                OmniMovementBehavior.INSTANCE
             )
             .incompatibleAugments(
                 ItemList.Augment_ArchmageStriders,
@@ -617,7 +618,8 @@ public class MechArmorAugmentRegistries {
                 new SpeedBoostBehavior(5.0F),
                 new JumpBoostBehavior(4.0F),
                 StepAssistBehavior.INSTANCE,
-                new VisDiscountBehavior(5)
+                new VisDiscountBehavior(5),
+                OmniMovementBehavior.INSTANCE
             )
             .incompatibleAugments(
                 ItemList.Augment_ApprenticeStriders,
@@ -680,7 +682,8 @@ public class MechArmorAugmentRegistries {
                 new SpeedBoostBehavior(10.0F),
                 new JumpBoostBehavior(5.0F),
                 StepAssistBehavior.INSTANCE,
-                new VisDiscountBehavior(10)
+                new VisDiscountBehavior(10),
+                OmniMovementBehavior.INSTANCE
             )
             .incompatibleAugments(
                 ItemList.Augment_ApprenticeStriders,

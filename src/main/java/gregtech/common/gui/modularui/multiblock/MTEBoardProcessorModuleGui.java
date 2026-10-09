@@ -17,7 +17,6 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -45,7 +44,6 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
 
         syncManager.syncValue("processedItems", new IntSyncValue(multiblock::getProcessedItems));
         syncManager.syncValue("impurity", new DoubleSyncValue(multiblock::getImpurityPercentage));
-        syncManager.syncValue("euMult", new FloatSyncValue(multiblock::getEuMultiplier));
         syncManager.syncValue(
             "automationPercentage",
             new IntSyncValue(multiblock::getAutoFlushPercentage, multiblock::setAutoFlushPercentage).allowC2S());

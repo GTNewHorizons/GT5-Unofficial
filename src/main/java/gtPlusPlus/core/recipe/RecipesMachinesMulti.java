@@ -49,7 +49,6 @@ public class RecipesMachinesMulti {
         volcanus();
         steamMultis();
 
-        multiArcFurnace();
         multiDehydrator();
         multiAlloySmelter();
         multiRockBreaker();
@@ -959,23 +958,6 @@ public class RecipesMachinesMulti {
             .addTo(assemblerRecipes);
     }
 
-    private static void multiArcFurnace() {
-        // Tempered Arc Furnace Casing
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Multi_Use.get(1),
-                GregtechItemList.TransmissionComponent_MV.get(2),
-                ItemList.Electric_Piston_EV.get(2),
-                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 4),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.pipeSmall, 1))
-            .itemOutputs(GregtechItemList.Casing_Industrial_Arc_Furnace.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Arcanite, FluidShapes.fluidMolten, 8 * INGOTS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-
-    }
-
     private static void multiDehydrator() {
         // Vacuum Casing
         GTValues.RA.stdBuilder()
@@ -1078,7 +1060,8 @@ public class RecipesMachinesMulti {
                 GregtechItemList.Casing_Refinery_Structural.get(4),
                 GregtechItemList.LFTRControlCircuit.get(1),
                 MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.cableGt08, 16),
-                GregtechItemList.TransmissionComponent_IV.get(2),
+                ItemList.Sensor_IV.get(4),
+                ItemList.Emitter_IV.get(4),
                 GregtechItemList.Gregtech_Computer_Cube.get(1))
             .itemOutputs(GregtechItemList.GT4_Multi_Crafter.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Pikyonium64B, FluidShapes.fluidMolten, 8 * INGOTS))

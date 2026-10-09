@@ -145,7 +145,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Assembly Line, Assline, AL")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.assembly_line"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "assembly-line"),
                 ImmutableMap.<String, Object>builder().build())

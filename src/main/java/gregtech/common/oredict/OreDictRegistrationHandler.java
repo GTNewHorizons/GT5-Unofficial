@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ProgressManager;
@@ -38,6 +39,7 @@ import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -296,7 +298,10 @@ public final class OreDictRegistrationHandler {
 
         OreDictAliases.registerAliases(oreName, stack);
         handleSpecialRegistration(stack, prefix, material, materialName);
-
+        String aliasKey = material == null ? null : material.getProperty(GTMaterialProperties.ALIAS_KEY);
+        if (aliasKey != null) {
+            API.setAliases(stack, aliasKey);
+        }
         if (!prefix.isIgnored(material)) {
             prefix.add(GTUtility.copyAmount(1, stack));
         }

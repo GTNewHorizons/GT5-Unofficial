@@ -94,7 +94,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
     @Override
     public String getMachineType() {
-        return "Solar Tower";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.solar_tower");
     }
 
     @Override

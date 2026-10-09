@@ -13,6 +13,8 @@ import com.ruling_0.materiallib.api.Property;
 /// behaviour of the material itself.
 public class GTMaterialProperties {
 
+    /// The lang key of the NEI search alias every oredict-registered item of the material carries.
+    public static final Property<String> ALIAS_KEY = Property.of("gregtech", "aliasKey");
     public static final Property<MaterialRef> ARC_SMELT_INTO = Property.of("gregtech", "arcSmeltInto");
     public static final Property<List<AspectRefStack>> ASPECTS = Property.of("gregtech", "aspects");
     public static final Property<Boolean> AUTO_BLAST_FURNACE_RECIPES = Property

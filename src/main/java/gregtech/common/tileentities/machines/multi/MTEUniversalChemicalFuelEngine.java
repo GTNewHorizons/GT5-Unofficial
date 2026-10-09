@@ -24,6 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -160,7 +161,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Chemical Engine, UCFE")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_engine"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "universal-chemical-fuel-engine"),
                 ImmutableMap.<String, Object>builder()

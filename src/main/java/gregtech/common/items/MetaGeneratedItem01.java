@@ -479,7 +479,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
@@ -3907,12 +3906,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements EnderSt
 
     /// The special items act through [gregtech.api.items.MetaBaseItem#onItemUseFirst]; the plain use hook does
     /// nothing for them.
-    @Override
-    public boolean onItemUse(final ItemStack oldItemStack, final EntityPlayer player, final World world, final int x,
-        final int y, final int z, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
-        return false;
-    }
-
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);

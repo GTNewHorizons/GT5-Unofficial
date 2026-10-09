@@ -3362,6 +3362,18 @@ public class AssemblerRecipes implements Runnable {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV / 4)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cover_Screen.get(1),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.screw, 2),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 1),
+                ItemList.Sensor_EV.get(2),
+                ItemList.Emitter_EV.get(2))
+            .itemOutputs(ItemList.Item_Redstone_Sniffer.get(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
     }
 
     /**
