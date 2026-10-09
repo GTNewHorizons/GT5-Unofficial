@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -124,6 +126,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                             .height(2)
                             .marginTop(2)
                             .marginBottom(4))
+                    .child(new TextWidget<>(IKey.lang("tt.spacepump.pendingqueue")))
                     .child(queueRowAndApply(syncManager)));
     }
 
@@ -178,8 +181,8 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             .overlay(createButtonOverlay(syncManager, mapping, GTUtility.getFluidDisplayStack(fluid.getFluid())))
             .tooltipBuilder(
                 t -> t.addLine(IKey.str(EnumChatFormatting.RED + fluid.getLocalizedName()))
-                    .addLine(IKey.lang("tt.spacepump.rate", fluid.amount))
-                    .addLine(IKey.lang("tt.spacepump.ratemax", fluid.amount * multiblock.getMaxParallelRecipes())))
+                    .addLine(IKey.lang("tt.spacepump.rate", formatFluid(fluid.amount)))
+                    .addLine(IKey.lang("tt.spacepump.ratemax", formatFluid(fluid.amount * multiblock.getParallels()))))
             .onMousePressed(_ -> {
                 if (getIndexQueue().size() >= multiblock.getParallelRecipes()) {
                     getIndexQueue().removeFirst();
@@ -217,7 +220,6 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
 
     private IWidget queue(PanelSyncManager syncManager) {
         List<IWidget> queueButtons = new ArrayList<>();
-        queueButtons.add(new TextWidget<>(IKey.lang("tt.spacepump.pendingqueue")));
         for (int i = 0; i < multiblock.getParallelRecipes(); i++) {
             queueButtons.add(createQueueButton(i));
         }
@@ -236,7 +238,8 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                     return false;
                 }
                 return null != getIndexQueue().remove(i);
-            });
+            })
+            .tooltip(t -> t.add(IKey.lang("tt.spacepump.utilityremove")));
     }
 
     private IDrawable queueButtonOverlay(int i) {
