@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.GTValues.VP;
+import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
@@ -50,6 +51,11 @@ import com.google.common.collect.SetMultimap;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import WayofTime.alchemicalWizardry.api.items.ShapedBloodOrbRecipe;
+import appeng.api.exceptions.MissingIngredientError;
+import appeng.api.exceptions.RegistrationError;
+import appeng.api.recipes.IIngredient;
+import appeng.recipes.game.ShapedRecipe;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -965,16 +971,27 @@ public class GTRecipeRegistrator {
             for (int i = 0; i < recipes.size(); i++) {
                 IRecipe recipe = recipes.get(i);
                 if (recipe instanceof IGTCraftingRecipe) continue;
-                Object[] inputs;
-                if (recipe.getClass() == ShapedOreRecipe.class) inputs = ((ShapedOreRecipe) recipe).getInput();
-                else if (recipe.getClass() == ShapedRecipes.class) inputs = ((ShapedRecipes) recipe).recipeItems;
-                else inputs = null;
+                Object[] inputs = readableInputs(recipe);
                 if (inputs != null && indexRodInputs(i, inputs)) readable.set(i);
                 else unreadable.set(i);
             }
         }
 
-        /// Indexes the rod stacks among `inputs` under recipe `index`, returning false when an input is unreadable.
+        /// The inputs of a recipe type whose matching compares each slot with its input's stacks by item and damage,
+        /// or null for any other type.
+        private static Object[] readableInputs(IRecipe recipe) {
+            Class<?> type = recipe.getClass();
+            if (type == ShapedOreRecipe.class) return ((ShapedOreRecipe) recipe).getInput();
+            if (type == ShapedRecipes.class) return ((ShapedRecipes) recipe).recipeItems;
+            if (type == ShapedRecipe.class) return ((ShapedRecipe) recipe).getInput();
+            if (BloodMagic.isModLoaded() && type == ShapedBloodOrbRecipe.class) {
+                return ((ShapedBloodOrbRecipe) recipe).getInput();
+            }
+            return null;
+        }
+
+        /// Indexes the rod stacks among `inputs` under recipe `index`, returning false when an input is unreadable. An
+        /// AE2 ingredient that fails to resolve, like a BloodMagic orb tier, accepts no rod.
         private boolean indexRodInputs(int index, Object[] inputs) {
             LongOpenHashSet keys = new LongOpenHashSet();
             for (Object input : inputs) {
@@ -986,7 +1003,11 @@ public class GTRecipeRegistrator {
                         if (!(option instanceof ItemStack stack)) return false;
                         addRodKey(keys, stack);
                     }
-                } else {
+                } else if (input instanceof IIngredient ingredient) {
+                    try {
+                        for (ItemStack stack : ingredient.getItemStackSet()) addRodKey(keys, stack);
+                    } catch (RegistrationError | MissingIngredientError ignored) {}
+                } else if (!(input instanceof Integer)) {
                     return false;
                 }
             }
