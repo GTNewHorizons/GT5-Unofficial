@@ -1530,6 +1530,7 @@ public class GTModHandler {
     static ItemStack removeMatchingRecipes(List<IRecipe> allRecipes, InventoryCrafting craftMatrix,
         IdentityHashMap<IRecipe, Boolean> knownMatches) {
         ItemStack result = null;
+        int occupiedSlots = occupiedSlots(craftMatrix);
         for (int i = 0; i < allRecipes.size(); i++) {
             final IRecipe recipe = allRecipes.get(i);
 
@@ -1538,7 +1539,8 @@ public class GTModHandler {
             }
 
             Boolean knownMatch = knownMatches == null ? null : knownMatches.get(recipe);
-            if (knownMatch != null ? knownMatch : recipe.matches(craftMatrix, DW)) {
+            if (knownMatch != null ? knownMatch
+                : canMatchRecipeShape(recipe, occupiedSlots) && recipe.matches(craftMatrix, DW)) {
                 result = recipe.getCraftingResult(craftMatrix);
                 allRecipes.remove(i--);
             }
@@ -1589,13 +1591,17 @@ public class GTModHandler {
         AtomicIntegerArray matchedDelayedRemovals = GT_RECIPE_REMOVAL_LOGGER_ENABLED
             ? new AtomicIntegerArray(delayedRemovalByRecipe.size())
             : null;
+        int[] occupiedSlots = delayedRemovalByRecipe.stream()
+            .mapToInt(GTModHandler::occupiedSlots)
+            .toArray();
         Set<IRecipe> listToRemove = allRecipes.parallelStream()
             .filter(recipe -> {
                 if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) {
                     return false;
                 }
                 for (int i = 0; i < delayedRemovalByRecipe.size(); i++) {
-                    if (recipe.matches(delayedRemovalByRecipe.get(i), DW)) {
+                    if (canMatchRecipeShape(recipe, occupiedSlots[i])
+                        && recipe.matches(delayedRemovalByRecipe.get(i), DW)) {
                         if (matchedDelayedRemovals != null) matchedDelayedRemovals.set(i, 1);
                         return true;
                     }
@@ -1920,6 +1926,18 @@ public class GTModHandler {
         return candidates;
     }
 
+    /// The bit mask of `craftMatrix`'s non-empty slots, bit `x + 3 * y` for column `x` and row `y`.
+    private static int occupiedSlots(InventoryCrafting craftMatrix) {
+        int occupiedSlots = 0;
+        for (int i = 0; i < 9; i++) {
+            if (craftMatrix.getStackInSlot(i) != null) occupiedSlots |= 1 << i;
+        }
+        return occupiedSlots;
+    }
+
+    /// Whether `recipe` can match a grid whose non-empty slots are `occupiedSlots`: a shaped recipe's pattern must
+    /// cover exactly those slots at some offset, mirrored or not, and a shapeless recipe must take as many items.
+    /// Recipe types it cannot read always can.
     private static boolean canMatchRecipeShape(IRecipe recipe, int occupiedSlots) {
         Class<?> recipeClass = recipe.getClass();
         if (recipeClass == ShapedRecipes.class) {
