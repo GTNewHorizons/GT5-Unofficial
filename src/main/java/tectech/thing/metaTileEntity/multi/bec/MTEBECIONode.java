@@ -54,7 +54,6 @@ import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -844,12 +843,21 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         return ret.toString();
     }
 
-    private static int saveNanite(NaniteTier tier) {
-        return tier == null ? -1 : MaterialUtils.oldSubId(tier.getMaterial());
+    private static void saveNanite(NBTTagCompound tag, String key, @Nullable NaniteTier tier) {
+        if (tier != null) tag.setString(key, tier.name());
     }
 
-    private static NaniteTier loadNanite(int id) {
-        return NaniteTier.fromMaterial(LegacyMaterialIDIndex.get(id));
+    private static @Nullable NaniteTier loadNanite(NBTTagCompound tag, String key) {
+        if (tag.hasKey(key, NBT.TAG_STRING)) {
+            for (NaniteTier tier : NaniteTier.values()) {
+                if (tier.name()
+                    .equals(tag.getString(key))) return tier;
+            }
+            return null;
+        }
+        // An int tag holds the tier material's legacy sub-id.
+        return tag.hasKey(key, NBT.TAG_INT) ? NaniteTier.fromMaterial(LegacyMaterialIDIndex.get(tag.getInteger(key)))
+            : null;
     }
 
     @Override
@@ -874,7 +882,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             aNBT.setInteger("naniteCount", requiredNanites.length);
 
             for (int i = 0; i < requiredNanites.length; i++) {
-                aNBT.setInteger("nanite" + i, saveNanite(requiredNanites[i]));
+                saveNanite(aNBT, "nanite" + i, requiredNanites[i]);
             }
         }
 
@@ -894,7 +902,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 NBTTagCompound tag = new NBTTagCompound();
                 steps.appendTag(tag);
 
-                tag.setInteger("nanite", saveNanite(step.nanite));
+                saveNanite(tag, "nanite", step.nanite);
             }
         }
 
@@ -910,7 +918,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         requiredNanites = new NaniteTier[count];
 
         for (int i = 0; i < count; i++) {
-            requiredNanites[i] = loadNanite(aNBT.getInteger("nanite" + i));
+            requiredNanites[i] = loadNanite(aNBT, "nanite" + i);
         }
 
         if (aNBT.hasKey("required")) {
@@ -936,7 +944,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
             // noinspection unchecked
             for (NBTTagCompound tag : (List<NBTTagCompound>) steps.tagList) {
-                tiers.add(loadNanite(tag.getInteger("nanite")));
+                tiers.add(loadNanite(tag, "nanite"));
             }
 
             loadRequiredNanites(mMaxProgresstime, tiers);
