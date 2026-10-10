@@ -21,6 +21,7 @@ public final class MaterialMisc {
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(SODIUM_CYANIDE, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(COPPER_SULFATE, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(COPPER_SULFATE_HYDRATED, false);
+        MaterialUtils.generateSpecialDustAndAssignToAMaterial(TECHNETIUM_DIOXIDE, false);
         WATER.registerComponentForMaterial(Materials.Water.getFluid(1_000));
     }
 
@@ -110,6 +111,22 @@ public final class MaterialMisc {
         false, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsElements.getInstance().SELENIUM, 1),
+        new MaterialStack(MaterialsElements.getInstance().OXYGEN, 2));
+
+    public static final Material TECHNETIUM_DIOXIDE = new Material(
+        "Technetium Dioxide",
+        MaterialState.SOLID,
+        TextureSet.SET_METALLIC,
+        new short[] { 0x1a, 0x1a, 0x1a }, // matte black
+        -1,
+        -1,
+        -1,
+        -1,
+        false,
+        "TcO2",
+        0,
+        false,
+        new MaterialStack(MaterialsElements.getInstance().TECHNETIUM, 1),
         new MaterialStack(MaterialsElements.getInstance().OXYGEN, 2));
 
     public static final Material SELENIOUS_ACID = new Material(
