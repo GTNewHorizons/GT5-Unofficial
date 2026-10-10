@@ -77,28 +77,18 @@ public class BlockCasingSpaceElevator extends BlockCasingsAbstract {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        switch (meta) {
-            case 0:
-                return IconSECasing0;
-            case 1:
-                switch (side) {
-                    case 0:
-                    case 1:
-                        return IconSECasing1[0];
-                    default:
-                        return IconSECasing1[1];
-                }
-            case 2:
-                switch (side) {
-                    case 0:
-                    case 1:
-                        return IconSECasing2[0];
-                    default:
-                        return IconSECasing2[1];
-                }
-            default:
-                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-        }
+        return switch (meta) {
+            case 0 -> IconSECasing0;
+            case 1 -> switch (side) {
+                    case 0, 1 -> IconSECasing1[0];
+                    default -> IconSECasing1[1];
+                };
+            case 2 -> switch (side) {
+                    case 0, 1 -> IconSECasing2[0];
+                    default -> IconSECasing2[1];
+                };
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        };
     }
 
     /**

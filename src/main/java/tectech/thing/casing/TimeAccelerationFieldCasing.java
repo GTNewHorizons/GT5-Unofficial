@@ -67,28 +67,18 @@ public class TimeAccelerationFieldCasing extends BlockCasingsAbstract {
 
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        switch (aMeta) {
-            case 0:
-                return textureTier0;
-            case 1:
-                return textureTier1;
-            case 2:
-                return textureTier2;
-            case 3:
-                return textureTier3;
-            case 4:
-                return textureTier4;
-            case 5:
-                return textureTier5;
-            case 6:
-                return textureTier6;
-            case 7:
-                return textureTier7;
-            case 8:
-                return textureTier8;
-            default:
-                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-        }
+        return switch (aMeta) {
+            case 0 -> textureTier0;
+            case 1 -> textureTier1;
+            case 2 -> textureTier2;
+            case 3 -> textureTier3;
+            case 4 -> textureTier4;
+            case 5 -> textureTier5;
+            case 6 -> textureTier6;
+            case 7 -> textureTier7;
+            case 8 -> textureTier8;
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        };
     }
 
     @Override

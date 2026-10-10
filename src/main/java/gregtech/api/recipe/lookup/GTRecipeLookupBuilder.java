@@ -1,6 +1,7 @@
 package gregtech.api.recipe.lookup;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,11 +120,9 @@ public final class GTRecipeLookupBuilder {
             groups.add(new IngredientGroup(pooledGroup, maxFrequency(pooledGroup, frequencies), i));
         }
 
-        groups.sort((first, second) -> {
-            int frequencyCompare = Integer.compare(first.maxFrequency, second.maxFrequency);
-            if (frequencyCompare != 0) return frequencyCompare;
-            return Integer.compare(first.originalIndex, second.originalIndex);
-        });
+        groups.sort(
+            Comparator.comparingInt((IngredientGroup ingredientGroup) -> ingredientGroup.maxFrequency)
+                .thenComparingInt(ingredientGroup -> ingredientGroup.originalIndex));
 
         List<List<GTRecipeLookupIngredient>> sorted = new ArrayList<>(groups.size());
         for (IngredientGroup group : groups) {

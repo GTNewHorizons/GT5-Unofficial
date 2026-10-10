@@ -60,37 +60,18 @@ public class BlockGodforgeCasings extends BlockCasingsAbstract {
 
     @Override
     public IIcon getIcon(int aSide, int aMeta) {
-        switch (aMeta) {
-            case 0:
-                return GodforgeTrim;
-            case 1:
-                return GodforgeInner;
-            case 2:
-                return GodforgeSupport;
-            case 3:
-                return GodforgeOuter;
-            case 4:
-                return GodforgeEnergy;
-            case 5:
-                if (aSide < 2) {
-                    return GodforgeOuter;
-                }
-                return GravitonModulatorT1;
-            case 6:
-                if (aSide < 2) {
-                    return GodforgeOuter;
-                }
-                return GravitonModulatorT2;
-            case 7:
-                if (aSide < 2) {
-                    return GodforgeOuter;
-                }
-                return GravitonModulatorT3;
-            case 8:
-                return PhononConduit;
-            default:
-                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-        }
+        return switch (aMeta) {
+            case 0 -> GodforgeTrim;
+            case 1 -> GodforgeInner;
+            case 2 -> GodforgeSupport;
+            case 3 -> GodforgeOuter;
+            case 4 -> GodforgeEnergy;
+            case 5 -> aSide < 2 ? GodforgeOuter : GravitonModulatorT1;
+            case 6 -> aSide < 2 ? GodforgeOuter : GravitonModulatorT2;
+            case 7 -> aSide < 2 ? GodforgeOuter : GravitonModulatorT3;
+            case 8 -> PhononConduit;
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        };
     }
 
     @Override

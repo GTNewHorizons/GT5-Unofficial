@@ -83,9 +83,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         super(aID, aName, aNameRegional, 4, null, 1);
     }
 
-    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack>(
-        this,
-        128_000) {};
+    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<>(this, 128_000) {};
 
     public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);

@@ -31,17 +31,12 @@ public interface IRecipeMap {
     }
 
     static IRecipeMap newRecipeMap(Function<? super GTRecipeBuilder, Collection<GTRecipe>> func) {
-        return new IRecipeMap() {
-
-            @Nonnull
-            @Override
-            public Collection<GTRecipe> doAdd(GTRecipeBuilder builder) {
-                List<Collection<GTRecipe>> ret = new ArrayList<>();
-                Collection<GTRecipe> out = func.apply(builder);
-                ret.add(out);
-                builder.clearInvalid();
-                return GTUtility.concat(ret);
-            }
+        return builder -> {
+            List<Collection<GTRecipe>> ret = new ArrayList<>();
+            Collection<GTRecipe> out = func.apply(builder);
+            ret.add(out);
+            builder.clearInvalid();
+            return GTUtility.concat(ret);
         };
     }
 }

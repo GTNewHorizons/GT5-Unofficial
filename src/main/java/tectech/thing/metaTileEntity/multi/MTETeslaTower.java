@@ -388,17 +388,11 @@ public class MTETeslaTower extends TTMultiblockBase
         // By Default:
         // Helium and Nitrogen Plasmas will double the range
         // Radon will quadruple the range
-        int plasmaBoost;
-        switch (plasmaTier) {
-            case 2:
-                plasmaBoost = ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2;
-                break;
-            case 1:
-                plasmaBoost = ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1;
-                break;
-            default:
-                plasmaBoost = 1;
-        }
+        int plasmaBoost = switch (plasmaTier) {
+            case 2 -> ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2;
+            case 1 -> ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1;
+            default -> 1;
+        };
 
         // Over-tiered coils will add +25% range
         if (tier > mTier) {

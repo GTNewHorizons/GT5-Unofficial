@@ -2398,23 +2398,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         if (c > 4) {
                             c = TecTech.RANDOM.nextInt(5);
                         }
-                        switch (c) {
-                            case 0:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
-                                break;
-                            case 1:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
-                                break;
-                            case 2:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
-                                break;
-                            case 3:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
-                                break;
-                            case 4:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
-                                break;
-                        }
+                        texture = switch (c) {
+                            case 0 -> TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
+                            case 1 -> TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
+                            case 2 -> TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
+                            case 3 -> TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
+                            case 4 -> TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
+                            default -> texture;
+                        };
                         break;
                     }
                     case STATUS_WRONG: // fallthrough
