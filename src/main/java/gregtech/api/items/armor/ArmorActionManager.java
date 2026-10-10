@@ -137,6 +137,10 @@ public class ArmorActionManager {
         // Keybinds
 
         register(
+            "activate_movement_staff",
+            SyncedKeybind.createConfigurable("key.gt.activate_movement_staff", "Gregtech Armor", Keyboard.KEY_NONE));
+
+        register(
             "open_radial_menu",
             SyncedKeybind.createConfigurable("key.gt.open_radial_menu", "Gregtech Armor", Keyboard.KEY_O));
 
