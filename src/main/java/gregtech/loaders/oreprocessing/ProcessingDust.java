@@ -94,6 +94,34 @@ public class ProcessingDust implements PartRecipeGenerator {
         return composition;
     }
 
+    /// Adds the blast furnace recipes smelting the dust `stack` of `material` into `ingotStack`, when the material
+    /// generates them.
+    private static void addBlastRecipes(Material material, ItemStack stack, ItemStack ingotStack) {
+        if (!MaterialUtils.autoGenerateBlastFurnaceRecipes(material) || MaterialUtils.blastFurnaceTemp(material) <= 0) {
+            return;
+        }
+        // A NOBLE_GAS_SMELTING material blast-smelts under a gas: BlastFurnaceWithGas fans one
+        // recipe out into a gas-input variant per BlastFurnaceGasStat, keyed on circuit 11 and
+        // the base gas amount in ADDITIVE_AMOUNT.
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NOBLE_GAS_SMELTING)) {
+            blastFurnaceBuilder(material, stack, ingotStack, 11).metadata(ADDITIVE_AMOUNT, 1000)
+                .addTo(BlastFurnaceWithGas);
+        } else {
+            blastFurnaceBuilder(material, stack, ingotStack, 1).addTo(blastFurnaceRecipes);
+        }
+        // Californium is the sole blast-required material melting low enough for the
+        // coal-fired bricked blast furnace.
+        if (material == Materials.Californium) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, stack))
+                .itemOutputs(GTUtility.copyAmount(1, ingotStack))
+                .duration(Math.max(MaterialUtils.mass(material) / 40L, 1L) * MaterialUtils.blastFurnaceTemp(material))
+                .eut(0)
+                .metadata(ADDITIVE_AMOUNT, 9)
+                .addTo(primitiveBlastRecipes);
+        }
+    }
+
     /// A blast furnace recipe smelting one `stack` into `material`'s smelt-into ingot, keyed on `circuit`.
     /// Above 1750K the output is a hot ingot instead, falling back to `ingotStack` when none resolves.
     private static GTRecipeBuilder blastFurnaceBuilder(Material material, ItemStack stack, ItemStack ingotStack,
@@ -167,34 +195,13 @@ public class ProcessingDust implements PartRecipeGenerator {
                     && (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {
                     if (MaterialUtils.blastFurnaceRequired(material)) {
                         GTModHandler.removeFurnaceSmelting(stack);
-                        if (MaterialUtils.autoGenerateBlastFurnaceRecipes(material)
-                            && MaterialUtils.blastFurnaceTemp(material) > 0) {
-                            // A NOBLE_GAS_SMELTING material blast-smelts under a gas: BlastFurnaceWithGas fans one
-                            // recipe out into a gas-input variant per BlastFurnaceGasStat, keyed on circuit 11 and
-                            // the base gas amount in ADDITIVE_AMOUNT.
-                            if (MaterialUtils.hasFlag(material, GTMaterialFlag.NOBLE_GAS_SMELTING)) {
-                                blastFurnaceBuilder(material, stack, tDustStack, 11).metadata(ADDITIVE_AMOUNT, 1000)
-                                    .addTo(BlastFurnaceWithGas);
-                            } else {
-                                blastFurnaceBuilder(material, stack, tDustStack, 1).addTo(blastFurnaceRecipes);
-                            }
-                            // Californium is the sole blast-required material melting low enough for the
-                            // coal-fired bricked blast furnace.
-                            if (material == Materials.Californium) {
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(1, stack))
-                                    .itemOutputs(GTUtility.copyAmount(1, tDustStack))
-                                    .duration(
-                                        Math.max(MaterialUtils.mass(material) / 40L, 1L)
-                                            * MaterialUtils.blastFurnaceTemp(material))
-                                    .eut(0)
-                                    .metadata(ADDITIVE_AMOUNT, 9)
-                                    .addTo(primitiveBlastRecipes);
-                            }
-                        }
+                        addBlastRecipes(material, stack, tDustStack);
                     } else {
                         GTModHandler
                             .addSmeltingRecipe(stack, ProcessingSubstitutes.smelting(material, prefix, tDustStack));
+                        if (MaterialUtils.hasFlag(material, GTMaterialFlag.ALSO_BLAST_SMELTED)) {
+                            addBlastRecipes(material, stack, tDustStack);
+                        }
                     }
                 } else if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     if ((!OrePrefixes.block.isIgnored(material))

@@ -102,27 +102,6 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
-        CrackRecipeAdder.reAddBlastRecipe(Materials.ExtremelyUnstableNaquadah, 8000, 122880, 7000, false);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.Zircaloy2, 500, 480, 2800, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.Zircaloy4, 500, 480, 2800, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.Incoloy903, 1200, 1920, 3700, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.AdamantiumAlloy, 2500, 1920, 5500, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.MARM200Steel, 200, 7680, 5000, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.Signalium, 1600, 30720, 4000, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.Lumiium, 1600, 30720, 4000, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.ArtheriumSn, 500, 122880, 6500, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.TanmolyiumBetaC, 400, 7680, 5300, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.Dalisenite, 800, 491520, 8700, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.Hikarium, 1200, 30720, 5400, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.Tairitsu, 1200, 1966080, 7400, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.PreciousMetalsAlloy, 2400, 7864320, 10000, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.EnrichedNaquadahAlloy, 2400, 7864320, 11000, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.MetastableOganesson, 600, 7864320, 12000, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.Shirabon, 600, 31457280, 13000, true);
-        CrackRecipeAdder.reAddBlastRecipe(Materials.AtomicSeparationCatalyst, 35000, 120, 5000, false);
-
-        GTModHandler.removeFurnaceSmelting(MaterialLibAPI.getStack(Materials.Dalisenite, Shapes.dust, 1)); // :doom:
-
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Zircaloy4, Shapes.plate, 4),

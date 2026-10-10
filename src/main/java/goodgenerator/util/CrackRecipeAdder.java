@@ -1,24 +1,16 @@
 package goodgenerator.util;
 
-import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
-import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
-import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
-
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTRecipeBuilder;
 
 public class CrackRecipeAdder {
@@ -98,33 +90,6 @@ public class CrackRecipeAdder {
             outputItem,
             Duration / 2,
             EUt / 3);
-    }
-
-    /// `material` must carry `dust` and, above 1750 K, `ingotHot`.
-    public static void reAddBlastRecipe(Material material, int duration, int EUt, int level, boolean gas) {
-        ItemStack input = MaterialLibAPI.getStack(material, Shapes.dust, 1);
-        ItemStack output = level > 1750 ? MaterialLibAPI.getStack(material, Shapes.ingotHot, 1)
-            : MaterialLibAPI.getStack(material, Shapes.ingot, 1);
-        if (gas) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(input)
-                .circuit(11)
-                .itemOutputs(output)
-                .duration(duration * TICKS)
-                .eut(EUt)
-                .metadata(COIL_HEAT, level)
-                .metadata(ADDITIVE_AMOUNT, 1000)
-                .addTo(BlastFurnaceWithGas);
-        } else {
-            GTValues.RA.stdBuilder()
-                .itemInputs(input)
-                .circuit(1)
-                .itemOutputs(output)
-                .duration(duration * TICKS)
-                .eut(EUt)
-                .metadata(COIL_HEAT, level)
-                .addTo(blastFurnaceRecipes);
-        }
     }
 
     public static void addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit,

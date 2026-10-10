@@ -42,6 +42,8 @@ public enum GTMaterialFlag {
     TOOL_MATERIAL,
     /// Alloys whose processing keeps the platinum-group metals they contain; see [ProcessingSubstitute].
     KEEPS_PLATINUM_GROUP_OUTPUTS,
+    /// Furnace-smeltable materials that also get blast furnace recipes.
+    ALSO_BLAST_SMELTED,
     /// Gems that never get an implosion recipe.
     NO_BLAST,
     /// Metals whose blast furnace recipes take any [gregtech.api.util.BlastFurnaceGasStat] gas.
