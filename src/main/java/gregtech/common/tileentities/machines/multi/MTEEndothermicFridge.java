@@ -429,7 +429,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 }
                 currentBoosterFluid = findBoosterFluid();
                 return super.createOverclockCalculator(recipe)
-                    .setMachineHeat(currentBoosterFluid == null ? 0 : currentBoosterFluid.perfectOverclock * 1800)
+                    .setMachineHeat(
+                        currentBoosterFluid == null ? 0
+                            : currentBoosterFluid.perfectOverclock * OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
                     .setRecipeHeat(0)
                     .setHeatOC(true)
                     .setHeatDiscount(false);

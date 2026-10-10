@@ -77,6 +77,7 @@ public class MultiblockTooltipBuilder {
     private final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
     private final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
     private final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
+    private final String TT_tier = StatCollector.translateToLocal("GT5U.MBTT.Tier");
     private final String TT_controller = StatCollector.translateToLocal("GT5U.MBTT.Controller");
     private final String TT_minimum = StatCollector.translateToLocal("GT5U.MBTT.Minimum");
     private final String TT_tiered = StatCollector.translateToLocal("GT5U.MBTT.Tiered");
@@ -114,6 +115,8 @@ public class MultiblockTooltipBuilder {
     private List<String> authors;
     private List<String> structureAuthors;
     private SetMultimap<Integer, String> hBlocks;
+
+    private int tierNoteIndex = -1;
 
     private String[] iArray;
     private String[] sArray;
@@ -441,6 +444,7 @@ public class MultiblockTooltipBuilder {
                 + EnumChatFormatting.GRAY
                 + ") "
                 + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
+        tierNoteIndex = sLines.size();
         sLines.add(EnumChatFormatting.WHITE + TT_structure + COLON);
         return this;
     }
@@ -1320,14 +1324,12 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * This machine can run recipes at most n tiers above the average energy hatch tier
+     * Energy Hatch limited by Glass Tier
      *
-     * @param n The max number of tier skips allowed
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addMaxTierSkips(int n) {
-        iLines.add(translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", n));
-        return this;
+    public MultiblockTooltipBuilder addEnergyHatchGlassTier() {
+        return addTierNote(StatCollector.translateToLocal("GT5U.MBTT.Structure.EnergyHatchGlassTier"));
     }
 
     /**
@@ -1511,6 +1513,23 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStructureFooter(String info) {
         sLines.add(info);
+        return this;
+    }
+
+    /**
+     * Use this method to add a note about relevant tiering:<br>
+     * (indent)info
+     *
+     * @param info The line to be added
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addTierNote(String info) {
+        if (tierNoteIndex < 0) {
+            sLines.add(info);
+            return this;
+        }
+        sLines.add(tierNoteIndex, info);
+        tierNoteIndex++;
         return this;
     }
 

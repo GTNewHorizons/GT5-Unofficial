@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -64,6 +65,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -106,13 +108,13 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Algae Pond")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.algae_pond"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "algae-pond"),
                 ImmutableMap.<String, Object>builder().build())
-            .addGlassEnergyLimitInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 10, false)
+            .addEnergyHatchGlassTier()
             .addController("Front center, 3rd layer")
             .addCasing("64", "Any Tiered Glass", true)
             .addCasing("20-25", "Algae Casing", false)
