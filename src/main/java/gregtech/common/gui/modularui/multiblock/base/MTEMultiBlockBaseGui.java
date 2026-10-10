@@ -1156,7 +1156,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
         return new ToggleButton().syncHandler("structureUpdateButton")
             .overlay(GTGuiTextures.OVERLAY_BUTTON_STRUCTURE_UPDATE)
-            .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.structure_update")));
     }
 
     protected ToggleButton createPowerSwitchButton() {

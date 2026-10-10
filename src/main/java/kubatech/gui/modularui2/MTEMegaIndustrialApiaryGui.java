@@ -117,7 +117,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         IntSyncValue maxSlotsSyncer = new IntSyncValue(() -> multiblock.mMaxSlots, val -> maxSlots = val);
         syncManager.syncValue("apiaryMaxSlots", maxSlotsSyncer);
 
-        IntSyncValue usedSlotsSyncer = new IntSyncValue(() -> multiblock.mStorage.size(), val -> usedSlots = val);
+        IntSyncValue usedSlotsSyncer = new IntSyncValue(multiblock.mStorage::size, val -> usedSlots = val);
         syncManager.syncValue("apiaryUsedSlots", usedSlotsSyncer);
 
         beeClickSyncer = new IntSyncValue(() -> 0, this::handleBeeClick).allowC2S();
