@@ -9,7 +9,6 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.GTMod;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.util.GTUtility;
 
 public class LinearSound implements ISoundPosition {
 
@@ -79,7 +78,7 @@ public class LinearSound implements ISoundPosition {
         float k = new Vector3f(playerPos).sub(start).dot(dir);
 
         // Clamp it to (0, distance)
-        k = GTUtility.clamp(k, 0, distance);
+        k = Math.clamp(k, 0, distance);
 
         if (centerWeight > 0) {
             // Shift the position towards the center, if set
