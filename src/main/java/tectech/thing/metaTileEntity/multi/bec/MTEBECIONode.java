@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,6 +49,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.OCMethod;
@@ -89,7 +91,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements IParametrized {
+public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements IParametrized, IDataCopyable {
 
     private @Nullable NaniteTier[] requiredNanites;
     private @Nullable CondensateList requiredCondensate, consumedCondensate;
@@ -1181,6 +1183,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     public List<Parameter<?, ?>> getParameters() {
         return List.of(minParallelParameter, maxParallelParameter, speedDivisorParameter);
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", getCopiedDataIdentifier(player));
+        for (Parameter<?, ?> parameter : getParameters()) parameter.saveNBT(tag);
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
+        if (nbt == null || !getCopiedDataIdentifier(player).equals(nbt.getString("type"))) return false;
+        for (Parameter<?, ?> parameter : getParameters()) parameter.loadNBT(nbt);
+        markDirty();
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return "bec-ionode";
     }
 
     private class SpeedDivisorParameter extends IntegerParameter {
