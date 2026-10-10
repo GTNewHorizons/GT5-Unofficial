@@ -2123,6 +2123,7 @@ gt.mbtt.machine_type.solar_tower=Solar Tower
 gt.mbtt.machine_type.macerator_ims=Macerator, IMS
 gt.mbtt.machine_type.compressor=Compressor
 gt.mbtt.machine_type.forge_hammer=Forge Hammer
+gt.mbtt.machine_type.furnace=Furnace
 gt.mbtt.machine_type.furnace_blaster_smoker=Furnace, Blaster, Smoker
 gt.mbtt.machine_type.macerator=Macerator
 gt.mbtt.machine_type.mixer=Mixer

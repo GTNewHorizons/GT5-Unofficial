@@ -108,7 +108,9 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBlockBase<MTESteamFurnace
 
     @Override
     public String getMachineType() {
-        return StatCollector.translateToLocal("gt.mbtt.machine_type.furnace_blaster_smoker");
+        return StatCollector.translateToLocal(
+            EtFuturumRequiem.isModLoaded() ? "gt.mbtt.machine_type.furnace_blaster_smoker"
+                : "gt.mbtt.machine_type.furnace");
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";

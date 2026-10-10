@@ -62,6 +62,7 @@ gt.mbtt.machine_type.antimatter_generator=反物质发电机，SLAM
 gt.mbtt.machine_type.alloy_smelter=合金炉
 gt.mbtt.machine_type.compressor=压缩机
 gt.mbtt.machine_type.forge_hammer=锻造锤
+gt.mbtt.machine_type.furnace=熔炉
 gt.mbtt.machine_type.furnace_blaster_smoker=熔炉、高炉、烟熏炉
 gt.mbtt.machine_type.macerator=研磨机
 gt.mbtt.machine_type.mixer=搅拌机

@@ -2049,6 +2049,7 @@ gt.mbtt.machine_type.arc_furnace_iaf=Дуговая печь, IAF
 gt.mbtt.machine_type.macerator_ims=Дробитель, IMS
 gt.mbtt.machine_type.compressor=Компрессор
 gt.mbtt.machine_type.forge_hammer=Кузнечный молот
+gt.mbtt.machine_type.furnace=Печь
 gt.mbtt.machine_type.furnace_blaster_smoker=Печь, Дутьё, Копчение
 gt.mbtt.machine_type.macerator=Дробитель
 gt.mbtt.machine_type.mixer=Миксер
