@@ -309,7 +309,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        /** Runs before any widgets are built / reflects today's rolled state */
+        /* Runs before any widgets are built / reflects today's rolled state */
         if (!data.isClient()) rollDailyMalfunctionIfNeeded();
         return new MTEBasicMachineBaseGui<>(this, this.getUIProperties()) {
 

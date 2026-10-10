@@ -82,7 +82,6 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
             default:
                 return 0;
         }
-
     }
 
     @Override
