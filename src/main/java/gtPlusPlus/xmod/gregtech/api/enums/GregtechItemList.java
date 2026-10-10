@@ -753,20 +753,6 @@ public enum GregtechItemList implements IItemContainer {
     PotassiumEthylXanthate,
     PotassiumHydroxide,
 
-    // Milled Items
-    MilledSphalerite,
-    MilledChalcopyrite,
-    MilledNickel,
-    MilledPlatinum,
-    MilledPentlandite,
-    MilledRedstone,
-    MilledSpessartine,
-    MilledGrossular,
-    MilledAlmandine,
-    MilledPyrope,
-    MilledMonazite,
-    MilledNetherite,
-
     // Compressed Stuff
     CactusCharcoal,
     BlockCactusCharcoal,

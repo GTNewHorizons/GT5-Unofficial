@@ -49,6 +49,7 @@ public final class ShapeRecipeTable {
         on(BlockShapes.blockCasing, OrePrefixes.blockCasing, () -> ProcessingCasing.INSTANCE);
         onOreVariants(OreShapes.ore, OrePrefixes.ore, () -> ProcessingOre.INSTANCE);
         on(Shapes.rawOre, OrePrefixes.rawOre, () -> ProcessingRawOre.INSTANCE);
+        on(Shapes.milled, OrePrefixes.milled, () -> ProcessingMilled.INSTANCE);
         onOreVariants(OreShapes.ore, OrePrefixes.ore, () -> ProcessingIceOre.INSTANCE);
         on(Shapes.rawOre, OrePrefixes.rawOre, () -> ProcessingIceOre.INSTANCE);
         on(Shapes.crushedCentrifuged, OrePrefixes.crushedCentrifuged, () -> ProcessingCrushedOre.INSTANCE);

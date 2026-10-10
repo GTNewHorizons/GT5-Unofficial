@@ -2,20 +2,16 @@ package gtPlusPlus.core.item;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -27,7 +23,6 @@ import gregtech.client.GTTooltipHandler;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseItemDamageable;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.bauble.FireProtectionBauble;
 import gtPlusPlus.core.item.chemistry.IonParticles;
@@ -286,38 +281,6 @@ public final class ModItems {
         GregtechItemList.ChlorinationCatalyst.set(new ItemStack(genericChemItem, 1, 36))
             .registerOre("catalystChlorination");
 
-        // Milled Ore Processing
-        GregtechItemList.MilledSphalerite.set(BaseItemMilledOre.generate(Materials.Sphalerite, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledChalcopyrite.set(BaseItemMilledOre.generate(Materials.Chalcopyrite, TierEU.RECIPE_IV));
-        GregtechItemList.MilledNickel.set(BaseItemMilledOre.generate(Materials.Nickel, TierEU.RECIPE_IV));
-        GregtechItemList.MilledPlatinum.set(BaseItemMilledOre.generate(Materials.Platinum, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledPentlandite.set(BaseItemMilledOre.generate(Materials.Pentlandite, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledRedstone.set(BaseItemMilledOre.generate(Materials.Redstone, TierEU.RECIPE_IV));
-        GregtechItemList.MilledSpessartine.set(BaseItemMilledOre.generate(Materials.Spessartine, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledGrossular.set(BaseItemMilledOre.generate(Materials.Grossular, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledAlmandine.set(BaseItemMilledOre.generate(Materials.Almandine, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials.Pyrope, TierEU.RECIPE_EV));
-        GregtechItemList.MilledMonazite.set(BaseItemMilledOre.generate(Materials.Monazite, TierEU.RECIPE_ZPM));
-        GregtechItemList.MilledNetherite.set(
-            BaseItemMilledOre.generate(Materials.Netherrack, TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
-
-        // The items stay registered for save and item-ID stability; BaseOreComponent already defers the
-        // milled oredict name to MaterialLib, so only NEI visibility follows the cutover.
-        if (NotEnoughItems.isModLoaded()) {
-            hideMilledIfCutOver(Materials.Sphalerite, GregtechItemList.MilledSphalerite);
-            hideMilledIfCutOver(Materials.Chalcopyrite, GregtechItemList.MilledChalcopyrite);
-            hideMilledIfCutOver(Materials.Nickel, GregtechItemList.MilledNickel);
-            hideMilledIfCutOver(Materials.Platinum, GregtechItemList.MilledPlatinum);
-            hideMilledIfCutOver(Materials.Pentlandite, GregtechItemList.MilledPentlandite);
-            hideMilledIfCutOver(Materials.Redstone, GregtechItemList.MilledRedstone);
-            hideMilledIfCutOver(Materials.Spessartine, GregtechItemList.MilledSpessartine);
-            hideMilledIfCutOver(Materials.Grossular, GregtechItemList.MilledGrossular);
-            hideMilledIfCutOver(Materials.Almandine, GregtechItemList.MilledAlmandine);
-            hideMilledIfCutOver(Materials.Pyrope, GregtechItemList.MilledPyrope);
-            hideMilledIfCutOver(Materials.Monazite, GregtechItemList.MilledMonazite);
-            hideMilledIfCutOver(Materials.Netherrack, GregtechItemList.MilledNetherite);
-        }
-
         // Baubles
         GregtechItemList.PersonalCloakingDevice.set(new ItemCloakingDevice(0));
         GregtechItemList.PersonalHealingDevice.set(new ItemHealingDevice());
@@ -350,12 +313,6 @@ public final class ModItems {
         genericToken.register(0, "BitCoin", 16, "Can be used on the dark web");
 
         GregtechItemList.BitCoin.set(new ItemStack(genericToken, 1, 0));
-    }
-
-    private static void hideMilledIfCutOver(Material material, GregtechItemList legacyItem) {
-        if (material.hasShape(Shapes.milled)) {
-            codechicken.nei.api.API.hideItem(legacyItem.get(1));
-        }
     }
 
     private static Item registerChargePack(int tier) {

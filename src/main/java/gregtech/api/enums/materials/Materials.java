@@ -15,6 +15,7 @@ import com.ruling_0.materiallib.api.StandardProperties;
 import com.ruling_0.materiallib.api.TextureSet;
 
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.TierEU;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -2258,6 +2259,7 @@ public class Materials {
             .generateShape(Shapes.milled)
             .removeShape(Shapes.ingotHot)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Nickel")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_IV)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.nickel")
             .setProperty(GTMaterialProperties.MELTING_POINT, 1728)
             .setProperty(GTMaterialProperties.TOOL_SPEED, 6.0F)
@@ -3368,6 +3370,7 @@ public class Materials {
             .generateShape(Shapes.milled)
             .removeShape(Shapes.ingotHot)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Platinum")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_LuV)
             .setProperty(GTMaterialProperties.PROCESSING_SUBSTITUTE, new ProcessingSubstitute(MaterialRef.of(() -> Materials.PlatinumMetallicPowder), ProcessingSubstitute.Rule.PLATINUM_METAL))
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.platinum")
             .setProperty(GTMaterialProperties.MELTING_POINT, 2041)
@@ -9408,6 +9411,7 @@ public class Materials {
             .generateShape(Shapes.milled)
             .removeShape(Shapes.lens)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Monazite")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_ZPM)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.monazite")
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 1)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 520)
@@ -14126,6 +14130,7 @@ public class Materials {
             .generateShape(Shapes.dustImpure)
             .generateShape(Shapes.milled)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Netherrack")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_IV)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.netherrack")
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 807)
             .setProperty(GTMaterialProperties.SMELT_INTO, MaterialRef.of(() -> Materials.NetherBrick))
@@ -14196,6 +14201,7 @@ public class Materials {
             .generateShape(BlockShapes.block)
             .addShapeOverride(BlockShapes.block, Blocks.redstone_block)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Redstone")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_IV)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.redstone")
             .setProperty(GTMaterialProperties.MELTING_POINT, 500)
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 2)
@@ -14385,6 +14391,7 @@ public class Materials {
             .addToFamily(Families.ores)
             .generateShape(Shapes.milled)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Almandine")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_LuV)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.almandine")
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 1)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 820)
@@ -14588,6 +14595,7 @@ public class Materials {
             .addToFamily(Families.ores)
             .generateShape(Shapes.milled)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Grossular")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_LuV)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.grossular")
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 1)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 831)
@@ -14657,6 +14665,7 @@ public class Materials {
             .addToFamily(Families.ores)
             .generateShape(Shapes.milled)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Pyrope")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_EV)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.pyrope")
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 2)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 835)
@@ -14706,6 +14715,7 @@ public class Materials {
             .addToFamily(Families.ores)
             .generateShape(Shapes.milled)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Spessartine")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_LuV)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.spessartine")
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 2)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 838)
@@ -14722,6 +14732,7 @@ public class Materials {
             .addToFamily(Families.ores)
             .generateShape(Shapes.milled)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Sphalerite")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_LuV)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.sphalerite")
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 1)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 839)
@@ -14985,6 +14996,7 @@ public class Materials {
             .addToFamily(Families.ores)
             .generateShape(Shapes.milled)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Chalcopyrite")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_IV)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.chalcopyrite")
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 1)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 855)
@@ -15709,6 +15721,7 @@ public class Materials {
             .addToFamily(Families.ores)
             .generateShape(Shapes.milled)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Pentlandite")
+            .setProperty(GTMaterialProperties.MILLING_VOLTAGE, TierEU.RECIPE_LuV)
             .setProperty(StandardProperties.DISPLAY_NAME_KEY, "Material.pentlandite")
             .setProperty(GTMaterialProperties.TOOL_QUALITY, 2)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 909)

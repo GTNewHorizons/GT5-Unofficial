@@ -3566,11 +3566,6 @@ item.BasicAlgaeItem.5.name=Размножающиеся водоросли
 item.BasicAlgaeItem.6.name=Размножающиеся водоросли
 
 # Added 30/03/20
-item.milledChalcopyrite.name=Обработанный халькопирит
-item.milledSphalerite.name=Обработанный сфалерит
-item.milledNickel.name=Обработанный никель
-item.milledPlatinum.name=Обработанная платина
-item.milledPentlandite.name=Обработанный пентландит
 item.FrothZincflotation.name=Капсула сфалеритового флотационного раствора
 item.FrothCopperflotation.name=Капсула халькопиритого флотационного раствора
 item.FrothNickelflotation.name=Капсула никелевого флотационного раствора
@@ -3591,11 +3586,6 @@ item.BasicAgrichemItem.25.name=Измельчённые сосновые мат�
 item.pineoil.name=Капсула соснового скипидара
 
 # Added 11/4/20
-item.milledRedstone.name=Обработанный красный камень
-item.milledSpessartine.name=Обработанный спессартин
-item.milledGrossular.name=Обработанный гроссуляр
-item.milledAlmandine.name=Обработанный альмандин
-item.milledPyrope.name=Обработанный пироп
 item.FrothRedstoneflotation.name=Капсула флотационного раствора красного камня
 item.FrothSpessartineflotation.name=Капсула спессартинового флотационного раствора
 item.FrothGrossularflotation.name=Капсула гроссулярного флотационного раствора
@@ -3787,9 +3777,7 @@ item.itemScrewPraseodymium.name=Празеодимный винт
 item.itemRotorPraseodymium.name=Празеодимный ротор
 item.itemGearPraseodymium.name=Празеодимная шестерня
 item.itemCellPraseodymium.name=Капсула празеодима
-item.milledMonazite.name=Обработанный монацит
 item.FrothMonaziteflotation.name=Капсула монацитового флотационного раствора
-item.milledNetherrack.name=Измельченный адский камень
 
 # Added 18/12/21
 item.BasicGenericChemItem.13.name=Формальдегидный катализатор

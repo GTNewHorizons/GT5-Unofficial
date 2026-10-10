@@ -81,6 +81,8 @@ public class GTMaterialProperties {
     /// A declared atomic mass that replaces the [MaterialAtomics] composition formula for this material.
     /// Composition sums over components still use their computed values.
     public static final Property<Long> MASS = Property.of("gregtech", "mass");
+    /// The voltage this material's milled ore is milled at.
+    public static final Property<Long> MILLING_VOLTAGE = Property.of("gregtech", "millingVoltage");
     /// The programmed circuit number for the generated mixer recipe. No circuit is added when unset.
     public static final Property<Integer> MIX_CIRCUIT = Property.of("gregtech", "mixCircuit");
     /// The material's internal name when it contains characters MaterialLib names reject (`:` or whitespace,
