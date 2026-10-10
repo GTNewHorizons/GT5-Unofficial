@@ -1,14 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convertSmelting;
-import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
-import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -27,6 +24,7 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.material.ProcessingSubstitutes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -115,7 +113,7 @@ public class ProcessingOre implements PartRecipeGenerator {
             } else {
                 tHasSmelting = GTModHandler.addSmeltingRecipe(
                     oreStack,
-                    convertSmelting(
+                    ProcessingSubstitutes.smelting(
                         material,
                         prefix,
                         GTUtility.copyAmount(multiplier * MaterialUtils.smeltingMultiplier(material), tSmeltInto)));
@@ -173,7 +171,7 @@ public class ProcessingOre implements PartRecipeGenerator {
         if (!tHasSmelting) {
             GTModHandler.addSmeltingRecipe(
                 oreStack,
-                convertSmelting(
+                ProcessingSubstitutes.smelting(
                     material,
                     prefix,
                     GTUtility.copyAmount(
@@ -191,7 +189,8 @@ public class ProcessingOre implements PartRecipeGenerator {
             GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)
                 .itemOutputs(
-                    convert(material, GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed)))
+                    ProcessingSubstitutes
+                        .ore(material, GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed)))
                 .duration(10)
                 .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
@@ -220,7 +219,7 @@ public class ProcessingOre implements PartRecipeGenerator {
             chanceOre2 = 100 * chanceOre2; // converting to the GT format, 100% is 10000
             GTRecipeBuilder macerator = GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)
-                .itemOutputs(convertOre(material, GTUtility.mul(2, tCrushed), byproduct, stoneDust))
+                .itemOutputs(ProcessingSubstitutes.ore(material, GTUtility.mul(2, tCrushed), byproduct, stoneDust))
                 .outputChances(10000, chanceOre2, 5000)
                 .duration(20 * SECONDS)
                 .eut(2);

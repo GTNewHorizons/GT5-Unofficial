@@ -1,8 +1,5 @@
 package gregtech.common.items;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,12 +16,13 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.ProcessingSubstitutes;
 
 /// Washes items in a water cauldron, either dropped in or used on it. Impure and purified dusts become clean dust,
-/// crushed ore becomes purified crushed ore, and wheat dust becomes dough. Each wash lowers the water by one level.
+/// or their material's processing substitute (see [ProcessingSubstitutes#washing]), crushed ore becomes purified
+/// crushed ore, and wheat dust becomes
+/// dough. Each wash lowers the water by one level.
 public final class CauldronWashing {
-
-    private static final Map<Material, Material> CLEANED_DUSTS = new HashMap<>();
 
     private CauldronWashing() {}
 
@@ -44,17 +42,11 @@ public final class CauldronWashing {
                     hitZ) -> washHeld(prefix, material, stack, player, world, x, y, z));
     }
 
-    /// Registers `out` as the clean dust that `in`'s impure and purified dusts wash into.
-    public static void registerCleaningFor(Material in, Material out) {
-        CLEANED_DUSTS.put(in, out);
-    }
-
     /// Returns the washed form of `stackSize` items of `prefix` and `material`, or null when they do not wash.
     public static ItemStack result(OrePrefixes prefix, Material material, int stackSize) {
         if (material == null || material == Materials.Empty || material == Materials.NULL) return null;
         return switch (prefix.getName()) {
-            case "dustImpure", "dustPure" -> MaterialLibAPI
-                .findStack(CLEANED_DUSTS.getOrDefault(material, material), Shapes.dust, stackSize);
+            case "dustImpure", "dustPure" -> ProcessingSubstitutes.washing(material, stackSize);
             case "crushed" -> MaterialLibAPI.findStack(material, Shapes.crushedPurified, stackSize);
             case "dust" -> material == Materials.Wheat ? ItemList.Food_Dough.get(stackSize) : null;
             default -> null;

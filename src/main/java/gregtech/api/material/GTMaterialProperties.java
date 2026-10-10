@@ -72,8 +72,8 @@ public class GTMaterialProperties {
     /// Whether the material is a superconductor. Set on members of
     /// [gregtech.api.enums.materials.Families#superconductors].
     public static final Property<Boolean> IS_SUPERCONDUCTOR = Property.of("gregtech", "isSuperconductor", false);
-    /// Whether this material's composition decomposition feeds the lanthanide line, turning its cerium and samarium
-    /// outputs into their ore concentrates (see `LanthanidesRecipeOutputs`).
+    /// Whether this material's electrolysis applies every [ProcessingSubstitute] to its outputs rather than only the
+    /// platinum-group ones.
     public static final Property<Boolean> LANTHANIDE_DECOMPOSITION = Property
         .of("gregtech", "lanthanideDecomposition", false);
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
@@ -115,6 +115,9 @@ public class GTMaterialProperties {
     public static final Property<Float> PLASMA_MULTIPLIER = Property.of("gregtech", "plasmaMultiplier");
     public static final Property<Integer> PROCESSING_MATERIAL_TIER_EU = Property
         .of("gregtech", "processingMaterialTierEU", 0);
+    /// What ore processing yields in place of this material; see [ProcessingSubstitute].
+    public static final Property<ProcessingSubstitute> PROCESSING_SUBSTITUTE = Property
+        .of("gregtech", "processingSubstitute");
     /// A declared proton count that replaces the [MaterialAtomics] composition formula for this material.
     /// Composition sums over components still use their computed values.
     public static final Property<Long> PROTONS = Property.of("gregtech", "protons");

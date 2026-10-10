@@ -1,10 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import net.minecraft.item.ItemStack;
 
@@ -17,6 +15,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.material.ProcessingSubstitutes;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingPure implements PartRecipeGenerator {
@@ -34,7 +33,8 @@ public class ProcessingPure implements PartRecipeGenerator {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                convert(material, MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1)))
+                ProcessingSubstitutes
+                    .ore(material, MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1)))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
@@ -42,7 +42,7 @@ public class ProcessingPure implements PartRecipeGenerator {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                convertOre(
+                ProcessingSubstitutes.ore(
                     material,
                     GTUtility.copyAmount(
                         1L,

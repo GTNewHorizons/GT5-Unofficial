@@ -10,7 +10,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
 import static gregtech.api.recipe.RecipeMaps.simpleWasherRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtnhlanth.util.LanthanidesRecipeOutputs.convertDecomposition;
 
 import net.minecraft.item.ItemStack;
 
@@ -23,6 +22,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.material.ProcessingSubstitutes;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -109,7 +109,8 @@ public class GregtechSimpleWasher {
     private static void generateDirtyDustRecipes() {
         for (Material ml : MaterialLibAPI.getMaterials()) {
             if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) continue;
-            ItemStack dustClean = convertDecomposition(MaterialLibAPI.findStack(ml, Shapes.dust, 1))[0];
+            ItemStack dustClean = ProcessingSubstitutes
+                .decomposition(null, MaterialLibAPI.findStack(ml, Shapes.dust, 1))[0];
             addSimpleWashRecipe(MaterialLibAPI.findStack(ml, Shapes.dustImpure, 1), dustClean);
             addSimpleWashRecipe(MaterialLibAPI.findStack(ml, Shapes.dustPure, 1), dustClean);
         }

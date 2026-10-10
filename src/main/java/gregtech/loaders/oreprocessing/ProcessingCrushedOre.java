@@ -1,13 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
-import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import net.minecraft.item.ItemStack;
 
@@ -21,6 +19,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.material.ProcessingSubstitutes;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingCrushedOre implements PartRecipeGenerator {
@@ -43,7 +42,7 @@ public class ProcessingCrushedOre implements PartRecipeGenerator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(convertOre(material, dust))
+                    .itemOutputs(ProcessingSubstitutes.ore(material, dust))
                     .duration(10 * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
@@ -51,7 +50,7 @@ public class ProcessingCrushedOre implements PartRecipeGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(
-                        convertOre(
+                        ProcessingSubstitutes.ore(
                             material,
                             MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1),
                             MaterialLibAPI.findStack(
@@ -70,7 +69,7 @@ public class ProcessingCrushedOre implements PartRecipeGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(
-                        convertOre(
+                        ProcessingSubstitutes.ore(
                             material,
                             GTUtility.copyAmount(
                                 1L,
@@ -102,7 +101,7 @@ public class ProcessingCrushedOre implements PartRecipeGenerator {
                         .stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
-                            convert(
+                            ProcessingSubstitutes.ore(
                                 material,
                                 GTUtility
                                     .copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1), tGem),
@@ -120,7 +119,7 @@ public class ProcessingCrushedOre implements PartRecipeGenerator {
                     default -> GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
-                            convert(
+                            ProcessingSubstitutes.ore(
                                 material,
                                 GTUtility
                                     .copyAmount(1L, MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1), tGem),

@@ -1,6 +1,5 @@
 package gtnhlanth.loader;
 
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -35,7 +34,6 @@ import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.api.util.GTRecipeConstants.WaferEngravingRecipes;
-import static gregtech.common.items.CauldronWashing.registerCleaningFor;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 
@@ -51,7 +49,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
@@ -3715,14 +3712,6 @@ public class RecipeLoader {
                 .addTo(laserEngraverRecipes);
         }
 
-    }
-
-    public static void registerCauldronRemaps() {
-        GT_FML_LOGGER
-            .debug(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes to replace cerium sources");
-        registerCleaningFor(Materials.Cerium, Materials.CeriumRichMixture);
-        registerCleaningFor(Materials.Samarium, Materials.SamariumOreConcentrate);
-        GT_FML_LOGGER.debug(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes done!");
     }
 
 }

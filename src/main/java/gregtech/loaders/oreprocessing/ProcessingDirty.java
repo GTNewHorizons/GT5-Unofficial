@@ -1,6 +1,5 @@
 package gregtech.loaders.oreprocessing;
 
-import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
@@ -8,7 +7,6 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +25,7 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.material.ProcessingSubstitutes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -46,7 +45,9 @@ public class ProcessingDirty implements PartRecipeGenerator {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                convert(material, MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1)))
+                ProcessingSubstitutes.ore(
+                    material,
+                    MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1)))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
@@ -54,7 +55,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                convertOre(
+                ProcessingSubstitutes.ore(
                     material,
                     GTUtility.copyAmount(
                         1L,
@@ -75,7 +76,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
         RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                convertOre(
+                ProcessingSubstitutes.ore(
                     material,
                     MaterialParts.stack(
                         orePrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,
@@ -98,7 +99,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
         RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                convertOre(
+                ProcessingSubstitutes.ore(
                     material,
                     MaterialParts.stack(
                         orePrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,
@@ -123,7 +124,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                convertOre(
+                ProcessingSubstitutes.ore(
                     material,
                     MaterialParts.stack(prefix, material, 1L),
                     MaterialLibAPI.findStack(
@@ -157,7 +158,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
-                    convert(
+                    ProcessingSubstitutes.ore(
                         material,
                         MaterialParts.stack(chemicalBathPrefix, material, 1L),
                         MaterialLibAPI.findStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
@@ -173,7 +174,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
-                    convert(
+                    ProcessingSubstitutes.ore(
                         material,
                         MaterialParts.stack(chemicalBathPrefix, material, 1L),
                         MaterialLibAPI.findStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
@@ -189,7 +190,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
-                    convert(
+                    ProcessingSubstitutes.ore(
                         material,
                         MaterialParts.stack(chemicalBathPrefix, material, 1L),
                         MaterialLibAPI.findStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),

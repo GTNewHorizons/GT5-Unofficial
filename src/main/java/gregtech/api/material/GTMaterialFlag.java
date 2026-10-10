@@ -40,6 +40,8 @@ public enum GTMaterialFlag {
     TRANSMUTABLE_NUGGETS,
     /// Materials Tinkers' Gregworks offers as tool materials.
     TOOL_MATERIAL,
+    /// Alloys whose processing keeps the platinum-group metals they contain; see [ProcessingSubstitute].
+    KEEPS_PLATINUM_GROUP_OUTPUTS,
     /// Gems that never get an implosion recipe.
     NO_BLAST,
     /// Metals whose blast furnace recipes take any [gregtech.api.util.BlastFurnaceGasStat] gas.

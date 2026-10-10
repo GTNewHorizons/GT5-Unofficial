@@ -11,7 +11,6 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtnhlanth.util.LanthanidesRecipeOutputs.convertCrafting;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.ArrayList;
@@ -121,6 +120,7 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.material.ProcessingSubstitutes;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -762,19 +762,19 @@ public class GTProxy implements IFuelHandler {
             if (MaterialUtils.unifiable(material)) {
                 if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
-                        convertCrafting(
+                        ProcessingSubstitutes.crafting(
                             MaterialUtils.macerateInto(material),
                             MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        convertCrafting(
+                        ProcessingSubstitutes.crafting(
                             MaterialUtils.macerateInto(material),
                             MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystalline.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        convertCrafting(
+                        ProcessingSubstitutes.crafting(
                             MaterialUtils.macerateInto(material),
                             MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
                         GTModHandler.RecipeBits.BITS_STD,

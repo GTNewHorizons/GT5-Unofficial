@@ -144,7 +144,6 @@ import gregtech.loaders.preload.LoaderGTOreDictionary;
 import gregtech.loaders.preload.LoaderMaterialPartOredict;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderPipeShapeEntities;
-import gtnhlanth.loader.RecipeLoader;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -634,7 +633,6 @@ public class GTMod {
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
         NaquadahRecipePatches.patchCropsNhRecipes();
-        RecipeLoader.registerCauldronRemaps();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
         GTPostLoad.processToolboxBans();

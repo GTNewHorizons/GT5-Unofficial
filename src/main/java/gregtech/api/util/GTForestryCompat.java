@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -23,6 +22,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.ProcessingSubstitutes;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -155,7 +155,7 @@ public class GTForestryCompat {
             }
             GTValues.RA.stdBuilder()
                 .itemInputs(tRecipe.getInput())
-                .itemOutputs(convert(tOutputs))
+                .itemOutputs(ProcessingSubstitutes.platinumGroup(null, tOutputs))
                 .outputChances(tChances)
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(5)
