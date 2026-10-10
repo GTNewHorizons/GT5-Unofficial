@@ -112,6 +112,7 @@ import gregtech.crossmod.chunkapi.ClientMetaManager;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.FissionFuelLoader;
+import gregtech.loaders.load.FoodRecipeLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
@@ -467,6 +468,7 @@ public class GTMod {
         new ScrapboxDropLoader().run();
         new GTWorldgenloader().run();
         new CoverLoader().run();
+        new FoodRecipeLoader().run();
         StoneType.init();
 
         GTRecipeRegistrator.registerUsagesForMaterials(

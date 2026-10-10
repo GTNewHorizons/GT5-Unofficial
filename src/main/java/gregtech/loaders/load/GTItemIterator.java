@@ -1,7 +1,6 @@
 package gregtech.loaders.load;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
-import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -12,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -21,14 +19,12 @@ import buildcraft.factory.BlockTank;
 import cpw.mods.fml.common.ModAPIManager;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tools.ToolScoop;
@@ -125,15 +121,6 @@ public class GTItemIterator implements Runnable {
             GTModHandler
                 .getRecipeOutput(new ItemStack(Items.iron_ingot, 1), null, null, null, new ItemStack(Items.stick, 1)));
 
-        GT_FML_LOGGER.debug(
-            "GTMod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.cake, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(12L))
-            .itemOutputs(ItemList.IC2_Food_Can_Filled.get(12L))
-            .duration(30 * SECONDS)
-            .eut(1)
-            .addTo(cannerRecipes);
-
         GT_FML_LOGGER.debug("GTMod: Scanning ItemList.");
 
         final boolean rcItems = ModAPIManager.INSTANCE.hasAPI("RailcraftAPI|items");
@@ -185,25 +172,7 @@ public class GTItemIterator implements Runnable {
                         GTOreDictUnificator.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
                     }
                 }
-                if (((tItem instanceof ItemFood)) && (tItem != ItemList.IC2_Food_Can_Filled.getItem())
-                    && (tItem != ItemList.IC2_Food_Can_Spoiled.getItem())) {
-                    int tFoodValue = ((ItemFood) tItem).func_150905_g(new ItemStack(tItem, 1, 0));
-                    if (tFoodValue > 0) {
-                        GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                        recipeBuilder
-                            .itemInputs(new ItemStack(tItem, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(tFoodValue));
-                        if (GTUtility.getContainerItem(new ItemStack(tItem, 1, 0), true) == null) {
-                            recipeBuilder.itemOutputs(ItemList.IC2_Food_Can_Filled.get(tFoodValue));
-                        } else {
-                            recipeBuilder.itemOutputs(
-                                ItemList.IC2_Food_Can_Filled.get(tFoodValue),
-                                GTUtility.getContainerItem(new ItemStack(tItem, 1, 0), true));
-                        }
-                        recipeBuilder.duration(tFoodValue * 5 * SECONDS)
-                            .eut(1)
-                            .addTo(cannerRecipes);
-                    }
-                }
+
                 if ((tItem instanceof IFluidContainerItem)) {
                     GTOreDictUnificator.addToBlacklist(new ItemStack(tItem, 1, WILDCARD));
                 }
