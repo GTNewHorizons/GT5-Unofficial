@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -19,7 +20,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEBlackHoleUtilityGui;
 
-public class MTEBlackHoleUtility extends MTEHatch {
+public class MTEBlackHoleUtility extends MTEHatch implements IDataCopyable {
+
+    public static final String COPIED_DATA_IDENTIFIER = "blackHoleUtility";
 
     private boolean isOn = false;
 
@@ -110,6 +113,26 @@ public class MTEBlackHoleUtility extends MTEHatch {
         aNBT.setInteger("mode", mode);
         aNBT.setBoolean("isOn", isOn);
         super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setBoolean("mode", getMode());
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        setMode(nbt.getBoolean("mode"));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
     }
 
     public void cycleStart() {
