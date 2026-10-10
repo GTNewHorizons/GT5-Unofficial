@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,6 +27,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,6 +40,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -48,11 +51,13 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings9;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump> implements ISurvivalConstructable {
 
     public MTESteamWaterPump(String aName) {
@@ -70,7 +75,7 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
 
     @Override
     public String getMachineType() {
-        return "Water Pump";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.water_pump");
     }
 
     private static IStructureDefinition<MTESteamWaterPump> STRUCTURE_DEFINITION = null;
@@ -232,38 +237,27 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Converts steam to water based on humidity")
-            .addInfo("Has two tiers: Basic and High-Pressure")
-            .addInfo("High-Pressure produces 2x Water from the same steam")
-            .addInfo(
-                EnumChatFormatting.AQUA + "Generates: "
-                    + EnumChatFormatting.WHITE
-                    + "tier * humidity * "
-                    + BASE_WATER_PER_SECOND
-                    + " L/s"
-                    + EnumChatFormatting.AQUA
-                    + " of Water, to a minimum of 250L/s"
-                    + EnumChatFormatting.RESET)
-            .addInfo(
-                EnumChatFormatting.RED + "Consumes: "
-                    + EnumChatFormatting.WHITE
-                    + BASE_STEAM_PER_SECOND
-                    + " L/s"
-                    + EnumChatFormatting.RED
-                    + " of Steam"
-                    + EnumChatFormatting.RESET)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "steam-water-pump"),
+                ImmutableMap.<String, Object>of(
+                    "water",
+                    BASE_WATER_PER_SECOND,
+                    "min_water",
+                    250,
+                    "steam",
+                    BASE_STEAM_PER_SECOND))
             .beginStructureBlock(3, 3, 4, false)
-            .addController("Front bottom center")
-            .addSteamHatch("1", "Any casing", 1)
-            .addOutputHatch("1", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addSteamHatch("1", TooltipHelper.anyCasingText(), 1)
+            .addOutputHatch("1", TooltipHelper.anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
-            .addCasing("10", "Bronze Frame Box", false)
-            .addCasing("9", "Wooden Casing", false)
+            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bronze), false)
+            .addCasing("9", Casings.PrimitiveWoodenCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
-            .addCasing("10", "Steel Frame Box", false)
-            .addCasing("9", "Wooden Casing", false)
+            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("9", Casings.PrimitiveWoodenCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
