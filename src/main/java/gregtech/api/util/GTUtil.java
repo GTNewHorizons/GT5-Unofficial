@@ -54,7 +54,6 @@ public class GTUtil {
         for (Tuple t : tags) {
             switch (t.getSecond()) {
                 case null -> {
-                    continue;
                 }
                 case Boolean b -> nbt.setBoolean(
                     t.getFirst()

@@ -69,7 +69,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanochipAssemblyComplex>
     implements NanochipTooltipValues {
 
-    protected TerminalTextListWidget textList = new TerminalTextListWidget();
+    private TerminalTextListWidget textList = new TerminalTextListWidget();
     private boolean isTalkModeActive = false;
 
     private static final String TALK_MODE_COMMAND = "'talk'";

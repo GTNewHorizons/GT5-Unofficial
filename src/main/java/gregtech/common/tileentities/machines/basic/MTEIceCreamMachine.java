@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -274,7 +273,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         final List<GTRecipe> matches = getRecipeMap().findRecipeQuery()
             .items(getAllInputs())
             .findAll()
-            .collect(Collectors.toList());
+            .toList();
         if (matches.isEmpty()) return DID_NOT_FIND_RECIPE;
 
         final GTRecipe recipe = matches.get(getBaseMetaTileEntity().getRandomNumber(matches.size()));

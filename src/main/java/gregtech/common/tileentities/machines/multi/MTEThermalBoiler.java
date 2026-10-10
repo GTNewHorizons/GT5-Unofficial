@@ -384,10 +384,6 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
         checkHasOutputHatch(errors);
     }
 
-    public void checkHatch(List<StructureError> errors) {
-
-    }
-
     @Override
     public boolean supportsInputSeparation() {
         return true;
