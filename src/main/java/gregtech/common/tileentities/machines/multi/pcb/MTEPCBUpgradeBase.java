@@ -184,10 +184,9 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
         if (tileEntity == null) return LinkResult.NO_VALID_FACTORY;
         if (!(tileEntity instanceof IGregTechTileEntity gtTileEntity)) return LinkResult.NO_VALID_FACTORY;
         var metaTileEntity = gtTileEntity.getMetaTileEntity();
-        if (!(metaTileEntity instanceof MTEPCBFactory)) return LinkResult.NO_VALID_FACTORY;
+        if (!(metaTileEntity instanceof MTEPCBFactory factory)) return LinkResult.NO_VALID_FACTORY;
 
         // Now link to new controller
-        MTEPCBFactory factory = (MTEPCBFactory) metaTileEntity;
         factory.registerLinkedUnit(this);
 
         return LinkResult.SUCCESS;

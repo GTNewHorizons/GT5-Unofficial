@@ -346,7 +346,7 @@ public class MTETeleporter extends MTEBasicTank {
                                 getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 2) + 2));
 
                     for (Object tObject : entities_in_box) {
-                        if (((tObject instanceof Entity tEntity)) && (!((Entity) tObject).isDead)) {
+                        if (((tObject instanceof Entity tEntity)) && (!tEntity.isDead)) {
                             if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(
                                 (long) (Math.pow(tDistance, 1.5) * calculateWeight(tEntity) * sFPowerMultiplyer),
                                 false)) {

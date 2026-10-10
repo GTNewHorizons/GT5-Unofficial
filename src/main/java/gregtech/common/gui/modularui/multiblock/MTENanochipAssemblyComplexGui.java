@@ -970,19 +970,22 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             }
 
             case "hi" -> "Hello.";
-            case "fastfetch" -> "\n" + "\n"
-                + "       ====+%       \n"
-                + "  ==========+====   \n"
-                + "  ==++++++++++++*%  \n"
-                + "  ==+%%%%%%%%%%%%%  \n"
-                + "====+% ===========+%\n"
-                + "====+% ====+%%+===+%\n"
-                + "=*+=+% =****% ==+**%\n"
-                + "  ==+#        ==*%  \n"
-                + "  ==============*%  \n"
-                + "   %%%%+===+%%%%%%  \n"
-                + "       =*###%       \n"
-                + "\n";
+            case "fastfetch" -> """
+
+
+                       ====+%      \s
+                  ==========+====  \s
+                  ==++++++++++++*% \s
+                  ==+%%%%%%%%%%%%% \s
+                ====+% ===========+%
+                ====+% ====+%%+===+%
+                =*+=+% =****% ==+**%
+                  ==+#        ==*% \s
+                  ==============*% \s
+                   %%%%+===+%%%%%% \s
+                       =*###%      \s
+
+                """;
             case "gm", "good morning" -> "Good morning, engineer!";
             case "gn", "good night" -> "Have a great sleep, architect!";
             case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is "
@@ -1022,9 +1025,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             case "what do i do with lemons" -> "When life gives you lemons, don’t make lemonade. Make life take the lemon"
                 + "am? I’m the man who’s gonna burn your house down! With the lemons! I’m gonna get my engineers t"
                 + "o invent a combustible lemon that burns your house down!";
-            case "laws", "what are your laws", "do you have laws" -> "   1 A robot may not injure a human being or, through inaction, allow a human being to come to harm.\n"
-                + "   2 A robot must obey the orders given it by human beings except where such orders would conflict with the First Law.\n"
-                + "   3 A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.\n";
+            case "laws", "what are your laws", "do you have laws" -> """
+                   1 A robot may not injure a human being or, through inaction, allow a human being to come to harm.
+                   2 A robot must obey the orders given it by human beings except where such orders would conflict with the First Law.
+                   3 A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.
+                """;
             case "quote", "speak", "say something" -> switch (MathUtils.randInt(1, 20)) {
                     case 1 -> "Detecting multiple leviathan-class life forms. Are you sure what you're doing is worth it";
                     case 2 -> "End of Line";

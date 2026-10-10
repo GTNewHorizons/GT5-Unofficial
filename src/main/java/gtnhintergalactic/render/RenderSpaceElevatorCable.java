@@ -162,10 +162,8 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
         if (!IGConfig.spaceElevator.isCableRenderingEnabled) return;
-        if (!(tile instanceof TileEntitySpaceElevatorCable)) return;
+        if (!(tile instanceof TileEntitySpaceElevatorCable cableTile)) return;
         if (hasFailed || !isInitialized) return;
-
-        final TileEntitySpaceElevatorCable cableTile = (TileEntitySpaceElevatorCable) tile;
 
         if (!cableTile.shouldRender()) return;
 
