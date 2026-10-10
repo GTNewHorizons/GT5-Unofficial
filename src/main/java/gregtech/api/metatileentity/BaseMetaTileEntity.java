@@ -1417,7 +1417,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         final ForgeDirection effectiveSide = !hasCoverAtSide(side) ? wrenchingSide : side;
         Cover effectiveSideCover = getCoverAtSide(effectiveSide);
         final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-        final boolean hasPermission = !privateAccess() || aPlayer.getUniqueID().equals(getOwnerUuid());
+        final boolean hasPermission = !privateAccess() || (isServerSide() && aPlayer.getUniqueID()
+            .equals(getOwnerUuid()));
 
         if (tCurrentItem != null && hasPermission) {
             if (!hasCoverAtSide(effectiveSide)) {
