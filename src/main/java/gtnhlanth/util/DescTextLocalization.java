@@ -2,6 +2,7 @@ package gtnhlanth.util;
 
 import net.minecraft.util.StatCollector;
 
+@Deprecated
 public class DescTextLocalization {
 
     public static String[] addText(String preFix, int length) {
