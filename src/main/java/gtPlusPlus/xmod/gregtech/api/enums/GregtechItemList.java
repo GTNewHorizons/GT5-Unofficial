@@ -531,9 +531,6 @@ public enum GregtechItemList implements IItemContainer {
     // Auto TC Research Creator
     Thaumcraft_Researcher,
 
-    // infinite Items
-    Infinite_Item_Chest,
-
     // GT4 automation
     GT4_Electric_Auto_Workbench_LV,
     GT4_Electric_Auto_Workbench_MV,
