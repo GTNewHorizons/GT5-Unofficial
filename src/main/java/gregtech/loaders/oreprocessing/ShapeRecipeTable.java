@@ -42,6 +42,8 @@ public final class ShapeRecipeTable {
         clamp(BlockShapes.block, OrePrefixes.block);
         clamp(OreShapes.ore, OrePrefixes.ore);
         clamp(OreShapes.oreSmall, OrePrefixes.oreSmall);
+        dustSplit(Shapes.dustSmall);
+        dustSplit(Shapes.dustTiny);
 
         on(BlockShapes.block, OrePrefixes.block, () -> ProcessingBlock.INSTANCE);
         on(BlockShapes.blockCasing, OrePrefixes.blockCasing, () -> ProcessingCasing.INSTANCE);
@@ -170,6 +172,15 @@ public final class ShapeRecipeTable {
         on(CellShapes.cellPlasmaLight, OrePrefixes.cellPlasma, () -> ProcessingRecycling.INSTANCE);
         on(CellShapes.cellGas, OrePrefixes.cell, () -> ProcessingRecycling.INSTANCE);
         on(CellShapes.cellSolid, OrePrefixes.cell, () -> ProcessingRecycling.INSTANCE);
+    }
+
+    /// Dust splitting crafting recipes, run for every material carrying `shape`, [GTMaterialFlag#NO_RECIPES] ones
+    /// included.
+    private static void dustSplit(Shape shape) {
+        MaterialLibAPI.registerPostInitShapeConsumer(
+            "gregtech",
+            shape,
+            (s, material) -> ProcessingUtils.addDustSplitRecipes(material, s));
     }
 
     /// High Pressure (Redstone) fluid pipes have no generated recipes.

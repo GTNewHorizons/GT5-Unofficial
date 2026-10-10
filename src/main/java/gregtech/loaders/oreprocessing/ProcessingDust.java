@@ -439,6 +439,9 @@ public class ProcessingDust implements PartRecipeGenerator {
                 if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     return;
                 }
+                ProcessingUtils.addSimpleWasherRecipe(
+                    stack,
+                    ProcessingSubstitutes.decomposition(null, MaterialLibAPI.findStack(material, Shapes.dust, 1))[0]);
 
                 boolean hasDust = hasDust(material);
                 Material tByProduct = GTUtility.selectItemInList(

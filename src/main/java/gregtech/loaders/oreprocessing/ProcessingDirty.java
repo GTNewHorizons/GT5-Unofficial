@@ -41,6 +41,10 @@ public class ProcessingDirty implements PartRecipeGenerator {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
+        ProcessingUtils.addHammerRecipe(orePrefix, material, Shapes.dustImpure, false);
+        if (shape == Shapes.crushed) {
+            ProcessingUtils.addSimpleWasherRecipe(stack, MaterialLibAPI.findStack(material, Shapes.crushedPurified, 1));
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))

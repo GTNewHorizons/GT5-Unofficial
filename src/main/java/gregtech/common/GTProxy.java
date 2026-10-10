@@ -108,7 +108,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -116,11 +115,9 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
-import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialData;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.material.ProcessingSubstitutes;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -755,75 +752,6 @@ public class GTProxy implements IFuelHandler {
                 } catch (Exception e) {
                     GT_FML_LOGGER.error("Could not load config for MTE {}", GregTechAPI.METATILEENTITIES[i], e);
                 }
-            }
-        }
-        GT_FML_LOGGER.debug("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
-        for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MaterialUtils.unifiable(material)) {
-                if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
-                    GTModHandler.addCraftingRecipe(
-                        ProcessingSubstitutes.crafting(
-                            MaterialUtils.macerateInto(material),
-                            MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.ingredient(material) });
-                    GTModHandler.addCraftingRecipe(
-                        ProcessingSubstitutes.crafting(
-                            MaterialUtils.macerateInto(material),
-                            MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crystalline.ingredient(material) });
-                    GTModHandler.addCraftingRecipe(
-                        ProcessingSubstitutes.crafting(
-                            MaterialUtils.macerateInto(material),
-                            MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crystal.ingredient(material) });
-                    GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crushedPurified.ingredient(material) });
-                    GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.cleanGravel.ingredient(material) });
-                    GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.reduced.ingredient(material) });
-                    GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.clump.ingredient(material) });
-                    GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.shard.ingredient(material) });
-                    GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crushed.ingredient(material) });
-                    GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.dirtyGravel.ingredient(material) });
-                }
-                GTModHandler.addCraftingRecipe(
-                    MaterialLibAPI.findStack(material, Shapes.dustSmall, 4),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { " X ", "   ", "   ", 'X', OrePrefixes.dust.ingredient(material) });
-                GTModHandler.addCraftingRecipe(
-                    MaterialLibAPI.findStack(material, Shapes.dustTiny, 9),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "X  ", "   ", "   ", 'X', OrePrefixes.dust.ingredient(material) });
-                GTModHandler.addCraftingRecipe(
-                    MaterialLibAPI.findStack(material, Shapes.dust, 1),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "XX", "XX", 'X', OrePrefixes.dustSmall.ingredient(material) });
-                GTModHandler.addCraftingRecipe(
-                    MaterialLibAPI.findStack(material, Shapes.dust, 1),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.dustTiny.ingredient(material) });
             }
         }
         // Cover GUI needs to know text color which can be configured with resource packs. In theory it's not needed on

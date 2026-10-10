@@ -9,21 +9,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
 import static gregtech.api.recipe.RecipeMaps.simpleWasherRecipes;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import net.minecraft.item.ItemStack;
-
-import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
-
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials.Shapes;
-import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MaterialUtils;
-import gregtech.api.material.ProcessingSubstitutes;
-import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -31,8 +18,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class GregtechSimpleWasher {
 
     public static void run() {
-        generateDirtyDustRecipes();
-        generateDirtyCrushedRecipes();
         // Register the Simple Washer Entity.
 
         // The unlocalized names here have inconsistent numbering because there only used to be a simple washer
@@ -105,36 +90,4 @@ public class GregtechSimpleWasher {
                 .getStackForm(1L));
     }
 
-    /// Washes each impure and purified dust back to its clean dust, for every material with ore processing.
-    private static void generateDirtyDustRecipes() {
-        for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) continue;
-            ItemStack dustClean = ProcessingSubstitutes
-                .decomposition(null, MaterialLibAPI.findStack(ml, Shapes.dust, 1))[0];
-            addSimpleWashRecipe(MaterialLibAPI.findStack(ml, Shapes.dustImpure, 1), dustClean);
-            addSimpleWashRecipe(MaterialLibAPI.findStack(ml, Shapes.dustPure, 1), dustClean);
-        }
-    }
-
-    /// Washes each crushed ore to its purified form, for every material with ore processing.
-    private static void generateDirtyCrushedRecipes() {
-        for (Material ml : MaterialLibAPI.getMaterials()) {
-            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) continue;
-            addSimpleWashRecipe(
-                MaterialLibAPI.findStack(ml, Shapes.crushed, 1),
-                MaterialLibAPI.findStack(ml, Shapes.crushedPurified, 1));
-        }
-    }
-
-    private static void addSimpleWashRecipe(ItemStack aInput, ItemStack aOutput) {
-        if (aInput != null && aOutput != null) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(aInput)
-                .itemOutputs(aOutput)
-                .fluidInputs(GTUtility.getWater(100))
-                .duration(5 * TICKS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(simpleWasherRecipes);
-        }
-    }
 }

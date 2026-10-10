@@ -30,6 +30,7 @@ public class ProcessingCrystallized implements PartRecipeGenerator {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
+        ProcessingUtils.addHammerRecipe(prefix, material, Shapes.dust, true);
 
         if (MaterialUtils.macerateInto(material) == null) {
             return;

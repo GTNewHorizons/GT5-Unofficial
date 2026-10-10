@@ -37,6 +37,7 @@ public class ProcessingCrushedOre implements PartRecipeGenerator {
 
         switch (prefix.getName()) {
             case "crushedCentrifuged" -> {
+                ProcessingUtils.addHammerRecipe(prefix, material, Shapes.dust, true);
                 // An ore material need not have a dust of its own -- ChargedCertusQuartz removes the dust shape.
                 ItemStack dust = MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1);
                 if (dust == null) break;
@@ -67,6 +68,7 @@ public class ProcessingCrushedOre implements PartRecipeGenerator {
                     .addTo(maceratorRecipes);
             }
             case "crushedPurified" -> {
+                ProcessingUtils.addHammerRecipe(prefix, material, Shapes.dustPure, false);
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(
