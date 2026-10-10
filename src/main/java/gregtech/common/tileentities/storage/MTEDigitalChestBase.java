@@ -208,6 +208,16 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         return getMaxItemCount();
     }
 
+    public long getTrueItemCount() {
+        long count = getItemCount();
+        ItemStack storedItem = getItemStack();
+        if (GTUtility.isStackValid(mInventory[1])
+            && (GTUtility.isStackInvalid(storedItem) || GTUtility.areStacksEqual(mInventory[1], storedItem))) {
+            count += mInventory[1].stackSize;
+        }
+        return count;
+    }
+
     @Override
     public ItemStack getExtraItemStack() {
         return mInventory[1];
@@ -225,6 +235,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     @Override
     public IAEItemStack injectItems(final IAEItemStack input, final Actionable mode, final BaseActionSource src) {
+        if (isVoidAllItems()) return null;
         if (isMatterCluster(input.getItemStack())) {
             if (getBaseMetaTileEntity() == null) return input;
 
@@ -244,7 +255,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         }
 
         IAEItemStack returnStack = meInventoryHandler.injectItems(input, mode, src);
-        if (mVoidOverflow) {
+        if (mVoidOverflow || isVoidAllItems()) {
             return null;
         }
         return returnStack;
@@ -349,7 +360,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         mInventory[1] = null;
     }
 
-    private @Nullable ItemStack getMatterClusterTargetItem() {
+    protected @Nullable ItemStack getMatterClusterTargetItem() {
         if (getItemCount() > 0 && getItemStack() != null) return getItemStack();
         if (mInventory[1] != null && !isMatterCluster(mInventory[1])) return mInventory[1];
         return null;
@@ -439,13 +450,21 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        mVoidOverflow = !mVoidOverflow;
+        setVoidOverflow(!mVoidOverflow);
         GTUtility.sendChatTrans(
             aPlayer,
             mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
                 : "GT5U.machines.digitalchest.voidoverflow.disabled");
+    }
+
+    public boolean isVoidOverflow() {
+        return mVoidOverflow;
+    }
+
+    public void setVoidOverflow(boolean voidOverflow) {
+        mVoidOverflow = voidOverflow;
     }
 
     @Override
@@ -463,6 +482,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
 
         if (getBaseMetaTileEntity().isServerSide()) {
+            if (isVoidAllItems()) {
+                clearStoredItems();
+                return;
+            }
+
             if ((getItemCount() <= 0)) {
                 setItemStack(null);
                 setItemCount(0);
@@ -471,16 +495,18 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             insertInputItems();
             int count = getItemCount();
             ItemStack stack = getItemStack();
-            if (mInventory[1] == null && stack != null) {
-                mInventory[1] = stack.copy();
-                mInventory[1].stackSize = Math.min(stack.getMaxStackSize(), count);
-                count -= mInventory[1].stackSize;
-            } else if ((count > 0) && GTUtility.areStacksEqual(mInventory[1], stack)
-                && mInventory[1].getMaxStackSize() > mInventory[1].stackSize) {
-                    int tmp = Math.min(count, mInventory[1].getMaxStackSize() - mInventory[1].stackSize);
-                    mInventory[1].stackSize += tmp;
-                    count -= tmp;
-                }
+            if (shouldFillOutputSlot()) {
+                if (mInventory[1] == null && stack != null) {
+                    mInventory[1] = stack.copy();
+                    mInventory[1].stackSize = Math.min(stack.getMaxStackSize(), count);
+                    count -= mInventory[1].stackSize;
+                } else if ((count > 0) && GTUtility.areStacksEqual(mInventory[1], stack)
+                    && mInventory[1].getMaxStackSize() > mInventory[1].stackSize) {
+                        int tmp = Math.min(count, mInventory[1].getMaxStackSize() - mInventory[1].stackSize);
+                        mInventory[1].stackSize += tmp;
+                        count -= tmp;
+                    }
+            }
             setItemCount(count);
             if (stack != null) {
                 mInventory[2] = stack.copy();
@@ -615,34 +641,74 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
-        return aIndex == 1;
+        return aIndex == 1 && isItemOutputSide(side);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (GTValues.disableDigitalChestsExternalAccess && meInventoryHandler.hasActiveMEConnection()) return false;
-        if (aIndex != 0) return false;
+        if (aIndex != 0 || !isItemInputSide(side)) return false;
         if (isMatterCluster(aStack)) return mInventory[0] == null;
         if ((mInventory[0] != null && !GTUtility.areStacksEqual(mInventory[0], aStack))) return false;
+        return isItemInputAllowed(aStack);
+    }
+
+    public boolean isItemInputAllowed(ItemStack stack) {
         if (mDisableFilter) return true;
-        if (getItemStack() == null) return mInventory[1] == null || GTUtility.areStacksEqual(mInventory[1], aStack);
-        return GTUtility.areStacksEqual(getItemStack(), aStack);
+        if (getItemStack() == null) return mInventory[1] == null || GTUtility.areStacksEqual(mInventory[1], stack);
+        return GTUtility.areStacksEqual(getItemStack(), stack);
+    }
+
+    @Override
+    public boolean isValidItem(ItemStack item) {
+        return isItemInputAllowed(item);
+    }
+
+    protected boolean isItemInputSide(ForgeDirection side) {
+        return true;
+    }
+
+    protected boolean isItemOutputSide(ForgeDirection side) {
+        return true;
+    }
+
+    protected boolean shouldFillOutputSlot() {
+        return true;
+    }
+
+    protected boolean isVoidAllItems() {
+        return false;
+    }
+
+    protected void clearStoredItems() {
+        ItemStack storedItem = getItemStack();
+        boolean hadItems = lastTrueCount > 0 || mInventory[0] != null || mInventory[1] != null;
+        setItemCount(0);
+        setItemStack(null);
+        mInventory[0] = null;
+        mInventory[1] = null;
+        mInventory[2] = null;
+        if (!hadItems) return;
+        meInventoryHandler.notifyListeners(-lastTrueCount, storedItem);
+        lastTrueCount = 0;
+        notifyMatterClusterOutputChange();
+        markDirty();
     }
 
     @Override
     protected ItemSink getItemSink(ForgeDirection side) {
-        return new ItemIOImpl();
+        return isItemInputSide(side) ? new ItemIOImpl(side) : null;
     }
 
     @Override
     protected ItemSource getItemSource(ForgeDirection side) {
-        return new ItemIOImpl();
+        return isItemOutputSide(side) ? new ItemIOImpl(side) : null;
     }
 
     @Override
     protected ItemIO getItemIO(ForgeDirection side) {
-        return new ItemIOImpl();
+        return isItemInputSide(side) || isItemOutputSide(side) ? new ItemIOImpl(side) : null;
     }
 
     @Override
@@ -682,10 +748,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         ItemStack is = getItemStack();
         if (GTUtility.isStackInvalid(is)) return;
-        long realItemCount = getItemCount();
-        if (GTUtility.isStackValid(mInventory[1]) && GTUtility.areStacksEqual(mInventory[1], is))
-            realItemCount += mInventory[1].stackSize;
-        tag.setLong("itemCount", realItemCount);
+        tag.setLong("itemCount", getTrueItemCount());
         tag.setTag("itemType", is.writeToNBT(new NBTTagCompound()));
     }
 
@@ -730,6 +793,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     class ItemIOImpl extends SimpleItemIO {
 
         private static final int[] SLOTS = { 0, 1 };
+        private final ForgeDirection side;
+
+        ItemIOImpl(ForgeDirection side) {
+            this.side = side;
+        }
 
         @Override
         protected @NotNull InventoryIterator iterator(int[] allowedSlots) {
@@ -772,6 +840,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
             @Override
             public ItemStack extract(int amount, boolean forced) {
+                if (!isItemOutputSide(side)) return null;
                 switch (getCurrentSlot()) {
                     case 0 -> {
                         int toExtract = Math.min(amount, getItemCount());
@@ -824,10 +893,12 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
             @Override
             public int insert(ImmutableItemStack stack, boolean forced) {
+                int remaining = stack.getStackSize();
+                if (!isItemInputSide(side)) return remaining;
+                if (isVoidAllItems()) return 0;
                 Integer matterClusterRemainder = tryInsertMatterClusters(stack, forced);
                 if (matterClusterRemainder != null) return matterClusterRemainder;
-
-                int remaining = stack.getStackSize();
+                if (!isItemInputAllowed(stack.toStackFast())) return remaining;
                 if (getCurrentSlot() == 1) {
                     int max = getStackSizeLimit(1, stack.toStackFast());
 
@@ -868,7 +939,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 }
                 remaining -= insertable;
 
-                return remaining;
+                return mVoidOverflow ? 0 : remaining;
             }
 
             private @Nullable Integer tryInsertMatterClusters(ImmutableItemStack stack, boolean forced) {
