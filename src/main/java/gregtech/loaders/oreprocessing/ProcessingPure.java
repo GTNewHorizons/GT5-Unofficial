@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -25,7 +26,7 @@ public class ProcessingPure implements PartRecipeGenerator {
     private ProcessingPure() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }

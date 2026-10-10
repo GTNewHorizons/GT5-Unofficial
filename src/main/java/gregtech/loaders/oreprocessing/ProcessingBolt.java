@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -18,7 +19,7 @@ public class ProcessingBolt implements PartRecipeGenerator {
     private ProcessingBolt() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if (MaterialUtils.processingMaterialTierEU(material) >= TierEU.IV) {
             return;
         }

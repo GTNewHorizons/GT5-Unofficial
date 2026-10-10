@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -36,8 +37,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
     private ProcessingDirty() {}
 
     @Override
-    public void generate(OrePrefixes orePrefix, Material material, String oreDictName,
-        net.minecraft.item.ItemStack stack) {
+    public void generate(OrePrefixes orePrefix, Material material, Shape shape, ItemStack stack) {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }

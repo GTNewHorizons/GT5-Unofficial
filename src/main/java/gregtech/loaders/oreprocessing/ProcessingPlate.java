@@ -1,7 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.GTValues.NI;
-import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
@@ -14,7 +13,6 @@ import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -24,12 +22,12 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
@@ -58,7 +56,7 @@ public class ProcessingPlate implements PartRecipeGenerator {
     private ProcessingPlate() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         final boolean noSmashing = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         final boolean noWorking = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);
         final long materialMass = MaterialUtils.mass(material);
@@ -72,7 +70,6 @@ public class ProcessingPlate implements PartRecipeGenerator {
             case "plateDense" -> registerPlateDense(material, stack, noSmashing, materialMass);
             case "plateSuperdense" -> registerPlateSuperdense(material, stack, noSmashing, materialMass);
             case "itemCasing" -> registerItemCasing(prefix, material, stack, noSmashing);
-            case "plateAlloy" -> registerPlateAlloy(oreDictName, stack);
             default -> {}
         }
     }
@@ -472,52 +469,6 @@ public class ProcessingPlate implements PartRecipeGenerator {
                 .duration(((int) Math.max(MaterialUtils.mass(material) / 2.5, 1L)) * TICKS)
                 .eut(calculateRecipeEU(material, 16))
                 .addTo(cutterRecipes);
-        }
-    }
-
-    private void registerPlateAlloy(final String oreDictName, final ItemStack stack) {
-
-        switch (oreDictName) {
-            case "plateAlloyCarbon" -> {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTModHandler.getIC2Item("generator", 1L), GTUtility.copyAmount(4, stack))
-                    .itemOutputs(GTModHandler.getIC2Item("windMill", 1L))
-                    .duration(5 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_ULV)
-                    .addTo(assemblerRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.glass, 3, WILDCARD))
-                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
-                    .duration(20 * SECONDS)
-                    .eut(4)
-                    .addTo(alloySmelterRecipes);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        GTUtility.copyAmount(1, stack),
-                        MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, 3))
-                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
-                    .duration(20 * SECONDS)
-                    .eut(4)
-                    .addTo(alloySmelterRecipes);
-            }
-            case "plateAlloyAdvanced" -> {
-                RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, stack), new ItemStack(Blocks.glass, 3, WILDCARD))
-                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
-                    .duration(20 * SECONDS)
-                    .eut(4)
-                    .addTo(alloySmelterRecipes);
-                RA.stdBuilder()
-                    .itemInputs(
-                        GTUtility.copyAmount(1, stack),
-                        MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, 3))
-                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
-                    .duration(20 * SECONDS)
-                    .eut(4)
-                    .addTo(alloySmelterRecipes);
-            }
-            default -> {}
         }
     }
 

@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -31,7 +32,7 @@ public class ProcessingGear implements PartRecipeGenerator {
     private ProcessingGear() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         switch (prefix.getName()) {
             case "gearGt" -> {
                 GTModHandler.removeRecipeByOutputDelayed(stack);

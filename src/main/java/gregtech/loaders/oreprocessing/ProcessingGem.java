@@ -41,7 +41,7 @@ public class ProcessingGem implements PartRecipeGenerator {
     private ProcessingGem() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         long materialMass = MaterialUtils.mass(material);
         boolean noSmashing = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean noWorking = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);

@@ -14,6 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.PipeMaterials;
 import gregtech.api.enums.materials.Shapes;
@@ -138,6 +139,13 @@ public final class ShapeRecipeTable {
         registerTransforming();
         registerRecycling();
         on(Shapes.toolHeadDrill, OrePrefixes.toolHeadDrill, () -> ProcessingDetravToolProspector.INSTANCE);
+        on(Shapes.gem, OrePrefixes.crystal, ShapeRecipeTable::isQuartzCrystal, () -> ProcessingCrystallized.INSTANCE);
+        on(Shapes.plate, OrePrefixes.item, material -> material == Materials.Silicon, () -> ProcessingItem.INSTANCE);
+    }
+
+    /// Certus Quartz and Quartzite gems also get the crystal recipes.
+    private static boolean isQuartzCrystal(Material material) {
+        return material == Materials.CertusQuartz || material == Materials.Quartzite;
     }
 
     /// Chemical-bath and polarizer recipes for every material-carrying prefix that is neither a container nor
@@ -146,7 +154,7 @@ public final class ShapeRecipeTable {
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
             if (prefix.getMaterialAmount() <= 0 || prefix.isContainer() || prefix.isEnchantable()) continue;
             for (Shape shape : MaterialParts.shapes(prefix)) {
-                on(shape, prefix, () -> new ProcessingTransforming(shape));
+                on(shape, prefix, () -> ProcessingTransforming.INSTANCE);
             }
         }
     }
@@ -192,7 +200,7 @@ public final class ShapeRecipeTable {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
             if (!filter.test(material)) return;
-            dispatch(registrator, prefix, material, MaterialLibAPI.getStack(material, s, 1));
+            dispatch(registrator, prefix, material, s, MaterialLibAPI.getStack(material, s, 1));
         });
     }
 
@@ -208,17 +216,16 @@ public final class ShapeRecipeTable {
                 ItemStack stack = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, false);
                 if (stack == null) continue;
                 GTRecipeBuilder
-                    .withVariantGroup(group, () -> dispatch(registrator, stoneType.getPrefix(), material, stack));
+                    .withVariantGroup(group, () -> dispatch(registrator, stoneType.getPrefix(), material, s, stack));
             }
         });
     }
 
     private static void dispatch(Supplier<PartRecipeGenerator> registrator, OrePrefixes prefix, Material material,
-        ItemStack stack) {
+        Shape shape, ItemStack stack) {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES) || prefix.isIgnored(material)) return;
-        String oreName = prefix.getName() + MaterialUtils.internalName(material);
-        if (OreDictRegistrationHandler.isIgnoredName(oreName)) return;
+        if (OreDictRegistrationHandler.isIgnoredName(prefix.getName() + MaterialUtils.internalName(material))) return;
         registrator.get()
-            .generate(prefix, material, oreName, stack);
+            .generate(prefix, material, shape, stack);
     }
 }

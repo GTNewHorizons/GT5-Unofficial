@@ -25,14 +25,14 @@ import gregtech.loaders.oreprocessing.ForeignPartRecipeTable.ForeignPart;
 /// [gregtech.common.oredict.OreDictRegistration] decides which registrations reach [#run].
 public final class ForeignPartRecipes {
 
-    private static final Map<OrePrefixes, PartRecipeGenerator> RULES = new IdentityHashMap<>();
+    private static final Map<OrePrefixes, ForeignPartRule> RULES = new IdentityHashMap<>();
     private static final Map<OrePrefixes, PartRecipeGenerator> TABLE_GENERATORS = new IdentityHashMap<>();
 
     static {
-        register(RULES, ProcessingCrop.INSTANCE, OrePrefixes.crop);
-        register(RULES, ProcessingLog.INSTANCE, OrePrefixes.log);
-        register(RULES, ProcessingPlank.INSTANCE, OrePrefixes.plank);
-        register(RULES, ProcessingSlab.INSTANCE, OrePrefixes.slab);
+        RULES.put(OrePrefixes.crop, ProcessingCrop.INSTANCE);
+        RULES.put(OrePrefixes.log, ProcessingLog.INSTANCE);
+        RULES.put(OrePrefixes.plank, ProcessingPlank.INSTANCE);
+        RULES.put(OrePrefixes.slab, ProcessingSlab.INSTANCE);
 
         register(TABLE_GENERATORS, ProcessingCompressed.INSTANCE, OrePrefixes.compressed);
         register(TABLE_GENERATORS, ProcessingCrystallized.INSTANCE, OrePrefixes.crystal);
@@ -40,12 +40,7 @@ public final class ForeignPartRecipes {
         register(TABLE_GENERATORS, ProcessingItem.INSTANCE, OrePrefixes.item);
         register(TABLE_GENERATORS, ProcessingNugget.INSTANCE, OrePrefixes.nugget);
         register(TABLE_GENERATORS, ProcessingOre.INSTANCE, OrePrefixes.ore, OrePrefixes.oreDeepslate);
-        register(
-            TABLE_GENERATORS,
-            ProcessingPlate.INSTANCE,
-            OrePrefixes.plate,
-            OrePrefixes.plateDense,
-            OrePrefixes.plateAlloy);
+        register(TABLE_GENERATORS, ProcessingPlate.INSTANCE, OrePrefixes.plate, OrePrefixes.plateDense);
     }
 
     private ForeignPartRecipes() {}
@@ -75,23 +70,24 @@ public final class ForeignPartRecipes {
         if (!GTUtility.isStackValid(stack)) return;
 
         clampStackSize(prefix, stack);
-        PartRecipeGenerator rule = RULES.get(prefix);
+        ForeignPartRule rule = RULES.get(prefix);
         if (rule != null) {
             rule.generate(prefix, material, oreDictName, GTUtility.copyAmount(1, stack));
         }
     }
 
-    /// Generates the recipes of every [ForeignPartRecipeTable] row whose item exists, and removes the foreign
-    /// storage-block
-    /// recipes [ProcessingBlock#removeForeignBlockRecipes] replaces.
+    /// Generates the recipes of every [ForeignPartRecipeTable] row whose item exists and of the alloy plates (see
+    /// [AlloyPlateRecipes]), and removes the foreign storage-block recipes [ProcessingBlock#removeForeignBlockRecipes]
+    /// replaces.
     public static void registerTable() {
         for (ForeignPart part : ForeignPartRecipeTable.parts()) {
             ItemStack stack = part.stack()
                 .get();
             if (!GTUtility.isStackValid(stack)) continue;
             TABLE_GENERATORS.get(part.prefix())
-                .generate(part.prefix(), part.material(), part.oreName(), stack);
+                .generate(part.prefix(), part.material(), null, stack);
         }
+        AlloyPlateRecipes.register();
         ProcessingBlock.removeForeignBlockRecipes();
     }
 }

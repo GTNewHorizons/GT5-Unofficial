@@ -12,7 +12,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingCrop implements PartRecipeGenerator {
+public class ProcessingCrop implements ForeignPartRule {
 
     public static final ProcessingCrop INSTANCE = new ProcessingCrop();
 

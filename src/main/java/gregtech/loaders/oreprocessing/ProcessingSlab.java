@@ -16,7 +16,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingSlab implements PartRecipeGenerator {
+public class ProcessingSlab implements ForeignPartRule {
 
     public static final ProcessingSlab INSTANCE = new ProcessingSlab();
 

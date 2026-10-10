@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
@@ -30,7 +31,7 @@ public class ProcessingCompressed implements PartRecipeGenerator {
     private ProcessingCompressed() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         GTModHandler.removeRecipeByOutputDelayed(stack);
         CoverRegistry.registerDecorativeCover(
             stack,

@@ -50,7 +50,7 @@ public class ProcessingWire implements PartRecipeGenerator {
     private ProcessingWire() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if (tt == TunnelType.ME) {
             try {
                 tt = TunnelType.valueOf("GT_POWER");
@@ -148,7 +148,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                 // Shapeless crafting recipes
                 GTModHandler.addShapelessCraftingRecipe(
                     MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 2),
-                    new Object[] { oreDictName });
+                    new Object[] { prefix.ingredient(material) });
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
@@ -161,7 +161,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                 // Shapeless crafting recipes
                 GTModHandler.addShapelessCraftingRecipe(
                     MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 4),
-                    new Object[] { oreDictName });
+                    new Object[] { prefix.ingredient(material) });
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
@@ -178,7 +178,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                 // Shapeless crafting recipes
                 GTModHandler.addShapelessCraftingRecipe(
                     MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 8),
-                    new Object[] { oreDictName });
+                    new Object[] { prefix.ingredient(material) });
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
@@ -197,7 +197,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                 // Shapeless crafting recipes
                 GTModHandler.addShapelessCraftingRecipe(
                     MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 12),
-                    new Object[] { oreDictName });
+                    new Object[] { prefix.ingredient(material) });
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
@@ -210,7 +210,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                 // Shapeless crafting recipes
                 GTModHandler.addShapelessCraftingRecipe(
                     MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 16),
-                    new Object[] { oreDictName });
+                    new Object[] { prefix.ingredient(material) });
 
                 GTModHandler.addShapelessCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
@@ -237,7 +237,7 @@ public class ProcessingWire implements PartRecipeGenerator {
         switch (MaterialUtils.internalName(material)) {
             case "RedAlloy", "Cobalt", "Lead", "Tin", "Zinc", "SolderingAlloy" -> {
                 ArrayList<Object> craftingListRubber = new ArrayList<>();
-                craftingListRubber.add(oreDictName);
+                craftingListRubber.add(prefix.ingredient(material));
                 for (int i = 0; i < costMultiplier; i++) {
                     craftingListRubber.add(OrePrefixes.plate.ingredient(Materials.Rubber));
                 }

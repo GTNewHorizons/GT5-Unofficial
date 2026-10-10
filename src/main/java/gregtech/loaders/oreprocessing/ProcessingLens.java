@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import appeng.api.AEApi;
 import gregtech.api.covers.CoverRegistry;
@@ -30,7 +31,7 @@ public class ProcessingLens implements PartRecipeGenerator {
     private ProcessingLens() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         AEApi.instance()
             .registries()
             .blockingModeIgnoreItem()

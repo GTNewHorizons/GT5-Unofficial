@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -24,7 +25,7 @@ public class ProcessingRecycling implements PartRecipeGenerator {
     private ProcessingRecycling() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if ((material != Materials.Empty) && (GTUtility.getFluidForFilledItem(stack, true) == null)
             && !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
             && (MaterialLibAPI.findStack(material, Shapes.dust, 1) != null)) {

@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -30,7 +31,7 @@ public class ProcessingStickLong implements PartRecipeGenerator {
     private ProcessingStickLong() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         ProcessingStick
             .addMeltMoldRecipe(OrePrefixes.stickLong, material, stack, ItemList.Shape_Mold_Rod_Long, 15 * SECONDS);
         if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {

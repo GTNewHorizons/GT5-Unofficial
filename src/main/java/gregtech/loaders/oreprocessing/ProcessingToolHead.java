@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -34,7 +35,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
     private ProcessingToolHead() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         boolean unifiable = MaterialUtils.unifiable(material);
         boolean specialRecipeReq1 = unifiable && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean specialRecipeReq2 = unifiable && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);
@@ -53,8 +54,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 100000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "PBM", "dXG", "SGP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Lithium.get(1L) });
@@ -66,8 +67,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 75000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "PBM", "dXG", "SGP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Cadmium.get(1L) });
@@ -79,8 +80,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 50000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "PBM", "dXG", "SGP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Sodium.get(1L) });
@@ -92,8 +93,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 400000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "PBM", "dXG", "SGP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
@@ -105,8 +106,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 300000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "PBM", "dXG", "SGP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Cadmium.get(1L) });
@@ -118,8 +119,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 200000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "PBM", "dXG", "SGP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Sodium.get(1L) });
@@ -131,9 +132,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 1600000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "PBM", "dXG", "SGP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GTModHandler.addCraftingRecipe(
@@ -144,9 +145,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 1200000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "PBM", "dXG", "SGP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GTModHandler.addCraftingRecipe(
@@ -157,9 +158,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 800000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PBM", "dXG", "SGP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "PBM", "dXG", "SGP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
                 if (specialRecipeReq2) GTModHandler.addCraftingRecipe(
@@ -176,8 +177,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 100000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Lithium.get(1L) });
@@ -189,8 +190,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 75000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Cadmium.get(1L) });
@@ -202,8 +203,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 50000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Sodium.get(1L) });
@@ -215,8 +216,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 400000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
@@ -228,8 +229,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 300000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Cadmium.get(1L) });
@@ -241,8 +242,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 200000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Sodium.get(1L) });
@@ -254,9 +255,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 1600000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GTModHandler.addCraftingRecipe(
@@ -267,9 +268,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 1200000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GTModHandler.addCraftingRecipe(
@@ -280,9 +281,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 800000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
                 if (specialRecipeReq2) GTModHandler.addCraftingRecipe(
@@ -301,8 +302,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 100_000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Lithium.get(1L) });
@@ -314,8 +315,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 75_000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Cadmium.get(1L) });
@@ -327,8 +328,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 50_000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Sodium.get(1L) });
@@ -340,8 +341,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 400_000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
@@ -353,8 +354,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 300_000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Cadmium.get(1L) });
@@ -366,8 +367,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 200_000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Sodium.get(1L) });
@@ -379,9 +380,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 1_600_000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GTModHandler.addCraftingRecipe(
@@ -392,9 +393,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 1_200_000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GTModHandler.addCraftingRecipe(
@@ -405,9 +406,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 800_000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
                 // LV Jackhammer
@@ -566,7 +567,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                             material,
                             MaterialUtils.handleMaterial(material),
                             null),
-                        new Object[] { oreDictName,
+                        new Object[] { prefix.ingredient(material),
                             OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
 
                     if ((!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING))
@@ -614,7 +615,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                             material,
                             MaterialUtils.handleMaterial(material),
                             null),
-                        new Object[] { oreDictName,
+                        new Object[] { prefix.ingredient(material),
                             OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
 
                     if (specialRecipeReq1) GTModHandler.addCraftingRecipe(
@@ -655,8 +656,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 100000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Lithium.get(1L) });
@@ -668,8 +669,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 75000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Cadmium.get(1L) });
@@ -681,8 +682,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Steel,
                         new long[] { 50000L, 32L, 1L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_LV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Steel), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_LV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'P',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'B',
                         ItemList.Battery_RE_LV_Sodium.get(1L) });
@@ -694,8 +695,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 400000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
@@ -707,8 +708,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 300000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Cadmium.get(1L) });
@@ -720,8 +721,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.Aluminium,
                         new long[] { 200000L, 128L, 2L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_MV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.Aluminium), 'P',
                         OrePrefixes.plate.ingredient(Materials.Aluminium), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'B',
                         ItemList.Battery_RE_MV_Sodium.get(1L) });
@@ -733,9 +734,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 1600000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Lithium.get(1L) });
                 GTModHandler.addCraftingRecipe(
@@ -746,9 +747,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 1200000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Cadmium.get(1L) });
                 GTModHandler.addCraftingRecipe(
@@ -759,9 +760,9 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         Materials.StainlessSteel,
                         new long[] { 800000L, 512L, 3L, -1L }),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "SXd", "GMG", "PBP", 'X', oreDictName, 'M', ItemList.Electric_Motor_HV.get(1L), 'S',
-                        OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'P',
-                        OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
+                    new Object[] { "SXd", "GMG", "PBP", 'X', prefix.ingredient(material), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.ingredient(Materials.StainlessSteel),
+                        'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'G',
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
                 GTModHandler.addCraftingRecipe(
@@ -1177,7 +1178,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                             MaterialUtils.handleMaterial(material),
                             null),
                         GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { oreDictName,
+                        new Object[] { prefix.ingredient(material),
                             OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
                     GTModHandler.addCraftingRecipe(
                         MetaGeneratedTool01.INSTANCE.getToolWithStats(

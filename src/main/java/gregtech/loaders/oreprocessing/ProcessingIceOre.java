@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -21,7 +22,7 @@ public class ProcessingIceOre implements PartRecipeGenerator {
     private ProcessingIceOre() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oredictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if (prefix != OrePrefixes.ore && prefix != OrePrefixes.rawOre) return;
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.ICE_ORE)) return;
 

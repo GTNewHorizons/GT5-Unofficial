@@ -182,7 +182,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
     }
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if (material == Materials.Ichorium || material == Materials.NetherQuartz) {
             return;
         }

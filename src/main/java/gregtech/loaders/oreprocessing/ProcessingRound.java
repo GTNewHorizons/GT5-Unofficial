@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import appeng.core.Api;
 import gregtech.api.enums.GTValues;
@@ -25,7 +26,7 @@ public class ProcessingRound implements PartRecipeGenerator {
     private ProcessingRound() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             if (MaterialLibAPI.findStack(material, Shapes.nugget, 1) != null) {
                 GTValues.RA.stdBuilder()

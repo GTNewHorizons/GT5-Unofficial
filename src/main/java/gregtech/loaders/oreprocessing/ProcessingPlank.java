@@ -30,7 +30,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("ControlFlowStatementWithoutBraces")
-public class ProcessingPlank implements PartRecipeGenerator {
+public class ProcessingPlank implements ForeignPartRule {
 
     /**
      * Sometimes automatically searching for recipes is not enough to ensure that the corresponding slab is correctly

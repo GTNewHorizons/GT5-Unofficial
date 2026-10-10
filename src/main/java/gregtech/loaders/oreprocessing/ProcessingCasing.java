@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -30,7 +31,7 @@ public class ProcessingCasing implements PartRecipeGenerator {
     private ProcessingCasing() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         OrePrefixes outer = material == Materials.Wood ? OrePrefixes.plank : OrePrefixes.plateDouble;
 
         if (MaterialLibAPI.findStack(material, Shapes.plate, 1) == null

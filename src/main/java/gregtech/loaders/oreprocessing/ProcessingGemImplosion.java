@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -87,7 +88,7 @@ public final class ProcessingGemImplosion implements PartRecipeGenerator {
     }
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack dust) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack dust) {
         Yield named = YIELDS.get(material);
         if (named != null) {
             ItemStack gems = material == Materials.Diamond ? ItemList.IC2_Industrial_Diamond.get(3L)

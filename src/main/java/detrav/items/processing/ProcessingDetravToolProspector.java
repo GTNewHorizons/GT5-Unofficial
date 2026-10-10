@@ -15,6 +15,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
@@ -36,7 +37,7 @@ public class ProcessingDetravToolProspector implements PartRecipeGenerator {
     private ProcessingDetravToolProspector() {}
 
     @Override
-    public void generate(OrePrefixes aPrefix, Material material, String aOreDictName, ItemStack aStack) {
+    public void generate(OrePrefixes aPrefix, Material material, Shape shape, ItemStack aStack) {
         if (DetravScannerMod.DEBUG_ENABLED) return;
 
         Material steel = Materials.Steel;

@@ -22,7 +22,7 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingLog implements PartRecipeGenerator {
+public class ProcessingLog implements ForeignPartRule {
 
     public static final ProcessingLog INSTANCE = new ProcessingLog();
 

@@ -9,22 +9,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
-import com.ruling_0.materiallib.api.Shape;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.XModMaterials;
 
-/// The items of other mods, and of MaterialLib under another prefix's name, that [ForeignPartRecipes#registerTable]
-/// generates part recipes, covers and material data for. A row whose item is absent is skipped.
+/// The items of other mods that [ForeignPartRecipes#registerTable] generates part recipes, covers and material data
+/// for. A row whose item is absent is skipped.
 final class ForeignPartRecipeTable {
 
-    /// One item, processed as `oreName` would be under `prefix` and `material`.
-    record ForeignPart(OrePrefixes prefix, Material material, String oreName, Supplier<ItemStack> stack) {}
+    /// One item, processed as a `prefix` part of `material`.
+    record ForeignPart(OrePrefixes prefix, Material material, Supplier<ItemStack> stack) {}
 
     static List<ForeignPart> parts() {
         return List.of(
@@ -174,12 +170,6 @@ final class ForeignPartRecipeTable {
             ore(Materials.Iron, "GalaxySpace", "barnardaEoreiron", 0),
             ore(Materials.Gold, "GalaxySpace", "barnardaEoregold", 0),
             ore(Materials.Adamantium, "GalaxySpace", "oberonblocks", 3),
-            // gregtech
-            alias(OrePrefixes.crystal, Materials.CertusQuartz, Shapes.gem),
-            alias(OrePrefixes.crystal, Materials.Quartzite, Shapes.gem),
-            alias(OrePrefixes.item, Materials.Silicon, Shapes.plate),
-            named(OrePrefixes.plateAlloy, "plateAlloyAdvanced", () -> ItemList.AdvancedAlloyPlate.get(1)),
-            named(OrePrefixes.plateAlloy, "plateAlloyCarbon", () -> ItemList.CarbonAlloyPlate.get(1)),
             // HardcoreEnderExpansion
             ore(Materials.HeeEndium, "HardcoreEnderExpansion", "endium_ore", 0),
             // harvestcraft
@@ -191,8 +181,6 @@ final class ForeignPartRecipeTable {
             ore(Materials.Lead, "IC2", "blockOreLead", 0),
             part(OrePrefixes.plateDense, Materials.Lapis, "IC2", "itemDensePlates", 8),
             part(OrePrefixes.plateDense, Materials.Obsidian, "IC2", "itemDensePlates", 7),
-            named(OrePrefixes.plateAlloy, "plateAlloyAdvanced", "IC2", "itemPartAlloy", 0),
-            named(OrePrefixes.plateAlloy, "plateAlloyCarbon", "IC2", "itemPartCarbonPlate", 0),
             // MagicBees
             part(OrePrefixes.nugget, Materials.Emerald, "MagicBees", "beeNugget", 6),
             part(OrePrefixes.nugget, Materials.Diamond, "MagicBees", "beeNugget", 5),
@@ -256,27 +244,7 @@ final class ForeignPartRecipeTable {
     }
 
     private static ForeignPart part(OrePrefixes prefix, Material material, String modId, String name, int meta) {
-        return new ForeignPart(
-            prefix,
-            material,
-            prefix.getName() + material.getName(),
-            () -> modStack(modId, name, meta));
-    }
-
-    private static ForeignPart alias(OrePrefixes prefix, Material material, Shape shape) {
-        return new ForeignPart(
-            prefix,
-            material,
-            prefix.getName() + material.getName(),
-            () -> MaterialLibAPI.getStack(material, shape, 1));
-    }
-
-    private static ForeignPart named(OrePrefixes prefix, String oreName, String modId, String name, int meta) {
-        return named(prefix, oreName, () -> modStack(modId, name, meta));
-    }
-
-    private static ForeignPart named(OrePrefixes prefix, String oreName, Supplier<ItemStack> stack) {
-        return new ForeignPart(prefix, Materials.NULL, oreName, stack);
+        return new ForeignPart(prefix, material, () -> modStack(modId, name, meta));
     }
 
     private static ItemStack modStack(String modId, String name, int meta) {

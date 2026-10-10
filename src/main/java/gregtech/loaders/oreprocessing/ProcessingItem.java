@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.M;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MaterialData;
@@ -18,7 +19,7 @@ public class ProcessingItem implements PartRecipeGenerator {
     private ProcessingItem() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         MaterialData.add(stack, new ItemData(material, M));
     }
 }

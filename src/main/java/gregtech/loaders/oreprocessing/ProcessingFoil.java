@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
@@ -25,7 +26,7 @@ public class ProcessingFoil implements PartRecipeGenerator {
     private ProcessingFoil() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         // ArtificialMicaLine bends Fluorophlogopite plates on the same circuit into Mica Insulator Foil
         if (material != Materials.Fluorophlogopite) registerBenderRecipe(material);
         registerCover(stack, material);

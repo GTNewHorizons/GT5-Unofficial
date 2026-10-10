@@ -50,7 +50,7 @@ public class ProcessingShaping implements PartRecipeGenerator {
     }
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if (shapesFromIngots(material)) {
             long materialMass = MaterialUtils.mass(material);
             int tAmount = (int) (prefix.getMaterialAmount() / 3628800L);

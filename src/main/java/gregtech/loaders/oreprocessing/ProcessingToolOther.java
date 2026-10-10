@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
@@ -23,7 +24,7 @@ public class ProcessingToolOther implements PartRecipeGenerator {
     private ProcessingToolOther() {}
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if (material == null) return;
 
         if ((material == Materials.Stone) || (material == Materials.Flint)) {

@@ -62,7 +62,7 @@ public class ProcessingPipe implements PartRecipeGenerator {
     }
 
     @Override
-    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if (material == null) return;
 
         long bits = getPipeBits(prefix, material);
