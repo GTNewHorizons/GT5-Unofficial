@@ -5,13 +5,13 @@ import static gregtech.api.util.GTRecipeConstants.MASS;
 import static gregtech.api.util.GTRecipeConstants.SIEVERT;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -74,24 +74,16 @@ public class RadioHatchMaterialLoader {
         loadRadioHatchNEI();
     }
 
+    /// Registers the rods of every radioactive material as radio hatch fuel, as MaterialLib generates them. Runs from
+    /// GregTech's [com.ruling_0.materiallib.api.MaterialRegistrationEvent] handler.
+    public static void registerMaterialRods() {
+        MaterialLibAPI
+            .registerShapeConsumer("bartworks", Shapes.stick, (shape, material) -> addRod(material, shape, 1));
+        MaterialLibAPI
+            .registerShapeConsumer("bartworks", Shapes.stickLong, (shape, material) -> addRod(material, shape, 2));
+    }
+
     public static void addRadioHatchMaterials() {
-        Material[] specialMaterial = { Materials.Naquadah, Materials.NaquadahEnriched, Materials.Naquadria };
-        int[] specialValue = { 130, 140, 150 };
-
-        for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!isRadioactive(material) || material == Materials.Tiberium
-                || material == Materials.Tritanium
-                || Arrays.asList(specialMaterial)
-                    .contains(material)) {
-                continue;
-            }
-            addRods(material, (int) MaterialUtils.protons(material));
-        }
-
-        for (int i = 0; i < specialMaterial.length; i++) {
-            addRods(specialMaterial[i], specialValue[i]);
-        }
-
         radioHatchMaterialAdder(ItemList.RodThorium.get(1), MaterialUtils.protons(Materials.Thorium), 3);
         radioHatchMaterialAdder(ItemList.RodThorium2.get(1), MaterialUtils.protons(Materials.Thorium), 6);
         radioHatchMaterialAdder(ItemList.RodThorium4.get(1), MaterialUtils.protons(Materials.Thorium), 12);
@@ -138,18 +130,18 @@ public class RadioHatchMaterialLoader {
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadria4.get(1), 15, 12);
     }
 
-    /// Whether `material`'s rods are radio hatch fuel: it has a [GTMaterialProperties#RADIATION_LEVEL], or it is an
-    /// element at or above bismuth.
-    private static boolean isRadioactive(Material material) {
-        return material.getProperty(GTMaterialProperties.RADIATION_LEVEL) != null
-            || MaterialUtils.element(material) != null && MaterialUtils.protons(material) >= 83;
-    }
-
-    private static void addRods(Material material, int level) {
-        ItemStack stick = MaterialLibAPI.findStack(material, Shapes.stick, 1);
-        if (stick != null) radioHatchMaterialAdder(stick, level, 1);
-        ItemStack stickLong = MaterialLibAPI.findStack(material, Shapes.stickLong, 1);
-        if (stickLong != null) radioHatchMaterialAdder(stickLong, level, 2);
+    /// Adds `material`'s rod of `shape`, weighing `mass`, at its radio hatch level: its
+    /// [GTMaterialProperties#RADIO_HATCH_SIEVERT], else its proton count when it has a
+    /// [GTMaterialProperties#RADIATION_LEVEL] or is an element at or above bismuth.
+    private static void addRod(Material material, Shape shape, int mass) {
+        Integer sievert = material.getProperty(GTMaterialProperties.RADIO_HATCH_SIEVERT);
+        if (sievert == null) {
+            boolean radioactive = material.getProperty(GTMaterialProperties.RADIATION_LEVEL) != null
+                || MaterialUtils.element(material) != null && MaterialUtils.protons(material) >= 83;
+            if (!radioactive) return;
+            sievert = (int) MaterialUtils.protons(material);
+        }
+        if (sievert > 0) radioHatchMaterialAdder(MaterialLibAPI.getStack(material, shape, 1), sievert, mass);
     }
 
     public static void loadRadioHatchNEI() {

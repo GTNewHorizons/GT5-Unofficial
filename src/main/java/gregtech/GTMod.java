@@ -30,6 +30,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.MaterialRegistrationEvent;
 
+import bartworks.common.loaders.RadioHatchMaterialLoader;
 import bwcrossmod.galacticgreg.VoidMinerLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -321,6 +322,7 @@ public class GTMod {
         MaterialSystem.init();
         OrePrefixes.copyDataFromShapes();
         ShapeRecipeTable.register();
+        RadioHatchMaterialLoader.registerMaterialRods();
         CauldronWashing.register();
     }
 

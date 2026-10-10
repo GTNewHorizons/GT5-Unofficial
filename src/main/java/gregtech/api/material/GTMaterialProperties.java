@@ -124,6 +124,9 @@ public class GTMaterialProperties {
     /// The radiation level a radioactive material's items and blocks inflict on the carrier; see
     /// [gregtech.api.hazards.ItemHazards#radiationLevel]. Absent when the material is not radioactive.
     public static final Property<Integer> RADIATION_LEVEL = Property.of("gregtech", "radiationLevel");
+    /// The sievert level this material's rods give in a radio hatch, in place of the proton count every radioactive
+    /// material's rods give. Zero keeps its rods out of the radio hatch.
+    public static final Property<Integer> RADIO_HATCH_SIEVERT = Property.of("gregtech", "radioHatchSievert");
     public static final Property<MaterialRef> SMELT_INTO = Property.of("gregtech", "smeltInto");
     public static final Property<Integer> SMELTING_MULTIPLIER = Property.of("gregtech", "smeltingMultiplier", 1);
     /// The Forge fluid name of the material's solid form, such as crushed ice.
