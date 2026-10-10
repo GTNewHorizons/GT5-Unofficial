@@ -144,7 +144,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Cleanroom")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cleanroom"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "cleanroom"),
                 ImmutableMap.<String, Object>builder()
