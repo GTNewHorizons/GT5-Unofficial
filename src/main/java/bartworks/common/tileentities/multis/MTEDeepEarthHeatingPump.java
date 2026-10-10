@@ -13,6 +13,8 @@
 
 package bartworks.common.tileentities.multis;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +23,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -28,11 +32,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import bartworks.MainMod;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -47,6 +54,7 @@ import gregtech.common.gui.modularui.multiblock.MTEDrillerBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     private byte mMode;
@@ -84,49 +92,32 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Geothermal Heat Pump, DEHP")
-            .addInfo("Consumes " + TierEU.RECIPE_HV + "EU/t")
-            .addInfo("Has 2 Modes, use the Screwdriver to change them:")
-            .addInfo("Direct Steam and Coolant Heating")
-            .addInfo(
-                "Direct Steam Mode: Consumes " + EnumChatFormatting.BLUE
-                    + "Distilled Water"
-                    + EnumChatFormatting.GRAY
-                    + " to produce "
-                    + EnumChatFormatting.WHITE
-                    + (long) (25600 * 20)
-                    + EnumChatFormatting.GRAY
-                    + "L/s of "
-                    + EnumChatFormatting.WHITE
-                    + "Superheated Steam")
-            .addInfo(
-                "Coolant Heating Mode: Converts " + (long) (192 * 20)
-                    + "L/s "
-                    + EnumChatFormatting.AQUA
-                    + "Coolant"
-                    + EnumChatFormatting.GRAY
-                    + " to "
-                    + EnumChatFormatting.RED
-                    + "Hot Coolant")
-            .addInfo("Each maintenance issue lowers output efficiency by " + EnumChatFormatting.GREEN + "10%")
-            .addInfo("Explodes when it runs out of Distilled Water/Coolant")
-            .addInfo("Base cycle time: 1 tick")
+        final String anyBottomCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing");
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.geothermal_heat_pump"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "deep-earth-heating-pump"),
+                ImmutableMap.of(
+                    "eu_usage", formatNumber(TierEU.RECIPE_HV),
+                    "steam_rate", formatNumber(25600 * 20),
+                    "coolant_rate", formatNumber(192 * 20)))
             .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom center")
-            .addCasing("15", "Tungsten Frame Box", false)
-            .addCasing("3-7", "Heat Proof Machine Casing", false)
-            .addEnergyHatch("1+", "Any bottom casing (HV+)", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0+", "Any bottom casing", 1)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputBus("0+", "Any bottom casing", 1)
-            .addOutputHatch("1+", "Any bottom casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("3-7", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", anyBottomCasing + " (HV+)", 1)
+            .addMaintenanceHatch("1", anyBottomCasing, 1)
+            .addInputBus("0+", anyBottomCasing, 1)
+            .addInputHatch("1+", anyBottomCasing, 1)
+            .addOutputBus("0+", anyBottomCasing, 1)
+            .addOutputHatch("1+", anyBottomCasing, 1)
             .toolTipFinisher(
                 EnumChatFormatting.GREEN + "bartimaeusnek"
                     + EnumChatFormatting.GRAY
                     + " via "
                     + EnumChatFormatting.DARK_GREEN
                     + "BartWorks");
+        // spotless:on
         return tt;
     }
 

@@ -34,7 +34,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -81,6 +81,7 @@ import gregtech.common.gui.modularui.multiblock.MTEWindmillGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.nei.RecipeDisplayInfo;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
@@ -280,55 +281,23 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Windmill, Macerator")
-            .addInfo("A primitive Grinder powered by " + EnumChatFormatting.AQUA + "Kinetic Energy")
-            .addInfo("Macerates up to" + EnumChatFormatting.GOLD + " 16 " + EnumChatFormatting.GRAY + "items at a time")
-            .addInfo("The amount of parallels is determined by " + EnumChatFormatting.AQUA + "Wind Speed")
-            .addInfo("Parallels determine how many items are processed per recipe")
-            .addInfo("Processing time is the same regardless of parallels")
-            .addInfo(
-                EnumChatFormatting.AQUA + "Wind Speed "
-                    + EnumChatFormatting.GRAY
-                    + "can be determined using the "
-                    + EnumChatFormatting.YELLOW
-                    + "Simple Wind Meter")
-            .addInfo("Rotor can be put in the " + EnumChatFormatting.BLUE + "Primitive Kinetic Shaftbox")
-            .addInfo("Will not work if wind is non-existent or too strong")
-            .addInfo(EnumChatFormatting.RED + "12.5% " + EnumChatFormatting.GRAY + "speed")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.GOLD + "2"
-                    + EnumChatFormatting.GRAY
-                    + " parallels: "
-                    + EnumChatFormatting.WHITE
-                    + "Low")
-            .addInfo(
-                EnumChatFormatting.GOLD + "4"
-                    + EnumChatFormatting.GRAY
-                    + " parallels: "
-                    + EnumChatFormatting.DARK_GREEN
-                    + "Common")
-            .addInfo(
-                EnumChatFormatting.GOLD + "8"
-                    + EnumChatFormatting.GRAY
-                    + " parallels: "
-                    + EnumChatFormatting.GOLD
-                    + "Rather strong")
-            .addInfo(
-                EnumChatFormatting.GOLD + "16"
-                    + EnumChatFormatting.GRAY
-                    + " parallels: "
-                    + EnumChatFormatting.DARK_RED
-                    + "Very Strong")
+        final String hardenedClay = Blocks.hardened_clay.getLocalizedName();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.windmill"))
+            .addMarkdown(new ResourceLocation("gregtech", "windmill"))
             .beginStructureBlock(7, 12, 7, true)
-            .addController("Front bottom center")
-            .addCasing("44", "Bricks", false)
-            .addCasing("40-47", "Terracotta (any color)", false)
-            .addCasing("100", "Wooden Planks (any)", false)
-            .addCasing("1", "Primitive Kinetic Shaftbox", false)
-            .addOtherStructurePart("Dispenser", "Any Terracotta", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("44", Blocks.brick_block.getLocalizedName(), false)
+            .addCasing("40-47", StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_color", hardenedClay), false)
+            .addCasing("100", StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_type", Blocks.planks.getLocalizedName()), false)
+            .addCasing("1", StatCollector.translateToLocal("tile.BWRotorBlock.0.name"), false)
+            .addOtherStructurePart(
+                Blocks.dispenser.getLocalizedName(),
+                StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_block", hardenedClay),
+                1)
             .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
