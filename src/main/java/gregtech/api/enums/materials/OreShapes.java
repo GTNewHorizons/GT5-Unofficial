@@ -107,6 +107,7 @@ public class OreShapes {
         var oreBuilder = MaterialLibAPI.newBlockShape("gregtech", "ore")
             .displayName("%s Ore")
             .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_ore")
+            .property(StandardProperties.EMISSIVE_LAYERS, true)
             .oreDict("ore")
             .variants(oreVariants)
             .drops(
@@ -123,6 +124,7 @@ public class OreShapes {
         var oreSmallBuilder = MaterialLibAPI.newBlockShape("gregtech", "oreSmall")
             .displayName("Small %s Ore")
             .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.small_material_ore")
+            .property(StandardProperties.EMISSIVE_LAYERS, true)
             .oreDict("oreSmall")
             .variants(smallOreVariants)
             .drops(

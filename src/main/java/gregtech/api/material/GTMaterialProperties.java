@@ -66,7 +66,6 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_CORRESPONDING_GAS = Property.of("gregtech", "hasCorrespondingGas", false);
     public static final Property<Boolean> HAS_ELECTROLYZER_RECIPE = Property
         .of("gregtech", "hasElectrolyzerRecipe", false);
-    public static final Property<Boolean> HAS_GLOWING_ORE = Property.of("gregtech", "hasGlowingOre");
     /// Whether a mixer recipe is generated from [#COMPOSITION] and [#MIX_CIRCUIT].
     public static final Property<Boolean> HAS_MIXER_RECIPE = Property.of("gregtech", "hasMixerRecipe");
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage", 0f);
