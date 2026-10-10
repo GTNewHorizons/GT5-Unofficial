@@ -53,6 +53,7 @@ public class PosteaTransformers implements Runnable {
         BlockReplacementManager
             .addSimpleReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
         BlockReplacementManager.addSimpleReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockMachine", 0, ItemList.Casing_LV.getBlock(), 1);
     }
 
     private void registerFrameboxTransformers() {
