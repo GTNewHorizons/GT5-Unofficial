@@ -1497,6 +1497,7 @@ public enum MetaTileEntityIDs {
     LegacyMegaOilCracker(13367),
     AdvancedAssline(13532),
     LinkedInputBus(13533),
+    LinkedInputHatch(13534),
     DysonSwarmController(14001),
     PlanetaryGasSiphonController(14002),
     SpaceElevatorController(14003),
