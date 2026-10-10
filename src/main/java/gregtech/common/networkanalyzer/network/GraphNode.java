@@ -47,7 +47,7 @@ class GraphNode {
         }
 
         if (node.mSelfPath instanceof PowerNodePath p) {
-            this.metrics.actualAmperage = (long) p.getAmperage();
+            this.metrics.actualAmperage = p.getAmperage();
             this.metrics.maxAmperage = p.getMaxAmperage();
             this.metrics.maxVoltage = p.getMaxVoltage();
             this.metrics.actualLoss = p.getLoss();

@@ -651,7 +651,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     public void setTraceSize(int value) {
-        mRoughnessMultiplier = 100f / (int) value;
+        mRoughnessMultiplier = 100f / value;
     }
 
     @Override

@@ -228,7 +228,6 @@ public class WorldgenStone extends GTWorldgen {
                                         tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockGranites) ||
                                         tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockStones)) {
                                     aWorld.setBlock(iX, iY, iZ, this.mBlock, this.mBlockMeta, 0);
-                                    continue;
                                 }
                                 // spotless:on
                             }

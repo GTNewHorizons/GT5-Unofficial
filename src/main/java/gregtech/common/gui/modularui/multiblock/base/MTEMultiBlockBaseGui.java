@@ -548,7 +548,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             if (fluidStack == null) {
                 continue;
             }
-            long amount = (long) fluidStack.amount;
+            long amount = fluidStack.amount;
             // map.merge requires the objects to be the same. fluidstacks with different stacksizes will be different.
             // set the amount to 1 to ensure fluid stacks of the same fluid get merged together
             fluidStack.amount = 1;

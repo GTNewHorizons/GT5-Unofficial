@@ -148,7 +148,7 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
         if (isUsingDenseSteam) {
-            addOutputPartial(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
+            addOutputPartial(Materials.DenseSteam.getGas(steamFlowForNextSteam));
         } else {
             addOutputPartial(Materials.Steam.getGas(totalFlow));
         }

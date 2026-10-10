@@ -345,7 +345,7 @@ public class MTELINAC extends MTEBeamMultiBase<MTELINAC> implements ISurvivalCon
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 3, 6, 0);
 
         int channelValue = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, 83);
-        int totalLength = (channelValue <= 19) ? 19 : channelValue;
+        int totalLength = Math.max(channelValue, 19);
         if ((totalLength & 1) == 0) {
             totalLength++; // Otherwise you get gaps at the end
         }
@@ -368,7 +368,7 @@ public class MTELINAC extends MTEBeamMultiBase<MTELINAC> implements ISurvivalCon
         if (build >= 0) return build; // Incomplete
 
         int channelValue = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, 83);
-        int totalLength = (channelValue <= 19) ? 19 : channelValue;
+        int totalLength = Math.max(channelValue, 19);
         if ((totalLength & 1) == 0) {
             totalLength++; // Otherwise you get gaps at the end
         }

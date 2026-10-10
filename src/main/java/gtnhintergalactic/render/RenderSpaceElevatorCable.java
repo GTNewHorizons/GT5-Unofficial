@@ -178,7 +178,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
                     + cableTile.getClimberHeight()
                     + ((CLIMBER_OFFSET + cableTile.yCoord) < MIN_CLIMBER_HEIGHT ? MIN_CLIMBER_HEIGHT : CLIMBER_OFFSET)),
                 (float) z + 0.5f)
-            .rotateY((float) Math.toRadians(cableTile.getClimberRotation()))
+            .rotateY(Math.toRadians(cableTile.getClimberRotation()))
             .scale(4);
         renderClimber();
     }

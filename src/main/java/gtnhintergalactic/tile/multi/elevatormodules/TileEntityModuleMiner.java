@@ -846,7 +846,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     protected List<AsteroidSummary> getAsteroidSummaries(int maxParallels, float effectiveComp) {
         long power = GTValues.V[tTier];
         if (prevRecipes == null) {
-            return Collections.<AsteroidSummary>emptyList();
+            return Collections.emptyList();
         }
         float totalWeight = prevRecipes.totalWeight; // save to float, so we don't have to cast in the following loop
         float totalTimedensity = prevRecipes.totalTimedensity;
