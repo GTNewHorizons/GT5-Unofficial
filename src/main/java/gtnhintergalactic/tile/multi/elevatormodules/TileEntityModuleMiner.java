@@ -811,7 +811,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 cycleDistanceParameter.setValue(Math.max(0, distance - range));
             }
         } else {
-            cycleDistanceParameter.setValue((int) Math.min(MAX_DISTANCE, Math.max(0, distance)));
+            cycleDistanceParameter.setValue((int) Math.clamp(distance, 0, MAX_DISTANCE));
         }
     }
 

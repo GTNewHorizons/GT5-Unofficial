@@ -221,12 +221,12 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         ArrayList<FluidStack> outputs = new ArrayList<>();
         int usedEUt = 0;
         // We store the highest batch size as time multiplier
-        int maxBatchSize = Math.min(Math.max(batchParameter.getValue(), 1), 128);
+        int maxBatchSize = Math.clamp(batchParameter.getValue(), 1, 128);
         for (int i = 0; i < getParallelRecipes(); i++) {
             FluidStack fluid = SpacePumpingRecipes.RECIPES
                 .get(Pair.of(planetTypeParameters[i].getValue(), gasTypeParameters[i].getValue()));
             if (fluid != null) {
-                int batchSize = Math.min(Math.max(batchParameter.getValue(), 1), 128);
+                int batchSize = Math.clamp(batchParameter.getValue(), 1, 128);
                 MTEHatchOutput targetOutput = null;
                 if (!hasMeOutputHatch && !eSafeVoid) {
                     for (MTEHatchOutput output : mOutputHatches) {

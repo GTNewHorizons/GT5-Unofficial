@@ -93,8 +93,8 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      */
     @Override
     public int getColor() {
-        return (Math.max(0, Math.min(255, colorRGBA[0])) << 16) | (Math.max(0, Math.min(255, colorRGBA[1])) << 8)
-            | Math.max(0, Math.min(255, colorRGBA[2]));
+        return (Math.clamp(colorRGBA[0], 0, 255) << 16) | (Math.clamp(colorRGBA[1], 0, 255) << 8)
+            | Math.clamp(colorRGBA[2], 0, 255);
     }
 
     // ----- IGTFluid interface implementations -----

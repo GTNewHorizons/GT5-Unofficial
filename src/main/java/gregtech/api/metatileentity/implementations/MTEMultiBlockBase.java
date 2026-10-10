@@ -3531,8 +3531,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 // This validator sets the bounds for the text box - if "Always use maximum" is active, the bounds
                 // are
                 // set to (maxParallel, maxParallel). If not, they are set to (1, maxParallel)
-                powerPanelMaxParallel = (int) Math
-                    .min(maxParallel, Math.max(val, (alwaysMaxParallel ? maxParallel : 1)));
+                powerPanelMaxParallel = (int) Math.clamp(val, alwaysMaxParallel ? maxParallel : 1, maxParallel);
                 return powerPanelMaxParallel;
             })
             .setDefaultValue(powerPanelMaxParallel)

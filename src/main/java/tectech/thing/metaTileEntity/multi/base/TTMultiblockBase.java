@@ -969,6 +969,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         dischargeController_EM(aBaseMetaTileEntity);
                         chargeController_EM(aBaseMetaTileEntity);
 
+                        int maxEff = getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000;
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
                             if (onRunningTick(mInventory[1])) { // Compute EU
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
@@ -999,12 +1000,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                         }
                                         if (aBaseMetaTileEntity.isAllowedToWork()) {
                                             if (checkRecipe()) {
-                                                mEfficiency = Math.max(
-                                                    0,
-                                                    min(
-                                                        mEfficiency + mEfficiencyIncrease,
-                                                        getMaxEfficiency(mInventory[1])
-                                                            - (getIdealStatus() - getRepairStatus()) * 1000));
+                                                mEfficiency = Math.clamp(mEfficiency + mEfficiencyIncrease, 0, maxEff);
                                             } else {
                                                 afterRecipeCheckFailed();
                                             }
@@ -1022,12 +1018,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                 || aBaseMetaTileEntity.hasInventoryBeenModified()
                                 || shouldCheckRecipeThisTick(aTick)) {
                                 if (checkRecipe()) {
-                                    mEfficiency = Math.max(
-                                        0,
-                                        min(
-                                            mEfficiency + mEfficiencyIncrease,
-                                            getMaxEfficiency(mInventory[1])
-                                                - (getIdealStatus() - getRepairStatus()) * 1000));
+                                    mEfficiency = Math.clamp(mEfficiency + mEfficiencyIncrease, 0, maxEff);
                                 } else {
                                     afterRecipeCheckFailed();
                                 }

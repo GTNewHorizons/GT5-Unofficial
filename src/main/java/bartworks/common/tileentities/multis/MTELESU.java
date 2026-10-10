@@ -146,7 +146,7 @@ public class MTELESU extends MTEMultiBlockBase {
 
     @Override
     public long maxEUOutput() {
-        return Math.min(Math.max(this.mStorage / Configuration.multiblocks.energyPerCell, 1L), 32768L);
+        return Math.clamp(this.mStorage / Configuration.multiblocks.energyPerCell, 1L, 32768L);
     }
 
     @Override

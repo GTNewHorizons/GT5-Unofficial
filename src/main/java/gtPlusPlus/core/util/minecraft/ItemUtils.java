@@ -30,7 +30,6 @@ import gregtech.api.util.StringUtils;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
@@ -312,7 +311,7 @@ public class ItemUtils {
         final int cap = aStack.stackSize;
         if (cap >= 1 && cap >= aAmount) {
             ItemStack aDepStack = aStack.copy();
-            aDepStack.stackSize = (MathUtils.balance((aDepStack.stackSize - 1), 0, 64));
+            aDepStack.stackSize = (Math.clamp((aDepStack.stackSize - 1), 0, 64));
             if (aDepStack.stackSize > 0) {
                 return aDepStack;
             }

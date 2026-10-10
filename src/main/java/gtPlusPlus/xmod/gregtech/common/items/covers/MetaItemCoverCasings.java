@@ -10,7 +10,6 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.items.MetaCustomCoverItem;
 
 public class MetaItemCoverCasings extends MetaCustomCoverItem {
@@ -38,14 +37,14 @@ public class MetaItemCoverCasings extends MetaCustomCoverItem {
 
     @Override
     public IIcon getIconFromDamage(int meta) {
-        return this.icons[MathUtils.balance(meta, 0, 15)];
+        return this.icons[Math.clamp(meta, 0, 15)];
     }
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         return EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocalFormatted(
             "item.itemCustomMetaCover.miscutils.GtMachineCasings",
-            GTValues.getLocalizedLongVoltageName(
-                MathUtils.balance(tItem.getItemDamage(), 0, GTValues.VOLTAGE_NAMES.length - 1)));
+            GTValues
+                .getLocalizedLongVoltageName(Math.clamp(tItem.getItemDamage(), 0, GTValues.VOLTAGE_NAMES.length - 1)));
     }
 }

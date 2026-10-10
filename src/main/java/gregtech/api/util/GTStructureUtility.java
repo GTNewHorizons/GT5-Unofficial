@@ -684,7 +684,7 @@ public class GTStructureUtility {
 
             private HeatingCoilLevel getHeatFromHint(ItemStack trigger) {
                 return HeatingCoilLevel
-                    .getFromTier((byte) Math.min(HeatingCoilLevel.getMaxTier(), Math.max(0, trigger.stackSize - 1)));
+                    .getFromTier((byte) Math.clamp(trigger.stackSize - 1, 0, HeatingCoilLevel.getMaxTier()));
             }
 
             @Override
@@ -797,7 +797,7 @@ public class GTStructureUtility {
             }
 
             private int getMetaFromHint(ItemStack trigger) {
-                return Math.min(Math.max(trigger.stackSize - 1, 0), 10);
+                return Math.clamp(trigger.stackSize - 1, 0, 10);
             }
 
             @Override

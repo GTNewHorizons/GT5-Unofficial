@@ -471,7 +471,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 + numMultiples * PH_PER_10_ACID_LITER;
 
             // Clamp pH to sensible values
-            this.currentpHValue = Math.min(Math.max(this.currentpHValue, 0.0f), 14.0f);
+            this.currentpHValue = Math.clamp(this.currentpHValue, 0.0f, 14.0f);
 
             // Round to 2 decimals
             this.currentpHValue = Math.round(this.currentpHValue * 100.0f) / 100.0f;

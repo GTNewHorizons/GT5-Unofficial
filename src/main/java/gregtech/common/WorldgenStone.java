@@ -55,7 +55,7 @@ public class WorldgenStone extends GTWorldgen {
         super(stone.stoneName, GregTechAPI.sWorldgenList, stone.enabledByDefault);
         mDimensionType = stone.dimension;
         mBlock = stone.block;
-        mBlockMeta = Math.min(Math.max(stone.blockMeta, 0), 15);
+        mBlockMeta = Math.clamp(stone.blockMeta, 0, 15);
         mProbability = stone.probability;
         mAmount = stone.amount;
         mSize = stone.size;

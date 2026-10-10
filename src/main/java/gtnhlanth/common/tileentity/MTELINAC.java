@@ -247,7 +247,7 @@ public class MTELINAC extends MTEBeamMultiBase<MTELINAC> implements ISurvivalCon
         this.outputParticleID = inputParticleID;
 
         float machineFocus = ((-0.9f) * (this.length - 1) * tempFactor) + 110;
-        machineFocus = Math.min(Math.max(machineFocus, 5), 90);
+        machineFocus = Math.clamp(machineFocus, 5, 90);
         this.outputFocus = (inputFocus > machineFocus) ? ((inputFocus + machineFocus) / 2)
             : inputFocus * (machineFocus / 100);
 

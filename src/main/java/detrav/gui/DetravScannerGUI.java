@@ -92,8 +92,8 @@ public class DetravScannerGUI extends GuiScreen {
 
         // the map is drawn at full 1:1 scale inside a viewport; when the scan is larger than the
         // window (big range and/or high GUI scale) the viewport scrolls instead of shrinking.
-        viewW = Math.min(map.width, Math.max(minWidth, this.width - listW - 12));
-        viewH = Math.min(map.height, Math.max(minHeight, this.height - 12));
+        viewW = Math.clamp(this.width - listW - 12, minWidth, map.width);
+        viewH = Math.clamp(this.height - 12, minHeight, map.height);
         maxPanX = Math.max(0, map.width - viewW);
         maxPanY = Math.max(0, map.height - viewH);
 
