@@ -1358,7 +1358,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 if (euVar > diff) {
                     tHatch.setEUVar(tHatch.maxEUStore());
                     euVar -= diff;
-                } else if (euVar <= diff) {
+                } else {
                     tHatch.setEUVar(
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + euVar);
@@ -1376,7 +1376,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 if (euVar > diff) {
                     tHatch.setEUVar(tHatch.maxEUStore());
                     euVar -= diff;
-                } else if (euVar <= diff) {
+                } else {
                     tHatch.setEUVar(
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + euVar);
