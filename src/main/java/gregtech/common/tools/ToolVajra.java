@@ -160,13 +160,13 @@ public class ToolVajra extends ItemTool implements IElectricItem, IGuiHolder<Pla
 
     public static int getCreativeBreakCooldown(ItemStack stack) {
         if (ItemStackNBT.hasKey(stack, CREATIVE_BREAK_COOLDOWN_KEY)) {
-            return Math.max(0, Math.min(20, ItemStackNBT.getInteger(stack, CREATIVE_BREAK_COOLDOWN_KEY)));
+            return Math.clamp(ItemStackNBT.getInteger(stack, CREATIVE_BREAK_COOLDOWN_KEY), 0, 20);
         }
         return ItemStackNBT.getBoolean(stack, LEGACY_CREATIVE_BREAK_COOLDOWN_KEY) ? 5 : 0;
     }
 
     public static void setCreativeBreakCooldown(ItemStack stack, int cooldown) {
-        ItemStackNBT.setInteger(stack, CREATIVE_BREAK_COOLDOWN_KEY, Math.max(0, Math.min(20, cooldown)));
+        ItemStackNBT.setInteger(stack, CREATIVE_BREAK_COOLDOWN_KEY, Math.clamp(cooldown, 0, 20));
         ItemStackNBT.removeTag(stack, LEGACY_CREATIVE_BREAK_COOLDOWN_KEY);
     }
 

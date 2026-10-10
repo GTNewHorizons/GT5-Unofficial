@@ -471,7 +471,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
     }
 
     private static int clamp(int input) {
-        return Math.min(MAX_TICK_RATE_ADDITION, Math.max(0, input));
+        return Math.clamp(input, 0, MAX_TICK_RATE_ADDITION);
     }
 
     /**

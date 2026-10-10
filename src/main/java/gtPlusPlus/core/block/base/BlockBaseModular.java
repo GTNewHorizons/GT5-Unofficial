@@ -59,7 +59,7 @@ public class BlockBaseModular extends BasicBlock {
             net.minecraft.block.material.Material.iron,
             blockType,
             colour,
-            Math.min(Math.max(material.tier, 1), 6));
+            Math.clamp(material.tier, 1, 6));
         this.material = material;
         registerComponent();
         BLOCK_CACHE.put(material.getUnlocalizedName() + "." + blockType.name(), this);

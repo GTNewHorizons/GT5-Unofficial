@@ -3,6 +3,7 @@ package gregtech.api.registries;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,12 +17,12 @@ public class LHECoolantRegistry {
     /**
      * Registers a coolant for use in Large Heat Exchangers and Whakawhiti Weras. See the constants in
      * {@link #registerBaseCoolants()} as a reference for what the multipliers should be. The multipliers are used in
-     * {@link MTEHeatExchanger#checkProcessing()} and {@link MTEHeatExchanger#onRunningTick()}.
+     * {@link MTEHeatExchanger#checkProcessing()} and {@link MTEHeatExchanger#onRunningTick(ItemStack)}.
      *
      * @param coldFluidName        The fluid name of the resulting cold coolant
      * @param hotFluidName         The fluid name of the input hot coolant
      * @param steamMultiplier      The steam multiplier
-     * @param superheatedThreshold The super heated threshold multiplier - see the constants in
+     * @param superheatedThreshold The superheated threshold multiplier - see the constants in
      *                             {@link #registerBaseCoolants()} for a reference
      */
     public static void registerCoolant(String coldFluidName, String hotFluidName, double steamMultiplier,

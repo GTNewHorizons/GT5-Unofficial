@@ -66,7 +66,7 @@ public class GeneratedItemRenderer implements IItemRenderer {
                         tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][8];
                     } else {
                         tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][(7
-                            - (int) Math.max(0L, Math.min(5L, (tStats[0] - tCharge) * 6L / tStats[0])))];
+                            - (int) Math.clamp((tStats[0] - tCharge) * 6L / tStats[0], 0L, 5L))];
                     }
                 }
             } else {

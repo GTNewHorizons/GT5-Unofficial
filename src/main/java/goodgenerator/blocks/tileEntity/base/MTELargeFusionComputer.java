@@ -365,7 +365,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                             if (mOutputFluids != null)
                                 for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
                             mEfficiency = Math
-                                .max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
+                                .clamp(mEfficiency + mEfficiencyIncrease, 0, getMaxEfficiency(mInventory[1]));
                             mOutputItems = null;
                             mOutputFluids = null;
                             mProgresstime = 0;
@@ -642,7 +642,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     @Override
     protected int getMaxBatchSize() {
         // Batch size 1~128
-        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
+        return (int) Math.clamp(batchSetting.get(), 1.0D, 128.0D);
     }
 
     @Override

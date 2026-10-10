@@ -264,7 +264,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         double y = this.getOutputCapacity() / 2D, z = Configuration.Multiblocks.bioVatMaxParallelBonus;
 
         int ret = MathUtils.ceilInt((-1D / y * (x - y) * (x - y) + y) / y * z);
-        return MathUtils.clamp(1, ret, Configuration.Multiblocks.bioVatMaxParallelBonus);
+        return Math.clamp(1, ret, Configuration.Multiblocks.bioVatMaxParallelBonus);
     }
 
     @Override

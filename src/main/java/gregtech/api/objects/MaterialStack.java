@@ -30,11 +30,10 @@ public class MaterialStack implements Cloneable {
     public boolean equals(Object aObject) {
         if (aObject == this) return true;
         return switch (aObject) {
-            case null -> false;
             case Materials materials -> aObject == mMaterial;
             case MaterialStack materialStack -> materialStack.mMaterial == mMaterial
                 && (mAmount < 0 || materialStack.mAmount < 0 || materialStack.mAmount == mAmount);
-            default -> false;
+            case null, default -> false;
         };
     }
 

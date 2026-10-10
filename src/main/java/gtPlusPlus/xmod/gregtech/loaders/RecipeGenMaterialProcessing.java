@@ -69,7 +69,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 alnsnfds++;
             }
 
-            /**
+            /*
              * Centrifuge
              */
 

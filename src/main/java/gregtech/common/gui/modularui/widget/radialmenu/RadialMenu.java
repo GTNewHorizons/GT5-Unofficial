@@ -139,8 +139,8 @@ public class RadialMenu extends Widget<RadialMenu> implements Interactable {
             for (int i = 0; true; i++) {
                 double t = option.startTheta + i * step;
 
-                radialVertex(outerRadius, Math.min(Math.max(t, option.startTheta), option.endTheta));
-                radialVertex(innerRadius, Math.min(Math.max(t, option.startTheta), option.endTheta));
+                radialVertex(outerRadius, Math.clamp(t, option.startTheta, option.endTheta));
+                radialVertex(innerRadius, Math.clamp(t, option.startTheta, option.endTheta));
 
                 if (t > option.endTheta) {
                     break;

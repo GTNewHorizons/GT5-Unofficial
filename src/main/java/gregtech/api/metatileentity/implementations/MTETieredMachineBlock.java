@@ -39,7 +39,8 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
     public MTETieredMachineBlock(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
-        mTier = (byte) Math.max(0, Math.min(aTier, 14));
+        // Ask miozune, why 14 only here?
+        mTier = (byte) Math.clamp(aTier, 0, 14);
         mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : new String[] { aDescription };
         // must always be the last call!
         if (GTMod.GT.isClientSide()) mTextures = getTextureSet(aTextures);
@@ -49,7 +50,8 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
     public MTETieredMachineBlock(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
-        mTier = (byte) Math.max(0, Math.min(aTier, 15));
+        // And not here as well
+        mTier = (byte) Math.clamp(aTier, 0, 15);
         mDescriptionArray = aDescription == null ? GTValues.emptyStringArray : aDescription;
 
         // must always be the last call!

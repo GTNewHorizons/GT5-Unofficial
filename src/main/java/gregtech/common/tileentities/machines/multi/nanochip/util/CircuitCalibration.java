@@ -53,8 +53,8 @@ public enum CircuitCalibration {
     ),
     SPECIAL(
         new CalibrationThreshold("Foreign", 0.01, nac -> {nac.globalDurationMultiplier -= 0.2f;}),
-        new CalibrationThreshold("Alien", 0.05, nac -> { nac.globalDurationMultiplier -= 0.2f;}),
-        new CalibrationThreshold("Xeno", 0.2, nac -> { nac.globalDurationMultiplier -= 0.1f;})
+        new CalibrationThreshold("Alien", 0.05, nac -> {nac.globalDurationMultiplier -= 0.2f;}),
+        new CalibrationThreshold("Xeno", 0.2, nac -> {nac.globalDurationMultiplier -= 0.1f;})
     ),; // Pico, Quantum
     // spotless:on
 

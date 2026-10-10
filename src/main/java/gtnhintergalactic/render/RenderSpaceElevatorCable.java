@@ -162,10 +162,8 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
         if (!IGConfig.spaceElevator.isCableRenderingEnabled) return;
-        if (!(tile instanceof TileEntitySpaceElevatorCable)) return;
+        if (!(tile instanceof TileEntitySpaceElevatorCable cableTile)) return;
         if (hasFailed || !isInitialized) return;
-
-        final TileEntitySpaceElevatorCable cableTile = (TileEntitySpaceElevatorCable) tile;
 
         if (!cableTile.shouldRender()) return;
 
@@ -178,7 +176,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
                     + cableTile.getClimberHeight()
                     + ((CLIMBER_OFFSET + cableTile.yCoord) < MIN_CLIMBER_HEIGHT ? MIN_CLIMBER_HEIGHT : CLIMBER_OFFSET)),
                 (float) z + 0.5f)
-            .rotateY((float) Math.toRadians(cableTile.getClimberRotation()))
+            .rotateY(Math.toRadians(cableTile.getClimberRotation()))
             .scale(4);
         renderClimber();
     }

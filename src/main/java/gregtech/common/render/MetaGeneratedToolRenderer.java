@@ -57,7 +57,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                         iconContainer = Textures.ItemIcons.DURABILITY_BAR[0];
                     } else {
                         iconContainer = Textures.ItemIcons.DURABILITY_BAR[((int) Math
-                            .max(0L, Math.min(7L, (maxDamage - damage) * 8L / maxDamage)))];
+                            .clamp((maxDamage - damage) * 8L / maxDamage, 0L, 7L))];
                     }
                     renderIcon(iconContainer);
                 }
@@ -73,7 +73,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                             iconContainer = Textures.ItemIcons.ENERGY_BAR[8];
                         } else {
                             iconContainer = Textures.ItemIcons.ENERGY_BAR[(7
-                                - (int) Math.max(0L, Math.min(6L, (stats[0] - tCharge) * 7L / stats[0])))];
+                                - (int) Math.clamp((stats[0] - tCharge) * 7L / stats[0], 0L, 6L))];
                         }
                     } else {
                         iconContainer = null;

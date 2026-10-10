@@ -98,7 +98,7 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
     @SideOnly(Side.CLIENT)
     public boolean renderWorldBlock(IBlockAccess iBlockAccess, int x, int y, int z, Block block, int modelId,
         RenderBlocks renderer) {
-        if (!(block instanceof BlockBioFluid)) return false;
+        if (!(block instanceof BlockBioFluid blockFluidBase)) return false;
         Tessellator tessellator = Tessellator.instance;
         Coords blockat = new Coords(
             x,
@@ -121,7 +121,6 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
         }
         float red = r / 255f, green = g / 255f, blue = b / 255f;
 
-        BlockFluidBase blockFluidBase = (BlockFluidBase) block;
         boolean renderTop = iBlockAccess.getBlock(x, y + 1, z) != blockFluidBase;
         boolean renderBottom = block.shouldSideBeRendered(iBlockAccess, x, y - 1, z, 0)
             && iBlockAccess.getBlock(x, y - 1, z) != blockFluidBase;

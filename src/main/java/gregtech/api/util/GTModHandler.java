@@ -2056,7 +2056,7 @@ public class GTModHandler {
             int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
             if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
                 if (!aIgnoreLimit && tTier >= 0)
-                    aCharge = (int) Math.min(aCharge, V[Math.max(0, Math.min(V.length - 1, tTier))]);
+                    aCharge = (int) Math.min(aCharge, V[Math.clamp(tTier, 0, V.length - 1)]);
                 if (aCharge > 0) {
                     int rCharge = (int) Math
                         .max(0.0, ic2.api.item.ElectricItem.manager.charge(aStack, aCharge, tTier, true, aSimulate));
@@ -2080,7 +2080,7 @@ public class GTModHandler {
             int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
             if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
                 if (!aIgnoreLimit && tTier >= 0) {
-                    int tier = Math.max(0, Math.min(V.length - 1, tTier));
+                    int tier = Math.clamp(tTier, 0, V.length - 1);
                     aCharge = (int) Math.min(aCharge, V[tier] + B[tier]);
                 }
                 if (aCharge > 0) {

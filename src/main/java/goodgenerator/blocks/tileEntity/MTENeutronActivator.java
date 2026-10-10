@@ -337,7 +337,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     @Override
     protected int getMaxBatchSize() {
         // Batch size 1~128
-        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
+        return (int) Math.clamp(batchSetting.get(), 1.0D, 128.0D);
     }
 
     @Override

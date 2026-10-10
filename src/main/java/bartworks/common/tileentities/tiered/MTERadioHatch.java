@@ -101,12 +101,12 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, ISmart
     }
 
     public short getColorForGuiAtIndex(int i) {
-        i = GTUtility.clamp(i, 0, 3);
+        i = Math.clamp(i, 0, 3);
         return colorForGUI[i];
     }
 
     public void setColorForGuiAtIndex(short c, int i) {
-        i = GTUtility.clamp(i, 0, 3);
+        i = Math.clamp(i, 0, 3);
         colorForGUI[i] = c;
     }
 

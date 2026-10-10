@@ -3349,20 +3349,36 @@ public class GTUtility {
             .count();
     }
 
+    /**
+     * @deprecated {@link Math#clamp(long, long, long)}
+     */
+    @Deprecated
     public static long clamp(long val, long lo, long hi) {
-        return Math.min(hi, Math.max(val, lo));
+        return Math.clamp(val, lo, hi);
     }
 
+    /**
+     * @deprecated {@link Math#clamp(long, int, int)}
+     */
+    @Deprecated
     public static int clamp(int val, int lo, int hi) {
-        return Math.min(hi, Math.max(val, lo));
+        return Math.clamp(val, lo, hi);
     }
 
+    /**
+     * @deprecated {@link Math#clamp(float, float, float)}
+     */
+    @Deprecated
     public static float clamp(float val, float lo, float hi) {
-        return Math.min(hi, Math.max(val, lo));
+        return Math.clamp(val, lo, hi);
     }
 
+    /**
+     * @deprecated {@link Math#clamp(double, double, double)}
+     */
+    @Deprecated
     public static double clamp(double val, double lo, double hi) {
-        return Math.min(hi, Math.max(val, lo));
+        return Math.clamp(val, lo, hi);
     }
 
     public static int map(int x, int in_min, int in_max, int out_min, int out_max) {
@@ -3382,7 +3398,7 @@ public class GTUtility {
     }
 
     public static double linearCurve(double x, double x1, double y1, double x2, double y2) {
-        x = GTUtility.clamp(x, Math.min(x1, x2), Math.max(x1, x2));
+        x = Math.clamp(x, Math.min(x1, x2), Math.max(x1, x2));
 
         return map(x, x1, x2, y1, y2);
     }
@@ -3392,7 +3408,7 @@ public class GTUtility {
     }
 
     public static int min(int a, int b, int c, int d) {
-        return Math.min(a, Math.min(b, Math.min(c, b)));
+        return Math.min(a, Math.min(b, Math.min(c, d)));
     }
 
     public static int min(int first, int... rest) {

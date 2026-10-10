@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.singleblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -16,7 +18,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuis;
@@ -82,11 +83,7 @@ public class MTEBoilerGui {
             .child(
                 new GTProgressWidget().syncHandler("heat")
                     .tooltipDynamic(
-                        (a) -> {
-                            a.add(
-                                NumberFormatUtil.formatNumber((int) (heat.getFloatValue() * base.maxProgresstime()))
-                                    + "°C");
-                        })
+                        t -> t.add(formatNumber((int) (heat.getFloatValue() * base.maxProgresstime())) + "°C"))
                     .direction(ProgressWidget.Direction.UP)
                     .widgetTheme(GTWidgetThemes.PROGRESSBAR_BOILER_HEAT)
                     .size(10, 54));

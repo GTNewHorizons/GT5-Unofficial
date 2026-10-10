@@ -53,7 +53,7 @@ public class RenderDrone extends Render {
             int bz = MathHelper.floor_double(drone.posZ);
             if (drone.worldObj.blockExists(bx, 0, bz)) {
                 int by = MathHelper.floor_double(drone.posY + 0.5D);
-                int light = drone.worldObj.getLightBrightnessForSkyBlocks(bx, Math.max(0, Math.min(255, by)), bz, 0);
+                int light = drone.worldObj.getLightBrightnessForSkyBlocks(bx, Math.clamp(by, 0, 255), bz, 0);
                 int u = light % 65536;
                 int v = light / 65536;
                 OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) u, (float) v);

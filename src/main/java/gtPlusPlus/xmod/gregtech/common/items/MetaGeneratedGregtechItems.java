@@ -110,7 +110,7 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 new TC_AspectStack(TCAspects.METALLUM, 3L),
                 new TC_AspectStack(TCAspects.POTENTIA, 3L)));
 
-        /**
+        /*
          * Power Gems
          */
         GregtechItemList.Battery_Gem_1.set(

@@ -386,7 +386,6 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
      *
      * @param aBaseMetaTileEntity MTE of this controller
      * @param stack               Item in the controller
-     * @return True if machine is valid, else false
      */
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack stack, List<StructureError> errors) {

@@ -140,7 +140,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     }
 
     protected boolean tryOutputAll(List<ItemStack> list) {
-        return tryOutputAll(list, l -> Collections.singletonList(l));
+        return tryOutputAll(list, Collections::singletonList);
     }
 
     protected <Y> boolean tryOutputAll(@Nullable List<Y> list, @Nullable Function<Y, List<ItemStack>> mappingFunction) {

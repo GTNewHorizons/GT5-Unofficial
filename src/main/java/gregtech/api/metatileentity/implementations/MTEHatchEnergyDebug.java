@@ -149,9 +149,7 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     }
 
     @Override
-    public void doExplosion(long aExplosionPower) {
-        return;
-    }
+    public void doExplosion(long aExplosionPower) {}
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {

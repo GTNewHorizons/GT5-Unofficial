@@ -64,7 +64,7 @@ public abstract class CoverRedstoneWirelessBase extends Cover {
                 default -> 0;
             };
 
-            int newFrequency = Math.max(0, Math.min(MAX_CHANNEL, this.frequency + adjustFrequencyValue));
+            int newFrequency = Math.clamp(this.frequency + adjustFrequencyValue, 0, MAX_CHANNEL);
             processCoverData(newFrequency, this.privateChannel);
         }
         GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.freq_format", frequency, privateChannel);

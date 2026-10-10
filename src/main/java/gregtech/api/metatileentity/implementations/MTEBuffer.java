@@ -440,7 +440,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock {
 
                 OptionalInt stored = sink.getStoredItemsInSink(null);
 
-                if (!stored.isPresent()) return;
+                if (stored.isEmpty()) return;
 
                 int toTransfer = mTargetStackSize - stored.getAsInt();
 

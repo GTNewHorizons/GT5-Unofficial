@@ -23,15 +23,13 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_UNSET,
         new Color(0),
         EnumChatFormatting.GRAY,
-        0, foundryData -> {}),
+        0, _ -> {}),
     EXTRA_CASTING_BASINS("GT5U.gui.text.foundry.modules.scb.name", "S.C.B", "extra_casting_basins",
         ItemList.Extra_Casting_Basins_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_ECB,
         new Color(174, 174, 102),
         EnumChatFormatting.YELLOW,
-        10, foundryData -> {
-            foundryData.parallelScaleAdditive+=12;
-    }
+        10, foundryData -> foundryData.parallelScaleAdditive+=12
     ),
     UNIVERSAL_COLLAPSER(
         "GT5U.gui.text.foundry.modules.uc.name", "U.C", "uc",
@@ -75,9 +73,7 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_SLC,
         new Color(250, 60, 60),
         EnumChatFormatting.RED,
-        10, foundryData -> {
-            foundryData.speedAdditive += 1.5f;
-        }
+        10, foundryData -> foundryData.speedAdditive += 1.5f
     ),
     HELIOCAST_REINFORCEMENT(
         "GT5U.gui.text.foundry.modules.hr.name", "H.R", "heliocast_reinforcement",
@@ -85,9 +81,7 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_HR,
         new Color(225, 45, 225),
         EnumChatFormatting.LIGHT_PURPLE,
-        11, foundryData -> {
-            foundryData.UIVRecipesEnabled=true;
-        }
+        11, foundryData -> foundryData.UIVRecipesEnabled = true
     ),
     HYPERCOOLER(
         "GT5U.gui.text.foundry.modules.hc.name", "H.C", "hypercooler",
@@ -95,9 +89,7 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_HC,
         new Color(40, 128, 153),
         EnumChatFormatting.AQUA,
-        11, foundryData -> {
-            foundryData.hypercoolerPresent = true;
-        }
+        11, foundryData -> foundryData.hypercoolerPresent = true
     ),
 
     ;

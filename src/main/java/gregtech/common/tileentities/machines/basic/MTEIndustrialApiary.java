@@ -1033,7 +1033,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             }
 
             if (!GTUtility.areStacksEqual(stack, stackInSlot)) continue;
-            amount = Math.max(Math.min(amount, maxStackSize - stackInSlot.stackSize), 0);
+            amount = Math.clamp(amount, 0, maxStackSize - stackInSlot.stackSize);
             if (amount == 0) return;
             stackInSlot.stackSize += amount;
             stack.stackSize -= amount;

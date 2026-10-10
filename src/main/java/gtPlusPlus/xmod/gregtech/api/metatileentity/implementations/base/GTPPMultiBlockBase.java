@@ -483,7 +483,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         return false;
     }
 
-    /**
+    /*
      * TecTech Support
      */
 

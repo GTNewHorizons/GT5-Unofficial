@@ -456,7 +456,7 @@ public class GTPreLoad {
         GTMod.proxy.oreDropSystem = Gregtech.oreDropBehavior.setting;
 
         // features
-        GTMod.proxy.mUpgradeCount = Math.min(64, Math.max(1, Gregtech.features.upgradeStackSize));
+        GTMod.proxy.mUpgradeCount = Math.clamp(Gregtech.features.upgradeStackSize, 1, 64);
 
         GTRecipeBuilder.onConfigLoad();
     }

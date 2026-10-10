@@ -67,10 +67,7 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
                 multiblock.getLinkedUnits()
                     .addAll(links);
             })
-            .serializer((buf, unit) -> {
-                buf.writeNBTTagCompoundToBuffer(unit.writeLinkDataToNBT());
-
-            })
+            .serializer((buf, unit) -> buf.writeNBTTagCompoundToBuffer(unit.writeLinkDataToNBT()))
             .deserializer(buffer -> new LinkedPurificationUnit(buffer.readNBTTagCompoundFromBuffer()))
             .copy(unit -> new LinkedPurificationUnit(unit.writeLinkDataToNBT()))
             .build();
