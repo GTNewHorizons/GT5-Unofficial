@@ -252,9 +252,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
 
     private String getCoolantTextFormatted(String fluidType, int speedBoost) {
         return String.format(
-            "%s%d L/s%s : %s%d %s: %s%s",
+            "%s%s/s%s : %s%d %s: %s%s",
             EnumChatFormatting.GOLD,
-            BOOSTER_DRAIN,
+            formatFluid(BOOSTER_DRAIN),
             EnumChatFormatting.GRAY,
             EnumChatFormatting.GREEN,
             speedBoost,
@@ -271,13 +271,14 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFFSET,
             VERTICAL_OFFSET,
             DEPTH_OFFSET,
-            elementBudget,
+            realBudget,
             env,
             false,
             true);
@@ -470,7 +471,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                 }
                 currentBoosterFluid = findBoosterFluid();
                 return super.createOverclockCalculator(recipe)
-                    .setMachineHeat(currentBoosterFluid == null ? 0 : currentBoosterFluid.perfectOverclock * 1800)
+                    .setMachineHeat(
+                        currentBoosterFluid == null ? 0
+                            : currentBoosterFluid.perfectOverclock * OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
                     .setRecipeHeat(0)
                     .setHeatOC(true)
                     .setHeatDiscount(false);

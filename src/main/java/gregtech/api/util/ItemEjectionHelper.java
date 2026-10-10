@@ -149,7 +149,7 @@ public class ItemEjectionHelper {
                 }
 
                 // Fill at most one slot with the remaining items
-                if (output.storePartial(transaction)) {
+                if (output.storePartial(transaction, pendingOutputs)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the bus, go to the next one
@@ -199,17 +199,16 @@ public class ItemEjectionHelper {
             this.initialAmount = amount;
         }
 
-        public boolean storePartial(IOutputBusTransaction transaction) {
-            if (transaction instanceof IOutputBusTransaction.IDynamicCapacityOutputAware sharedOutput
-                && sharedOutput.isDynamicCapacity()) {
-                int origin = remaining.stackSize;
-                int amount = Math.min(origin, perParallel);
-                remaining.stackSize = amount;
-                boolean succeed = transaction.storePartial(id, remaining);
-                remaining.stackSize += origin - amount;
-                return succeed;
+        public boolean storePartial(IOutputBusTransaction transaction, Iterable<ItemParallelData> pendingOutputs) {
+            long totalPerParallel = perParallel;
+            if (transaction.needsTotalParallelData()) {
+                for (ItemParallelData other : pendingOutputs) {
+                    if (!transaction.isFiltered() || transaction.isFilteredTo(other.id)) {
+                        totalPerParallel += other.perParallel;
+                    }
+                }
             }
-            return transaction.storePartial(id, remaining);
+            return transaction.storePartial(id, remaining, totalPerParallel, perParallel);
         }
     }
 }

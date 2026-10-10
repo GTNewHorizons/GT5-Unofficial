@@ -8,12 +8,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTI
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -66,8 +64,10 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -320,26 +320,32 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
     }
 
+    @OCMethod
     public int getMinAutoPullStackSize() {
         return minAutoPullStackSize;
     }
 
+    @OCMethod
     public void setMinAutoPullStackSize(int minAutoPullStackSize) {
         this.minAutoPullStackSize = minAutoPullStackSize;
     }
 
+    @OCMethod
     public int getAutoPullRefreshTime() {
         return autoPullRefreshTime;
     }
 
+    @OCMethod
     public void setAutoPullRefreshTime(int autoPullRefreshTime) {
         this.autoPullRefreshTime = autoPullRefreshTime;
     }
 
+    @OCMethod
     public boolean isAutoPullItemList() {
         return autoPullItemList;
     }
 
+    @OCMethod
     public void setAutoPullItemList(boolean pullItemList) {
         if (!autoPullAvailable) {
             return;
@@ -602,16 +608,21 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     @Override
     public List<ItemStack> getNonConsumedInputDisplayItems() {
-        if (mRecipeMap == null) return Collections.emptyList();
-        Set<GTUtility.ItemId> nonConsumedIds = mRecipeMap.getNonConsumedInputItemIds();
-        if (nonConsumedIds.isEmpty()) return Collections.emptyList();
-
         List<ItemStack> result = new ArrayList<>();
         for (Slot slot : slots) {
-            if (slot == null || slot.config == null || GTUtility.isAnyIntegratedCircuit(slot.config)) continue;
-            if (nonConsumedIds.contains(GTUtility.ItemId.create(slot.config))) {
+            if (slot == null) continue;
+            if (INonConsumedItemDisplay.isDisplayableItem(mRecipeMap, slot.config)) {
                 result.add(slot.config);
             }
+        }
+        return result;
+    }
+
+    @Override
+    public List<ItemStack> getItemsForHoloGlasses() {
+        List<ItemStack> result = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot != null && slot.extracted != null) result.add(slot.extracted);
         }
         return result;
     }
@@ -809,6 +820,28 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     public void setSlotConfig(int index, ItemStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
         configureWatchers();
+    }
+
+    @OCMethod
+    public ItemStack getSlotConfig(int index) {
+        Slot slot = GTDataUtils.getIndexSafe(slots, index);
+
+        return slot == null || slot.config == null ? null : slot.config.copy();
+    }
+
+    @OCMethod
+    public boolean setSlotConfigAndUpdate(int index, ItemStack config) {
+        if (index < 0 || index >= slots.length) return false;
+
+        setSlotConfig(index, config);
+
+        try {
+            updateInformationSlot(index);
+        } catch (GridAccessException e) {
+            // :)
+        }
+
+        return true;
     }
 
     /**

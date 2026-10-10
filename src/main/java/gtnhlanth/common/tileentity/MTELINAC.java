@@ -4,8 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.HatchElement.BeamlineInput;
-import static gregtech.api.enums.HatchElement.BeamlineOutput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -16,6 +14,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineInput;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineOutput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -60,6 +59,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -70,8 +70,7 @@ import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.Util;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
-    implements ISurvivalConstructable, ICasingTextureProvider {
+public class MTELINAC extends MTEBeamMultiBase<MTELINAC> implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTELINAC> STRUCTURE_DEFINITION;
 
@@ -160,10 +159,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
 
     public MTELINAC(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        this.hasMaintenanceChecks = true;
     }
 
     public MTELINAC(String name) {
         super(name);
+        this.hasMaintenanceChecks = true;
     }
 
     @Override
@@ -195,7 +196,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
             .addOutputHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.linac.structure.output_hatch_pos"), 2)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
-            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
+            .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         // spotless:on
@@ -234,7 +235,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.mMaxProgresstime = TickTime.SECOND;
-        this.mEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()]
+        this.lEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()]
             : (int) (-this.getMaxInputAmps() * GTValues.VP[(int) this.getInputVoltageTier()]));
 
         // 1A of full power if one energy hatch, 4A if two
@@ -272,11 +273,11 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
     }
 
     private void outputPacketAfterRecipe() {
-        if (!mBeamlineOutputHatches.isEmpty()) {
+        if (!mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticleID, outputFocus));
 
-            for (MTEHatchOutputBeamline o : mBeamlineOutputHatches) {
+            for (MTEHatchOutputBeamline o : mOutputBeamline) {
                 o.dataPacket = packet;
             }
         }
@@ -294,7 +295,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
 
     @Nullable
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mBeamlineInputHatches) {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
             if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
             return in.dataPacket.getContent();
         }
@@ -343,10 +344,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 3, 6, 0);
 
-        int lLength = Math.max(stackSize.stackSize + 7, 8); // !!
-        if (!(lLength % 2 == 0)) {
-            lLength++; // Otherwise you get gaps at the end
+        int channelValue = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, 83);
+        int totalLength = (channelValue <= 19) ? 19 : channelValue;
+        if ((totalLength & 1) == 0) {
+            totalLength++; // Otherwise you get gaps at the end
         }
+        int lLength = totalLength - 11;
 
         for (int i = -8; i > -lLength - 1; i -= 2) {
             buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 3, 6, i);
@@ -364,10 +367,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
         int build = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 3, 6, 0, elementBudget, env, false, true);
         if (build >= 0) return build; // Incomplete
 
-        int lLength = Math.max(stackSize.stackSize + 7, 8); // !!
-        if (!(lLength % 2 == 0)) {
-            lLength++; // Otherwise you get gaps at the end
+        int channelValue = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, 83);
+        int totalLength = (channelValue <= 19) ? 19 : channelValue;
+        if ((totalLength & 1) == 0) {
+            totalLength++; // Otherwise you get gaps at the end
         }
+        int lLength = totalLength - 11;
 
         for (int i = -8; i > -lLength - 1; i -= 2) {
             build = survivalBuildPiece(STRUCTURE_PIECE_LAYER, stackSize, 3, 6, i, elementBudget, env, false, true);

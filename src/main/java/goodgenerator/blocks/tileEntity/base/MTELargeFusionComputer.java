@@ -13,19 +13,21 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.math.BigInteger;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -41,9 +43,10 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -63,9 +66,9 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -92,6 +95,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     public static final String MAIN_NAME = "largeFusion";
     public static final int M = 1_000_000;
+    private static final int MAX_ENERGY_HATCHES = 32;
     public GTRecipe lastRecipe;
     public int para;
     protected OverclockDescriber overclockDescriber;
@@ -120,12 +124,10 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                     'E',
                     lazy(
                         x -> HatchElementBuilder.<MTELargeFusionComputer>builder()
-                            .anyOf(
-                                tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
-                                    .or(gregtech.api.enums.HatchElement.Energy))
+                            .anyOf(HatchElement.EnergyMulti.or(gregtech.api.enums.HatchElement.Energy))
                             .adder(MTELargeFusionComputer::addEnergyInjector)
                             .casingIndex(x.textureIndex())
-                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.energyHatchTier(), Integer.MAX_VALUE))
+                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.tier(), Integer.MAX_VALUE))
                             .hint(2)
                             .buildAndChain(ofBlock(x.getCasingBlock(), x.getCasingMeta()))))
                 .addElement('F', lazy(x -> ofFrame(x.getFrameBox())))
@@ -142,7 +144,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     };
 
     static {
-        Textures.BlockIcons.setCasingTextureForId(
+        setCasingTextureForId(
             52,
             TextureFactory.of(
                 TextureFactory.builder()
@@ -172,17 +174,56 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         return new FusionOverclockDescriber((byte) tier(), capableStartupCanonical());
     }
 
-    @Nullable
+    @Nonnull
     @Override
     public OverclockDescriber getOverclockDescriber() {
         return overclockDescriber;
     }
 
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final FusionOverclockDescriber fod = (FusionOverclockDescriber) getOverclockDescriber();
+        // spotless:off
+        tt.addMachineType(translateToLocal("gt.mbtt.machine_type.fusion_reactor"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "large-fusion-computer"),
+                ImmutableMap.<String, Object>builder()
+                    .put("power", formatNumber(getSingleHatchPower()))
+                    .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
+                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
+                    .put("base_para", formatNumber(getMaxPara()))
+                    .put("per_tier_para", formatNumber(getMaxPara()))
+                    .put("eu_per_oc", formatNumber(fod.getEUtIncreasePerOC()))
+                    .put("time_per_oc", formatNumber(fod.getDurationDecreasePerOC()))
+                    .build())
+            .addSupportAny()
+            .beginStructureBlock(47, 7, 47, false)
+            .addController(translateToLocal("gt.mbtt.structure.middle_center_4th_layer"))
+            .addCasing("1662-1695", new ItemStack(getCasingBlock(), 1, getCasingMeta()).getDisplayName(), false)
+            .addCasing("560", new ItemStack(getCoilBlock(), 1, getCoilMeta()).getDisplayName(), false)
+            .addCasing("128", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameBox()), false)
+            .addCasing("63-93", new ItemStack(getGlassBlock(), 1, getGlassMeta()).getDisplayName(), false)
+            .addEnergyHatch("1-32", StatCollector.translateToLocalFormatted("gt.mbtt.structure.specific_casings_on_each_curve", GTValues.VN[tier()]), 2)
+            .addInputHatch("1+", translateToLocal("gt.mbtt.structure.specific_glass_on_each_side"), 1)
+            .addOutputHatch("1+", translateToLocal("gt.mbtt.structure.specific_glass_on_each_side"), 1)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("gt.mbtt.structure.supports_crafting_input_buffers"))
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    /**
+     * Sets the tier of the fusion reactor and the required (energy) hatch tier
+     */
     public abstract int tier();
 
     @Override
     public long maxEUStore() {
-        return capableStartupCanonical() * (Math.min(32, this.mEnergyHatches.size() + this.eEnergyMulti.size())) / 32L;
+        return capableStartupCanonical()
+            * (Math.min((long) MAX_ENERGY_HATCHES, this.mEnergyHatches.size() + this.eEnergyMulti.size()))
+            / ((long) MAX_ENERGY_HATCHES);
     }
 
     /**
@@ -220,11 +261,11 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         return ofBlock(glass, getGlassMeta());
     }
 
-    public abstract int energyHatchTier();
-
     public abstract Materials getFrameBox();
 
-    public abstract int getMaxPara();
+    public int getMaxPara() {
+        return 64;
+    }
 
     public abstract int extraPara(long startEnergy);
 
@@ -375,7 +416,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
      * @return The power one hatch can deliver to the reactor
      */
     protected long getSingleHatchPower() {
-        return GTValues.V[tier()] * getMaxPara() * extraPara(100) / 32;
+        return GTValues.V[tier()] * getMaxPara() * extraPara(100) / MAX_ENERGY_HATCHES;
     }
 
     public boolean turnCasingActive(boolean status) {
@@ -414,7 +455,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             .addIcon(MACHINE_CASING_FUSION_GLASS)
             .extFacing()
             .build(), getTextureOverlay() };
-        if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
+        if (aActive) return new ITexture[] { getCasingTextureForId(52) };
         return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_FUSION_GLASS)
             .extFacing()
@@ -456,7 +497,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                long powerToStart = recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L);
+                long powerToStart = recipe.getMetadataOrDefault(FUSION_THRESHOLD, 0L);
                 if (!mRunningOnLoad) {
                     if (powerToStart > maxEUStore()) {
                         return CheckRecipeResultRegistry.insufficientStartupPower(BigInteger.valueOf(powerToStart));
@@ -489,7 +530,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GTValues.V[tier()]);
-        logic.setAvailableAmperage(getSingleHatchPower() * 32 / GTValues.V[tier()]);
+        logic.setAvailableAmperage(getSingleHatchPower() * MAX_ENERGY_HATCHES / GTValues.V[tier()]);
         logic.setUnlimitedTierSkips();
     }
 
@@ -508,12 +549,12 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                 return false;
             }
             case MTEHatchEnergy tHatch -> {
-                if (tHatch.getTierForStructure() < energyHatchTier()) return false;
+                if (tHatch.getTierForStructure() < tier()) return false;
                 tHatch.updateTexture(aBaseCasingIndex);
                 return mEnergyHatches.add(tHatch);
             }
             case MTEHatchEnergyMulti tHatch -> {
-                if (tHatch.getTierForStructure() < energyHatchTier()) return false;
+                if (tHatch.getTierForStructure() < tier()) return false;
                 tHatch.updateTexture(aBaseCasingIndex);
                 return eEnergyMulti.add(tHatch);
             }
@@ -576,11 +617,8 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
         screenElements
             .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
-                            + numberFormat.format(energyStorageCache)
-                            + " EU")
+                new TextWidget().setStringSupplier(
+                    () -> translateToLocal("gui.LargeFusion.0") + " " + numberFormat.format(energyStorageCache) + " EU")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0))
@@ -588,9 +626,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
-                            + numberFormat.format(getEUVar())
-                            + " EU")
+                        () -> translateToLocal("gui.LargeFusion.1") + " " + numberFormat.format(getEUVar()) + " EU")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0))
@@ -617,21 +653,6 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     @Override
     public boolean getDefaultBatchMode() {
         return true;
-    }
-
-    protected String createParallelText() {
-        return "Has " + EnumChatFormatting.WHITE
-            + "(1 + "
-            + EnumChatFormatting.LIGHT_PURPLE
-            + "Machine Tier"
-            + EnumChatFormatting.WHITE
-            + " - "
-            + EnumChatFormatting.GREEN
-            + "Recipe Tier"
-            + EnumChatFormatting.WHITE
-            + ") * 64"
-            + EnumChatFormatting.GOLD
-            + " Parallels";
     }
 
     @Override

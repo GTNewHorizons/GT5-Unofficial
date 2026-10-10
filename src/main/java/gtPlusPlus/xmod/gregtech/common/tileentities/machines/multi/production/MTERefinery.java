@@ -16,6 +16,8 @@ import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -37,6 +39,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISurvivalConstructable {
 
     private int mCasing;
@@ -52,17 +55,15 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public String getMachineType() {
-        return "Fuel Refinery, RFPP";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.fuel_refinery");
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(getMachineType())
-            .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
-            .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
-            .addInfo("Only one Energy Hatch is allowed per Processing Unit")
-            .addInfo("All recipe times in this multi are very long, watch out!")
+            .addMarkdown(new ResourceLocation("gregtech", "refinery"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front bottom center")
@@ -76,6 +77,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
             .addInputHatch("2+", "Any hastelloy-X casing", 1)
             .addOutputHatch("1+", "Any hastelloy-X casing", 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

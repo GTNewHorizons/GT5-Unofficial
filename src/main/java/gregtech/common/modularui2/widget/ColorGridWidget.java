@@ -34,10 +34,12 @@ public class ColorGridWidget extends Flow {
     public int buttonSize = 9;
     public int buttonPadding = 1;
     public int borderSize = 1;
+    private boolean input;
 
-    public ColorGridWidget() {
+    public ColorGridWidget(boolean input) {
         super(GuiAxis.Y);
         this.coverChildren();
+        this.input = input;
     }
 
     /**
@@ -161,13 +163,17 @@ public class ColorGridWidget extends Flow {
             .tooltipDynamic(tooltip -> {
                 if (selected.contains((byte) index)) {
                     tooltip.add(Dyes.VALUES[index].getLocalizedDyeName());
-                    tooltip
-                        .add(EnumChatFormatting.GREEN + " " + translateToLocal("GT5U.tooltip.nac.color_grid.selected"));
+                    tooltip.addLine(
+                        EnumChatFormatting.GREEN + " " + translateToLocal("GT5U.tooltip.nac.color_grid.selected"));
                 } else {
                     tooltip.addLine(
-                        EnumChatFormatting.GRAY + translateToLocal("GT5U.tooltip.nac.color_grid.click_select"));
-                    tooltip.add(Dyes.VALUES[index].getLocalizedDyeName());
+                        EnumChatFormatting.GRAY + translateToLocal("GT5U.tooltip.nac.color_grid.click_select")
+                            + " "
+                            + Dyes.VALUES[index].getLocalizedDyeName());
+                }
 
+                if (input) {
+                    tooltip.addLine(translateToLocal("GT5U.tooltip.nac.color_grid.wildcard"));
                 }
             })
             .size(buttonSize, buttonSize);

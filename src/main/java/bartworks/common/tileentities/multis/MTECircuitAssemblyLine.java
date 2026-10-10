@@ -44,12 +44,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -62,6 +64,8 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import bartworks.API.enums.CircuitImprint;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -91,6 +95,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuitAssemblyLine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -166,22 +171,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Circuit Assembler, CAL")
-            .addInfo("Change Mode with Screwdriver")
-            .addPerfectOCInfo()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.0") + ":")
-            .addInfo("Imprint this machine with a Circuit Imprint,")
-            .addInfo("by putting the imprint in the controller")
-            .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.1") + ":")
-            .addInfo(
-                "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
-                    + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
-            .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.circuit_assembly_line"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "circuit-assembly-line"),
+                ImmutableMap.<String, Object>builder()
+                    .put("min_length", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
+                    .build())
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
             .addController("First slice, 3rd layer")
             .addEnergyHatch("1", "Any layer 3 casing", 3)
@@ -214,6 +210,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -419,8 +416,9 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         if (machineMode == MACHINEMODE_CAL) logic.setSpecialSlotItem(this.circuitImprint.imprint.get(1));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return GTCEU_LOOP_ASSEMBLER;
     }
 
@@ -495,7 +493,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         this.infoDataBuffer = new String[oldInfo.length + 1];
         System.arraycopy(oldInfo, 0, this.infoDataBuffer, 0, oldInfo.length);
         this.infoDataBuffer[oldInfo.length] = IGregTechDeviceInformation
-            .encode("tooltip.cal.imprintedWith", EnumChatFormatting.YELLOW + this.getTypeForDisplay());
+            .encode("tooltip.cal.imprintedWith", this.getTypeForDisplay());
         return this.infoDataBuffer;
     }
 
@@ -605,7 +603,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.cal.imprintedWith",
-                        EnumChatFormatting.YELLOW + imprint.circuit.get(1)
+                        imprint.circuit.get(1)
                             .getDisplayName()));
             }
         }
@@ -684,9 +682,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger("mode")));
         if (tag.hasKey("ImprintedWith") && tag.getInteger("mode") == 0) {
             list.add(
-                StatCollector.translateToLocalFormatted(
-                    "tooltip.cal.imprintedWith",
-                    EnumChatFormatting.YELLOW + tag.getString("ImprintedWith")));
+                StatCollector.translateToLocalFormatted("tooltip.cal.imprintedWith", tag.getString("ImprintedWith")));
         }
     }
 

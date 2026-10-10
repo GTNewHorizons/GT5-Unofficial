@@ -38,7 +38,7 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
         if (world == null) return; // Just in-case
 
         // Smooth global animation clock
-        float time = world.getTotalWorldTime() + partialTicks;
+        double time = (double) world.getTotalWorldTime() + partialTicks;
 
         eyeModel.translation((float) x + 0.5f, (float) y + 0.5f, (float) z + 0.5f);
 
@@ -55,7 +55,7 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
         RenderState.restore(GL11.GL_BLEND, blendWas);
     }
 
-    private void renderOrbitObjects(TileEntityEyeOfHarmony te, float time) {
+    private void renderOrbitObjects(TileEntityEyeOfHarmony te, double time) {
 
         var objects = te.getOrbitingObjects();
 

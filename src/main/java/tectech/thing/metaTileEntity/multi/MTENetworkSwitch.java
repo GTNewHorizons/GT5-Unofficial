@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,6 +54,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 /**
  * Created by danie_000 on 17.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENetworkSwitch extends TTMultiblockBase
     implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitch> {
 
@@ -162,24 +165,20 @@ public class MTENetworkSwitch extends TTMultiblockBase
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTENetworkSwitch> tt = new StructureWrapperTooltipBuilder<>(structure);
+        // spotless:off
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.type"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2"))
-            .addSeparator()
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.3"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.4"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.5"))
+            .addMarkdown(new ResourceLocation("gregtech", "network-switch"))
             .addSupportAny()
             .beginStructureBlock(3, 3, 3, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("0-17", "Computer Casing", false)
-            .addCasing("0-5", "Advanced Computer Casing", false)
-            .addMiscHatch("1+", "Optical Reception Connector", "Any advanced casing", 1)
-            .addMiscHatch("1+", "Optical Transmission Connector", "Any casing", 1, 2)
-            .addEnergyHatch("1+", "Any casing", 1, 2)
-            .addMaintenanceHatch("1", "Any casing", 1, 2)
+            .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("0-17", translateToLocal("gt.blockcasingsTT.1.name"), false)
+            .addCasing("0-5", translateToLocal("gt.blockcasingsTT.3.name"), false)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"), 1)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), anyCasingText(), 1, 2)
+            .addEnergyHatch("1+", anyCasingText(), 1, 2)
+            .addMaintenanceHatch("1", anyCasingText(), 1, 2)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

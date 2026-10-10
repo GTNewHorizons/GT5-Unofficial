@@ -91,7 +91,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
             .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
             .addInfo(
                 String.format(
-                    "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
+                    "Every Coil Tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
                     TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
                     TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER))))
             .addInfo(
@@ -269,7 +269,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
     }
 
     public double getSpeedBonus() {
-        return 1F / (BASE_SPEED_BONUS + getCoilSpeedBonus());
+        return 1.0D / (BASE_SPEED_BONUS + getCoilSpeedBonus());
     }
 
     public double getEUMultiplier() {
