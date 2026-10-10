@@ -174,6 +174,10 @@ public class GTSoundLoop extends MovingSound {
         return this;
     }
 
+    public float getTargetVolume() {
+        return targetVolume;
+    }
+
     public GTSoundLoop setPosition(ISoundPosition position) {
         this.position = position;
 

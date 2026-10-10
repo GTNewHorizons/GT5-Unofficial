@@ -756,7 +756,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEPartProcessorModule(
                 NANOCHIP_MODULE_PART_PROCESSOR.ID,
                 "multimachine.nanochipmodule.smdprocessor",
-                "Part Preparation Apparatus").getStackForm(1));
+                "Part Processing Apparatus").getStackForm(1));
         addItemTooltip(
             ItemList.NanoChipModule_PartProcessor.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
