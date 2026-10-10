@@ -3904,8 +3904,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements EnderSt
         craftingShapelessRecipes();
     }
 
-    /// The special items act through [gregtech.api.items.MetaBaseItem#onItemUseFirst]; the plain use hook does
-    /// nothing for them.
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
