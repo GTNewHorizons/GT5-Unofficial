@@ -22,6 +22,7 @@ import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -560,6 +561,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mCoils.clear();
         deactivateCoilLease();
         debugEnergyPresent = false;
+    }
+
+    /**
+     * Drops this multiblock's AE2 crafting icon from hatches kept outside {@link #mSmartInputHatches}, for a
+     * {@link #clearHatches()} override to call on its own lists before clearing them.
+     */
+    protected void clearCraftingIcons(Collection<? extends MTEHatch> hatches) {
+        for (MTEHatch hatch : hatches) {
+            hatch.updateCraftingIcon(null, getBaseMetaTileEntity());
+        }
     }
 
     public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {

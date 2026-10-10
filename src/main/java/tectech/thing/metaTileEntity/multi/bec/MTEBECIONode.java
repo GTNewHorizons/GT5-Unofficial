@@ -192,7 +192,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     public void clearHatches() {
         super.clearHatches();
 
+        // These hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(naniteDetectors);
         naniteDetectors.clear();
+        clearCraftingIcons(controllerHatches);
         controllerHatches.clear();
 
         if (losHatch != null) {
@@ -1029,7 +1032,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
                 if (imte instanceof MTEHatchNaniteDetector hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
 
                     self.naniteDetectors.add(hatch);
                     hatch.setRequiredTier(self.requiredTier);
@@ -1079,7 +1082,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
                 if (imte instanceof MTEHatchIONodeController hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
 
                     self.controllerHatches.add(hatch);
 
@@ -1128,7 +1131,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
                 if (self.losHatch == null && imte instanceof MTEHatchLoS hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     hatch.setOwner(self);
 
                     self.addIfSmartInput(hatch);

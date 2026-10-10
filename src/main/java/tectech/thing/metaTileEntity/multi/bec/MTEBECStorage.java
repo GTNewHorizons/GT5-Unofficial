@@ -116,6 +116,8 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public void clearHatches() {
         super.clearHatches();
 
+        // Condensate detectors register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(condensateDetectors);
         condensateDetectors.clear();
     }
 
@@ -396,7 +398,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
                 if (imte instanceof MTEHatchCondensateDetector hatch) {
                     hatch.updateTexture(texture);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     hatch.bindBECStorage(self);
                     self.condensateDetectors.add(hatch);
                     self.contentsChanged = true;

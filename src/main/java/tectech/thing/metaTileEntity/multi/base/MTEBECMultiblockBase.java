@@ -137,6 +137,8 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
 
         mPreviousBECHatches = new ArrayList<>(mBECHatches);
 
+        // BEC hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(mBECHatches);
         mBECHatches.forEach(h -> h.removeController(this));
         mBECHatches.clear();
     }
@@ -317,7 +319,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
 
                 if (imte instanceof MTEHatchBEC hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     self.mBECHatches.add(hatch);
                     hatch.addController(self);
                     return true;
