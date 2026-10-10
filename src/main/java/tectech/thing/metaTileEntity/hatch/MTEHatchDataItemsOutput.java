@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -21,13 +20,11 @@ import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
-import tectech.mechanics.pipe.IConnectsToDataPipe;
-import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.util.CommonValues;
 
 public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataPacket> {
 
-    private ALRecipeDataPacket previousPacket;
+    public ALRecipeDataPacket previousPacket;
 
     public MTEHatchDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -76,43 +73,22 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        IConnectsToDataPipe current = this, source = this, next;
-        int range = 0;
-        while ((next = current.getNext(source)) != null && range++ < 1000) {
-            if (next instanceof MTEHatchDataItemsInput) {
-                ((MTEHatchDataItemsInput) next).setContents(q);
-                break;
-            }
-            source = current;
-            current = next;
-        }
-        previousPacket = q;
-        q = null;
-    }
+    public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState checkState) {
+        var result = super.moveAround(aBaseMetaTileEntity, checkState);
 
-    @Override
-    public IConnectsToDataPipe getNext(IConnectsToDataPipe source /* ==this */) {
-        IGregTechTileEntity base = getBaseMetaTileEntity();
-        byte color = base.getColorization();
-        if (color < 0) {
-            return null;
+        switch (result) {
+            // these states should not modify this hatch or the connected one
+            case CONNECTION, DISCONNECTED, UNKNOWN -> {}
+            case NEW_DATA -> {
+                previousPacket = q;
+                q = null;
+            }
+            case CONNECTED -> {} // ((MTEHatchDataItemsInput) connected).setContents(q);
+            default -> {
+                // TODO: log this new state
+            }
         }
-        IGregTechTileEntity next = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
-        if (next == null) {
-            return null;
-        }
-        IMetaTileEntity meta = next.getMetaTileEntity();
-        if (meta instanceof MTEPipeData) {
-            ((MTEPipeData) meta).markUsed();
-            return (IConnectsToDataPipe) meta;
-        } else if (meta instanceof MTEHatchDataItemsInput && ((MTEHatchDataItemsInput) meta).getColorization() == color
-            && ((MTEHatchDataItemsInput) meta).canConnectData(
-                base.getFrontFacing()
-                    .getOpposite())) {
-                        return (IConnectsToDataPipe) meta;
-                    }
-        return null;
+        return result;
     }
 
     @Override
