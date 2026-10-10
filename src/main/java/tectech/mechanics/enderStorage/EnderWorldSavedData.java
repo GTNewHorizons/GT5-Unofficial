@@ -189,8 +189,7 @@ public class EnderWorldSavedData extends WorldSavedData {
         EnderLinkTag oldTag = getEnderLiquidTankLink().remove(tank);
 
         if (oldTag != null) {
-            boolean isReferenced = getEnderLiquidTankLink().values()
-                .contains(oldTag);
+            boolean isReferenced = getEnderLiquidTankLink().containsValue(oldTag);
 
             if (!isReferenced) {
                 getEnderLiquidLink().remove(oldTag);
