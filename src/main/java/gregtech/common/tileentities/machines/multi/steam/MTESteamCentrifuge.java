@@ -313,6 +313,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
     protected MultiblockTooltipBuilder createTooltip() {
         String anyNormalCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_normal_casing");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(StatCollector.translateToLocal("GT5U.MBTT.Steam.HighPressure"))
@@ -320,11 +321,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addSteamHatch("1", anyNormalCasing, 1)
             .addSteamInputBus("1+", anyNormalCasing, 1)
-            .addMiscHatch(
-                "1+",
-                StatCollector.translateToLocal("gt.mbtt.structure.steam_output_bus_or_output_hatch"),
-                anyNormalCasing,
-                1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.steam_output_bus_or_output_hatch"), anyNormalCasing, 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
             .addCasing("60-65", Casings.BronzePlatedBricks.getLocalizedName(), false)
@@ -340,6 +337,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
+        // spotless:on
         return tt;
     }
 
