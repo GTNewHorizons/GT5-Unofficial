@@ -172,7 +172,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Circuit Assembler, CAL")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.circuit_assembly_line"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "circuit-assembly-line"),
                 ImmutableMap.<String, Object>builder()

@@ -1110,6 +1110,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         result = postCheckRecipe(result, processingLogic);
         // inputs are consumed at this point
         updateSlots();
+        // a fully consumed controller slot stack must not linger as a 0-size stack, it can be duped from the GUI
+        if (mInventory[1] != null && mInventory[1].stackSize <= 0) mInventory[1] = null;
         if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -4061,10 +4063,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean shouldCheckMaintenance() {
         return !disableMaintenance && hasMaintenanceChecks;
-    }
-
-    public void setMaxParallelForPanel(int parallel) {
-        this.maxParallel = parallel;
     }
 
     @Nonnull
