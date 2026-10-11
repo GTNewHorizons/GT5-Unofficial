@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -123,6 +124,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                 new ResourceLocation("gregtech", "nuclear-reactor"),
                 ImmutableMap.<String, Object>builder()
                     .put("warmup", formatNumber(WARMUP_SECONDS))
+                    .put("unit", getFluidUnit())
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 4, 7, true)
