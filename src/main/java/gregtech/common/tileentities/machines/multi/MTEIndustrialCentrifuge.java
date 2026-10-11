@@ -59,7 +59,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -180,23 +179,14 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Centrifuge")
-            .addInfo(
-                TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER) + " - "
-                    + TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER * 2)
-                    + " Parallels per "
-                    + TooltipHelper.coloredText("Voltage", TooltipHelper.TIER_COLOR)
-                    + " Tier")
-            .addInfo(
-                TooltipHelper.speedText((float) SPEED) + " - " + TooltipHelper.speedText((float) MAX_SPEED) + " Speed")
-            .addMarkdown(
-                new ResourceLocation("gregtech", "industrial-centrifuge"),
-                ImmutableMap.<String, Object>builder().build())
-            .addStaticEuEffInfo((float) EU_EFFICIENCY)
-            .addInfo(
-                "Right-click the controller with a " + EnumChatFormatting.WHITE
-                    + "Screwdriver"
-                    + EnumChatFormatting.GRAY
-                    + " to disable animations")
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-centrifuge"),
+                ImmutableMap.<String, Object>builder()
+                    .put("min_parallels", formatNumber(BASE_PARALLEL_PER_TIER))
+                    .put("max_parallels", formatNumber((BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / 100D)))
+                    .put("min_speed", formatNumber(SPEED * 100))
+                    .put("max_speed", formatNumber((SPEED + EXTRA_SPEED) * 100))
+                    .put("eu_eff", formatNumber(EU_EFFICIENCY * 100))
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front center, 3rd layer")
