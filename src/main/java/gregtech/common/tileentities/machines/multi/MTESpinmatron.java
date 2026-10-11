@@ -386,7 +386,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Centrifuge")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.centrifuge"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "spinmatron"),
                 ImmutableMap.<String, Object>builder()
