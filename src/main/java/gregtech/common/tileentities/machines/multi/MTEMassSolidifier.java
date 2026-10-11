@@ -73,16 +73,16 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final double DECAY_RATE = 0.025;
+    private static final double DECAY_RATE = 0.025D;
+    private static final double MAX_SPEEDUP = 3.0D;
+    private static final double EU_MODIFIER = 0.8D;
+    private static final int PARALLELS_PER_TIER = 10;
+
     private static final int HORIZONTAL_OFFSET = 2;
     private static final int VERTICAL_OFFSET = 5;
     private static final int DEPTH_OFFSET = 0;
 
-    private static final int MAX_SPEEDUP_PERCENT = 300;
-    private static final int PARALLELS_PER_TIER = 10;
-    private static final double EU_MODIFIER = 0.8d;
-
-    private double speedup = 1;
+    private double speedup = 1.0D;
     private int runningTickCounter = 0;
     private int glassTier = -1;
     private final static int MAX_CASINGS = 77;
@@ -163,7 +163,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                 ImmutableMap.<String, Object>builder()
                     .put("parallels", formatNumber(PARALLELS_PER_TIER))
                     .put("min_speedup", formatNumber(100))
-                    .put("max_speedup", formatNumber(MAX_SPEEDUP_PERCENT))
+                    .put("max_speedup", formatNumber(MAX_SPEEDUP * 100))
                     .put("speed_increase", formatNumber(DECAY_RATE * 200))
                     .put("speed_decrease", formatNumber(DECAY_RATE * 400))
                     .put("eu_modifier", formatNumber(EU_MODIFIER * 100))
@@ -204,9 +204,9 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         runningTickCounter++;
-        if (runningTickCounter % 10 == 0 && speedup < MAX_SPEEDUP_PERCENT) {
+        if (runningTickCounter % 10 == 0 && speedup < MAX_SPEEDUP) {
             runningTickCounter = 0;
-            speedup += DECAY_RATE;
+            speedup = Math.min(MAX_SPEEDUP, speedup + DECAY_RATE);
         }
         return super.onRunningTick(aStack);
     }
@@ -217,7 +217,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (mMaxProgresstime == 0 && speedup > 1) {
             if (aTick % 5 == 0) {
-                speedup = (float) Math.max(1, speedup - DECAY_RATE);
+                speedup = Math.max(1, speedup - DECAY_RATE);
             }
         }
     }
