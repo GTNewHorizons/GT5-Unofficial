@@ -174,7 +174,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             TexturesGtBlock.oMCATreeFarm,
             TexturesGtBlock.oMCATreeFarmGlow,
             TexturesGtBlock.oMCATreeFarmActive,
-            TexturesGtBlock.oMCATreeFarmActiveGlow);
+            TexturesGtBlock.oMCATreeFarmActive);
     }
 
     @Override
