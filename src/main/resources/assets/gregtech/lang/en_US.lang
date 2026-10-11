@@ -3752,7 +3752,6 @@ gt.circuitcomponent.sheet.processed.eternity=Eternity Wrapper Spool
 
 gt.circuitcomponent.casing.processed.basicmainframe=Basic Mainframe Circuit Encasement
 gt.circuitcomponent.casing.processed.advancedmainframe=Advanced Mainframe Circuit Encasement
-gt.circuitcomponent.casing.processed.pico=Pico Circuit Encasement
 gt.circuitcomponent.casing.processed.quantum=Quantum Circuit Encasement
 gt.circuitcomponent.casing.processed.planck=Planck-Scale Circuit Encasement
 
@@ -3781,12 +3780,9 @@ gt.circuitcomponent.plate.processed.rhugnor=Bolted Rhugnor Plate
 gt.circuitcomponent.plate.processed.metastableoganesson=Bolted Metastable Oganesson Plate
 gt.circuitcomponent.plate.processed.hexanite=Bolted Hexanite Plate
 
-gt.circuitcomponent.pico.processed.opticalmainframerack=Optical Mainframe Rack
-gt.circuitcomponent.pico.processed.picocpu=Pico CPU
-
 gt.circuitcomponent.quantum.processed.compressionresidue=Compression Residue
-gt.circuitcomponent.quantum.processed.organizedpicocircuit=Organized Pico Circuit
-gt.circuitcomponent.quantum.processed.picocircuitrack=Pico Circuit Rack
+gt.circuitcomponent.quantum.processed.organizedexoticmainframe=Organized Exotic Mainframe
+gt.circuitcomponent.quantum.processed.exoticmainframerack=Exotic Mainframe Rack
 gt.circuitcomponent.quantum.processed.quantumcpu=Quantum CPU
 
 gt.circuitcomponent.quantum.processed.disorderlyspool=Spooled Disorderly Wire
