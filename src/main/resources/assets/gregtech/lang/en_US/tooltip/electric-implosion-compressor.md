@@ -1,8 +1,8 @@
 Uses electricity instead of explosives
-The {blue:Containment Block} used determines the number of {gold:Parallels}
-{blue:Neutronium}: {gold:1} Parallel
-{blue:Infinity}: {gold:4} Parallels
-{blue:Transcendent Metal}: {gold:16} Parallels
-{blue:Spacetime}: {gold:64} Parallels
-{blue:Universium}: {gold:256} Parallels
+The Containment Block used determines the number of {gold:Parallels}
+{white:Neutronium}: {gold:1}
+{red:Infinity}: {gold:4}
+{dark_gray:Transcendent Metal}: {gold:16}
+{light_purple:Spacetime}: {gold:64}
+{aqua:Universium}: {gold:256}
 {gray:{hr}}
