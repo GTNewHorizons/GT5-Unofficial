@@ -1,8 +1,7 @@
-Потребляет {aqua:{var:eu_usage} EU/t}
-Имеет 2 режима, для переключения используйте отвёртку:
-{gold:Прямой пар} и {gold:Нагрев хладагента}
-Режим {gold:Прямой пар}: {white:{fluid:ic2distilledwater}} → {white:{var:steam_rate}}Л/с {white:{fluid:ic2superheatedsteam}}
-Режим {gold:Нагрев хладагента}: {white:{var:coolant_rate}}Л/с {white:{fluid:ic2coolant}} → {white:{fluid:ic2hotcoolant}}
+Потребляет фиксированные {aqua:{var:eu_usage} EU/t}
+Имеет 2 режима, для переключения используйте {white:отвёртку}:
+{gold:Режим прямого пара}: расходует {blue:{var:water_rate} {var:unit}/т}: {blue:{fluid:ic2distilledwater}}, производит {white:{var:steam_rate} {var:unit}/т}: {white:{fluid:ic2superheatedsteam}}
+{gold:Режим нагрева хладагента}: расходует {blue:{var:coolant_rate} {var:unit}/т}: {blue:{fluid:ic2coolant}}, производит {red:{var:coolant_rate} {var:unit}/т}: {red:{fluid:ic2hotcoolant}}
+{gray:{hr}}
 Каждая проблема с техобслуживанием снижает эффективность производства на {aqua:10%}
-{dark_red:Взрывается}, когда заканчивается {white:{fluid:ic2distilledwater}} или {white:{fluid:ic2coolant}}
-Длительность цикла: 1 тик
+{dark_red:Взрывается}, если закончится {blue:{fluid:ic2distilledwater}} или {blue:{fluid:ic2coolant}}

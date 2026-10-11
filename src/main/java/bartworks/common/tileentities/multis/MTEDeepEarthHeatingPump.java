@@ -14,6 +14,7 @@
 package bartworks.common.tileentities.multis;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 
 import java.util.Arrays;
 import java.util.List;
@@ -101,7 +102,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     "eu_usage", formatNumber(TierEU.RECIPE_HV),
                     "water_rate", formatNumber(161),
                     "steam_rate", formatNumber(25600),
-                    "coolant_rate", formatNumber(192)))
+                    "coolant_rate", formatNumber(192),
+                    "unit", getFluidUnit()))
             .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
