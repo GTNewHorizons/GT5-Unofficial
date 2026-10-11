@@ -23,12 +23,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -63,6 +65,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialElectromagneticSeparator
     extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -193,23 +196,11 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Electromagnetic Separator/Polarizer, MFE")
-            .addInfo("Use screwdriver to switch mode")
-            .addInfo(
-                "Insert an " + EnumChatFormatting.AQUA
-                    + "Electromagnet"
-                    + EnumChatFormatting.GRAY
-                    + " into the electromagnet housing to use")
-            .addInfo(
-                "Better " + EnumChatFormatting.AQUA
-                    + "Electromagnets"
-                    + EnumChatFormatting.GRAY
-                    + " give increased bonuses")
-            .addInfo(
-                "With a " + EnumChatFormatting.DARK_GREEN
-                    + "Tengam Electromagnet"
-                    + EnumChatFormatting.GRAY
-                    + ", one multi-amp hatch is allowed")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-electromagnetic-separator"),
+                ImmutableMap.<String, Object>builder().build())
             .beginStructureBlock(7, 6, 7, true)
             .addController("Front bottom center")
             .addCasing(MIN_CASING + "-73", "MagTech Casing", false)
@@ -227,6 +218,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.authorBaps);
+        // spotless:on
         return tt;
     }
 
