@@ -355,8 +355,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 new ResourceLocation("gregtech", "extreme-industrial-greenhouse"),
                 ImmutableMap.of("weedexName", new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()));
         EIGModes.addTooltipInfo(tt);
-        tt.addGlassEnergyLimitInfo()
-            .beginStructureBlock(7, 7, 9, true)
+        tt.beginStructureBlock(7, 7, 9, true)
+            .addEnergyHatchGlassTier()
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("102", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing(
