@@ -86,8 +86,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     private int runningTickCounter = 0;
     private int glassTier = -1;
     private final static int MAX_CASINGS = 77;
-    private final static int MIN_CASINGS = MAX_CASINGS - 53; // = 24. Allow for 53 hatch space to match Fluid Shaper
-    // max.
+    private final static int MIN_CASINGS = MAX_CASINGS - 53; // = 24.
 
     private static final IStructureDefinition<MTEMassSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMassSolidifier>builder()
@@ -159,16 +158,16 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Fluid Solidifier")
-            .addVoltageParallelInfo(10)
-            .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
-            .addInfo("Decays at double the rate that it speeds up at")
-            .addStaticEuEffInfo(0.8f)
-            .addInfo(
-                "Can use " + EnumChatFormatting.YELLOW
-                    + "Solidifier Hatches"
-                    + EnumChatFormatting.GRAY
-                    + " to hold fluids and molds in the same hatch")
-            .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mass-solidifier"),
+                ImmutableMap.<String, Object>builder()
+                    .put("parallels", formatNumber(PARALLELS_PER_TIER))
+                    .put("min_speedup", formatNumber(100))
+                    .put("max_speedup", formatNumber(MAX_SPEEDUP_PERCENT))
+                    .put("speed_increase", formatNumber(DECAY_RATE * 200))
+                    .put("speed_decrease", formatNumber(DECAY_RATE * 400))
+                    .put("eu_modifier", formatNumber(EU_MODIFIER * 100))
+                    .build())
             .beginStructureBlock(5, 6, 9, false)
             .addEnergyHatchGlassTier()
             .addController("Front bottom center")
