@@ -33,6 +33,7 @@ import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Blossoming_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Calabi_Yau_Manifold;
+import static gregtech.common.items.IDMetaItem03.CasimirContainer;
 import static gregtech.common.items.IDMetaItem03.Circuit_AdvancedIntegrated;
 import static gregtech.common.items.IDMetaItem03.Circuit_BasicElectronic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
@@ -190,6 +191,8 @@ import static gregtech.common.items.IDMetaItem03.Cover_Metrics_Transmitter;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
+import static gregtech.common.items.IDMetaItem03.DecoherenceLattice;
+import static gregtech.common.items.IDMetaItem03.DegenerateCacheMatrix;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
@@ -282,6 +285,7 @@ import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
 import static gregtech.common.items.IDMetaItem03.Prismatic_Crystal;
 import static gregtech.common.items.IDMetaItem03.PseudoStar;
 import static gregtech.common.items.IDMetaItem03.Pulsating_WDM_Strands;
+import static gregtech.common.items.IDMetaItem03.QuantumEntangledComputationUnit;
 import static gregtech.common.items.IDMetaItem03.Quark_Catalyst_Housing;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Charm;
@@ -294,6 +298,7 @@ import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naqua
 import static gregtech.common.items.IDMetaItem03.Raw_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Realized_Quantum_Circuit_Rack;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.SingularityTolerantCacheMatrix;
 import static gregtech.common.items.IDMetaItem03.Sintered_Halkonite_Clump;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
@@ -314,6 +319,7 @@ import static gregtech.common.items.IDMetaItem03.UV_Coil;
 import static gregtech.common.items.IDMetaItem03.UXV_Coil;
 import static gregtech.common.items.IDMetaItem03.Unbound_WDM_Strands;
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
+import static gregtech.common.items.IDMetaItem03.YangMillsMask;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
 import java.util.List;
@@ -1272,6 +1278,44 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Sintered_Halkonite_Clump.ID,
                 "gt.item.sintered_halkonite_clump.name",
                 "gt.item.sintered_halkonite_clump.tooltip",
+                o));
+
+        // Exotic circuit intermediates
+        ItemList.YangMillsMask.set(
+            addItemWithLocalizationKeys(
+                YangMillsMask.ID,
+                "gt.item.yangmills_mask.name",
+                "gt.item.yangmills_mask.tooltip",
+                o));
+        ItemList.QuantumEntangledComputationUnit.set(
+            addItemWithLocalizationKeys(
+                QuantumEntangledComputationUnit.ID,
+                "gt.item.quantum_entangled_computation_unit.name",
+                "gt.item.quantum_entangled_computation_unit.tooltip",
+                o));
+        ItemList.SingularityTolerantCacheMatrix.set(
+            addItemWithLocalizationKeys(
+                SingularityTolerantCacheMatrix.ID,
+                "gt.item.singularity_tolerant_cache_matrix.name",
+                "gt.item.singularity_tolerant_cache_matrix.tooltip",
+                o));
+        ItemList.DegenerateCacheMatrix.set(
+            addItemWithLocalizationKeys(
+                DegenerateCacheMatrix.ID,
+                "gt.item.degenerate_cache_matrix.name",
+                "gt.item.degenerate_cache_matrix.tooltip",
+                o));
+        ItemList.CasimirContainer.set(
+            addItemWithLocalizationKeys(
+                CasimirContainer.ID,
+                "gt.item.casimir_container.name",
+                "gt.item.casimir_container.tooltip",
+                o));
+        ItemList.DecoherenceLattice.set(
+            addItemWithLocalizationKeys(
+                DecoherenceLattice.ID,
+                "gt.item.decoherence_lattice.name",
+                "gt.item.decoherence_lattice.tooltip",
                 o));
 
         // Optical circuits

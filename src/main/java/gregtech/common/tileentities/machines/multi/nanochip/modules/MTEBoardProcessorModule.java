@@ -265,7 +265,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             Materials.BioMediumSterilized.mFluid,
             Materials.PrismaticAcid.mFluid,
             Materials.UUMatter.mFluid,
-            Materials.StableBaryonicMatter.mFluid));
+            Materials.ExcitedDTEC.mFluid));
 
     @NotNull
     @Override
@@ -309,7 +309,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         }
 
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 6
-            && !storedFluidStack.isFluidEqual(Materials.StableBaryonicMatter.getFluid(0))) {
+            && !storedFluidStack.isFluidEqual(Materials.ExcitedDTEC.getFluid(0))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -388,8 +388,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                         impurityFluidStack = Materials.PrismaticGas.getFluid(0);
                     } else if (storedFluidStack.isFluidEqual(Materials.UUMatter.getFluid(0))) {
                         impurityFluidStack = Materials.UUAmplifier.getFluid(0);
-                    } else if (storedFluidStack.isFluidEqual(Materials.StableBaryonicMatter.getFluid(0))) {
-                        impurityFluidStack = Materials.Grade8PurifiedWater.getFluid(0);
+                    } else if (storedFluidStack.isFluidEqual(Materials.ExcitedDTEC.getFluid(0))) {
+                        impurityFluidStack = Materials.DTEC.getFluid(0);
                     }
                 }
             }

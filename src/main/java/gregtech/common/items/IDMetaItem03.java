@@ -297,6 +297,12 @@ public enum IDMetaItem03 {
     Circuit_DarkMatter_Unit(736),
     Coolant_Containment_Field(737),
     Sintered_Halkonite_Clump(738),
+    YangMillsMask(739),
+    QuantumEntangledComputationUnit(740),
+    SingularityTolerantCacheMatrix(741),
+    DegenerateCacheMatrix(742),
+    CasimirContainer(743),
+    DecoherenceLattice(744),
 
     Timepiece(757),
     Transdimensional_Alignment_Matrix(758),

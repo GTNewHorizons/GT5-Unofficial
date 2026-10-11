@@ -1,5 +1,6 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.sourceChamberRecipes;
@@ -290,6 +291,23 @@ public class BeamlineRecipeLoader {
                     .build())
             .duration(1)
             .eut(TierEU.RECIPE_LuV)
+            .addTo(targetChamberRecipes);
+
+        // Decoherence Lattice (exotic circuit line)
+        focusItem = ItemList.YangMillsMask.get(1);
+        GTValues.RA.stdBuilder()
+            .itemInputs(focusItem, ItemList.Circuit_CrystalPerfected.get(16))
+            .itemOutputs(GTUtility.copyAmountUnsafe(256, ItemList.DecoherenceLattice.get(1)))
+            .metadata(
+                TARGET_CHAMBER_METADATA,
+                TargetChamberMetadata.builder(focusItem)
+                    .particleID(PHOTON.getId())
+                    .amount(64)
+                    .energy(20, 64, 1)
+                    .minFocus(90)
+                    .build())
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
             .addTo(targetChamberRecipes);
     }
 }

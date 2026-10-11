@@ -1957,7 +1957,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
         .of("gt.recipe.nanochip.opticalorganizer", RecipeMapBackend::new)
-        .maxIO(1, 1, 0, 0)
+        .maxIO(9, 1, 0, 0)
         .minInputs(1, 0)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipEncasementWrapper = RecipeMapBuilder
@@ -1968,6 +1968,11 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
         .of("gt.recipe.nanochip.biologicalcoordinator", RecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
+        .minInputs(1, 0)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipExoticEntangleEngine = RecipeMapBuilder
+        .of("gt.recipe.nanochip.exoticentangleengine", RecipeMapBackend::new)
+        .maxIO(4, 2, 2, 1)
         .minInputs(1, 0)
         .build();
     public static final RecipeMap<RecipeMapBackend> industrialCokeOvenRecipes = RecipeMapBuilder
