@@ -50,6 +50,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -93,10 +94,12 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
@@ -300,9 +303,35 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
             @NotNull
             @Override
             protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
-                return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
+                return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids))
+                    .setRecipeLocked(null, false)
+                    .setInputConsumer((adjustedRecipe, amountMultiplier, fluids, items) -> {
+                        if (isRecipeLocked && getSingleRecipeCheck() == null) {
+                            ItemStack[] copiedItems = GTUtility.copyItemArray(items);
+                            FluidStack[] copiedFluids = GTUtility.copyFluidArray(fluids);
+                            SingleRecipeCheck.Builder builder = SingleRecipeCheck.builder(getRecipeMap())
+                                .setRecipe(recipe)
+                                .setBefore(copiedItems, copiedFluids);
+                            recipe.consumeInput(1, copiedFluids, copiedItems);
+                            setSingleRecipeCheck(
+                                builder.setAfter(copiedItems, copiedFluids)
+                                    .build());
+                        }
+                        adjustedRecipe.consumeInput(amountMultiplier, fluids, items);
+                    });
             }
         };
+    }
+
+    @Override
+    protected SingleRecipeCheck loadSingleRecipeChecker(NBTTagCompound aNBT) {
+        SingleRecipeCheck check = super.loadSingleRecipeChecker(aNBT);
+        if (check == null) return null;
+        FluidStack inputFluid = check.getRecipe().mFluidInputs[0];
+        GTUtility.streamCompounds(aNBT.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND))
+            .filter(cost -> FluidRegistry.getFluid(cost.getString("id")) == inputFluid.getFluid())
+            .forEach(cost -> cost.setInteger("count", inputFluid.amount));
+        return super.loadSingleRecipeChecker(aNBT);
     }
 
     protected GTRecipe recipeWithMultiplier(GTRecipe recipe, FluidStack[] fluidInputs) {
