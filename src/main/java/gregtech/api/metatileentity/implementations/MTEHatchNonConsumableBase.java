@@ -145,7 +145,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30))
             .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> { isOutputSlotLocked = !isOutputSlotLocked; })
+                new ButtonWidget().setOnClick((_, _) -> { isOutputSlotLocked = !isOutputSlotLocked; })
                     .setBackground(
                         () -> new UITexture[] {
                             isOutputSlotLocked ? GTUITextures.BUTTON_STANDARD_PRESSED : GTUITextures.BUTTON_STANDARD,

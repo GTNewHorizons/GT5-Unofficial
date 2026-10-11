@@ -443,11 +443,10 @@ public final class RecipeLookupValidator {
 
     @Nullable
     private String unresolvedOreDictInputReason(GTRecipe recipe, ItemStack[] items) {
-        if (!(recipe instanceof GTRecipe.GTRecipe_WithAlt)) {
+        if (!(recipe instanceof GTRecipe.GTRecipe_WithAlt recipeWithAlt)) {
             return null;
         }
 
-        GTRecipe.GTRecipe_WithAlt recipeWithAlt = (GTRecipe.GTRecipe_WithAlt) recipe;
         if (recipeWithAlt.mOreDictIds == null) {
             return null;
         }
@@ -841,22 +840,9 @@ public final class RecipeLookupValidator {
         return issues.size() + recipeConflictIssues.size() + unresolvedOreDictIssues.size();
     }
 
-    private static final class ValidationLookupResult {
+    private record ValidationLookupResult(List<GTRecipe> matches, List<GTRecipe> sampleRejectedCandidates,
+        int rawCandidates, int filteredMatches, boolean truncated) {
 
-        private final List<GTRecipe> matches;
-        private final List<GTRecipe> sampleRejectedCandidates;
-        private final int rawCandidates;
-        private final int filteredMatches;
-        private final boolean truncated;
-
-        private ValidationLookupResult(List<GTRecipe> matches, List<GTRecipe> sampleRejectedCandidates,
-            int rawCandidates, int filteredMatches, boolean truncated) {
-            this.matches = matches;
-            this.sampleRejectedCandidates = sampleRejectedCandidates;
-            this.rawCandidates = rawCandidates;
-            this.filteredMatches = filteredMatches;
-            this.truncated = truncated;
-        }
     }
 
     private String estimateEta(long elapsedNanos) {

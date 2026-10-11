@@ -656,7 +656,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     private static int boostFluidCost(int rate) {
         // equation for how much booster fluid to demand per cycle
-        return (int) rate;
+        return rate;
     }
 
     private boolean consumeBoostFluid(int rate) {

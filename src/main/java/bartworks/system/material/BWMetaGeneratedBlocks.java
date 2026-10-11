@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -150,7 +149,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        return ((ITileEntityProvider) this).createNewTileEntity(world, metadata);
+        return this.createNewTileEntity(world, metadata);
     }
 
     @Override

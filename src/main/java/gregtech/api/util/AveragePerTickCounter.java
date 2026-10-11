@@ -36,8 +36,8 @@ public class AveragePerTickCounter {
 
         final int currTick = getWorldTimeInTicks();
 
-        /// sums up values added in the same tick
-        /// for example a cable had an amp running through it multiple times in the same tick
+        // sums up values added in the same tick
+        // for example a cable had an amp running through it multiple times in the same tick
         if (currTick == timestamps[currIndex]) {
             values[currIndex] += value;
         } else if (currTick > timestamps[currIndex]) {

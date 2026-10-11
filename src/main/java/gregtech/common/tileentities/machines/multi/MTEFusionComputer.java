@@ -406,7 +406,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             if (mOutputItems != null) addItemOutputs(mOutputItems);
                             if (mOutputFluids != null) addFluidOutputs(mOutputFluids);
                             mEfficiency = Math
-                                .max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
+                                .clamp(mEfficiency + mEfficiencyIncrease, 0, getMaxEfficiency(mInventory[1]));
                             mOutputItems = null;
                             mOutputFluids = null;
                             mProgresstime = 0;

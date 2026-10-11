@@ -479,7 +479,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return mIconMap.get(0);
         } else {
             int newMeta = aMetaData - this.mOffset;
-            newMeta = (Math.max(0, Math.min(4, newMeta)));
+            newMeta = (Math.clamp(newMeta, 0, 4));
             return mIconMap.get(newMeta);
         }
     }
@@ -929,7 +929,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 return 0;
             } else {
                 int newMeta = aStack.getItemDamage() - this.mOffset;
-                newMeta = (Math.max(0, Math.min(4, newMeta)));
+                newMeta = (Math.clamp(newMeta, 0, 4));
                 return newMeta;
             }
         }

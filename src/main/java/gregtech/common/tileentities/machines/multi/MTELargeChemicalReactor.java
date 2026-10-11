@@ -239,7 +239,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
 
         private HeatingCoilLevel getHeatFromHint(ItemStack trigger) {
             return HeatingCoilLevel
-                .getFromTier((byte) Math.min(HeatingCoilLevel.getMaxTier(), Math.max(0, trigger.stackSize - 1)));
+                .getFromTier((byte) Math.clamp(trigger.stackSize - 1, 0, HeatingCoilLevel.getMaxTier()));
         }
 
         @Override

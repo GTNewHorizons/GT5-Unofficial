@@ -30,8 +30,8 @@ public class FluidGT6 extends Fluid implements Runnable {
 
     @Override
     public int getColor() {
-        return (Math.max(0, Math.min(255, this.mRGBa[0])) << 16) | (Math.max(0, Math.min(255, this.mRGBa[1])) << 8)
-            | Math.max(0, Math.min(255, this.mRGBa[2]));
+        return (Math.clamp(this.mRGBa[0], 0, 255) << 16) | (Math.clamp(this.mRGBa[1], 0, 255) << 8)
+            | Math.clamp(this.mRGBa[2], 0, 255);
     }
 
     @Override

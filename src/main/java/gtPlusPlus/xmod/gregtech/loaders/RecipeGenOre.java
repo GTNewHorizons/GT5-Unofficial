@@ -152,7 +152,7 @@ public class RecipeGenOre extends RecipeGenBase {
         ItemStack matDustA = getDust(bonusA);
         ItemStack matDustB = getDust(bonusB);
 
-        /**
+        /*
          * Macerate
          */
 

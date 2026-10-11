@@ -969,6 +969,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         dischargeController_EM(aBaseMetaTileEntity);
                         chargeController_EM(aBaseMetaTileEntity);
 
+                        int maxEff = getMaxEfficiency(mInventory[1]) - (getIdealStatus() - getRepairStatus()) * 1000;
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
                             if (onRunningTick(mInventory[1])) { // Compute EU
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
@@ -999,12 +1000,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                         }
                                         if (aBaseMetaTileEntity.isAllowedToWork()) {
                                             if (checkRecipe()) {
-                                                mEfficiency = Math.max(
-                                                    0,
-                                                    min(
-                                                        mEfficiency + mEfficiencyIncrease,
-                                                        getMaxEfficiency(mInventory[1])
-                                                            - (getIdealStatus() - getRepairStatus()) * 1000));
+                                                mEfficiency = Math.clamp(mEfficiency + mEfficiencyIncrease, 0, maxEff);
                                             } else {
                                                 afterRecipeCheckFailed();
                                             }
@@ -1022,12 +1018,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                 || aBaseMetaTileEntity.hasInventoryBeenModified()
                                 || shouldCheckRecipeThisTick(aTick)) {
                                 if (checkRecipe()) {
-                                    mEfficiency = Math.max(
-                                        0,
-                                        min(
-                                            mEfficiency + mEfficiencyIncrease,
-                                            getMaxEfficiency(mInventory[1])
-                                                - (getIdealStatus() - getRepairStatus()) * 1000));
+                                    mEfficiency = Math.clamp(mEfficiency + mEfficiencyIncrease, 0, maxEff);
                                 } else {
                                     afterRecipeCheckFailed();
                                 }
@@ -1358,7 +1349,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 if (euVar > diff) {
                     tHatch.setEUVar(tHatch.maxEUStore());
                     euVar -= diff;
-                } else if (euVar <= diff) {
+                } else {
                     tHatch.setEUVar(
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + euVar);
@@ -1376,7 +1367,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 if (euVar > diff) {
                     tHatch.setEUVar(tHatch.maxEUStore());
                     euVar -= diff;
-                } else if (euVar <= diff) {
+                } else {
                     tHatch.setEUVar(
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + euVar);
@@ -2398,23 +2389,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         if (c > 4) {
                             c = TecTech.RANDOM.nextInt(5);
                         }
-                        switch (c) {
-                            case 0:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
-                                break;
-                            case 1:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
-                                break;
-                            case 2:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
-                                break;
-                            case 3:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
-                                break;
-                            case 4:
-                                texture = TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
-                                break;
-                        }
+                        texture = switch (c) {
+                            case 0 -> TecTechUITextures.PICTURE_PARAMETER_BLUE[posIndex];
+                            case 1 -> TecTechUITextures.PICTURE_PARAMETER_CYAN[posIndex];
+                            case 2 -> TecTechUITextures.PICTURE_PARAMETER_GREEN[posIndex];
+                            case 3 -> TecTechUITextures.PICTURE_PARAMETER_ORANGE[posIndex];
+                            case 4 -> TecTechUITextures.PICTURE_PARAMETER_RED[posIndex];
+                            default -> texture;
+                        };
                         break;
                     }
                     case STATUS_WRONG: // fallthrough

@@ -407,7 +407,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.ITALIC + "" + EnumChatFormatting.BOLD
+                EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.ITALIC + EnumChatFormatting.BOLD
                     + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
             .addController("Front center, 9th layer")

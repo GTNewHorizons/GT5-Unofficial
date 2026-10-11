@@ -97,54 +97,25 @@ public class BlockGTCasingsTT extends BlockCasingsAbstract {
 
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        switch (aMeta) {
-            case 0:
-                return eM0;
-            case 1:
-                if (ordinalSide < 2) {
-                    return eM1;
-                }
-                return eM1s;
-            case 2:
-                if (ordinalSide < 2) {
-                    return eM2;
-                }
-                return eM2s;
-            case 3:
-                if (ordinalSide < 2) {
-                    return eM3;
-                }
-                return eM3s;
-            case 4:
-                return eM4;
-            case 5:
-                return eM5;
-            case 6:
-                return eM6;
-            case 7:
-                if (ordinalSide < 2) {
-                    return eM7;
-                }
-                return eM7s;
-            case 8:
-                return eM8;
-            case 9:
-                return eM9;
-            case 10:
-                return eM10;
-            case 11:
-                return eM11;
-            case 12:
-                return eM12;
-            case 13:
-                return eM13;
-            case 14:
-                return eM14;
-            case 15:
-                return debug[ordinalSide];
-            default:
-                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-        }
+        return switch (aMeta) {
+            case 0 -> eM0;
+            case 1 -> ordinalSide < 2 ? eM1 : eM1s;
+            case 2 -> ordinalSide < 2 ? eM2 : eM2s;
+            case 3 -> ordinalSide < 2 ? eM3 : eM3s;
+            case 4 -> eM4;
+            case 5 -> eM5;
+            case 6 -> eM6;
+            case 7 -> ordinalSide < 2 ? eM7 : eM7s;
+            case 8 -> eM8;
+            case 9 -> eM9;
+            case 10 -> eM10;
+            case 11 -> eM11;
+            case 12 -> eM12;
+            case 13 -> eM13;
+            case 14 -> eM14;
+            case 15 -> debug[ordinalSide];
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        };
     }
 
     @Override

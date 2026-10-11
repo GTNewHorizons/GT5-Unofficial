@@ -6,6 +6,7 @@ import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 
+@Deprecated
 public class MathUtils {
 
     private static final Random rand = GTPPCore.RANDOM;
@@ -214,11 +215,11 @@ public class MathUtils {
     }
 
     public static byte safeByte(long number) {
-        return (byte) clamp_long(number, Byte.MIN_VALUE, Byte.MAX_VALUE);
+        return (byte) Math.clamp(number, Byte.MIN_VALUE, Byte.MAX_VALUE);
     }
 
     public static int safeInt(long number, int margin) {
-        return (int) clamp_long(number, Integer.MIN_VALUE + margin, Integer.MAX_VALUE - margin);
+        return Math.clamp(number, Integer.MIN_VALUE + margin, Integer.MAX_VALUE - margin);
     }
 
     public static int safeInt(long number) {
@@ -254,9 +255,13 @@ public class MathUtils {
     }
 
     public static int safeCast_LongToInt(long l) {
-        return (int) clamp_long(l, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        return Math.clamp(l, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
+    /**
+     * @deprecated {@link Math#clamp(long, long, long)}
+     */
+    @Deprecated
     public static long clamp_long(long number, long min, long max) {
         if (number > max) {
             return max;
@@ -270,9 +275,11 @@ public class MathUtils {
      * @param aMin   - The minimum bounds
      * @param aMax   - The maximum bounds
      * @return - An Integer which will be between the bounds, or a boundary value.
+     * @deprecated {@link Math#clamp(long, int, int)}
      */
+    @Deprecated
     public static int balance(int aInput, int aMin, int aMax) {
-        return Math.max(Math.min(aInput, aMax), aMin);
+        return Math.clamp(aInput, aMin, aMax);
     }
 
 }

@@ -107,7 +107,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     EntityPlayer lastClickedPlayer = null;
 
-    private final MTEHatchOutputMEBase<IAEItemStack> provider = new MTEHatchOutputMEBase<IAEItemStack>(this, 1_600) {};
+    private final MTEHatchOutputMEBase<IAEItemStack> provider = new MTEHatchOutputMEBase<>(this, 1_600) {};
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {

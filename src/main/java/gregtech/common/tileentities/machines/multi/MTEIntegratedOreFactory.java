@@ -272,7 +272,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         }
 
         final int baseParallel = GTUtility
-            .safeInt(Math.min(Math.min((long) maxParallelFromPower, parallelFromFluids), parallelFromItems));
+            .safeInt(Math.min(Math.min(maxParallelFromPower, parallelFromFluids), parallelFromItems));
         if (baseParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }

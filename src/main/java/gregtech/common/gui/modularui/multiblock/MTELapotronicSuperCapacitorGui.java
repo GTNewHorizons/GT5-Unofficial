@@ -68,7 +68,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
                 .asWidget())
 
             .child(IKey.dynamic(() -> {
-                String avgString = formatNumber(avgIn.getValue()).toString();
+                String avgString = formatNumber(avgIn.getValue());
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in", avgString);
             })
@@ -92,7 +92,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
-                String lost = formatNumber(loss.getValue()).toString();
+                String lost = formatNumber(loss.getValue());
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.passive_loss", lost);
             })

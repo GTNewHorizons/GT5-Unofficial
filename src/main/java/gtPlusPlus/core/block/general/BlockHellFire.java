@@ -456,12 +456,7 @@ public class BlockHellFire extends BlockFire {
     }
 
     private FireInfo getInfo(final Block block) {
-        FireInfo ret = this.blockInfo.get(block);
-        if (ret == null) {
-            ret = new FireInfo();
-            this.blockInfo.put(block, ret);
-        }
-        return ret;
+        return this.blockInfo.computeIfAbsent(block, k -> new FireInfo());
     }
 
     @Override

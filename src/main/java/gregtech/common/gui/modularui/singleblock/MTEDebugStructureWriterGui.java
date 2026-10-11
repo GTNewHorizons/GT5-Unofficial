@@ -1,7 +1,7 @@
 package gregtech.common.gui.modularui.singleblock;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.util.GTUtility.clamp;
+import static java.lang.Math.clamp;
 
 import java.util.stream.IntStream;
 

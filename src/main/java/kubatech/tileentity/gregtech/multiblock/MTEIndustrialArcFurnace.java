@@ -873,8 +873,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     if (found == null) return Stream.of();
                     GTRecipe copy = found.copy()
                         .setEUt(
-                            (int) Math
-                                .min((long) found.mEUt * (long) BLAST_MODE_POWER_MULTIPLIER, (long) Integer.MAX_VALUE));
+                            (int) Math.min((long) found.mEUt * (long) BLAST_MODE_POWER_MULTIPLIER, Integer.MAX_VALUE));
                     copy.mCanBeBuffered = false;
                     return Stream.of(copy);
                 }

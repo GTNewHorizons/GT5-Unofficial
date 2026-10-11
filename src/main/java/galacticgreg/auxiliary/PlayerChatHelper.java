@@ -16,7 +16,7 @@ public class PlayerChatHelper {
     /**
      * Meant for notifications that are being send to an admin/op Color will be GREEN
      *
-     * @param pPlayer
+     * @param pCommandSender
      * @param pMessage
      */
     public static void SendInfo(ICommandSender pCommandSender, String pMessage) {
@@ -26,7 +26,7 @@ public class PlayerChatHelper {
     /**
      * Meant for notifications that are being send to an admin/op Color will be RED
      *
-     * @param pPlayer
+     * @param pCommandSender
      * @param pMessage
      */
     public static void SendError(ICommandSender pCommandSender, String pMessage) {
@@ -36,7 +36,7 @@ public class PlayerChatHelper {
     /**
      * Meant for notifications that are being send to an admin/op Color will be YELLOW
      *
-     * @param pPlayer
+     * @param pCommandSender
      * @param pMessage
      */
     public static void SendWarn(ICommandSender pCommandSender, String pMessage) {

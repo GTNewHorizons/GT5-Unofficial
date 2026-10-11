@@ -78,7 +78,7 @@ public class ItemBlockGtBlock extends ItemBlock {
                             list.add(
                                 StatCollector.translateToLocalFormatted(
                                     "GTPP.tooltip.block.mining_level",
-                                    Math.min(Math.max(aMiningLevel1, 0), 5)));
+                                    Math.clamp(aMiningLevel1, 0, 5)));
                             list.add(StatCollector.translateToLocal("GTPP.tooltip.block.contains"));
                             if (mMaterial.getComposites()
                                 .isEmpty()) {
@@ -101,7 +101,7 @@ public class ItemBlockGtBlock extends ItemBlock {
                 Block b = Block.getBlockFromItem(stack.getItem());
                 if (b != null) {
                     int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
-                    list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
+                    list.add("Mining Level: " + Math.clamp(aMiningLevel1, 0, 5));
                 }
             }
         }

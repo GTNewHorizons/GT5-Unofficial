@@ -120,26 +120,18 @@ public class MTEExtremeIndustrialGreenhouseGui extends KubaTechGTMultiBlockBaseG
 
         syncManager.syncValue(
             "eigSetupPhase",
-            new IntSyncValue(() -> multiblock.getSetupPhase(), val -> multiblock.setSetupPhase(val)).allowC2S());
+            new IntSyncValue(multiblock::getSetupPhase, multiblock::setSetupPhase).allowC2S());
 
-        IntSyncValue maxSeedTypesSyncer = new IntSyncValue(
-            () -> multiblock.getMaxSeedTypes(),
-            val -> maxSeedTypes = val);
+        IntSyncValue maxSeedTypesSyncer = new IntSyncValue(multiblock::getMaxSeedTypes, val -> maxSeedTypes = val);
         syncManager.syncValue("eigMaxSeedTypes", maxSeedTypesSyncer);
 
-        IntSyncValue maxSeedCountSyncer = new IntSyncValue(
-            () -> multiblock.getMaxSeedCount(),
-            val -> maxSeedCount = val);
+        IntSyncValue maxSeedCountSyncer = new IntSyncValue(multiblock::getMaxSeedCount, val -> maxSeedCount = val);
         syncManager.syncValue("eigMaxSeedCount", maxSeedCountSyncer);
 
-        IntSyncValue usedSeedTypesSyncer = new IntSyncValue(
-            () -> multiblock.buckets.size(),
-            val -> usedSeedTypes = val);
+        IntSyncValue usedSeedTypesSyncer = new IntSyncValue(multiblock.buckets::size, val -> usedSeedTypes = val);
         syncManager.syncValue("eigUsedSeedTypes", usedSeedTypesSyncer);
 
-        IntSyncValue usedSeedCountSyncer = new IntSyncValue(
-            () -> multiblock.getTotalSeedCount(),
-            val -> usedSeedCount = val);
+        IntSyncValue usedSeedCountSyncer = new IntSyncValue(multiblock::getTotalSeedCount, val -> usedSeedCount = val);
         syncManager.syncValue("eigUsedSeedCount", usedSeedCountSyncer);
 
         syncManager.syncValue(

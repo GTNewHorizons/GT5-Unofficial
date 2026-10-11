@@ -71,11 +71,7 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
                     .getTileEntity(dX, dY, dZ);
 
             if (sink.acceptsEnergyFrom(tNextTo, side)) {
-                ConsumerNode tConsumerNode = new NodeEnergySink(
-                    aNodeValue,
-                    (IEnergySink) aTileEntity,
-                    side,
-                    aConsumers);
+                ConsumerNode tConsumerNode = new NodeEnergySink(aNodeValue, sink, side, aConsumers);
                 aConsumers.add(tConsumerNode);
                 return true;
             }

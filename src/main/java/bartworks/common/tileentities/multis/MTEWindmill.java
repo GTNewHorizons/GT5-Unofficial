@@ -411,9 +411,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             }
 
             @Override
-            public void drawEnergyInfo(@NotNull RecipeDisplayInfo recipeInfo) {
-                return;
-            }
+            public void drawEnergyInfo(@NotNull RecipeDisplayInfo recipeInfo) {}
         };
     }
 

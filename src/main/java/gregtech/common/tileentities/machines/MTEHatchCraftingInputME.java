@@ -260,12 +260,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             if (patternDetails != null) {
                 for (IAEStack<?> singleInput : patternDetails.getAEInputs()) {
                     switch (singleInput) {
-                        case null -> {
-                            continue;
-                        }
                         case IAEItemStack ais -> inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
                         case IAEFluidStack ifs -> inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
-                        default -> {
+                        case null, default -> {
                         }
                     }
                 }
@@ -424,14 +421,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             for (int i = 0; i < inventoryCrafting.getSizeInventory(); ++i) {
                 final IAEStack<?> aes = inventoryCrafting.getAEStackInSlot(i);
                 switch (aes) {
-                    case null -> {
-                        continue;
-                    }
                     case IAEFluidStack ifs ->  // insert fluid
                         insertFluid(ifs);
                     case IAEItemStack ais ->  // insert item
                         insertItem(ais);
-                    default -> {
+                    case null, default -> {
                     }
                 }
 

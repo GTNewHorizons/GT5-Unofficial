@@ -385,7 +385,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
         } else {
             ocLevel--;
             fluid.amount *= 2 << ocLevel;
-            lEUt = -recipeEUt * (4 << (2 * ocLevel));
+            lEUt = -recipeEUt * (4L << (2 * ocLevel));
         }
 
         int processTime = (int) (20 * speedBoost(getCoilTier()));

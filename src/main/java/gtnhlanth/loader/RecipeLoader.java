@@ -3148,7 +3148,7 @@ public class RecipeLoader {
             .duration(10 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
 
-        /**
+        /*
          * ImpureSamariumChloride has 2 method to process 1. In IV-LuV, fix with NcCL then use electrolyzer to process
          * the mixture, get Samarium dust & Chlorine & Sodium. 2. In ZPM, put molten ImpureSamariumChloride and
          * LanthanumDust in Distillation Tower to get molten Samarium and impure Lanthanum Chloride.
@@ -3302,12 +3302,11 @@ public class RecipeLoader {
             .addTo(vacuumFreezerRecipes);
 
         // TODO Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG)
-        /**
+        /*
          * 1/9 Ce + 3 Lu + 5 Sapphire = 8 LuAG Blend 1/9 Ce + 3 Lu + 10 Green Sapphire = 8 LuAG Blend 2/9 Ce + 6 Lu + 25
          * Alumina + 9 Oxygen = 12 LuAG Blend
          * <p>
          * 1 Ce + 60 Lu + 100 Sapphire = 160 LuAG Blend 1 Ce + 60 Lu +200 Green Sapphire = 160 LuAG Blend
-         *
          */
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Cerium.getDust(1), Materials.Lutetium.getDust(3), Materials.Sapphire.getDust(5))

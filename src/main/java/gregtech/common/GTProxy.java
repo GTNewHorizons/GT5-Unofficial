@@ -1657,7 +1657,7 @@ public class GTProxy implements IFuelHandler {
             .getId();
         if (UUID != null) {
             PLAYERS_BY_UUID.remove(UUID);
-            UUID_BY_NAME.remove(UUID);
+            UUID_BY_NAME.remove(player.getCommandSenderName());
         }
     }
 

@@ -35,7 +35,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.util.MathUtils;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
@@ -392,7 +391,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             coolingTimer += 2;
         }
 
-        heat = MathUtils.clamp(heat + heatMod, 0, 100);
+        heat = Math.clamp(heat + heatMod, 0, 100);
 
         // Switch overheated conditionally and reset the cooling speed
         if ((overheated && heat <= 0) || (!overheated && heat >= 100)) {

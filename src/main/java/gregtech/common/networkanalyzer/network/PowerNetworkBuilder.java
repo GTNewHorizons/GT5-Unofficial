@@ -297,7 +297,7 @@ public class PowerNetworkBuilder {
         edge.path.add(toTile);
         this.visited.add(toTile);
 
-        edge.metrics.actualAmperage = (long) path.getAmperage();
+        edge.metrics.actualAmperage = path.getAmperage();
         edge.metrics.maxAmperage = path.getMaxAmperage();
         edge.metrics.maxVoltage = path.getMaxVoltage();
         edge.metrics.actualLoss = path.getLoss();

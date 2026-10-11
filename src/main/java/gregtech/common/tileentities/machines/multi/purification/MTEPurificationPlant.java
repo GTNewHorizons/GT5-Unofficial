@@ -317,11 +317,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         updateCycleProgress();
         // Calculate efficiency based on maintenance issues
         if (mMaxProgresstime > 0) {
-            mEfficiency = Math.max(
+            mEfficiency = Math.clamp(
+                mEfficiency + mEfficiencyIncrease,
                 0,
-                Math.min(
-                    mEfficiency + mEfficiencyIncrease,
-                    getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000));
         }
     }
 

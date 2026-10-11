@@ -135,7 +135,7 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
         if (isUsingDenseSteam) {
-            addOutputPartial(Materials.DenseSuperheatedSteam.getGas((long) steamFlowForNextSteam));
+            addOutputPartial(Materials.DenseSuperheatedSteam.getGas(steamFlowForNextSteam));
         } else {
             addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
         }

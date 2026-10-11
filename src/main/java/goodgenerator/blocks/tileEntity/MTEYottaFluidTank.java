@@ -496,7 +496,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
         long totalInput = 0;
         long totalOutput = 0;
 
-        long tickRate = Math.min(100L, Math.max(1L, (long) tickRateSettings.get()));
+        long tickRate = Math.clamp((long) tickRateSettings.get(), 1L, 100L);
         ++workTickCounter;
         if (workTickCounter < tickRate) {
             fluidInputValues1m.update(totalInput);

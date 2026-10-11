@@ -409,7 +409,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         return SimpleCheckRecipeResult.ofFailure("nanites_missing");
                     }
                 }
-                maxParallel = (int) Math.min(Math.max(Math.ceil(Math.pow(numberOfNanites, 0.75)), 1), 256);
+                maxParallel = (int) Math.clamp(Math.ceil(Math.pow(numberOfNanites, 0.75)), 1, 256);
                 mMaxParallel = maxParallel;
 
                 PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
@@ -629,7 +629,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     protected long getActualEnergyUsage() {
-        return (-this.lEUt * 10000) / Math.min(Math.max(1000, mEfficiency), 10000);
+        return (-this.lEUt * 10000) / Math.clamp(mEfficiency, 1000, 10000);
     }
 
     @Override
@@ -651,7 +651,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     public void setTraceSize(int value) {
-        mRoughnessMultiplier = 100f / (int) value;
+        mRoughnessMultiplier = 100f / value;
     }
 
     @Override

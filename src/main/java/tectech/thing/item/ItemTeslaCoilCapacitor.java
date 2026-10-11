@@ -80,22 +80,15 @@ public final class ItemTeslaCoilCapacitor extends Item {
 
     @Override
     public IIcon getIconFromDamage(int damage) {
-        switch (damage) {
-            case 1:
-                return MVicon;
-            case 2:
-                return HVicon;
-            case 3:
-                return EVicon;
-            case 4:
-                return IVicon;
-            case 5:
-                return LuVicon;
-            case 6:
-                return ZPMicon;
-            default:
-                return LVicon;
-        }
+        return switch (damage) {
+            case 1 -> MVicon;
+            case 2 -> HVicon;
+            case 3 -> EVicon;
+            case 4 -> IVicon;
+            case 5 -> LuVicon;
+            case 6 -> ZPMicon;
+            default -> LVicon;
+        };
     }
 
     @Override

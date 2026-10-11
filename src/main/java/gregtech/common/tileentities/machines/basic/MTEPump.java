@@ -352,12 +352,11 @@ public class MTEPump extends MTEBasicMachine {
             for (int i = 1; (i < 21)
                 && ((tTileEntity = getBaseMetaTileEntity()
                     .getIGregTechTileEntityAtSideAndDistance(ForgeDirection.DOWN, i)) != null)
-                && ((tTileEntity.getMetaTileEntity() instanceof MTEPump)); i++) {
+                && ((tTileEntity.getMetaTileEntity() instanceof MTEPump bottomPump)); i++) {
                 // Apparently someone might stack 21 pumps on top of each other, so let's check for that
                 getBaseMetaTileEntity().setActive(tTileEntity.isActive());
                 this.mPumpCountBelow += 1;
                 // The more pumps we have stacked, the faster the ones below go
-                MTEPump bottomPump = (MTEPump) tTileEntity.getMetaTileEntity();
                 bottomPump.mPumpTimer -= 1;
                 if (bottomPump.mProgresstime < bottomPump.mMaxProgresstime) {
                     bottomPump.mProgresstime += 1;

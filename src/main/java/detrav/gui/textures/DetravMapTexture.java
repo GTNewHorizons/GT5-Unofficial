@@ -16,7 +16,6 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import detrav.items.DetravMetaGeneratedTool01;
 import detrav.net.ProspectingPacket;
-import gregtech.api.util.GTUtility;
 
 /**
  * Created by wital_000 on 21.03.2016.
@@ -143,7 +142,7 @@ public class DetravMapTexture extends AbstractTexture {
 
                         if (!invert) mult = 1f - mult;
 
-                        mult = GTUtility.clamp(mult, 0, 1);
+                        mult = Math.clamp(mult, 0, 1);
 
                         for (int x = 0; x < 16; x++) {
                             for (int y = 0; y < 16; y++) {

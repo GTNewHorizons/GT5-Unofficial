@@ -19,8 +19,4 @@ public class TFFluids {
         fluidEnder = ender;
 
     }
-
-    public static void init() {}
-
-    public static void postInit() {}
 }
