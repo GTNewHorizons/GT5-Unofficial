@@ -20,6 +20,7 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -349,52 +350,32 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(
-            StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.machine_type"))
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.machine_type"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "extreme-industrial-greenhouse"),
-                ImmutableMap.of("weedexName", new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()));
+                ImmutableMap.of("weedexName", new FluidStack(WEEDEX_FLUID, 1).getLocalizedName(), "unit", getFluidUnit()));
         EIGModes.addTooltipInfo(tt);
         tt.beginStructureBlock(7, 7, 9, true)
             .addEnergyHatchGlassTier()
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("102", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
-            .addCasing(
-                "70-86",
-                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.sterile_farm_casing"),
-                false)
-            .addCasing(
-                "33",
-                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.frame_box"),
-                false)
-            .addCasing(
-                "21",
-                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt"),
-                false)
-            .addCasing(
-                "3",
-                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp"),
-                false)
+            .addCasing("70-86", StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.sterile_farm_casing"), false)
+            .addCasing("33", StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.frame_box"), false)
+            .addCasing("21", StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt"), false)
+            .addCasing("3", StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp"), false)
             .addEnergyHatch("1+", anyCasingText(), 1)
             .addMaintenanceHatch("1", anyCasingText(), 1)
             .addInputAny("1+", anyCasingText(), 1)
             .addOutputBus("1+", anyCasingText(), 1)
             .addStructureInfo("")
-            .addStructureFooter(
-                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.footer"))
+            .addStructureFooter(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.footer"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addAuthors(GTAuthors.AuthorKuba)
             .addStructureAuthors("HydroCN")
             .toolTipFinisher();
+        // spotless:on
         return tt;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        List<String> info = new ArrayList<>(Arrays.asList(super.getStructureDescription(stackSize)));
-        info.add("The dirt is from RandomThings, must be tilled");
-        info.add("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted");
-        return info.toArray(new String[] {});
     }
 
     // endregion tooltip

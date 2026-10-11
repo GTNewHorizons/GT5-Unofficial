@@ -373,8 +373,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         ttVars.put("jelly_bonus", JELLY_BONUS_PER_BEE_PERCENT);
         tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.machine_type"))
             .addMarkdown(new ResourceLocation("gregtech", "mega-apiary"), ttVars)
-            .addGlassEnergyLimitInfo()
             .beginStructureBlock(15, 17, 15, true)
+            .addEnergyHatchGlassTier()
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
             .addCasing(
                 "455",
