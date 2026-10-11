@@ -175,7 +175,6 @@ gt.mbtt.machine_type.bacterial_vat=细菌培养缸，Bac Vat
 gt.mbtt.machine_type.geothermal_heat_pump=地源热泵，DEHP
 gt.mbtt.machine_type.transformer=变压器
 gt.mbtt.machine_type.windmill=风车，研磨机
-gt.mbtt.structure.any_top_casing=任意顶层机械方块
 
 GT5U.tooltip.manual_trafo.winding_layers=每改变一个电压等级一层
 GT5U.tooltip.manual_trafo.ferrite_position=位于%s的中间

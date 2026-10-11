@@ -2026,7 +2026,6 @@ gt.mbtt.structure.any_bottom_casing_or_top_for_fluid_output=Любой нижн�
 gt.mbtt.structure.any_hearth_casing=Любой корпус горна
 gt.mbtt.structure.any_heat_proof_machine_casing=Любой жаропрочный корпус
 gt.mbtt.structure.glass_tier_limits_energy_input=Тир стекла ограничивает тир энерговвода
-gt.mbtt.structure.any_top_casing=Любой верхний блок корпуса
 gt.mbtt.structure.mega_hologram_too_big=Этот мультиблок слишком велик, чтобы показать голограмму структуры целиком.
 gt.mbtt.structure.any_vibration_safe_casing=Любой виброустойчивый корпус
 gt.mbtt.structure.rotors_go_in_controller=Роторы ставятся в контроллер, а не в узлы ротора

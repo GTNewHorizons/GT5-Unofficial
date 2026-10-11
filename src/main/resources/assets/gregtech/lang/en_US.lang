@@ -2098,7 +2098,6 @@ gt.mbtt.structure.any_bottom_casing_or_top_for_fluid_output=Any bottom casing, o
 gt.mbtt.structure.any_hearth_casing=Any hearth casing
 gt.mbtt.structure.any_heat_proof_machine_casing=Any Heat Proof Machine Casing
 gt.mbtt.structure.glass_tier_limits_energy_input=The Glass Tier limits the Energy Input Tier
-gt.mbtt.structure.any_top_casing=Any top casing
 gt.mbtt.structure.mega_hologram_too_big=This multiblock is too big to have its structure hologram displayed fully.
 gt.mbtt.structure.any_vibration_safe_casing=Any vibration safe casing
 gt.mbtt.structure.rotors_go_in_controller=Rotors go in the controller, not the rotor assemblies
