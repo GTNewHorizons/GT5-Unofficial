@@ -17,6 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 
 import java.util.List;
 
@@ -78,6 +79,10 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     public static final int HEAT_BONUS_START_TIER = VoltageIndex.MV;
 
     private int mHeatingCapacity = 0;
+    private static final int EU_REDUCTION_PERCENT = 5;
+    private static final int HEAT_PER_TIER = 100;
+    private static final int EU_REDUCTION_HEAT_THRESHOLD = 900;
+    private static final int HEAT_PER_PERFECT_OC = 1800;
 
     protected static final int CASING_INDEX = 11;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -125,14 +130,16 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace_ebf"))
+        tt.addMachineType("Blast Furnace, EBF")
             .addMarkdown(
                 new ResourceLocation("gregtech", "electric-blast-furnace"),
-                ImmutableMap.of(
-                    "heat_per_tier", formatNumber(HEAT_PER_VOLTAGE_TIER),
-                    "start_tier", GTValues.VN[HEAT_BONUS_START_TIER],
-                    "discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
-                    "perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
+                ImmutableMap.<String, Object>builder()
+                    .put("heat_per_tier", formatNumber(HEAT_PER_TIER))
+                    .put("eu_reduction", EU_REDUCTION_PERCENT)
+                    .put("eu_reduction_heat", formatNumber(EU_REDUCTION_HEAT_THRESHOLD))
+                    .put("heat_per_poc", formatNumber(HEAT_PER_PERFECT_OC))
+                    .put("voltageTier_MV", voltageTooltipFormatted(2))
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
