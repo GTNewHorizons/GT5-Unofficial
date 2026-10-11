@@ -36,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -56,6 +57,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteam
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESteamAlloySmelter extends MTESteamMultiBlockBase<MTESteamAlloySmelter>
     implements ISurvivalConstructable {
 
@@ -85,7 +87,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBlockBase<MTESteamAlloySm
 
     @Override
     public String getMachineType() {
-        return "Alloy Smelter";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.alloy_smelter");
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -137,25 +139,27 @@ public class MTESteamAlloySmelter extends MTESteamMultiBlockBase<MTESteamAlloySm
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyNormalCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_normal_casing");
+        String anyTieredGlass = StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
-            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
+            .addInfo(StatCollector.translateToLocal("GT5U.MBTT.Steam.HighPressure"))
             .beginStructureBlock(3, 3, 4, false)
-            .addController("Front center, 2nd layer")
-            .addSteamHatch("1", "Any normal casing", 1)
-            .addSteamInputBus("1+", "Any normal casing", 1)
-            .addSteamOutputBus("1+", "Any normal casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addSteamHatch("1", anyNormalCasing, 1)
+            .addSteamInputBus("1+", anyNormalCasing, 1)
+            .addSteamOutputBus("1+", anyNormalCasing, 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
-            .addCasing("25-26", "Bronze Plated Bricks", false)
-            .addCasing("4", "Any Tiered Glass", false)
-            .addCasing("2", "Bronze Pipe Casing", false)
+            .addCasing("25-26", Casings.BronzePlatedBricks.getLocalizedName(), false)
+            .addCasing("4", anyTieredGlass, false)
+            .addCasing("2", Casings.BronzePipeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
-            .addCasing("25-26", "Solid Steel Machine Casing", false)
-            .addCasing("4", "Any Tiered Glass", false)
-            .addCasing("2", "Steel Pipe Casing", false)
+            .addCasing("25-26", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("4", anyTieredGlass, false)
+            .addCasing("2", Casings.SteelPipeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
