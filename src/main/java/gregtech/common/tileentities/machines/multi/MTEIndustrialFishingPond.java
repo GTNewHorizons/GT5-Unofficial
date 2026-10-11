@@ -22,9 +22,11 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -48,6 +50,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTEIndustrialFishingPond>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -90,12 +93,15 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Fish Trap, ZFP")
-            .addInfo("Can process (Tier + 1) * 2 recipes")
-            .addInfo("Put a numbered circuit into the input bus or controller")
-            .addInfo("Circuit " + FISH_MODE + " for Fish")
-            .addInfo("Circuit " + JUNK_MODE + " for Junk")
-            .addInfo("Circuit " + TREASURE_MODE + " for Treasure")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-fishing-pond"),
+                ImmutableMap.<String, Object>builder()
+                    .put("fish_mode", FISH_MODE)
+                    .put("junk_mode", JUNK_MODE)
+                    .put("treasure_mode", TREASURE_MODE)
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 4, 11, false)
             .addController("Front center, 2nd layer")
@@ -113,6 +119,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterCost"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
