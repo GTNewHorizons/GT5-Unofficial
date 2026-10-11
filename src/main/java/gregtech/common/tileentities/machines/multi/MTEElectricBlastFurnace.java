@@ -129,7 +129,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Blast Furnace, EBF")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace_ebf"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "electric-blast-furnace"),
                 ImmutableMap.<String, Object>builder()

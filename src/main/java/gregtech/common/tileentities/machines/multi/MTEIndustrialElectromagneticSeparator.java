@@ -37,9 +37,11 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -197,24 +199,24 @@ public class MTEIndustrialElectromagneticSeparator
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Electromagnetic Separator/Polarizer, MFE")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.electromagnetic_separator"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-electromagnetic-separator"),
                 ImmutableMap.<String, Object>builder().build())
             .beginStructureBlock(7, 6, 7, true)
-            .addController("Front bottom center")
-            .addCasing(MIN_CASING + "-73", "MagTech Casing", false)
-            .addCasing("37", "Magnetic Neodymium Frame Box", false)
-            .addCasing("12", "Any Tiered Glass", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing(MIN_CASING + "-73", Casings.MagTechCasing.getLocalizedName(), false)
+            .addCasing("37", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NeodymiumMagnetic), false)
+            .addCasing("12", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
-                "One block above/behind controller",
+                StatCollector.translateToLocal("gt.mbtt.structure.one_block_above_behind_controller"),
                 2)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.authorBaps);

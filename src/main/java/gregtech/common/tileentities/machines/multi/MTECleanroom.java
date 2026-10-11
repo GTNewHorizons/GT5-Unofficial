@@ -180,7 +180,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[] { "The base can be rectangular." };
+        return new String[] { StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_rectangular_base") };
     }
 
     @Nonnull

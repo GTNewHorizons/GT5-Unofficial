@@ -56,6 +56,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -173,7 +174,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Vacuum Freezer, EnF, MVF")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.vacuum_freezer"))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addSeparator()
             .addMarkdown(
@@ -191,28 +192,28 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             .addSupportAny()
             .addUnlimitedTierSkips()
             .addSeparator()
-            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.AQUA + "... without the other!")
+            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.mbtt.flavor.endothermic_fridge"))
             .beginStructureBlock(23, 16, 23, true)
-            .addController("Front center, 4th layer")
-            .addCasing("750-773", "Fridge Casing", false)
-            .addCasing("148", "Tungstensteel Reinforced Block", false)
-            .addCasing("148", "Tungstensteel Pipe Casing", false)
-            .addCasing("146", "Callisto Ice Frame Box", false)
-            .addCasing("135", "Robust Tungstensteel Machine Casing", false)
-            .addCasing("51", "Coolant Duct", false)
-            .addCasing("40", "Ledox Sheetmetal", false)
-            .addCasing("18", "Any Tiered Glass", false)
-            .addEnergyHatch("1+", "Any fridge casing", 1)
-            .addMaintenanceHatch("1", "Any fridge casing", 1)
-            .addInputAny("1+", "Any fridge casing", 1)
-            .addOutputAny("1+", "Any fridge casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("750-773", Casings.FridgeCasing.getLocalizedName(), false)
+            .addCasing("148", Casings.TungstenSteelReinforcedBlock.getLocalizedName(), false)
+            .addCasing("148", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
+            .addCasing("146", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.CallistoIce), false)
+            .addCasing("135", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("51", Casings.CoolantDuct.getLocalizedName(), false)
+            .addCasing("40", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Ledox), false)
+            .addCasing("18", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_fridge_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_fridge_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_fridge_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_fridge_casing"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addCasing("351", "Frost Proof Machine Casing", false)
+            .addCasing("351", Casings.FrostProofMachineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
-            .addCasing("208", "Infinity Cooled Casing", false)
-            .addCasing("143", "Frost Proof Machine Casing", false)
+            .addCasing("208", Casings.InfinityCooledCasing.getLocalizedName(), false)
+            .addCasing("143", Casings.FrostProofMachineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
