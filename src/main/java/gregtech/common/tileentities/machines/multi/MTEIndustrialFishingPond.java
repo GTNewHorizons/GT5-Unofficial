@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -94,7 +95,7 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Fish Trap, ZFP")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fish_trap"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-fishing-pond"),
                 ImmutableMap.<String, Object>builder()
@@ -104,17 +105,17 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 4, 11, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("160-167", "Aquatic Casing", false)
-            .addCasing("40", "Water", false)
-            .addCasing("12", "Stainless Steel Sheetmetal", false)
-            .addCasing("12", "Stainless Steel Frame Box", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("0+", "Any casing", 1)
-            .addInputHatch("0+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("160-167", Casings.AquaticCasing.getLocalizedName(), false)
+            .addCasing("40", StatCollector.translateToLocal("GT5U.structure.water"), false)
+            .addCasing("12", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterCost"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")

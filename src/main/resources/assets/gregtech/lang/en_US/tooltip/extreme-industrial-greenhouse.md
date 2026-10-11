@@ -1,6 +1,6 @@
 Grow your crops like a chad!
-Uses {green:1000L} water/seed per operation
-Uses {green:1L} {var:weedexName}/seed if over {green:1000} seeds, else {green:~1%} of seeds are voided each operation
+Uses {green:1000 {var:unit}} water/seed per operation
+Uses {green:1 {var:unit}} {var:weedexName}/seed if over {green:1000} seeds, else {green:~1%} of seeds are voided each operation
 Fertilizer can be inserted per operation for up to {green:+400%} drops
 {gray:{hr}}
 {gold:Setup Mode}:

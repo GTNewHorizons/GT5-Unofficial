@@ -2151,6 +2151,23 @@ gt.mbtt.structure.cleanroom_doors=- Reinforced Doors (§oIC2§r§7). Keep closed
 gt.mbtt.structure.cleanroom_elevators=- Elevators (§oOpenBlocks§r§7) or Travel Anchors (§oEnderIO§r§7)
 gt.mbtt.structure.cleanroom_config=See §8config/GregTech/MachineStats.cfg§7 for more valid blocks
 gt.mbtt.structure.cleanroom_wireless=Use Wireless Connectors for transferring AE2 channels
+gt.mbtt.structure.front_left_3rd_layer=Front left, 3rd layer
+gt.mbtt.structure.front_left_center_2nd_layer=Front left center, 2nd layer
+gt.mbtt.structure.right_center_casing=Right center casing
+gt.mbtt.structure.one_block_above_behind_controller=One block above/behind controller
+gt.mbtt.structure.any_reinforced_block=Any reinforced block
+gt.mbtt.structure.any_fridge_casing=Any fridge casing
+gt.mbtt.structure.any_solidifier_casing=Any solidifier casing
+gt.mbtt.structure.any_printer_casing=Any printer casing
+gt.mbtt.structure.any_cutting_factory_frame=Any cutting factory frame
+gt.mbtt.structure.any_structural_casing_on_base=Any structural casing on base structure
+gt.mbtt.structure.any_tungstensteel_casing_not_next_to_gearbox=Any tungstensteel machine casing NOT next to a gearbox
+gt.mbtt.structure.any_tungstensteel_casing_next_to_gearbox=Any tungstensteel machine casing next to a gearbox
+gt.mbtt.structure.area_above_engine_intakes=3x4 area above the extreme engine intake casings
+gt.mbtt.structure.containment_block=Containment Block
+gt.mbtt.structure.heat_resistant_proof_coke_oven_casing=Heat Resistant/Proof Coke Oven Casing
+gt.mbtt.structure.input_or_solidifier_hatch=Input/Solidifier Hatch
+gt.mbtt.structure.input_or_chisel_bus=Input/Chisel Bus
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -2216,6 +2233,16 @@ gt.mbtt.machine_type.bacterial_vat=Bacterial Vat, Bac Vat
 gt.mbtt.machine_type.geothermal_heat_pump=Geothermal Heat Pump, DEHP
 gt.mbtt.machine_type.transformer=Transformer
 gt.mbtt.machine_type.windmill=Windmill, Macerator
+gt.mbtt.machine_type.implosion_compressor=Implosion Compressor, EIC
+gt.mbtt.machine_type.vacuum_freezer=Vacuum Freezer, EnF, MVF
+gt.mbtt.machine_type.combustion_generator=Combustion Generator, ECE
+gt.mbtt.machine_type.flotation_cell=Flotation Cell, FCR
+gt.mbtt.machine_type.fluid_solidifier=Fluid Solidifier
+gt.mbtt.machine_type.chisel=Chisel
+gt.mbtt.machine_type.industrial_coke_oven=Coke Oven, ICO
+gt.mbtt.machine_type.cutting_machine=Cutting Machine, ICF
+gt.mbtt.machine_type.electromagnetic_separator=Electromagnetic Separator/Polarizer, MFE
+gt.mbtt.machine_type.fish_trap=Fish Trap, ZFP
 
 # BartWorks multiblock structure text
 GT5U.tooltip.manual_trafo.winding_layers=1 Layer for each tier transformed
@@ -2230,6 +2257,7 @@ GT5U.tooltip.windmill.any_block=Any %s
 # Tooltip flavor text
 gt.mbtt.flavor.exothermic_hearth=Never one...
 gt.mbtt.flavor.spinmatron=Maahes guides the way...
+gt.mbtt.flavor.endothermic_fridge=... without the other!
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
