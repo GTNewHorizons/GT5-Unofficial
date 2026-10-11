@@ -1315,6 +1315,18 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * This machine can run recipes regardless of tier, if given enough energy
      *
+     * @param skips The number of tier skips it can run
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMaxTierSkips(int skips) {
+        iLines.add(StatCollector.translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", skips));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes regardless of tier, if given enough energy
+     *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addUnlimitedTierSkips() {
