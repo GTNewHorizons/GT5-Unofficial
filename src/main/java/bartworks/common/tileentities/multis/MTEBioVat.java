@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.multis;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -57,6 +58,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -177,7 +179,9 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         final String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bacterial_vat"))
-            .addMarkdown(new ResourceLocation("gregtech", "bio-vat"))
+            .addMarkdown(new ResourceLocation("gregtech", "bio-vat"),
+            ImmutableMap.of(
+                "eff_mult", formatNumber(Configuration.Multiblocks.bioVatMaxParallelBonus + 1)))
             .beginStructureBlock(5, 4, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("19-45", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)

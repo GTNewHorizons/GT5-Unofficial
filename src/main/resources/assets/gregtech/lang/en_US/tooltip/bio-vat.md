@@ -6,4 +6,4 @@ Radiation can be either a minimum requirement or an exact value
 The {green:{lang:tooltip.bw.structure.radio_hatch}} can be toggled with a {white:machine controller cover}
 {gray:{hr}}
 {aqua:Efficiency} depends on the {white:output hatch} fluid level and peaks at {aqua:50% capacity}
-Scales the input/output {bold:fluid} amounts up to 1,001x
+Scales the input/output {bold:fluid} amounts up to {var:eff_mult}x
