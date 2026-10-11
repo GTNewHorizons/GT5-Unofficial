@@ -59,7 +59,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
@@ -226,12 +225,11 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Laser Engraver, HILE")
-            .addInfo(TooltipHelper.parallelText("(Laser Source Amperage)^1/3") + " Parallels")
-            .addStaticSpeedInfo(3.5F)
-            .addStaticEuEffInfo(0.8F)
             .addMarkdown(
-                new ResourceLocation("gregtech", "laser-engraver"),
+                new ResourceLocation("gregtech", "industrial-laser-engraver"),
                 ImmutableMap.<String, Object>builder()
+                    .put("speed", 350)
+                    .put("eu_eff", 80)
                     .put("tier", GTValues.TIER_COLORS[VoltageIndex.UEV] + GTValues.VN[VoltageIndex.UEV])
                     .build())
             .beginStructureBlock(5, 5, 5, false)
@@ -240,11 +238,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addCasing("9", "Tungstensteel Frame Box", false)
             .addCasing("3", "Any Tiered Glass", true)
             .addCasing("1", "Laser Resistant Plate", false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
-                "Casing above glass",
-                2)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "Casing above glass", 2)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputAny("1+", "Any casing", 1)

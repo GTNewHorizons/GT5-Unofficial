@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -50,7 +51,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -184,12 +184,12 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Mixer, IMM")
-            .addVoltageParallelInfo(8)
-            .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
-            .addStaticEuEffInfo(1)
+            .addVoltageParallelInfo(PARALLEL_PER_TIER)
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-mixer"),
                 ImmutableMap.<String, Object>builder()
+                    .put("speed_increase", formatNumber(SPEED_INCREASE_TIER * 100))
+                    .put("eu_eff", 100)
                     .put("tier", TIER_COLORS[VoltageIndex.UIV] + GTValues.VN[VoltageIndex.UIV])
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
