@@ -1,7 +1,7 @@
 Produces energy and new elements from Radioactive Beta Decay
-Consumes {gold:1 L/s Molten Salt} for fuel and {yellow:2 L/s LFTB} for coolant
+Consumes {gold:1 {var:unit}/s Molten Salt} for fuel and {yellow:2 {var:unit}/s LFTB} for coolant
 Warm-up takes 250s, during which no fuel/coolant is consumed and no power is produced
-Once running, outputs {white:0.33 L/s U-233} on average
+Once running, outputs {white:0.33 {var:unit}/s U-233} on average
 Once finished, outputs various {red:Depleted Molten Salts} based on the fuel used
 {gray:{hr}}
 Use four 4A dynamo hatches corresponding to the Molten Salt Tier:
