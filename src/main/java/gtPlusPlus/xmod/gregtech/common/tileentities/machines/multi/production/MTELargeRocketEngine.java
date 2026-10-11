@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -528,7 +529,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public String getMachineType() {
-        return "Rocket Engine";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.rocket_engine");
     }
 
     @Override
