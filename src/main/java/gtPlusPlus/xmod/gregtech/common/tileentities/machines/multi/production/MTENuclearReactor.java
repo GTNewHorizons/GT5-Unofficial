@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -125,18 +126,18 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 4, 7, true)
-            .addController("Front bottom center")
-            .addCasing("27-86", "Hastelloy-N Reactor Casing", false)
-            .addCasing("26", "Reactor Shield Casing", false)
-            .addDynamoHatch("4", "Any edge casing (EV-LuV)", 1)
-            .addMaintenanceHatch("1", "Any edge casing", 1)
-            .addMufflerHatch("4", "Any top 3x3 center casing (IV+)", 2)
-            .addInputHatch("1+", "Any edge casing (IV+)", 1)
-            .addOutputHatch("4+", "Any edge casing (IV+)", 1)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("27-86", Casings.HastelloyNReactorCasing.getLocalizedName(), false)
+            .addCasing("26", Casings.ReactorShieldCasing.getLocalizedName(), false)
+            .addDynamoHatch("4", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_edge_casing_tier", "EV-LuV"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_edge_casing"), 1)
+            .addMufflerHatch("4", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_top_3x3_center_casing_tier", "IV+"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_edge_casing_tier", "IV+"), 1)
+            .addOutputHatch("4+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_edge_casing_tier", "IV+"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
-            .addStructureFooter("One ME output hatch can replace the four regular output hatches")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.me_output_hatch_replaces_four"))
             .toolTipFinisher();
         // spotless:on
         return tt;
