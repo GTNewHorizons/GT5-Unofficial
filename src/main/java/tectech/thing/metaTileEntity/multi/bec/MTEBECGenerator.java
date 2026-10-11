@@ -95,6 +95,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECGenerator> tt = new StructureWrapperTooltipBuilder<>(structure);
 
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_generator"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-generator"))
             .addSupportAny();
@@ -110,13 +111,10 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             .addCasing("101", CondensateTransformativeCoil.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-generator.hatch-pos"), 1)
             .addInputHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-generator.hatch-pos"), 1)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"),
-                StatCollector.translateToLocal("GT5U.tooltip.bec-generator.bec-hatch-pos"),
-                2)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-generator.bec-hatch-pos"), 2)
             .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
+        // spotless:on
     }
 
     @Override
