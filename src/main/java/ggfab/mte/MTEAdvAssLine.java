@@ -152,6 +152,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                                     { "o", "i", "b" },
                             }))
             // @formatter:on
+        .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 1, 12)
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 10)) // grate machine casing
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 9)) // assembler machine casing
         .addElement('m', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casing
@@ -188,6 +189,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         .addElement('i', InputBus.newAny(16, 2, ForgeDirection.DOWN))
         .addElement('o', OutputBus.newAny(16, 1, ForgeDirection.DOWN))
         .build();
+
     private GTRecipe.RecipeAssemblyLine currentRecipe;
     private final Slice[] slices = IntStream.range(0, 16)
         .mapToObj(Slice::new)
