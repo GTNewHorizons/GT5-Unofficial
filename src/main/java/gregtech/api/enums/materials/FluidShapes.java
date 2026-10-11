@@ -46,7 +46,6 @@ public class FluidShapes {
     public static void init() {
         fluidLiquid = fluidShape(
             "fluidLiquid",
-            "%s",
             "gt.oreprefix.material",
             legacySlot(FluidNames::fluid),
             temperature(GTMaterialProperties.LIQUID_TEMPERATURE),
@@ -54,7 +53,6 @@ public class FluidShapes {
             FluidShapes::liquidAttrs);
         fluidGas = fluidShape(
             "fluidGas",
-            "%s",
             "gt.oreprefix.material",
             legacySlot(FluidNames::gas),
             temperature(GTMaterialProperties.GAS_TEMPERATURE),
@@ -62,7 +60,6 @@ public class FluidShapes {
             FluidShapes::gasAttrs);
         fluidPlasma = fluidShape(
             "fluidPlasma",
-            "%s Plasma",
             "gt.oreprefix.material_plasma",
             legacySlot(FluidNames::plasma),
             temperature(GTMaterialProperties.PLASMA_TEMPERATURE),
@@ -70,7 +67,6 @@ public class FluidShapes {
             FluidShapes::plasmaAttrs);
         fluidMolten = fluidShape(
             "fluidMolten",
-            "Molten %s",
             "gt.oreprefix.molten_material",
             legacySlot(FluidNames::molten),
             FluidShapes::moltenTemperature,
@@ -79,7 +75,6 @@ public class FluidShapes {
 
         fluidHydroCracked1 = fluidShape(
             "fluidHydroCracked1",
-            "Lightly Hydro-Cracked %s",
             "gt.oreprefix.lightly_hydro-cracked_material",
             crackedSlot("lightlyhydrocracked"),
             temperature(GTMaterialProperties.CRACKED_TEMPERATURE),
@@ -87,7 +82,6 @@ public class FluidShapes {
             FluidShapes::gasAttrs);
         fluidHydroCracked2 = fluidShape(
             "fluidHydroCracked2",
-            "Moderately Hydro-Cracked %s",
             "gt.oreprefix.moderately_hydro-cracked_material",
             crackedSlot("moderatelyhydrocracked"),
             temperature(GTMaterialProperties.CRACKED_TEMPERATURE),
@@ -95,7 +89,6 @@ public class FluidShapes {
             FluidShapes::gasAttrs);
         fluidHydroCracked3 = fluidShape(
             "fluidHydroCracked3",
-            "Severely Hydro-Cracked %s",
             "gt.oreprefix.severely_hydro-cracked_material",
             crackedSlot("severelyhydrocracked"),
             temperature(GTMaterialProperties.CRACKED_TEMPERATURE),
@@ -103,7 +96,6 @@ public class FluidShapes {
             FluidShapes::gasAttrs);
         fluidSteamCracked1 = fluidShape(
             "fluidSteamCracked1",
-            "Lightly Steam-Cracked %s",
             "gt.oreprefix.lightly_steam-cracked_material",
             crackedSlot("lightlysteamcracked"),
             temperature(GTMaterialProperties.CRACKED_TEMPERATURE),
@@ -111,7 +103,6 @@ public class FluidShapes {
             FluidShapes::gasAttrs);
         fluidSteamCracked2 = fluidShape(
             "fluidSteamCracked2",
-            "Moderately Steam-Cracked %s",
             "gt.oreprefix.moderately_steam-cracked_material",
             crackedSlot("moderatelysteamcracked"),
             temperature(GTMaterialProperties.CRACKED_TEMPERATURE),
@@ -119,7 +110,6 @@ public class FluidShapes {
             FluidShapes::gasAttrs);
         fluidSteamCracked3 = fluidShape(
             "fluidSteamCracked3",
-            "Severely Steam-Cracked %s",
             "gt.oreprefix.severely_steam-cracked_material",
             crackedSlot("severelysteamcracked"),
             temperature(GTMaterialProperties.CRACKED_TEMPERATURE),
@@ -148,12 +138,10 @@ public class FluidShapes {
         };
     }
 
-    private static Shape fluidShape(String name, String displayFormat, String displayFormatKey,
-        Function<Material, FluidRef> ref, ToIntFunction<Material> temperature, String defaultTexture,
-        ObjIntConsumer<Fluid> attrs) {
+    private static Shape fluidShape(String name, String displayFormatKey, Function<Material, FluidRef> ref,
+        ToIntFunction<Material> temperature, String defaultTexture, ObjIntConsumer<Fluid> attrs) {
         return MaterialLibAPI.newFluidShape("gregtech", name)
-            .displayName(displayFormat)
-            .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, displayFormatKey)
+            .displayNameKey(displayFormatKey)
             .property(StandardProperties.NAME_FORMATTER, OrePrefixes::shapeDisplayName)
             .fluidName((shape, material) -> {
                 FluidRef fluidRef = ref.apply(material);

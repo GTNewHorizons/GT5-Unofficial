@@ -15,8 +15,8 @@ import gregtech.api.enums.NaniteTier;
 /// The `nanite` MaterialLib shape. Adds the stack's [NaniteTier] to its tooltip.
 public class GTNaniteShapeItem extends ShapeItem {
 
-    public GTNaniteShapeItem(String modid, String name, String displayNameFormat, String... oreDicts) {
-        super(modid, name, displayNameFormat, oreDicts);
+    public GTNaniteShapeItem(String modid, String name, String... oreDicts) {
+        super(modid, name, oreDicts);
     }
 
     @Override

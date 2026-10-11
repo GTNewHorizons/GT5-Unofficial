@@ -57,8 +57,8 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
     private final int mteId;
     private final Map<Integer, ITexture[][]> texturesByIndex = new ConcurrentHashMap<>();
 
-    public FrameShapeBlock(String name, String displayNameFormat, int mteId, String... oreDicts) {
-        super(new MaterialMachines(), "gregtech", name, displayNameFormat, oreDicts);
+    public FrameShapeBlock(String name, int mteId, String... oreDicts) {
+        super(new MaterialMachines(), "gregtech", name, oreDicts);
         this.mteId = mteId;
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
         GregTechAPI.registerMachineBlock(this, -1);

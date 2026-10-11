@@ -51,8 +51,7 @@ public class CellShapes {
 
         cell = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cell")
-                .displayName("%s Cell")
-                .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_cell")
+                .displayNameKey("gt.oreprefix.material_cell")
                 .fluid(FluidShapes.fluidLiquid)
                 .emptyContainer(emptyCell)
                 .volume(1000)
@@ -60,8 +59,7 @@ public class CellShapes {
                 .build());
         cellGas = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cellGas")
-                .displayName("%s Cell")
-                .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_cell")
+                .displayNameKey("gt.oreprefix.material_cell")
                 .fluid(FluidShapes.fluidGas)
                 .emptyContainer(emptyCell)
                 .volume(1000)
@@ -69,14 +67,12 @@ public class CellShapes {
                 .emptyIcon(CELL_BASE)
                 .build());
         cellSolid = reg(
-            MaterialLibAPI
-                .registerItemShape(new GTSolidCellShapeItem("gregtech", "cellSolid", "%s Cell", CELL_BASE, "cell"))
+            MaterialLibAPI.registerItemShape(new GTSolidCellShapeItem("gregtech", "cellSolid", CELL_BASE, "cell"))
                 .setProperty(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_cell"));
 
         cellPlasma = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasma")
-                .displayName("%s Plasma Cell")
-                .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_plasma_cell")
+                .displayNameKey("gt.oreprefix.material_plasma_cell")
                 .fluid(FluidShapes.fluidPlasma)
                 .emptyContainer(emptyCell)
                 .volume(INGOTS)
@@ -84,8 +80,7 @@ public class CellShapes {
                 .build());
         cellPlasmaLight = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasmaLight")
-                .displayName("%s Plasma Cell")
-                .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_plasma_cell")
+                .displayNameKey("gt.oreprefix.material_plasma_cell")
                 .fluid(FluidShapes.fluidPlasma)
                 .emptyContainer(emptyCell)
                 .volume(1000)
@@ -95,8 +90,7 @@ public class CellShapes {
 
         cellMolten = reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", "cellMolten")
-                .displayName("Molten %s Cell")
-                .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.molten_material_cell")
+                .displayNameKey("gt.oreprefix.molten_material_cell")
                 .fluid(FluidShapes.fluidMolten)
                 .emptyContainer(emptyCell)
                 .volume(INGOTS)
@@ -105,42 +99,34 @@ public class CellShapes {
 
         cellHydroCracked1 = crackedCellShape(
             "cellHydroCracked1",
-            "Lightly Hydro-Cracked %s Cell",
             "gt.oreprefix.lightly_hydro-cracked_material_cell",
             FluidShapes.fluidHydroCracked1);
         cellHydroCracked2 = crackedCellShape(
             "cellHydroCracked2",
-            "Moderately Hydro-Cracked %s Cell",
             "gt.oreprefix.moderately_hydro-cracked_material_cell",
             FluidShapes.fluidHydroCracked2);
         cellHydroCracked3 = crackedCellShape(
             "cellHydroCracked3",
-            "Severely Hydro-Cracked %s Cell",
             "gt.oreprefix.severely_hydro-cracked_material_cell",
             FluidShapes.fluidHydroCracked3);
         cellSteamCracked1 = crackedCellShape(
             "cellSteamCracked1",
-            "Lightly Steam-Cracked %s Cell",
             "gt.oreprefix.lightly_steam-cracked_material_cell",
             FluidShapes.fluidSteamCracked1);
         cellSteamCracked2 = crackedCellShape(
             "cellSteamCracked2",
-            "Moderately Steam-Cracked %s Cell",
             "gt.oreprefix.moderately_steam-cracked_material_cell",
             FluidShapes.fluidSteamCracked2);
         cellSteamCracked3 = crackedCellShape(
             "cellSteamCracked3",
-            "Severely Steam-Cracked %s Cell",
             "gt.oreprefix.severely_steam-cracked_material_cell",
             FluidShapes.fluidSteamCracked3);
     }
 
-    private static Shape crackedCellShape(String name, String displayFormat, String displayFormatKey,
-        Shape fluidShape) {
+    private static Shape crackedCellShape(String name, String displayFormatKey, Shape fluidShape) {
         return reg(
             MaterialLibAPI.newFluidInContainerShape("gregtech", name)
-                .displayName(displayFormat)
-                .property(StandardProperties.DISPLAY_NAME_FORMAT_KEY, displayFormatKey)
+                .displayNameKey(displayFormatKey)
                 .fluid(fluidShape)
                 .emptyContainer(emptyCell)
                 .volume(1000)

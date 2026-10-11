@@ -19,6 +19,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.ShapeBlock;
+import com.ruling_0.materiallib.api.StandardProperties;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -64,12 +65,14 @@ public class PipeShapeBlock extends ShapeBlock {
 
     private boolean checkingAdjacent = false;
 
-    /// `iconName` is the texture-set file of this shape's art, which several shapes can share (e.g. every wire and
-    /// cable draws `wire.png`).
-    public PipeShapeBlock(String name, String displayNameFormat, String prefixKey, int mteId, PipeFamily family,
-        int sizeIndex, int pipeAmount, float thickness, String iconName, String... oreDicts) {
-        super(new MaterialMachines(), "gregtech", name, displayNameFormat, oreDicts);
+    /// `prefixKey` is the `gt.oreprefix.*` lang key of this shape's display-name format. `iconName` is the
+    /// texture-set file of this shape's art, which several shapes can share (e.g. every wire and cable draws
+    /// `wire.png`).
+    public PipeShapeBlock(String name, String prefixKey, int mteId, PipeFamily family, int sizeIndex, int pipeAmount,
+        float thickness, String iconName, String... oreDicts) {
+        super(new MaterialMachines(), "gregtech", name, oreDicts);
         this.prefixKey = prefixKey;
+        setProperty(StandardProperties.DISPLAY_NAME_FORMAT_KEY, prefixKey);
         this.iconName = iconName;
         this.mteId = mteId;
         this.family = family;

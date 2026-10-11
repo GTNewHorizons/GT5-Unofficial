@@ -29,8 +29,8 @@ public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextur
 
     private final Map<Integer, ITexture[][]> texturesByIndex = new ConcurrentHashMap<>();
 
-    public SheetmetalShapeBlock(String name, String displayNameFormat, String... oreDicts) {
-        super("gregtech", name, displayNameFormat, oreDicts);
+    public SheetmetalShapeBlock(String name, String... oreDicts) {
+        super("gregtech", name, oreDicts);
         GregTechAPI.registerMachineBlock(this, -1);
     }
 

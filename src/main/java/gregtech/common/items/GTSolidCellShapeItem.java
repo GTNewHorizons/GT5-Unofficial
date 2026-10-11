@@ -19,9 +19,8 @@ public class GTSolidCellShapeItem extends ShapeItem {
     private IIcon baseIcon;
 
     /// As [ShapeItem#ShapeItem], with `baseIconPath` naming the untinted container texture drawn under the fill.
-    public GTSolidCellShapeItem(String modid, String name, String displayNameFormat, String baseIconPath,
-        String... oreDicts) {
-        super(modid, name, displayNameFormat, oreDicts);
+    public GTSolidCellShapeItem(String modid, String name, String baseIconPath, String... oreDicts) {
+        super(modid, name, oreDicts);
         this.baseIconPath = baseIconPath;
     }
 

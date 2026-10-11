@@ -13,8 +13,8 @@ import gregtech.api.GregTechAPI;
 /// is the material index. Casings act as multiblock structure parts.
 public class GTCasingShapeBlock extends ShapeBlock {
 
-    public GTCasingShapeBlock(String modid, String name, String displayNameFormat, String... oreDicts) {
-        super(modid, name, displayNameFormat, oreDicts);
+    public GTCasingShapeBlock(String modid, String name, String... oreDicts) {
+        super(modid, name, oreDicts);
         GregTechAPI.registerMachineBlock(this, -1);
     }
 

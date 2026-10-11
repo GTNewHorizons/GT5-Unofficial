@@ -18,8 +18,8 @@ import gregtech.api.material.MaterialUtils;
 /// The `block` MaterialLib shape block (storage blocks, e.g. "Block of Iron"). Metadata is the material index.
 public class GTStorageShapeBlock extends ShapeBlock {
 
-    public GTStorageShapeBlock(String modid, String name, String displayNameFormat, String... oreDicts) {
-        super(modid, name, displayNameFormat, oreDicts);
+    public GTStorageShapeBlock(String modid, String name, String... oreDicts) {
+        super(modid, name, oreDicts);
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
