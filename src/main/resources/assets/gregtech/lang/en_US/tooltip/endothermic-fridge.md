@@ -1,11 +1,12 @@
-While active, the machine will cool down and increase its speed bonus up to {green:{var:max_speed}x}
-Takes {light_purple:{var:warmup_minutes} minutes} of constant running to reach maximum bonus
-While not running, the machine will return to normal temperatures
-Optionally supply {aqua:{var:cryo_rate}/s} of {gold:Cryotheum} to speed up cooling by {green:{var:cryo_speedup}x}
-The drain rate of {gold:Cryotheum} will increase linearly with the speed modifier
+While active, the temperature slowly drops to increase its speed bonus up to {green:{var:max_speed}x}
+Takes {yellow:{var:warmup_minutes} minutes} of constant running to reach the maximum bonus
+While inactive, the machine returns back to normal temperatures
+Optionally supply {aqua:{var:min_cryo}-{var:max_cryo} L/s} of {aqua:Cryotheum} to speed up cooling by {yellow:{var:cryo_speedup}x}
+{aqua:Cryotheum} consumption scales linearly with the speed bonus
 {gray:{hr}}
-Upgrade to {light_purple:Tier {var:subspace_tier}} to unlock {blue:Subspace Cooling}
-{light_purple:Performs Perfect Overclocks} by consuming {gold:Exotic Coolants}:
-{gold:{var:booster_drain} {var:fluid_unit}/s} : {green:1} : {light_purple:Molten Infinity}
-{gold:{var:booster_drain} {var:fluid_unit}/s} : {green:2} : {light_purple:Molten Spacetime}
-{gold:{var:booster_drain} {var:fluid_unit}/s} : {green:3} : {light_purple:Molten Eternity}
+Upgrade to Tier 2 to unlock {gold:Subspace Cooling}
+Optionally supply an {blue:Exotic Coolant} to run {light_purple:Perfect Overclocks}
+{blue:{var:booster_drain} {var:fluid_unit}/s} of {blue:Molten Infinity}: {light_purple:1}
+{blue:{var:booster_drain} {var:fluid_unit}/s} of {blue:Molten Spacetime}: {light_purple:2}
+{blue:{var:booster_drain} {var:fluid_unit}/s} of {blue:Molten Eternity}: {light_purple:3}
+{gray:{hr}}

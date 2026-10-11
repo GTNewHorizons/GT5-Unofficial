@@ -1,8 +1,8 @@
-Explosions are fun!
-Uses electricity instead of Explosives
-{gold:Parallels} are determined by {white:Containment Block} tier
-{white:Neutronium} : {green:1} Parallel
-{red:Infinity} : {green:4} Parallels
-{dark_gray:Transcendent Metal} : {green:16} Parallels
-{light_purple:Spacetime}: {green:64} Parallels
-{blue:Universium}: {green:256} Parallels
+Uses electricity instead of explosives
+The {blue:Containment Block} used determines the number of {gold:Parallels}
+{blue:Neutronium}: {gold:1} Parallel
+{blue:Infinity}: {gold:4} Parallels
+{blue:Transcendent Metal}: {gold:16} Parallels
+{blue:Spacetime}: {gold:64} Parallels
+{blue:Universium}: {gold:256} Parallels
+{gray:{hr}}
