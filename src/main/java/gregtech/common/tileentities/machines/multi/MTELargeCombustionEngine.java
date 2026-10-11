@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -20,12 +21,14 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -52,10 +55,18 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTELargeCombustionEngine>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int LUBRICANT_PER_HOUR = 1000;
+    private static final int OXYGEN_RATE = 40;
+    private static final int DEFAULT_OUTPUT_EU = 2048;
+    private static final int DEFAULT_EFFICIENCY_PERCENT = 100;
+    private static final int BOOSTED_OUTPUT_EU = 6144;
+    private static final int BOOSTED_EFFICIENCY_PERCENT = 150;
+    private static final int WAIT_POWER_PERCENT = 300;
 
     private int casingAmount;
     private static final int OFFSET_X = 1;
@@ -112,30 +123,20 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
-        String lubricantRate = TooltipHelper.fluidText(1000);
-        String oxygenRate = TooltipHelper.fluidRateText(40);
-        String defaultOutput = TooltipHelper.euRateText(2048);
-        String defaultEfficiency = TooltipHelper.effText(1.0f);
-        String boostedOutput = TooltipHelper.euRateText(6144);
-        String boostedEfficiency = TooltipHelper.effText(1.5f);
-        String waitPower = TooltipHelper.effText(3.0f);
-
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.DieselEngine.machine_type"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc1", lubricantRate))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc2", oxygenRate))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.DieselEngine.default_output",
-                    defaultOutput,
-                    defaultEfficiency))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.DieselEngine.boosted_output",
-                    boostedOutput,
-                    boostedEfficiency))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.wait_power", waitPower))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.DieselEngine.intake_warning"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "extreme-combustion-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("lubricant", formatNumber(LUBRICANT_PER_HOUR))
+                    .put("oxygen", formatNumber(OXYGEN_RATE))
+                    .put("default_output", formatNumber(DEFAULT_OUTPUT_EU))
+                    .put("default_eff", formatNumber(DEFAULT_EFFICIENCY_PERCENT))
+                    .put("boosted_output", formatNumber(BOOSTED_OUTPUT_EU))
+                    .put("boosted_eff", formatNumber(BOOSTED_EFFICIENCY_PERCENT))
+                    .put("wait_power", formatNumber(WAIT_POWER_PERCENT))
+                    .put("fluid_unit", getFluidUnit())
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(8, 3, 3, false)
             .addController("Front left, 2nd layer")
@@ -153,6 +154,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
