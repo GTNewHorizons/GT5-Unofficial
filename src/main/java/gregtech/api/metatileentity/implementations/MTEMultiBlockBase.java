@@ -156,6 +156,7 @@ import gregtech.common.tileentities.machines.multi.drone.production.ProductionRe
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
@@ -1109,6 +1110,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         result = postCheckRecipe(result, processingLogic);
         // inputs are consumed at this point
         updateSlots();
+        // a fully consumed controller slot stack must not linger as a 0-size stack, it can be duped from the GUI
+        if (mInventory[1] != null && mInventory[1].stackSize <= 0) mInventory[1] = null;
         if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -1920,6 +1923,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             setHatchRecipeMap(tHatch);
             switch (tHatch) {
+                case MTEHatchSolidifier ignored -> {}
                 case MTEHatchMultiInput multiInputHatch -> {
                     for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
                         if (tFluid != null) {
@@ -4059,10 +4063,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean shouldCheckMaintenance() {
         return !disableMaintenance && hasMaintenanceChecks;
-    }
-
-    public void setMaxParallelForPanel(int parallel) {
-        this.maxParallel = parallel;
     }
 
     @Nonnull

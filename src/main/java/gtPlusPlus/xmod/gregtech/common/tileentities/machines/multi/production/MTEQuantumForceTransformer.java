@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -186,7 +187,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         tt.addMachineType("Quantum Force Transformer, QFT")
             .addInfo("Allows Complex processing lines to be performed instantly in one step")
             .addSeparator()
-            .addInfo(catalystText("Pulse Manipulator") + " Tier determines maximum recipe tier")
+            .addInfo(catalystText("Pulse Manipulator") + " Tier determines maximum Recipe Tier")
             .addInfo("Every recipe requires a specific " + catalystText("catalyst"))
             .addInfo(catalystText("Catalysts") + " have to be placed in a Bulk Catalyst Housing")
             .addInfo("Gains " + TooltipHelper.parallelText("1") + " Parallel per " + catalystText("Catalyst"))
@@ -657,7 +658,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     private enum SpecialHatchElement implements IHatchElement<MTEQuantumForceTransformer> {
 
-        CatalystHousing(MTEQuantumForceTransformer::addCatalystHousingToMachineList,
+        CatalystHousing("GT5U.MBTT.BulkCatalystHousing", MTEQuantumForceTransformer::addCatalystHousingToMachineList,
             MTEHatchBulkCatalystHousing.class) {
 
             @Override
@@ -666,12 +667,14 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEQuantumForceTransformer> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEQuantumForceTransformer> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEQuantumForceTransformer> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -684,6 +687,16 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         @Override
         public IGTHatchAdder<? super MTEQuantumForceTransformer> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
