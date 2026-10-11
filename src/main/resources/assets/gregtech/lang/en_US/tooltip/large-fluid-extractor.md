@@ -1,2 +1,2 @@
-Every Coil Tier gives a {var:coil_speed_bonus} speed bonus and a {var:coil_eu_discount} EU/t discount (multiplicative)
-{white:EU multiplier =} {aqua:{var:base_eu_mult} * ({var:coil_eu_mult}^Heating Coil Tier)}, prior to overclocks
+{green:{var:speed}%} Speed {green:+{var:speed_bonus}%} per {white:Heating Coil} tier
+{aqua:{var:eu_eff}%} EU Usage {aqua:x{var:eu_eff_bonus}} per {white:Heating Coil} tier

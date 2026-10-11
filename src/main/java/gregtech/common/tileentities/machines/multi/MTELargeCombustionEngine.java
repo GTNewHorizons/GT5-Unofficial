@@ -126,7 +126,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.DieselEngine.machine_type"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "extreme-combustion-engine"),
+                new ResourceLocation("gregtech", "large-combustion-engine"),
                 ImmutableMap.<String, Object>builder()
                     .put("lubricant", formatNumber(LUBRICANT_PER_HOUR))
                     .put("oxygen", formatNumber(OXYGEN_RATE))
