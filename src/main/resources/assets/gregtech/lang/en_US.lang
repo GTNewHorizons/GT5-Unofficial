@@ -2151,6 +2151,7 @@ gt.mbtt.structure.cleanroom_doors=- Reinforced Doors (§oIC2§r§7). Keep closed
 gt.mbtt.structure.cleanroom_elevators=- Elevators (§oOpenBlocks§r§7) or Travel Anchors (§oEnderIO§r§7)
 gt.mbtt.structure.cleanroom_config=See §8config/GregTech/MachineStats.cfg§7 for more valid blocks
 gt.mbtt.structure.cleanroom_wireless=Use Wireless Connectors for transferring AE2 channels
+gt.mbtt.structure.cleanroom_rectangular_base=The base can be rectangular.
 gt.mbtt.structure.front_left_3rd_layer=Front left, 3rd layer
 gt.mbtt.structure.front_left_center_2nd_layer=Front left center, 2nd layer
 gt.mbtt.structure.right_center_casing=Right center casing
