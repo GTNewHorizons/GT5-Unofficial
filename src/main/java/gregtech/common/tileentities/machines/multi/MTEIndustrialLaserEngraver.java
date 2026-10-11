@@ -20,12 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -57,6 +59,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
@@ -64,6 +67,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<MTEIndustrialLaserEngraver>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -219,24 +223,17 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Laser Engraver, HILE")
+            .addInfo(TooltipHelper.parallelText("(Laser Source Amperage)^1/3") + " Parallels")
             .addStaticSpeedInfo(3.5F)
             .addStaticEuEffInfo(0.8F)
-            .addInfo("Laser Source Hatch determines maximum Recipe Tier and parallels")
-            .addInfo("Recipe Tier and overclocks limited to Laser Source Tier + 1")
-            .addInfo(
-                "When using a " + GTValues.TIER_COLORS[VoltageIndex.UEV]
-                    + GTValues.VN[VoltageIndex.UEV]
-                    + EnumChatFormatting.GRAY
-                    + "+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches")
-            .addInfo("Parallels equal to the cube root of laser source amperage input")
-            .addInfo(
-                EnumChatFormatting.WHITE + "Glass "
-                    + EnumChatFormatting.GRAY
-                    + "Tier determines maximum Laser Source Tier")
-            .addInfo("Use screwdriver to disable laser rendering")
-            .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "laser-engraver"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", GTValues.TIER_COLORS[VoltageIndex.UEV] + GTValues.VN[VoltageIndex.UEV])
+                    .build())
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front bottom center")
             .addCasing("35-58", "Laser Containment Casing", false)
@@ -255,6 +252,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
