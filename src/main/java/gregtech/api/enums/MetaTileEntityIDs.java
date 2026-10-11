@@ -1951,7 +1951,6 @@ public enum MetaTileEntityIDs {
     Hatch_SuperBus_Output_UV(30039),
     Hatch_SuperBus_Output_UHV(30040),
     PipeIncoloy903(30995),
-    Infinite_Item_Chest(31010),
     SimpleDustWasher_MV(31017),
     SimpleDustWasher_EV(31018),
     SimpleDustWasher_LuV(31019),
