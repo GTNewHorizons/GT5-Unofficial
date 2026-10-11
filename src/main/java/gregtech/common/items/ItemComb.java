@@ -996,7 +996,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     public void addProcessGT(CombType comb, Material[] aMaterial, Voltage volt) {
         ItemStack tComb = getStackForType(comb);
         for (Material materials : aMaterial) {
-            if (MaterialLibAPI.findStack(materials, Shapes.crushedPurified, 4) != null) {
+            if (materials.hasShape(Shapes.crushedPurified)) {
                 ItemStack combInput;
                 ItemStack combOutput;
                 FluidStack fluidInput;
@@ -1047,7 +1047,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     }
                     default -> {
                         combInput = GTUtility.copyAmount(4, tComb);
-                        combOutput = MaterialLibAPI.findStack(materials, Shapes.crushedPurified, 4);
+                        combOutput = MaterialLibAPI.getStack(materials, Shapes.crushedPurified, 4);
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = null;
                         durationTicks = volt.getComplexTime();
@@ -1105,13 +1105,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         stackSize = Arrays.copyOf(stackSize, 1);
         chance = Arrays.copyOf(chance, 2);
         chance[1] = waxChance;
-        if (chance[0] != 0) {
+        if (chance[0] != 0 && material.hasShape(Shapes.dust)) {
             if (Math.max(1, stackSize[0]) % 9 == 0) {
-                aOutPut[0] = MaterialLibAPI.findStack(material, Shapes.dust, Math.max(1, stackSize[0]) / 9);
+                aOutPut[0] = MaterialLibAPI.getStack(material, Shapes.dust, Math.max(1, stackSize[0]) / 9);
             } else if (Math.max(1, stackSize[0]) % 4 == 0) {
-                aOutPut[0] = MaterialLibAPI.findStack(material, Shapes.dust, Math.max(1, stackSize[0]) / 4);
+                aOutPut[0] = MaterialLibAPI.getStack(material, Shapes.dust, Math.max(1, stackSize[0]) / 4);
             } else {
-                aOutPut[0] = MaterialLibAPI.findStack(material, Shapes.dust, Math.max(1, stackSize[0]));
+                aOutPut[0] = MaterialLibAPI.getStack(material, Shapes.dust, Math.max(1, stackSize[0]));
             }
         }
         if (beeWax != NI) {
@@ -1133,11 +1133,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 continue;
             }
             if (Math.max(1, stackSize[i]) % 9 == 0) {
-                aOutPut[i] = MaterialLibAPI.findStack(aMaterial[i], Shapes.dust, Math.max(1, stackSize[i]) / 9);
+                aOutPut[i] = MaterialLibAPI.getStack(aMaterial[i], Shapes.dust, Math.max(1, stackSize[i]) / 9);
             } else if (Math.max(1, stackSize[i]) % 4 == 0) {
-                aOutPut[i] = MaterialLibAPI.findStack(aMaterial[i], Shapes.dust, Math.max(1, stackSize[i]) / 4);
+                aOutPut[i] = MaterialLibAPI.getStack(aMaterial[i], Shapes.dust, Math.max(1, stackSize[i]) / 4);
             } else {
-                aOutPut[i] = MaterialLibAPI.findStack(aMaterial[i], Shapes.dust, Math.max(1, stackSize[i]));
+                aOutPut[i] = MaterialLibAPI.getStack(aMaterial[i], Shapes.dust, Math.max(1, stackSize[i]));
             }
         }
         if (beeWax != NI) {

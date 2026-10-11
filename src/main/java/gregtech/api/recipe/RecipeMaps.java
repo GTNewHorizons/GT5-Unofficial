@@ -951,7 +951,7 @@ public final class RecipeMaps {
                     .setInputs(
                         aInput1,
                         aInput2,
-                        GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.findStack(coal, Shapes.gem, 1)))
+                        GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.getStack(coal, Shapes.gem, 1)))
                     .setOutputs(
                         aOutput1,
                         aOutput2,
@@ -961,7 +961,7 @@ public final class RecipeMaps {
                     .setInputs(
                         aInput1,
                         aInput2,
-                        GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.findStack(coal, Shapes.dust, 1)))
+                        GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.getStack(coal, Shapes.dust, 1)))
                     .setOutputs(
                         aOutput1,
                         aOutput2,
@@ -1030,7 +1030,7 @@ public final class RecipeMaps {
                         .setInputs(
                             aInput1,
                             aInput2,
-                            GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.findStack(coal, BlockShapes.block, 1)))
+                            GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.getStack(coal, BlockShapes.block, 1)))
                         .setOutputs(
                             aOutput1,
                             aOutput2,

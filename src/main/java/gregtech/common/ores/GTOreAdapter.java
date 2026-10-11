@@ -250,7 +250,7 @@ public final class GTOreAdapter implements IOreAdapter {
 
         switch (oreDropMode) {
             case Item -> drops
-                .add(MaterialLibAPI.findStack(info.material, Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
+                .add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
             case FortuneItem -> {
                 if (fortune > 0) {
                     // Max applicable fortune
@@ -262,11 +262,11 @@ public final class GTOreAdapter implements IOreAdapter {
                     int amount = (info.stoneType.isRich() ? 2 : 1) * (addedDrops + 1);
 
                     for (int i = 0; i < amount; i++) {
-                        drops.add(MaterialLibAPI.findStack(info.material, Shapes.rawOre, 1));
+                        drops.add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, 1));
                     }
                 } else {
                     for (int i = 0; i < (info.stoneType.isRich() ? 2 : 1); i++) {
-                        drops.add(MaterialLibAPI.findStack(info.material, Shapes.rawOre, 1));
+                        drops.add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, 1));
                     }
                 }
             }

@@ -95,14 +95,13 @@ public class ProcessingOreSmelting implements PartRecipeGenerator {
 
                 final int outputAmount = GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
 
+                Material target = MaterialUtils.directSmelting(material);
                 if (!MaterialUtils.hasFlag(material, GTMaterialFlag.DONT_ADD_DEFAULT_BBF_RECIPE)
-                    && MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1) != null) {
+                    && target.hasShape(Shapes.ingot)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(2, stack))
                         .itemOutputs(
-                            GTUtility.copyAmount(
-                                outputAmount,
-                                MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1)))
+                            GTUtility.copyAmount(outputAmount, MaterialLibAPI.getStack(target, Shapes.ingot, 1)))
                         .duration(2 * MINUTES)
                         .metadata(ADDITIVE_AMOUNT, 2)
                         .addTo(primitiveBlastRecipes);
@@ -126,86 +125,71 @@ public class ProcessingOreSmelting implements PartRecipeGenerator {
 
     private static void addSpecialDustRecipes(Material material, int outputAmount) {
         if (material == Materials.Chalcopyrite) {
+            ItemStack dust = MaterialLibAPI.getStack(material, Shapes.dust, 2);
+            ItemStack ingot = MaterialLibAPI.getStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1);
+
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.findStack(material, Shapes.dust, 2), new ItemStack(Blocks.sand, 2))
+                .itemInputs(dust, new ItemStack(Blocks.sand, 2))
                 .itemOutputs(
-                    GTUtility.copyAmount(
-                        (long) outputAmount,
-                        MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1)),
+                    GTUtility.copyAmount((long) outputAmount, ingot),
                     MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, (int) (2 * outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.findStack(material, Shapes.dust, 2),
-                    MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, 2))
+                .itemInputs(dust, MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, 2))
                 .itemOutputs(
-                    GTUtility.copyAmount(
-                        (long) outputAmount,
-                        MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1)),
+                    GTUtility.copyAmount((long) outputAmount, ingot),
                     MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, (int) (7 * outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.findStack(material, Shapes.dust, 2),
-                    MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 2))
+                .itemInputs(dust, MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 2))
                 .itemOutputs(
-                    GTUtility.copyAmount(
-                        (long) outputAmount,
-                        MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1)),
+                    GTUtility.copyAmount((long) outputAmount, ingot),
                     MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, outputAmount))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.findStack(material, Shapes.dust, 2),
-                    MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.dust, 2))
+                .itemInputs(dust, MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.dust, 2))
                 .itemOutputs(
-                    GTUtility.copyAmount(
-                        (long) outputAmount,
-                        MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1)),
+                    GTUtility.copyAmount((long) outputAmount, ingot),
                     MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, outputAmount))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.findStack(material, Shapes.dust, 2),
-                    MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, 2))
+                .itemInputs(dust, MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, 2))
                 .itemOutputs(
-                    GTUtility.copyAmount(
-                        (long) outputAmount,
-                        MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1)),
+                    GTUtility.copyAmount((long) outputAmount, ingot),
                     MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, outputAmount))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
         } else if (material == Materials.Tetrahedrite) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.findStack(material, Shapes.dust, 2))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.dust, 2))
                 .itemOutputs(
                     GTUtility.copyAmount(
                         (long) outputAmount,
-                        MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1)),
+                        MaterialLibAPI.getStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1)),
                     MaterialLibAPI.getStack(Materials.Antimony, Shapes.nugget, (int) (3 * outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
         } else if (material == Materials.Galena) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.findStack(material, Shapes.dust, 2))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.dust, 2))
                 .itemOutputs(
                     GTUtility.copyAmount(
                         (long) outputAmount,
-                        MaterialLibAPI.findStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1)),
+                        MaterialLibAPI.getStack(MaterialUtils.directSmelting(material), Shapes.ingot, 1)),
                     MaterialLibAPI.getStack(Materials.Silver, Shapes.nugget, (int) (3 * outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)

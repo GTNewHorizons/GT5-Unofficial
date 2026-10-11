@@ -41,7 +41,7 @@ public class ProcessingRotor implements PartRecipeGenerator {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(material, Shapes.rotor, 1),
+                        MaterialLibAPI.getStack(material, Shapes.rotor, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "PhP", "SRf", "PdP", 'P',
                             material == Materials.Wood ? OrePrefixes.plank.ingredient(material)
@@ -51,19 +51,19 @@ public class ProcessingRotor implements PartRecipeGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy())
                     .circuit(4)
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.rotor, 1))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.rotor, 1))
                     .fluidInputs(SubstituteFluidStack.soldering(1 * NUGGETS))
                     .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 24))
                     .addTo(assemblerRecipes);
             }
 
-            if (MaterialLibAPI.findStack(material, Shapes.ingot, 1) != null) {
+            if (material.hasShape(Shapes.ingot)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        MaterialLibAPI.findStack(material, Shapes.ingot, 5),
+                        MaterialLibAPI.getStack(material, Shapes.ingot, 5),
                         ItemList.Shape_Extruder_Rotor.get(0L))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.rotor, 1))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.rotor, 1))
                     .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 24))
                     .addTo(extruderRecipes);
@@ -73,7 +73,7 @@ public class ProcessingRotor implements PartRecipeGenerator {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Rotor.get(0L))
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.rotor, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.rotor, 1))
                         .fluidInputs(MaterialUtils.molten(material, 612L))
                         .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
                         .eut(calculateRecipeEU(material, 24))

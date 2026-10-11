@@ -35,7 +35,7 @@ public class ProcessingPure implements PartRecipeGenerator {
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
                 ProcessingSubstitutes
-                    .ore(material, MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1)))
+                    .ore(material, MaterialLibAPI.getStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1)))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
@@ -48,8 +48,8 @@ public class ProcessingPure implements PartRecipeGenerator {
                     GTUtility.copyAmount(
                         1L,
                         MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustPure, 1),
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
-                    MaterialLibAPI.findStack(
+                        MaterialLibAPI.getStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
+                    MaterialLibAPI.getStack(
                         GTUtility.selectItemInList(
                             1,
                             MaterialUtils.macerateInto(material),

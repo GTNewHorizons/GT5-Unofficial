@@ -29,7 +29,7 @@ public class ProcessingSheetmetal implements PartRecipeGenerator {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 2), GTUtility.getIntegratedCircuit(11))
+            .itemInputs(MaterialLibAPI.getStack(material, Shapes.plate, 2), GTUtility.getIntegratedCircuit(11))
             .itemOutputs(GTUtility.copyAmount(1, stack))
             .eut(TierEU.RECIPE_LV)
             .duration(10)

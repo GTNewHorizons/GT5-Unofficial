@@ -28,9 +28,9 @@ public class ProcessingScrew implements PartRecipeGenerator {
     @Override
     public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
-            if (MaterialLibAPI.findStack(material, Shapes.bolt, 1) != null) {
+            if (material.hasShape(Shapes.bolt)) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.findStack(material, Shapes.bolt, 1))
+                    .itemInputs(MaterialLibAPI.getStack(material, Shapes.bolt, 1))
                     .itemOutputs(GTUtility.copyAmount(1, stack))
                     .duration(((int) Math.max(MaterialUtils.mass(material) / 8L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 4))
@@ -39,7 +39,7 @@ public class ProcessingScrew implements PartRecipeGenerator {
             if (MaterialUtils.unifiable(material)) {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(material, Shapes.screw, 1),
+                        MaterialLibAPI.getStack(material, Shapes.screw, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "fX", "X ", 'X', OrePrefixes.bolt.ingredient(material) });
                 }

@@ -69,11 +69,11 @@ public class ProcessingWire implements PartRecipeGenerator {
                 if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
                     // Bender recipes
                     {
-                        if (MaterialLibAPI.findStack(material, Shapes.springSmall, 1) != null) {
+                        if (material.hasShape(Shapes.springSmall)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(1)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.springSmall, 2))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.springSmall, 2))
                                 .duration(5 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8))
                                 .addTo(benderRecipes);
@@ -82,11 +82,11 @@ public class ProcessingWire implements PartRecipeGenerator {
 
                     // Wiremill Recipes
                     {
-                        if (MaterialLibAPI.findStack(material, Shapes.wireFine, 1) != null) {
+                        if (material.hasShape(Shapes.wireFine)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(1)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.wireFine, 4))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.wireFine, 4))
                                 .duration(10 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8))
                                 .addTo(wiremillRecipes);
@@ -99,7 +99,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                     && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)
                     && (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV)) {
                     GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 1),
+                        MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "Xx", 'X', OrePrefixes.plate.ingredient(material) });
 
@@ -109,35 +109,35 @@ public class ProcessingWire implements PartRecipeGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(2, stack))
                     .circuit(2)
-                    .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt02, 1))
+                    .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt02, 1))
                     .duration(7 * SECONDS + 10 * TICKS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(4, stack))
                     .circuit(4)
-                    .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt04, 1))
+                    .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt04, 1))
                     .duration(10 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(8, stack))
                     .circuit(8)
-                    .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt08, 1))
+                    .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt08, 1))
                     .duration(15 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(12, stack))
                     .circuit(12)
-                    .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt12, 1))
+                    .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt12, 1))
                     .duration(20 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(16, stack))
                     .circuit(16)
-                    .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.wireGt16, 1))
+                    .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt16, 1))
                     .duration(25 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);
@@ -147,7 +147,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                 correspondingCable = TEBlockShapes.cableGt02;
                 // Shapeless crafting recipes
                 GTModHandler.addShapelessCraftingRecipe(
-                    MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 2),
+                    MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 2),
                     new Object[] { prefix.ingredient(material) });
 
                 GTModHandler.addShapelessCraftingRecipe(
@@ -160,7 +160,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                 correspondingCable = TEBlockShapes.cableGt04;
                 // Shapeless crafting recipes
                 GTModHandler.addShapelessCraftingRecipe(
-                    MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 4),
+                    MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 4),
                     new Object[] { prefix.ingredient(material) });
 
                 GTModHandler.addShapelessCraftingRecipe(
@@ -177,7 +177,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                 correspondingCable = TEBlockShapes.cableGt08;
                 // Shapeless crafting recipes
                 GTModHandler.addShapelessCraftingRecipe(
-                    MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 8),
+                    MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 8),
                     new Object[] { prefix.ingredient(material) });
 
                 GTModHandler.addShapelessCraftingRecipe(
@@ -196,7 +196,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                 correspondingCable = TEBlockShapes.cableGt12;
                 // Shapeless crafting recipes
                 GTModHandler.addShapelessCraftingRecipe(
-                    MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 12),
+                    MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 12),
                     new Object[] { prefix.ingredient(material) });
 
                 GTModHandler.addShapelessCraftingRecipe(
@@ -209,7 +209,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                 correspondingCable = TEBlockShapes.cableGt16;
                 // Shapeless crafting recipes
                 GTModHandler.addShapelessCraftingRecipe(
-                    MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 16),
+                    MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 16),
                     new Object[] { prefix.ingredient(material) });
 
                 GTModHandler.addShapelessCraftingRecipe(
@@ -338,13 +338,13 @@ public class ProcessingWire implements PartRecipeGenerator {
                             .addTo(assemblerRecipes);
 
                         for (Material dielectric : dielectrics) {
+                            ItemStack dielectricDust = MaterialLibAPI.getStack(dielectric, Shapes.dust, 1);
+                            ItemStack dielectricDustSmall = MaterialLibAPI.getStack(dielectric, Shapes.dustSmall, 1);
                             for (Material syntheticRubber : Wildcard.AnySyntheticRubber.members()) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(
                                         GTUtility.copyAmount(4, stack),
-                                        GTUtility.copyAmount(
-                                            costMultiplier,
-                                            MaterialLibAPI.findStack(dielectric, Shapes.dust, 1)))
+                                        GTUtility.copyAmount(costMultiplier, dielectricDust))
                                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 4))
                                     .fluidInputs(MaterialUtils.molten(syntheticRubber, (long) costMultiplier * INGOTS))
                                     .duration(20 * SECONDS)
@@ -352,11 +352,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                                     .addTo(cableRecipes);
 
                                 GTValues.RA.stdBuilder()
-                                    .itemInputs(
-                                        stack,
-                                        GTUtility.copyAmount(
-                                            costMultiplier,
-                                            MaterialLibAPI.findStack(dielectric, Shapes.dustSmall, 1)))
+                                    .itemInputs(stack, GTUtility.copyAmount(costMultiplier, dielectricDustSmall))
                                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                                     .fluidInputs(
                                         MaterialUtils.molten(syntheticRubber, (long) costMultiplier * QUARTER_INGOTS))
@@ -367,9 +363,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(
                                         GTUtility.copyAmount(4, stack),
-                                        GTUtility.copyAmount(
-                                            costMultiplier,
-                                            MaterialLibAPI.findStack(dielectric, Shapes.dust, 1)))
+                                        GTUtility.copyAmount(costMultiplier, dielectricDust))
                                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 4))
                                     .fluidInputs(MaterialUtils.molten(syntheticRubber, (long) costMultiplier * INGOTS))
                                     .duration(20 * SECONDS)
@@ -377,11 +371,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                                     .addTo(assemblerRecipes);
 
                                 GTValues.RA.stdBuilder()
-                                    .itemInputs(
-                                        stack,
-                                        GTUtility.copyAmount(
-                                            costMultiplier,
-                                            MaterialLibAPI.findStack(dielectric, Shapes.dustSmall, 1)))
+                                    .itemInputs(stack, GTUtility.copyAmount(costMultiplier, dielectricDustSmall))
                                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                                     .fluidInputs(
                                         MaterialUtils.molten(syntheticRubber, (long) costMultiplier * QUARTER_INGOTS))
@@ -398,8 +388,8 @@ public class ProcessingWire implements PartRecipeGenerator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, 2),
-                            MaterialLibAPI.findStack(material, TEBlockShapes.wireGt01, 1))
-                        .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.cableGt01, 1))
+                            MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.cableGt01, 1))
                         .duration(5 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(alloySmelterRecipes);
@@ -407,8 +397,8 @@ public class ProcessingWire implements PartRecipeGenerator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, 2),
-                            MaterialLibAPI.findStack(material, TEBlockShapes.wireGt02, 1))
-                        .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.cableGt02, 1))
+                            MaterialLibAPI.getStack(material, TEBlockShapes.wireGt02, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.cableGt02, 1))
                         .duration(10 * SECONDS)
                         .eut(TierEU.RECIPE_LV / 2)
                         .addTo(alloySmelterRecipes);
@@ -416,8 +406,8 @@ public class ProcessingWire implements PartRecipeGenerator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, 4),
-                            MaterialLibAPI.findStack(material, TEBlockShapes.wireGt04, 1))
-                        .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.cableGt04, 1))
+                            MaterialLibAPI.getStack(material, TEBlockShapes.wireGt04, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.cableGt04, 1))
                         .duration(15 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
                         .addTo(alloySmelterRecipes);
@@ -500,12 +490,13 @@ public class ProcessingWire implements PartRecipeGenerator {
                     .addTo(assemblerRecipes);
 
                 for (Material dielectric : dielectrics) {
+                    ItemStack dielectricDust = MaterialLibAPI.getStack(dielectric, Shapes.dust, 1);
+                    ItemStack dielectricDustSmall = MaterialLibAPI.getStack(dielectric, Shapes.dustSmall, 1);
                     for (Material syntheticRubber : Wildcard.AnySyntheticRubber.members()) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
                                 GTUtility.copyAmount(4, stack),
-                                GTUtility
-                                    .copyAmount(costMultiplier, MaterialLibAPI.findStack(dielectric, Shapes.dust, 1)))
+                                GTUtility.copyAmount(costMultiplier, dielectricDust))
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 4))
                             .fluidInputs(MaterialUtils.molten(syntheticRubber, (long) costMultiplier * INGOTS))
                             .duration(20 * SECONDS)
@@ -513,11 +504,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                             .addTo(cableRecipes);
 
                         GTValues.RA.stdBuilder()
-                            .itemInputs(
-                                stack,
-                                GTUtility.copyAmount(
-                                    costMultiplier,
-                                    MaterialLibAPI.findStack(dielectric, Shapes.dustSmall, 1)))
+                            .itemInputs(stack, GTUtility.copyAmount(costMultiplier, dielectricDustSmall))
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                             .fluidInputs(MaterialUtils.molten(syntheticRubber, (long) costMultiplier * QUARTER_INGOTS))
                             .duration(5 * SECONDS)
@@ -527,8 +514,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
                                 GTUtility.copyAmount(4, stack),
-                                GTUtility
-                                    .copyAmount(costMultiplier, MaterialLibAPI.findStack(dielectric, Shapes.dust, 1)))
+                                GTUtility.copyAmount(costMultiplier, dielectricDust))
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 4))
                             .fluidInputs(MaterialUtils.molten(syntheticRubber, (long) costMultiplier * INGOTS))
                             .duration(20 * SECONDS)
@@ -536,11 +522,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                             .addTo(assemblerRecipes);
 
                         GTValues.RA.stdBuilder()
-                            .itemInputs(
-                                stack,
-                                GTUtility.copyAmount(
-                                    costMultiplier,
-                                    MaterialLibAPI.findStack(dielectric, Shapes.dustSmall, 1)))
+                            .itemInputs(stack, GTUtility.copyAmount(costMultiplier, dielectricDustSmall))
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                             .fluidInputs(MaterialUtils.molten(syntheticRubber, (long) costMultiplier * QUARTER_INGOTS))
                             .duration(5 * SECONDS)
@@ -584,12 +566,13 @@ public class ProcessingWire implements PartRecipeGenerator {
                     .addTo(assemblerRecipes);
 
                 for (Material dielectric : dielectrics) {
+                    ItemStack dielectricDust = MaterialLibAPI.getStack(dielectric, Shapes.dust, 1);
+                    ItemStack dielectricDustSmall = MaterialLibAPI.getStack(dielectric, Shapes.dustSmall, 1);
                     for (Material syntheticRubber : Wildcard.AnySyntheticRubber.members()) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
                                 GTUtility.copyAmount(4, stack),
-                                GTUtility
-                                    .copyAmount(costMultiplier, MaterialLibAPI.findStack(dielectric, Shapes.dust, 1)),
+                                GTUtility.copyAmount(costMultiplier, dielectricDust),
                                 MaterialLibAPI
                                     .getStack(Materials.PolyphenyleneSulfide, Shapes.foil, costMultiplier * 4))
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 4))
@@ -600,9 +583,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
                                 stack,
-                                GTUtility.copyAmount(
-                                    costMultiplier,
-                                    MaterialLibAPI.findStack(dielectric, Shapes.dustSmall, 1)),
+                                GTUtility.copyAmount(costMultiplier, dielectricDustSmall),
                                 MaterialLibAPI.getStack(Materials.PolyphenyleneSulfide, Shapes.foil, costMultiplier))
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                             .fluidInputs(MaterialUtils.molten(syntheticRubber, costMultiplier * 36L))
@@ -613,8 +594,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
                                 GTUtility.copyAmount(4, stack),
-                                GTUtility
-                                    .copyAmount(costMultiplier, MaterialLibAPI.findStack(dielectric, Shapes.dust, 1)),
+                                GTUtility.copyAmount(costMultiplier, dielectricDust),
                                 MaterialLibAPI
                                     .getStack(Materials.PolyphenyleneSulfide, Shapes.foil, costMultiplier * 4))
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 4))
@@ -625,9 +605,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
                                 stack,
-                                GTUtility.copyAmount(
-                                    costMultiplier,
-                                    MaterialLibAPI.findStack(dielectric, Shapes.dustSmall, 1)),
+                                GTUtility.copyAmount(costMultiplier, dielectricDustSmall),
                                 MaterialLibAPI.getStack(Materials.PolyphenyleneSulfide, Shapes.foil, costMultiplier))
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                             .fluidInputs(MaterialUtils.molten(syntheticRubber, costMultiplier * 36L))

@@ -173,9 +173,9 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 new Object[] { Circuits.UHV.getIngredient(), circuitMultiplier },
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                 getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
-                MaterialLibAPI.findStack(Materials.Eternity, part, multiplier))
+                MaterialLibAPI.getStack(Materials.Eternity, part, multiplier))
             .itemOutputs(
-                MaterialLibAPI.findStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, part, multiplier))
+                MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, part, multiplier))
             .fluidInputs(
                 MaterialUtils
                     .molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, (long) partFraction * multiplier))

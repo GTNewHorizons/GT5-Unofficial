@@ -77,37 +77,33 @@ public class ProcessingStick implements PartRecipeGenerator {
     public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         addMeltMoldRecipe(OrePrefixes.stick, material, stack, ItemList.Shape_Mold_Rod, 7 * SECONDS + 10 * TICKS);
         {
-            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
+            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV && material.hasShape(Shapes.springSmall)) {
                 GTModHandler.addCraftingRecipe(
-                    MaterialLibAPI.findStack(material, Shapes.springSmall, 1),
+                    MaterialLibAPI.getStack(material, Shapes.springSmall, 1),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { " s ", "fPx", 'P', OrePrefixes.stick.ingredient(material) });
             }
         }
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
 
-            if ((MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTAL)
-                ? MaterialLibAPI.findStack(material, Shapes.gem, 1)
-                : MaterialLibAPI.findStack(material, Shapes.ingot, 1)) != null
-                && MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustSmall, 1) != null) {
+            Shape feedstock = MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTAL) ? Shapes.gem : Shapes.ingot;
+            Material dustTarget = MaterialUtils.macerateInto(material);
+            if (material.hasShape(feedstock) && dustTarget.hasShape(Shapes.dustSmall)) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTAL)
-                            ? MaterialLibAPI.findStack(material, Shapes.gem, 1)
-                            : MaterialLibAPI.findStack(material, Shapes.ingot, 1))
+                    .itemInputs(MaterialLibAPI.getStack(material, feedstock, 1))
                     .itemOutputs(
-                        MaterialLibAPI.findStack(material, Shapes.stick, 1),
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustSmall, 2))
+                        MaterialLibAPI.getStack(material, Shapes.stick, 1),
+                        MaterialLibAPI.getStack(dustTarget, Shapes.dustSmall, 2))
                     .duration(((int) Math.max(MaterialUtils.mass(material) * 5L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 16))
                     .addTo(latheRecipes);
             }
 
-            if (MaterialLibAPI.findStack(material, Shapes.bolt, 1) != null) {
+            if (material.hasShape(Shapes.bolt)) {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.bolt, 4))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.bolt, 4))
                     .fluidInputs(
                         GTUtility.getWater(
                             Math.max(
@@ -123,7 +119,7 @@ public class ProcessingStick implements PartRecipeGenerator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.bolt, 4))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.bolt, 4))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
                             Math.max(
@@ -139,7 +135,7 @@ public class ProcessingStick implements PartRecipeGenerator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.bolt, 4))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.bolt, 4))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Lubricant,
@@ -157,7 +153,7 @@ public class ProcessingStick implements PartRecipeGenerator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.bolt, 4))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.bolt, 4))
                     .fluidInputs(
                         MaterialUtils.fluid(
                             Materials.dimensionallyshiftedsuperfluid,
@@ -176,11 +172,11 @@ public class ProcessingStick implements PartRecipeGenerator {
             if (MaterialUtils.unifiable(material)) {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(material, Shapes.stick, 2),
+                        MaterialLibAPI.getStack(material, Shapes.stick, 2),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "s", "X", 'X', OrePrefixes.stickLong.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(material, Shapes.stick, 1),
+                        MaterialLibAPI.getStack(material, Shapes.stick, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "f ", " X", 'X', OrePrefixes.ingot.ingredient(material) });
                 }
@@ -189,21 +185,21 @@ public class ProcessingStick implements PartRecipeGenerator {
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
             // bender recipe
             {
-                if (MaterialLibAPI.findStack(material, Shapes.springSmall, 1) != null) {
+                if (material.hasShape(Shapes.springSmall)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(1)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.springSmall, 2))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.springSmall, 2))
                         .duration(5 * SECONDS)
                         .eut(calculateRecipeEU(material, 8))
                         .addTo(benderRecipes);
                 }
             }
 
-            if (MaterialLibAPI.findStack(material, Shapes.stickLong, 1) != null) {
+            if (material.hasShape(Shapes.stickLong)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(2, stack))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.stickLong, 1))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.stickLong, 1))
                     .duration(Math.max(MaterialUtils.mass(material), 1L))
                     .eut(calculateRecipeEU(material, 16))
                     .addTo(hammerRecipes);

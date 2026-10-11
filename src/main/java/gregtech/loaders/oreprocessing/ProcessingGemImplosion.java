@@ -92,7 +92,7 @@ public final class ProcessingGemImplosion implements PartRecipeGenerator {
         Yield named = YIELDS.get(material);
         if (named != null) {
             ItemStack gems = material == Materials.Diamond ? ItemList.IC2_Industrial_Diamond.get(3L)
-                : MaterialLibAPI.findStack(material, Shapes.gem, 3);
+                : MaterialLibAPI.getStack(material, Shapes.gem, 3);
             implode(dust, gems, named);
         } else if (!NEVER.contains(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_BLAST)
             && (MaterialParts.isMinted(material, Shapes.gem) || FOREIGN_GEMS.contains(material))) {

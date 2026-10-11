@@ -40,8 +40,7 @@ public class LoaderMaterialPartOredict implements Runnable {
     private static void registerSolderingMetals() {
         for (Material material : new Material[] { Materials.Lead, Materials.Tin, Materials.SolderingAlloy }) {
             for (Shape shape : new Shape[] { Shapes.stick, Shapes.wireFine, Shapes.ingot }) {
-                ItemStack stack = MaterialLibAPI.findStack(material, shape, 1);
-                if (stack == null) continue;
+                ItemStack stack = MaterialLibAPI.getStack(material, shape, 1);
                 GregTechAPI.sSolderingMetalList.add(stack);
                 GTModHandler.registerBoxableItemToToolBox(stack);
             }

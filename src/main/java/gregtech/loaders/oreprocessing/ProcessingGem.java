@@ -65,14 +65,13 @@ public class ProcessingGem implements PartRecipeGenerator {
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
-                if (!OrePrefixes.block.isIgnored(material)
-                    && MaterialLibAPI.findStack(material, BlockShapes.block, 1) != null) {
+                if (!OrePrefixes.block.isIgnored(material) && material.hasShape(BlockShapes.block)) {
                     // Compressor recipes
                     // need to avoid iridium exploit
                     if (material != Materials.Iridium) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, stack))
-                            .itemOutputs(MaterialLibAPI.findStack(material, BlockShapes.block, 1))
+                            .itemOutputs(MaterialLibAPI.getStack(material, BlockShapes.block, 1))
                             .duration(15 * SECONDS)
                             .eut(2)
                             .addTo(compressorRecipes);
@@ -80,19 +79,20 @@ public class ProcessingGem implements PartRecipeGenerator {
                 }
 
                 // Smelting recipe
-                if (!noSmelting) {
+                Material target = MaterialUtils.smeltInto(material);
+                if (!noSmelting && target.hasShape(Shapes.ingot)) {
                     GTModHandler.addSmeltingRecipe(
                         GTUtility.copyAmount(1, stack),
-                        MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.ingot, 1));
+                        MaterialLibAPI.getStack(target, Shapes.ingot, 1));
                 }
 
                 if (noSmashing) {
                     // Forge hammer recipes
                     {
-                        if (MaterialLibAPI.findStack(material, Shapes.gemFlawed, 1) != null) {
+                        if (material.hasShape(Shapes.gemFlawed)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(stack)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemFlawed, 2))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemFlawed, 2))
                                 .duration(3 * SECONDS + 4 * TICKS)
                                 .eut(TierEU.RECIPE_LV / 2)
                                 .addTo(hammerRecipes);
@@ -102,11 +102,10 @@ public class ProcessingGem implements PartRecipeGenerator {
                     // Forge hammer recipes
                     {
                         // need to avoid iridium exploit
-                        if (MaterialLibAPI.findStack(material, Shapes.plate, 1) != null
-                            && material != Materials.Iridium) {
+                        if (material.hasShape(Shapes.plate) && material != Materials.Iridium) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 1))
                                 .duration(Math.max(materialMass, 1L))
                                 .eut(calculateRecipeEU(material, 16))
                                 .addTo(hammerRecipes);
@@ -115,67 +114,67 @@ public class ProcessingGem implements PartRecipeGenerator {
 
                     // Bender recipes
                     if (material != Materials.Iridium) {
-                        if (MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
+                        if (material.hasShape(Shapes.plate)) {
                             // Plate
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(1)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 1))
                                 .duration((int) Math.max(materialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(material, 24))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.plateDouble, 1) != null) {
+                        if (material.hasShape(Shapes.plateDouble)) {
                             // Double plates
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(2, stack))
                                 .circuit(2)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateDouble, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateDouble, 1))
                                 .duration(Math.max(materialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.plateTriple, 1) != null) {
+                        if (material.hasShape(Shapes.plateTriple)) {
                             // Triple plate
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(3, stack))
                                 .circuit(3)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateTriple, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateTriple, 1))
                                 .duration(Math.max(materialMass * 3L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.plateQuadruple, 1) != null) {
+                        if (material.hasShape(Shapes.plateQuadruple)) {
                             // Quadruple plate
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(4, stack))
                                 .circuit(4)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateQuadruple, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateQuadruple, 1))
                                 .duration(Math.max(materialMass * 4L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.plateQuintuple, 1) != null) {
+                        if (material.hasShape(Shapes.plateQuintuple)) {
                             // Quintuple plate
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(5, stack))
                                 .circuit(5)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateQuintuple, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateQuintuple, 1))
                                 .duration(Math.max(materialMass * 5L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.plateDense, 1) != null) {
+                        if (material.hasShape(Shapes.plateDense)) {
                             // dense plate
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(9, stack))
                                 .circuit(9)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateDense, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateDense, 1))
                                 .duration(Math.max(materialMass * 9L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
@@ -185,13 +184,12 @@ public class ProcessingGem implements PartRecipeGenerator {
                 if (noWorking) {
                     if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                         // Lathe recipes
-                        if (MaterialLibAPI.findStack(material, Shapes.stick, 1) != null
-                            && MaterialLibAPI.findStack(material, Shapes.dustSmall, 1) != null) {
+                        if (material.hasShape(Shapes.stick) && material.hasShape(Shapes.dustSmall)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .itemOutputs(
-                                    MaterialLibAPI.findStack(material, Shapes.stick, 1),
-                                    MaterialLibAPI.findStack(material, Shapes.dustSmall, 2))
+                                    MaterialLibAPI.getStack(material, Shapes.stick, 1),
+                                    MaterialLibAPI.getStack(material, Shapes.dustSmall, 2))
                                 .duration(((int) Math.max(materialMass, 1L)) * TICKS)
                                 .eut(calculateRecipeEU(material, 16))
                                 .addTo(latheRecipes);
@@ -203,7 +201,7 @@ public class ProcessingGem implements PartRecipeGenerator {
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                MaterialLibAPI.findStack(material, Shapes.gem, 2),
+                                MaterialLibAPI.getStack(material, Shapes.gem, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
                                 new Object[] { "h", "X", 'X', OrePrefixes.gemFlawless.ingredient(material) });
 
@@ -216,7 +214,7 @@ public class ProcessingGem implements PartRecipeGenerator {
 
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialLibAPI.findStack(material, Shapes.dust, 1),
+                                    MaterialLibAPI.getStack(material, Shapes.dust, 1),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "X", "m", 'X', OrePrefixes.gem.ingredient(material) });
                             }
@@ -229,12 +227,12 @@ public class ProcessingGem implements PartRecipeGenerator {
                     // Laser engraver recipes
                     {
 
-                        if (MaterialLibAPI.findStack(material, Shapes.gemFlawless, 1) != null) {
+                        if (material.hasShape(Shapes.gemFlawless)) {
                             is.stackSize = 0;
 
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(3, stack), is)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemFlawless, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemFlawless, 1))
                                 .duration(60 * SECONDS)
                                 .eut(TierEU.RECIPE_HV)
                                 .addTo(laserEngraverRecipes);
@@ -255,13 +253,12 @@ public class ProcessingGem implements PartRecipeGenerator {
 
                 if (!noWorking) {
                     // Lathe recipes
-                    if (MaterialLibAPI.findStack(material, Shapes.bolt, 1) != null
-                        && MaterialLibAPI.findStack(material, Shapes.dustTiny, 1) != null) {
+                    if (material.hasShape(Shapes.bolt) && material.hasShape(Shapes.dustTiny)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
-                                MaterialLibAPI.findStack(material, Shapes.bolt, 1),
-                                MaterialLibAPI.findStack(material, Shapes.dustTiny, 1))
+                                MaterialLibAPI.getStack(material, Shapes.bolt, 1),
+                                MaterialLibAPI.getStack(material, Shapes.dustTiny, 1))
                             .duration(((int) Math.max(materialMass, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(latheRecipes);
@@ -273,12 +270,12 @@ public class ProcessingGem implements PartRecipeGenerator {
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                MaterialLibAPI.findStack(material, Shapes.gemChipped, 2),
+                                MaterialLibAPI.getStack(material, Shapes.gemChipped, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
                                 new Object[] { "h", "X", 'X', OrePrefixes.gemFlawed.ingredient(material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialLibAPI.findStack(material, Shapes.dustSmall, 1),
+                                    MaterialLibAPI.getStack(material, Shapes.dustSmall, 1),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "X", "m", 'X', OrePrefixes.gemChipped.ingredient(material) });
                             }
@@ -291,7 +288,7 @@ public class ProcessingGem implements PartRecipeGenerator {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(3, stack), is)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemFlawed, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemFlawed, 1))
                         .duration(30 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
                         .addTo(laserEngraverRecipes);
@@ -314,7 +311,7 @@ public class ProcessingGem implements PartRecipeGenerator {
                         {
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialLibAPI.findStack(material, Shapes.dust, 4),
+                                    MaterialLibAPI.getStack(material, Shapes.dust, 4),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "X", "m", 'X', OrePrefixes.gemExquisite.ingredient(material) });
                             }
@@ -326,7 +323,7 @@ public class ProcessingGem implements PartRecipeGenerator {
                 {
                     GTValues.RA.stdBuilder()
                         .itemInputs(stack)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemFlawless, 2))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemFlawless, 2))
                         .duration(3 * SECONDS + 4 * TICKS)
                         .eut(TierEU.RECIPE_LV / 2)
                         .addTo(hammerRecipes);
@@ -344,13 +341,12 @@ public class ProcessingGem implements PartRecipeGenerator {
 
                 if (!noWorking) {
                     // Lathe recipes
-                    if (MaterialLibAPI.findStack(material, Shapes.bolt, 1) != null
-                        && MaterialLibAPI.findStack(material, Shapes.dustSmall, 1) != null) {
+                    if (material.hasShape(Shapes.bolt) && material.hasShape(Shapes.dustSmall)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
-                                MaterialLibAPI.findStack(material, Shapes.bolt, 2),
-                                MaterialLibAPI.findStack(material, Shapes.dustSmall, 1))
+                                MaterialLibAPI.getStack(material, Shapes.bolt, 2),
+                                MaterialLibAPI.getStack(material, Shapes.dustSmall, 1))
                             .duration(((int) Math.max(materialMass, 1L)) * TICKS)
                             .eut(12)
                             .addTo(latheRecipes);
@@ -362,12 +358,12 @@ public class ProcessingGem implements PartRecipeGenerator {
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                MaterialLibAPI.findStack(material, Shapes.gemFlawed, 2),
+                                MaterialLibAPI.getStack(material, Shapes.gemFlawed, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
                                 new Object[] { "h", "X", 'X', OrePrefixes.gem.ingredient(material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialLibAPI.findStack(material, Shapes.dustSmall, 2),
+                                    MaterialLibAPI.getStack(material, Shapes.dustSmall, 2),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "X", "m", 'X', OrePrefixes.gemFlawed.ingredient(material) });
                             }
@@ -376,7 +372,7 @@ public class ProcessingGem implements PartRecipeGenerator {
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack)
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemChipped, 2))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemChipped, 2))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
@@ -388,7 +384,7 @@ public class ProcessingGem implements PartRecipeGenerator {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(3, stack), is)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gem, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gem, 1))
                         .duration(30 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(laserEngraverRecipes);
@@ -408,13 +404,12 @@ public class ProcessingGem implements PartRecipeGenerator {
 
                 if (!noWorking) {
                     // Lathe recipes; LatheRecipes turns Lanthanum Hexaboride on its own, slower recipe
-                    if (material != Materials.LanthanumHexaboride
-                        && MaterialLibAPI.findStack(material, Shapes.stickLong, 1) != null
-                        && MaterialLibAPI.findStack(material, Shapes.dust, 1) != null) {
+                    if (material != Materials.LanthanumHexaboride && material.hasShape(Shapes.stickLong)
+                        && material.hasShape(Shapes.dust)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
-                                MaterialLibAPI.findStack(material, Shapes.stickLong, 1),
+                                MaterialLibAPI.getStack(material, Shapes.stickLong, 1),
                                 MaterialParts.dustOf(
                                     material,
                                     prefix.getMaterialAmount() - OrePrefixes.stickLong.getMaterialAmount()))
@@ -429,12 +424,12 @@ public class ProcessingGem implements PartRecipeGenerator {
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                MaterialLibAPI.findStack(material, Shapes.gemFlawless, 2),
+                                MaterialLibAPI.getStack(material, Shapes.gemFlawless, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
                                 new Object[] { "h", "X", 'X', OrePrefixes.gemExquisite.ingredient(material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    MaterialLibAPI.findStack(material, Shapes.dust, 2),
+                                    MaterialLibAPI.getStack(material, Shapes.dust, 2),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "X", "m", 'X', OrePrefixes.gemFlawless.ingredient(material) });
                             }
@@ -443,7 +438,7 @@ public class ProcessingGem implements PartRecipeGenerator {
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack)
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gem, 2))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gem, 2))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
@@ -454,7 +449,7 @@ public class ProcessingGem implements PartRecipeGenerator {
                     is.stackSize = 0;
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(3, stack), is)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemExquisite, 1))
                         .duration(2 * MINUTES)
                         .eut(TierEU.RECIPE_EV)
                         .addTo(laserEngraverRecipes);

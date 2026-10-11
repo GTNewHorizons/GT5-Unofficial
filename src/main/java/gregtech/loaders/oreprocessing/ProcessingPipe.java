@@ -148,7 +148,7 @@ public class ProcessingPipe implements PartRecipeGenerator {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(material, TEBlockShapes.pipeQuadruple, 1),
+                        MaterialLibAPI.getStack(material, TEBlockShapes.pipeQuadruple, 1),
                         bits,
                         new Object[] { "MM ", "MM ", "   ", 'M',
                             MaterialLibAPI.getStack(material, TEBlockShapes.pipeMedium, 1) });
@@ -156,7 +156,7 @@ public class ProcessingPipe implements PartRecipeGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeMedium, 4))
                     .circuit(9)
-                    .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.pipeQuadruple, 1))
+                    .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeQuadruple, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(assemblerRecipes);
@@ -173,7 +173,7 @@ public class ProcessingPipe implements PartRecipeGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeSmall, 9))
                     .circuit(9)
-                    .itemOutputs(MaterialLibAPI.findStack(material, TEBlockShapes.pipeNonuple, 1))
+                    .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.pipeNonuple, 1))
                     .duration(3 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);

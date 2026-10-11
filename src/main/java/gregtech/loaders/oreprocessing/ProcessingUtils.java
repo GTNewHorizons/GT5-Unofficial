@@ -50,7 +50,7 @@ public class ProcessingUtils {
     static void addHammerRecipe(OrePrefixes prefix, Material material, Shape into, boolean substituted) {
         if (!MaterialUtils.unifiable(material)) return;
         Material crushed = MaterialUtils.macerateInto(material);
-        ItemStack output = MaterialLibAPI.findStack(crushed, into, 1);
+        ItemStack output = MaterialLibAPI.getStack(crushed, into, 1);
         GTModHandler.addCraftingRecipe(
             substituted ? ProcessingSubstitutes.crafting(crushed, output) : output,
             GTModHandler.RecipeBits.BITS_STD,
@@ -63,11 +63,11 @@ public class ProcessingUtils {
         boolean small = smaller == Shapes.dustSmall;
         OrePrefixes part = small ? OrePrefixes.dustSmall : OrePrefixes.dustTiny;
         GTModHandler.addCraftingRecipe(
-            MaterialLibAPI.findStack(material, smaller, small ? 4 : 9),
+            MaterialLibAPI.getStack(material, smaller, small ? 4 : 9),
             GTModHandler.RecipeBits.BITS_STD,
             new Object[] { small ? " X " : "X  ", "   ", "   ", 'X', OrePrefixes.dust.ingredient(material) });
         GTModHandler.addCraftingRecipe(
-            MaterialLibAPI.findStack(material, Shapes.dust, 1),
+            MaterialLibAPI.getStack(material, Shapes.dust, 1),
             GTModHandler.RecipeBits.BITS_STD,
             small ? new Object[] { "XX", "XX", 'X', part.ingredient(material) }
                 : new Object[] { "XXX", "XXX", "XXX", 'X', part.ingredient(material) });

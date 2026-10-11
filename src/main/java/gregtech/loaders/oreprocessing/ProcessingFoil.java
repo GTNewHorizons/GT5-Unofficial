@@ -34,9 +34,9 @@ public class ProcessingFoil implements PartRecipeGenerator {
 
     private void registerBenderRecipe(Material material) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, MaterialLibAPI.findStack(material, Shapes.plate, 4)))
+            .itemInputs(GTUtility.copyAmount(1, MaterialLibAPI.getStack(material, Shapes.plate, 4)))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.foil, 4))
+            .itemOutputs(MaterialLibAPI.getStack(material, Shapes.foil, 4))
             .duration((int) Math.max(MaterialUtils.mass(material), 1L))
             .eut(calculateRecipeEU(material, 24))
             .addTo(benderRecipes);

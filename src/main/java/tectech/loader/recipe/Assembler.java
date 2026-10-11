@@ -116,7 +116,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 CustomItemList.eM_Power.get(1),
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plateDense, 6),
-                MaterialLibAPI.findStack(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), Shapes.foil, 12),
+                MaterialLibAPI.getStack(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), Shapes.foil, 12),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, 24),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ring, 24),
                 ItemList.Field_Generator_IV.get(1))
@@ -266,7 +266,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Dynamo_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt04, 2),
-                        MaterialLibAPI.findStack(
+                        MaterialLibAPI.getStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             Shapes.plate,
                             2))
@@ -391,7 +391,7 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_ZPM_LuV.get(1),
                         CustomItemList.eM_dynamoMulti4_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt08, 2),
-                        MaterialLibAPI.findStack(
+                        MaterialLibAPI.getStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             Shapes.plate,
                             4))
@@ -523,7 +523,7 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_ZPM_LuV.get(1),
                         CustomItemList.eM_dynamoMulti16_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt12, 2),
-                        MaterialLibAPI.findStack(
+                        MaterialLibAPI.getStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             Shapes.plate,
                             6))
@@ -734,7 +734,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Hatch_Energy_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt04, 2),
-                        MaterialLibAPI.findStack(
+                        MaterialLibAPI.getStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             Shapes.plate,
                             2))
@@ -859,7 +859,7 @@ public class Assembler implements Runnable {
                         ItemList.Transformer_ZPM_LuV.get(1),
                         CustomItemList.eM_energyMulti4_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt08, 2),
-                        MaterialLibAPI.findStack(
+                        MaterialLibAPI.getStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             Shapes.plate,
                             4))
@@ -991,7 +991,7 @@ public class Assembler implements Runnable {
                         ItemList.WetTransformer_ZPM_LuV.get(1),
                         CustomItemList.eM_energyMulti16_LuV.get(1),
                         MaterialLibAPI.getStack(Materials.VanadiumGallium, TEBlockShapes.wireGt12, 2),
-                        MaterialLibAPI.findStack(
+                        MaterialLibAPI.getStack(
                             BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                             Shapes.plate,
                             6))
@@ -1114,7 +1114,7 @@ public class Assembler implements Runnable {
                 ItemList.Transformer_ZPM_LuV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("Display", 1),
                 Circuits.LuV.get(2),
-                MaterialLibAPI.findStack(
+                MaterialLibAPI.getStack(
                     BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials.Chrome),
                     Shapes.plate,
                     2),

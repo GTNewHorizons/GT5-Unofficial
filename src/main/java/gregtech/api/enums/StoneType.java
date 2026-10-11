@@ -544,7 +544,7 @@ public enum StoneType implements IStoneType {
         }
 
         public StoneBuilder setDust(Material mat) {
-            pureDust = new LazyItem(Mods.GregTech, () -> MaterialLibAPI.findStack(mat, Shapes.dust, 1));
+            pureDust = new LazyItem(Mods.GregTech, () -> MaterialLibAPI.getStack(mat, Shapes.dust, 1));
             impureDust = new LazyItem(Mods.GregTech, () -> MaterialLibAPI.findStack(mat, Shapes.dustImpure, 1));
 
             return this;

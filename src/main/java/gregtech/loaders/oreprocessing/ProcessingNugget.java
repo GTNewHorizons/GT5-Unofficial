@@ -34,22 +34,21 @@ public class ProcessingNugget implements PartRecipeGenerator {
 
     @Override
     public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
-        if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
-            && MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.gem, 1) != null) {
+        Material target = MaterialUtils.smeltInto(material);
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM) && target.hasShape(Shapes.gem)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ball.get(0L))
-                .itemOutputs(MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.gem, 1))
+                .itemOutputs(MaterialLibAPI.getStack(target, Shapes.gem, 1))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(material, 2))
                 .addTo(alloySmelterRecipes);
         }
 
-        if ((!MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM))
-            && MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.ingot, 1) != null
+        if ((!MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) && target.hasShape(Shapes.ingot)
             && material != Materials.Aluminium) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ingot.get(0L))
-                .itemOutputs(MaterialLibAPI.findStack(MaterialUtils.smeltInto(material), Shapes.ingot, 1))
+                .itemOutputs(MaterialLibAPI.getStack(target, Shapes.ingot, 1))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(material, 2))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
@@ -60,7 +59,7 @@ public class ProcessingNugget implements PartRecipeGenerator {
             if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.nugget, 1))
+                    .itemOutputs(GTUtility.copyAmount(1, stack))
                     .fluidInputs(MaterialUtils.molten(material, 1 * NUGGETS))
                     .duration(16 * TICKS)
                     .eut(calculateRecipeEU(material, 4))
@@ -71,10 +70,9 @@ public class ProcessingNugget implements PartRecipeGenerator {
         GTRecipeRegistrator.registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, true);
         GTRecipeRegistrator
             .registerReverseMacerating(stack, material, prefix.getMaterialAmount(), null, null, null, false, true);
-        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)
-            && MaterialLibAPI.findStack(material, Shapes.ingot, 1) != null) {
+        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING) && material.hasShape(Shapes.ingot)) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.findStack(material, Shapes.ingot, 1), ItemList.Shape_Mold_Nugget.get(0L))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1), ItemList.Shape_Mold_Nugget.get(0L))
                 .itemOutputs(GTUtility.copyAmount(9, stack))
                 .duration(5 * SECONDS)
                 .eut(calculateRecipeEU(material, 1))
@@ -82,7 +80,7 @@ public class ProcessingNugget implements PartRecipeGenerator {
                 .addTo(alloySmelterRecipes);
             if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV && material != Materials.Unstable) {
                 GTModHandler.addCraftingRecipe(
-                    MaterialLibAPI.findStack(material, Shapes.nugget, 8),
+                    GTUtility.copyAmount(8, stack),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "sI ", 'I', OrePrefixes.ingot.ingredient(material) });
             }

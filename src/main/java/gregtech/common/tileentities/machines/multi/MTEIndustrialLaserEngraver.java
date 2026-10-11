@@ -544,7 +544,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     private static void putLens(Map<String, Colors> colors, Material material, Colors color) {
-        ItemStack lens = MaterialLibAPI.findStack(material, Shapes.lens, 1);
-        if (lens != null) colors.put(getUniqueIdentifier(lens), color);
+        ItemStack lens = MaterialLibAPI.getStack(material, Shapes.lens, 1);
+        colors.put(getUniqueIdentifier(lens), color);
     }
 }

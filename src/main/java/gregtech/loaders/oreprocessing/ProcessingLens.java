@@ -40,55 +40,55 @@ public class ProcessingLens implements PartRecipeGenerator {
         switch (MaterialUtils.internalName(material)) {
             case "Diamond", "Glass" -> {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
+                    .itemInputs(MaterialLibAPI.getStack(material, Shapes.plate, 1))
                     .itemOutputs(
-                        MaterialLibAPI.findStack(material, Shapes.lens, 1),
-                        MaterialLibAPI.findStack(material, Shapes.dustSmall, 1))
+                        MaterialLibAPI.getStack(material, Shapes.lens, 1),
+                        MaterialLibAPI.getStack(material, Shapes.dustSmall, 1))
                     .duration(1 * MINUTES)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(latheRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1))
+                    .itemInputs(MaterialLibAPI.getStack(material, Shapes.gemExquisite, 1))
                     .itemOutputs(
-                        MaterialLibAPI.findStack(material, Shapes.lens, 3),
-                        MaterialLibAPI.findStack(material, Shapes.dust, 1))
+                        MaterialLibAPI.getStack(material, Shapes.lens, 3),
+                        MaterialLibAPI.getStack(material, Shapes.dust, 1))
                     .duration(2 * MINUTES)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(latheRecipes);
             }
             case "ChromaticGlass" -> {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.findStack(material, Shapes.dust, 16))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.lens, 1))
+                    .itemInputs(MaterialLibAPI.getStack(material, Shapes.dust, 16))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.lens, 1))
                     .duration(10 * MINUTES)
                     .eut(TierEU.RECIPE_UHV)
                     .addTo(compressorRecipes);
             }
             default -> {
-                if (MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
+                if (material.hasShape(Shapes.plate)) {
                     GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                    recipeBuilder.itemInputs(MaterialLibAPI.findStack(material, Shapes.plate, 1));
-                    if (MaterialLibAPI.findStack(material, Shapes.dustSmall, 1) == null) {
-                        recipeBuilder.itemOutputs(MaterialLibAPI.findStack(material, Shapes.lens, 1));
+                    recipeBuilder.itemInputs(MaterialLibAPI.getStack(material, Shapes.plate, 1));
+                    if (!material.hasShape(Shapes.dustSmall)) {
+                        recipeBuilder.itemOutputs(MaterialLibAPI.getStack(material, Shapes.lens, 1));
                     } else {
                         recipeBuilder.itemOutputs(
-                            MaterialLibAPI.findStack(material, Shapes.lens, 1),
-                            MaterialLibAPI.findStack(material, Shapes.dustSmall, 1));
+                            MaterialLibAPI.getStack(material, Shapes.lens, 1),
+                            MaterialLibAPI.getStack(material, Shapes.dustSmall, 1));
                     }
                     recipeBuilder.duration(1 * MINUTES)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(latheRecipes);
                 }
-                if (MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1) != null) {
+                if (material.hasShape(Shapes.gemExquisite)) {
                     GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                    recipeBuilder.itemInputs(MaterialLibAPI.findStack(material, Shapes.gemExquisite, 1));
-                    if (MaterialLibAPI.findStack(material, Shapes.dust, 1) == null) {
-                        recipeBuilder.itemOutputs(MaterialLibAPI.findStack(material, Shapes.lens, 1));
+                    recipeBuilder.itemInputs(MaterialLibAPI.getStack(material, Shapes.gemExquisite, 1));
+                    if (!material.hasShape(Shapes.dust)) {
+                        recipeBuilder.itemOutputs(MaterialLibAPI.getStack(material, Shapes.lens, 1));
                     } else {
                         recipeBuilder.itemOutputs(
-                            MaterialLibAPI.findStack(material, Shapes.lens, 1),
-                            MaterialLibAPI.findStack(material, Shapes.dust, 2));
+                            MaterialLibAPI.getStack(material, Shapes.lens, 1),
+                            MaterialLibAPI.getStack(material, Shapes.dust, 2));
                     }
                     recipeBuilder.duration(2 * MINUTES)
                         .eut(TierEU.RECIPE_LV)

@@ -63,7 +63,7 @@ public class ProcessingIngot implements PartRecipeGenerator {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.ingot, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1))
                         .fluidInputs(MaterialUtils.molten(material, 1 * INGOTS))
                         .duration(1 * SECONDS + 12 * TICKS)
                         .eut(calculateRecipeEU(material, 8))
@@ -100,17 +100,17 @@ public class ProcessingIngot implements PartRecipeGenerator {
                     && !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
                     && MaterialUtils.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE)) {
                     GTModHandler.addShapelessCraftingRecipe(
-                        MaterialLibAPI.findStack(material, Shapes.dust, 1),
+                        MaterialLibAPI.getStack(material, Shapes.dust, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { ToolDictNames.craftingToolMortar, OrePrefixes.ingot.ingredient(material) });
                 }
                 if (!noSmashing) {
                     // Forge hammer recipes
                     if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-                        && MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
+                        && material.hasShape(Shapes.plate)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(3, stack))
-                            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 2))
+                            .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 2))
                             .duration(Math.max(materialMass, 1L))
                             .eut(calculateRecipeEU(material, 16))
                             .addTo(hammerRecipes);
@@ -120,71 +120,71 @@ public class ProcessingIngot implements PartRecipeGenerator {
 
                     // Bender recipes
                     {
-                        if (MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
+                        if (material.hasShape(Shapes.plate)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(1)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 1))
                                 .duration(Math.max(materialMass, 1L))
                                 .eut(calculateRecipeEU(material, 24))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.plateDouble, 1) != null) {
+                        if (material.hasShape(Shapes.plateDouble)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(2, stack))
                                 .circuit(2)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateDouble, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateDouble, 1))
                                 .duration(Math.max(materialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.plateTriple, 1) != null) {
+                        if (material.hasShape(Shapes.plateTriple)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(3, stack))
                                 .circuit(3)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateTriple, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateTriple, 1))
                                 .duration(Math.max(materialMass * 3L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.plateQuadruple, 1) != null) {
+                        if (material.hasShape(Shapes.plateQuadruple)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(4, stack))
                                 .circuit(4)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateQuadruple, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateQuadruple, 1))
                                 .duration(Math.max(materialMass * 4L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.plateQuintuple, 1) != null) {
+                        if (material.hasShape(Shapes.plateQuintuple)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(5, stack))
                                 .circuit(5)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateQuintuple, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateQuintuple, 1))
                                 .duration(Math.max(materialMass * 5L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.plateDense, 1) != null) {
+                        if (material.hasShape(Shapes.plateDense)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(9, stack))
                                 .circuit(9)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plateDense, 1))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateDense, 1))
                                 .duration(Math.max(materialMass * 9L, 1L))
                                 .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (MaterialLibAPI.findStack(material, Shapes.foil, 1) != null) {
+                        if (material.hasShape(Shapes.foil)) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(10)
-                                .itemOutputs(MaterialLibAPI.findStack(material, Shapes.foil, 4))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.foil, 4))
                                 .duration(Math.max(materialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(material, 24))
                                 .addTo(benderRecipes);
@@ -193,13 +193,12 @@ public class ProcessingIngot implements PartRecipeGenerator {
                 }
             }
             case "ingotHot" -> {
-                if (MaterialUtils.autoGenerateVacuumFreezerRecipes(material)
-                    && MaterialLibAPI.findStack(material, Shapes.ingot, 1) != null) {
+                if (MaterialUtils.autoGenerateVacuumFreezerRecipes(material) && material.hasShape(Shapes.ingot)) {
                     Integer duration = material.getProperty(GTMaterialProperties.VACUUM_FREEZER_DURATION);
                     Integer voltage = material.getProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.ingot, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1))
                         .duration(duration != null ? duration : Math.max(materialMass * 3L, 1L) * TICKS)
                         .eut(voltage != null ? voltage : TierEU.RECIPE_MV)
                         .addTo(vacuumFreezerRecipes);

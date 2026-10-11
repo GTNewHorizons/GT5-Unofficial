@@ -61,8 +61,7 @@ public final class MicroblockMaterials {
 
     public static void register() {
         for (Material material : MATERIALS) {
-            ItemStack stack = MaterialLibAPI.findStack(material, BlockShapes.block, 1);
-            if (stack == null) continue;
+            ItemStack stack = MaterialLibAPI.getStack(material, BlockShapes.block, 1);
             Block block = Block.getBlockFromItem(stack.getItem());
             MicroMaterialRegistry
                 .registerMaterial(new BlockMicroMaterial(block, stack.getItemDamage()), name(material));

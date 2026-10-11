@@ -360,8 +360,8 @@ public class FluidSolidifierRecipes implements Runnable {
         final int partFraction = (int) (shape.getProperty(GTShapeProperties.MATERIAL_AMOUNT) * INGOTS / M);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.findStack(Materials.Netherite, shape, multiplier))
-            .itemOutputs(MaterialLibAPI.findStack(Materials.Hexanite, shape, multiplier))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Netherite, shape, multiplier))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hexanite, shape, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.UnformedHexanite,

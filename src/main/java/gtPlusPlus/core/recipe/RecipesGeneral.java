@@ -254,13 +254,13 @@ public class RecipesGeneral {
     }
 
     private static void addCompressedObsidian() {
-        addCompressionRecipe(MaterialLibAPI.findStack(Obsidian, BlockShapes.block, 9), CompressedObsidian.get(1));
+        addCompressionRecipe(MaterialLibAPI.getStack(Obsidian, BlockShapes.block, 9), CompressedObsidian.get(1));
         addCompressionRecipe(CompressedObsidian.get(9), DoubleCompressedObsidian.get(1));
         addCompressionRecipe(DoubleCompressedObsidian.get(9), TripleCompressedObsidian.get(1));
         addCompressionRecipe(TripleCompressedObsidian.get(9), QuadrupleCompressedObsidian.get(1));
         addCompressionRecipe(QuadrupleCompressedObsidian.get(9), QuintupleCompressedObsidian.get(1));
 
-        addDecompressionRecipe(CompressedObsidian.get(1), MaterialLibAPI.findStack(Obsidian, BlockShapes.block, 9));
+        addDecompressionRecipe(CompressedObsidian.get(1), MaterialLibAPI.getStack(Obsidian, BlockShapes.block, 9));
         addDecompressionRecipe(DoubleCompressedObsidian.get(1), CompressedObsidian.get(9));
         addDecompressionRecipe(TripleCompressedObsidian.get(1), DoubleCompressedObsidian.get(9));
         addDecompressionRecipe(QuadrupleCompressedObsidian.get(1), TripleCompressedObsidian.get(9));

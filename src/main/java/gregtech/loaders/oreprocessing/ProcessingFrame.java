@@ -38,10 +38,9 @@ public class ProcessingFrame implements PartRecipeGenerator {
                 new Object[] { "SSS", "SwS", "SSS", 'S', OrePrefixes.stick.ingredient(material) });
         }
 
-        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)
-            && MaterialLibAPI.findStack(material, Shapes.stick, 1) != null) {
+        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES) && material.hasShape(Shapes.stick)) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.findStack(material, Shapes.stick, 4))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 4))
                 .circuit(4)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
                 .duration(3 * SECONDS + 4 * TICKS)

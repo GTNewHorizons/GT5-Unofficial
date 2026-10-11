@@ -559,27 +559,29 @@ public class MixerRecipes implements Runnable {
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
-                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.gem, 1))
-            .itemOutputs(MaterialLibAPI.findStack(XModMaterials.Fluix, Shapes.gem, 2))
-            .fluidInputs(GTUtility.getWater(500))
-            .duration(20 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(mixerRecipes);
+        if (AppliedEnergistics2.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
+                    MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.gem, 1))
+                .itemOutputs(MaterialLibAPI.getStack(XModMaterials.Fluix, Shapes.gem, 2))
+                .fluidInputs(GTUtility.getWater(500))
+                .duration(20 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2)
+                .addTo(mixerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
-                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.gem, 1))
-            .itemOutputs(MaterialLibAPI.findStack(XModMaterials.Fluix, Shapes.gem, 2))
-            .fluidInputs(GTModHandler.getDistilledWater(500))
-            .duration(20 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(mixerRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
+                    MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.gem, 1))
+                .itemOutputs(MaterialLibAPI.getStack(XModMaterials.Fluix, Shapes.gem, 2))
+                .fluidInputs(GTModHandler.getDistilledWater(500))
+                .duration(20 * TICKS)
+                .eut(TierEU.RECIPE_LV / 2)
+                .addTo(mixerRecipes);
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(

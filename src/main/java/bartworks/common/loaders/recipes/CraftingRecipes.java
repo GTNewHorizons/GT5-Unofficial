@@ -167,7 +167,7 @@ public class CraftingRecipes implements Runnable {
         for (int i = 0; i < 9; i++) {
             try {
                 Material cable = cables[i];
-                ItemStack hull = MaterialLibAPI.findStack(hulls[i], Shapes.plate, 1);
+                ItemStack hull = MaterialLibAPI.getStack(hulls[i], Shapes.plate, 1);
                 ItemStack machinehull = ItemList.MACHINE_HULLS[i].get(1L);
 
                 GTModHandler.addCraftingRecipe(

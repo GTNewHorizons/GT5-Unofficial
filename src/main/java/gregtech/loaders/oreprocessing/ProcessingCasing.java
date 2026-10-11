@@ -8,8 +8,6 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
@@ -34,11 +32,10 @@ public class ProcessingCasing implements PartRecipeGenerator {
     public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         OrePrefixes outer = material == Materials.Wood ? OrePrefixes.plank : OrePrefixes.plateDouble;
 
-        if (MaterialLibAPI.findStack(material, Shapes.plate, 1) == null
-            || MaterialLibAPI.findStack(material, Shapes.screw, 1) == null
-            || MaterialLibAPI.findStack(material, Shapes.gearGtSmall, 1) == null
-            || MaterialLibAPI.findStack(material, Shapes.gearGt, 1) == null
-            || outerPart(material, 1L) == null) {
+        if (!material.hasShape(Shapes.plate) || !material.hasShape(Shapes.screw)
+            || !material.hasShape(Shapes.gearGtSmall)
+            || !material.hasShape(Shapes.gearGt)
+            || (material != Materials.Wood && !material.hasShape(Shapes.plateDouble))) {
             return;
         }
 
@@ -50,9 +47,9 @@ public class ProcessingCasing implements PartRecipeGenerator {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.findStack(material, Shapes.plate, 6),
-                MaterialLibAPI.findStack(material, Shapes.screw, 2),
-                MaterialLibAPI.findStack(material, Shapes.gearGtSmall, 1))
+                MaterialLibAPI.getStack(material, Shapes.plate, 6),
+                MaterialLibAPI.getStack(material, Shapes.screw, 2),
+                MaterialLibAPI.getStack(material, Shapes.gearGtSmall, 1))
             .itemOutputs(GTUtility.copyAmount(1, stack))
             .duration(10 * SECONDS)
             .eut(calculateRecipeEU(material, 16))
@@ -70,8 +67,8 @@ public class ProcessingCasing implements PartRecipeGenerator {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 outerPart(material, 6L),
-                MaterialLibAPI.findStack(material, Shapes.screw, 2),
-                MaterialLibAPI.findStack(material, Shapes.gearGt, 1))
+                MaterialLibAPI.getStack(material, Shapes.screw, 2),
+                MaterialLibAPI.getStack(material, Shapes.gearGt, 1))
             .itemOutputs(GTUtility.copyAmount(1, advanced))
             .duration(10 * SECONDS)
             .eut(calculateRecipeEU(material, 16))
@@ -79,9 +76,9 @@ public class ProcessingCasing implements PartRecipeGenerator {
     }
 
     /// Returns the advanced casing's outer plating. That is vanilla planks for [Materials#Wood], otherwise the
-    /// material's double plate, or null when it has none.
-    private static @Nullable ItemStack outerPart(Material material, long amount) {
+    /// material's double plate.
+    private static ItemStack outerPart(Material material, long amount) {
         if (material == Materials.Wood) return new ItemStack(Blocks.planks, (int) amount, WILDCARD);
-        return MaterialLibAPI.findStack(material, Shapes.plateDouble, (int) amount);
+        return MaterialLibAPI.getStack(material, Shapes.plateDouble, (int) amount);
     }
 }

@@ -164,7 +164,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
                 if (specialRecipeReq2) GTModHandler.addCraftingRecipe(
-                    MaterialLibAPI.findStack(material, Shapes.toolHeadBuzzSaw, 1),
+                    MaterialLibAPI.getStack(material, Shapes.toolHeadBuzzSaw, 1),
                     GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "wXh", "X X", "fXx", 'X', OrePrefixes.plate.ingredient(material) });
             }
@@ -287,7 +287,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
                 if (specialRecipeReq2) GTModHandler.addCraftingRecipe(
-                    MaterialLibAPI.findStack(material, Shapes.toolHeadChainsaw, 1),
+                    MaterialLibAPI.getStack(material, Shapes.toolHeadChainsaw, 1),
                     GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "SRS", "XhX", "SRS", 'X', OrePrefixes.plate.ingredient(material), 'S',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'R',
@@ -533,25 +533,25 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
                 if (specialRecipeReq2) {
                     GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(material, Shapes.toolHeadDrill, 1),
+                        MaterialLibAPI.getStack(material, Shapes.toolHeadDrill, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "XSX", "XSX", "ShS", 'X', OrePrefixes.plate.ingredient(material), 'S',
                             OrePrefixes.plate.ingredient(Materials.Steel) });
                     if (MaterialUtils.hasMolten(material)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_ToolHeadDrill.get(0))
-                            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.toolHeadDrill, 1))
+                            .itemOutputs(MaterialLibAPI.getStack(material, Shapes.toolHeadDrill, 1))
                             .fluidInputs(MaterialUtils.molten(material, 4 * INGOTS))
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
                             .addTo(fluidSolidifierRecipes);
                     }
-                    if (MaterialLibAPI.findStack(material, Shapes.ingot, 1) != null) {
+                    if (material.hasShape(Shapes.ingot)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
-                                MaterialLibAPI.findStack(material, Shapes.ingot, 4),
+                                MaterialLibAPI.getStack(material, Shapes.ingot, 4),
                                 ItemList.Shape_Extruder_ToolHeadDrill.get(0))
-                            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.toolHeadDrill, 1))
+                            .itemOutputs(MaterialLibAPI.getStack(material, Shapes.toolHeadDrill, 1))
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
                             .addTo(extruderRecipes);
@@ -587,19 +587,16 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         }
                     }
                 }
-                if (MaterialLibAPI.findStack(MaterialUtils.handleMaterial(material), Shapes.stick, 1) != null) {
+                Material handle = MaterialUtils.handleMaterial(material);
+                if (handle.hasShape(Shapes.stick)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            MaterialLibAPI.findStack(MaterialUtils.handleMaterial(material), Shapes.stick, 1),
-                            MaterialLibAPI.findStack(material, Shapes.toolHeadFile, 1))
+                            MaterialLibAPI.getStack(handle, Shapes.stick, 1),
+                            MaterialLibAPI.getStack(material, Shapes.toolHeadFile, 1))
                         .circuit(15)
                         .itemOutputs(
-                            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                                IDMetaTool01.FILE.ID,
-                                1,
-                                material,
-                                MaterialUtils.handleMaterial(material),
-                                null))
+                            MetaGeneratedTool01.INSTANCE
+                                .getToolWithStats(IDMetaTool01.FILE.ID, 1, material, handle, null))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
                         .addTo(assemblerRecipes);
@@ -619,29 +616,26 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                             OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
 
                     if (specialRecipeReq1) GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(material, Shapes.toolHeadSaw, 1),
+                        MaterialLibAPI.getStack(material, Shapes.toolHeadSaw, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "PP ", "fh ", 'P', OrePrefixes.plate.ingredient(material), 'I',
                             OrePrefixes.ingot.ingredient(material) });
 
                     if (!noWorking) GTModHandler.addCraftingRecipe(
-                        MaterialLibAPI.findStack(material, Shapes.toolHeadSaw, 1),
+                        MaterialLibAPI.getStack(material, Shapes.toolHeadSaw, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "GGf", 'G', OrePrefixes.gem.ingredient(material) });
                 }
-                if (MaterialLibAPI.findStack(MaterialUtils.handleMaterial(material), Shapes.stick, 1) != null) {
+                Material handle = MaterialUtils.handleMaterial(material);
+                if (handle.hasShape(Shapes.stick)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            MaterialLibAPI.findStack(MaterialUtils.handleMaterial(material), Shapes.stick, 1),
-                            MaterialLibAPI.findStack(material, Shapes.toolHeadSaw, 1))
+                            MaterialLibAPI.getStack(handle, Shapes.stick, 1),
+                            MaterialLibAPI.getStack(material, Shapes.toolHeadSaw, 1))
                         .circuit(7)
                         .itemOutputs(
-                            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                                IDMetaTool01.SAW.ID,
-                                1,
-                                material,
-                                MaterialUtils.handleMaterial(material),
-                                null))
+                            MetaGeneratedTool01.INSTANCE
+                                .getToolWithStats(IDMetaTool01.SAW.ID, 1, material, handle, null))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
                         .addTo(assemblerRecipes);
@@ -1144,7 +1138,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
 
                 // Wrench Special Condition
                 if (specialRecipeReq2) GTModHandler.addCraftingRecipe(
-                    MaterialLibAPI.findStack(material, Shapes.toolHeadWrench, 1),
+                    MaterialLibAPI.getStack(material, Shapes.toolHeadWrench, 1),
                     GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "hXW", "XRX", "WXd", 'X', OrePrefixes.plate.ingredient(material), 'S',
                         OrePrefixes.plate.ingredient(Materials.Steel), 'R',
@@ -1152,18 +1146,19 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                         OrePrefixes.screw.ingredient(Materials.Steel) });
             }
             case "toolHeadHammer" -> {
-                if (MaterialLibAPI.findStack(MaterialUtils.handleMaterial(material), Shapes.stick, 1) != null) {
+                Material handle = MaterialUtils.handleMaterial(material);
+                if (handle.hasShape(Shapes.stick)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            MaterialLibAPI.findStack(MaterialUtils.handleMaterial(material), Shapes.stick, 1),
-                            MaterialLibAPI.findStack(material, Shapes.toolHeadHammer, 1))
+                            MaterialLibAPI.getStack(handle, Shapes.stick, 1),
+                            MaterialLibAPI.getStack(material, Shapes.toolHeadHammer, 1))
                         .circuit(14)
                         .itemOutputs(
                             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                                 producesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
                                 1,
                                 material,
-                                MaterialUtils.handleMaterial(material),
+                                handle,
                                 null))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
@@ -1204,7 +1199,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                             OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
                 }
                 if (specialRecipeReq1) GTModHandler.addCraftingRecipe(
-                    MaterialLibAPI.findStack(material, Shapes.toolHeadHammer, 1),
+                    MaterialLibAPI.getStack(material, Shapes.toolHeadHammer, 1),
                     GTModHandler.RecipeBits.BITS_STD,
                     new Object[] { "II ", "IIh", "II ", 'P', OrePrefixes.plate.ingredient(material), 'I',
                         OrePrefixes.ingot.ingredient(material) });
@@ -1212,7 +1207,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
             case "turbineBlade" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        MaterialLibAPI.findStack(material, Shapes.turbineBlade, 4),
+                        MaterialLibAPI.getStack(material, Shapes.turbineBlade, 4),
                         MaterialLibAPI.getStack(Materials.Magnalium, Shapes.stickLong, 1))
                     .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(170, 1, material, material, null))
                     .duration(8 * SECONDS)
@@ -1220,7 +1215,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        MaterialLibAPI.findStack(material, Shapes.turbineBlade, 8),
+                        MaterialLibAPI.getStack(material, Shapes.turbineBlade, 8),
                         MaterialLibAPI.getStack(Materials.Titanium, Shapes.stickLong, 1))
                     .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(172, 1, material, material, null))
                     .duration(16 * SECONDS)
@@ -1228,7 +1223,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        MaterialLibAPI.findStack(material, Shapes.turbineBlade, 12),
+                        MaterialLibAPI.getStack(material, Shapes.turbineBlade, 12),
                         MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stickLong, 1))
                     .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(174, 1, material, material, null))
                     .duration(32 * SECONDS)
@@ -1236,7 +1231,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                     .addTo(assemblerRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        MaterialLibAPI.findStack(material, Shapes.turbineBlade, 16),
+                        MaterialLibAPI.getStack(material, Shapes.turbineBlade, 16),
                         MaterialLibAPI.getStack(Materials.Americium, Shapes.stickLong, 1))
                     .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(176, 1, material, material, null))
                     .duration(1 * MINUTES + 4 * SECONDS)
@@ -1245,7 +1240,7 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                 if (specialRecipeReq2) {
                     if (belowProcessingTierIV) {
                         GTModHandler.addCraftingRecipe(
-                            MaterialLibAPI.findStack(material, Shapes.turbineBlade, 1),
+                            MaterialLibAPI.getStack(material, Shapes.turbineBlade, 1),
                             GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "fPd", "SPS", " P ", 'P',
                                 material == Materials.Wood ? OrePrefixes.plank.ingredient(material)
@@ -1255,13 +1250,12 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                     }
 
                     // Turbine blades
-                    if (MaterialLibAPI.findStack(material, Shapes.plateDouble, 1) != null
-                        && MaterialLibAPI.findStack(material, Shapes.screw, 1) != null) {
+                    if (material.hasShape(Shapes.plateDouble) && material.hasShape(Shapes.screw)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
-                                MaterialLibAPI.findStack(material, Shapes.plateDouble, 3),
-                                MaterialLibAPI.findStack(material, Shapes.screw, 2))
-                            .itemOutputs(MaterialLibAPI.findStack(material, Shapes.turbineBlade, 1))
+                                MaterialLibAPI.getStack(material, Shapes.plateDouble, 3),
+                                MaterialLibAPI.getStack(material, Shapes.screw, 2))
+                            .itemOutputs(MaterialLibAPI.getStack(material, Shapes.turbineBlade, 1))
                             .duration(10 * SECONDS)
                             .eut(calculateRecipeEU(material, 60))
                             .addTo(formingPressRecipes);

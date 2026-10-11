@@ -49,9 +49,8 @@ public class ProcessingDirty implements PartRecipeGenerator {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
-                ProcessingSubstitutes.ore(
-                    material,
-                    MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1)))
+                ProcessingSubstitutes
+                    .ore(material, MaterialLibAPI.getStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1)))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
@@ -64,8 +63,8 @@ public class ProcessingDirty implements PartRecipeGenerator {
                     GTUtility.copyAmount(
                         1L,
                         MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dustImpure, 1),
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
-                    MaterialLibAPI.findStack(
+                        MaterialLibAPI.getStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
+                    MaterialLibAPI.getStack(
                         GTUtility.selectItemInList(
                             0,
                             MaterialUtils.macerateInto(material),
@@ -86,7 +85,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
                         orePrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,
                         material,
                         1L),
-                    MaterialLibAPI.findStack(
+                    MaterialLibAPI.getStack(
                         GTUtility.selectItemInList(
                             0,
                             MaterialUtils.macerateInto(material),
@@ -109,7 +108,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
                         orePrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,
                         material,
                         1L),
-                    MaterialLibAPI.findStack(
+                    MaterialLibAPI.getStack(
                         GTUtility.selectItemInList(
                             0,
                             MaterialUtils.macerateInto(material),
@@ -131,7 +130,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
                 ProcessingSubstitutes.ore(
                     material,
                     MaterialParts.stack(prefix, material, 1L),
-                    MaterialLibAPI.findStack(
+                    MaterialLibAPI.getStack(
                         GTUtility.selectItemInList(
                             1,
                             MaterialUtils.macerateInto(material),
@@ -165,7 +164,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
                     ProcessingSubstitutes.ore(
                         material,
                         MaterialParts.stack(chemicalBathPrefix, material, 1L),
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
+                        MaterialLibAPI.getStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
                         MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1)))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, 1_000))
@@ -181,7 +180,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
                     ProcessingSubstitutes.ore(
                         material,
                         MaterialParts.stack(chemicalBathPrefix, material, 1L),
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
+                        MaterialLibAPI.getStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
                         MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1)))
                 .outputChances(10000, 9900, 4000)
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, 1_000))
@@ -197,7 +196,7 @@ public class ProcessingDirty implements PartRecipeGenerator {
                     ProcessingSubstitutes.ore(
                         material,
                         MaterialParts.stack(chemicalBathPrefix, material, 1L),
-                        MaterialLibAPI.findStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
+                        MaterialLibAPI.getStack(MaterialUtils.macerateInto(byproduct), Shapes.dust, 1),
                         MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1)))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SodiumPersulfate, FluidShapes.fluidLiquid, 100))

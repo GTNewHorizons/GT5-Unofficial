@@ -28,20 +28,20 @@ public class ProcessingRecycling implements PartRecipeGenerator {
     public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         if ((material != Materials.Empty) && (GTUtility.getFluidForFilledItem(stack, true) == null)
             && !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
-            && (MaterialLibAPI.findStack(material, Shapes.dust, 1) != null)) {
+            && material.hasShape(Shapes.dust)) {
             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
             recipeBuilder.itemInputs(stack);
             if (GTUtility.getContainerItem(stack, true) == null) {
                 recipeBuilder.itemOutputs(
                     GTUtility.copyAmount(
                         prefix.getMaterialAmount() / 3628800L,
-                        MaterialLibAPI.findStack(material, Shapes.dust, 1)));
+                        MaterialLibAPI.getStack(material, Shapes.dust, 1)));
             } else {
                 recipeBuilder.itemOutputs(
                     GTUtility.getContainerItem(stack, true),
                     GTUtility.copyAmount(
                         prefix.getMaterialAmount() / 3628800L,
-                        MaterialLibAPI.findStack(material, Shapes.dust, 1)));
+                        MaterialLibAPI.getStack(material, Shapes.dust, 1)));
             }
             recipeBuilder.duration(((int) Math.max(MaterialUtils.mass(material) / 2L, 1L)) * TICKS)
                 .eut(2)

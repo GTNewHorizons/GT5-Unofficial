@@ -32,24 +32,21 @@ public class ProcessingCrystallized implements PartRecipeGenerator {
         }
         ProcessingUtils.addHammerRecipe(prefix, material, Shapes.dust, true);
 
-        if (MaterialUtils.macerateInto(material) == null) {
-            return;
-        }
-
-        if (MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1) == null) {
+        Material target = MaterialUtils.macerateInto(material);
+        if (!target.hasShape(Shapes.dust)) {
             return;
         }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
-            .itemOutputs(MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(target, Shapes.dust, 1))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
-            .itemOutputs(MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(target, Shapes.dust, 1))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);

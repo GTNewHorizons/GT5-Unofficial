@@ -76,7 +76,7 @@ public class ProcessingDust implements PartRecipeGenerator {
     /// Whether a dust resolves for `material`. An ore material need not have one (ChargedCertusQuartz removes
     /// the dust shape).
     private static boolean hasDust(Material material) {
-        return MaterialLibAPI.findStack(material, Shapes.dust, 1) != null;
+        return material.hasShape(Shapes.dust);
     }
 
     /// `composition` with every amount divided by their greatest common divisor when the whole composition exceeds
@@ -152,10 +152,10 @@ public class ProcessingDust implements PartRecipeGenerator {
     public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
         switch (prefix.getName()) {
             case "dust" -> {
-                if (MaterialLibAPI.findStack(material, Shapes.dustSmall, 1) != null) {
+                if (material.hasShape(Shapes.dustSmall)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Schematic_Dust_Small.get(0L))
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.dustSmall, 4))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.dustSmall, 4))
                         .duration(1 * SECONDS)
                         .eut(4)
                         .addTo(packagerRecipes);
@@ -204,21 +204,19 @@ public class ProcessingDust implements PartRecipeGenerator {
                         }
                     }
                 } else if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
-                    if ((!OrePrefixes.block.isIgnored(material))
-                        && (null == MaterialLibAPI.findStack(material, Shapes.gem, 1))
-                        && MaterialLibAPI.findStack(material, BlockShapes.block, 1) != null
+                    if ((!OrePrefixes.block.isIgnored(material)) && (!material.hasShape(Shapes.gem))
+                        && material.hasShape(BlockShapes.block)
                         && (material != Materials.Clay)
                         && (material != Materials.Netherrack)) {
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, stack))
-                            .itemOutputs(MaterialLibAPI.findStack(material, BlockShapes.block, 1))
+                            .itemOutputs(MaterialLibAPI.getStack(material, BlockShapes.block, 1))
                             .duration(15 * SECONDS)
                             .eut(2)
                             .addTo(compressorRecipes);
                     }
-                    if (((OrePrefixes.block.isIgnored(material))
-                        || (null == MaterialLibAPI.findStack(material, BlockShapes.block, 1)))
+                    if (((OrePrefixes.block.isIgnored(material)) || (!material.hasShape(BlockShapes.block)))
                         && (material != Materials.GraniteRed)
                         && (material != Materials.GraniteBlack)
                         && (material != Materials.Basalt)
@@ -234,10 +232,10 @@ public class ProcessingDust implements PartRecipeGenerator {
                         && (material != Materials.Stone)) {
                         // compressor recipe
                         {
-                            if (MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
+                            if (material.hasShape(Shapes.plate)) {
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(GTUtility.copyAmount(1, stack))
-                                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 1))
+                                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 1))
                                     .duration(15 * SECONDS)
                                     .eut(2)
                                     .addTo(compressorRecipes);
@@ -377,12 +375,11 @@ public class ProcessingDust implements PartRecipeGenerator {
                         }
                     }
                 }
-                if (MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTALLISABLE)
-                    && MaterialLibAPI.findStack(material, Shapes.gem, 1) != null) {
+                if (MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTALLISABLE) && material.hasShape(Shapes.gem)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(1)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gem, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gem, 1))
                         .outputChances(7000)
                         .fluidInputs(GTUtility.getWater(200L))
                         .duration(1 * MINUTES + 40 * SECONDS)
@@ -391,7 +388,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(2)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gem, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gem, 1))
                         .outputChances(9000)
                         .fluidInputs(GTModHandler.getDistilledWater(100L))
                         .duration(1 * MINUTES + 15 * SECONDS)
@@ -400,7 +397,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(3)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gem, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gem, 1))
                         .outputChances(10000)
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
@@ -462,7 +459,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                             .itemOutputs(
                                 ProcessingSubstitutes.platinumGroup(
                                     material,
-                                    MaterialLibAPI.findStack(material, Shapes.dust, 1),
+                                    MaterialLibAPI.getStack(material, Shapes.dust, 1),
                                     MaterialLibAPI.getStack(Materials.Gold, Shapes.dustSmall, 1),
                                     MaterialLibAPI.getStack(Materials.Gold, Shapes.nugget, 1)))
                             .outputChances(10000, 4000, 2000)
@@ -476,7 +473,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                             .itemOutputs(
                                 ProcessingSubstitutes.platinumGroup(
                                     material,
-                                    MaterialLibAPI.findStack(material, Shapes.dust, 1),
+                                    MaterialLibAPI.getStack(material, Shapes.dust, 1),
                                     MaterialLibAPI.getStack(Materials.Iron, Shapes.dustSmall, 1),
                                     MaterialLibAPI.getStack(Materials.Iron, Shapes.nugget, 1)))
                             .outputChances(10000, 4000, 2000)
@@ -490,7 +487,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                             .itemOutputs(
                                 ProcessingSubstitutes.platinumGroup(
                                     material,
-                                    MaterialLibAPI.findStack(material, Shapes.dust, 1),
+                                    MaterialLibAPI.getStack(material, Shapes.dust, 1),
                                     MaterialLibAPI.getStack(Materials.Neodymium, Shapes.dustSmall, 1),
                                     MaterialLibAPI.getStack(Materials.Neodymium, Shapes.nugget, 1)))
                             .outputChances(10000, 4000, 2000)
@@ -499,12 +496,11 @@ public class ProcessingDust implements PartRecipeGenerator {
                             .addTo(electroMagneticSeparatorRecipes);
                     }
                 }
-                if (MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTALLISABLE)
-                    && MaterialLibAPI.findStack(material, Shapes.gem, 1) != null) {
+                if (MaterialUtils.hasFlag(material, GTMaterialFlag.CRYSTALLISABLE) && material.hasShape(Shapes.gem)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(1)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gem, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gem, 1))
                         .outputChances(prefix == OrePrefixes.dustPure ? 9500 : 9000)
                         .fluidInputs(GTUtility.getWater(200L))
                         .duration(1 * MINUTES + 40 * SECONDS)
@@ -513,7 +509,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(2)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gem, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gem, 1))
                         .outputChances(prefix == OrePrefixes.dustPure ? 10000 : 9500)
                         .fluidInputs(GTModHandler.getDistilledWater(100L))
                         .duration(1 * MINUTES + 15 * SECONDS)
@@ -522,7 +518,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .circuit(3)
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.gem, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gem, 1))
                         .outputChances(10000)
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
@@ -549,7 +545,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                                     .itemInputs(GTUtility.copyAmount(1, stack))
                                     .itemOutputs(
                                         ProcessingSubstitutes
-                                            .ore(material, MaterialLibAPI.findStack(material, Shapes.dust, 1)))
+                                            .ore(material, MaterialLibAPI.getStack(material, Shapes.dust, 1)))
                                     .duration(Math.max(1L, MaterialUtils.mass(material)))
                                     .eut(5)
                                     .addTo(centrifugeRecipes);
@@ -561,7 +557,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                                         .itemOutputs(
                                             ProcessingSubstitutes.ore(
                                                 material,
-                                                MaterialLibAPI.findStack(material, Shapes.dust, 9),
+                                                MaterialLibAPI.getStack(material, Shapes.dust, 9),
                                                 tImpureStack))
                                         .duration(Math.max(1L, MaterialUtils.mass(material) * 72L))
                                         .eut(5)
@@ -572,7 +568,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                                         .itemInputs(GTUtility.copyAmount(1, stack))
                                         .itemOutputs(
                                             ProcessingSubstitutes
-                                                .ore(material, MaterialLibAPI.findStack(material, Shapes.dust, 1)))
+                                                .ore(material, MaterialLibAPI.getStack(material, Shapes.dust, 1)))
                                         .fluidOutputs(tFluid)
                                         .duration(Math.max(1L, MaterialUtils.mass(material) * 8L))
                                         .eut(5)
@@ -583,10 +579,8 @@ public class ProcessingDust implements PartRecipeGenerator {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(9, stack))
                                 .itemOutputs(
-                                    ProcessingSubstitutes.ore(
-                                        material,
-                                        MaterialLibAPI.findStack(material, Shapes.dust, 9),
-                                        tImpureStack))
+                                    ProcessingSubstitutes
+                                        .ore(material, MaterialLibAPI.getStack(material, Shapes.dust, 9), tImpureStack))
                                 .duration(Math.max(1L, MaterialUtils.mass(material) * 72L))
                                 .eut(5)
                                 .addTo(centrifugeRecipes);
@@ -596,7 +590,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                             .itemInputs(GTUtility.copyAmount(2, stack))
                             .itemOutputs(
                                 ProcessingSubstitutes
-                                    .ore(material, MaterialLibAPI.findStack(material, Shapes.dust, 2), tImpureStack))
+                                    .ore(material, MaterialLibAPI.getStack(material, Shapes.dust, 2), tImpureStack))
                             .duration(Math.max(1L, MaterialUtils.mass(material) * 16L))
                             .eut(5)
                             .addTo(centrifugeRecipes);
@@ -611,7 +605,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
                                 ProcessingSubstitutes
-                                    .ore(material, MaterialLibAPI.findStack(material, Shapes.dust, 1), tByProductStack))
+                                    .ore(material, MaterialLibAPI.getStack(material, Shapes.dust, 1), tByProductStack))
                             .outputChances(10000, 1111)
                             .duration(Math.max(1L, MaterialUtils.mass(material) * 8L))
                             .eut(5)
@@ -623,7 +617,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                 if (hasDust(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(4, stack), ItemList.Schematic_Dust.get(0L))
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.dust, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.dust, 1))
                         .duration(1 * SECONDS)
                         .eut(4)
                         .addTo(packagerRecipes);
@@ -646,7 +640,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                 if (hasDust(material)) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Schematic_Dust.get(0L))
-                        .itemOutputs(MaterialLibAPI.findStack(material, Shapes.dust, 1))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.dust, 1))
                         .duration(1 * SECONDS)
                         .eut(4)
                         .addTo(packagerRecipes);

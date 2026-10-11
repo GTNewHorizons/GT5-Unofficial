@@ -54,8 +54,8 @@ public class ProcessingCrushedOre implements PartRecipeGenerator {
                     .itemOutputs(
                         ProcessingSubstitutes.ore(
                             material,
-                            MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1),
-                            MaterialLibAPI.findStack(
+                            MaterialLibAPI.getStack(MaterialUtils.macerateInto(material), Shapes.dust, 1),
+                            MaterialLibAPI.getStack(
                                 GTUtility.selectItemInList(
                                     2,
                                     MaterialUtils.macerateInto(material),
@@ -78,8 +78,8 @@ public class ProcessingCrushedOre implements PartRecipeGenerator {
                                 1L,
                                 MaterialLibAPI
                                     .findStack(MaterialUtils.macerateInto(material), Shapes.crushedCentrifuged, 1),
-                                MaterialLibAPI.findStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
-                            MaterialLibAPI.findStack(
+                                MaterialLibAPI.getStack(MaterialUtils.macerateInto(material), Shapes.dust, 1)),
+                            MaterialLibAPI.getStack(
                                 GTUtility.selectItemInList(
                                     1,
                                     MaterialUtils.macerateInto(material),

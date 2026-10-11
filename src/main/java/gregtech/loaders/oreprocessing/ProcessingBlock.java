@@ -164,8 +164,8 @@ public class ProcessingBlock implements PartRecipeGenerator {
             }
         }
         for (Material material : OWN_BLOCK_RECIPE_REMOVALS) {
-            ItemStack block = MaterialLibAPI.findStack(material, BlockShapes.block, 1);
-            if (block != null) GTModHandler.removeRecipeDelayed(block);
+            ItemStack block = MaterialLibAPI.getStack(material, BlockShapes.block, 1);
+            GTModHandler.removeRecipeDelayed(block);
         }
         PACKING_RECIPE_REMOVALS.forEach((material, removals) -> {
             if ((removals & INGOT_RECIPE_REMOVAL) != 0) removePackingRecipe(material, Shapes.ingot);
@@ -175,10 +175,8 @@ public class ProcessingBlock implements PartRecipeGenerator {
     }
 
     private static void removePackingRecipe(Material material, Shape shape) {
-        ItemStack input = MaterialLibAPI.findStack(material, shape, 1);
-        if (input != null) {
-            GTModHandler.removeRecipeDelayed(input, input, input, input, input, input, input, input, input);
-        }
+        ItemStack input = MaterialLibAPI.getStack(material, shape, 1);
+        GTModHandler.removeRecipeDelayed(input, input, input, input, input, input, input, input, input);
     }
 
     @Override
@@ -187,8 +185,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
             return;
         }
 
-        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
-            && MaterialLibAPI.findStack(material, Shapes.plate, 1) != null) {
+        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV && material.hasShape(Shapes.plate)) {
 
             if (material == Materials.Livingrock || material == Materials.Livingwood
                 || material == Materials.Dreamwood) {
@@ -196,7 +193,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         GTUtility.getWater(
                             Math.max(
@@ -211,7 +208,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
                             Math.max(
@@ -226,7 +223,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Lubricant,
@@ -243,7 +240,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         MaterialUtils.fluid(
                             Materials.dimensionallyshiftedsuperfluid,
@@ -262,7 +259,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         GTUtility.getWater(
                             Math.max(
@@ -276,7 +273,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
                             Math.max(
@@ -290,7 +287,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Lubricant,
@@ -306,7 +303,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(MaterialLibAPI.findStack(material, Shapes.plate, 9))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         MaterialUtils.fluid(
                             Materials.dimensionallyshiftedsuperfluid,
@@ -324,9 +321,9 @@ public class ProcessingBlock implements PartRecipeGenerator {
         ItemStack ingot = MaterialLibAPI.findStack(material, Shapes.ingot, 1);
         ItemStack gem = MaterialLibAPI.findStack(material, Shapes.gem, 1);
         ItemStack dust = MaterialLibAPI.findStack(material, Shapes.dust, 1);
-        ItemStack block = MaterialLibAPI.findStack(material, BlockShapes.block, 1);
+        ItemStack block = MaterialLibAPI.getStack(material, BlockShapes.block, 1);
 
-        if (MaterialUtils.hasMolten(material) && block != null) {
+        if (MaterialUtils.hasMolten(material)) {
             if (!(material == Materials.AnnealedCopper || material == Materials.CastIron
                 || material == Materials.Obsidian)) {
                 if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
@@ -355,12 +352,10 @@ public class ProcessingBlock implements PartRecipeGenerator {
                 .addTo(hammerRecipes);
         }
 
-        if (ingot != null && block != null
-            && !OrePrefixes.block.isIgnored(material)
-            && material != Materials.Obsidian) {
+        if (ingot != null && !OrePrefixes.block.isIgnored(material) && material != Materials.Obsidian) {
             // 9 ingots -> 1 block
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.findStack(material, Shapes.ingot, 9))
+                .itemInputs(ingot)
                 .itemOutputs(block)
                 .duration(MaterialUtils.mass(material) * 2 * TICKS)
                 .eut(calculateRecipeEU(material, 2))

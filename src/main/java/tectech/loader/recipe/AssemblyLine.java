@@ -57,7 +57,7 @@ public class AssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDouble, 8),
                 MaterialLibAPI.getStack(Materials.Uranium, Shapes.plate, 16),
                 MaterialLibAPI
-                    .findStack(BaseRecipeLoader.getOrDefault("Quantium", Materials.Europium), Shapes.screw, 16))
+                    .getStack(BaseRecipeLoader.getOrDefault("Quantium", Materials.Europium), Shapes.screw, 16))
             .fluidInputs(
                 MaterialUtils.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), 9 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 9 * INGOTS),
