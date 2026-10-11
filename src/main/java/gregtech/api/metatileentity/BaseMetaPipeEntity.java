@@ -701,6 +701,47 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
         final ForgeDirection effectiveSide = (!hasCoverAtSide(side)) ? wrenchingSide : side;
         Cover effectiveSideCover = getCoverAtSide(effectiveSide);
+        final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+
+        if (tCurrentItem != null) {
+            if (!hasCoverAtSide(effectiveSide)) {
+                if (aPlayer.isSneaking() && CoverRegistry.isCover(tCurrentItem)) {
+                    if (CoverRegistry.getCoverPlacer(tCurrentItem)
+                        .isCoverPlaceable(effectiveSide, tCurrentItem, this)
+                        && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {
+
+                        CoverRegistry.getCoverPlacer(tCurrentItem)
+                            .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
+                        mMetaTileEntity.onCoverChangedServer();
+                        mMetaTileEntity.markDirty();
+
+                        if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
+                        if (isServerSide()) {
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
+                            issueTileUpdate();
+                        } else {
+                            issueTextureUpdate();
+                        }
+                    }
+                    return true;
+                }
+            } else {
+                if (aPlayer.isSneaking() && GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
+                    if (isServerSide()) {
+                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                            sendSoundToPlayers(SoundResource.RANDOM_BREAK, 1.0F, -1);
+                            dropCover(effectiveSide, side);
+                            mMetaTileEntity.onCoverChangedServer();
+                            mMetaTileEntity.markDirty();
+                        }
+                    } else {
+                        detachCover(effectiveSide);
+                        issueTextureUpdate();
+                    }
+                    return true;
+                }
+            }
+        }
         if (isClientSide()) {
             // Place/configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
@@ -708,7 +749,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             }
         }
         if (isServerSide()) {
-            final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null) {
                 if (getColorization() >= 0
                     && GTUtility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
@@ -790,33 +830,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     }
                     doEnetUpdate();
                     return true;
-                }
-
-                if (!hasCoverAtSide(effectiveSide)) {
-                    if (aPlayer.isSneaking() && CoverRegistry.isCover(tCurrentItem)) {
-                        if (CoverRegistry.getCoverPlacer(tCurrentItem)
-                            .isCoverPlaceable(effectiveSide, tCurrentItem, this)
-                            && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {
-
-                            CoverRegistry.getCoverPlacer(tCurrentItem)
-                                .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
-                            mMetaTileEntity.onCoverChangedServer();
-                            mMetaTileEntity.markDirty();
-                            if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                            sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                        }
-                        return true;
-                    }
-                } else {
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
-                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            sendSoundToPlayers(SoundResource.RANDOM_BREAK, 1.0F, -1);
-                            dropCover(effectiveSide, side);
-                            mMetaTileEntity.onCoverChangedServer();
-                            mMetaTileEntity.markDirty();
-                        }
-                        return true;
-                    }
                 }
             } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config or turn back.
                 return effectiveSideCover.isValid() && effectiveSideCover.onCoverShiftRightClick(aPlayer);

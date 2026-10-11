@@ -1416,6 +1416,46 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
         final ForgeDirection effectiveSide = !hasCoverAtSide(side) ? wrenchingSide : side;
         Cover effectiveSideCover = getCoverAtSide(effectiveSide);
+        final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+        final boolean hasPermission = !privateAccess() || (isServerSide() && aPlayer.getUniqueID()
+            .equals(getOwnerUuid()));
+
+        if (tCurrentItem != null && hasPermission) {
+            if (!hasCoverAtSide(effectiveSide)) {
+                if (aPlayer.isSneaking() && CoverRegistry.isCover(tCurrentItem)) {
+                    if (CoverRegistry.getCoverPlacer(tCurrentItem)
+                        .isCoverPlaceable(effectiveSide, tCurrentItem, this)
+                        && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {
+
+                        CoverRegistry.getCoverPlacer(tCurrentItem)
+                            .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
+
+                        if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
+                        if (isServerSide()) {
+                            sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
+                            issueTileUpdate();
+                        } else {
+                            issueTextureUpdate();
+                        }
+                    }
+                    return true;
+                }
+            } else {
+                if (aPlayer.isSneaking() && GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
+                    if (isServerSide()) {
+                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                            sendSoundToPlayers(SoundResource.RANDOM_BREAK, 1.0F, -1);
+                            dropCover(effectiveSide, side);
+                        }
+                    } else {
+                        detachCover(effectiveSide);
+                        issueTextureUpdate();
+                    }
+                    return true;
+                }
+            }
+        }
+
         if (isClientSide()) {
             // Place/configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
@@ -1426,9 +1466,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
 
         if (isServerSide()) {
-            if (!privateAccess() || aPlayer.getDisplayName()
-                .equalsIgnoreCase(getOwnerName())) {
-                final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+            if (hasPermission) {
                 if (tCurrentItem != null) {
                     final boolean isHardHammer = GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList);
                     final boolean isJackhammer = GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList);
@@ -1562,48 +1600,24 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                         return true;
                     }
 
-                    if (!hasCoverAtSide(effectiveSide)) {
-                        if (aPlayer.isSneaking() && CoverRegistry.isCover(tCurrentItem)) {
-                            if (CoverRegistry.getCoverPlacer(tCurrentItem)
-                                .isCoverPlaceable(effectiveSide, tCurrentItem, this)
-                                && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {
+                    if (isHardHammer || isJackhammer) {
+                        // Configuration of delicate electronics calls for a tool with precision and subtlety.
+                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+                            if (effectiveSideCover.isValid()) {
+                                if (effectiveSideCover.allowsTickRateAddition()) {
+                                    effectiveSideCover.onCoverJackhammer(aPlayer);
+                                    sendSoundToPlayers(SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT, 1.0F, 1);
 
-                                CoverRegistry.getCoverPlacer(tCurrentItem)
-                                    .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
-
-                                if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                                sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                                issueTileUpdate();
-                            }
-                            return true;
-                        }
-                    } else {
-                        if (aPlayer.isSneaking() && GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
-                            if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                sendSoundToPlayers(SoundResource.RANDOM_BREAK, 1.0F, -1);
-                                dropCover(effectiveSide, side);
+                                } else {
+                                    GTUtility.sendChatTrans(aPlayer, "gt.cover.info.chat.tick_rate_not_allowed");
+                                }
                                 if (tCurrentItem.stackSize == 0)
                                     ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
-                            }
-                            return true;
-                        } else if (isHardHammer || isJackhammer) {
-                            // Configuration of delicate electronics calls for a tool with precision and subtlety.
-                            if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                if (effectiveSideCover.isValid()) {
-                                    if (effectiveSideCover.allowsTickRateAddition()) {
-                                        effectiveSideCover.onCoverJackhammer(aPlayer);
-                                        sendSoundToPlayers(SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT, 1.0F, 1);
-
-                                    } else {
-                                        GTUtility.sendChatTrans(aPlayer, "gt.cover.info.chat.tick_rate_not_allowed");
-                                    }
-                                    if (tCurrentItem.stackSize == 0)
-                                        ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
-                                    return true;
-                                }
+                                return true;
                             }
                         }
                     }
+
                     // End item != null
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
                     return effectiveSideCover.isValid() && effectiveSideCover.onCoverShiftRightClick(aPlayer);
