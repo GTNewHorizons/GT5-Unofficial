@@ -398,6 +398,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             if (ePowerPass && getEUVar() > V[3]
                 || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
                 explodeMultiblock();
+            } else {
+                super.onRemoval();
             }
         } catch (Exception e) {
             if (ConfigHandler.debug.DEBUG_MODE) {

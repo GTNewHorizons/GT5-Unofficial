@@ -1,4 +1,4 @@
-{green:200%} Speed {green:+{var:speed}%} per {white:Heating Coil Tier}
+{green:200%} Speed {green:+{var:speed}%} per {white:Heating Coil} Tier
 Build on a Space Station orbiting a Gas Planet
 Right-click the controller with a {white:Soldering Iron} to Chunkload
 {gray:{hr}}

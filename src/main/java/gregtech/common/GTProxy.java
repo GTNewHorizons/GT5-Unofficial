@@ -316,8 +316,8 @@ public class GTProxy implements IFuelHandler {
      */
     public int tooltipFinisherStyle = 1;
     /**
-     * Enables scrolling up while hovering the ghost circuit of a machine UI to increment the circuit number instead of
-     * decrement
+     * Enables scrolling up while hovering over the ghost circuit of a machine UI to decrement the circuit number
+     * instead of incrementing it.
      */
     public boolean invertCircuitScrollDirection = false;
     /** Whether to show seconds or ticks on NEI */
@@ -383,7 +383,7 @@ public class GTProxy implements IFuelHandler {
         oreDictBurnTimes.put("dustSodium", 400);
         oreDictBurnTimes.put("dustSmallCoal", 400);
         oreDictBurnTimes.put("dustSmallCharcoal", 400);
-        oreDictBurnTimes.put("dustTinyLithium", 888);
+        oreDictBurnTimes.put("dustTinyLithium", 666);
         oreDictBurnTimes.put("dustTinyCaesium", 888);
         oreDictBurnTimes.put("gemLignite", 1200);
         oreDictBurnTimes.put("crushedLignite", 1200);
@@ -398,7 +398,7 @@ public class GTProxy implements IFuelHandler {
         oreDictBurnTimes.put("crushedCharcoal", 1600);
         oreDictBurnTimes.put("dustImpureCharcoal", 1600);
         oreDictBurnTimes.put("dustCharcoal", 1600);
-        oreDictBurnTimes.put("dustSmallLithium", 2000);
+        oreDictBurnTimes.put("dustSmallLithium", 1500);
         oreDictBurnTimes.put("dustSmallCaesium", 2000);
         oreDictBurnTimes.put("gemSodium", 4000);
         oreDictBurnTimes.put("crushedSodium", 4000);
