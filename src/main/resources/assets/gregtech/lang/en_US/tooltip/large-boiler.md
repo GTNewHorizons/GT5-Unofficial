@@ -1,6 +1,7 @@
-Produces {white:{var:steam_1_coal} {var:fluid_unit}} {white:Steam} per {blue:Coal} at {white:{var:steam_per_sec} {var:fluid_unit}/s}
-Has an added formula for long time burn fuels, {aqua:1 + log(BurnTime / 10) * 0.025}
-A {white:Programmed Circuit} in the controller reduces output by {green:{var:throttle_amount}{var:fluid_unit}/s} per circuit number
+Produces {white:{var:steam_1_coal} {var:fluid_unit}} {white:Steam} per {gold:Coal} at a rate of {white:{var:steam_per_sec} {var:fluid_unit}/s}
+Fuels with long burn times receive bonus ticks: {aqua:1 + log(BurnTime / 10) * 0.025}
 Burning solid and liquid fuel at the same time gives a {green:{var:multi_fuel_boost}} speed boost
-Takes {green:{var:heat_seconds}} seconds to heat up
-{yellow:Fuels with a low burn value will not work}
+{yellow:Fuels with low burn times do not work}
+{gray:{hr}}
+Takes {light_purple:{var:heat_seconds}} seconds to warm-up
+A {white:Programmed Circuit} in the controller reduces output by {white:{var:throttle_amount} {var:fluid_unit}/s} per value

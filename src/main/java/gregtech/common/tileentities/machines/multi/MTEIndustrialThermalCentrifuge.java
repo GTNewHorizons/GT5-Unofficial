@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -45,7 +46,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -89,21 +89,15 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Thermal Centrifuge, LTR")
-            .addInfo(
-                EnumChatFormatting.GOLD + String.format(
-                        "%s%s * Voltage Tier + %s%s * Solenoid Tier %sParallels",
-                        TooltipHelper.parallelText(8), EnumChatFormatting.GOLD,
-                        TooltipHelper.parallelText(2), EnumChatFormatting.GOLD,
-                        EnumChatFormatting.GRAY))
-            .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
-            .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
             .addMarkdown(
-                new ResourceLocation("gregtech", "thermal-centrifuge"),
+                new ResourceLocation("gregtech", "industrial-thermal-centrifuge"),
                 ImmutableMap.<String, Object>builder()
-                    .put("coil_speed_bonus", TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL))
-                    .put("coil_eu_discount", TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER)))
-                    .put("base_eu_mult", BASE_EU_MULTIPLIER)
-                    .put("coil_eu_mult", HEATING_COIL_EU_MULTIPLIER)
+                    .put("parallels", formatNumber(BASE_PARALLELS))
+                    .put("parallels_bonus", formatNumber(PARALLELS_PER_SOLENOID))
+                    .put("speed", formatNumber(BASE_SPEED_BONUS * 100))
+                    .put("speed_bonus", formatNumber(SPEED_PER_COIL * 100))
+                    .put("eu_eff", formatNumber(BASE_EU_MULTIPLIER * 100))
+                    .put("eu_eff_bonus", formatNumber(HEATING_COIL_EU_MULTIPLIER))
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 8, 6, false)
