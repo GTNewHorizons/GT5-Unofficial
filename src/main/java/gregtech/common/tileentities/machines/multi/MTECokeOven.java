@@ -64,6 +64,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.gui.modularui.multiblock.MTECokeOvenGui;
 import gregtech.common.pollution.Pollution;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -86,7 +87,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Coke Oven")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.coke_oven"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "coke-oven"),
                 ImmutableMap.<String, Object>builder().build())
@@ -325,6 +326,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     }
 
     private void onPostTickServer(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        mTotalRunTime++;
         checkRecipeProgress(baseMetaTileEntity);
 
         // Polling updates.
@@ -352,6 +354,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             mOutputFluids = null;
             mProgresstime = 0;
             mMaxProgresstime = 0;
+            recipesDone++;
+            mLastWorkingTick = mTotalRunTime;
         }
 
         if (mMaxProgresstime == 0 && baseMetaTileEntity.isAllowedToWork()) {

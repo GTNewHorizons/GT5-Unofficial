@@ -146,7 +146,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public String getMachineType() {
-        return "Chemical Plant";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_plant");
     }
 
     @Override

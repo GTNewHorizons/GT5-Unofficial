@@ -23,6 +23,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -58,6 +59,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillationTower>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -142,7 +144,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("DT")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.distillation_tower"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "distillation-tower"),
                 ImmutableMap.<String, Object>builder().build())

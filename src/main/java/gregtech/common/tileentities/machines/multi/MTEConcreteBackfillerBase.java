@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.IFluidBlock;
 
 import org.jetbrains.annotations.NotNull;
@@ -99,7 +100,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
         // spotless:off
-        tt.addMachineType("Concrete Backfiller")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.concrete_backfiller"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "concrete-backfiller"),
                 ImmutableMap.<String, Object>builder()
