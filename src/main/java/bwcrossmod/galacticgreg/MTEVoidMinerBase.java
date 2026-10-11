@@ -14,6 +14,7 @@
 package bwcrossmod.galacticgreg;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -179,6 +180,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
                 ImmutableMap.<String, Object>builder()
                     .put("power", formatNumber(GTValues.V[this.getMinTier()]))
                     .put("gas_rate", NOBLE_GAS_CONSUMPTION_PER_TIER)
+                    .put("unit", getFluidUnit())
                     .put("neon_boost", NEON_BOOST)
                     .put("krypton_boost", KRYPTON_BOOST)
                     .put("xenon_boost", XENON_BOOST)

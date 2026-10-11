@@ -1,5 +1,5 @@
 Потребляет {aqua:{var:power} EU/t}
-Можно подавать {blue:{var:gas_rate} Л/с} {gold:Благородных газов} для увеличения добычи
+Можно подавать {blue:{var:gas_rate} {var:unit}/с} {gold:Благородных газов} для увеличения добычи
 {gold:Неон}: {green:{var:neon_boost}x}
 {aqua:Криптон}: {green:{var:krypton_boost}x}
 {dark_aqua:Ксенон}: {green:{var:xenon_boost}x}
