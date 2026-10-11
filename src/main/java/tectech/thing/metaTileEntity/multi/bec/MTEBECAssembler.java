@@ -161,17 +161,17 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
             .addMiscHatch(
                 "1+",
-                "Nanite Containment Bus",
+                StatCollector.translateToLocal("GT5U.MBTT.NaniteContainmentBus"),
                 StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"),
                 1)
             .addMiscHatch(
                 "1+",
-                "Line-of-Sight Connector Hatch",
+                StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"),
                 StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.los-hatch-pos"),
                 3)
             .addMiscHatch(
                 "1-2",
-                "Bose-Einstein Condensate Hatch",
+                StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"),
                 StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"),
                 2)
             .toolTipFinisher(GTAuthors.AuthorPineapple);

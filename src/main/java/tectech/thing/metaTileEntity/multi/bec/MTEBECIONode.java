@@ -220,19 +220,19 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             .addCasing("20", CondensateGuidanceCoil.getLocalizedName(), false)
             .addMiscHatch(
                 "0+",
-                "Nanite Detector Hatch",
+                StatCollector.translateToLocal("GT5U.MBTT.NaniteTierDetectorHatch"),
                 StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
                 1)
             .addMiscHatch(
                 "0+",
-                "Teleportation Node Controller Hatch",
+                StatCollector.translateToLocal("GT5U.MBTT.TeleportationControllerHatch"),
                 StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
                 1)
             .addInputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
             .addOutputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
             .addMiscHatch(
                 "1",
-                "Line-of-Sight Connector Hatch",
+                StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"),
                 StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.los-hatch-pos"),
                 2)
             .toolTipFinisher(GTAuthors.AuthorPineapple);

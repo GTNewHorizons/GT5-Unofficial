@@ -214,7 +214,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
             .addInputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
             .addMiscHatch(
                 "2",
-                "Bose-Einstein Condensate Hatch",
+                StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"),
                 StatCollector.translateToLocal("GT5U.tooltip.bec-diode.bec-hatch-pos"),
                 2,
                 3)

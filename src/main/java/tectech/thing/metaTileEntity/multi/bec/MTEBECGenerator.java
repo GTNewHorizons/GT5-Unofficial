@@ -112,7 +112,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             .addInputHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-generator.hatch-pos"), 1)
             .addMiscHatch(
                 "1",
-                "Bose-Einstein Condensate Hatch",
+                StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"),
                 StatCollector.translateToLocal("GT5U.tooltip.bec-generator.bec-hatch-pos"),
                 2)
             .toolTipFinisher(GTAuthors.AuthorPineapple);
