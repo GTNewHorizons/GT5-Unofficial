@@ -27,9 +27,11 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.modularui2.common.CommonButtons;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncActions;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
 import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
@@ -76,6 +78,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
         SyncValues.FORMATTER.registerFor(Panels.MAIN, hypervisor);
         SyncValues.UPGRADES_LIST.registerFor(Panels.MAIN, hypervisor);
         SyncValues.RING_AMOUNT.registerFor(Panels.MAIN, hypervisor);
+
+        SyncActions.RESTART_FORGE.registerFor(Panels.MAIN, hypervisor, multiblock);
     }
 
     @Override
@@ -168,11 +172,15 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .size(0, 0);
     }
 
+    /** The Forge idles on an untranslated reason, so only surface the one that actually explains a failure. */
     @Override
-    protected IWidget createShutdownReasonWidget(PanelSyncManager syncManager) {
-        return IKey.str("")
-            .asWidget()
-            .size(0, 0);
+    protected boolean shouldShutdownReasonBeDisplayed(String shutdownString) {
+        return super.shouldShutdownReasonBeDisplayed(shutdownString)
+            && ShutDownReasonRegistry.FOG_SIPHON_OVERHEAT.getKey()
+                .equals(
+                    multiblock.getBaseMetaTileEntity()
+                        .getLastShutDownReason()
+                        .getKey());
     }
 
     @Override
@@ -313,6 +321,8 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
             .disableHoverBackground()
             .onMousePressed(d -> {
                 refreshSyncer.setBoolValue(!refreshSyncer.getBoolValue());
+                // Also acknowledges a siphon fracture lockout, so no dedicated restart button is needed.
+                SyncActions.RESTART_FORGE.callFrom(Panels.MAIN, hypervisor, null);
                 return true;
             })
             .clickSound(ForgeOfGodsGuiUtil.getButtonSound())

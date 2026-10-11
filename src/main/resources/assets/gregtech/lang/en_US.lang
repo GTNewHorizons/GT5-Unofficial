@@ -3224,6 +3224,7 @@ GT5U.gui.text.shutdown_reason.fluid_output_failed=§4Failed to output all the fl
 GT5U.gui.text.shutdown_reason.item_output_failed=§4Failed to output all the items.
 GT5U.gui.text.shutdown_reason.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.shutdown_reason.no_repair=§4Shut down due to machine damage.
+GT5U.gui.text.shutdown_reason.fog_siphon_overheat=§4Stellar energy siphon rings fractured due to excessive heat.
 GT5U.gui.text.shutdown_reason.no_machine_part=No correct machine part in controller slot.
 GT5U.gui.text.shutdown_reason.insufficient_dynamo=§4Shut down due to insufficient dynamo size
 GT5U.gui.text.shutdown_reason.computation_loss=§4Shut down due to computation loss.
@@ -6447,6 +6448,8 @@ gt.item.circuit_darkmatter_unit.name=Dark Matter Containment Field
 gt.item.circuit_darkmatter_unit.tooltip=Containing Dark Matter
 gt.item.coolant_containment_field.name=Coolant Containment Field
 gt.item.coolant_containment_field.tooltip=Provides A Dissolving Environment For Zero-Entropy Crystals
+gt.item.sintered_halkonite_clump.name=Sintered Halkonite Clump
+gt.item.sintered_halkonite_clump.tooltip=Reforged From Shattered Proto-Halkonite
 
 ## Optical Circuits
 gt.item.circuit.optical_processor.name=Optical Processor

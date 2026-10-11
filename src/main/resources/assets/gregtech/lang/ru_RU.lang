@@ -3050,6 +3050,7 @@ GT5U.gui.text.shutdown_reason.fluid_output_failed=§4Не удалось выв�
 GT5U.gui.text.shutdown_reason.item_output_failed=§4Не удалось вывести все предметы.
 GT5U.gui.text.shutdown_reason.structure_incomplete=§4Отключён из-за незавершённой структуры.
 GT5U.gui.text.shutdown_reason.no_repair=§4Отключён из-за повреждения механизма.
+GT5U.gui.text.shutdown_reason.fog_siphon_overheat=§4Кольца сифонов звездной энергии расколоты из-за чрезмерного нагрева.
 GT5U.gui.text.shutdown_reason.no_machine_part=Нет нужной детали механизма в слоте контроллера.
 GT5U.gui.text.shutdown_reason.insufficient_dynamo=§4Отключён из-за недостаточной мощности энерговывода.
 GT5U.gui.text.shutdown_reason.computation_loss=§4Отключён из-за потери вычислений.
@@ -5907,6 +5908,8 @@ gt.item.circuit_darkmatter_unit.name=Сдерживающее поле тёмн�
 gt.item.circuit_darkmatter_unit.tooltip=Сдерживает тёмную материю
 gt.item.coolant_containment_field.name=Сдерживающее поле охлаждающей жидкости
 gt.item.coolant_containment_field.tooltip=Создаёт среду для растворения кристаллов с нулевой энтропией
+gt.item.sintered_halkonite_clump.name=Спечённый сгусток халконита
+gt.item.sintered_halkonite_clump.tooltip=Перекован из расколотого прото-халконита
 
 # Zero-Entropy Coolant Line
 Material.zeroentropycoolantsolvent.flavorText=Леденяще холодный, но не абсолютный ноль

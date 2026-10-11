@@ -82,6 +82,7 @@ public class ForgeOfGodsData {
     private boolean isRenderActive;
     private boolean secretUpgrade;
     private boolean isRendererDisabled;
+    private boolean overheatLockout;
 
     private final UpgradeStorage upgrades = new UpgradeStorage();
     private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
@@ -383,6 +384,14 @@ public class ForgeOfGodsData {
         return upgrades.isUpgradeActive(upgrade);
     }
 
+    public boolean isOverheatLockout() {
+        return overheatLockout;
+    }
+
+    public void setOverheatLockout(boolean overheatLockout) {
+        this.overheatLockout = overheatLockout;
+    }
+
     public ItemStack[] getStoredUpgradeWindowItems() {
         return storedUpgradeWindowItems;
     }
@@ -431,6 +440,7 @@ public class ForgeOfGodsData {
         if (force || gravitonShardEjection) NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
         if (force || secretUpgrade) NBT.setBoolean("secretUpgrade", secretUpgrade);
         if (force || inversion) NBT.setBoolean("inversion", inversion);
+        if (force || overheatLockout) NBT.setBoolean("overheatLockout", overheatLockout);
 
         // Fields with non-zero defaults
         if (force || fuelConsumptionFactor != DEFAULT_FUEL_CONSUMPTION_FACTOR) {
@@ -486,6 +496,7 @@ public class ForgeOfGodsData {
         gravitonShardEjection = NBT.getBoolean("gravitonShardEjection");
         secretUpgrade = NBT.getBoolean("secretUpgrade");
         inversion = NBT.getBoolean("inversion");
+        overheatLockout = NBT.getBoolean("overheatLockout");
 
         // Fields with non-zero defaults
         if (NBT.hasKey("fuelConsumptionFactor")) {

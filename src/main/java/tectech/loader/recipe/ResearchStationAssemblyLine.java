@@ -2500,6 +2500,25 @@ public class ResearchStationAssemblyLine implements Runnable {
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 
+        // Proto-Halkonite Siphon Casing
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            CustomItemList.Godforge_StellarEnergySiphonCasing.get(1),
+            48_000_000,
+            8_192,
+            (int) TierEU.RECIPE_UMV,
+            64,
+            new Object[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(1),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.ProtoHalkonite, 8),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.ProtoHalkonite, 4),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.ProtoHalkonite, 2), ItemList.Emitter_UIV.get(4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 8),
+                ItemList.Reactor_Coolant_Sp_6.get(1L) },
+            new FluidStack[] { Materials.MoltenProtoHalkoniteBase.getFluid(8 * INGOTS),
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8 * INGOTS) },
+            CustomItemList.Godforge_ProtoHalkoniteSiphonCasing.get(16),
+            20 * SECONDS,
+            (int) TierEU.RECIPE_UIV);
+
         // Gravitational Lens
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             new ItemStack(BlockQuantumGlass.INSTANCE, 1),

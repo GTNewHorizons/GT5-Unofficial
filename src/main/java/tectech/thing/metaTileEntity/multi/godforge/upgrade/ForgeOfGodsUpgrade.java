@@ -54,6 +54,8 @@ public enum ForgeOfGodsUpgrade {
     TBF,
     EE,
     END,
+    // Must stay last: upgrades are serialized by ordinal, so inserting above would corrupt every save.
+    EHSR,
 
     ;
 
@@ -253,6 +255,12 @@ public enum ForgeOfGodsUpgrade {
             .background(BLUE, COMPOSITION)
             .panelSize(LARGE)
             .treePos(126, 798));
+
+        EHSR.build(b -> b
+            .prereqs(SEFCP)
+            .cost(3)
+            .background(PURPLE, CHARGE)
+            .treePos(6, 506));
 
         // spotless:on
 

@@ -213,7 +213,6 @@ public enum CircuitComponent {
         406,
         "gt.circuitcomponent.livingbiochip",
         () -> ItemList.Circuit_Parts_Chip_Bioware.get(1)),
-    // id 407 unused
     BoardQuantum(408, "gt.circuitcomponent.processed.board.quantum",null,true),
     BoardPlanck(409, "gt.circuitcomponent.processed.board.planck",null,true),
 
@@ -225,7 +224,6 @@ public enum CircuitComponent {
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
     UnattunedCircuitry(507,"gt.circuitcomponent.unattunedcircuitry",null,true),
-    // id 508 unused
     CleansedBoardQuantum(509, "gt.circuitcomponent.processed.board.cleansedquantum",()-> BoardQuantum,true),
     CleansedBoardPlanck(510, "gt.circuitcomponent.processed.board.cleansedplanck",()-> BoardPlanck,true),
 

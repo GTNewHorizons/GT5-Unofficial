@@ -736,6 +736,16 @@ public class BlastFurnaceRecipes implements Runnable {
             .eut((int) TierEU.RECIPE_UMV)
             .metadata(COIL_HEAT, 13000)
             .addTo(blastFurnaceRecipes);
+
+        // 25001K is above every EBF coil, so only the Forge of the Gods' Helioflare Power Forge can run this.
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.ProtoHalkonite, 64))
+            .fluidInputs(Materials.PhononMedium.getFluid(10))
+            .itemOutputs(ItemList.Sintered_Halkonite_Clump.get(1))
+            .duration(60 * SECONDS)
+            .eut((int) TierEU.RECIPE_UEV)
+            .metadata(COIL_HEAT, 25001)
+            .addTo(blastFurnaceRecipes);
     }
 
     public void registerPrimitiveBlastFurnaceRecipes() {

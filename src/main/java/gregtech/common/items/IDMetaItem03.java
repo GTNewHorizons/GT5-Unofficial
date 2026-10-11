@@ -296,6 +296,7 @@ public enum IDMetaItem03 {
     Circuit_CrystalPerfected(735),
     Circuit_DarkMatter_Unit(736),
     Coolant_Containment_Field(737),
+    Sintered_Halkonite_Clump(738),
 
     Timepiece(757),
     Transdimensional_Alignment_Matrix(758),

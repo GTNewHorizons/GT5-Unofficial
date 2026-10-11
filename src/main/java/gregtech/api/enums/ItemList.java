@@ -2052,6 +2052,7 @@ public enum ItemList implements IItemContainer {
     Circuit_CrystalPerfected,
     Circuit_DarkMatter_Unit,
     Coolant_Containment_Field,
+    Sintered_Halkonite_Clump,
 
     Tube_Wires,
     KevlarFiber,

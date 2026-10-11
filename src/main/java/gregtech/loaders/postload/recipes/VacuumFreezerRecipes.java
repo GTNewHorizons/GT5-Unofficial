@@ -360,6 +360,25 @@ public class VacuumFreezerRecipes implements Runnable {
         this.addProtoHalkonitePartRecipe(OrePrefixes.wireFine, 8);
         this.addProtoHalkonitePartRecipe(OrePrefixes.plateSuperdense, 1);
 
+        // Exo-Halkonite
+        this.addExoHalkonitePartRecipe(OrePrefixes.frameGt, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.ingot, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.plate, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.plateDouble, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.plateDense, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.stick, 2);
+        this.addExoHalkonitePartRecipe(OrePrefixes.round, 8);
+        this.addExoHalkonitePartRecipe(OrePrefixes.bolt, 8);
+        this.addExoHalkonitePartRecipe(OrePrefixes.screw, 8);
+        this.addExoHalkonitePartRecipe(OrePrefixes.ring, 4);
+        this.addExoHalkonitePartRecipe(OrePrefixes.foil, 8);
+        this.addExoHalkonitePartRecipe(OrePrefixes.gearGtSmall, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.rotor, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.stickLong, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.gearGt, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.wireFine, 8);
+        this.addExoHalkonitePartRecipe(OrePrefixes.plateSuperdense, 1);
+
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Harmonic_Compound.get(2))
             .fluidInputs(GGMaterial.atomicSeparationCatalyst.getMolten(1 * INGOTS))
@@ -390,5 +409,20 @@ public class VacuumFreezerRecipes implements Runnable {
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
 
+    }
+
+    /** Quenches hot Exo-Halkonite castings: 72L superfluid and 20L zero-entropy coolant per ingot. */
+    private void addExoHalkonitePartRecipe(OrePrefixes prefix, final int multiplier) {
+        final int partFraction = (int) (prefix.getMaterialAmount() * INGOTS / M);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials.HotExoHalkonite, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.ExoHalkonite, multiplier))
+            .fluidInputs(
+                Materials.DimensionallyShiftedSuperfluid.getFluid((long) partFraction * multiplier * 72L / INGOTS),
+                Materials.ZeroEntropyCoolant.getFluid((long) partFraction * multiplier * 20L / INGOTS))
+            .duration((int) (multiplier * (SECONDS * partFraction / (float) INGOTS)))
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(vacuumFreezerRecipes);
     }
 }

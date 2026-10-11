@@ -294,6 +294,7 @@ import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naqua
 import static gregtech.common.items.IDMetaItem03.Raw_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Realized_Quantum_Circuit_Rack;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.Sintered_Halkonite_Clump;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
 import static gregtech.common.items.IDMetaItem03.StableBosonContainmentUnit;
@@ -1226,7 +1227,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.circuit_board.transcendent.tooltip",
                     o))
             .setRender(new InfinityMetaItemRenderer());
-        
+
         // Exotic circuit parts
         ItemList.Circuit_Board_Exotic_Membrane.set(
             addItemWithLocalizationKeys(
@@ -1263,6 +1264,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Coolant_Containment_Field.ID,
                 "gt.item.coolant_containment_field.name",
                 "gt.item.coolant_containment_field.tooltip",
+                o));
+
+        // Exo-Halkonite line
+        ItemList.Sintered_Halkonite_Clump.set(
+            addItemWithLocalizationKeys(
+                Sintered_Halkonite_Clump.ID,
+                "gt.item.sintered_halkonite_clump.name",
+                "gt.item.sintered_halkonite_clump.tooltip",
                 o));
 
         // Optical circuits

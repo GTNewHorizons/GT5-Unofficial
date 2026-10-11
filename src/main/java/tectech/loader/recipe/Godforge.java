@@ -760,6 +760,16 @@ public class Godforge implements Runnable {
                 ItemList.ZPM6.get(32),
                 ItemList.Field_Generator_UXV.get(64),
                 ItemList.Robot_Arm_UXV.get(64));
+
+            // Exo-Halkonite only exists after the Forge has already been driven hot, so the loop is intentional.
+            ForgeOfGodsUpgrade.EHSR.addExtraCost(
+                CustomItemList.Godforge_ProtoHalkoniteSiphonCasing.get(32),
+                CustomItemList.Godforge_StellarEnergySiphonCasing.get(16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.ExoHalkonite, 9),
+                CustomItemList.Godforge_SingularityShieldingCasing.get(32),
+                CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(16),
+                ItemList.Field_Generator_UEV.get(64),
+                ItemList.Robot_Arm_UIV.get(64));
         }
 
     }
@@ -777,6 +787,7 @@ public class Godforge implements Runnable {
         ForgeOfGodsUpgrade.CD.addExtraCost(new ItemStack(Blocks.cobblestone, 32));
         ForgeOfGodsUpgrade.EE.addExtraCost(new ItemStack(Blocks.cobblestone, 48));
         ForgeOfGodsUpgrade.END.addExtraCost(new ItemStack(Blocks.cobblestone, 64));
+        ForgeOfGodsUpgrade.EHSR.addExtraCost(new ItemStack(Blocks.cobblestone, 48));
     }
 
     public static void addFakeUpgradeCostRecipes() {
@@ -837,6 +848,14 @@ public class Godforge implements Runnable {
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, translateToLocal(ForgeOfGodsUpgrade.END.getShortNameKey()))
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ForgeOfGodsUpgrade.EHSR.getExtraCostNoNulls())
+            .itemOutputs(CustomItemList.Godforge_ProtoHalkoniteSiphonCasing.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, translateToLocal(ForgeOfGodsUpgrade.EHSR.getShortNameKey()))
             .fake()
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
     }

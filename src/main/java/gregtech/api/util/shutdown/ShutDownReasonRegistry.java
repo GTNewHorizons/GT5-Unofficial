@@ -122,6 +122,9 @@ public class ShutDownReasonRegistry {
     @Nonnull
     public static final ShutDownReason OVERHEAT_FAIL = SimpleShutDownReason.ofCritical("overheat_fail");
 
+    @Nonnull
+    public static final ShutDownReason FOG_SIPHON_OVERHEAT = SimpleShutDownReason.ofCritical("fog_siphon_overheat");
+
     /**
      * Fluid that needs to be constantly supplied are out. E.g. PCB coolant with cooling upgrades enabled.
      */

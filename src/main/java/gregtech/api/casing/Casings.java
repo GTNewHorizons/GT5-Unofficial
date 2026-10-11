@@ -1060,6 +1060,8 @@ public enum Casings implements ICasing {
         (() -> TTCasingsContainer.GodforgeCasings, 7, gt(7,71)),
     HarmonicPhononTransmissionConduit
         (() -> TTCasingsContainer.GodforgeCasings, 8, gt(7,72)),
+    ProtoHalkoniteStellarSiphonCasing
+        (() -> TTCasingsContainer.GodforgeCasings, 9, gt(7,73)),
 
     QuantumGlass
         (() -> BlockQuantumGlass.INSTANCE, 0, -1),

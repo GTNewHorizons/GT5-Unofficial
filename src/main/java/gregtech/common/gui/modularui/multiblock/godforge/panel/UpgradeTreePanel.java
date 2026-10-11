@@ -86,6 +86,7 @@ public class UpgradeTreePanel {
             .child(createConnectorLine(UpgradeColor.ORANGE, EPEC, POS, hypervisor))
             .child(createConnectorLine(UpgradeColor.ORANGE, POS, NGMS, hypervisor))
             .child(createConnectorLine(UpgradeColor.PURPLE, QGPIU, SEFCP, hypervisor))
+            .child(createConnectorLine(UpgradeColor.PURPLE, SEFCP, EHSR, hypervisor))
             .child(createConnectorLine(UpgradeColor.PURPLE, SEFCP, CNTI, hypervisor))
             .child(createConnectorLine(UpgradeColor.PURPLE, CNTI, NDPE, hypervisor))
             .child(createConnectorLine(UpgradeColor.PURPLE, NDPE, NGMS, hypervisor))

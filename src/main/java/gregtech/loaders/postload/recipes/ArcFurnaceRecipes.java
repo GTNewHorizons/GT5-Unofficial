@@ -19,6 +19,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
+import tectech.thing.CustomItemList;
 
 public class ArcFurnaceRecipes implements Runnable {
 
@@ -508,6 +509,15 @@ public class ArcFurnaceRecipes implements Runnable {
                 ItemList.Naquarite_Universal_Insulator_Foil.get(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
+            .metadata(RECYCLE, true)
+            .addTo(UniversalArcFurnace);
+
+        // Sintered Halkonite Clump
+        GTValues.RA.stdBuilder()
+            .itemInputs(CustomItemList.Godforge_ProtoHalkoniteSiphonCasingCracked.get(16))
+            .itemOutputs(ItemList.Sintered_Halkonite_Clump.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
             .metadata(RECYCLE, true)
             .addTo(UniversalArcFurnace);
 

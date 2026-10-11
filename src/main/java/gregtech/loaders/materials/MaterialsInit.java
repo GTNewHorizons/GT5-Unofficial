@@ -16399,7 +16399,6 @@ public class MaterialsInit {
             .removeOrePrefix(OrePrefixes.spring)
             .removeOrePrefix(OrePrefixes.springSmall)
             .removeOrePrefix(OrePrefixes.itemCasing)
-            .removeOrePrefix(OrePrefixes.plateSuperdense) // when Exo Halkonite is added, remove this.
             .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
@@ -16435,7 +16434,6 @@ public class MaterialsInit {
             .removeOrePrefix(OrePrefixes.spring)
             .removeOrePrefix(OrePrefixes.springSmall)
             .removeOrePrefix(OrePrefixes.itemCasing)
-            .removeOrePrefix(OrePrefixes.plateSuperdense) // when Exo Halkonite is added, remove this.
             .removeOrePrefix(OrePrefixes.sheetmetal) // no custom texture set for this. remove when implemented.
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);

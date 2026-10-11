@@ -1896,6 +1896,8 @@ gt.item.circuit_darkmatter_unit.name=暗物质约束场
 gt.item.circuit_darkmatter_unit.tooltip=内含暗物质
 gt.item.coolant_containment_field.name=冷却液容纳力场
 gt.item.coolant_containment_field.tooltip=为零熵晶体提供溶解环境
+gt.item.sintered_halkonite_clump.name=烧结恒坚钢团块
+gt.item.sintered_halkonite_clump.tooltip=由碎裂的原初恒坚钢重铸而成
 
 # Zero-Entropy Coolant Line
 Material.zeroentropycoolantsolvent.flavorText=极寒，但尚未达到绝对零度

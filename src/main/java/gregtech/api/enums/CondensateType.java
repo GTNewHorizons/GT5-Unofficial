@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -131,7 +132,7 @@ public enum CondensateType {
         "zeroentropycoolantsolvent",
         () -> Materials.ZeroEntropyCoolantSolvent,
         1000,
-        () -> Materials.ZeroEntropyCoolantSolvent.getFluid(1000), 1 * SECONDS, TierEU.RECIPE_UIV),
+        () -> Materials.ZeroEntropyCoolantSolvent.getFluid(1000), 1 * TICKS, TierEU.RECIPE_UIV),
     // spotless:on
     ;
 
