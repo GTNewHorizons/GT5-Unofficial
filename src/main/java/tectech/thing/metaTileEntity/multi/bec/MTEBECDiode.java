@@ -216,7 +216,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
             .addMiscHatch("2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-diode.bec-hatch-pos"), 2, 3)
             .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
-        // spotles:on
+        // spotless:on
     }
 
     @Override
