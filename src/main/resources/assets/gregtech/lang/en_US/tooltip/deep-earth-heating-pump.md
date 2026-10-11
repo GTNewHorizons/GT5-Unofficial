@@ -1,8 +1,7 @@
-Consumes {aqua:{var:eu_usage} EU/t}
-Has 2 Modes, use the Screwdriver to change them:
-{gold:Direct Steam} and {gold:Coolant Heating}
-{gold:Direct Steam} Mode: Consumes {white:{fluid:ic2distilledwater}} to produce {white:{var:steam_rate}}L/s of {white:{fluid:ic2superheatedsteam}}
-{gold:Coolant Heating} Mode: Converts {white:{var:coolant_rate}}L/s {white:{fluid:ic2coolant}} to {white:{fluid:ic2hotcoolant}}
+Consumes a fixed {aqua:{var:eu_usage} EU/t}
+Has 2 Modes, use a {white:screwdriver} to switch between them:
+{gold:Direct Steam Mode}: Consumes {blue:{var:water_rate} L/t} of {blue:{fluid:ic2distilledwater}} to produce {white:{var:steam_rate} L/t} of {white:{fluid:ic2superheatedsteam}}
+{gold:Coolant Heating Mode}: Consumes {blue:{var:coolant_rate} L/t} of {blue:{fluid:ic2coolant}} to produce {red:{var:coolant_rate} L/t} of {red:{fluid:ic2hotcoolant}}
+{gray:{hr}}
 Each maintenance issue lowers output efficiency by {aqua:10%}
-{dark_red:Explodes} when it runs out of {white:{fluid:ic2distilledwater}}/{white:{fluid:ic2coolant}}
-Base cycle time: 1 tick
+{dark_red:Explodes} if it ever runs out of {blue:{fluid:ic2distilledwater}} or {blue:{fluid:ic2coolant}}

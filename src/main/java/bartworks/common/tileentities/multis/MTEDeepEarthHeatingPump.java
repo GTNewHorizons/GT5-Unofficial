@@ -99,8 +99,9 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                 new ResourceLocation("gregtech", "deep-earth-heating-pump"),
                 ImmutableMap.of(
                     "eu_usage", formatNumber(TierEU.RECIPE_HV),
-                    "steam_rate", formatNumber(25600 * 20),
-                    "coolant_rate", formatNumber(192 * 20)))
+                    "water_rate", formatNumber(161),
+                    "steam_rate", formatNumber(25600),
+                    "coolant_rate", formatNumber(192)))
             .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
