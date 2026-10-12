@@ -55,7 +55,7 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
             .coverChildrenHeight(0)
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .collapseDisabledChild()
-            .setEnabledIf(w -> connected.getBoolValue());
+            .setEnabledIf(_ -> connected.getBoolValue());
         super.createTerminalTextWidget(syncManager, parent).getChildren()
             .forEach(statusWrapper::child);
         widget.child(statusWrapper);
@@ -65,10 +65,8 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler infoPanel = syncManager.syncedPanel(
-            "infoPanel",
-            true,
-            (p_syncManager, syncHandler) -> MTENanochipAssemblyComplexGui.openInfoPanel(parent));
+        IPanelHandler infoPanel = syncManager
+            .syncedPanel("infoPanel", true, (_, _) -> MTENanochipAssemblyComplexGui.openInfoPanel(parent));
 
         return new ButtonWidget<>().size(24)
             .marginTop(4)
@@ -76,7 +74,7 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
             .tooltip(t -> t.addLine(translateToLocal("GT5U.gui.text.nac.info.open")))
             .background(GTGuiTextures.PICTURE_NANOCHIP_LOGO)
             .disableHoverBackground()
-            .onMousePressed(d -> {
+            .onMousePressed(_ -> {
                 if (!infoPanel.isPanelOpen()) {
                     infoPanel.openPanel();
                 } else {

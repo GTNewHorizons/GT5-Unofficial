@@ -3541,6 +3541,8 @@ GT5U.gui.text.nac.splitter.custom_name_desc=Press middle-mouse to rename item
 
 GT5U.gui.text.nac.hint.talk=Type %s to enter talk mode
 GT5U.gui.text.nac.hint.exit=Type %s to exit talk mode
+GT5U.gui.text.nac.hint.ask=Ask GREGOS a question
+GT5U.gui.text.nac.hint.help=Type 'help' for a list of commands
 
 GT5U.gui.text.nac.contributors.idea_structure=Idea and Structure
 GT5U.gui.text.nac.bar.calibration.progress.1=Nanocalibration in progress.
@@ -3576,6 +3578,25 @@ GT5U.gui.text.nac.module.disable_all_button_off.2=§7Press to enable all modules
 
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
+GT5U.gui.text.nac.title.standard=Standard
+GT5U.gui.text.nac.title.primitive.1=Crude
+GT5U.gui.text.nac.title.primitive.2=Robust
+GT5U.gui.text.nac.title.primitive.3=Archaic
+GT5U.gui.text.nac.title.crystal.1=Shiny
+GT5U.gui.text.nac.title.crystal.2=Glimmering
+GT5U.gui.text.nac.title.crystal.3=Prismatic
+GT5U.gui.text.nac.title.wetware.1=Wet
+GT5U.gui.text.nac.title.wetware.2=Fleshy
+GT5U.gui.text.nac.title.wetware.3=Wriggling
+GT5U.gui.text.nac.title.bioware.1=Aware
+GT5U.gui.text.nac.title.bioware.2=Sentient
+GT5U.gui.text.nac.title.bioware.3=ALIVE!!!!!!!!!
+GT5U.gui.text.nac.title.optical.1=Tuned
+GT5U.gui.text.nac.title.optical.2=Precise
+GT5U.gui.text.nac.title.optical.3=Perfected
+GT5U.gui.text.nac.title.special.1=Foreign
+GT5U.gui.text.nac.title.special.2=Alien
+GT5U.gui.text.nac.title.special.3=Xeno
 GT5U.gui.text.nac.info.open=Open Info Panel
 GT5U.gui.text.nac.info.toc=§nTable of Contents
 GT5U.gui.text.nac.info.introduction.header=Introduction
