@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.CustomItemList.Machine_Multi_Switch;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
@@ -286,8 +287,8 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             .beginVariableStructureBlock(3, 3, 3, 3, 3, 18, false)
             .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"), 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
-            .addEnergyHatch("1+", translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), anyCasingText(), 1, 2)
+            .addEnergyHatch("1+", anyCasingText(), 1, 2)
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing("0-18", translateToLocal("gt.blockcasingsTT.1.name"), false)

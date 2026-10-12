@@ -44,12 +44,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -65,6 +67,7 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -93,6 +96,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuitAssemblyLine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -168,54 +172,37 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Circuit Assembler, CAL")
-            .addInfo("Change Mode with Screwdriver")
-            .addPerfectOCInfo()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.0") + ":")
-            .addInfo("Imprint this machine with a Circuit Imprint,")
-            .addInfo("by putting the imprint in the controller")
-            .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.1") + ":")
-            .addInfo(
-                "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
-                    + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
-            .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.circuit_assembly_line"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "circuit-assembly-line"),
+                ImmutableMap.<String, Object>builder()
+                    .put("min_length", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
+                    .build())
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
-            .addController("First slice, 3rd layer")
-            .addEnergyHatch("1", "Any layer 3 casing", 3)
-            .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
-            .addInputBus("1-6", "Bottom center of each slice", 2)
-            .addInputHatch("1", "Any layer 1 side casing", 1)
-            .addOutputBus("1", "Bottom center of last slice", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.first_slice_3rd_layer"))
+            .addEnergyHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_casing", 3), 3)
+            .addMaintenanceHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_side_casing", 1), 1)
+            .addInputBus("1-6", StatCollector.translateToLocal("gt.mbtt.structure.bottom_center_each_slice"), 2)
+            .addInputHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_side_casing", 1), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.bottom_center_last_slice"), 2)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("4", "Grate Machine Casing", false)
-            .addCasing("4", "EV+ Tiered Glass", false)
-            .addCasing("2", "Solid Steel Machine Casing", false)
-            .addCasing("2", "Assembly Line Casing", false)
+            .addCasing("4", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("4", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", "EV"), false)
+            .addCasing("2", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("2", Casings.AssemblyLineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 3: "
-                    + EnumChatFormatting.GRAY
-                    + "Grate Machine Casing, Grate Machine Casing, Grate Machine Casing")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 2: "
-                    + EnumChatFormatting.GRAY
-                    + "EV+ Tiered Glass, Assembly Line Casing, EV+ Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 1: "
-                    + EnumChatFormatting.GRAY
-                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 3) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", Casings.GrateMachineCasing.getLocalizedName(), Casings.GrateMachineCasing.getLocalizedName(), Casings.GrateMachineCasing.getLocalizedName()))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 2) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", "EV"), Casings.AssemblyLineCasing.getLocalizedName(), StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", "EV")))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 1) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", Casings.SolidSteelMachineCasing.getLocalizedName(), StatCollector.translateToLocal("GT5U.MBTT.InputBus"), Casings.SolidSteelMachineCasing.getLocalizedName()))
             .addStructureInfo("")
-            .addStructureFooter("Up to 7 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter(StatCollector.translateToLocalFormatted("gt.mbtt.structure.slices_footer", 7))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

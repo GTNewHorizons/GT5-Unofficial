@@ -56,10 +56,12 @@ item.itemSandstoneHammer.name=Разрушитель булыжника
 
 # Tooltips
 GTPP.machines.chisel_slot.tooltip=Слот для образца
-GTPP.machines.chisel_slot.tooltip.1=7Поместите сюда §6Chisel§7еный блок для выбора выходного продукта
-GTPP.core.GT_Tooltip=Добавлено: §2Alkalus §7- §c[GT++]
-GTPP.core.GT_Tooltip_Builder=§2Alkalus §7- §c[GT++]
-GTPP.core.GT_Tooltip_Radioactive=§7Внимание: §aРадиоактивно! §6Избегайте прямого контакта без средств защиты.
+GTPP.machines.chisel_slot.tooltip.1=§7Поместите сюда §6Chisel§7еный блок для выбора выходного продукта
+GTPP.core.GT_Tooltip=Добавлено: %s §7- §c[GT++]
+GTPP.core.GT_Tooltip_Builder=%s §7- §c[GT++]
+GTPP.core.GT_Tooltip_Radioactive=§7Внимание: §aРадиоактивно!
+GTPP.core.GT_Tooltip_Toxic=§7Внимание: §2Токсично!
+GTPP.core.GT_Tooltip_HazmatWarning=§6Избегайте прямого контакта без защиты от опасных веществ.
 
 # Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Ведро пылающего пиротеума
@@ -145,6 +147,7 @@ tile.blockCompressedObsidian.13.name=Трижды сжатый адский ка
 tile.blockNet.name=Сеть
 gtplusplus.blockcasings.2.name=Обшивка механизма
 gtplusplus.blockcasings.3.name=Обшивка механизма
+gtplusplus.blockcasings.3.10.name=Улучшенный криогенный корпус
 gtplusplus.blockcasings.4.name=Обшивка механизма
 gtplusplus.blockcasings.5.name=Обшивка механизма
 gtplusplus.blockcasings.6.name=Обшивка механизма
@@ -154,6 +157,7 @@ gtplusplus.blockspecialcasings.2.name=Обшивка механизма
 gtplusplus.blockspecialcasings.3.name=Обшивка механизма
 gtplusplus.blocktieredcasings.1.name=Обшивка механизма
 miscutils.blockcasings.name=Обшивка механизма
+miscutils.blockcasings.7.name=Корпус промышленного дробителя
 MU-metatool.01.name=Ручной насос
 
 # Fuel Blocks

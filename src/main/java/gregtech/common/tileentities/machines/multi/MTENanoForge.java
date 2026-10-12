@@ -748,7 +748,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         tt.addMachineType("Nanite Fabricator")
             .addInfo("Requires insane amounts of power to create nanites")
             .addInfo("Each tier requires some structural changes")
-            .addInfo("Machine tier depends on Nanite in controller slot")
+            .addInfo("Machine Tier depends on Nanite in controller slot")
             .addInfo("Tier 4 has additional mechanics, check the controller")
             .addSeparator()
             .addInfo(
