@@ -1356,6 +1356,16 @@ public class GTStructureUtility {
         }
 
         @Override
+        public String getDescriptionLangKey() {
+            return proxiedHatch.getDescriptionLangKey();
+        }
+
+        @Override
+        public List<String> getDescriptionLangKeys() {
+            return proxiedHatch.getDescriptionLangKeys();
+        }
+
+        @Override
         public long count(T t) {
             return proxiedHatch.count(t);
         }

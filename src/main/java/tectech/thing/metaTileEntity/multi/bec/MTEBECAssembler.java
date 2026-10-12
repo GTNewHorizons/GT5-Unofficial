@@ -29,7 +29,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
@@ -49,7 +48,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECAssemblerGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -144,7 +142,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Assembler, Observation Array")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_assembler"))
             .addMarkdown(
                 new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"),
                 ImmutableMap.of("max-nanites", NumberFormatUtil.formatNumber(MAX_NANITES)))
@@ -161,23 +160,12 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
             .addCasing("560", CondensateTransformativeCoil.getLocalizedName(), false)
             .addCasing("464", CondensateGuidanceCoil.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
-            .addMiscHatch(
-                "1+",
-                "Nanite Containment Bus",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"),
-                1)
-            .addMiscHatch(
-                "1+",
-                "Line-of-Sight Connector Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.los-hatch-pos"),
-                3)
-            .addMiscHatch(
-                "1-2",
-                "Bose-Einstein Condensate Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"),
-                2)
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.NaniteContainmentBus"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.los-hatch-pos"), 3)
+            .addMiscHatch("1-2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"), 2)
             .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
+        // spotless:on
     }
 
     @Override
@@ -307,11 +295,17 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
     private enum NaniteHatchElement implements IHatchElement<MTEBECAssembler> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.NaniteContainmentBus");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Arrays.asList(MTEHatchNanite.class);
+        }
+
+        NaniteHatchElement(String name) {
+            this.name = name;
         }
 
         @Override
@@ -333,7 +327,12 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
         @Override
         public String getDisplayName() {
-            return ItemList.Hatch_Nanite.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -344,16 +343,27 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
     public enum AssemblerLineOfSightHatch implements IHatchElement<MTEBECAssembler> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.LineOfSightHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return List.of(MTEHatchLoS.class);
         }
 
+        AssemblerLineOfSightHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_LineOfSight_Connector.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override

@@ -25,12 +25,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -57,12 +60,12 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCentrifuge>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -76,10 +79,10 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final int OFFSET_Z = 1;
 
     private static final int BASE_PARALLEL_PER_TIER = 4;
-    private static final float SPEED = 2f;
-    private static final float EXTRA_SPEED = 1f;
-    private static final float MAX_SPEED = SPEED + EXTRA_SPEED;
-    private static final float EU_EFFICIENCY = 0.9f;
+    private static final double SPEED = 2.0D;
+    private static final double EXTRA_SPEED = 1.0D;
+    private static final double MAX_SPEED = SPEED + EXTRA_SPEED;
+    private static final double EU_EFFICIENCY = 0.9D;
 
     private int momentum = 0;
     private int runningTickCounter = 0;
@@ -175,34 +178,30 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Centrifuge")
-            .addInfo(
-                TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER) + " - "
-                    + TooltipHelper.parallelText(BASE_PARALLEL_PER_TIER * 2)
-                    + " Parallels per "
-                    + TooltipHelper.coloredText("Voltage", TooltipHelper.TIER_COLOR)
-                    + " Tier")
-            .addInfo(TooltipHelper.speedText(SPEED) + " - " + TooltipHelper.speedText(MAX_SPEED) + " Speed")
-            .addInfo(
-                TooltipHelper.coloredText("Parallels", TooltipHelper.PARALLEL_COLOR) + " and "
-                    + TooltipHelper.coloredText("Speed", TooltipHelper.SPEED_COLOR)
-                    + " increase as the machine gains momentum")
-            .addInfo("Momentum is lost at four times the rate it is gained")
-            .addStaticEuEffInfo(EU_EFFICIENCY)
-            .addInfo("Disable animations with a screwdriver")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.centrifuge"))
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-centrifuge"),
+                ImmutableMap.<String, Object>builder()
+                    .put("min_parallels", formatNumber(BASE_PARALLEL_PER_TIER))
+                    .put("max_parallels", formatNumber((BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / 100D)))
+                    .put("min_speed", formatNumber(SPEED * 100))
+                    .put("max_speed", formatNumber((SPEED + EXTRA_SPEED) * 100))
+                    .put("eu_eff", formatNumber(EU_EFFICIENCY * 100))
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front center, 3rd layer")
-            .addCasing("6-32", "Centrifuge Casing", false)
-            .addCasing("24", "Eglin Steel Frame Box", false)
-            .addCasing("18", "Large Sieve Grate", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputAny("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("6-32", Casings.CentrifugeCasing.getLocalizedName(), false)
+            .addCasing("24", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.EGLIN_STEEL), false)
+            .addCasing("18", Casings.LargeSieveGrate.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Ducked")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -223,12 +222,12 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     private Double getSpeedWithMomentum() {
-        return 1D / (SPEED + EXTRA_SPEED * momentum / 100);
+        return 1.0D / (SPEED + EXTRA_SPEED * momentum / 100D);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) ((BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / 100F)
+        return (int) ((BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / 100D)
             * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 

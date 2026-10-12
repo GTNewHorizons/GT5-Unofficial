@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,6 +21,8 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     private static final FluidStack ANTIMATTER = Materials.Antimatter.getFluid(1);
 
+    private static final String DATA_STICK_DATA_TYPE = "AntimatterOutputHatch";
+
     public AntimatterOutputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 11);
     }
@@ -33,6 +36,27 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     public void setLockedFluid(Fluid lockedFluid) {
         this.lockedFluid = ANTIMATTER.getFluid();
         markDirty();
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type", DATA_STICK_DATA_TYPE);
+        nbt.setByte(MODE_NBT_KEY, mMode);
+        return nbt;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !DATA_STICK_DATA_TYPE.equals(nbt.getString("type"))) return false;
+        mMode = nbt.getByte(MODE_NBT_KEY);
+        markDirty();
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return DATA_STICK_DATA_TYPE;
     }
 
     @Override

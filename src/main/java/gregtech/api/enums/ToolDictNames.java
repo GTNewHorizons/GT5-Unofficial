@@ -29,7 +29,6 @@ public enum ToolDictNames {
     craftingToolForgeHammer,
     craftingToolScrewdriver,
     craftingToolSolderingIron,
-    craftingToolSolderingMetal,
     craftingToolHandPump,
     craftingToolAngleGrinder,
     craftingToolElectricSnips,

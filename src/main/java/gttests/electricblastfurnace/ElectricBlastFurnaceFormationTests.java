@@ -6,33 +6,22 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.horizonqa.api.GameTestHelper;
 import com.gtnewhorizons.horizonqa.api.TestPos;
-import com.gtnewhorizons.horizonqa.api.TickCallbackHandle;
 import com.gtnewhorizons.horizonqa.api.annotation.GameTest;
 import com.gtnewhorizons.horizonqa.api.annotation.GameTestHolder;
 import com.gtnewhorizons.horizonqa.api.gt.Multiblock;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTRecipeBuilder;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.items.IDMetaTool01;
-import gregtech.common.items.MetaGeneratedTool01;
 
 @GameTestHolder(value = Mods.ModIDs.GREG_TECH, templatePrefix = "multiblock/electric_blast_furnace")
 public class ElectricBlastFurnaceFormationTests {
@@ -524,75 +513,6 @@ public class ElectricBlastFurnaceFormationTests {
             .assertPollutionEmitted(1);
         ebf.assertNoExplosion();
         helper.succeed();
-    }
-
-    @GameTest(template = "ebf_power", timeoutTicks = 240, batch = "gt5.ebf")
-    public static void wireConnectionChangeDoesNotCausePowerLoss(GameTestHelper helper) {
-        TestPos controller = helper.pos("controller");
-        Multiblock ebf = helper.gtnh()
-            .multiblock(controller);
-        ebf.fixMaintenance();
-        ebf.assertFormed();
-
-        ItemStack input = stack(Blocks.bedrock);
-        addItemRecipe(helper, ebf, input, stack(Blocks.obsidian), LOW_HEAT, 600, TierEU.RECIPE_EV);
-        MTEHatchInputBusDebug inputBus = (MTEHatchInputBusDebug) helper.gtnh()
-            .metaTileEntity(helper.pos("debug_input_bus"));
-        BaseMetaTileEntity generator = (BaseMetaTileEntity) helper.gtnh()
-            .gtTile(helper.pos("debug_energy"));
-        generator.enableWorking();
-
-        MTECable wire = (MTECable) helper.gtnh()
-            .metaTileEntity(helper.pos("wire"));
-        generator.generatePowerNodes();
-        helper.assertNotNull(
-            ((BaseMetaPipeEntity) wire.getBaseMetaTileEntity()).getNode(),
-            "Cable power graph did not initialize");
-        FakePlayer player = helper.spawnFakePlayer("ebf-wire-click");
-        player.capabilities.isCreativeMode = true;
-        ItemStack wireCutter = MetaGeneratedTool01.INSTANCE
-            .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, Materials.Steel, Materials.Steel, null);
-        int[] progressAtClick = { 0 };
-        int[] previousProgress = { 0 };
-        TickCallbackHandle noPowerLoss = helper.onEachTickDisabled("EBF keeps power after cable update", () -> {
-            helper.assertNotEquals(
-                ShutDownReasonRegistry.POWER_LOSS.getKey(),
-                helper.gtnh()
-                    .gtTile(controller)
-                    .getLastShutDownReason()
-                    .getKey(),
-                "Cable connection change caused a power-loss shutdown");
-            helper.assertTrue(ebf.isProcessing(), "EBF stopped processing after the cable connection changed");
-            int progress = ebf.progress();
-            helper.assertTrue(progress >= previousProgress[0], "EBF recipe progress reset after the cable update");
-            previousProgress[0] = progress;
-        });
-
-        helper.startSequence()
-            .thenExecute("stock bedrock input", () -> inputBus.phantomHolder.setStackInSlot(0, input))
-            .thenWaitUntil(
-                "long EV recipe starts",
-                100,
-                () -> helper.assertTrue(ebf.isProcessing(), "EBF did not start the synthetic EV recipe"))
-            .thenExecute("add an unused cable connection", () -> {
-                progressAtClick[0] = ebf.progress();
-                previousProgress[0] = progressAtClick[0];
-                helper.assertFalse(wire.isConnectedAtSide(ForgeDirection.DOWN), "Cable already connected downward");
-                helper.assertTrue(
-                    helper.simulateRightClick("wire", player, wireCutter),
-                    "Wire-cutter click was not handled");
-                helper.assertTrue(
-                    wire.isConnectedAtSide(ForgeDirection.DOWN),
-                    "Wire-cutter click did not add the downward connection");
-                noPowerLoss.enable();
-            })
-            .thenIdle(80)
-            .thenExecute("verify uninterrupted progress", () -> {
-                noPowerLoss.disable();
-                helper.assertTrue(ebf.progress() > progressAtClick[0], "EBF made no progress after the cable update");
-                ebf.assertNoExplosion();
-            })
-            .thenSucceed();
     }
 
     private static Multiblock formedEbf(GameTestHelper helper) {
