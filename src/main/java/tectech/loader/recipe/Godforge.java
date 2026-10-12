@@ -77,7 +77,7 @@ public class Godforge implements Runnable {
                 GT_FML_LOGGER.error("Godforge.convertToFluid: no unification data for {}", items[i]);
                 continue;
             }
-            molten[i] = MaterialUtils.molten(association.mMaterial.mMaterial, 1 * INGOTS);
+            molten[i] = MaterialUtils.molten(association.material.mMaterial, 1 * INGOTS);
         }
 
         return molten;
@@ -1025,14 +1025,14 @@ public class Godforge implements Runnable {
         FluidStack contained = GTUtility.getFluidForFilledItem(stack, true);
         if (contained != null) return contained;
         ItemData data = MaterialData.getAssociation(stack);
-        Material mat = data != null ? data.mMaterial.mMaterial : null;
+        Material mat = data != null ? data.material.mMaterial : null;
         if (mat != null) {
             if (MaterialUtils.hasMolten(mat)) {
-                return MaterialUtils.molten(mat, INGOTS * data.mMaterial.mAmount / GTValues.M);
+                return MaterialUtils.molten(mat, INGOTS * data.material.mAmount / GTValues.M);
             } else if (MaterialUtils.fluidOf(mat) != null) {
                 return MaterialUtils.fluid(
                     mat,
-                    mat.getProperty(GTMaterialProperties.DUST_FLUID_AMOUNT) * data.mMaterial.mAmount / GTValues.M);
+                    mat.getProperty(GTMaterialProperties.DUST_FLUID_AMOUNT) * data.material.mAmount / GTValues.M);
             }
         }
         int[] oreIDs = OreDictionary.getOreIDs(stack);

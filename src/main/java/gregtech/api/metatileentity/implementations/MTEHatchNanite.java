@@ -36,7 +36,7 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
         if (getItemStack() == null) return null;
         ItemData data = MaterialData.getAssociation(getItemStack());
         if (data == null) return null;
-        return data.mMaterial.mMaterial;
+        return data.material.mMaterial;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
         if (data == null) {
             return false;
         }
-        OrePrefixes prefix = data.mPrefix;
+        OrePrefixes prefix = data.prefix;
         return prefix == OrePrefixes.nanite;
     }
 

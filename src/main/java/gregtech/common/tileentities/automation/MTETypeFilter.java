@@ -122,7 +122,7 @@ public class MTETypeFilter extends MTESpecialFilter {
     private void copyHeldItemPrefix(ItemStack handStack) {
         ItemData data = MaterialData.getAssociation(handStack);
         if (data != null && data.hasValidPrefixData()) {
-            this.mPrefix = data.mPrefix;
+            this.mPrefix = data.prefix;
             this.mRotationIndex = -1;
         }
     }
@@ -183,7 +183,7 @@ public class MTETypeFilter extends MTESpecialFilter {
     protected boolean isStackAllowed(ItemStack aStack) {
         if (this.mPrefix == OrePrefixes.ore) {
             ItemData data = MaterialData.get(aStack);
-            if (data != null && data.mPrefix != null && OREBLOCK_PREFIXES.contains(data.mPrefix)) {
+            if (data != null && data.prefix != null && OREBLOCK_PREFIXES.contains(data.prefix)) {
                 return true;
             }
         }

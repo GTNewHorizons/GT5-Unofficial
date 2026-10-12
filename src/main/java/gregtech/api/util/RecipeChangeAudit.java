@@ -303,9 +303,9 @@ public final class RecipeChangeAudit {
         result.addProperty("damage", stack.getItemDamage());
         result.addProperty("amount", stack.stackSize);
         ItemData association = MaterialData.getAssociation(stack);
-        if (association != null && association.mPrefix != null && association.mMaterial != null) {
-            result.addProperty("prefix", association.mPrefix.getName());
-            result.addProperty("material", MaterialUtils.internalName(association.mMaterial.mMaterial));
+        if (association != null && association.prefix != null && association.material != null) {
+            result.addProperty("prefix", association.prefix.getName());
+            result.addProperty("material", MaterialUtils.internalName(association.material.mMaterial));
         }
         if (stack.hasTagCompound()) result.addProperty(
             "nbt",

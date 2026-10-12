@@ -38,12 +38,12 @@ public class BehaviourProspecting extends BehaviourNone {
     private static com.ruling_0.materiallib.api.Material getOreMaterial(Block block, int meta) {
         ItemData association = MaterialData.getAssociation(new ItemStack(block, 1, meta));
         if (association == null) return null;
-        if (association.mPrefix == null) return null;
-        if (association.mMaterial == null) return null;
-        if (!association.mPrefix.toString()
+        if (association.prefix == null) return null;
+        if (association.material == null) return null;
+        if (!association.prefix.toString()
             .startsWith("ore")) return null;
 
-        return association.mMaterial.mMaterial;
+        return association.material.mMaterial;
     }
 
     @Override

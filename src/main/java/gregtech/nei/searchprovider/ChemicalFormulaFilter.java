@@ -130,7 +130,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
 
         ItemData data = MaterialData.getAssociation(itemstack);
         if (data != null) {
-            return MaterialUtils.chemicalFormula(data.mMaterial.mMaterial);
+            return MaterialUtils.chemicalFormula(data.material.mMaterial);
         }
 
         return "";

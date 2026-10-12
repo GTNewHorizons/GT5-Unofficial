@@ -697,13 +697,13 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(inputItem, false, null);
                 if (smeltedOutput != null) {
                     ItemData data = MaterialData.get(inputItem);
-                    if (data != null && data.mPrefix != null
-                        && data.mPrefix.getMaterialPostfix()
+                    if (data != null && data.prefix != null
+                        && data.prefix.getMaterialPostfix()
                             .equals(" Ore")) {
                         ItemData outputData = MaterialData.get(smeltedOutput);
                         if (outputData != null) {
-                            FluidStack output = MaterialUtils.molten(outputData.mMaterial.mMaterial, 1);
-                            long amount = outputData.mPrefix.getMaterialAmount() / (GTValues.M / 144L)
+                            FluidStack output = MaterialUtils.molten(outputData.material.mMaterial, 1);
+                            long amount = outputData.prefix.getMaterialAmount() / (GTValues.M / 144L)
                                 * smeltedOutput.stackSize;
                             if (output != null) {
                                 int toDo = Math.min(paraToDoLeft, inputItem.stackSize);
@@ -887,8 +887,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(inputItem, false, null);
                     if (smeltedOutput != null) {
                         ItemData data = MaterialData.get(inputItem);
-                        if (data != null && data.mPrefix != null
-                            && data.mPrefix.getMaterialPostfix()
+                        if (data != null && data.prefix != null
+                            && data.prefix.getMaterialPostfix()
                                 .equals(" Ore")) {
                             GTRecipe fake = fakeRecipe();
                             fake.mEUt = 16;

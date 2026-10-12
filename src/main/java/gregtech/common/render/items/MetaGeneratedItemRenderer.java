@@ -75,9 +75,9 @@ public final class MetaGeneratedItemRenderer implements IItemRenderer {
             // Handle fluid rendering.
             if (aMaterialRenderer == null) {
                 ItemData itemData = MaterialData.getAssociation(aStack);
-                if (itemData != null && itemData.mMaterial != null) {
+                if (itemData != null && itemData.material != null) {
                     GeneratedMaterialRenderer materialRenderer = MaterialRenderers
-                        .rendererOf(itemData.mMaterial.mMaterial);
+                        .rendererOf(itemData.material.mMaterial);
                     if (materialRenderer != null) {
                         aMaterialRenderer = materialRenderer;
                     }

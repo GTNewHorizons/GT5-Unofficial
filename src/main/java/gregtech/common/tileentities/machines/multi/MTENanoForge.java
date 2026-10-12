@@ -443,8 +443,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                         if (data == null) {
                             continue;
                         }
-                        if (data.mPrefix == OrePrefixes.nanite) {
-                            inputNaniteMats.add(data.mMaterial);
+                        if (data.prefix == OrePrefixes.nanite) {
+                            inputNaniteMats.add(data.material);
                         }
                     }
 
@@ -463,14 +463,14 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                                 if (data == null) {
                                     continue;
                                 }
-                                if (data.mPrefix == OrePrefixes.nanite) {
+                                if (data.prefix == OrePrefixes.nanite) {
                                     if (inputItem.isItemEqual(outputNanite)) {
                                         busWithNaniteIndex = i;
                                         slotWithNaniteIndex = j;
                                         foundNanite = true;
                                     } else {
                                         if (!inputNaniteMats
-                                            .contains(MaterialData.getAssociation(inputItem).mMaterial)) {
+                                            .contains(MaterialData.getAssociation(inputItem).material)) {
                                             foundNanite = false;
                                             break busScan;
                                         }
@@ -483,7 +483,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     if (renderActive) {
                         RenderingTileEntityNanoForge tile = getRenderer();
                         ItemData data = MaterialData.getAssociation(outputNanite);
-                        Material mat = data != null ? data.mMaterial.mMaterial : null;
+                        Material mat = data != null ? data.material.mMaterial : null;
                         short[] color = mat == null ? null : MaterialUtils.rgba(mat);
                         if (color != null) {
                             tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);

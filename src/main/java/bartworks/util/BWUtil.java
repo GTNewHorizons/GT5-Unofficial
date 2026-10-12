@@ -65,7 +65,7 @@ public class BWUtil {
         if (!ret.contains("%material")) return ret;
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack)) {
-            matname = MaterialUtils.localName(MaterialData.getAssociation(itemStack).mMaterial.mMaterial);
+            matname = MaterialUtils.localName(MaterialData.getAssociation(itemStack).material.mMaterial);
         }
         return ret.replace("%material", matname);
     }
@@ -101,9 +101,9 @@ public class BWUtil {
     }
 
     public static boolean checkStackAndPrefix(ItemData association) {
-        return association != null && association.mPrefix != null
-            && association.mMaterial != null
-            && association.mMaterial.mMaterial != null;
+        return association != null && association.prefix != null
+            && association.material != null
+            && association.material.mMaterial != null;
     }
 
     @Deprecated

@@ -96,8 +96,8 @@ public enum NaniteTier {
         ItemData data = MaterialData.getAssociation(stack);
 
         if (data == null) return null;
-        if (data.mPrefix != OrePrefixes.nanite) return null;
+        if (data.prefix != OrePrefixes.nanite) return null;
 
-        return fromMaterial(data.mMaterial.mMaterial);
+        return fromMaterial(data.material.mMaterial);
     }
 }

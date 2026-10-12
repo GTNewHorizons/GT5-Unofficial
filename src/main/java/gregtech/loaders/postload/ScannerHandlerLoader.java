@@ -157,8 +157,8 @@ public class ScannerHandlerLoader {
         ItemData tData = MaterialData.getAssociation(aInput);
         if (tData == null) return null;
         // must be a dust or a cell
-        if (tData.mPrefix != OrePrefixes.dust && tData.mPrefix != OrePrefixes.cell) return null;
-        return getElementScanResult(tData.mMaterial.mMaterial);
+        if (tData.prefix != OrePrefixes.dust && tData.prefix != OrePrefixes.cell) return null;
+        return getElementScanResult(tData.material.mMaterial);
     }
 
     private static Material[] unscannableElements;

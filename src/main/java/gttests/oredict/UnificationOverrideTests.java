@@ -216,9 +216,9 @@ public class UnificationOverrideTests {
             mismatches.add(pair + ": the ore-dictionary name stands for " + describe(named));
         }
         ItemData association = MaterialData.getAssociation(new ItemStack(item, 1, meta));
-        if (association == null || association.mPrefix != prefix
-            || association.mMaterial == null
-            || association.mMaterial.mMaterial != material) {
+        if (association == null || association.prefix != prefix
+            || association.material == null
+            || association.material.mMaterial != material) {
             mismatches.add(pair + ": association is " + association);
         }
     }

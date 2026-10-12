@@ -257,9 +257,9 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         ItemData tPrefixMaterial = MaterialData.getAssociation(aResult);
         if (tPrefixMaterial != null && tPrefixMaterial.hasValidPrefixMaterialData()
             && !OreDictUtils.isBlacklisted(aResult)
-            && !tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty()) {
-            for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
-                tResults.add(MaterialParts.stack(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+            && !tPrefixMaterial.prefix.mFamiliarPrefixes.isEmpty()) {
+            for (OrePrefixes tPrefix : tPrefixMaterial.prefix.mFamiliarPrefixes) {
+                tResults.add(MaterialParts.stack(tPrefix, tPrefixMaterial.material.mMaterial, 1L));
             }
         }
 
@@ -334,9 +334,9 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         ItemData tPrefixMaterial = MaterialData.getAssociation(aInput);
         ArrayList<ItemStack> tInputs = new ArrayList<>();
         tInputs.add(aInput);
-        if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
-            for (OrePrefixes tPrefix : tPrefixMaterial.mPrefix.mFamiliarPrefixes) {
-                tInputs.add(MaterialParts.stack(tPrefix, tPrefixMaterial.mMaterial.mMaterial, 1L));
+        if ((tPrefixMaterial != null) && (!tPrefixMaterial.prefix.mFamiliarPrefixes.isEmpty())) {
+            for (OrePrefixes tPrefix : tPrefixMaterial.prefix.mFamiliarPrefixes) {
+                tInputs.add(MaterialParts.stack(tPrefix, tPrefixMaterial.material.mMaterial, 1L));
             }
         }
         if (aInput != null && ItemList.Tool_DataStick.isStackEqual(aInput, false, true)) {

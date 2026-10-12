@@ -209,6 +209,6 @@ public class ProcessingOreSmelting implements PartRecipeGenerator {
 
         if (smeltingOutput != null) GTModHandler.addSmeltingRecipe(
             stack,
-            ProcessingSubstitutes.smelting(material, MaterialData.getAssociation(stack).mPrefix, smeltingOutput));
+            ProcessingSubstitutes.smelting(material, MaterialData.getAssociation(stack).prefix, smeltingOutput));
     }
 }

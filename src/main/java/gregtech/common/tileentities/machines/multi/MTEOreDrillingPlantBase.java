@@ -937,15 +937,15 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     private boolean doUseMaceratorRecipe(ItemStack currentItem) {
         ItemData itemData = MaterialData.get(currentItem);
-        return itemData == null || itemData.mPrefix != OrePrefixes.crushed && itemData.mPrefix != OrePrefixes.dustImpure
-            && itemData.mPrefix != OrePrefixes.dust
-            && itemData.mPrefix != OrePrefixes.gem
-            && itemData.mPrefix != OrePrefixes.gemChipped
-            && itemData.mPrefix != OrePrefixes.gemExquisite
-            && itemData.mPrefix != OrePrefixes.gemFlawed
-            && itemData.mPrefix != OrePrefixes.gemFlawless
-            && itemData.mMaterial.mMaterial != Materials.Oilsands
-            && !MaterialUtils.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.ICE_ORE);
+        return itemData == null || itemData.prefix != OrePrefixes.crushed && itemData.prefix != OrePrefixes.dustImpure
+            && itemData.prefix != OrePrefixes.dust
+            && itemData.prefix != OrePrefixes.gem
+            && itemData.prefix != OrePrefixes.gemChipped
+            && itemData.prefix != OrePrefixes.gemExquisite
+            && itemData.prefix != OrePrefixes.gemFlawed
+            && itemData.prefix != OrePrefixes.gemFlawless
+            && itemData.material.mMaterial != Materials.Oilsands
+            && !MaterialUtils.hasFlag(itemData.material.mMaterial, GTMaterialFlag.ICE_ORE);
     }
 
     private boolean tryConsumeDrillingFluid(boolean simulate) {

@@ -79,7 +79,7 @@ public class MTETypeFilterGui extends MTESpecialFilterBaseGui<MTETypeFilter> {
                     private void copyHeldItemPrefix(ItemStack handStack) {
                         ItemData data = MaterialData.getAssociation(handStack);
                         if (data != null && data.hasValidPrefixData()) {
-                            orePrefixSyncer.setValue(data.mPrefix.toString());
+                            orePrefixSyncer.setValue(data.prefix.toString());
                             rotationIndexSyncer.setValue(-1);
                         }
                     }

@@ -193,7 +193,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, ISmart
                         this.material = this.lastUsedItem.getDisplayName();
                         ItemData itemData = MaterialData.getAssociation(lStack);
                         if (itemData != null) {
-                            short[] rgba = MaterialUtils.rgba(itemData.mMaterial.mMaterial);
+                            short[] rgba = MaterialUtils.rgba(itemData.material.mMaterial);
                             this.colorForGUI = new short[] { rgba[0], rgba[1], rgba[2] };
                         } else {
                             this.colorForGUI = getEmptyColor();
@@ -226,7 +226,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, ISmart
                     this.material = lStack.getDisplayName();
                     ItemData itemData = MaterialData.getAssociation(lStack);
                     if (itemData != null) {
-                        short[] rgba = MaterialUtils.rgba(itemData.mMaterial.mMaterial);
+                        short[] rgba = MaterialUtils.rgba(itemData.material.mMaterial);
                         this.colorForGUI = new short[] { rgba[0], rgba[1], rgba[2] };
                     } else {
                         this.colorForGUI = getEmptyColor();

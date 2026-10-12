@@ -195,7 +195,7 @@ public class MaterialParts {
     public static boolean isPartOf(@Nullable ItemStack stack, @Nullable Material material) {
         if (material == null) return false;
         ItemData association = MaterialData.getAssociation(stack);
-        return association != null && association.mMaterial.mMaterial == material;
+        return association != null && association.material.mMaterial == material;
     }
 
     /// Returns the shapes serving each oredict prefix. Where several shapes share a prefix, the shape named after

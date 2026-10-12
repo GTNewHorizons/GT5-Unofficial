@@ -154,11 +154,11 @@ public final class MaterialData {
         if (data.hasValidMaterialData()) {
             long recyclableMaterialAmount = 0;
 
-            if (!MaterialUtils.hasFlag(data.mMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING)) {
-                recyclableMaterialAmount += data.mMaterial.mAmount >= 0 ? data.mMaterial.mAmount : M;
+            if (!MaterialUtils.hasFlag(data.material.mMaterial, GTMaterialFlag.NO_RECYCLING)) {
+                recyclableMaterialAmount += data.material.mAmount >= 0 ? data.material.mAmount : M;
             }
 
-            for (MaterialStack material : data.mByProducts) {
+            for (MaterialStack material : data.byProducts) {
                 if (!MaterialUtils.hasFlag(material.mMaterial, GTMaterialFlag.NO_RECYCLING)) {
                     recyclableMaterialAmount += material.mAmount >= 0 ? material.mAmount : M;
                 }
@@ -198,11 +198,11 @@ public final class MaterialData {
 
     private static boolean shouldRegisterMaterialRecycling(ItemData data) {
         if (data == null || isHighPressurePipe(data)) return false;
-        return data.hasExplicitComposition || !data.hasValidPrefixData() || data.mPrefix.isRecyclable();
+        return data.hasExplicitComposition || !data.hasValidPrefixData() || data.prefix.isRecyclable();
     }
 
     private static boolean isHighPressurePipe(ItemData data) {
         return !data.hasExplicitComposition && data.hasValidPrefixMaterialData()
-            && PipeMaterials.isHighPressurePipe(data.mPrefix, data.mMaterial.mMaterial);
+            && PipeMaterials.isHighPressurePipe(data.prefix, data.material.mMaterial);
     }
 }

@@ -699,11 +699,11 @@ public final class RecipeMaps {
                 aOutput = aOutput / tScale;
                 if (!isArrayEmptyOrNull(r.mOutputs)) {
                     ItemData tData = MaterialData.get(r.mOutputs[0]);
-                    if (tData != null && (tData.mPrefix == OrePrefixes.dust
-                        || OrePrefixes.dust.mFamiliarPrefixes.contains(tData.mPrefix))) {
+                    if (tData != null && (tData.prefix == OrePrefixes.dust
+                        || OrePrefixes.dust.mFamiliarPrefixes.contains(tData.prefix))) {
                         r.mOutputs[0] = MaterialParts.dustOf(
-                            tData.mMaterial.mMaterial,
-                            tData.mMaterial.mAmount * r.mOutputs[0].stackSize / tScale);
+                            tData.material.mMaterial,
+                            tData.material.mAmount * r.mOutputs[0].stackSize / tScale);
                     } else {
                         if (r.mOutputs[0].stackSize / tScale == 0) r.mOutputs[0] = GTValues.NI;
                         else r.mOutputs[0] = copyAmount(r.mOutputs[0].stackSize / tScale, r.mOutputs[0]);
@@ -2295,9 +2295,9 @@ public final class RecipeMaps {
         ItemData outputData = MaterialData.getAssociation(builder.getItemOutput(0));
 
         if (inputData == null || outputData == null) return false;
-        if (inputData.mMaterial.mMaterial != outputData.mMaterial.mMaterial) return false;
+        if (inputData.material.mMaterial != outputData.material.mMaterial) return false;
 
-        return isGemUpgradeStep(inputData.mPrefix, outputData.mPrefix);
+        return isGemUpgradeStep(inputData.prefix, outputData.prefix);
     }
 
     private static boolean isGemUpgradeStep(OrePrefixes inputPrefix, OrePrefixes outputPrefix) {

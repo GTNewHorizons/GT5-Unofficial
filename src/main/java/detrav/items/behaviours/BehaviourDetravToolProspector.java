@@ -312,7 +312,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                             ItemStack oreStack = new ItemStack(tBlock, 1, tMetaID);
 
                             itemData = MaterialData.getAssociation(oreStack);
-                            if (itemData != null && itemData.mPrefix.toString()
+                            if (itemData != null && itemData.prefix.toString()
                                 .startsWith("ore")) {
                                 addOreToHashMap(oreStack.getDisplayName(), aPlayer);
                             }

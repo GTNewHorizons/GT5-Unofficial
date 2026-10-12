@@ -447,8 +447,8 @@ public class GTAchievements {
         }
         ItemData data = MaterialData.get(stack);
 
-        if ((data != null) && (data.mPrefix == OrePrefixes.ingot)) {
-            Material tMaterial = data.mMaterial.mMaterial;
+        if ((data != null) && (data.prefix == OrePrefixes.ingot)) {
+            Material tMaterial = data.material.mMaterial;
             if (tMaterial == Materials.Aluminium) {
                 issueAchievement(player, "gtaluminium");
             } else if (tMaterial == Materials.Titanium) {
@@ -501,7 +501,7 @@ public class GTAchievements {
         }
         ItemData data = MaterialData.get(stack);
         if (data != null) {
-            if (data.mPrefix == OrePrefixes.dust && data.mMaterial.mMaterial == Materials.Bronze) {
+            if (data.prefix == OrePrefixes.dust && data.material.mMaterial == Materials.Bronze) {
                 issueAchievement(player, "bronze");
             }
         }
@@ -667,15 +667,15 @@ public class GTAchievements {
             return;
         }
         ItemData data = MaterialData.get(stack);
-        if (data != null && data.mPrefix != null) {
-            if (data.mPrefix == OrePrefixes.dust) {
-                if (data.mMaterial.mMaterial == Materials.Lutetium) {
+        if (data != null && data.prefix != null) {
+            if (data.prefix == OrePrefixes.dust) {
+                if (data.material.mMaterial == Materials.Lutetium) {
                     issueAchievement(player, "newmetal");
                 }
-                if (data.mMaterial.mMaterial != Materials.Gunpowder) {
+                if (data.material.mMaterial != Materials.Gunpowder) {
                     issueAchievement(player, "cleandust");
                 }
-            } else if (data.mPrefix.getName()
+            } else if (data.prefix.getName()
                 .startsWith("ore")) {
                     int data_getAllMaterialStacks_sS = data.getAllMaterialStacks()
                         .size();
@@ -692,16 +692,16 @@ public class GTAchievements {
                             issueAchievement(event.entityPlayer, "mineOre");
                         }
                     }
-                } else if (data.mPrefix == OrePrefixes.crushed) {
+                } else if (data.prefix == OrePrefixes.crushed) {
                     issueAchievement(player, "crushed");
-                } else if (data.mPrefix == OrePrefixes.crushedPurified) {
+                } else if (data.prefix == OrePrefixes.crushedPurified) {
                     issueAchievement(player, "washing");
-                } else if (data.mPrefix == OrePrefixes.crushedCentrifuged) {
+                } else if (data.prefix == OrePrefixes.crushedCentrifuged) {
                     issueAchievement(player, "spinit");
-                } else if (data.mMaterial.mMaterial == Materials.Steel) {
-                    if (data.mPrefix == OrePrefixes.ingot && stack.stackSize == stack.getMaxStackSize()) {
+                } else if (data.material.mMaterial == Materials.Steel) {
+                    if (data.prefix == OrePrefixes.ingot && stack.stackSize == stack.getMaxStackSize()) {
                         issueAchievement(player, "steel");
-                    } else if (data.mPrefix == OrePrefixes.nugget && Thaumcraft.isModLoaded()
+                    } else if (data.prefix == OrePrefixes.nugget && Thaumcraft.isModLoaded()
                         && ThaumcraftApiHelper.isResearchComplete(player.getDisplayName(), "GT_IRON_TO_STEEL")) {
                             issueAchievement(player, "steel");
                         }

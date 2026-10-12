@@ -82,16 +82,16 @@ public class MicrowaveBackend extends NonGTBackend {
 
             ItemData itemData = MaterialData.get(item);
             if (itemData != null) {
-                if (itemData.mMaterial != null && itemData.mMaterial.mMaterial != null) {
-                    if (MaterialUtils.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.METAL)
-                        || MaterialUtils.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
+                if (itemData.material != null && itemData.material.mMaterial != null) {
+                    if (MaterialUtils.hasFlag(itemData.material.mMaterial, GTMaterialFlag.METAL)
+                        || MaterialUtils.hasFlag(itemData.material.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
                         GTLoggers.GT_EXPLOSION_LOGGER.info("Microwave Explosion due to METAL insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(EXPLODE, true)
                             .build()
                             .orElse(null);
                     }
-                    if (MaterialUtils.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.FLAMMABLE)) {
+                    if (MaterialUtils.hasFlag(itemData.material.mMaterial, GTMaterialFlag.FLAMMABLE)) {
                         GTLoggers.GT_EXPLOSION_LOGGER.info("Microwave INFLAMMATION due to FLAMMABLE insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(ON_FIRE, true)
@@ -99,7 +99,7 @@ public class MicrowaveBackend extends NonGTBackend {
                             .orElse(null);
                     }
                 }
-                for (MaterialStack materialStack : itemData.mByProducts) {
+                for (MaterialStack materialStack : itemData.byProducts) {
                     if (materialStack == null) continue;
                     if (MaterialUtils.hasFlag(materialStack.mMaterial, GTMaterialFlag.METAL)
                         || MaterialUtils.hasFlag(materialStack.mMaterial, GTMaterialFlag.EXPLOSIVE)) {

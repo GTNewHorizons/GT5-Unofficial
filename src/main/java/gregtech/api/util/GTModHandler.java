@@ -1009,8 +1009,8 @@ public class GTModHandler {
     /// name.
     public static ItemStack collisionProbe(ItemData ingredient) {
         if (ingredient.hasValidPrefixMaterialData()
-            && MaterialParts.isCutOver(ingredient.mPrefix, ingredient.mMaterial.mMaterial)) {
-            return MaterialParts.stack(ingredient.mPrefix, ingredient.mMaterial.mMaterial, 1);
+            && MaterialParts.isCutOver(ingredient.prefix, ingredient.material.mMaterial)) {
+            return MaterialParts.stack(ingredient.prefix, ingredient.material.mMaterial, 1);
         }
         return collisionProbe(ingredient.toString());
     }
