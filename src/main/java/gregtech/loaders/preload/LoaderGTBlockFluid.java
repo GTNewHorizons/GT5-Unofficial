@@ -946,7 +946,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerContainers(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L), 2000);
         GTFluidFactory.builder("LiquidOxygen")
             .withDefaultLocalName("Liquid Oxygen")
-            .withStateAndTemperature(GAS, 60)
+            .withStateAndTemperature(GAS, 90)
             .buildAndRegister()
             .configureMaterials(Materials.LiquidOxygen)
             .addLocalizedName(Materials.LiquidOxygen)
