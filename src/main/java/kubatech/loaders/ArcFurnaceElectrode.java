@@ -21,11 +21,13 @@ import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 
 public enum ArcFurnaceElectrode {
 
+    // Empty event handler to generate tooltip text, special effect handled as electrode parameter
     GraphiteElectrode(0, Materials.Graphite, 1, 4, 2d, 4d, 200, 1, 0, e -> {}),
     TantalumElectrode(1, Materials.Tantalum, 1.2d, 2, 4d, 4d, 500, 1.2d, 3),
     MolybdenumElectrode(2, Materials.Molybdenum, 0.9d, 16, 3d, 4d, 400, 0.8d, 1),
     TungstenElectrode(3, Materials.Tungsten, 1, 128, 1d, 4d, 1000, 0.75d, 0.5d),
     TungstenSteelElectrode(4, Materials.TungstenSteel, 0.8d, 256, 1d, 4d, 1600, 0.5d, 0.5d),
+    // Empty event handler to generate tooltip text, special effect handled as electrode parameter
     GrapheneElectrode(5, Materials.Graphene, 2.5d, 16, 2d, 4d, 900, 1, 0, e -> {}),
     YBCOElectrode(6, Materials.YttriumBariumCuprate, 1.2d, 8, 6d, 4d, 900, 1d, 6d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck postRecipe) {
@@ -229,6 +231,7 @@ public enum ArcFurnaceElectrode {
         return parallel;
     }
 
+    // Full = blue, half or more = green, quarter or more = red, below = dark red
     private static String getDurabilityFormatted(int current, int max) {
         double ratio = max > 0 ? (double) current / max : 0;
         EnumChatFormatting color;
@@ -251,6 +254,8 @@ public enum ArcFurnaceElectrode {
     private static String getModifierFormatted(EnumChatFormatting color, double value, String prefix, String suffix) {
         String formatted = color.toString();
         formatted += prefix;
+
+        // trim trailing zeroes if no decimal-precision is needed
         if (value == (int) value) {
             return formatted + (int) value + suffix;
         }
