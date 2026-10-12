@@ -20,6 +20,7 @@ tile.reactorSim.desc.1=Взрывается, но не так сильно...
 
 gt.spacetime_compression_field_generator.name=Генератор поля пространственно-временного сжатия
 gt.time_acceleration_field_generator.name=Генератор поля замедления времени
+gt.stabilisation_field_generator.name=Генератор поля стабилизации
 
 tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
 

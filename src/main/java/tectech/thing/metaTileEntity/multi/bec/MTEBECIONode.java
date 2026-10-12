@@ -205,9 +205,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECIONode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_io_node"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode"));
 
+        // spotless:off
         tt.beginStructureBlock(7, 23, 13, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
             .addCasing("94", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
@@ -218,25 +219,14 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             .addCasing("44", CondensateTransformativeCoil.getLocalizedName(), false)
             .addCasing("32", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("20", CondensateGuidanceCoil.getLocalizedName(), false)
-            .addMiscHatch(
-                "0+",
-                "Nanite Detector Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
-                1)
-            .addMiscHatch(
-                "0+",
-                "Teleportation Node Controller Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
-                1)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.NaniteTierDetectorHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.TeleportationControllerHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
             .addInputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
             .addOutputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
-            .addMiscHatch(
-                "1",
-                "Line-of-Sight Connector Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.los-hatch-pos"),
-                2)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.los-hatch-pos"), 2)
             .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
+        //spotless:on
     }
 
     @Override

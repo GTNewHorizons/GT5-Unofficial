@@ -43,13 +43,13 @@ public class BeamlineRecipeLoader {
          */
 
         coolantMap.put(
-            Materials.LiquidNitrogen.getGas(1L)
+            Materials.LiquidNitrogen.getFluid(1L)
                 .getFluid()
                 .getName(),
             Materials.Nitrogen.getGas(1L)
                 .getFluid());
         coolantMap.put(
-            Materials.LiquidOxygen.getGas(1L)
+            Materials.LiquidOxygen.getFluid(1L)
                 .getFluid()
                 .getName(),
             Materials.Oxygen.getGas(1L)

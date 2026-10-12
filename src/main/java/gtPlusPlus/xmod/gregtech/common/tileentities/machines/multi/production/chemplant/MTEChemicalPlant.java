@@ -146,7 +146,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public String getMachineType() {
-        return "Chemical Plant";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_plant");
     }
 
     @Override
@@ -163,21 +163,17 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     .put("max_casing", GTValues.TIER_COLORS[9] + GTValues.VN[9])
                     .build())
             .beginStructureBlock(7, 7, 7, false)
-            .addController("Front bottom center")
-            .addCasing("70-91", "Metal Machine Casing", true)
-            .addCasing("57", "Machine Casing", true)
-            .addCasing("27", "Heating Coil", true)
-            .addCasing("18", "Pipe Casing", true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("70-91", StatCollector.translateToLocal("GT5U.MBTT.Tiers.MetalMachineCasing"), true)
+            .addCasing("57", StatCollector.translateToLocal("GT5U.MBTT.Tiers.MachineCasing"), true)
+            .addCasing("27", StatCollector.translateToLocal("GT5U.MBTT.Tiers.Coil"), true)
+            .addCasing("18", StatCollector.translateToLocal("GT5U.MBTT.Tiers.FluidPipe"), true)
             .addStructureHint("item.GTPP.catalyst_housing.name", 1)
-            .addMiscHatch(
-                "0-1",
-                StatCollector.translateToLocal("item.GTPP.catalyst_housing.name"),
-                "Any metal machine casing",
-                1)
-            .addEnergyHatch("1+", "Any metal machine casing", 1)
-            .addMaintenanceHatch("1", "Any metal machine casing", 1)
-            .addInputAny("1+", "Any metal machine casing", 1)
-            .addOutputAny("1+", "Any metal machine casing", 1)
+            .addMiscHatch("0-1", StatCollector.translateToLocal("item.GTPP.catalyst_housing.name"), StatCollector.translateToLocal("gt.mbtt.structure.any_metal_machine_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_metal_machine_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_metal_machine_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_metal_machine_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_metal_machine_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.METAL_MACHINE_CASING)
             .addSubChannel(GTStructureChannels.TIER_MACHINE_CASING)

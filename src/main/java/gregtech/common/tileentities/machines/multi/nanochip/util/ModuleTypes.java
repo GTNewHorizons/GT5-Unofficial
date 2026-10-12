@@ -6,32 +6,35 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.item.ItemStack;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+
 import gregtech.api.enums.ItemList;
 
 public enum ModuleTypes {
 
     // spotless:off
-    AssemblyMatrix("GT5U.tooltip.nac.module.assembly_matrix.name", ItemList.NanoChipModule_AssemblyMatrix.get(1)),
+    AssemblyMatrix("GT5U.tooltip.nac.module.assembly_matrix.name", () -> ItemList.NanoChipModule_AssemblyMatrix.get(1)),
 
-    BiologicalCoordinator("GT5U.tooltip.nac.module.biological_coordinator.name", ItemList.NanoChipModule_BiologicalCoordinator.get(1)),
+    BiologicalCoordinator("GT5U.tooltip.nac.module.biological_coordinator.name", () -> ItemList.NanoChipModule_BiologicalCoordinator.get(1)),
 
-    BoardProcessor("GT5U.tooltip.nac.module.board_processor.name", ItemList.NanoChipModule_BoardProcessor.get(1)),
+    BoardProcessor("GT5U.tooltip.nac.module.board_processor.name", () -> ItemList.NanoChipModule_BoardProcessor.get(1)),
 
-    CuttingChamber("GT5U.tooltip.nac.module.cutting_chamber.name", ItemList.NanoChipModule_CuttingChamber.get(1)),
+    CuttingChamber("GT5U.tooltip.nac.module.cutting_chamber.name", () -> ItemList.NanoChipModule_CuttingChamber.get(1)),
 
-    EtchingArray("GT5U.tooltip.nac.module.etching_array.name", ItemList.NanoChipModule_EtchingArray.get(1)),
+    EtchingArray("GT5U.tooltip.nac.module.etching_array.name", () -> ItemList.NanoChipModule_EtchingArray.get(1)),
 
-    OpticalOrganizer("GT5U.tooltip.nac.module.optical_organizer.name", ItemList.NanoChipModule_OpticalOrganizer.get(1)),
+    OpticalOrganizer("GT5U.tooltip.nac.module.optical_organizer.name", () -> ItemList.NanoChipModule_OpticalOrganizer.get(1)),
 
-    EncasementWrapper("GT5U.tooltip.nac.module.encasement_wrapper.name", ItemList.NanoChipModule_EncasementWrapper.get(1)),
+    EncasementWrapper("GT5U.tooltip.nac.module.encasement_wrapper.name", () -> ItemList.NanoChipModule_EncasementWrapper.get(1)),
 
-    PartProcessor("GT5U.tooltip.nac.module.part_processor.name", ItemList.NanoChipModule_PartProcessor.get(1)),
+    PartProcessor("GT5U.tooltip.nac.module.part_processor.name", () -> ItemList.NanoChipModule_PartProcessor.get(1)),
 
-    Splitter("GT5U.tooltip.nac.module.splitter.name", ItemList.NanoChipModule_Splitter.get(1)),
+    Splitter("GT5U.tooltip.nac.module.splitter.name", () -> ItemList.NanoChipModule_Splitter.get(1)),
 
-    SuperconductorSplitter("GT5U.tooltip.nac.module.superconductor_splitter.name", ItemList.NanoChipModule_SuperconductorSplitter.get(1)),
+    SuperconductorSplitter("GT5U.tooltip.nac.module.superconductor_splitter.name", () -> ItemList.NanoChipModule_SuperconductorSplitter.get(1)),
 
-    WireTracer("GT5U.tooltip.nac.module.wire_tracer.name", ItemList.NanoChipModule_WireTracer.get(1)),
+    WireTracer("GT5U.tooltip.nac.module.wire_tracer.name", () -> ItemList.NanoChipModule_WireTracer.get(1)),
 
     ExoticEntangleEngine("GT5U.tooltip.nac.module.exotic_entangle_engine.name", ItemList.NanoChipModule_ExoticEntangleEngine.get(1)),
 
@@ -41,11 +44,11 @@ public enum ModuleTypes {
     public static final ModuleTypes[] VALUES = values();
 
     private final String nameKey;
-    private final ItemStack displayStack;
+    private final Supplier<ItemStack> displayStack;
 
-    ModuleTypes(String nameKey, ItemStack displayStack) {
+    ModuleTypes(String nameKey, Supplier<ItemStack> displayStack) {
         this.nameKey = nameKey;
-        this.displayStack = displayStack;
+        this.displayStack = Suppliers.memoize(displayStack);
     }
 
     public String getName() {
@@ -57,6 +60,6 @@ public enum ModuleTypes {
     }
 
     public ItemStack getDisplayStack() {
-        return displayStack;
+        return displayStack.get();
     }
 }
