@@ -82,9 +82,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     @Override
     protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
         // initializes the panel so that it can be called in the gregos text response system.
-        syncManager
-            .syncedPanel("contributorsPanel", true, (p_syncManager, syncHandler) -> openContributorsPanel(panel));
-        textList.setEnabledIf(a -> isTalkModeActive)
+        syncManager.syncedPanel("contributorsPanel", true, (_, _) -> openContributorsPanel(panel));
+        textList.setEnabledIf(_ -> isTalkModeActive)
             .childSeparator(
                 IDrawable.EMPTY.asIcon()
                     .height(2))
@@ -108,7 +107,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         GenericListSyncHandler<MTENanochipAssemblyModuleBase<?>> moduleList = syncManager
             .findSyncHandler("modulesList", GenericListSyncHandler.class);
 
-        DynamicSyncHandler moduleListHolder = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
+        DynamicSyncHandler moduleListHolder = new DynamicSyncHandler().widgetProvider((_, _) -> {
             ListWidget<IWidget, ?> listWidget = new ListWidget<>().crossAxisAlignment(Alignment.CrossAxis.START)
                 .coverChildren();
 
@@ -137,11 +136,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             return listWidget;
         })
             .allowC2S();
-        moduleList.setChangeListener(() -> moduleListHolder.notifyUpdate(($) -> {}));
+        moduleList.setChangeListener(() -> moduleListHolder.notifyUpdate(_ -> {}));
         return super.createTerminalTextWidget(syncManager, parent).child(
             new DynamicSyncedWidget<>().coverChildren()
                 .syncHandler(moduleListHolder))
-            .setEnabledIf(flow -> !isTalkModeActive);
+            .setEnabledIf(_ -> !isTalkModeActive);
     }
 
     private static final int MODULE_DISPLAY_SIZE = 14;
@@ -171,17 +170,16 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler infoPanel = syncManager
-            .syncedPanel("infoPanel", true, (p_syncManager, syncHandler) -> openInfoPanel(parent));
+        IPanelHandler infoPanel = syncManager.syncedPanel("infoPanel", true, (_, _) -> openInfoPanel(parent));
 
         return new ButtonWidget<>().size(24)
             .marginTop(4)
             .overlay(IDrawable.EMPTY)
-            .setEnabledIf(a -> !isTalkModeActive)
+            .setEnabledIf(_ -> !isTalkModeActive)
             .tooltip(t -> t.addLine(translateToLocal("GT5U.gui.text.nac.info.open")))
             .background(GTGuiTextures.PICTURE_NANOCHIP_LOGO)
             .disableHoverBackground()
-            .onMousePressed(d -> {
+            .onMousePressed(_ -> {
                 if (!infoPanel.isPanelOpen()) {
                     infoPanel.openPanel();
                 } else {
@@ -453,7 +451,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .alignment(Alignment.CenterLeft))
             .disableHoverBackground()
             .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-            .onMousePressed(d -> {
+            .onMousePressed(_ -> {
                 textList.getScrollData()
                     .animateTo(
                         textList.getScrollArea(),
@@ -601,7 +599,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .background(GTGuiTextures.BACKGROUND_NANOCHIP_NAMEPLATE)
                     .overlay(
                         IKey.dynamic(
-                            () -> titleSync.getStringValue() + "\n"
+                            () -> translateToLocal(titleSync.getStringValue()) + "\n"
                                 + translateToLocal("GT5U.gui.text.nac.nameplate"))));
     }
 
@@ -955,8 +953,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         return switch (currentText.toLowerCase()) {
             case "help" -> "List of commands: contributors, info, gregos, joke, nac, clear";
             case "info" -> {
-                IPanelHandler infoPanel = syncManager
-                    .syncedPanel("infoPanel", true, (p_syncManager, syncHandler) -> openInfoPanel(parent));
+                IPanelHandler infoPanel = syncManager.syncedPanel("infoPanel", true, (_, _) -> openInfoPanel(parent));
                 if (!infoPanel.isPanelOpen()) {
                     infoPanel.openPanel();
                     yield "Opening Info Panel...";
@@ -966,10 +963,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 }
             }
             case "contributors" -> {
-                IPanelHandler contribPanel = syncManager.syncedPanel(
-                    "contributorsPanel",
-                    true,
-                    (p_syncManager, syncHandler) -> openContributorsPanel(parent));
+                IPanelHandler contribPanel = syncManager
+                    .syncedPanel("contributorsPanel", true, (_, _) -> openContributorsPanel(parent));
                 if (!contribPanel.isPanelOpen()) {
                     contribPanel.openPanel();
                     yield "Opening Contributors Panel...";
@@ -993,8 +988,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 + "   %%%%+===+%%%%%%  \n"
                 + "       =*###%       \n"
                 + "\n";
-            case "gm" -> "Good morning, engineer!";
-            case "good morning" -> "Good morning, engineer!";
+            case "gm", "good morning" -> "Good morning, engineer!";
             case "gn", "good night" -> "Have a great sleep, architect!";
             case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is "
                 + "an artificial intelligence designed to simulate the player's otherwise inimitably rad typing "
@@ -1161,10 +1155,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         public void onInit() {
             super.onInit();
             this.child(
-                new TextWidget<>("Ask GREGOS a question").left(6)
+                new TextWidget<>(IKey.lang("GT5U.gui.text.nac.hint.ask")).left(6)
                     .color(genericTextColor));
             this.child(
-                new TextWidget<>("Type 'help' for a list of commands").left(6)
+                new TextWidget<>(IKey.lang("GT5U.gui.text.nac.hint.help")).left(6)
                     .color(Color.WHITE.main));
         }
 

@@ -56,24 +56,13 @@ public class MTENanochipAssemblyModuleBaseAdapter implements IByteBufAdapter<MTE
 
     @Override
     public boolean areEqual(@NotNull MTENanochipAssemblyModuleBase t1, @NotNull MTENanochipAssemblyModuleBase t2) {
-        if (t1.getBaseMetaTileEntity()
-            .getXCoord()
-            != t2.getBaseMetaTileEntity()
-                .getXCoord())
-            return false;
-        if (t1.getBaseMetaTileEntity()
-            .getYCoord()
-            != t2.getBaseMetaTileEntity()
-                .getYCoord())
-            return false;
-        if (t1.getBaseMetaTileEntity()
-            .getZCoord()
-            != t2.getBaseMetaTileEntity()
-                .getZCoord())
-            return false;
-        return t1.getBaseMetaTileEntity()
-            .getWorld().provider.dimensionId
-            == t2.getBaseMetaTileEntity()
-                .getWorld().provider.dimensionId;
+        IGregTechTileEntity t1b = t1.getBaseMetaTileEntity();
+        IGregTechTileEntity t2b = t2.getBaseMetaTileEntity();
+        if (t1b == null || t2b == null) return false;
+
+        if (t1b.getXCoord() != t2b.getXCoord()) return false;
+        if (t1b.getYCoord() != t2b.getYCoord()) return false;
+        if (t1b.getZCoord() != t2b.getZCoord()) return false;
+        return t1b.getWorld().provider.dimensionId == t2b.getWorld().provider.dimensionId;
     }
 }
