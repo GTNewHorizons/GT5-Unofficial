@@ -233,7 +233,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addCasing("56", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.prismaticnaquadah)), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
-            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.top_center_casing"), 2)
             .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
             .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
             .addStructureInfo("")

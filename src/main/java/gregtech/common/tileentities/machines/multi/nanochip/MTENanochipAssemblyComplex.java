@@ -612,7 +612,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     public String getCalibrationTitle() {
-        if (currentThreshold == null) return "Standard";
+        if (currentThreshold == null) return "GT5U.gui.text.nac.title.standard";
         return currentThreshold.title;
     }
 

@@ -23,11 +23,14 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -39,6 +42,7 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
@@ -47,6 +51,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
@@ -57,6 +62,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -123,40 +129,31 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Implosion Compressor, EIC")
-            .addInfo("Explosions are fun!")
-            .addInfo("Uses electricity instead of Explosives")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Parallels"
-                    + EnumChatFormatting.GRAY
-                    + " are determined by "
-                    + EnumChatFormatting.WHITE
-                    + "Containment Block"
-                    + EnumChatFormatting.GRAY
-                    + " Tier")
-            .addInfo(createParallelText(EnumChatFormatting.WHITE, "Neutronium", 1))
-            .addInfo(createParallelText(EnumChatFormatting.RED, "Infinity", 4))
-            .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
-            .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
-            .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.implosion_compressor"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "electric-implosion-compressor"),
+                ImmutableMap.<String, Object>builder().build())
+            .addMaxTierSkips(1)
             .addSupportAny()
             .beginStructureBlock(15, 7, 7, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("230-247", "Naquadah Reinforced Block", false)
-            .addCasing("36", "Robust Tungstensteel Machine Casing", false)
-            .addCasing("24", "Containment Block", true)
-            .addCasing("22", "Any Tiered Glass", false)
-            .addCasing("10", "PTFE Pipe Casing", false)
-            .addCasing("2", "Naquadah Frame Box", false)
-            .addEnergyHatch("1+", "Any reinforced block", 1)
-            .addMaintenanceHatch("1", "Any reinforced block", 1)
-            .addInputAny("1+", "Any reinforced block", 1)
-            .addOutputAny("1+", "Any reinforced block", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("230-247", Casings.NaquadahReinforcedBlock.getLocalizedName(), false)
+            .addCasing("36", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("24", StatCollector.translateToLocal("gt.mbtt.structure.containment_block"), true)
+            .addCasing("22", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("10", Casings.PTFEPipeCasing.getLocalizedName(), false)
+            .addCasing("2", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Naquadah)), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_block"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_block"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_block"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_block"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.EIC_PISTON)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

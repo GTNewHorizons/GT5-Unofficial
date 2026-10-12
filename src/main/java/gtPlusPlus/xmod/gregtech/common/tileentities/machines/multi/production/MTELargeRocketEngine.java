@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.materials.FluidShapes;
@@ -141,14 +142,14 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     .build())
             .addSupportAny()
             .beginStructureBlock(3, 3, 10, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("62-76", "Turbodyne Casing", false)
-            .addCasing("8", "Inconel Reinforced Casing", false)
-            .addMiscHatch("1+", "Air Intake Hatch", "Any center casing", 1, 2)
-            .addDynamoHatch("1+", "Any top center casing", 2)
-            .addMaintenanceHatch("1", "Any center casing", 1, 2)
-            .addMufflerHatch("1", "Back center casing", 3)
-            .addInputHatch("1+", "Any side or bottom center casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("62-76", Casings.TurbodyneCasing.getLocalizedName(), false)
+            .addCasing("8", Casings.InconelReinforcedCasing.getLocalizedName(), false)
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.AirIntakeHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_casing"), 1, 2)
+            .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_center_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_center_casing"), 1, 2)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 3)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_or_bottom_center_casing"), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;

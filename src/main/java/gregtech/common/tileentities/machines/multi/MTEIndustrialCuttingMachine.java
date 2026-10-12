@@ -34,6 +34,7 @@ import org.joml.Math;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -44,6 +45,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -53,6 +55,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
@@ -69,6 +72,7 @@ import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import io.netty.buffer.ByteBuf;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCuttingMachine>
     implements ISurvivalConstructable, IMTERenderer, ICasingTextureProvider {
 
@@ -162,37 +166,29 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cutting Machine, ICF")
-            .addInfo(
-                "Requires a " + EnumChatFormatting.AQUA
-                    + "Sawblade"
-                    + EnumChatFormatting.GRAY
-                    + " in the controller slot to use")
-            .addInfo(
-                "Better " + EnumChatFormatting.AQUA + "Sawblades" + EnumChatFormatting.GRAY + " give increased bonuses")
-            .addInfo(
-                "With a " + EnumChatFormatting.DARK_GREEN
-                    + "Transcendent Metal Sawblade"
-                    + EnumChatFormatting.GRAY
-                    + ", one multi-amp hatch is allowed")
-            .addInfo("Use screwdriver to disable sawblade rendering")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cutting_machine"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-cutting-machine"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
-            .addController("Front left, 2nd layer")
-            .addCasing("10-29", "Cutting Factory Frame", false)
-            .addCasing("18", "Tantalum Carbide Frame Box", false)
-            .addCasing("16", "Any Tiered Glass", false)
-            .addCasing("13", "Black Steel Sheetmetal", false)
-            .addEnergyHatch("1+", "Any cutting factory frame", 1)
-            .addMaintenanceHatch("1", "Any cutting factory frame", 1)
-            .addMufflerHatch("1", "Any cutting factory frame", 1)
-            .addInputBus("1+", "Any cutting factory frame", 1)
-            .addInputHatch("1+", "Any cutting factory frame", 1)
-            .addOutputBus("1+", "Any cutting factory frame", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
+            .addCasing("10-29", Casings.CuttingFactoryFrame.getLocalizedName(), false)
+            .addCasing("18", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.TantalumCarbide)), false)
+            .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("13", OrePrefixes.sheetmetal.getLocalizedNameForItem(MaterialUtils.internalName(Materials.BlackSteel)), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Auynonymous")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

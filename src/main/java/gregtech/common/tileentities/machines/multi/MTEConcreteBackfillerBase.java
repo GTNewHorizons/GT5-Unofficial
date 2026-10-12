@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableMap;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
@@ -112,18 +113,18 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                     .put("concrete_per_block", formatNumber(CONCRETE_PER_BLOCK))
                     .put(
                         "cycle_time",
-                        baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                            : formatNumber(baseCycleTime / 20.0) + " seconds")
+                        baseCycleTime < 20 ? formatNumber(baseCycleTime) + " " + StatCollector.translateToLocal("gt.time.tick.plural")
+                            : StatCollector.translateToLocalFormatted("GT5U.gui.text.second.plural", formatNumber(baseCycleTime / 20.0)))
                     .build())
             .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom center")
-            .addCasing("15", MaterialUtils.internalName(getFrameMaterial()) + " Frame Box", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())), false)
             .addCasing("3-8", casings, false)
-            .addEnergyHatch("1+", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0+", "Any bottom casing", 1)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputBus("0+", "Any bottom casing", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_bottom_casing_min_tier", VN[getMinTier()]), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;

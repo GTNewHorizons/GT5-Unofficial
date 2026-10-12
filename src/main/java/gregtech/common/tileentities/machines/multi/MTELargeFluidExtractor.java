@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -25,11 +26,12 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -52,13 +54,13 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.gui.modularui.multiblock.MTELargeFluidExtractorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELargeFluidExtractor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -261,23 +263,18 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Fluid Extractor, LFE")
-            .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
-            .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
-            .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
-            .addInfo(
-                String.format(
-                    "Every Coil Tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
-                    TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
-                    TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER))))
-            .addInfo(
-                String.format(
-                    "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
-                    EnumChatFormatting.ITALIC,
-                    BASE_EU_MULTIPLIER,
-                    HEATING_COIL_EU_MULTIPLIER,
-                    EnumChatFormatting.GRAY))
+        .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
+        .addMarkdown(
+            new ResourceLocation("gregtech", "large-fluid-extractor"),
+            ImmutableMap.<String, Object>builder()
+                .put("speed", formatNumber(BASE_SPEED_BONUS * 100))
+                .put("speed_bonus", formatNumber(SPEED_PER_COIL * 100))
+                .put("eu_eff", formatNumber(BASE_EU_MULTIPLIER * 100))
+                .put("eu_eff_bonus", formatNumber(HEATING_COIL_EU_MULTIPLIER))
+                .build())            
             .beginStructureBlock(5, 9, 5, false)
             .addEnergyHatchGlassTier()
             .addController("Front bottom center")
@@ -296,6 +293,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.SOLENOID)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

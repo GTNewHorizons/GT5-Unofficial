@@ -21,16 +21,19 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
@@ -39,6 +42,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
@@ -59,6 +63,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChise
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndustrialChisel>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -87,32 +92,32 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chisel")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chisel"))
             .addBulkMachineInfo(16, 3f, 0.75f)
-            .addInfo("Factory Grade Auto Chisel")
-            .addInfo("Chisel Bus: Set ghost targets to define the desired output variants")
-            .addInfo("CRIB: Uses the pattern output as the target block")
-            .addInfo("Regular Bus: Use a programmed circuit to select a variant (see NEI)")
-            .addInfo("Also supports ArchitectureCraft shapes as target blocks")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-chisel"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
-            .addController("Front left, 3rd layer")
-            .addCasing("40-48", "Sturdy Printer Casing", false)
-            .addCasing("37", "Steel Frame Box", false)
-            .addCasing("18", "Any Tiered Glass", false)
-            .addCasing("12", "Steel Pipe Casing", false)
-            .addCasing("6", "Steel Gear Box Casing", false)
-            .addCasing("1", "Iron Fence", false)
-            .addCasing("1", "Cupronickel Coil Block", false)
-            .addEnergyHatch("1+", "Any printer casing", 1)
-            .addMaintenanceHatch("1", "Any printer casing", 1)
-            .addMufflerHatch("1", "Any printer casing", 1)
-            .addMiscHatch("1+", "Input/Chisel Bus", "Any printer casing", 1)
-            .addOutputBus("1+", "Any printer casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_3rd_layer"))
+            .addCasing("40-48", Casings.SturdyPrinterCasing.getLocalizedName(), false)
+            .addCasing("37", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)), false)
+            .addCasing("18", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("12", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("6", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addCasing("1", Casings.IronFence.getLocalizedName(), false)
+            .addCasing("1", Casings.CupronickelCoilBlock.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_printer_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_printer_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_printer_casing"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.input_or_chisel_bus"), StatCollector.translateToLocal("gt.mbtt.structure.any_printer_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_printer_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

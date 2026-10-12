@@ -115,14 +115,10 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
      */
     private void renderFace(ISBRContext ctx, ForgeDirection side, FaceRenderer face) {
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
-        final boolean startedDrawing = beginDrawingQuads(renderBlocks, side.offsetX, side.offsetY, side.offsetZ);
         ctx.reset();
         final boolean enableAO = renderBlocks.enableAO;
         if (glow) {
-            if (!GTMod.proxy.mRenderGlowTextures) {
-                endDrawingQuads(renderBlocks, startedDrawing);
-                return;
-            }
+            if (!GTMod.proxy.mRenderGlowTextures) return;
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
@@ -130,6 +126,7 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
                 worldCtx.finishLighting();
             }
         }
+        final boolean startedDrawing = beginDrawingQuads(ctx, side.offsetX, side.offsetY, side.offsetZ);
         if (canRenderInPass(ctx)) {
             final ExtendedFacing rotation = getExtendedFacing(ctx);
             final int passes = mIconContainer.getIconPasses();

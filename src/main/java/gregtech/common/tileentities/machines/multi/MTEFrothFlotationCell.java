@@ -1,4 +1,3 @@
-
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
@@ -18,6 +17,7 @@ import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,6 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -48,6 +49,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -61,6 +63,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFrothFlotationCell>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -118,25 +121,27 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Flotation Cell, FCR")
-            .addInfo("Process that milled ore!")
-            .addInfo("You can only ever process one type of material per controller")
-            .addPerfectOCInfo()
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.flotation_cell"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "froth-flotation-cell"),
+                ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 5, 11, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("110-120", "Inconel Reinforced Casing", false)
-            .addCasing("31", "Flotation Cell Casing", false)
-            .addCasing("20", "Staballoy Frame Box", false)
-            .addCasing("8", "Inconel-690 Frame Box", false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("1+", "Any bottom casing", 1)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputHatch("1+", "Any bottom casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("110-120", Casings.InconelReinforcedCasing.getLocalizedName(), false)
+            .addCasing("31", Casings.FlotationCellCasings.getLocalizedName(), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Staballoy)), false)
+            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Inconel690)), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .toolTipFinisher(GTAuthors.AuthorNoc.get());
+        // spotless:on
         return tt;
     }
 
