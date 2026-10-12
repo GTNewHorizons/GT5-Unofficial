@@ -110,8 +110,8 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                     .put("concrete_per_block", formatNumber(CONCRETE_PER_BLOCK))
                     .put(
                         "cycle_time",
-                        baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                            : formatNumber(baseCycleTime / 20.0) + " seconds")
+                        baseCycleTime < 20 ? formatNumber(baseCycleTime) + " " + StatCollector.translateToLocal("gt.time.tick.plural")
+                            : StatCollector.translateToLocalFormatted("GT5U.gui.text.second.plural", formatNumber(baseCycleTime / 20.0)))
                     .build())
             .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))

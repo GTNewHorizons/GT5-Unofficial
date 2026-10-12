@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -36,6 +37,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -124,7 +126,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Combustion Generator, ECE")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.combustion_generator"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "extreme-combustion-engine"),
                 ImmutableMap.<String, Object>builder()
@@ -135,24 +137,24 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     .put("boosted_output", formatNumber(BOOSTED_OUTPUT_EU))
                     .put("boosted_eff", BOOSTED_EFFICIENCY_PERCENT)
                     .put("wait_power", WAIT_POWER_PERCENT)
-                    .put("fluid_unit", "L")
+                    .put("fluid_unit", getFluidUnit())
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(10, 5, 5, false)
-            .addController("Front left, 2nd layer")
-            .addCasing("30-33", "Robust Tungstensteel Machine Casing", false)
-            .addCasing("32", "PTFE Frame Box", false)
-            .addCasing("30", "Chemically Inert Machine Casing", false)
-            .addCasing("20", "PTFE Pipe Casing", false)
-            .addCasing("12", "Tungstensteel Firebox Casing", false)
-            .addCasing("12", "Extreme Engine Intake Casing", false)
-            .addCasing("4-7", "Tungstensteel Turbine Casing", false)
-            .addCasing("6", "Steel Gear Box Casing", false)
-            .addDynamoHatch("1", "Right center casing", 3)
-            .addMaintenanceHatch("1", "Any tungstensteel machine casing NOT next to a gearbox", 2)
-            .addMufflerHatch("1", "Any tungstensteel machine casing NOT next to a gearbox", 2)
-            .addInputHatch("1+", "Any tungstensteel machine casing next to a gearbox", 1)
-            .addAir("3x4 area above the extreme engine intake casings")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
+            .addCasing("30-33", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("32", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
+            .addCasing("30", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.PTFEPipeCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.TungstensteelFireboxCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.ExtremeEngineIntakeCasing.getLocalizedName(), false)
+            .addCasing("4-7", Casings.TungstensteelTurbineCasing.getLocalizedName(), false)
+            .addCasing("6", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.right_center_casing"), 3)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tungstensteel_casing_not_next_to_gearbox"), 2)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_tungstensteel_casing_not_next_to_gearbox"), 2)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tungstensteel_casing_next_to_gearbox"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.area_above_engine_intakes"))
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")

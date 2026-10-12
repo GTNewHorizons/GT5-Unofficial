@@ -121,22 +121,22 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Flotation Cell, FCR")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.flotation_cell"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "froth-flotation-cell"),
                 ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 5, 11, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("110-120", "Inconel Reinforced Casing", false)
-            .addCasing("31", "Flotation Cell Casing", false)
-            .addCasing("20", "Staballoy Frame Box", false)
-            .addCasing("8", "Inconel-690 Frame Box", false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("1+", "Any bottom casing", 1)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputHatch("1+", "Any bottom casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("110-120", Casings.InconelReinforcedCasing.getLocalizedName(), false)
+            .addCasing("31", Casings.FlotationCellCasings.getLocalizedName(), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.STABALLOY), false)
+            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.INCONEL_690), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .toolTipFinisher(GTAuthors.AuthorNoc.get());
