@@ -46,6 +46,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -71,6 +72,7 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import io.netty.buffer.ByteBuf;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCuttingMachine>
     implements ISurvivalConstructable, IMTERenderer, ICasingTextureProvider {
 
@@ -165,23 +167,23 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Cutting Machine, ICF")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cutting_machine"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-cutting-machine"),
                 ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
-            .addController("Front left, 2nd layer")
-            .addCasing("10-29", "Cutting Factory Frame", false)
-            .addCasing("18", "Tantalum Carbide Frame Box", false)
-            .addCasing("16", "Any Tiered Glass", false)
-            .addCasing("13", "Black Steel Sheetmetal", false)
-            .addEnergyHatch("1+", "Any cutting factory frame", 1)
-            .addMaintenanceHatch("1", "Any cutting factory frame", 1)
-            .addMufflerHatch("1", "Any cutting factory frame", 1)
-            .addInputBus("1+", "Any cutting factory frame", 1)
-            .addInputHatch("1+", "Any cutting factory frame", 1)
-            .addOutputBus("1+", "Any cutting factory frame", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
+            .addCasing("10-29", Casings.CuttingFactoryFrame.getLocalizedName(), false)
+            .addCasing("18", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.TANTALUM_CARBIDE), false)
+            .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("13", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.BlackSteel), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Auynonymous")

@@ -2151,6 +2151,24 @@ gt.mbtt.structure.cleanroom_doors=- Reinforced Doors (§oIC2§r§7). Keep closed
 gt.mbtt.structure.cleanroom_elevators=- Elevators (§oOpenBlocks§r§7) or Travel Anchors (§oEnderIO§r§7)
 gt.mbtt.structure.cleanroom_config=See §8config/GregTech/MachineStats.cfg§7 for more valid blocks
 gt.mbtt.structure.cleanroom_wireless=Use Wireless Connectors for transferring AE2 channels
+gt.mbtt.structure.cleanroom_rectangular_base=The base can be rectangular.
+gt.mbtt.structure.front_left_3rd_layer=Front left, 3rd layer
+gt.mbtt.structure.front_left_center_2nd_layer=Front left center, 2nd layer
+gt.mbtt.structure.right_center_casing=Right center casing
+gt.mbtt.structure.one_block_above_behind_controller=One block above/behind controller
+gt.mbtt.structure.any_reinforced_block=Any reinforced block
+gt.mbtt.structure.any_fridge_casing=Any fridge casing
+gt.mbtt.structure.any_solidifier_casing=Any solidifier casing
+gt.mbtt.structure.any_printer_casing=Any printer casing
+gt.mbtt.structure.any_cutting_factory_frame=Any cutting factory frame
+gt.mbtt.structure.any_structural_casing_on_base=Any structural casing on base structure
+gt.mbtt.structure.any_tungstensteel_casing_not_next_to_gearbox=Any tungstensteel machine casing NOT next to a gearbox
+gt.mbtt.structure.any_tungstensteel_casing_next_to_gearbox=Any tungstensteel machine casing next to a gearbox
+gt.mbtt.structure.area_above_engine_intakes=3x4 area above the extreme engine intake casings
+gt.mbtt.structure.containment_block=Containment Block
+gt.mbtt.structure.heat_resistant_proof_coke_oven_casing=Heat Resistant/Proof Coke Oven Casing
+gt.mbtt.structure.input_or_solidifier_hatch=Input/Solidifier Hatch
+gt.mbtt.structure.input_or_chisel_bus=Input/Chisel Bus
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -2216,6 +2234,16 @@ gt.mbtt.machine_type.bacterial_vat=Bacterial Vat, Bac Vat
 gt.mbtt.machine_type.geothermal_heat_pump=Geothermal Heat Pump, DEHP
 gt.mbtt.machine_type.transformer=Transformer
 gt.mbtt.machine_type.windmill=Windmill, Macerator
+gt.mbtt.machine_type.implosion_compressor=Implosion Compressor, EIC
+gt.mbtt.machine_type.vacuum_freezer=Vacuum Freezer, EnF, MVF
+gt.mbtt.machine_type.combustion_generator=Combustion Generator, ECE
+gt.mbtt.machine_type.flotation_cell=Flotation Cell, FCR
+gt.mbtt.machine_type.fluid_solidifier=Fluid Solidifier
+gt.mbtt.machine_type.chisel=Chisel
+gt.mbtt.machine_type.industrial_coke_oven=Coke Oven, ICO
+gt.mbtt.machine_type.cutting_machine=Cutting Machine, ICF
+gt.mbtt.machine_type.electromagnetic_separator=Electromagnetic Separator/Polarizer, MFE
+gt.mbtt.machine_type.fish_trap=Fish Trap, ZFP
 
 # BartWorks multiblock structure text
 GT5U.tooltip.manual_trafo.winding_layers=1 Layer for each tier transformed
@@ -2230,6 +2258,7 @@ GT5U.tooltip.windmill.any_block=Any %s
 # Tooltip flavor text
 gt.mbtt.flavor.exothermic_hearth=Never one...
 gt.mbtt.flavor.spinmatron=Maahes guides the way...
+gt.mbtt.flavor.endothermic_fridge=... without the other!
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
@@ -3512,6 +3541,8 @@ GT5U.gui.text.nac.splitter.custom_name_desc=Press middle-mouse to rename item
 
 GT5U.gui.text.nac.hint.talk=Type %s to enter talk mode
 GT5U.gui.text.nac.hint.exit=Type %s to exit talk mode
+GT5U.gui.text.nac.hint.ask=Ask GREGOS a question
+GT5U.gui.text.nac.hint.help=Type 'help' for a list of commands
 
 GT5U.gui.text.nac.contributors.idea_structure=Idea and Structure
 GT5U.gui.text.nac.bar.calibration.progress.1=Nanocalibration in progress.
@@ -3547,6 +3578,25 @@ GT5U.gui.text.nac.module.disable_all_button_off.2=§7Press to enable all modules
 
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
+GT5U.gui.text.nac.title.standard=Standard
+GT5U.gui.text.nac.title.primitive.1=Crude
+GT5U.gui.text.nac.title.primitive.2=Robust
+GT5U.gui.text.nac.title.primitive.3=Archaic
+GT5U.gui.text.nac.title.crystal.1=Shiny
+GT5U.gui.text.nac.title.crystal.2=Glimmering
+GT5U.gui.text.nac.title.crystal.3=Prismatic
+GT5U.gui.text.nac.title.wetware.1=Wet
+GT5U.gui.text.nac.title.wetware.2=Fleshy
+GT5U.gui.text.nac.title.wetware.3=Wriggling
+GT5U.gui.text.nac.title.bioware.1=Aware
+GT5U.gui.text.nac.title.bioware.2=Sentient
+GT5U.gui.text.nac.title.bioware.3=ALIVE!!!!!!!!!
+GT5U.gui.text.nac.title.optical.1=Tuned
+GT5U.gui.text.nac.title.optical.2=Precise
+GT5U.gui.text.nac.title.optical.3=Perfected
+GT5U.gui.text.nac.title.special.1=Foreign
+GT5U.gui.text.nac.title.special.2=Alien
+GT5U.gui.text.nac.title.special.3=Xeno
 GT5U.gui.text.nac.info.open=Open Info Panel
 GT5U.gui.text.nac.info.toc=§nTable of Contents
 GT5U.gui.text.nac.info.introduction.header=Introduction
@@ -3556,7 +3606,7 @@ GT5U.gui.text.nac.info.nac_basics.body.1=The "Vacuum Conveyor" system is a way t
 GT5U.gui.text.nac.info.nac_basics.body.2=The Vacuum Conveyor system starts and ends at the NAC. The NAC will convert items into Circuit Components (CCs) every 5 seconds and send them to its VCOs. The NAC can also convert CCs into item equivalents and send them to its Output Bus. Vacuum Conveyor connections are 1 to 1.
 GT5U.gui.text.nac.info.nac_basics.body.3=The Nanopart Splitter module allows the player to set custom routing rules to its hatches. The Splitter allows filtering by color input type, color output type, item type, and supplied redstone level. Utilizing all of these is key to an efficient and properly operating NAC.
 GT5U.gui.text.nac.info.module_basics.header=Module Basics
-GT5U.gui.text.nac.info.module_basics.body.1=Modules also operate with colors. A module will pull inputs from a colored VCI and output into the same colored VCO on its structure. If the recipe takes multiple inputs, they can be taken from VCIs with different colors, and the output will be placed in the VCO with the color of the first input in the recipe. Certain modules have extra mechanics and gimmicks that must be dealt with to ensure optimum processing.
+GT5U.gui.text.nac.info.module_basics.body.1=Modules also operate with colors. A module will pull inputs from a colored VCI and output into the same colored VCO on its structure. If §aInput Separation§r is disabled, multiple inputs can be taken from VCIs with different colors, and the output will be placed in the VCO with the color of the first input in the recipe. Alternatively if §aInput Separation§r is enabled, the module will instead only look at one color for the entire contents of the recipe. This can be used to process similar CCs in differently colored VCIs without merging them into the same color, whether or not they are renamed. Additionally, certain modules have extra mechanics and gimmicks that must be dealt with to ensure optimum processing.
 GT5U.gui.text.nac.info.module_basics.body.2=Modules take CCs and output Processed Components (PCs). The Nanochip Assembly Matrix takes these CCs and PCs and creates Circuit CCs that can be routed around or sent back to the NAC to be converted into real items.
 GT5U.gui.text.nac.info.module_basics.body.3=Modules draw power from the NAC based on a manually specified 'ratio'. In the NAC's UI, there is a slider to determine the percentage of power allocated to the Assembly Matrix, in a range from 1 to 99. All other modules, excluding the Splitter which does not use power, will evenly split the non-matrix portion of the power. In the case that there is more than one matrix, all matrices will split their portion of power evenly as well.
 GT5U.gui.text.nac.info.module_basics.body.4=Modules innately have infinite parallels, but can be granted extra bonuses to Speed, EU cost, and running cost based on module-specific gimmicks and the NACs 'Calibration'.

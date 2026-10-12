@@ -43,6 +43,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -105,7 +106,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Coke Oven, ICO")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.industrial_coke_oven"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-coke-oven"),
                 ImmutableMap.<String, Object>builder()
@@ -118,25 +119,25 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(6, 36, 7, 7, 5, 5, false)
-            .addController("Front left center, 2nd layer")
-            .addEnergyHatch("1+", "Any structural casing on base structure", 1)
-            .addMaintenanceHatch("1", "Any structural casing on base structure", 1)
-            .addMufflerHatch("1", "Any structural casing on base structure", 1)
-            .addInputAny("1+", "Any structural casing on base structure", 1)
-            .addOutputAny("1+", "Any structural casing on base structure", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_center_2nd_layer"))
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_structural_casing_on_base"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_structural_casing_on_base"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_structural_casing_on_base"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_structural_casing_on_base"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_structural_casing_on_base"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("35-48", "Structural Coke Oven Casing", false)
-            .addCasing("10", "Steel Frame Box", false)
-            .addCasing("8", "Heating Coil", true)
-            .addCasing("8", "Heat Resistant/Proof Coke Oven Casing", true)
+            .addCasing("35-48", Casings.StructuralCokeOvenCasing.getLocalizedName(), false)
+            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("8", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("8", StatCollector.translateToLocal("gt.mbtt.structure.heat_resistant_proof_coke_oven_casing"), true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addCasing("19", "Structural Coke Oven Casing", false)
-            .addCasing("10", "Steel Frame Box", false)
-            .addCasing("8", "Heating Coil", true)
-            .addCasing("5", "Heat Resistant/Proof Coke Oven Casing", true)
-            .addCasing("3", "Steel Pipe Casing", false)
+            .addCasing("19", Casings.StructuralCokeOvenCasing.getLocalizedName(), false)
+            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("8", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("5", StatCollector.translateToLocal("gt.mbtt.structure.heat_resistant_proof_coke_oven_casing"), true)
+            .addCasing("3", Casings.SteelPipeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.HEATING_COIL)

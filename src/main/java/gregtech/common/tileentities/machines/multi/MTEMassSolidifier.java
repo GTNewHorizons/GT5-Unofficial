@@ -42,6 +42,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -73,16 +74,16 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final double DECAY_RATE = 0.025;
+    private static final double DECAY_RATE = 0.025D;
+    private static final double MAX_SPEEDUP = 3.0D;
+    private static final double EU_MODIFIER = 0.8D;
+    private static final int PARALLELS_PER_TIER = 10;
+
     private static final int HORIZONTAL_OFFSET = 2;
     private static final int VERTICAL_OFFSET = 5;
     private static final int DEPTH_OFFSET = 0;
 
-    private static final int MAX_SPEEDUP_PERCENT = 300;
-    private static final int PARALLELS_PER_TIER = 10;
-    private static final double EU_MODIFIER = 0.8d;
-
-    private double speedup = 1;
+    private double speedup = 1.0D;
     private int runningTickCounter = 0;
     private int glassTier = -1;
     private final static int MAX_CASINGS = 77;
@@ -157,31 +158,31 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Fluid Solidifier")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_solidifier"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "mass-solidifier"),
                 ImmutableMap.<String, Object>builder()
                     .put("parallels", formatNumber(PARALLELS_PER_TIER))
                     .put("min_speedup", formatNumber(100))
-                    .put("max_speedup", formatNumber(MAX_SPEEDUP_PERCENT))
+                    .put("max_speedup", formatNumber(MAX_SPEEDUP * 100))
                     .put("speed_increase", formatNumber(DECAY_RATE * 200))
                     .put("speed_decrease", formatNumber(DECAY_RATE * 400))
                     .put("eu_modifier", formatNumber(EU_MODIFIER * 100))
                     .build())
             .beginStructureBlock(5, 6, 9, false)
             .addEnergyHatchGlassTier()
-            .addController("Front bottom center")
-            .addCasing(MIN_CASINGS + "-73", "Solidifier Casing", false)
-            .addCasing("42", "Any Tiered Glass", true)
-            .addCasing("34", "Solidifier Radiator", false)
-            .addCasing("13", "Heat Proof Machine Casing", false)
-            .addCasing("7", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("3", "Steel Pipe Casing", false)
-            .addEnergyHatch("1+", "Any solidifier casing", 1)
-            .addMaintenanceHatch("1", "Any solidifier casing", 1)
-            .addInputBus("0+", "Any solidifier casing", 1)
-            .addMiscHatch("1+", "Input/Solidifier Hatch", "Any solidifier casing", 1)
-            .addOutputBus("1+", "Any solidifier casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing(MIN_CASINGS + "-73", Casings.SolidifierCasing.getLocalizedName(), false)
+            .addCasing("42", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("34", Casings.SolidifierRadiator.getLocalizedName(), false)
+            .addCasing("13", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addCasing("7", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("3", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_solidifier_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_solidifier_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_solidifier_casing"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.input_or_solidifier_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_solidifier_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_solidifier_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);
@@ -204,9 +205,9 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         runningTickCounter++;
-        if (runningTickCounter % 10 == 0 && speedup < MAX_SPEEDUP_PERCENT) {
+        if (runningTickCounter % 10 == 0 && speedup < MAX_SPEEDUP) {
             runningTickCounter = 0;
-            speedup += DECAY_RATE;
+            speedup = Math.min(MAX_SPEEDUP, speedup + DECAY_RATE);
         }
         return super.onRunningTick(aStack);
     }
@@ -217,7 +218,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (mMaxProgresstime == 0 && speedup > 1) {
             if (aTick % 5 == 0) {
-                speedup = (float) Math.max(1, speedup - DECAY_RATE);
+                speedup = Math.max(1, speedup - DECAY_RATE);
             }
         }
     }
