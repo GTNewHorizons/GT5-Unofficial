@@ -767,7 +767,7 @@ public enum OreMixes {
         .enableInDim(Horus, Enceladus, DimensionDef.Europa)
         .primary(Materials.Ledox)
         .secondary(Materials.Opal)
-        .inBetween(Materials.Orichalcum)
+        .inBetween(Materials.Orikalkum)
         .sporadic(Materials.Rubracium)),
 
     Oriharukon(new OreMixBuilder().name("ore.mix.oriharukon")

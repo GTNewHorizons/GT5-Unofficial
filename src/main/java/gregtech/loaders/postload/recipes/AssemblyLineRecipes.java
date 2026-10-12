@@ -1044,5 +1044,26 @@ public class AssemblyLineRecipes implements Runnable {
             .duration(1 * MINUTES)
             .addTo(AssemblyLine);
 
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.PlasmaTurbineXL.get(1))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
+            .itemInputs(
+                ItemList.CasingQuadcellDriving.get(1),
+                ItemList.Field_Generator_ZPM.get(1),
+                ItemList.FluidRegulator_ZPM.get(4),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite, 1),
+                MaterialsAlloy.PIKYONIUM.getGear(4),
+                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.NaquadahAlloy, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.ElectrumFlux, 8))
+            .fluidInputs(
+                MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS),
+                Materials.Americium.getMolten(10 * INGOTS),
+                Materials.Tritanium.getMolten(10 * INGOTS),
+                new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 10000))
+            .itemOutputs(ItemList.QuadcellPlasmaCollider.get(1))
+            .duration(1 * MINUTES)
+            .eut(TierEU.RECIPE_ZPM / 2)
+            .addTo(AssemblyLine);
+
     }
 }
