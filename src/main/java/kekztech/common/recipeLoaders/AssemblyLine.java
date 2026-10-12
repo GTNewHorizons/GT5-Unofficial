@@ -107,7 +107,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Quantum_Tank_IV.get(4),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(2),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateDense, 6),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plateDense, 6),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.plateDense, 6),
                 MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.pipeNonuple, 3),
                 ItemList.EnergisedTesseract.get(1),
                 MaterialLibAPI.getStack(Materials.Hypogen, Shapes.rotor, 6),

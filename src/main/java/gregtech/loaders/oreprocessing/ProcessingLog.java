@@ -62,7 +62,7 @@ public class ProcessingLog implements ForeignPartRule {
                                 MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 1))
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
-                                    Materials.dimensionallyshiftedsuperfluid,
+                                    Materials.DimensionallyShiftedSuperfluid,
                                     FluidShapes.fluidLiquid,
                                     1))
                             .duration(4 * SECONDS)
@@ -131,7 +131,7 @@ public class ProcessingLog implements ForeignPartRule {
                             MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 1))
                         .fluidInputs(
                             MaterialLibAPI
-                                .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1))
+                                .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1))
                         .duration(4 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);

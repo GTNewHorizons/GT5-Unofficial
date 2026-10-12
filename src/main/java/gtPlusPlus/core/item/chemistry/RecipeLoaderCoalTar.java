@@ -274,7 +274,7 @@ public class RecipeLoaderCoalTar {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 5))
             .fluidInputs(new FluidStack(GTPPFluids.Naphthalene, 2_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.phtalicacid, FluidShapes.fluidLiquid, 2_500))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PhthalicAcid, FluidShapes.fluidLiquid, 2_500))
             .eut(TierEU.RECIPE_LV)
             .duration(16 * SECONDS)
             .addTo(UniversalChemical);
@@ -283,7 +283,7 @@ public class RecipeLoaderCoalTar {
     private static void recipePhthalicAcidToPhthalicAnhydride() {
         GTValues.RA.stdBuilder()
             .itemOutputs(GregtechItemList.PhthalicAnhydrideDust.get(15))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.phtalicacid, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhthalicAcid, FluidShapes.fluidLiquid, 1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(60 * SECONDS)
             .addTo(chemicalDehydratorRecipes);

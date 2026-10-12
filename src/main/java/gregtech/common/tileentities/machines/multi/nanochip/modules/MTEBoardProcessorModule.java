@@ -265,7 +265,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             MaterialLibAPI.getFluid(Materials.IronIIIChloride, FluidShapes.fluidLiquid),
             MaterialLibAPI.getFluid(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid),
             MaterialLibAPI.getFluid(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid),
-            MaterialLibAPI.getFluid(Materials.prismaticacid, FluidShapes.fluidLiquid),
+            MaterialLibAPI.getFluid(Materials.PrismaticAcid, FluidShapes.fluidLiquid),
             MaterialLibAPI.getFluid(Materials.UUMatter, FluidShapes.fluidLiquid)));
 
     private static boolean holds(FluidStack stack, Material material) {
@@ -308,7 +308,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 4
-            && !holds(storedFluidStack, Materials.prismaticacid)) {
+            && !holds(storedFluidStack, Materials.PrismaticAcid)) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -388,8 +388,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                         impurityFluidStack = liquid(Materials.GrowthMediumRaw);
                     } else if (holds(storedFluidStack, Materials.BiohMediumSterilized)) {
                         impurityFluidStack = liquid(Materials.BioMediumRaw);
-                    } else if (holds(storedFluidStack, Materials.prismaticacid)) {
-                        impurityFluidStack = liquid(Materials.prismaticgas);
+                    } else if (holds(storedFluidStack, Materials.PrismaticAcid)) {
+                        impurityFluidStack = liquid(Materials.PrismaticGas);
                     } else if (holds(storedFluidStack, Materials.UUMatter)) {
                         impurityFluidStack = liquid(Materials.UUAmplifier);
                     }
@@ -404,7 +404,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             FluidStack toFlush = new FluidStack(
                 impurityFluidStack.getFluid(),
                 impurityFluidStack.getFluid()
-                    == MaterialLibAPI.getFluid(Materials.prismaticgas, FluidShapes.fluidLiquid)
+                    == MaterialLibAPI.getFluid(Materials.PrismaticGas, FluidShapes.fluidLiquid)
                         ? impurityFluidAmount / 4
                         : impurityFluidAmount);
             addOutputPartial(toFlush);

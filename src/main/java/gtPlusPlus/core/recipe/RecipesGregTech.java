@@ -1222,7 +1222,7 @@ public class RecipesGregTech {
                 MaterialLibAPI
                     .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 8 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.MoltenProtoHalkoniteBase, FluidShapes.fluidLiquid, 8 * INGOTS))
             .eut(TierEU.RECIPE_UEV)
             .duration(60 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);

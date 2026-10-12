@@ -253,7 +253,7 @@ public class AdditionalRecipes {
             ImmutablePair.of(Materials.AceticAcid, 21),
             ImmutablePair.of(Materials.FormicAcid, 40),
             ImmutablePair.of(Materials.HexafluorosilicicAcid, 350),
-            ImmutablePair.of(Materials.phtalicacid, 270),
+            ImmutablePair.of(Materials.PhthalicAcid, 270),
             ImmutablePair.of(Materials.NaphthenicAcid, 250),
             ImmutablePair.of(Materials.ChlorosulfonicAcid, 2304),
             ImmutablePair.of(Materials.FluoroantimonicAcid, 5760));

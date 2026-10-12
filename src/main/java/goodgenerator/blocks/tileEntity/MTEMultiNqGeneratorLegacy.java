@@ -70,9 +70,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
 
     static {
         excitedLiquid = Arrays.asList(
-            Pair.of(
-                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 20),
-                ExcitedLiquidCoe[0]),
+            Pair.of(MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, 20), ExcitedLiquidCoe[0]),
             Pair.of(
                 MaterialLibAPI.getFluidStack(Materials.AtomicSeparationCatalyst, FluidShapes.fluidMolten, 20),
                 ExcitedLiquidCoe[1]),
@@ -84,9 +82,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
                 MaterialLibAPI.getFluidStack(Materials.Caesium, FluidShapes.fluidMolten, 180),
                 ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
-            Pair.of(
-                MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, 20),
-                CoolantEfficiency[0]),
+            Pair.of(MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, 20), CoolantEfficiency[0]),
             Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
             Pair.of(
                 MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 1_000),

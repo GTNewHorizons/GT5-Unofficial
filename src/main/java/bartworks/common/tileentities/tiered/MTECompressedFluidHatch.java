@@ -50,7 +50,7 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
             .areFluidsEqual(aFluid, MaterialLibAPI.getFluidStack(Materials.LiquidAir, FluidShapes.fluidLiquid, 1))
             || GTUtility.areFluidsEqual(
                 aFluid,
-                MaterialLibAPI.getFluidStack(Materials.nethersemifluid, FluidShapes.fluidLiquid, 1))
+                MaterialLibAPI.getFluidStack(Materials.NetherSemiFluid, FluidShapes.fluidLiquid, 1))
             || GTUtility
                 .areFluidsEqual(aFluid, MaterialLibAPI.getFluidStack(Materials.ToxicAir, FluidShapes.fluidGas, 1));
     }

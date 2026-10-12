@@ -243,7 +243,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
                     .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         MaterialUtils.fluid(
-                            Materials.dimensionallyshiftedsuperfluid,
+                            Materials.DimensionallyShiftedSuperfluid,
                             Math.max(
                                 1,
                                 Math.min(
@@ -306,7 +306,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
                     .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         MaterialUtils.fluid(
-                            Materials.dimensionallyshiftedsuperfluid,
+                            Materials.DimensionallyShiftedSuperfluid,
                             Math.max(
                                 1,
                                 Math.min(

@@ -506,10 +506,10 @@ public class ChemicalBathRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Infinity, shape, multiplier))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, shape, multiplier))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HotProtoHalkonite, shape, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials.protohalkonitebase,
+                    Materials.MoltenProtoHalkoniteBase,
                     FluidShapes.fluidLiquid,
                     (int) (partFraction * multiplier)))
             .duration((int) (multiplier * (8 * SECONDS * partFraction / (float) INGOTS)))
@@ -518,10 +518,10 @@ public class ChemicalBathRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Creon, shape, multiplier))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, shape, multiplier))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HotProtoHalkonite, shape, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials.protohalkonitebase,
+                    Materials.MoltenProtoHalkoniteBase,
                     FluidShapes.fluidLiquid,
                     (int) (partFraction * multiplier / 2L)))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
@@ -530,10 +530,10 @@ public class ChemicalBathRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Mellion, shape, multiplier))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, shape, multiplier))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HotProtoHalkonite, shape, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials.protohalkonitebase,
+                    Materials.MoltenProtoHalkoniteBase,
                     FluidShapes.fluidLiquid,
                     (int) (partFraction * multiplier / 2L)))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))

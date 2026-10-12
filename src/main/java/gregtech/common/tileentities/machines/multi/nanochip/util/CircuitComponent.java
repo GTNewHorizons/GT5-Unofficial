@@ -41,7 +41,7 @@ public enum CircuitComponent {
     WireProtoHalkonite(
         3,
         "gt.circuitcomponent.wireprotohalkonite",
-        () -> MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 1)),
+        () -> MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 1)),
     WireSpacetime(
         4,
         "gt.circuitcomponent.wirespacetime",

@@ -1267,7 +1267,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     /* EV */
                     MaterialLibAPI
                         .getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, this.getFluidAmount());
-                default -> MaterialLibAPI.getFluidStack(Materials.phtalicacid, FluidShapes.fluidLiquid, fluidAmount);
+                default -> MaterialLibAPI.getFluidStack(Materials.PhthalicAcid, FluidShapes.fluidLiquid, fluidAmount);
             };
         }
 

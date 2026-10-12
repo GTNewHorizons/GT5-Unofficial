@@ -298,13 +298,13 @@ public class RecipeLoaderChemicalSkips {
                     GTUtility.copyAmountUnsafe(64 * 16, MaterialLibAPI.getStack(Materials.Netherrack, Shapes.dust, 1)),
                     getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.netherair, FluidShapes.fluidLiquid, 64_000),
+                    MaterialLibAPI.getFluidStack(Materials.NetherAir, FluidShapes.fluidLiquid, 64_000),
                     MaterialLibAPI.getFluidStack(Materials.HellishMetal, FluidShapes.fluidMolten, 8 * INGOTS),
                     GTUtility.getLava(256_000))
                 .itemOutputs(
                     getModItem(EtFuturumRequiem.ID, "netherite_scrap", 16),
                     ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(64))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.nefariousoil, FluidShapes.fluidLiquid, 64_000))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.NefariousOil, FluidShapes.fluidLiquid, 64_000))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .metadata(QFT_CATALYST, GregtechItemList.HellishForceCatalyst.get(0))
@@ -320,9 +320,9 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000),
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000),
                 MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 24_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 16))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.dust, 16))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.prismaticacid, FluidShapes.fluidLiquid, 32_000),
+                MaterialLibAPI.getFluidStack(Materials.PrismaticAcid, FluidShapes.fluidLiquid, 32_000),
                 MaterialLibAPI.getFluidStack(Materials.Strontium, FluidShapes.fluidMolten, 144 * 16))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -600,7 +600,7 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.dust, 64),
                 getModItem(Botania.ID, "manaResource", 64, 10),
                 MaterialLibAPI.getStack(Materials.Silver, Shapes.nanite, 1))
             .circuit(10)
@@ -798,7 +798,7 @@ public class RecipeLoaderChemicalSkips {
             32,
             new ItemStack[] { MaterialLibAPI.getStack(Materials.Quantum, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.Hypogen, Shapes.plateDense, 4),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plateSuperdense, 2),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.plateSuperdense, 2),
                 ItemList.Field_Generator_UIV.get(1),
                 MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.screw, 16),
                 ItemList.SuperconductorComposite.get(4) },

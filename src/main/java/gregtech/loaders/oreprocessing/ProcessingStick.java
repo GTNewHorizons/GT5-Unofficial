@@ -156,7 +156,7 @@ public class ProcessingStick implements PartRecipeGenerator {
                     .itemOutputs(MaterialLibAPI.getStack(material, Shapes.bolt, 4))
                     .fluidInputs(
                         MaterialUtils.fluid(
-                            Materials.dimensionallyshiftedsuperfluid,
+                            Materials.DimensionallyShiftedSuperfluid,
                             Math.max(
                                 1,
                                 Math.min(

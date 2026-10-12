@@ -96,7 +96,7 @@ public class ProcessingStickLong implements PartRecipeGenerator {
                     .itemOutputs(MaterialLibAPI.getStack(material, Shapes.stick, 2))
                     .fluidInputs(
                         MaterialUtils.fluid(
-                            Materials.dimensionallyshiftedsuperfluid,
+                            Materials.DimensionallyShiftedSuperfluid,
                             Math.max(
                                 1,
                                 Math.min(

@@ -38,7 +38,7 @@ public class BECMetaMaterialRecipes implements Runnable {
     private static final int[] baseAmounts = { 1, 2, 4, 8 };
     private static final int baseDuration = 300 * SECONDS;
 
-    private static final Material[] other3Tier = { Materials.protohalkonite, Materials.Hexanite,
+    private static final Material[] other3Tier = { Materials.ProtoHalkonite, Materials.Hexanite,
         Materials.MagnetohydrodynamicallyConstrainedStarMatter };
     private static final Material[] black3Tier = { Materials.Tairitsu, Materials.TranscendentMetal,
         Materials.BlackDwarfMatter };
@@ -49,7 +49,7 @@ public class BECMetaMaterialRecipes implements Runnable {
         Materials.SpaceTime };
     private static final Material[] gray4Tier = { Materials.Churitsu, Materials.WhiteDwarfMatter,
         Materials.BlackDwarfMatter, Materials.MagnetohydrodynamicallyConstrainedStarMatter };
-    private static final Material[] white4Tier = { Materials.Shijima, Materials.protohalkonite, Materials.Hexanite,
+    private static final Material[] white4Tier = { Materials.Shijima, Materials.ProtoHalkonite, Materials.Hexanite,
         Materials.Eternity };
 
     private static final int[] chromatic4TierAmts = { 8, 12, 16, 24 };

@@ -287,8 +287,8 @@ public class CompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 1 * STACKS))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, Shapes.plateSuperdense, 1))
+                MaterialLibAPI.getFluidStack(Materials.MoltenProtoHalkoniteBase, FluidShapes.fluidLiquid, 1 * STACKS))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HotProtoHalkonite, Shapes.plateSuperdense, 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
             .duration(45 * SECONDS)
@@ -298,8 +298,8 @@ public class CompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Creon, Shapes.plateSuperdense, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 32 * INGOTS))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, Shapes.plateSuperdense, 1))
+                MaterialLibAPI.getFluidStack(Materials.MoltenProtoHalkoniteBase, FluidShapes.fluidLiquid, 32 * INGOTS))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HotProtoHalkonite, Shapes.plateSuperdense, 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
             .duration(45 * SECONDS / 4)
@@ -309,8 +309,8 @@ public class CompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Mellion, Shapes.plateSuperdense, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 32 * INGOTS))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, Shapes.plateSuperdense, 1))
+                MaterialLibAPI.getFluidStack(Materials.MoltenProtoHalkoniteBase, FluidShapes.fluidLiquid, 32 * INGOTS))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HotProtoHalkonite, Shapes.plateSuperdense, 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
             .duration(45 * SECONDS / 4)

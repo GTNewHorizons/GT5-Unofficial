@@ -76,13 +76,13 @@ public class PurifiedWaterRecipes {
             .addTo(multiblockChemicalReactorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.PreActivatedCarbon, Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.carbonactivateddirty, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.DirtyActivatedCarbon, Shapes.dust, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .specialValue((int) HeatingCoilLevel.EV.getHeat())
             .addTo(blastFurnaceRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.carbonactivateddirty, Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.DirtyActivatedCarbon, Shapes.dust, 1))
             .fluidInputs(GTUtility.getWater(1_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.ActivatedCarbon, Shapes.dust, 1))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
@@ -301,7 +301,7 @@ public class PurifiedWaterRecipes {
                 .itemInputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(1))
                 .circuit(i + 1)
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.stablebaryonicmatter, FluidShapes.fluidLiquid, 1_000))
+                    MaterialLibAPI.getFluidStack(Materials.StableBaryonicMatter, FluidShapes.fluidLiquid, 1_000))
                 .itemOutputs(catalystInputs[i])
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
@@ -345,7 +345,7 @@ public class PurifiedWaterRecipes {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 900),
                 MaterialLibAPI
-                    .getFluidStack(Materials.stablebaryonicmatter, FluidShapes.fluidLiquid, extraBaryonicOutput))
+                    .getFluidStack(Materials.StableBaryonicMatter, FluidShapes.fluidLiquid, extraBaryonicOutput))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(10000, 100)
             .ignoreCollision()
@@ -361,7 +361,7 @@ public class PurifiedWaterRecipes {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 900),
                 MaterialLibAPI
-                    .getFluidStack(Materials.stablebaryonicmatter, FluidShapes.fluidLiquid, extraBaryonicOutput))
+                    .getFluidStack(Materials.StableBaryonicMatter, FluidShapes.fluidLiquid, extraBaryonicOutput))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(10000, 100)
             .ignoreCollision()

@@ -478,7 +478,7 @@ public class MTEPurificationUnitBaryonicPerfection
             // If we found something, immediately output stable baryonic matter
             if (correctStartIndex != -1) addOutputPartial(
                 MaterialLibAPI.getFluidStack(
-                    Materials.stablebaryonicmatter,
+                    Materials.StableBaryonicMatter,
                     FluidShapes.fluidLiquid,
                     (int) BARYONIC_MATTER_OUTPUT));
         }

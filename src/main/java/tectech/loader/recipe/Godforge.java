@@ -793,12 +793,10 @@ public class Godforge implements Runnable {
             quarkGluonItemsForNEI.add(item);
         }
         for (int i = 0; i < 21; i++) {
-            magmatterTimeFluidItemsForNEI.add(
-                MaterialLibAPI
-                    .getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, getRandomIntInRange(1, 50)));
+            magmatterTimeFluidItemsForNEI
+                .add(MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, getRandomIntInRange(1, 50)));
             magmatterSpaceFluidItemsForNEI.add(
-                MaterialLibAPI
-                    .getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, getRandomIntInRange(51, 100)));
+                MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, getRandomIntInRange(51, 100)));
         }
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
 
@@ -1015,7 +1013,7 @@ public class Godforge implements Runnable {
                 ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1L))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, 2))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.activatednetherite, FluidShapes.fluidLiquid, 144),
+                MaterialLibAPI.getFluidStack(Materials.ActivatedNetherite, FluidShapes.fluidLiquid, 144),
                 MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidMolten, 2))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_UXV)

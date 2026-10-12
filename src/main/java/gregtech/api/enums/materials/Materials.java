@@ -108,7 +108,7 @@ public class Materials {
     public static Material Plutonium;
     public static Material Plutonium241;
     public static Material Americium;
-    public static Material spatialFluid;
+    public static Material Space;
     public static Material ExcitedDTCC;
     public static Material TengamRaw;
     public static Material TengamPurified;
@@ -117,13 +117,13 @@ public class Materials {
     public static Material InactiveCosmicSolder;
     public static Material BoundlessCosmicSolder;
     public static Material ComputationBase;
-    public static Material netherair;
-    public static Material nethersemifluid;
-    public static Material nefariousgas;
+    public static Material NetherAir;
+    public static Material NetherSemiFluid;
+    public static Material NefariousGas;
     public static Material ExcitedDTRC;
-    public static Material nefariousoil;
-    public static Material poornetherwaste;
-    public static Material richnetherwaste;
+    public static Material NefariousOil;
+    public static Material PoorNetherWaste;
+    public static Material RichNetherWaste;
     public static Material HellishMetal;
     public static Material ExcitedDTEC;
     public static Material ExcitedDTSC;
@@ -131,12 +131,12 @@ public class Materials {
     public static Material DimensionallyTranscendentStellarCatalyst;
     public static Material SuperconductorUIVBase;
     public static Material Netherite;
-    public static Material activatednetherite;
+    public static Material ActivatedNetherite;
     public static Material SuperconductorUMVBase;
-    public static Material prismarinesolution;
-    public static Material prismarinecontaminatedhydrogenperoxide;
-    public static Material prismarinerichnitrobenzenesolution;
-    public static Material prismarinecontaminatednitrobenzenesolution;
+    public static Material PrismarineSolution;
+    public static Material PrismarineContaminatedHydrogenPeroxide;
+    public static Material PrismarineRichNitrobenzeneSolution;
+    public static Material PrismarineContaminatedNitrobenzeneSolution;
     public static Material Universium;
     public static Material SuperCoolant;
     public static Material Eternity;
@@ -149,20 +149,20 @@ public class Materials {
     public static Material Mellion;
     public static Material Creon;
     public static Material GravitonShard;
-    public static Material dimensionallyshiftedsuperfluid;
-    public static Material protohalkonitebase;
-    public static Material hotprotohalkonite;
-    public static Material protohalkonite;
-    public static Material moltenexohalkonitebase;
-    public static Material hotexohalkonite;
-    public static Material exohalkonite;
+    public static Material DimensionallyShiftedSuperfluid;
+    public static Material MoltenProtoHalkoniteBase;
+    public static Material HotProtoHalkonite;
+    public static Material ProtoHalkonite;
+    public static Material MoltenExoHalkoniteBase;
+    public static Material HotExoHalkonite;
+    public static Material ExoHalkonite;
     public static Material Antimatter;
     public static Material Protomatter;
-    public static Material sgcrystalslurry;
-    public static Material prismaticgas;
-    public static Material prismaticacid;
-    public static Material prismaticnaquadah;
-    public static Material prismaticnaquadahcompositeslurry;
+    public static Material StargateCrystalSlurry;
+    public static Material PrismaticGas;
+    public static Material PrismaticAcid;
+    public static Material PrismaticNaquadah;
+    public static Material PrismaticNaquadahCompositeSlurry;
     public static Material BrightLumipodExtract;
     public static Material BiocatalyzedPropulsionFluid;
     public static Material Chlorite;
@@ -402,11 +402,11 @@ public class Materials {
     public static Material FlocculationWasteLiquid;
     public static Material ActivatedCarbon;
     public static Material PreActivatedCarbon;
-    public static Material carbonactivateddirty;
+    public static Material DirtyActivatedCarbon;
     public static Material PolyaluminiumChloride;
     public static Material AdvancedGlue;
     public static Material Ozone;
-    public static Material stablebaryonicmatter;
+    public static Material StableBaryonicMatter;
     public static Material OilExtraHeavy;
     public static Material TPVAlloy;
     public static Material TranscendentMetal;
@@ -415,7 +415,7 @@ public class Materials {
     public static Material RawStarMatter;
     public static Material WhiteDwarfMatter;
     public static Material BlackDwarfMatter;
-    public static Material temporalFluid;
+    public static Material Time;
     public static Material SpaceTime;
     public static Material DimensionallyTranscendentResidue;
     public static Material PotassiumNitrate;
@@ -423,7 +423,7 @@ public class Materials {
     public static Material _2Nitrochlorobenzene;
     public static Material Dimethylbenzene;
     public static Material PotassiumDichromate;
-    public static Material phtalicacid;
+    public static Material PhthalicAcid;
     public static Material _33Dichlorobenzidine;
     public static Material _33Diaminobenzidine;
     public static Material DiphenylIsophtalate;
@@ -527,7 +527,7 @@ public class Materials {
     public static Material FermentedBiomass;
     public static Material SaltWater;
     public static Material IronIIIChloride;
-    public static Material lifeessence;
+    public static Material LifeEssence;
     public static Material SodiumCarbonate;
     public static Material SodiumAluminate;
     public static Material Alumina;
@@ -619,7 +619,7 @@ public class Materials {
     public static Material GammaButyrolactone;
     public static Material Trimethylamine;
     public static Material Methylamine;
-    public static Material pPhenylenediamine;
+    public static Material ParaPhenylenediamine;
     public static Material _4Nitroaniline;
     public static Material Acetylene;
     public static Material TerephthaloylChloride;
@@ -3753,7 +3753,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .build();
-        Materials.spatialFluid = MaterialLibAPI.newMaterial("gregtech", "spatialFluid", TextureSet.of("gregtech", "FLUID"))
+        Materials.Space = MaterialLibAPI.newMaterial("gregtech", "spatialFluid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6401FF)
             .setFluidTint(0xFFFFFFFF)
             .addToFamily(Families.all)
@@ -3909,7 +3909,7 @@ public class Materials {
 
     private static void initPart3() {
         // spotless:off
-        Materials.netherair = MaterialLibAPI.newMaterial("gregtech", "netherair", TextureSet.of("gregtech", "FLUID"))
+        Materials.NetherAir = MaterialLibAPI.newMaterial("gregtech", "netherair", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFEEA39A)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -3919,7 +3919,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
-        Materials.nethersemifluid = MaterialLibAPI.newMaterial("gregtech", "nethersemifluid", TextureSet.of("gregtech", "FLUID"))
+        Materials.NetherSemiFluid = MaterialLibAPI.newMaterial("gregtech", "nethersemifluid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFDAC172)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -3929,7 +3929,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
-        Materials.nefariousgas = MaterialLibAPI.newMaterial("gregtech", "nefariousgas", TextureSet.of("gregtech", "FLUID"))
+        Materials.NefariousGas = MaterialLibAPI.newMaterial("gregtech", "nefariousgas", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF300A05)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -3956,7 +3956,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.TRANSPARENT))
             .setProperty(GTMaterialProperties.DYE, "dyeLime")
             .build();
-        Materials.nefariousoil = MaterialLibAPI.newMaterial("gregtech", "nefariousoil", TextureSet.of("gregtech", "FLUID"))
+        Materials.NefariousOil = MaterialLibAPI.newMaterial("gregtech", "nefariousoil", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF391616)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -3968,7 +3968,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
-        Materials.poornetherwaste = MaterialLibAPI.newMaterial("gregtech", "poornetherwaste", TextureSet.of("gregtech", "FLUID"))
+        Materials.PoorNetherWaste = MaterialLibAPI.newMaterial("gregtech", "poornetherwaste", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFA0827E)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -3978,7 +3978,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
-        Materials.richnetherwaste = MaterialLibAPI.newMaterial("gregtech", "richnetherwaste", TextureSet.of("gregtech", "FLUID"))
+        Materials.RichNetherWaste = MaterialLibAPI.newMaterial("gregtech", "richnetherwaste", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFF9827E)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4148,7 +4148,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "NrAuMa*")
             .generateShape(TEBlockShapes.frameGt)
             .build();
-        Materials.activatednetherite = MaterialLibAPI.newMaterial("gregtech", "activatednetherite", TextureSet.of("gregtech", "METALLIC"))
+        Materials.ActivatedNetherite = MaterialLibAPI.newMaterial("gregtech", "activatednetherite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF9C575A)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4181,7 +4181,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .build();
-        Materials.prismarinesolution = MaterialLibAPI.newMaterial("gregtech", "prismarinesolution", TextureSet.of("gregtech", "METALLIC"))
+        Materials.PrismarineSolution = MaterialLibAPI.newMaterial("gregtech", "prismarinesolution", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF559A8A)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4191,7 +4191,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
-        Materials.prismarinecontaminatedhydrogenperoxide = MaterialLibAPI.newMaterial("gregtech", "prismarinecontaminatedhydrogenperoxide", TextureSet.of("gregtech", "METALLIC"))
+        Materials.PrismarineContaminatedHydrogenPeroxide = MaterialLibAPI.newMaterial("gregtech", "prismarinecontaminatedhydrogenperoxide", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF445F59)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4201,7 +4201,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
-        Materials.prismarinerichnitrobenzenesolution = MaterialLibAPI.newMaterial("gregtech", "prismarinerichnitrobenzenesolution", TextureSet.of("gregtech", "METALLIC"))
+        Materials.PrismarineRichNitrobenzeneSolution = MaterialLibAPI.newMaterial("gregtech", "prismarinerichnitrobenzenesolution", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF5D763F)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4211,7 +4211,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
-        Materials.prismarinecontaminatednitrobenzenesolution = MaterialLibAPI.newMaterial("gregtech", "prismarinecontaminatednitrobenzenesolution", TextureSet.of("gregtech", "METALLIC"))
+        Materials.PrismarineContaminatedNitrobenzeneSolution = MaterialLibAPI.newMaterial("gregtech", "prismarinecontaminatednitrobenzenesolution", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF2F331E)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4479,7 +4479,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES, false)
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("VACUOS", 150)))
             .build();
-        Materials.dimensionallyshiftedsuperfluid = MaterialLibAPI.newMaterial("gregtech", "dimensionallyshiftedsuperfluid", TextureSet.of("gregtech", "CUSTOM/dimensionallyshiftedsuperfluid"))
+        Materials.DimensionallyShiftedSuperfluid = MaterialLibAPI.newMaterial("gregtech", "dimensionallyshiftedsuperfluid", TextureSet.of("gregtech", "CUSTOM/dimensionallyshiftedsuperfluid"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4491,7 +4491,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.TRANSPARENT))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
-        Materials.protohalkonitebase = MaterialLibAPI.newMaterial("gregtech", "protohalkonitebase", TextureSet.of("gregtech", "CUSTOM/protohalkonitebase"))
+        Materials.MoltenProtoHalkoniteBase = MaterialLibAPI.newMaterial("gregtech", "protohalkonitebase", TextureSet.of("gregtech", "CUSTOM/protohalkonitebase"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4506,7 +4506,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES, false)
             .setProperty(GTMaterialProperties.FORMULA, "(TsЖ)₂(W₈Nq*₇((SiO₂)₂₆₂₄₄C₉)₄C₄V₃SpPu)₂Tt₂((CW)₇Ti₃)₃" + CustomGlyphs.FIRE + CustomGlyphs.EARTH + CustomGlyphs.CHAOS + "If*")
             .build();
-        Materials.hotprotohalkonite = MaterialLibAPI.newMaterial("gregtech", "hotprotohalkonite", TextureSet.of("gregtech", "CUSTOM/hotprotohalkonite"))
+        Materials.HotProtoHalkonite = MaterialLibAPI.newMaterial("gregtech", "hotprotohalkonite", TextureSet.of("gregtech", "CUSTOM/hotprotohalkonite"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
@@ -4534,7 +4534,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(TsЖ)₂(W₈Nq*₇((SiO₂)₂₆₂₄₄C₉)₄C₄V₃SpPu)₂Tt₂((CW)₇Ti₃)₃" + CustomGlyphs.FIRE + CustomGlyphs.EARTH + CustomGlyphs.CHAOS + "If*")
             .generateShape(TEBlockShapes.frameGt)
             .build();
-        Materials.protohalkonite = MaterialLibAPI.newMaterial("gregtech", "protohalkonite", TextureSet.of("gregtech", "CUSTOM/protohalkonite"))
+        Materials.ProtoHalkonite = MaterialLibAPI.newMaterial("gregtech", "protohalkonite", TextureSet.of("gregtech", "CUSTOM/protohalkonite"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
@@ -4563,7 +4563,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(TsЖ)₂(W₈Nq*₇((SiO₂)₂₆₂₄₄C₉)₄C₄V₃SpPu)₂Tt₂((CW)₇Ti₃)₃" + CustomGlyphs.FIRE + CustomGlyphs.EARTH + CustomGlyphs.CHAOS + "If*")
             .generateShape(TEBlockShapes.frameGt)
             .build();
-        Materials.moltenexohalkonitebase = MaterialLibAPI.newMaterial("gregtech", "moltenexohalkonitebase", TextureSet.of("gregtech", "FLUID"))
+        Materials.MoltenExoHalkoniteBase = MaterialLibAPI.newMaterial("gregtech", "moltenexohalkonitebase", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF1E1E1E)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4576,7 +4576,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES, false)
             .setProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES, false)
             .build();
-        Materials.hotexohalkonite = MaterialLibAPI.newMaterial("gregtech", "hotexohalkonite", TextureSet.of("gregtech", "CUSTOM/hotexohalkonite"))
+        Materials.HotExoHalkonite = MaterialLibAPI.newMaterial("gregtech", "hotexohalkonite", TextureSet.of("gregtech", "CUSTOM/hotexohalkonite"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
@@ -4604,7 +4604,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES, false)
             .generateShape(TEBlockShapes.frameGt)
             .build();
-        Materials.exohalkonite = MaterialLibAPI.newMaterial("gregtech", "exohalkonite", TextureSet.of("gregtech", "CUSTOM/exohalkonite"))
+        Materials.ExoHalkonite = MaterialLibAPI.newMaterial("gregtech", "exohalkonite", TextureSet.of("gregtech", "CUSTOM/exohalkonite"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
@@ -4658,7 +4658,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.TRANSPARENT))
             .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 1)
             .build();
-        Materials.sgcrystalslurry = MaterialLibAPI.newMaterial("gregtech", "sgcrystalslurry", TextureSet.of("gregtech", "CUSTOM/sgcrystalfluid"))
+        Materials.StargateCrystalSlurry = MaterialLibAPI.newMaterial("gregtech", "sgcrystalslurry", TextureSet.of("gregtech", "CUSTOM/sgcrystalfluid"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4669,7 +4669,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .setProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU, 2013265912)
             .build();
-        Materials.prismaticgas = MaterialLibAPI.newMaterial("gregtech", "prismaticgas", TextureSet.of("gregtech", "METALLIC"))
+        Materials.PrismaticGas = MaterialLibAPI.newMaterial("gregtech", "prismaticgas", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF76BABD)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4679,7 +4679,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
-        Materials.prismaticacid = MaterialLibAPI.newMaterial("gregtech", "prismaticacid", TextureSet.of("gregtech", "CUSTOM/prismaticacid"))
+        Materials.PrismaticAcid = MaterialLibAPI.newMaterial("gregtech", "prismaticacid", TextureSet.of("gregtech", "CUSTOM/prismaticacid"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -4690,7 +4690,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.TRANSPARENT))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .build();
-        Materials.prismaticnaquadah = MaterialLibAPI.newMaterial("gregtech", "prismaticnaquadah", TextureSet.of("gregtech", "METALLIC"))
+        Materials.PrismaticNaquadah = MaterialLibAPI.newMaterial("gregtech", "prismaticnaquadah", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF373737)
             .addToFamily(Families.all)
             .addToFamily(Families.metals)
@@ -4713,7 +4713,7 @@ public class Materials {
 
     private static void initPart4() {
         // spotless:off
-        Materials.prismaticnaquadahcompositeslurry = MaterialLibAPI.newMaterial("gregtech", "prismaticnaquadahcompositeslurry", TextureSet.of("gregtech", "FLUID"))
+        Materials.PrismaticNaquadahCompositeSlurry = MaterialLibAPI.newMaterial("gregtech", "prismaticnaquadahcompositeslurry", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF4B4B4B)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -10289,7 +10289,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES, false)
             .setProperty(GTMaterialProperties.FORMULA, "C(H₃PO₄)")
             .build();
-        Materials.carbonactivateddirty = MaterialLibAPI.newMaterial("gregtech", "carbonactivateddirty", TextureSet.of("gregtech", "DULL"))
+        Materials.DirtyActivatedCarbon = MaterialLibAPI.newMaterial("gregtech", "carbonactivateddirty", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF6E6E6E)
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
@@ -10338,7 +10338,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.FORMULA, "O₃")
             .build();
-        Materials.stablebaryonicmatter = MaterialLibAPI.newMaterial("gregtech", "stablebaryonicmatter", TextureSet.of("gregtech", "CUSTOM/stablebaryonicmatter"))
+        Materials.StableBaryonicMatter = MaterialLibAPI.newMaterial("gregtech", "stablebaryonicmatter", TextureSet.of("gregtech", "CUSTOM/stablebaryonicmatter"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -10547,7 +10547,7 @@ public class Materials {
             .generateShape(Shapes.nanite)
             .setProperty(GTMaterialProperties.DUST_FLUID_AMOUNT, 144)
             .build();
-        Materials.temporalFluid = MaterialLibAPI.newMaterial("gregtech", "temporalFluid", TextureSet.of("gregtech", "FLUID"))
+        Materials.Time = MaterialLibAPI.newMaterial("gregtech", "temporalFluid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6401FF)
             .setFluidTint(0xFFFFFFFF)
             .addToFamily(Families.all)
@@ -10681,7 +10681,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyePink")
             .setProperty(GTMaterialProperties.FORMULA, "K₂Cr₂O₇")
             .build();
-        Materials.phtalicacid = MaterialLibAPI.newMaterial("gregtech", "phtalicacid", TextureSet.of("gregtech", "FLUID"))
+        Materials.PhthalicAcid = MaterialLibAPI.newMaterial("gregtech", "phtalicacid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF368547)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -12356,7 +12356,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeBlack")
             .setProperty(GTMaterialProperties.FORMULA, "FeCl₃")
             .build();
-        Materials.lifeessence = MaterialLibAPI.newMaterial("gregtech", "lifeessence", TextureSet.of("gregtech", "FLUID"))
+        Materials.LifeEssence = MaterialLibAPI.newMaterial("gregtech", "lifeessence", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6E0303)
             .addToFamily(Families.all)
             .addToFamily(Families.liquids)
@@ -13646,7 +13646,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DYE, "dyeGray")
             .setProperty(GTMaterialProperties.FORMULA, "CH₅N")
             .build();
-        Materials.pPhenylenediamine = MaterialLibAPI.newMaterial("gregtech", "pPhenylenediamine", TextureSet.of("gregtech", "POWDER"))
+        Materials.ParaPhenylenediamine = MaterialLibAPI.newMaterial("gregtech", "pPhenylenediamine", TextureSet.of("gregtech", "POWDER"))
             .setTint(0xFFFBEC5D)
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)

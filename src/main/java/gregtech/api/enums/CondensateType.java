@@ -74,9 +74,9 @@ public enum CondensateType {
         () -> MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 144), 80 * SECONDS, TierEU.RECIPE_UMV),
     DimensionallyShiftedSuperfluid(
         "dimshiftedsuperfluid",
-        () -> Materials.dimensionallyshiftedsuperfluid,
+        () -> Materials.DimensionallyShiftedSuperfluid,
         1000,
-        () -> MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1000), 80 * SECONDS, TierEU.RECIPE_UIV),
+        () -> MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1000), 80 * SECONDS, TierEU.RECIPE_UIV),
     PhononMedium(
         "phononmedium",
         () -> Materials.PhononMedium,
@@ -94,14 +94,14 @@ public enum CondensateType {
         () -> MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 144), 160 * SECONDS, TierEU.RECIPE_UMV),
     Time(
         "time",
-        () -> Materials.temporalFluid,
+        () -> Materials.Time,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, 144), 160 * SECONDS, TierEU.RECIPE_UMV),
+        () -> MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, 144), 160 * SECONDS, TierEU.RECIPE_UMV),
     Space(
         "space",
-        () -> Materials.spatialFluid,
+        () -> Materials.Space,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 144), 160 * SECONDS, TierEU.RECIPE_UMV),
+        () -> MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, 144), 160 * SECONDS, TierEU.RECIPE_UMV),
     BoundlessCosmicSolder(
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,

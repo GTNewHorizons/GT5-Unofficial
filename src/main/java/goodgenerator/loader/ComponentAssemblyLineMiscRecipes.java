@@ -346,7 +346,7 @@ public class ComponentAssemblyLineMiscRecipes {
             1 << (t - 3),
             (int) TierEU.RECIPE_UEV,
             1,
-            new Object[] { MaterialLibAPI.getStack(Materials.protohalkonite, TEBlockShapes.frameGt, 1),
+            new Object[] { MaterialLibAPI.getStack(Materials.ProtoHalkonite, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateSuperdense, 1),
                 ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
@@ -355,7 +355,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 ComponentType.Electric_Motor.getComponent(t)
                     .get(16),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.gearGt, 4),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.gearGtSmall, 16),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.gearGtSmall, 16),
                 MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.cableGt04, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
             new FluidStack[] {
@@ -363,7 +363,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1000 * (t - 2)) },
+                    .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1000 * (t - 2)) },
             Compassline_Casing_UIV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UEV);

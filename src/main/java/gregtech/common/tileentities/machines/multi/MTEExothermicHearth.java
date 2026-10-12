@@ -153,7 +153,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             GTStructureChannels.HEATING_COIL
                 .use(activeCoils(ofCoil(MTEExothermicHearth::setCoilLevel, MTEExothermicHearth::getCoilLevel))))
         .addElement('F', Casings.RadiantNaquadahAlloyCasing.asElement())
-        .addElement('G', ofFrame(Materials.prismaticnaquadah))
+        .addElement('G', ofFrame(Materials.PrismaticNaquadah))
         .addElement('H', Casings.ThermalContainmentCasing.asElement())
         .addElement(
             'I',
@@ -230,7 +230,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addCasing("308", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
             .addCasing("280", Casings.BlastSmelterHeatContainmentCoil.getLocalizedName(), false)
             .addCasing("131", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
-            .addCasing("56", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.prismaticnaquadah)), false)
+            .addCasing("56", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.PrismaticNaquadah)), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
             .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.top_center_casing"), 2)

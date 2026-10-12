@@ -254,7 +254,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Trinium, Shapes.dust, 8),
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 16),
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.dust, 16),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.dust, 1))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
@@ -266,7 +266,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.dust, 8),
                 MaterialLibAPI.getStack(Materials.Trinium, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 24),
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.dust, 24),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.dustSmall, 6))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
@@ -278,7 +278,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.dust, 8),
                 MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 32),
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.dust, 32),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.dust, 2))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
@@ -290,7 +290,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 48),
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.dust, 48),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.dust, 3))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -302,7 +302,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Hypogen, Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.dust, 4))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -314,7 +314,7 @@ public class Pulverizer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials.Hypogen, Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.dust, 8))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)

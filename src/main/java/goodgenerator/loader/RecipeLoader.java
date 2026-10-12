@@ -102,7 +102,7 @@ public class RecipeLoader {
                 new Object[] { Circuits.UV.getIngredient(), 4 },
                 MaterialLibAPI.getStack(Materials.SuperconductorLuV, TEBlockShapes.wireGt08, 8),
                 MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.pipeHuge, 4),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.screw, 16))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Trinium, FluidShapes.fluidMolten, 4 * INGOTS),
@@ -129,7 +129,7 @@ public class RecipeLoader {
         // LNR Frame
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.stickLong, 8),
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.stickLong, 8),
                 MaterialLibAPI.getStack(Materials.HSSE, TEBlockShapes.frameGt, 4))
             .circuit(24)
             .itemOutputs(ItemRefer.Radiation_Proof_Steel_Frame_Box.get(1))
@@ -822,7 +822,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 1 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 64_000))
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 64_000))
             .itemOutputs(ItemRefer.Field_Restriction_Coil_T3.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(60 * SECONDS)
@@ -845,7 +845,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 1 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 64_000))
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 64_000))
             .itemOutputs(ItemRefer.Field_Restriction_Coil_T4.get(1))
             .eut(TierEU.RECIPE_UEV)
             .duration(60 * SECONDS)
@@ -1324,7 +1324,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.stickLong, 16))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 12 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 4_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 4_000),
                 MaterialLibAPI.getFluidStack(Materials.Grade7PurifiedWater, FluidShapes.fluidLiquid, 16_000))
             .itemOutputs(Loaders.NeutronAccelerators[11].copy())
             .eut(TierEU.RECIPE_UIV)
@@ -1349,7 +1349,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Mellion, Shapes.stickLong, 16))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 3 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 8_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 8_000),
                 MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 16_000))
             .itemOutputs(Loaders.NeutronAccelerators[12].copy())
             .eut(TierEU.RECIPE_UMV)
@@ -1417,7 +1417,7 @@ public class RecipeLoader {
             .fluidInputs(
                 new FluidStack(GTPPFluids.Pyrotheum, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, 2 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.prismaticnaquadah, FluidShapes.fluidMolten, 72))
+                MaterialLibAPI.getFluidStack(Materials.PrismaticNaquadah, FluidShapes.fluidMolten, 72))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)

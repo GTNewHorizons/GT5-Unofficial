@@ -243,7 +243,7 @@ public class ProcessingPlank implements ForeignPartRule {
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1))
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1))
             .duration(10 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);

@@ -565,14 +565,14 @@ public class RecipeLoader2 {
                     ItemList.Electric_Pump_UIV.get(8),
                     MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.pipeLarge, 12),
                     MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateDouble, 12),
-                    MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plateDouble, 12),
+                    MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.plateDouble, 12),
                     MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 64))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 1 * STACKS + 36 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 5 * STACKS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 5 * STACKS))
+                        .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 5 * STACKS))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T9.get(1))
                 .eut(TierEU.RECIPE_UMV)
                 .duration(50 * SECONDS)
@@ -589,14 +589,14 @@ public class RecipeLoader2 {
                     ItemList.Electric_Pump_UMV.get(8),
                     MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.pipeLarge, 64),
                     MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateDouble, 12),
-                    MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plateDouble, 12),
+                    MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.plateDouble, 12),
                     MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plate, 10))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 10 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 10 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 5 * STACKS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 5 * STACKS))
+                        .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 5 * STACKS))
                 .itemOutputs(ItemRefer.YOTTank_Cell_T10.get(1))
                 .eut(TierEU.RECIPE_UXV)
                 .duration(50 * SECONDS)

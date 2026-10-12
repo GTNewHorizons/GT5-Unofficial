@@ -1473,7 +1473,7 @@ public final class RecipeMaps {
                 .ifPresent(ret::add);
             b.fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials.dimensionallyshiftedsuperfluid,
+                    Materials.DimensionallyShiftedSuperfluid,
                     FluidShapes.fluidLiquid,
                     clamp(aDuration * aEUt / 4000, 1, 10)))
                 .duration((int) (aDuration / 2.5))

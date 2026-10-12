@@ -166,8 +166,8 @@ public class ResearchStationAssemblyLine implements Runnable {
 
                 ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM5.get(4),
                 MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt16, 64) },
-            new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, 144_000),
-                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 144_000),
+            new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, 144_000),
+                MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, 144_000),
                 MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 16 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 16 * STACKS), },
             CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
@@ -627,11 +627,11 @@ public class ResearchStationAssemblyLine implements Runnable {
             1,
             new Object[] { CustomItemList.eM_energyTunnel6_UEV.get(4),
                 new Object[] { Circuits.UIV.getIngredient(), 32L }, ItemList.Electric_Pump_UEV.get(16),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plate, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.plate, 64),
 
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.gearGt, 16),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.gearGtSmall, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.screw, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.gearGt, 16),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.gearGtSmall, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.screw, 64),
                 ItemList.EnergisedTesseract.get(32),
 
                 ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Reactor_Coolant_Sp_6.get(1L),
@@ -1132,8 +1132,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Magmatter, Shapes.plateSuperdense, 1),
                 MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt08, 8),
                 MaterialLibAPI.getStack(Materials.Shirabon, Shapes.plateDense, 64) },
-            new FluidStack[] {
-                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 1 * STACKS),
+            new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, 1 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 1 * STACKS),
                 MaterialLibAPI.getFluidStack(
                     Materials.MagnetohydrodynamicallyConstrainedStarMatter,
@@ -1599,7 +1598,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         FluidStack fluid_1 = MaterialLibAPI
             .getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 18 * INGOTS);
         FluidStack fluid_2 = MaterialLibAPI
-            .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 4_000);
+            .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 4_000);
 
         int crafting_time_in_ticks = 1000;
         int crafting_eu_per_tick = (int) TierEU.RECIPE_UEV;
@@ -1618,14 +1617,14 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.stickLong, 16),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.round, 32),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.cableGt04, 2) },
             new FluidStack[] { fluid_0, fluid_1, fluid_2 },
             ItemList.Electric_Motor_UIV.get(1L),
@@ -1782,14 +1781,14 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { MaterialLibAPI.getStack(Materials.TranscendentMetal, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plate, 6), ItemList.NuclearStar.get(1L),
                 ItemList.Emitter_UIV.get(4L), new Object[] { Circuits.UMV.getIngredient(), 4 },
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials.NetherStar, TEBlockShapes.cableGt04, 8) },
             new FluidStack[] { fluid_0, fluid_1 },
             ItemList.Field_Generator_UIV.get(1L),
@@ -1817,7 +1816,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         FluidStack fluid_2 = MaterialLibAPI
             .getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 18 * INGOTS);
         FluidStack fluid_3 = MaterialLibAPI
-            .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 4_000);
+            .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 4_000);
 
         int crafting_time_in_ticks = 1000;
         int crafting_eu_per_tick = (int) TierEU.RECIPE_UIV;
@@ -2029,7 +2028,7 @@ public class ResearchStationAssemblyLine implements Runnable {
         FluidStack moltenUniversium_576 = MaterialLibAPI
             .getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 4 * INGOTS);
         FluidStack dimensionallyShiftedSuperfluid8000 = MaterialLibAPI
-            .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 8_000);
+            .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 8_000);
         FluidStack solderingAlloy_14_400 = MaterialUtils
             .anyFluid(Materials.MutatedLivingSolder, 1 * STACKS + 36 * INGOTS);
 
@@ -2341,7 +2340,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Churitsu, TEBlockShapes.frameGt, 24),
                 MaterialLibAPI.getStack(Materials.Shijima, TEBlockShapes.frameGt, 24),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "IrradiantReinforcedBedrockiumPlate", 16),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.foil, 32),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.foil, 32),
                 MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.screw, 64),
                 MaterialLibAPI.getStack(Materials.Shijima, Shapes.bolt, 64), ItemList.Field_Generator_UEV.get(2),
@@ -2367,7 +2366,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, TEBlockShapes.pipeHuge, 6),
                 ItemList.Electromagnet_Tengam.get(1),
                 MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt04, 4),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.stick, 8),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.stick, 8),
                 MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.foil, 16),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.itemCasing, 8),
                 MaterialLibAPI.getStack(Materials.Shijima, Shapes.screw, 32), ItemList.Electric_Pump_UIV.get(3),
@@ -2389,12 +2388,12 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV,
             64,
             new Object[] { ItemList.ConflictInducementCasing.get(12), ItemList.ElectromagneticallyIsolatedCasing.get(3),
-                ItemList.UIV_Coil.get(4), MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.stickLong, 4),
+                ItemList.UIV_Coil.get(4), MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.wireFine, 32),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.foil, 16),
                 MaterialLibAPI.getStack(Materials.Shijima, Shapes.screw, 32),
                 GTModHandler.getModItem(Railcraft.ID, "machine.eta", 8, 8),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.ring, 8),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.foil, 16),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.gearGtSmall, 4),
                 MaterialLibAPI.getStack(Materials.Shijima, Shapes.round, 36), ItemList.Sensor_UIV.get(2),
@@ -2420,7 +2419,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Tairitsu, TEBlockShapes.frameGt, 2),
                 MaterialLibAPI.getStack(Materials.Churitsu, TEBlockShapes.frameGt, 2),
                 MaterialLibAPI.getStack(Materials.Shijima, TEBlockShapes.frameGt, 2), ItemList.UIV_Coil.get(2),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.stickLong, 2),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.stickLong, 2),
                 MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.wireFine, 16),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.foil, 8),
                 MaterialLibAPI.getStack(Materials.Shijima, Shapes.screw, 16),
@@ -2473,7 +2472,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV,
             64,
             new Object[] { ItemRefer.AntimatterContainmentCasing.get(6), ItemList.UIV_Coil.get(2),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.stickLong, 2),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.stickLong, 2),
                 MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.wireFine, 16),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.foil, 8),
                 MaterialLibAPI.getStack(Materials.Shijima, Shapes.screw, 16),
@@ -3142,7 +3141,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     getModItem(EternalSingularity.ID, "combined_singularity", 1L, 4),
                     MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateSuperdense, 2),
                     MaterialLibAPI.getStack(Materials.Titansteel, TEBlockShapes.frameGt, 4),
-                    MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plate, 16),
+                    MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.plate, 16),
                     MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateSuperdense, 2),
                     MaterialLibAPI.getStack(Materials.AbyssalAlloy, TEBlockShapes.frameGt, 4) },
                 new FluidStack[] {

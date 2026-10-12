@@ -246,7 +246,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.MysteriousCrystal, Shapes.gearGt, 16),
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.HighDurabilityCompoundSteel, Shapes.ring, 2),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.screw, 16))
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.screw, 16))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 10 * INGOTS))
             .itemOutputs(ItemList.T2Sawblade.get(1))
             .duration(120 * SECONDS)
@@ -269,12 +269,12 @@ public class FormingPressRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.gearGt, 16),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.ring, 2),
                 MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.screw, 16))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 10 * INGOTS))
+                    .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 10 * INGOTS))
             .itemOutputs(ItemList.T4Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UIV)

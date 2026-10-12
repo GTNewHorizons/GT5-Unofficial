@@ -367,7 +367,7 @@ public class CuttingRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("stoneConcrete", 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Concrete, Shapes.plate, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1))
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -401,7 +401,7 @@ public class CuttingRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("stoneMarble", 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Marble, Shapes.plate, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1))
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -439,7 +439,7 @@ public class CuttingRecipes implements Runnable {
             .circuit(3)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Basalt, Shapes.plate, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1))
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -473,7 +473,7 @@ public class CuttingRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("stoneGraniteBlack", 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.GraniteBlack, Shapes.plate, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1))
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -507,7 +507,7 @@ public class CuttingRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("stoneGraniteRed", 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.GraniteRed, Shapes.plate, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1))
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -572,7 +572,7 @@ public class CuttingRecipes implements Runnable {
             .itemOutputs(outputs)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials.dimensionallyshiftedsuperfluid,
+                    Materials.DimensionallyShiftedSuperfluid,
                     FluidShapes.fluidLiquid,
                     (int) (Math.max(1, Math.min(10, duration * eut / 4000)))))
             .duration((int) (duration / 2.5))

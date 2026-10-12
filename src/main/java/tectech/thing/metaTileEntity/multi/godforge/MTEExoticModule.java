@@ -250,8 +250,8 @@ public class MTEExoticModule extends MTEBaseModule {
         int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
         int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
         randomizedFluidInput = new FluidStack[] {
-            MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, timeAmount * 1000),
-            MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, spaceAmount * 1000) };
+            MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, timeAmount * 1000),
+            MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, spaceAmount * 1000) };
 
         return new GTRecipe(
             null,
@@ -263,8 +263,8 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils.addAll(
                 convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount),
-                MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, timeAmount),
-                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, spaceAmount)),
+                MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, timeAmount),
+                MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, spaceAmount)),
             new FluidStack[] { MaterialLibAPI
                 .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, (int) (576 * actualParallel)) },
             10 * SECONDS,

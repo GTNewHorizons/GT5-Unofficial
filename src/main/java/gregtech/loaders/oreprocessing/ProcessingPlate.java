@@ -462,7 +462,7 @@ public class ProcessingPlate implements PartRecipeGenerator {
                 .itemOutputs(MaterialLibAPI.getStack(material, Shapes.itemCasing, 2))
                 .fluidInputs(
                     MaterialUtils.fluid(
-                        Materials.dimensionallyshiftedsuperfluid,
+                        Materials.DimensionallyShiftedSuperfluid,
                         Math.max(
                             1,
                             Math.min(

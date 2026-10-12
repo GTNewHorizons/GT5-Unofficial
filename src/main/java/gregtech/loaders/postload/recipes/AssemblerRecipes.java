@@ -3006,9 +3006,9 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 12),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.screw, 4))
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.screw, 4))
             .itemOutputs(ItemList.RadiantNaquadahAlloyCasing.get(4))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 9 * INGOTS))
             .duration(10 * TICKS)
@@ -3182,7 +3182,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.MagneticAnchorCasing.get(1L),
                 ItemRefer.Field_Restriction_Coil_T4.get(1),
                 ItemList.NaquadriaSupersolid.get(16L),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.plateSuperdense, 2))
+                MaterialLibAPI.getStack(Materials.PrismaticNaquadah, Shapes.plateSuperdense, 2))
             .itemOutputs(ItemList.FieldEnergyAbsorberCasing.get(2L))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 16_000))
             .duration(5 * SECONDS)

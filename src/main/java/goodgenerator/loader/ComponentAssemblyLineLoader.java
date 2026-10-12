@@ -1509,8 +1509,8 @@ public class ComponentAssemblyLineLoader {
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
-                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 48 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
+                MaterialLibAPI.getFluidStack(Materials.MoltenProtoHalkoniteBase, FluidShapes.fluidLiquid, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.TengamPurified, FluidShapes.fluidMolten, 12 * STACKS),
@@ -1527,8 +1527,8 @@ public class ComponentAssemblyLineLoader {
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
-                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 24 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
+                MaterialLibAPI.getFluidStack(Materials.MoltenProtoHalkoniteBase, FluidShapes.fluidLiquid, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidMolten, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Mellion, FluidShapes.fluidMolten, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
@@ -1549,7 +1549,7 @@ public class ComponentAssemblyLineLoader {
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 192_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 18 * STACKS + 53 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 3 * STACKS))
             .duration(40 * MINUTES)
@@ -1570,7 +1570,7 @@ public class ComponentAssemblyLineLoader {
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 192_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 16 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 3 * STACKS))
             .duration(40 * MINUTES)
@@ -1589,7 +1589,7 @@ public class ComponentAssemblyLineLoader {
                 .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                    MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 192_000),
+                    MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 192_000),
                     MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 14 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                     MaterialUtils.molten(rubber, 12 * STACKS),
                     MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 9 * STACKS),
@@ -1609,7 +1609,7 @@ public class ComponentAssemblyLineLoader {
                 .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                    MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 192_000),
+                    MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 192_000),
                     MaterialUtils.molten(rubber, 59 * STACKS + 58 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 6 * STACKS + 53 * INGOTS + 3 * NUGGETS),
                     MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 3 * STACKS))
@@ -1678,8 +1678,8 @@ public class ComponentAssemblyLineLoader {
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 12 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 48 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 12 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.MoltenProtoHalkoniteBase, FluidShapes.fluidLiquid, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 48 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 3 * STACKS))
             .duration(40 * MINUTES)
@@ -1699,8 +1699,8 @@ public class ComponentAssemblyLineLoader {
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 12 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 24 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 12 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.MoltenProtoHalkoniteBase, FluidShapes.fluidLiquid, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidMolten, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Mellion, FluidShapes.fluidMolten, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 3 * STACKS))
@@ -1719,7 +1719,7 @@ public class ComponentAssemblyLineLoader {
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 192_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 51 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.TengamPurified, FluidShapes.fluidMolten, 24 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
@@ -1739,7 +1739,7 @@ public class ComponentAssemblyLineLoader {
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 192_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 18 * STACKS + 53 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 3 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 3 * STACKS))
@@ -1760,7 +1760,7 @@ public class ComponentAssemblyLineLoader {
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 192_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 192_000),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 16 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, 9 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 3 * STACKS),
@@ -1781,7 +1781,7 @@ public class ComponentAssemblyLineLoader {
                 .circuit(PUMP_CIRCUIT)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                    MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 192_000),
+                    MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 192_000),
                     MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 14 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                     MaterialUtils.molten(rubber, 12 * STACKS),
                     MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 9 * STACKS),
@@ -1802,7 +1802,7 @@ public class ComponentAssemblyLineLoader {
                 .circuit(CONVEYOR_CIRCUIT)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 13 * STACKS + 32 * INGOTS),
-                    MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 192_000),
+                    MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 192_000),
                     MaterialUtils.molten(rubber, 59 * STACKS + 58 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 6 * STACKS + 53 * INGOTS + 3 * NUGGETS),
                     MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 3 * STACKS),
@@ -1899,7 +1899,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.nanite, Materials.Gold, 12))
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 384_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 384_000),
                 MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 31 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 28 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 15 * STACKS),
@@ -1920,7 +1920,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.nanite, Materials.Gold, 12))
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 384_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 384_000),
                 MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 26 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 23 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 15 * STACKS),
@@ -1944,7 +1944,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.nanite, Materials.Gold, 24))
             .circuit(ROBOT_ARM_CIRCUIT)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 384_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 384_000),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 21 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 19 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 16 * STACKS + 32 * INGOTS),
@@ -1965,7 +1965,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.nanite, Materials.Gold, 12))
             .circuit(PUMP_CIRCUIT)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 384_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 384_000),
                 MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 20 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 17 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 12 * STACKS + 48 * INGOTS),
@@ -1988,7 +1988,7 @@ public class ComponentAssemblyLineLoader {
                 get(OrePrefixes.nanite, Materials.Gold, 12))
             .circuit(CONVEYOR_CIRCUIT)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 384_000),
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 384_000),
                 MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, 59 * STACKS + 58 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Kevlar, FluidShapes.fluidMolten, 59 * STACKS + 58 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 11 * STACKS + 21 * INGOTS + 3 * NUGGETS),

@@ -82,7 +82,7 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
         if (excitedLiquid == null) {
             excitedLiquid = Arrays.asList(
                 Pair.of(
-                    MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 20),
+                    MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, 20),
                     ExcitedLiquidCoe[0]),
                 Pair.of(
                     MaterialLibAPI.getFluidStack(Materials.AtomicSeparationCatalyst, FluidShapes.fluidMolten, 20),
@@ -104,7 +104,7 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
         if (coolant == null) {
             coolant = Arrays.asList(
                 Pair.of(
-                    MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, 20),
+                    MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, 20),
                     CoolantEfficiency[0]),
                 Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
                 Pair.of(

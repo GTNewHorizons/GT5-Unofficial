@@ -240,11 +240,11 @@ public class GTClient extends GTProxy {
         MaterialLibClient.setItemRenderer(Materials.Magmatter, new InfinityRenderer());
         MaterialLibClient.setItemRenderer(Materials.SixPhasedCopper, new GlitchEffectRenderer());
         MaterialLibClient.setItemRenderer(Materials.GravitonShard, new InfinityRenderer());
-        MaterialLibClient.setItemRenderer(Materials.exohalkonite, new InfinityRenderer());
-        MaterialLibClient.setItemRenderer(Materials.hotexohalkonite, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.ExoHalkonite, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.HotExoHalkonite, new InfinityRenderer());
         MaterialLibClient.setItemRenderer(
-            Materials.prismaticnaquadah,
-            new RainbowOverlayRenderer(MaterialUtils.rgba(Materials.prismaticnaquadah)));
+            Materials.PrismaticNaquadah,
+            new RainbowOverlayRenderer(MaterialUtils.rgba(Materials.PrismaticNaquadah)));
         MaterialLibClient.setItemRenderer(Materials.Amalgatite, new InfinityRenderer());
     }
 

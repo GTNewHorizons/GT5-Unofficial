@@ -315,11 +315,11 @@ public class VacuumFreezerRecipes implements Runnable {
         final int partFraction = (int) (shape.getProperty(GTShapeProperties.MATERIAL_AMOUNT) * INGOTS / M);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.hotprotohalkonite, shape, multiplier))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.protohalkonite, shape, multiplier))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HotProtoHalkonite, shape, multiplier))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.ProtoHalkonite, shape, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials.dimensionallyshiftedsuperfluid,
+                    Materials.DimensionallyShiftedSuperfluid,
                     FluidShapes.fluidLiquid,
                     partFraction * multiplier / 4),
                 MaterialLibAPI.getFluidStack(

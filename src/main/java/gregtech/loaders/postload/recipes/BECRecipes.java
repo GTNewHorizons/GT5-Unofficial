@@ -71,7 +71,7 @@ public class BECRecipes implements Runnable {
     private static final int[] BOLT_TIER = { 1, 2, 2, 2, 3, 3, 3, 4, 4 };
     private static final int[] BOLT_POS = { 0, 0, 1, 2, 0, 1, 2, 0, 1 };
     // Material per tier differentiating each EoH part
-    private static final Material[] TIER_MATS = { Materials.Netherite, Materials.protohalkonite,
+    private static final Material[] TIER_MATS = { Materials.Netherite, Materials.ProtoHalkonite,
         Materials.SixPhasedCopper, Materials.TranscendentMetal, Materials.Mellion, Materials.Creon, Materials.SpaceTime,
         Materials.Hexanite, Materials.Eternity };
     private static final int[] EOH_TIMES = { 2_000_000, 3_000_000, 4_000_000, 5_000_000, 100_000, 120_000, 140_000,
@@ -308,7 +308,7 @@ public class BECRecipes implements Runnable {
                 getModItem(EternalSingularity.ID, "combined_singularity", 1L, 4),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateSuperdense, 2),
                 MaterialLibAPI.getStack(Materials.Titansteel, TEBlockShapes.frameGt, 4),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plate, 16),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.plate, 16),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateSuperdense, 2),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, TEBlockShapes.frameGt, 4) },
             nanites(1, 2, 1, 1, 2, 4, 3, 1, 1, 3, 4, 2, 1, 1, 2, 1),
@@ -466,7 +466,7 @@ public class BECRecipes implements Runnable {
         addBec(
             CustomItemList.EOH_Reinforced_Temporal_Casing.get(4),
             new ItemStack[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plateDense, 32),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.plateDense, 32),
                 MaterialLibAPI.getStack(Materials.Hexanite, BlockShapes.block, 8),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 48),
                 MaterialLibAPI.getStack(Materials.Bedrockium, Shapes.plateSuperdense, 2),
@@ -486,7 +486,7 @@ public class BECRecipes implements Runnable {
         addBec(
             CustomItemList.EOH_Reinforced_Spatial_Casing.get(4),
             new ItemStack[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
-                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plateDense, 32),
+                MaterialLibAPI.getStack(Materials.ProtoHalkonite, Shapes.plateDense, 32),
                 MaterialLibAPI.getStack(Materials.Hexanite, BlockShapes.block, 8),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 48),
                 MaterialLibAPI.getStack(Materials.Bedrockium, Shapes.plateSuperdense, 2),
