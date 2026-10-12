@@ -18,7 +18,6 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import static gregtech.api.util.GTUtility.getTier;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -548,13 +547,25 @@ public class GTRecipeRegistrator {
 
     }
 
-    /**
-     * Place Materials which you want to replace in Non-GT-Recipes here (warning HUGHE impact on loading times!)
-     */
-    private static final Material[] VANILLA_MATS = { Materials.Cobalt, Materials.Gold, Materials.Iron, Materials.Lead,
-        Materials.FierySteel, Materials.Void, Materials.Bronze, Materials.Diamond, Materials.Ruby, Materials.Sapphire,
-        Materials.Steel, Materials.IronWood, Materials.Steeleaf, Materials.Knightmetal, Materials.Thaumium,
-        Materials.DarkSteel, };
+    /// The materials whose ingots, gems and blocks [gregtech.loaders.postload.GTPostLoad#replaceVanillaMaterials]
+    /// passes to [#registerUsagesForMaterials]. Each one scans every crafting recipe, so the list stays short.
+    public static final List<Material> VANILLA_MATS = List.of(
+        Materials.Cobalt,
+        Materials.Gold,
+        Materials.Iron,
+        Materials.Lead,
+        Materials.FierySteel,
+        Materials.Void,
+        Materials.Bronze,
+        Materials.Diamond,
+        Materials.Ruby,
+        Materials.Sapphire,
+        Materials.Steel,
+        Materials.IronWood,
+        Materials.Steeleaf,
+        Materials.Knightmetal,
+        Materials.Thaumium,
+        Materials.DarkSteel);
 
     /**
      * You give this Function a Material and it will scan almost everything for adding recycling Recipes and replacing
@@ -926,11 +937,6 @@ public class GTRecipeRegistrator {
                 .eut(eut)
                 .addTo(wiremillRecipes);
         }
-    }
-
-    public static boolean hasVanillaRecipes(Material material) {
-        return Arrays.stream(VANILLA_MATS)
-            .anyMatch(mat -> mat == material);
     }
 
     private static int getRecipeWidth(ShapedOreRecipe r) {

@@ -17,7 +17,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
@@ -417,15 +416,10 @@ public class GTPostLoad {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
         GT_FML_LOGGER.debug("Replacing Vanilla Materials in recipes, please wait.");
-        Set<Material> replaceVanillaItemsSet = MaterialLibAPI.getMaterials()
-            .stream()
-            .filter(GTRecipeRegistrator::hasVanillaRecipes)
-            .collect(Collectors.toSet());
-
         ProgressManager.ProgressBar progressBar = ProgressManager
-            .push("Register materials", replaceVanillaItemsSet.size());
+            .push("Register materials", GTRecipeRegistrator.VANILLA_MATS.size());
 
-        for (Material material : replaceVanillaItemsSet) {
+        for (Material material : GTRecipeRegistrator.VANILLA_MATS) {
             progressBar.step(MaterialUtils.localizedName(material));
             doActualRegistration(material);
         }
