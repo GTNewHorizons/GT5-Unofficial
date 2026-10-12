@@ -179,7 +179,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final int MODULE_CONNECT_INTERVAL = 20;
 
     private final ArrayList<MTENanochipAssemblyModuleBase<?>> modules = new ArrayList<>();
-    private final ArrayList<ModuleTypes> moduleTypes = new ArrayList<>();
 
     private final VacuumConveyorHatchMap<MTEHatchVacuumConveyor> vacuumConveyors = new VacuumConveyorHatchMap<>();
 
@@ -228,7 +227,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         modules.clear();
-        moduleTypes.clear();
         vacuumConveyors.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z, errors)) return;
         // Exactly one energy hatch is accepted
@@ -340,10 +338,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             // immediate recheck to prevent module from using outdated hatch during recipe check
             // delay is already done by the main structure, this does not cause immediate recheck.
             module.checkStructure(true, aTileEntity);
-            if (modules.add(module)) {
-                moduleTypes.add(module.getModuleType());
-                return true;
-            }
+            return modules.add(module);
         }
         return false;
     }
