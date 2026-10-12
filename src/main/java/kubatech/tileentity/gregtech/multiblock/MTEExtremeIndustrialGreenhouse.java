@@ -39,6 +39,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
@@ -87,7 +88,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -252,7 +252,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 .casingIndex(CASING.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, CASING.asElement())))
-        .addElement('f', ofBlock(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.TungstenSteel.getIndex()))
+        .addElement('f', ofFrame(Materials.TungstenSteel))
         .addElement(
             'l',
             ProjectRedIllumination.isModLoaded()
