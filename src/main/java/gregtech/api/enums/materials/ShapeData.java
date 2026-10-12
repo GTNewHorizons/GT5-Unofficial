@@ -1,8 +1,6 @@
 package gregtech.api.enums.materials;
 
 import static gregtech.api.enums.GTValues.M;
-import static gregtech.api.enums.StackSizeLimits.ORE_STACK_SIZE;
-import static gregtech.api.enums.StackSizeLimits.OTHER_STACK_SIZE;
 
 import java.util.List;
 
@@ -25,20 +23,17 @@ public final class ShapeData {
 
     public static void init() {
         BlockShapes.block.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Block of %s")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         BlockShapes.blockCasing.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Bolted %s Casing")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true);
         BlockShapes.blockCasingAdvanced.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Rebolted %s Casing")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -178,19 +173,16 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Shapes.crushed.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
-            .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Crushed %s Ore")
+        Shapes.crushed.setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Crushed %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERFODIO, 1L)));
-        Shapes.crushedCentrifuged.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
-            .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Centrifuged %s Ore")
+        Shapes.crushedCentrifuged.setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Centrifuged %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERFODIO, 1L)));
-        Shapes.crushedPurified.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
-            .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Purified %s Ore")
+        Shapes.crushedPurified.setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Purified %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERFODIO, 1L)));
@@ -200,13 +192,11 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERDITIO, 1L)));
         Shapes.dustImpure.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Impure Pile of %s Dust")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERDITIO, 1L)));
         Shapes.dustPure.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Purified Pile of %s Dust")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -249,7 +239,6 @@ public final class ShapeData {
                 GTShapeProperties.ASPECTS,
                 List.of(new TC_AspectStack(TCAspects.MOTUS, 1L), new TC_AspectStack(TCAspects.MACHINA, 1L)));
         Shapes.gem.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
@@ -380,8 +369,7 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.VITREUS, 1L)));
-        Shapes.milled.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
-            .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Milled %s Ore")
+        Shapes.milled.setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Milled %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true);
         Shapes.nanite.setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Nanites")
@@ -393,14 +381,12 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.METALLUM, 1L)));
-        OreShapes.ore.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
-            .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Ore")
+        OreShapes.ore.setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.TERRA, 1L)));
-        OreShapes.oreSmall.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
-            .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Ore")
+        OreShapes.oreSmall.setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 2))
@@ -489,8 +475,7 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.FABRICO, 1L)));
-        Shapes.rawOre.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
-            .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Raw %s Ore")
+        Shapes.rawOre.setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Raw %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1));
@@ -515,7 +500,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         BlockShapes.sheetmetal.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Sheetmetal")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)

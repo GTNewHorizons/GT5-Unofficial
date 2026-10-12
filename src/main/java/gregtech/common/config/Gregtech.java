@@ -121,20 +121,10 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public int maxLogStackSize;
 
-        @Config.Comment("Controls the stacksize of every oredicted prefix based items used for blocks (if that even makes sense)")
-        @Config.DefaultInt(64)
-        @Config.RequiresMcRestart
-        public int maxOtherBlocksStackSize;
-
         @Config.Comment("Controls the stacksize of oredicted planks.")
         @Config.DefaultInt(64)
         @Config.RequiresMcRestart
         public int maxPlankStackSize;
-
-        @Config.Comment("Controls the stacksize of oredicted items used in ore treatment.")
-        @Config.DefaultInt(64)
-        @Config.RequiresMcRestart
-        public int maxOreStackSize;
 
         @Config.Comment("Controls the stacksize of IC2 overclocker upgrades.")
         @Config.DefaultInt(4)

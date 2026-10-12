@@ -28,7 +28,7 @@ import gregtech.common.ores.GTOreAdapter;
 
 /// The recipe generators of every MaterialLib part shape. Each row runs a `Processing*` registrator once per material
 /// MaterialLib serves the shape for, with that pair's stack, under the oredict prefix the registrator switches on.
-/// Rows run at MaterialLib's postInit in table order; the stack-size clamps run at init.
+/// Rows run at MaterialLib's postInit in table order.
 ///
 /// Materials flagged [GTMaterialFlag#NO_RECIPES], prefixes a material ignores and ignored oredict names are skipped.
 /// Registrators are [Supplier]s so each `Processing*` class initializes when its rows first run, after every mod's
@@ -39,9 +39,6 @@ public final class ShapeRecipeTable {
 
     /// Registers every row. Runs from `GTMod`'s `MaterialRegistrationEvent` handler.
     public static void register() {
-        clamp(BlockShapes.block, OrePrefixes.block);
-        clamp(OreShapes.ore, OrePrefixes.ore);
-        clamp(OreShapes.oreSmall, OrePrefixes.oreSmall);
         dustSplit(Shapes.dustSmall);
         dustSplit(Shapes.dustTiny);
 
@@ -191,15 +188,6 @@ public final class ShapeRecipeTable {
             prefix,
             material -> !PipeMaterials.isHighPressurePipe(prefix, material),
             () -> ProcessingPipe.INSTANCE);
-    }
-
-    /// Clamps the shape's item to the prefix's default stack size, once per material.
-    private static void clamp(Shape shape, OrePrefixes prefix) {
-        if (shape == null) return;
-        MaterialLibAPI.registerShapeConsumer("gregtech", shape, (s, material) -> {
-            ItemStack stack = MaterialLibAPI.getStack(material, s, 1);
-            if (stack != null) ForeignPartRecipes.clampStackSize(prefix, stack);
-        });
     }
 
     private static void on(Shape shape, OrePrefixes prefix, Supplier<PartRecipeGenerator> registrator) {

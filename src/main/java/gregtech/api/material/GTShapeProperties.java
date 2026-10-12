@@ -25,8 +25,6 @@ public class GTShapeProperties {
     /// recipes ([gregtech.api.enums.OrePrefixes#mSecondaryMaterial]).
     public static final Property<MaterialStack> SECONDARY_MATERIAL = Property.of("gregtech", "secondaryMaterial");
 
-    public static final Property<Integer> DEFAULT_STACK_SIZE = Property.of("gregtech", "defaultStackSize", 64);
-
     /// Damage dealt per tick while an item of this shape is held, added to the material's own
     /// ([gregtech.api.enums.OrePrefixes#mHeatDamage]). Negative is frost damage.
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "shapeHeatDamage", 0.0F);

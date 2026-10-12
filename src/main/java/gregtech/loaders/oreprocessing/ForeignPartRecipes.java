@@ -47,7 +47,7 @@ public final class ForeignPartRecipes {
 
     /// Lowers the stack limit of `stack`'s item to `prefix`'s default stack size, when the item is a block. The limit
     /// belongs to the item, so it applies to every stack of it.
-    static void clampStackSize(OrePrefixes prefix, ItemStack stack) {
+    private static void clampStackSize(OrePrefixes prefix, ItemStack stack) {
         Item item = stack.getItem();
         if (item instanceof ItemBlock && prefix.getDefaultStackSize() < item.getItemStackLimit(stack)) {
             item.setMaxStackSize(prefix.getDefaultStackSize());

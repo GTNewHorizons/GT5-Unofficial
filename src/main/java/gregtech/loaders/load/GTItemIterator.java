@@ -176,13 +176,6 @@ public class GTItemIterator implements Runnable {
                         tBlock.setHarvestLevel("scoop", 0);
                         ToolScoop.sBeeHiveMaterial = tBlock.getMaterial();
                     }
-                    if (OrePrefixes.stone.getDefaultStackSize() < tItem.getItemStackLimit(new ItemStack(tItem, 1, 0))) {
-                        if ((tBlock.isReplaceableOreGen(GTValues.DW, 0, 0, 0, Blocks.stone))
-                            || (tBlock.isReplaceableOreGen(GTValues.DW, 0, 0, 0, Blocks.netherrack))
-                            || (tBlock.isReplaceableOreGen(GTValues.DW, 0, 0, 0, Blocks.end_stone))) {
-                            tItem.setMaxStackSize(OrePrefixes.stone.getDefaultStackSize());
-                        }
-                    }
                     if (tName.equals("tile.tankBlock") && tBlock instanceof BlockTank) {
                         OreDictUtils.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
                     }

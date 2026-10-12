@@ -2,8 +2,6 @@ package gregtech.api.enums;
 
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.StackSizeLimits.LOG_STACK_SIZE;
-import static gregtech.api.enums.StackSizeLimits.ORE_STACK_SIZE;
-import static gregtech.api.enums.StackSizeLimits.OTHER_STACK_SIZE;
 import static gregtech.api.enums.StackSizeLimits.PLANK_STACK_SIZE;
 
 import java.util.ArrayList;
@@ -79,7 +77,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
@@ -89,7 +86,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
@@ -98,7 +94,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
@@ -107,7 +102,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
@@ -117,7 +111,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
@@ -126,7 +119,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix of the Dense-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation! */
@@ -135,7 +127,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix of TFC */
@@ -144,7 +135,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix of TFC */
@@ -153,7 +143,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix of Railcraft. */
@@ -166,7 +155,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
@@ -176,7 +164,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
@@ -185,7 +172,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix of EFR */
@@ -195,7 +181,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     // region space ores
@@ -205,7 +190,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Mars */
@@ -214,7 +198,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Asteroid */
@@ -224,7 +207,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Phobos */
@@ -233,7 +215,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Deimos */
@@ -242,7 +223,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Ceres */
@@ -251,7 +231,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Io */
@@ -260,7 +239,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Europa */
@@ -269,7 +247,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Ganymede */
@@ -279,7 +256,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Callisto */
@@ -289,7 +265,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Enceladus */
@@ -299,7 +274,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Titan */
@@ -308,7 +282,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Miranda */
@@ -317,7 +290,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Oberon */
@@ -326,7 +298,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Proteus */
@@ -335,7 +306,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Triton */
@@ -344,7 +314,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Pluto */
@@ -353,7 +322,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Haumea */
@@ -362,7 +330,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Makemake */
@@ -372,7 +339,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Venus */
@@ -381,7 +347,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Mercury */
@@ -390,7 +355,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Alpha Centauri */
@@ -400,7 +364,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on T Ceti E */
@@ -409,7 +372,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Vega B */
@@ -418,7 +380,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Barnarda E */
@@ -428,7 +389,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Barnarda F */
@@ -438,7 +398,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Horus */
@@ -447,7 +406,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ores on Anubis and Maahes */
@@ -457,7 +415,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for packed ice ores */
@@ -467,7 +424,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for ice ores on Seth */
@@ -477,7 +433,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for clay ores on Seth */
@@ -487,7 +442,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for tuff ores */
@@ -496,7 +450,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** Prefix for blue ice ores */
@@ -506,7 +459,6 @@ public class OrePrefixes {
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
     // endregion
 
@@ -532,40 +484,34 @@ public class OrePrefixes {
     public static final OrePrefixes shard = new OrePrefixBuilder("shard").withDefaultLocalName("Crystallised Shards")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     public static final OrePrefixes clump = new OrePrefixBuilder("clump").withDefaultLocalName("Clumps")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     public static final OrePrefixes reduced = new OrePrefixBuilder("reduced").withDefaultLocalName("Reduced Gravels")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     public static final OrePrefixes crystalline = new OrePrefixBuilder("crystalline")
         .withDefaultLocalName("Crystallised Metals")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     public static final OrePrefixes cleanGravel = new OrePrefixBuilder("cleanGravel")
         .withDefaultLocalName("Clean Gravels")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     public static final OrePrefixes dirtyGravel = new OrePrefixBuilder("dirtyGravel")
         .withDefaultLocalName("Dirty Gravels")
         .unifiable()
         .materialBased()
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     /** A hot Ingot, which has to be cooled down by a Vacuum Freezer. */
@@ -619,7 +565,6 @@ public class OrePrefixes {
         .unifiable()
         .materialBased()
         .materialAmount(M * 1)
-        .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
     public static final OrePrefixes dustPure = new OrePrefixBuilder("dustPure").withDefaultLocalName("Purified Dusts")
@@ -976,22 +921,18 @@ public class OrePrefixes {
 
     public static final OrePrefixes paneGlass = new OrePrefixBuilder("paneGlass").withDefaultLocalName("Glass Panes")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes blockGlass = new OrePrefixBuilder("blockGlass").withDefaultLocalName("Glass Blocks")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes blockWool = new OrePrefixBuilder("blockWool").withDefaultLocalName("Wool Blocks")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** IGNORE */
     public static final OrePrefixes block_ = new OrePrefixBuilder("block_").withDefaultLocalName("Random Blocks")
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** A decorative sheet metal block. */
@@ -1025,12 +966,10 @@ public class OrePrefixes {
 
     /** Prefix used for Slabs. Usually as "slabWood" or "slabStone". Introduced by SirSengir */
     public static final OrePrefixes slab = new OrePrefixBuilder("slab").withDefaultLocalName("Slabs")
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Prefix used for Stairs. Usually as "stairWood" or "stairStone". Introduced by SirSengir */
     public static final OrePrefixes stair = new OrePrefixBuilder("stair").withDefaultLocalName("Stairs")
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Prefix used for Fences. Usually as "fenceWood". Introduced by Forge */
@@ -1062,68 +1001,58 @@ public class OrePrefixes {
     public static final OrePrefixes stoneCobble = new OrePrefixBuilder("stoneCobble")
         .withDefaultLocalName("Cobblestones")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Smoothstone Prefix. */
     public static final OrePrefixes stoneSmooth = new OrePrefixBuilder("stoneSmooth")
         .withDefaultLocalName("Smoothstones")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Mossy Stone Bricks. */
     public static final OrePrefixes stoneMossyBricks = new OrePrefixBuilder("stoneMossyBricks")
         .withDefaultLocalName("mossy Stone Bricks")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Mossy Cobble. */
     public static final OrePrefixes stoneMossy = new OrePrefixBuilder("stoneMossy").withDefaultLocalName("Mossy Stones")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Stone Bricks. */
     public static final OrePrefixes stoneBricks = new OrePrefixBuilder("stoneBricks")
         .withDefaultLocalName("Stone Bricks")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Cracked Bricks. */
     public static final OrePrefixes stoneCracked = new OrePrefixBuilder("stoneCracked")
         .withDefaultLocalName("Cracked Stones")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Chiseled Stone. */
     public static final OrePrefixes stoneChiseled = new OrePrefixBuilder("stoneChiseled")
         .withDefaultLocalName("Chiseled Stones")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Prefix to determine which kind of Rock this is. */
     public static final OrePrefixes stone = new OrePrefixBuilder("stone").withDefaultLocalName("Stones")
         .materialBased()
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes cobblestone = new OrePrefixBuilder("cobblestone").materialBased()
         .withDefaultLocalName("Cobblestones")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** Prefix to determine which kind of Rock this is. */
     public static final OrePrefixes rock = new OrePrefixBuilder("rock").withDefaultLocalName("Rocks")
         .materialBased()
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes record = new OrePrefixBuilder("record").withDefaultLocalName("Records")
@@ -1170,7 +1099,6 @@ public class OrePrefixes {
     public static final OrePrefixes stainedClay = new OrePrefixBuilder("stainedClay")
         .withDefaultLocalName("Stained Clays")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     /** vanilly Helmet */
@@ -1378,7 +1306,6 @@ public class OrePrefixes {
 
     public static final OrePrefixes sand = new OrePrefixBuilder("sand").withDefaultLocalName("Sands")
         .selfReferencing()
-        .defaultStackSize(OTHER_STACK_SIZE)
         .build();
 
     public static final OrePrefixes grass = new OrePrefixBuilder("grass").withDefaultLocalName("Grasses")
@@ -1773,7 +1700,6 @@ public class OrePrefixes {
                 prefix.materialPostfix = format.substring(split + 2);
             }
             prefix.materialAmount = shape.getProperty(GTShapeProperties.MATERIAL_AMOUNT);
-            prefix.defaultStackSize = shape.getProperty(GTShapeProperties.DEFAULT_STACK_SIZE);
             prefix.isUnifiable = shape.getProperty(GTShapeProperties.UNIFIABLE);
             prefix.isMaterialBased = shape.getProperty(GTShapeProperties.MATERIAL_BASED);
             prefix.isSelfReferencing = shape.getProperty(GTShapeProperties.SELF_REFERENCING);
