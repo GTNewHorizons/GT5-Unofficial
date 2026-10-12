@@ -179,6 +179,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final int MODULE_CONNECT_INTERVAL = 20;
 
     private final ArrayList<MTENanochipAssemblyModuleBase<?>> modules = new ArrayList<>();
+    private final ArrayList<ModuleTypes> moduleTypes = new ArrayList<>();
 
     private final VacuumConveyorHatchMap<MTEHatchVacuumConveyor> vacuumConveyors = new VacuumConveyorHatchMap<>();
 
@@ -227,6 +228,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         modules.clear();
+        moduleTypes.clear();
         vacuumConveyors.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z, errors)) return;
         // Exactly one energy hatch is accepted
@@ -338,7 +340,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             // immediate recheck to prevent module from using outdated hatch during recipe check
             // delay is already done by the main structure, this does not cause immediate recheck.
             module.checkStructure(true, aTileEntity);
-            return modules.add(module);
+            if (modules.add(module)) {
+                moduleTypes.add(module.getModuleType());
+                return true;
+            }
         }
         return false;
     }
@@ -777,18 +782,27 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (aNBT.hasKey("euBufferMax")) euBufferMax = aNBT.getLong("euBufferMax");
     }
 
-    public List<MTENanochipAssemblyModuleBase<?>> getModules() {
-        return modules;
+    public List<ModuleTypes> getModuleTypes() {
+        return moduleTypes;
     }
 
-    public void setModules(List<MTENanochipAssemblyModuleBase<?>> incomingList) {
-        this.modules.clear();
-        this.modules.addAll(incomingList);
+    public void setModuleTypes(List<ModuleTypes> incomingList) {
+        this.moduleTypes.clear();
+        this.moduleTypes.addAll(incomingList);
+    }
+
+    public boolean isModuleRunning() {
+        for (var module : modules) {
+            if (module.mMaxProgresstime > 0) return true;
+        }
+        return false;
     }
 
     public void setMatrixPowerPortion(int portion) {
-        if (matrixPowerPortion != portion && updateModuleEU(portion, false)) {
-            matrixPowerPortion = portion;
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (matrixPowerPortion != portion && updateModuleEU(portion, false)) {
+                matrixPowerPortion = portion;
+            }
         }
     }
 
