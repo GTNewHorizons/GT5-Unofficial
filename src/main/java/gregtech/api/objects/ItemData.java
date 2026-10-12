@@ -54,9 +54,9 @@ public class ItemData {
     public ItemData(OrePrefixes prefix, Material material, String oreDictName) {
         this.prefix = prefix;
         this.material = material == null ? null : new MaterialStack(material, prefix.getMaterialAmount());
-        this.byProducts = prefix.mSecondaryMaterial == null || prefix.mSecondaryMaterial.material == null
+        this.byProducts = prefix.secondaryMaterial == null || prefix.secondaryMaterial.material == null
             ? EMPTY_MATERIALSTACK_ARRAY
-            : new MaterialStack[] { prefix.mSecondaryMaterial.clone() };
+            : new MaterialStack[] { prefix.secondaryMaterial.clone() };
         hasExplicitComposition = false;
         this.oreDictName = oreDictName;
     }

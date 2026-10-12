@@ -140,7 +140,7 @@ public class MTETypeFilter extends MTESpecialFilter {
             .map(offset -> start + (rightClick ? -offset : offset))                        // search up/down from start
             .map(index -> (index + OrePrefixes.VALUES.length) % OrePrefixes.VALUES.length) // wrap around
             .mapToObj(index -> OrePrefixes.VALUES[index])                                  // map to prefix
-            .filter(prefix -> !prefix.mPrefixedItems.isEmpty())                            // only prefixes with items
+            .filter(prefix -> !prefix.prefixedItems.isEmpty())                            // only prefixes with items
             .findFirst()
             .orElse(mPrefix);                                                              // fallback to current prefix
         // spotless:on
@@ -150,14 +150,14 @@ public class MTETypeFilter extends MTESpecialFilter {
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((!getBaseMetaTileEntity().isServerSide()) || ((aTick % 8L != 0L) && mRotationIndex != -1)) return;
-        if (this.mPrefix.mPrefixedItems.isEmpty()) {
+        if (this.mPrefix.prefixedItems.isEmpty()) {
             this.mInventory[FILTER_SLOT_INDEX] = null;
             return;
         }
         this.mInventory[FILTER_SLOT_INDEX] = GTUtility.copyAmount(
             1,
-            this.mPrefix.mPrefixedItems
-                .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
+            this.mPrefix.prefixedItems
+                .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.prefixedItems.size()));
         if (this.mInventory[FILTER_SLOT_INDEX] == null) return;
         if (this.mInventory[FILTER_SLOT_INDEX].getItemDamage() == WILDCARD) this.mInventory[9].setItemDamage(0);
     }

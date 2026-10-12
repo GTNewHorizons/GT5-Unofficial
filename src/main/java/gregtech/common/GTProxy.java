@@ -573,11 +573,11 @@ public class GTProxy implements IFuelHandler {
         ItemList.Food_Baked_Potato.set(new ItemStack(Items.baked_potato, 1, 0));
         ItemList.Food_Poisonous_Potato.set(new ItemStack(Items.poisonous_potato, 1, 0));
 
-        OrePrefixes.bottle.mContainerItem = ItemList.Bottle_Empty.get(1L);
-        OrePrefixes.bucket.mContainerItem = new ItemStack(Items.bucket, 1);
-        OrePrefixes.cellPlasma.mContainerItem = ItemList.Cell_Empty.get(1L);
-        OrePrefixes.cellMolten.mContainerItem = ItemList.Cell_Empty.get(1L);
-        OrePrefixes.cell.mContainerItem = ItemList.Cell_Empty.get(1L);
+        OrePrefixes.bottle.containerItem = ItemList.Bottle_Empty.get(1L);
+        OrePrefixes.bucket.containerItem = new ItemStack(Items.bucket, 1);
+        OrePrefixes.cellPlasma.containerItem = ItemList.Cell_Empty.get(1L);
+        OrePrefixes.cellMolten.containerItem = ItemList.Cell_Empty.get(1L);
+        OrePrefixes.cell.containerItem = ItemList.Cell_Empty.get(1L);
 
         GTModHandler.sNonReplaceableItems.add(new ItemStack(Items.bow, 1, 32767));
         GTModHandler.sNonReplaceableItems.add(new ItemStack(Items.fishing_rod, 1, 32767));
@@ -652,7 +652,7 @@ public class GTProxy implements IFuelHandler {
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {
-            OrePrefixes.bucketClay.mContainerItem = GTModHandler
+            OrePrefixes.bucketClay.containerItem = GTModHandler
                 .getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0);
             OreDictUtils.registerAndAssociate(
                 OrePrefixes.bucketClay,

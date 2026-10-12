@@ -50,7 +50,7 @@ public class MTETypeFilterGui extends MTESpecialFilterBaseGui<MTETypeFilter> {
         replacementTooltip.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.tooltip.typefilter.size",
-                "§e" + orePrefix.mPrefixedItems.size() + "§r"));
+                "§e" + orePrefix.prefixedItems.size() + "§r"));
         replacementTooltip.addAll(machine.mTooltipCache.getData("GT5U.type_filter.representation_slot.tooltip").text);
         return replacementTooltip;
     }
@@ -103,7 +103,7 @@ public class MTETypeFilterGui extends MTESpecialFilterBaseGui<MTETypeFilter> {
                                 // map to prefix
                                 .mapToObj(index -> OrePrefixes.VALUES[index])
                                 // only prefixes with items
-                                .filter(prefix -> !prefix.mPrefixedItems.isEmpty())
+                                .filter(prefix -> !prefix.prefixedItems.isEmpty())
                                 // map to string
                                 .map(OrePrefixes::toString)
                                 .findFirst()

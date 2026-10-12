@@ -210,7 +210,7 @@ public class ProcessingOre implements PartRecipeGenerator {
                 }
             }
             if (stoneDust == null) {
-                stoneDust = MaterialParts.dustOf(prefix.mSecondaryMaterial);
+                stoneDust = MaterialParts.dustOf(prefix.secondaryMaterial);
             }
 
             int chanceOre2 = tPrimaryByProduct == null ? 0

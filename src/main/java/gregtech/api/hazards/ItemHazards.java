@@ -49,7 +49,7 @@ public final class ItemHazards {
         }
         ItemData data = MaterialData.get(stack);
         if (data == null) return 0;
-        return (data.prefix == null ? 0 : data.prefix.mHeatDamage)
+        return (data.prefix == null ? 0 : data.prefix.heatDamage)
             + (data.hasValidMaterialData() ? MaterialUtils.heatDamage(data.material.material) : 0);
     }
 

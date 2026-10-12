@@ -700,7 +700,7 @@ public final class RecipeMaps {
                 if (!isArrayEmptyOrNull(r.mOutputs)) {
                     ItemData tData = MaterialData.get(r.mOutputs[0]);
                     if (tData != null && (tData.prefix == OrePrefixes.dust
-                        || OrePrefixes.dust.mFamiliarPrefixes.contains(tData.prefix))) {
+                        || OrePrefixes.dust.familiarPrefixes.contains(tData.prefix))) {
                         r.mOutputs[0] = MaterialParts
                             .dustOf(tData.material.material, tData.material.amount * r.mOutputs[0].stackSize / tScale);
                     } else {

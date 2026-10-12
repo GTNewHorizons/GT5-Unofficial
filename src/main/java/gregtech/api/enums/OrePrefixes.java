@@ -46,7 +46,7 @@ import it.unimi.dsi.fastutil.objects.ObjectSet;
 /// interchangeable:
 ///
 /// - **A shape owns the data.** For a prefix a shape serves, the per-form values ([#getMaterialAmount],
-/// [#mSecondaryMaterial], [#mHeatDamage], the aspects and the behaviour flags) are declared on the shape (see
+/// [#secondaryMaterial], [#heatDamage], the aspects and the behaviour flags) are declared on the shape (see
 /// [gregtech.api.enums.materials.ShapeData]) and copied here by [#copyDataFromShapes]. Prefixes no shape serves,
 /// such as tool and armor forms, containers, ore stone variants and foreign-mod marker names, declare their own.
 /// - **A prefix owns the names.** Saved data freezes prefix names and [#VALUES] ordinals: a type filter writes its
@@ -1705,11 +1705,11 @@ public class OrePrefixes {
             prefix.isContainer = shape.getProperty(GTShapeProperties.CONTAINER);
             prefix.isRecyclable = shape.getProperty(GTShapeProperties.RECYCLABLE);
             prefix.isEnchantable = shape.getProperty(GTShapeProperties.ENCHANTABLE);
-            prefix.mHeatDamage = shape.getProperty(GTShapeProperties.HEAT_DAMAGE);
-            prefix.mSecondaryMaterial = shape.getProperty(GTShapeProperties.SECONDARY_MATERIAL);
+            prefix.heatDamage = shape.getProperty(GTShapeProperties.HEAT_DAMAGE);
+            prefix.secondaryMaterial = shape.getProperty(GTShapeProperties.SECONDARY_MATERIAL);
             List<TC_AspectStack> aspects = shape.getProperty(GTShapeProperties.ASPECTS);
-            prefix.mAspects.clear();
-            if (aspects != null) prefix.mAspects.addAll(aspects);
+            prefix.aspects.clear();
+            if (aspects != null) prefix.aspects.addAll(aspects);
         }
     }
 
@@ -1740,7 +1740,7 @@ public class OrePrefixes {
     }
 
     private void addAspect(TCAspects aspect, int amount) {
-        new TC_AspectStack(aspect, amount).addToAspectList(mAspects);
+        new TC_AspectStack(aspect, amount).addToAspectList(aspects);
     }
 
     public @NotNull String getDefaultLocalName() {
@@ -1837,45 +1837,45 @@ public class OrePrefixes {
         ingot.addFamiliarPrefix(nugget);
         nugget.addFamiliarPrefix(ingot);
 
-        for (OrePrefixes tPrefix1 : VALUES) {
-            if (tPrefix1.name.startsWith("ore")) {
-                for (OrePrefixes tPrefix2 : VALUES) {
-                    if (tPrefix2.name.startsWith("ore")) {
-                        tPrefix1.addFamiliarPrefix(tPrefix2);
+        for (OrePrefixes outer : VALUES) {
+            if (outer.name.startsWith("ore")) {
+                for (OrePrefixes inner : VALUES) {
+                    if (inner.name.startsWith("ore")) {
+                        outer.addFamiliarPrefix(inner);
                     }
                 }
             }
         }
 
-        bucket.mSecondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
-        bucketClay.mSecondaryMaterial = new MaterialStack(Materials.Clay, dust.materialAmount * 5);
-        oreRedgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.materialAmount);
-        oreBlackgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteBlack, dust.materialAmount);
-        oreNetherrack.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
-        oreNether.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
-        oreEndstone.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
-        oreEnd.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
-        oreMarble.mSecondaryMaterial = new MaterialStack(Materials.Marble, dust.materialAmount);
-        oreBasalt.mSecondaryMaterial = new MaterialStack(Materials.Basalt, dust.materialAmount);
-        oreDense.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
-        orePoor.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        oreNormal.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        oreRich.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
-        bulletGtSmall.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 9);
-        bulletGtMedium.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 6);
-        bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 3);
+        bucket.secondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
+        bucketClay.secondaryMaterial = new MaterialStack(Materials.Clay, dust.materialAmount * 5);
+        oreRedgranite.secondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.materialAmount);
+        oreBlackgranite.secondaryMaterial = new MaterialStack(Materials.GraniteBlack, dust.materialAmount);
+        oreNetherrack.secondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
+        oreNether.secondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
+        oreEndstone.secondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
+        oreEnd.secondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
+        oreMarble.secondaryMaterial = new MaterialStack(Materials.Marble, dust.materialAmount);
+        oreBasalt.secondaryMaterial = new MaterialStack(Materials.Basalt, dust.materialAmount);
+        oreDense.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
+        orePoor.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        oreNormal.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        oreRich.secondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        bulletGtSmall.secondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 9);
+        bulletGtMedium.secondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 6);
+        bulletGtLarge.secondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 3);
     }
 
-    public final ArrayList<ItemStack> mPrefixedItems = new GTArrayList<>(false, 16);
+    public final ArrayList<ItemStack> prefixedItems = new GTArrayList<>(false, 16);
 
-    public final List<TC_AspectStack> mAspects = new ArrayList<>();
-    public final Collection<OrePrefixes> mFamiliarPrefixes = new HashSet<>();
+    public final List<TC_AspectStack> aspects = new ArrayList<>();
+    public final Collection<OrePrefixes> familiarPrefixes = new HashSet<>();
 
-    public final Collection<Material> mIgnoredMaterials = new HashSet<>();
-    public ItemStack mContainerItem = null;
-    public MaterialStack mSecondaryMaterial = null;
-    public float mHeatDamage = 0.0F; // Negative for Frost Damage
-    private final ObjectSet<ItemStack> mContainsTestCache = new ObjectOpenCustomHashSet<>(
+    public final Collection<Material> ignoredMaterials = new HashSet<>();
+    public ItemStack containerItem = null;
+    public MaterialStack secondaryMaterial = null;
+    public float heatDamage = 0.0F; // Negative for Frost Damage
+    private final ObjectSet<ItemStack> containsTestCache = new ObjectOpenCustomHashSet<>(
         512,
         0.5f,
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
@@ -1998,21 +1998,21 @@ public class OrePrefixes {
     public boolean add(ItemStack stack) {
         if (stack == null) return false;
         if (!contains(stack)) {
-            mPrefixedItems.add(stack);
+            prefixedItems.add(stack);
             // It's now in there... so update the cache
-            mContainsTestCache.add(stack);
+            containsTestCache.add(stack);
         }
         return true;
     }
 
     public boolean contains(ItemStack stack) {
-        return !GTUtility.isStackInvalid(stack) && mContainsTestCache.contains(stack);
+        return !GTUtility.isStackInvalid(stack) && containsTestCache.contains(stack);
     }
 
     public boolean containsUnCached(ItemStack stack) {
         // In case someone needs this
-        for (ItemStack tStack : mPrefixedItems) {
-            if (GTUtility.areStacksEqual(stack, tStack, !tStack.hasTagCompound())) {
+        for (ItemStack prefixed : prefixedItems) {
+            if (GTUtility.areStacksEqual(stack, prefixed, !prefixed.hasTagCompound())) {
                 return true;
             }
         }
@@ -2020,7 +2020,7 @@ public class OrePrefixes {
     }
 
     public boolean ignoreMaterials(Material... materials) {
-        for (Material tMaterial : materials) if (tMaterial != null) mIgnoredMaterials.add(tMaterial);
+        for (Material ignored : materials) if (ignored != null) ignoredMaterials.add(ignored);
         return true;
     }
 
@@ -2028,12 +2028,12 @@ public class OrePrefixes {
     /// ([#ignoreMaterials]), or one that is not unifiable at all.
     public boolean isIgnored(@Nullable Material material) {
         if (material != null && !MaterialUtils.unifiable(material)) return true;
-        return mIgnoredMaterials.contains(material);
+        return ignoredMaterials.contains(material);
     }
 
     public boolean addFamiliarPrefix(OrePrefixes prefix) {
-        if (prefix == null || mFamiliarPrefixes.contains(prefix) || prefix == this) return false;
-        return mFamiliarPrefixes.add(prefix);
+        if (prefix == null || familiarPrefixes.contains(prefix) || prefix == this) return false;
+        return familiarPrefixes.add(prefix);
     }
 
     /// Returns a crafting ingredient accepting any item under the oredict name of this prefix and `material`. It

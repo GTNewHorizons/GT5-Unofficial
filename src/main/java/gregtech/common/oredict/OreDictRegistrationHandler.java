@@ -398,7 +398,7 @@ public final class OreDictRegistrationHandler {
 
         if (GregTechAPI.sThaumcraftCompat != null && carriesAspects(prefix, material) && !prefix.isIgnored(material)) {
             ArrayList<TC_AspectStack> aspects = new ArrayList<>();
-            for (TC_AspectStack aspect : prefix.mAspects) {
+            for (TC_AspectStack aspect : prefix.aspects) {
                 aspect.addToAspectList(aspects);
             }
 
