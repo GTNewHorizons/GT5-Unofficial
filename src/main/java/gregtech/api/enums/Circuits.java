@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import static goodgenerator.loader.Loaders.circuitWrap;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.objects.ItemData;
@@ -49,7 +51,7 @@ public enum Circuits {
     }
 
     public ItemStack getWrap(int amount) {
-        return GTModHandler.getModItem(Mods.GoodGenerator.ID, "circuitWrap", amount, wrapMeta);
+        return new ItemStack(circuitWrap, amount, wrapMeta);
     }
 
     public ItemData getWrapIngredient() {

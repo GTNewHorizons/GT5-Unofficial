@@ -28,8 +28,8 @@ final class AlloyPlateRecipes {
     static void register() {
         reinforcedGlass(ItemList.AdvancedAlloyPlate.get(1));
         carbon(ItemList.CarbonAlloyPlate.get(1));
-        reinforcedGlass(GTModHandler.getModItem("IC2", "itemPartAlloy", 1, 0));
-        carbon(GTModHandler.getModItem("IC2", "itemPartCarbonPlate", 1, 0));
+        reinforcedGlass(GTModHandler.getIC2Item("itemPartAlloy", 1, 0));
+        carbon(GTModHandler.getIC2Item("itemPartCarbonPlate", 1, 0));
     }
 
     private static void carbon(ItemStack plate) {
