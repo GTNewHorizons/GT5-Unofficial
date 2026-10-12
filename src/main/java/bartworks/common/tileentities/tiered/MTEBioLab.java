@@ -395,7 +395,7 @@ public class MTEBioLab extends MTEBasicMachine {
             (stack -> BioCulture.getBioCulture(
                 stack.getTagCompound()
                     .getString("Name"))
-                .getdDNA()),
+                .getDNA()),
             outputSupplierDNA);
     }
 

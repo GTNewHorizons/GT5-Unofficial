@@ -68,8 +68,8 @@ public final class BWAtmosphereManager {
     }
 
     public static void addGasToWorld(int worldID, ISubTagContainer gas, int amount) {
-        Pair<ISubTagContainer, Integer> toadd = Pair.of(gas, amount);
-        BWAtmosphereManager.gasConcentration.put(worldID, toadd);
+        Pair<ISubTagContainer, Integer> toAdd = Pair.of(gas, amount);
+        BWAtmosphereManager.gasConcentration.put(worldID, toAdd);
     }
 
     public static void addGasToWorld(int worldID, Pair<ISubTagContainer, Integer> toPut) {

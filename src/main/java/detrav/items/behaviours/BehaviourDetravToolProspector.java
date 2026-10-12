@@ -41,7 +41,7 @@ import gregtech.common.pollution.Pollution;
  */
 public class BehaviourDetravToolProspector extends BehaviourNone {
 
-    static final int[] DISTANCEINTS = new int[] { 0, 4, 25, 64 };
+    static final int[] DISTANCE_INTS = new int[] { 0, 4, 25, 64 };
     int distTextIndex;
 
     HashMap<String, Integer> ores;
@@ -123,8 +123,8 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 aZ = bZ + z * 16;
                 int dist = x * x + z * z;
 
-                for (distTextIndex = 0; distTextIndex < DISTANCEINTS.length; distTextIndex++) {
-                    if (dist <= DISTANCEINTS[distTextIndex]) {
+                for (distTextIndex = 0; distTextIndex < DISTANCE_INTS.length; distTextIndex++) {
+                    if (dist <= DISTANCE_INTS[distTextIndex]) {
                         break;
                     }
                 }

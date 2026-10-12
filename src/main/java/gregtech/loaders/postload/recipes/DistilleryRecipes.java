@@ -619,7 +619,7 @@ public class DistilleryRecipes implements Runnable {
     }
 
     public void universalDistillationTowerRecipes() {
-        addUniversalDistillationRecipewithCircuit(
+        addUniversalDistillationRecipeWithCircuit(
             Materials.CharcoalByproducts.getGas(1_000),
             1,
             new FluidStack[] { Materials.WoodTar.getFluid(250), Materials.WoodVinegar.getFluid(400),
@@ -628,7 +628,7 @@ public class DistilleryRecipes implements Runnable {
             40,
             256);
 
-        addUniversalDistillationRecipewithCircuit(
+        addUniversalDistillationRecipeWithCircuit(
             Materials.WoodGas.getGas(1_000),
             1,
             new FluidStack[] { Materials.CarbonDioxide.getGas(390), Materials.Ethylene.getGas(120),
@@ -636,7 +636,7 @@ public class DistilleryRecipes implements Runnable {
             GTValues.NI,
             40,
             256);
-        addUniversalDistillationRecipewithCircuit(
+        addUniversalDistillationRecipeWithCircuit(
             Materials.WoodVinegar.getFluid(1_000),
             1,
             new FluidStack[] { Materials.AceticAcid.getFluid(100), Materials.Water.getFluid(500),
@@ -645,7 +645,7 @@ public class DistilleryRecipes implements Runnable {
             GTValues.NI,
             40,
             256);
-        addUniversalDistillationRecipewithCircuit(
+        addUniversalDistillationRecipeWithCircuit(
             Materials.WoodTar.getFluid(1_000),
             1,
             new FluidStack[] { Materials.Creosote.getFluid(250), Materials.Phenol.getFluid(100),
@@ -655,7 +655,7 @@ public class DistilleryRecipes implements Runnable {
             40,
             256);
 
-        addUniversalDistillationRecipewithCircuit(
+        addUniversalDistillationRecipeWithCircuit(
             Materials.OilLight.getFluid(100),
             1,
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(7), Materials.SulfuricLightFuel.getFluid(13),
@@ -663,7 +663,7 @@ public class DistilleryRecipes implements Runnable {
             null,
             10,
             96);
-        addUniversalDistillationRecipewithCircuit(
+        addUniversalDistillationRecipeWithCircuit(
             Materials.OilMedium.getFluid(100),
             1,
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(10), Materials.SulfuricLightFuel.getFluid(50),
@@ -671,7 +671,7 @@ public class DistilleryRecipes implements Runnable {
             null,
             20,
             96);
-        addUniversalDistillationRecipewithCircuit(
+        addUniversalDistillationRecipeWithCircuit(
             Materials.Oil.getFluid(100),
             1,
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(30), Materials.SulfuricLightFuel.getFluid(100),
@@ -679,7 +679,7 @@ public class DistilleryRecipes implements Runnable {
             null,
             30,
             96);
-        addUniversalDistillationRecipewithCircuit(
+        addUniversalDistillationRecipeWithCircuit(
             Materials.OilHeavy.getFluid(100),
             1,
             new FluidStack[] { Materials.SulfuricHeavyFuel.getFluid(100), Materials.SulfuricLightFuel.getFluid(45),
@@ -1204,7 +1204,7 @@ public class DistilleryRecipes implements Runnable {
             120);
     }
 
-    public void addUniversalDistillationRecipewithCircuit(FluidStack aInput, int aCircuit, FluidStack[] aOutputs,
+    public void addUniversalDistillationRecipeWithCircuit(FluidStack aInput, int aCircuit, FluidStack[] aOutputs,
         ItemStack aOutput2, int aDuration, int aEUt) {
         GTRecipeBuilder buildDT = GTValues.RA.stdBuilder()
             .circuit(aCircuit);

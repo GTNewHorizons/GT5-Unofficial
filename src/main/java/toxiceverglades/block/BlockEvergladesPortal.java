@@ -266,14 +266,14 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
             && ((par5Entity instanceof EntityPlayerMP thePlayer))) {
             if (thePlayer.timeUntilPortal > 0) {
                 thePlayer.timeUntilPortal = 100;
-            } else if (thePlayer.dimension != DimensionEverglades.DIMID) {
+            } else if (thePlayer.dimension != DimensionEverglades.DIM_ID) {
                 thePlayer.timeUntilPortal = 100;
                 thePlayer.mcServer.getConfigurationManager()
                     .transferPlayerToDimension(
                         thePlayer,
-                        DimensionEverglades.DIMID,
+                        DimensionEverglades.DIM_ID,
                         new TeleporterDimensionMod(
-                            thePlayer.mcServer.worldServerForDimension(DimensionEverglades.DIMID)));
+                            thePlayer.mcServer.worldServerForDimension(DimensionEverglades.DIM_ID)));
             } else {
                 thePlayer.timeUntilPortal = 100;
                 thePlayer.mcServer.getConfigurationManager()

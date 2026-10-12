@@ -38,7 +38,7 @@ import forestry.arboriculture.tiles.TileLeaves;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.events.BlockScanningEvent;
-import gregtech.api.interfaces.IDebugableBlock;
+import gregtech.api.interfaces.IDebuggableBlock;
 import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -298,8 +298,8 @@ public class ScannerHelper {
         Block block) {
         int euAmount = 0;
         try {
-            if (block instanceof IDebugableBlock debugableBlock) {
-                final List<String> temp = debugableBlock.getDebugInfo(player, x, y, z, 3);
+            if (block instanceof IDebuggableBlock debuggableBlock) {
+                final List<String> temp = debuggableBlock.getDebugInfo(player, x, y, z, 3);
                 if (temp != null && !temp.isEmpty()) {
                     list.add(addTitleComp("title_debug_info"));
                     for (String s : temp) list.add(new ChatComponentText(s));

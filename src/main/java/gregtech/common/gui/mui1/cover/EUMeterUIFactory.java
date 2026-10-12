@@ -63,7 +63,7 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                     .addFollower(
                         numericWidget,
                         coverData -> (double) coverData.getThreshold(),
-                        (coverData, state) -> coverData.setThresdhold(state.longValue()),
+                        (coverData, state) -> coverData.setThreshold(state.longValue()),
                         widget -> widget.setScrollValues(1000, 100, 100000)
                             .setFocusOnGuiOpen(true)
                             .setPos(spaceX * 0, spaceY * 2 + 2)

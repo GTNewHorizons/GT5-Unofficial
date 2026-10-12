@@ -179,14 +179,14 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint,
+    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingPoint,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         Pair<ISubTagContainer, Integer>... contents) {
         this(
             rgba,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type)
-                .setMeltingPoint(meltingpoint),
+                .setMeltingPoint(meltingPoint),
             type,
             generationFeatures,
             mID,
@@ -210,14 +210,14 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
     }
 
     @SafeVarargs
-    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingpoint,
+    public Werkstoff(short[] rgba, String defaultName, Werkstoff.Types type, int meltingPoint,
         Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
         List<? extends ISubTagContainer> oreByProduct, Pair<ISubTagContainer, Integer>... contents) {
         this(
             rgba,
             defaultName,
             Werkstoff.Types.getDefaultStatForType(type)
-                .setMeltingPoint(meltingpoint),
+                .setMeltingPoint(meltingPoint),
             type,
             generationFeatures,
             mID,
@@ -302,7 +302,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
-        this.setRgb(BWColorUtil.correctCorlorArray(rgba));
+        this.setRgb(BWColorUtil.correctColorArray(rgba));
         this.CONTENTS.addAll(Arrays.asList(contents));
         this.toolTip = "";
         if (toolTip.isEmpty()) {

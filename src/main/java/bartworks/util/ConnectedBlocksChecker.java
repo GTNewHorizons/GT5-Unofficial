@@ -27,7 +27,7 @@ public class ConnectedBlocksChecker {
 
     public final HashSet<Coords> hashset = new HashSet<>(2048);
 
-    public static byte check_sourroundings(Coords C, Block b) {
+    public static byte checkSurroundings(Coords C, Block b) {
         byte ret = 0;
         World w = DimensionManager.getWorld(C.wID);
         int x = C.x, y = C.y, z = C.z;
@@ -53,7 +53,7 @@ public class ConnectedBlocksChecker {
         return ret;
     }
 
-    public int get_connected(World w, int x, int y, int z, Block b) {
+    public int getConnected(World w, int x, int y, int z, Block b) {
         int ret = 0;
 
         int wID = w.provider.dimensionId;
@@ -68,7 +68,7 @@ public class ConnectedBlocksChecker {
             }
             this.hashset.add(curr);
             ret++;
-            byte res = check_sourroundings(w, curr.x, curr.y, curr.z, b);
+            byte res = checkSurroundings(w, curr.x, curr.y, curr.z, b);
             if ((res | 0b111011) == 0b111111) {
                 toVisit.add(new Coords(curr.x + 1, curr.y, curr.z, curr.wID));
             }
@@ -92,7 +92,7 @@ public class ConnectedBlocksChecker {
         return ret;
     }
 
-    public byte check_sourroundings(World w, int x, int y, int z, Block b) {
+    public byte checkSurroundings(World w, int x, int y, int z, Block b) {
 
         byte ret = 0;
         int wID = w.provider.dimensionId;
@@ -118,7 +118,7 @@ public class ConnectedBlocksChecker {
         return ret;
     }
 
-    public boolean get_meta_of_sideblocks(World w, int n, int[] xyz, boolean GT) {
+    public boolean getMetaOfSideblocks(World w, int n, int[] xyz, boolean GT) {
 
         int wID = w.provider.dimensionId;
         Coords Controller = new Coords(xyz[0], xyz[1], xyz[2], wID);

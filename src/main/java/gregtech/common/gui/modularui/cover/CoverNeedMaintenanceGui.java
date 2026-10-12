@@ -12,16 +12,16 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.covers.CoverNeedMaintainance;
+import gregtech.common.covers.CoverNeedMaintenance;
 import gregtech.common.covers.conditions.MaintenanceAlertCondition;
 import gregtech.common.covers.modes.RedstoneMode;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.sync.LinkedBoolValue;
 import gregtech.common.modularui2.widget.SelectButton;
 
-public class CoverNeedMaintenanceGui extends CoverBaseGui<CoverNeedMaintainance> {
+public class CoverNeedMaintenanceGui extends CoverBaseGui<CoverNeedMaintenance> {
 
-    public CoverNeedMaintenanceGui(CoverNeedMaintainance cover) {
+    public CoverNeedMaintenanceGui(CoverNeedMaintenance cover) {
         super(cover);
     }
 

@@ -27,12 +27,12 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
 import gregtech.common.covers.modes.FilterType;
-import gregtech.common.gui.modularui.cover.CoverFluidfilterGui;
+import gregtech.common.gui.modularui.cover.CoverFluidFilterGui;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.FluidFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 
-public class CoverFluidfilter extends Cover {
+public class CoverFluidFilter extends Cover {
 
     // Uses the lower 3 bits of the cover variable, so we have 8 options to work with (0-7)
     private final int FILTER_INPUT_DENY_OUTPUT = 0; // 000
@@ -47,7 +47,7 @@ public class CoverFluidfilter extends Cover {
     private int mFluidID;
     private int mFilterMode;
 
-    public CoverFluidfilter(CoverContext context, ITexture coverTexture) {
+    public CoverFluidFilter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
         this.mFluidID = -1;
         this.mFilterMode = 0;
@@ -57,7 +57,7 @@ public class CoverFluidfilter extends Cover {
         return mFluidID;
     }
 
-    public CoverFluidfilter setFluidId(int fluidId) {
+    public CoverFluidFilter setFluidId(int fluidId) {
         this.mFluidID = fluidId;
         return this;
     }
@@ -66,7 +66,7 @@ public class CoverFluidfilter extends Cover {
         return mFilterMode;
     }
 
-    public CoverFluidfilter setFilterMode(int filterMode) {
+    public CoverFluidFilter setFilterMode(int filterMode) {
         this.mFilterMode = filterMode;
         return this;
     }
@@ -282,7 +282,7 @@ public class CoverFluidfilter extends Cover {
 
     @Override
     protected @NotNull CoverBaseGui<?> getCoverGui() {
-        return new CoverFluidfilterGui(this);
+        return new CoverFluidFilterGui(this);
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 /**
  * You are allowed to include this File in your Download, as i will not change it.
  */
-public interface IDebugableBlock {
+public interface IDebuggableBlock {
 
     /**
      * Returns a Debug Message, for a generic DebugItem Blocks have to implement this interface NOT TileEntities!

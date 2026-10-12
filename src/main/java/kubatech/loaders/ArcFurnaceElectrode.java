@@ -80,7 +80,7 @@ public enum ArcFurnaceElectrode {
     }),
     HypogenElectrode(10, MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 2500, 1.3d, 0.5d),
 
-    // nanite eletrodes
+    // nanite electrodes
     NeutroniumNaniteElectrode(11, Materials.Neutronium, 5d, 256, 2d, 4d, 1750, 2d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
@@ -249,11 +249,11 @@ public enum ArcFurnaceElectrode {
         return color.toString() + value;
     }
 
-    private static String getModifierFormatted(double value, boolean undesireable, double lo_threshold,
+    private static String getModifierFormatted(double value, boolean undesirable, double lo_threshold,
         double mid_threshold, double hi_threshold, String prefix, String suffix) {
         EnumChatFormatting color;
         double discriminant = value;
-        if (undesireable) {
+        if (undesirable) {
             if (value == 0) discriminant = Double.POSITIVE_INFINITY;
             else discriminant = 1.0d / value;
         }

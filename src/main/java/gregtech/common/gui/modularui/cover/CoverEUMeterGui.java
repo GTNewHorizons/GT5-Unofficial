@@ -60,7 +60,7 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
     private @NotNull Flow makeEnergyThresholdRow() {
         return makeNamedColumn(IKey.lang("gt.interact.desc.EnergyThreshold"))
             .child(
-                makeNumberField(120).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold).allowC2S())
+                makeNumberField(120).value(new LongSyncValue(cover::getThreshold, cover::setThreshold).allowC2S())
                     .numbersLong(() -> 0L, cover::getMaxThreshold)
                     .setFocusOnGuiOpen(true))
             .paddingRight(TICK_RATE_BUTTON_SIZE);

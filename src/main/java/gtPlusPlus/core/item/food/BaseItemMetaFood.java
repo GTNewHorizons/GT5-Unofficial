@@ -250,8 +250,8 @@ public class BaseItemMetaFood extends ItemFood {
             }
         }
 
-        boolean aHasEpcialBehaviour = mHasSpecialBehaviourMap.get(getMetaKey(aStack));
-        if (!aWorld.isRemote && aHasEpcialBehaviour) {
+        boolean aHasSpecialBehaviour = mHasSpecialBehaviourMap.get(getMetaKey(aStack));
+        if (!aWorld.isRemote && aHasSpecialBehaviour) {
             SpecialFoodBehaviour aBehaviour = mSpecialBehaviourMap.get(getMetaKey(aStack));
             if (aBehaviour != null) {
                 aBehaviour.doBehaviour(aPlayer);

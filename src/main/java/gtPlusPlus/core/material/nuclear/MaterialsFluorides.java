@@ -1,6 +1,7 @@
 package gtPlusPlus.core.material.nuclear;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialStack;
@@ -95,7 +96,7 @@ public class MaterialsFluorides {
         -1,
         -1,
         false,
-        "ZrF\u2084",
+        StringUtils.subscript("ZrF4"),
         -1,
         true,
         false,
@@ -165,7 +166,7 @@ public class MaterialsFluorides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
-        "Be(OH)\u2082",
+        StringUtils.subscript("Be(OH)2"),
         0,
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsElements.getInstance().BERYLLIUM, 1),

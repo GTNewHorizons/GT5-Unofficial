@@ -1302,9 +1302,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         return false;
     }
 
-    public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {
+    public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecisely) {
         if (!canAccessData()) return false;
-        if (aCheckPrecicely || privateAccess() || (mOwnerName.isEmpty()))
+        if (aCheckPrecisely || privateAccess() || (mOwnerName.isEmpty()))
             if ((mOwnerName.isEmpty()) && isServerSide()) {
                 setOwnerName(aPlayer.getDisplayName());
                 setOwnerUuid(aPlayer.getUniqueID());

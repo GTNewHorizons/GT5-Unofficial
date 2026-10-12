@@ -458,7 +458,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         double coeff = Math.pow((totalAntimatterAmount), 0.5 + modifiers[CONTAINMENT_ID]);
         int difference = 0;
 
-        // a pull per hatch instead of a global one distributed randomly to increase the odds of pulling a outlier
+        // a pull per hatch instead of a global one distributed randomly to increase the odds of pulling an outlier
         // in one of the hatches. It changes nothing when the automation is done successfully, but punishes more the
         // player when the automation is improperly done.
 

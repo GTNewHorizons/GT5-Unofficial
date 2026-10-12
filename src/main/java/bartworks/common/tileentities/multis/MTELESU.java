@@ -371,14 +371,14 @@ public class MTELESU extends MTEMultiBlockBase {
         List<StructureError> errors) {
         long startingTime = System.nanoTime();
         this.connectedcells = new ConnectedBlocksChecker();
-        this.connectedcells.get_connected(
+        this.connectedcells.getConnected(
             aBaseMetaTileEntity.getWorld(),
             aBaseMetaTileEntity.getXCoord(),
             aBaseMetaTileEntity.getYCoord(),
             aBaseMetaTileEntity.getZCoord(),
             ItemRegistry.BW_BLOCKS[1]);
 
-        if (this.connectedcells.get_meta_of_sideblocks(
+        if (this.connectedcells.getMetaOfSideblocks(
             aBaseMetaTileEntity.getWorld(),
             this.getBaseMetaTileEntity()
                 .getMetaTileID(),

@@ -26,9 +26,9 @@ import gregtech.common.gui.modularui.cover.CoverNeedMaintenanceGui;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory;
 
-public class CoverNeedMaintainance extends CoverLegacyData {
+public class CoverNeedMaintenance extends CoverLegacyData {
 
-    public CoverNeedMaintainance(CoverContext context, ITexture coverTexture) {
+    public CoverNeedMaintenance(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 

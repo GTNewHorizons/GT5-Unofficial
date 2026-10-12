@@ -68,7 +68,7 @@ public class CoverEUMeter extends Cover implements Invertable {
         return this.threshold;
     }
 
-    public CoverEUMeter setThresdhold(long threshold) {
+    public CoverEUMeter setThreshold(long threshold) {
         this.threshold = threshold;
         return this;
     }

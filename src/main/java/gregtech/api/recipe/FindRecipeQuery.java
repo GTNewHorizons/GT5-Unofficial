@@ -48,7 +48,7 @@ public final class FindRecipeQuery {
     private long voltage = Integer.MAX_VALUE;
     @Nullable
     private GTRecipe cachedRecipe;
-    private boolean notUnificated;
+    private boolean notUnified;
     private boolean dontCheckStackSizes;
     private boolean forCollisionCheck;
     private boolean caching = false;
@@ -85,7 +85,7 @@ public final class FindRecipeQuery {
                 fluids,
                 specialSlot,
                 cachedRecipe,
-                notUnificated,
+                notUnified,
                 dontCheckStackSizes,
                 forCollisionCheck)
             .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe))
@@ -165,10 +165,10 @@ public final class FindRecipeQuery {
     }
 
     /**
-     * @param notUnificated If this is set to true, item inputs will be unificated.
+     * @param notUnified If this is set to true, item inputs will be unificated.
      */
-    public FindRecipeQuery notUnificated(boolean notUnificated) {
-        this.notUnificated = notUnificated;
+    public FindRecipeQuery notUnified(boolean notUnified) {
+        this.notUnified = notUnified;
         return this;
     }
 

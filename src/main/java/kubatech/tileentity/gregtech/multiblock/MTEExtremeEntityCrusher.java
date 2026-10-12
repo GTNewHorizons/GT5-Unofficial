@@ -459,10 +459,10 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void HandleCustomPacket(CustomTileEntityPacket message) {
-        if (message.getDataBoolean() && Mods.MobsInfo.isModLoaded()) {
+    public void handleCustomPacket(CustomTileEntityPacket customData) {
+        if (customData.getDataBoolean() && Mods.MobsInfo.isModLoaded()) {
             renderEntity = true;
-            String mobType = message.getDataString();
+            String mobType = customData.getDataString();
             MobHandlerLoader.MobEECRecipe r = MobHandlerLoader.recipeMap.get(mobType);
             if (r != null) {
                 if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);

@@ -17,10 +17,10 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.common.covers.CoverNeedMaintainance;
+import gregtech.common.covers.CoverNeedMaintenance;
 import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
-import gregtech.common.gui.modularui.cover.redstone.CoverWirelessMaintenenceDetectorGui;
+import gregtech.common.gui.modularui.cover.redstone.CoverWirelessMaintenanceDetectorGui;
 import gregtech.common.gui.mui1.cover.WirelessMaintenanceDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -105,7 +105,7 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
                         >= mode.ordinal();
                     case ROTOR_80, ROTOR_100 -> {
                         ItemStack rotor = multiTE.getRealInventory()[1];
-                        if (CoverNeedMaintainance.isRotor(rotor)) {
+                        if (CoverNeedMaintenance.isRotor(rotor)) {
                             long max = MetaGeneratedTool.getToolMaxDamage(rotor);
                             long current = MetaGeneratedTool.getToolDamage(rotor);
 
@@ -194,6 +194,6 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
 
     @Override
     protected @NotNull CoverBaseGui<?> getCoverGui() {
-        return new CoverWirelessMaintenenceDetectorGui(this);
+        return new CoverWirelessMaintenanceDetectorGui(this);
     }
 }

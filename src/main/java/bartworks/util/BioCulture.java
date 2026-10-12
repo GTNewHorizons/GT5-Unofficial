@@ -36,25 +36,25 @@ public class BioCulture extends BioData implements IColorModulationContainer {
 
     Color color;
     BioData plasmid;
-    BioData dDNA;
-    boolean bBreedable;
+    BioData DNA;
+    boolean breedable;
     Fluid mFluid;
 
     public BioCulture(BioCultureEnum culture) {
         super(culture.name, culture.id, culture.rarity, 75_00, VoltageIndex.ULV);
         this.color = culture.color;
         this.plasmid = culture.plasmid.getBioData();
-        this.dDNA = culture.dna.getBioData();
-        this.bBreedable = culture.breedable;
+        this.DNA = culture.dna.getBioData();
+        this.breedable = culture.breedable;
     }
 
-    public BioCulture(Color color, String name, int ID, BioData plasmid, BioData dDNA, EnumRarity rarity,
-        boolean bBreedable) {
+    public BioCulture(Color color, String name, int ID, BioData plasmid, BioData DNA, EnumRarity rarity,
+        boolean breedable) {
         super(name, ID, rarity, 75_00, VoltageIndex.ULV);
         this.color = color;
         this.plasmid = plasmid;
-        this.dDNA = dDNA;
-        this.bBreedable = bBreedable;
+        this.DNA = DNA;
+        this.breedable = breedable;
     }
 
     public static NBTTagCompound getNBTTagFromCulture(BioCulture bioCulture) {
@@ -77,7 +77,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public static BioCulture getBioCulture(BioData DNA) {
-        for (BioCulture b : BioCultureEnum.BIO_CULTURES) if (b.getdDNA()
+        for (BioCulture b : BioCultureEnum.BIO_CULTURES) if (b.getDNA()
             .equals(DNA)) return b;
         return null;
     }
@@ -97,11 +97,11 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public boolean isBreedable() {
-        return this.bBreedable;
+        return this.breedable;
     }
 
-    public void setbBreedable(boolean bBreedable) {
-        this.bBreedable = bBreedable;
+    public void setBreedable(boolean breedable) {
+        this.breedable = breedable;
     }
 
     public int getColorRGB() {
@@ -123,26 +123,26 @@ public class BioCulture extends BioData implements IColorModulationContainer {
 
     public BioCulture setPlasmid(BioData plasmid) {
         return this.checkForExisting(
-            new BioCulture(this.color, this.name, this.ID, plasmid, this.dDNA, this.rarity, this.bBreedable));
+            new BioCulture(this.color, this.name, this.ID, plasmid, this.DNA, this.rarity, this.breedable));
     }
 
     private BioCulture checkForExisting(BioCulture culture) {
         if (culture == null) return null;
-        for (BioCulture bc : BioCultureEnum.BIO_CULTURES) if (culture.getdDNA()
-            .equals(bc.getdDNA())
+        for (BioCulture bc : BioCultureEnum.BIO_CULTURES) if (culture.getDNA()
+            .equals(bc.getDNA())
             && culture.getPlasmid()
                 .equals(bc.getPlasmid()))
             return bc;
         return culture;
     }
 
-    public BioData getdDNA() {
-        return this.dDNA;
+    public BioData getDNA() {
+        return this.DNA;
     }
 
-    public BioCulture setdDNA(BioData dDNA) {
+    public BioCulture setDNA(BioData DNA) {
         return this.checkForExisting(
-            new BioCulture(this.color, this.name, this.ID, this.plasmid, dDNA, this.rarity, this.bBreedable));
+            new BioCulture(this.color, this.name, this.ID, this.plasmid, DNA, this.rarity, this.breedable));
     }
 
     @Override
@@ -152,7 +152,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         BioCulture culture = (BioCulture) o;
         return this.isBreedable() == culture.isBreedable() && Objects.equals(this.getColor(), culture.getColor())
             && Objects.equals(this.getPlasmid(), culture.getPlasmid())
-            && Objects.equals(this.getdDNA(), culture.getdDNA())
+            && Objects.equals(this.getDNA(), culture.getDNA())
             && Objects.equals(this.mFluid, culture.mFluid);
     }
 
@@ -169,7 +169,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
                         31))
                 .putInt(this.getColorRGB())
                 .putInt(this.getPlasmid().ID)
-                .putInt(this.getdDNA().ID)
+                .putInt(this.getDNA().ID)
                 .put((byte) (this.isBreedable() ? 1 : 0))
                 .array(),
             0,
@@ -197,8 +197,8 @@ public class BioCulture extends BioData implements IColorModulationContainer {
             this.name,
             this.ID,
             this.plasmid.toString(),
-            this.dDNA.toString(),
+            this.DNA.toString(),
             this.rarity.name(),
-            this.bBreedable);
+            this.breedable);
     }
 }
