@@ -338,7 +338,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     public boolean turnCasingActive(final boolean status) {
-        // TODO
         if (this.mDynamoHatches != null) {
             for (final MTEHatchDynamo hatch : this.mDynamoHatches) {
                 hatch.updateTexture(status ? TAE.GTPP_INDEX(13) : TAE.GTPP_INDEX(12));

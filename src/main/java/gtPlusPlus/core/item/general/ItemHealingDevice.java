@@ -238,13 +238,14 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         return BaubleType.AMULET;
     }
 
-    @Override // TODO
+    // TODO: implement (un-)equip logic that was planned 10 years ago, if anyone even remembers the plan.
+    @Override
     public void onEquipped(final ItemStack arg0, final EntityLivingBase arg1) {}
 
-    @Override // TODO
+    @Override
     public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {}
 
-    @Override // TODO
+    @Override
     public void onWornTick(final ItemStack baubleStack, final EntityLivingBase arg1) {
         if (arg1 == null || arg1.worldObj == null || arg1.worldObj.isRemote || !(arg1 instanceof EntityPlayer player))
             return;
