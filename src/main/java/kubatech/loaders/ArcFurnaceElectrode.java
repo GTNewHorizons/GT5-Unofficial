@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import net.minecraft.client.Minecraft;
@@ -22,13 +21,11 @@ import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 
 public enum ArcFurnaceElectrode {
 
-    // Empty event handler to generate tooltip text, special effect handled as electrode parameter
     GraphiteElectrode(0, Materials.Graphite, 1, 4, 2d, 4d, 200, 1, 0, e -> {}),
     TantalumElectrode(1, Materials.Tantalum, 1.2d, 2, 4d, 4d, 500, 1.2d, 3),
     MolybdenumElectrode(2, Materials.Molybdenum, 0.9d, 16, 3d, 4d, 400, 0.8d, 1),
     TungstenElectrode(3, Materials.Tungsten, 1, 128, 1d, 4d, 1000, 0.75d, 0.5d),
     TungstenSteelElectrode(4, Materials.TungstenSteel, 0.8d, 256, 1d, 4d, 1600, 0.5d, 0.5d),
-    // Empty event handler to generate tooltip text, special effect handled as electrode parameter
     GrapheneElectrode(5, Materials.Graphene, 2.5d, 16, 2d, 4d, 900, 1, 0, e -> {}),
     YBCOElectrode(6, Materials.YttriumBariumCuprate, 1.2d, 8, 6d, 4d, 900, 1d, 6d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck postRecipe) {
@@ -80,7 +77,7 @@ public enum ArcFurnaceElectrode {
     }),
     HypogenElectrode(10, MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 2500, 1.3d, 0.5d),
 
-    // nanite eletrodes
+    // nanite electrodes
     NeutroniumNaniteElectrode(11, Materials.Neutronium, 5d, 256, 2d, 4d, 1750, 2d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
@@ -102,11 +99,9 @@ public enum ArcFurnaceElectrode {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(-1000);
             }
         }
-    }),
+    });
 
-    ;
-
-    private static final Map<Integer, ArcFurnaceElectrode> ID_MAP = new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectOpenHashMap<ArcFurnaceElectrode> ID_MAP = new Int2ObjectOpenHashMap<>();
     private static final String INFINITY_TARGET_PARALLEL_KEY = "infinityTargetParallel";
 
     public final int id;
@@ -180,38 +175,39 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.durability",
-                getModifierFormatted(durability, 100, 500, 700) + EnumChatFormatting.RESET + EnumChatFormatting.GRAY,
-                getModifierFormatted(this.durability, 100, 500, 700)));
-        tooltip.add(
-            StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.speed",
-                getModifierFormatted((int) (this.speedModifier * 100), false, 50d, 100d, 200d, "", "%")));
+                getDurabilityFormatted(durability, this.durability) + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY,
+                getModifierFormatted(EnumChatFormatting.BLUE, this.durability, "", "")));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.parallel_limit",
                 this.parallelLimit == 0
                     ? StatCollector.translateToLocal("item.arc_furnace_electrode.tip.parallel_limit_none")
-                    : getModifierFormatted(this.parallelLimit, 4, 64, 128)));
+                    : getModifierFormatted(EnumChatFormatting.GOLD, this.parallelLimit, "", "")));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.oc",
-                getModifierFormatted(this.OCSpeedFactor, false, 1d, 2d, 4d, "", "") + EnumChatFormatting.GRAY
+                "item.arc_furnace_electrode.tip.speed",
+                getModifierFormatted(EnumChatFormatting.GREEN, (int) (this.speedModifier * 100), "", "%")));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.eu_usage",
+                getModifierFormatted(EnumChatFormatting.AQUA, this.euModifier, "", "x")));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.overclock",
+                EnumChatFormatting.LIGHT_PURPLE + getModifierFormatted(this.OCSpeedFactor, "", "")
                     + "/"
-                    + getModifierFormatted(this.OCPowerFactor, false, 2d, 4d, 6d, "", ""),
+                    + getModifierFormatted(this.OCPowerFactor, "", ""),
                 ""));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
-                "item.arc_furnace_electrode.tip.eu_modifier",
-                getModifierFormatted(this.euModifier, true, 0.6d, 1d, 1.25d, "", "x")));
-        tooltip.add(
-            StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.startup_penalty",
-                getModifierFormatted(this.startupPenalty + 1d, true, 0.25d, 0.5d, 1d, "x", "")));
+                getModifierFormatted(EnumChatFormatting.RED, this.startupPenalty + 1d, "", "x")));
         long startupAmperage = getStartupAmperage();
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.startup_amperage",
-                formatNumber(startupAmperage)));
+                EnumChatFormatting.WHITE + formatNumber(startupAmperage)));
         if (specialEffect != null) {
             tooltip.addAll(
                 Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
@@ -233,50 +229,38 @@ public enum ArcFurnaceElectrode {
         return parallel;
     }
 
-    private static String getModifierFormatted(int value, int lo_threshold, int mid_threshold, int hi_threshold) {
+    private static String getDurabilityFormatted(int current, int max) {
+        double ratio = max > 0 ? (double) current / max : 0;
         EnumChatFormatting color;
-        if (value <= lo_threshold) {
-            color = EnumChatFormatting.DARK_RED; // "bad" stat
-        } else if (value < mid_threshold) {
-            color = EnumChatFormatting.RED; // "below average" stat
-        } else if (value == mid_threshold) {
-            color = EnumChatFormatting.GOLD; // "average" stat
-        } else if (value <= hi_threshold) {
-            color = EnumChatFormatting.GREEN; // "above average" stat
+        if (ratio >= 1.0) {
+            color = EnumChatFormatting.BLUE;
+        } else if (ratio >= 0.5) {
+            color = EnumChatFormatting.GREEN;
+        } else if (ratio >= 0.25) {
+            color = EnumChatFormatting.RED;
         } else {
-            color = EnumChatFormatting.AQUA; // "great" stat
+            color = EnumChatFormatting.DARK_RED;
         }
-        return color.toString() + value;
+        return color + Integer.toString(current);
     }
 
-    private static String getModifierFormatted(double value, boolean undesireable, double lo_threshold,
-        double mid_threshold, double hi_threshold, String prefix, String suffix) {
-        EnumChatFormatting color;
-        double discriminant = value;
-        if (undesireable) {
-            if (value == 0) discriminant = Double.POSITIVE_INFINITY;
-            else discriminant = 1.0d / value;
-        }
-        if (discriminant <= lo_threshold) {
-            color = EnumChatFormatting.DARK_RED; // "bad" stat
-        } else if (discriminant < mid_threshold) {
-            color = EnumChatFormatting.RED; // "below average" stat
-        } else if (discriminant == mid_threshold) {
-            color = EnumChatFormatting.GOLD; // "average" stat
-        } else if (discriminant <= hi_threshold) {
-            color = EnumChatFormatting.GREEN; // "above average" stat
-        } else {
-            color = EnumChatFormatting.AQUA; // "great" stat
-        }
+    private static String getModifierFormatted(EnumChatFormatting color, int value, String prefix, String suffix) {
+        return color + prefix + value + suffix;
+    }
+
+    private static String getModifierFormatted(EnumChatFormatting color, double value, String prefix, String suffix) {
         String formatted = color.toString();
-
         formatted += prefix;
-
-        // trim trailing zeroes if no decimal-precision is needed
         if (value == (int) value) {
             return formatted + (int) value + suffix;
         }
         return formatted + value + suffix;
     }
 
+    private static String getModifierFormatted(double value, String prefix, String suffix) {
+        if (value == (int) value) {
+            return prefix + (int) value + suffix;
+        }
+        return prefix + value + suffix;
+    }
 }
