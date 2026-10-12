@@ -64,7 +64,7 @@ public class ProcessingCell implements PartRecipeGenerator {
 
                     int tAllAmount = 0;
                     for (MaterialStack tMat2 : tMaterialList) {
-                        tAllAmount = (int) (tAllAmount + tMat2.mAmount);
+                        tAllAmount = (int) (tAllAmount + tMat2.amount);
                     }
                     long tItemAmount = 0L;
                     long tCapsuleCount = (long) GTModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(stack)
@@ -74,21 +74,21 @@ public class ProcessingCell implements PartRecipeGenerator {
                         : 1L;
                     ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : tMaterialList) {
-                        if (tMat.mAmount <= 0) {
+                        if (tMat.amount <= 0) {
                             continue;
                         }
 
                         ItemStack tStack = GTUtility
-                            .copyAmount(tMat.mAmount, MaterialLibAPI.findStack(tMat.mMaterial, Shapes.dust, 1));
+                            .copyAmount(tMat.amount, MaterialLibAPI.findStack(tMat.material, Shapes.dust, 1));
                         if (tStack == null) {
-                            tStack = MaterialParts.stack(OrePrefixes.cell, tMat.mMaterial, Math.min(64L, tMat.mAmount));
+                            tStack = MaterialParts.stack(OrePrefixes.cell, tMat.material, Math.min(64L, tMat.amount));
                         }
-                        if (tItemAmount + tMat.mAmount * 3628800L
+                        if (tItemAmount + tMat.amount * 3628800L
                             > stack.getMaxStackSize() * MaterialUtils.density(material)) {
                             continue;
                         }
 
-                        tItemAmount += tMat.mAmount * 3628800L;
+                        tItemAmount += tMat.amount * 3628800L;
 
                         if (tStack == null) {
                             continue;

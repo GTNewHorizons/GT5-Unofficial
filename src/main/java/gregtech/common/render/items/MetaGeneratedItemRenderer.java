@@ -77,7 +77,7 @@ public final class MetaGeneratedItemRenderer implements IItemRenderer {
                 ItemData itemData = MaterialData.getAssociation(aStack);
                 if (itemData != null && itemData.material != null) {
                     GeneratedMaterialRenderer materialRenderer = MaterialRenderers
-                        .rendererOf(itemData.material.mMaterial);
+                        .rendererOf(itemData.material.material);
                     if (materialRenderer != null) {
                         aMaterialRenderer = materialRenderer;
                     }

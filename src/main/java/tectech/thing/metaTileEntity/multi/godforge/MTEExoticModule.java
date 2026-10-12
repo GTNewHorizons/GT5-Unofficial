@@ -365,7 +365,7 @@ public class MTEExoticModule extends MTEBaseModule {
         for (ItemStack itemStack : items) {
             ItemData association = MaterialData.getAssociation(itemStack);
             FluidStack plasma = association == null ? null
-                : MaterialUtils.plasma(association.material.mMaterial, INGOTS * multiplier * itemStack.stackSize);
+                : MaterialUtils.plasma(association.material.material, INGOTS * multiplier * itemStack.stackSize);
             if (plasma == null) {
                 GT_FML_LOGGER.error("MTEExoticModule.convertItemToPlasma: no plasma for {}", itemStack);
                 continue;

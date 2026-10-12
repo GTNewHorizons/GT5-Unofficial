@@ -54,7 +54,7 @@ public class ItemData {
     public ItemData(OrePrefixes prefix, Material material, String oreDictName) {
         this.prefix = prefix;
         this.material = material == null ? null : new MaterialStack(material, prefix.getMaterialAmount());
-        this.byProducts = prefix.mSecondaryMaterial == null || prefix.mSecondaryMaterial.mMaterial == null
+        this.byProducts = prefix.mSecondaryMaterial == null || prefix.mSecondaryMaterial.material == null
             ? EMPTY_MATERIALSTACK_ARRAY
             : new MaterialStack[] { prefix.mSecondaryMaterial.clone() };
         hasExplicitComposition = false;
@@ -63,7 +63,7 @@ public class ItemData {
 
     public ItemData(MaterialStack material, MaterialStack... byProducts) {
         this.prefix = null;
-        this.material = material.mMaterial == null ? null : material.clone();
+        this.material = material.material == null ? null : material.clone();
         hasExplicitComposition = true;
 
         if (byProducts == null) {
@@ -73,7 +73,7 @@ public class ItemData {
                 : new MaterialStack[byProducts.length];
             int j = 0;
             for (MaterialStack byProduct : byProducts)
-                if (byProduct != null && byProduct.mMaterial != null) kept[j++] = byProduct.clone();
+                if (byProduct != null && byProduct.material != null) kept[j++] = byProduct.clone();
             this.byProducts = j > 0 ? new MaterialStack[j] : EMPTY_MATERIALSTACK_ARRAY;
             System.arraycopy(kept, 0, this.byProducts, 0, this.byProducts.length);
         }
@@ -109,7 +109,7 @@ public class ItemData {
 
         if (association.material != null) {
             for (int i = 0; i < materials.size(); i++) {
-                if (materials.get(i).mMaterial == association.material.mMaterial) {
+                if (materials.get(i).material == association.material.material) {
                     associatedMaterial = materials.remove(i);
                     break;
                 }
@@ -137,9 +137,9 @@ public class ItemData {
         MaterialStack[] dividedByProducts = byProducts.length == 0 ? EMPTY_MATERIALSTACK_ARRAY
             : new MaterialStack[byProducts.length];
         for (int i = 0; i < dividedByProducts.length; i++) {
-            dividedByProducts[i] = byProducts[i].copy(byProducts[i].mAmount / divisor);
+            dividedByProducts[i] = byProducts[i].copy(byProducts[i].amount / divisor);
         }
-        MaterialStack dividedMaterial = material == null ? null : material.copy(material.mAmount / divisor);
+        MaterialStack dividedMaterial = material == null ? null : material.copy(material.amount / divisor);
         return new ItemData(prefix, dividedMaterial, dividedByProducts, hasExplicitComposition, oreDictName);
     }
 
@@ -149,25 +149,25 @@ public class ItemData {
         for (ItemData itemData : dataArray) {
             if (itemData == null) continue;
 
-            if (itemData.material != null && itemData.material.mAmount > 0) {
+            if (itemData.material != null && itemData.material.amount > 0) {
                 mergeMaterial(materials, itemData.material);
             }
 
             for (MaterialStack material : itemData.byProducts) {
-                if (material.mAmount > 0) {
+                if (material.amount > 0) {
                     mergeMaterial(materials, material);
                 }
             }
         }
 
-        materials.sort((a, b) -> Long.compare(b.mAmount, a.mAmount));
+        materials.sort((a, b) -> Long.compare(b.amount, a.amount));
         return materials;
     }
 
     private static void mergeMaterial(ArrayList<MaterialStack> materials, MaterialStack material) {
         for (MaterialStack existing : materials) {
-            if (existing.mMaterial == material.mMaterial) {
-                existing.mAmount += material.mAmount;
+            if (existing.material == material.material) {
+                existing.amount += material.amount;
                 return;
             }
         }
@@ -175,7 +175,7 @@ public class ItemData {
     }
 
     public final boolean hasValidPrefixMaterialData() {
-        return prefix != null && material != null && material.mMaterial != null;
+        return prefix != null && material != null && material.material != null;
     }
 
     /// Whether [#toString] names a unification target. True both for a prefix+material association and for the
@@ -194,7 +194,7 @@ public class ItemData {
     }
 
     public final boolean hasValidMaterialData() {
-        return material != null && material.mMaterial != null;
+        return material != null && material.material != null;
     }
 
     public final ArrayList<MaterialStack> getAllMaterialStacks() {
@@ -211,8 +211,8 @@ public class ItemData {
     @Override
     public String toString() {
         if (oreDictName != null) return oreDictName;
-        if (prefix == null || material == null || material.mMaterial == null) return "";
-        if (pairName == null) pairName = prefix.getName() + MaterialUtils.internalName(material.mMaterial);
+        if (prefix == null || material == null || material.material == null) return "";
+        if (pairName == null) pairName = prefix.getName() + MaterialUtils.internalName(material.material);
         return pairName;
     }
 }

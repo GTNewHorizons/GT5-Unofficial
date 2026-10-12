@@ -944,8 +944,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             && itemData.prefix != OrePrefixes.gemExquisite
             && itemData.prefix != OrePrefixes.gemFlawed
             && itemData.prefix != OrePrefixes.gemFlawless
-            && itemData.material.mMaterial != Materials.Oilsands
-            && !MaterialUtils.hasFlag(itemData.material.mMaterial, GTMaterialFlag.ICE_ORE);
+            && itemData.material.material != Materials.Oilsands
+            && !MaterialUtils.hasFlag(itemData.material.material, GTMaterialFlag.ICE_ORE);
     }
 
     private boolean tryConsumeDrillingFluid(boolean simulate) {

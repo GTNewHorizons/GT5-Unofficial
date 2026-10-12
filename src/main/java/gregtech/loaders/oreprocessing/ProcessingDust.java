@@ -85,12 +85,12 @@ public class ProcessingDust implements PartRecipeGenerator {
         long total = 0L;
         long divisor = 0L;
         for (MaterialStack component : composition) {
-            if (component.mAmount <= 0L) continue;
-            total += component.mAmount;
-            divisor = LongMath.gcd(divisor, component.mAmount);
+            if (component.amount <= 0L) continue;
+            total += component.amount;
+            divisor = LongMath.gcd(divisor, component.amount);
         }
         if (total * M <= capacity || divisor <= 1L) return composition;
-        for (MaterialStack component : composition) component.mAmount /= divisor;
+        for (MaterialStack component : composition) component.amount /= divisor;
         return composition;
     }
 
@@ -275,18 +275,18 @@ public class ProcessingDust implements PartRecipeGenerator {
                         ? MaterialUtils.density(material) / 3628800L
                         : 1L;
                     long tEntryCount = tMaterialList.stream()
-                        .filter(tMat -> tMat.mAmount > 0L)
+                        .filter(tMat -> tMat.amount > 0L)
                         .count();
                     int outputSlots = MaterialUtils.hasElectrolyzerRecipe(material) && tEntryCount > 6 ? 9 : 6;
                     ArrayList<ItemStack> tList = new ArrayList<>();
-                    for (MaterialStack tMat : tMaterialList) if (tMat.mAmount > 0L) {
+                    for (MaterialStack tMat : tMaterialList) if (tMat.amount > 0L) {
                         tDustStack = GTUtility
-                            .copyAmount(tMat.mAmount, MaterialLibAPI.findStack(tMat.mMaterial, Shapes.dust, 1));
+                            .copyAmount(tMat.amount, MaterialLibAPI.findStack(tMat.material, Shapes.dust, 1));
                         if (tDustStack == null) tDustStack = MaterialParts
-                            .stack(OrePrefixes.cell, tMat.mMaterial, Math.min(64L, tMat.mAmount));
-                        if (tItemAmount + tMat.mAmount * 3628800L
+                            .stack(OrePrefixes.cell, tMat.material, Math.min(64L, tMat.amount));
+                        if (tItemAmount + tMat.amount * 3628800L
                             <= stack.getMaxStackSize() * MaterialUtils.density(material)) {
-                            tItemAmount += tMat.mAmount * 3628800L;
+                            tItemAmount += tMat.amount * 3628800L;
                             if (tDustStack != null) {
                                 tDustStack.stackSize = ((int) (tDustStack.stackSize * tDensityMultiplier));
                                 while ((tDustStack.stackSize > 64) && (tList.size() < outputSlots)

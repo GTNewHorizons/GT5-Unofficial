@@ -448,7 +448,7 @@ public class GTAchievements {
         ItemData data = MaterialData.get(stack);
 
         if ((data != null) && (data.prefix == OrePrefixes.ingot)) {
-            Material tMaterial = data.material.mMaterial;
+            Material tMaterial = data.material.material;
             if (tMaterial == Materials.Aluminium) {
                 issueAchievement(player, "gtaluminium");
             } else if (tMaterial == Materials.Titanium) {
@@ -501,7 +501,7 @@ public class GTAchievements {
         }
         ItemData data = MaterialData.get(stack);
         if (data != null) {
-            if (data.prefix == OrePrefixes.dust && data.material.mMaterial == Materials.Bronze) {
+            if (data.prefix == OrePrefixes.dust && data.material.material == Materials.Bronze) {
                 issueAchievement(player, "bronze");
             }
         }
@@ -669,10 +669,10 @@ public class GTAchievements {
         ItemData data = MaterialData.get(stack);
         if (data != null && data.prefix != null) {
             if (data.prefix == OrePrefixes.dust) {
-                if (data.material.mMaterial == Materials.Lutetium) {
+                if (data.material.material == Materials.Lutetium) {
                     issueAchievement(player, "newmetal");
                 }
-                if (data.material.mMaterial != Materials.Gunpowder) {
+                if (data.material.material != Materials.Gunpowder) {
                     issueAchievement(player, "cleandust");
                 }
             } else if (data.prefix.getName()
@@ -684,11 +684,11 @@ public class GTAchievements {
                             player,
                             MaterialUtils.internalName(
                                 data.getAllMaterialStacks()
-                                    .get(i).mMaterial));
+                                    .get(i).material));
                         if (data.getAllMaterialStacks()
-                            .get(i).mMaterial == Materials.Copper
+                            .get(i).material == Materials.Copper
                             || data.getAllMaterialStacks()
-                                .get(i).mMaterial == Materials.Tin) {
+                                .get(i).material == Materials.Tin) {
                             issueAchievement(event.entityPlayer, "mineOre");
                         }
                     }
@@ -698,7 +698,7 @@ public class GTAchievements {
                     issueAchievement(player, "washing");
                 } else if (data.prefix == OrePrefixes.crushedCentrifuged) {
                     issueAchievement(player, "spinit");
-                } else if (data.material.mMaterial == Materials.Steel) {
+                } else if (data.material.material == Materials.Steel) {
                     if (data.prefix == OrePrefixes.ingot && stack.stackSize == stack.getMaxStackSize()) {
                         issueAchievement(player, "steel");
                     } else if (data.prefix == OrePrefixes.nugget && Thaumcraft.isModLoaded()

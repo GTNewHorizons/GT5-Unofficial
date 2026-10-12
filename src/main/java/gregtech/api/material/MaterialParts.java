@@ -148,7 +148,7 @@ public class MaterialParts {
 
     /// Same as [#dustOf(Material, long)] for a [MaterialStack]'s material and amount.
     public static @Nullable ItemStack dustOf(@Nullable MaterialStack materialStack) {
-        return materialStack == null ? null : dustOf(materialStack.mMaterial, materialStack.mAmount);
+        return materialStack == null ? null : dustOf(materialStack.material, materialStack.amount);
     }
 
     /// Returns `materialAmount` of `material` as metal. It picks blocks when the amount is a whole number of at
@@ -177,7 +177,7 @@ public class MaterialParts {
 
     /// Same as [#ingotOrDustOf(Material, long)] for a [MaterialStack]'s material and amount.
     public static @Nullable ItemStack ingotOrDustOf(@Nullable MaterialStack materialStack) {
-        return materialStack == null ? null : ingotOrDustOf(materialStack.mMaterial, materialStack.mAmount);
+        return materialStack == null ? null : ingotOrDustOf(materialStack.material, materialStack.amount);
     }
 
     /// [#dustOf], falling back to [#ingotOf].
@@ -195,7 +195,7 @@ public class MaterialParts {
     public static boolean isPartOf(@Nullable ItemStack stack, @Nullable Material material) {
         if (material == null) return false;
         ItemData association = MaterialData.getAssociation(stack);
-        return association != null && association.material.mMaterial == material;
+        return association != null && association.material.material == material;
     }
 
     /// Returns the shapes serving each oredict prefix. Where several shapes share a prefix, the shape named after

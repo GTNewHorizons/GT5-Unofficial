@@ -50,14 +50,14 @@ public final class ItemHazards {
         ItemData data = MaterialData.get(stack);
         if (data == null) return 0;
         return (data.prefix == null ? 0 : data.prefix.mHeatDamage)
-            + (data.hasValidMaterialData() ? MaterialUtils.heatDamage(data.material.mMaterial) : 0);
+            + (data.hasValidMaterialData() ? MaterialUtils.heatDamage(data.material.material) : 0);
     }
 
     private static @Nullable Material materialOf(ItemStack stack) {
         StackMaterialInfo info = MaterialLibAPI.lookupStack(stack);
         if (info != null) return info.material();
         ItemData data = MaterialData.get(stack);
-        return data != null && data.hasValidMaterialData() ? data.material.mMaterial : null;
+        return data != null && data.hasValidMaterialData() ? data.material.material : null;
     }
 
     private ItemHazards() {}

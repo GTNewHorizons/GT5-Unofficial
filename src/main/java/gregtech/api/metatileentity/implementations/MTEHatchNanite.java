@@ -36,7 +36,7 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
         if (getItemStack() == null) return null;
         ItemData data = MaterialData.getAssociation(getItemStack());
         if (data == null) return null;
-        return data.material.mMaterial;
+        return data.material.material;
     }
 
     @Override

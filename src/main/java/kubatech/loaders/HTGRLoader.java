@@ -60,7 +60,7 @@ public class HTGRLoader {
         .frontend(HighTemperatureGasCooledReactorRecipeMapFrontend::new)
         .builderTransformer(builder -> {
             ItemStack[] inputs = builder.getItemInputsBasic();
-            Material material = MaterialData.getAssociation(inputs[0]).material.mMaterial;
+            Material material = MaterialData.getAssociation(inputs[0]).material.material;
             Pair<ItemStack, Integer>[] fuels = builder.getMetadata(FUEL);
             ItemStack[] shells = builder.getMetadataOrDefault(SHELL, new ItemStack[0]);
             Triple<Double, Double, Double> fuelModificator = builder.getMetadata(FUEL_MODIFICATOR);

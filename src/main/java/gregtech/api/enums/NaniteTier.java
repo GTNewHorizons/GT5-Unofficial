@@ -98,6 +98,6 @@ public enum NaniteTier {
         if (data == null) return null;
         if (data.prefix != OrePrefixes.nanite) return null;
 
-        return fromMaterial(data.material.mMaterial);
+        return fromMaterial(data.material.material);
     }
 }

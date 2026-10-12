@@ -305,7 +305,7 @@ public final class RecipeChangeAudit {
         ItemData association = MaterialData.getAssociation(stack);
         if (association != null && association.prefix != null && association.material != null) {
             result.addProperty("prefix", association.prefix.getName());
-            result.addProperty("material", MaterialUtils.internalName(association.material.mMaterial));
+            result.addProperty("material", MaterialUtils.internalName(association.material.material));
         }
         if (stack.hasTagCompound()) result.addProperty(
             "nbt",

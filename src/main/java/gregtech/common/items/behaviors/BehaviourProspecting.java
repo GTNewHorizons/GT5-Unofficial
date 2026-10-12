@@ -43,7 +43,7 @@ public class BehaviourProspecting extends BehaviourNone {
         if (!association.prefix.toString()
             .startsWith("ore")) return null;
 
-        return association.material.mMaterial;
+        return association.material.material;
     }
 
     @Override

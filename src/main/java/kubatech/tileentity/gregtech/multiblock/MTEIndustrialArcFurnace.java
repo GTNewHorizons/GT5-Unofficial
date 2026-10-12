@@ -702,7 +702,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                             .equals(" Ore")) {
                         ItemData outputData = MaterialData.get(smeltedOutput);
                         if (outputData != null) {
-                            FluidStack output = MaterialUtils.molten(outputData.material.mMaterial, 1);
+                            FluidStack output = MaterialUtils.molten(outputData.material.material, 1);
                             long amount = outputData.prefix.getMaterialAmount() / (GTValues.M / 144L)
                                 * smeltedOutput.stackSize;
                             if (output != null) {

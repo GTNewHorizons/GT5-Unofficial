@@ -8,16 +8,16 @@ import gregtech.api.util.GTUtility;
 
 public class MaterialStack implements Cloneable {
 
-    public long mAmount;
-    public Material mMaterial;
+    public long amount;
+    public Material material;
 
     public MaterialStack(Material material, long amount) {
-        mMaterial = material == null ? Materials.NULL : material;
-        mAmount = amount;
+        this.material = material == null ? Materials.NULL : material;
+        this.amount = amount;
     }
 
     public MaterialStack copy(long amount) {
-        return new MaterialStack(mMaterial, amount);
+        return new MaterialStack(material, amount);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class MaterialStack implements Cloneable {
         try {
             return (MaterialStack) super.clone();
         } catch (Exception e) {
-            return new MaterialStack(mMaterial, mAmount);
+            return new MaterialStack(material, amount);
         }
     }
 
@@ -34,9 +34,9 @@ public class MaterialStack implements Cloneable {
         if (object == this) return true;
         return switch (object) {
             case null -> false;
-            case Material material -> material == mMaterial;
-            case MaterialStack stack -> stack.mMaterial == mMaterial
-                && (mAmount < 0 || stack.mAmount < 0 || stack.mAmount == mAmount);
+            case Material other -> other == material;
+            case MaterialStack stack -> stack.material == material
+                && (amount < 0 || stack.amount < 0 || stack.amount == amount);
             default -> false;
         };
     }
@@ -47,11 +47,11 @@ public class MaterialStack implements Cloneable {
     }
 
     public String toString(boolean single) {
-        String temp1 = "", temp2 = MaterialUtils.chemicalTooltip(mMaterial, true), temp3 = "", temp4 = "";
-        if (mAmount > 1) {
-            temp4 = GTUtility.toSubscript(mAmount);
+        String temp1 = "", temp2 = MaterialUtils.chemicalTooltip(material, true), temp3 = "", temp4 = "";
+        if (amount > 1) {
+            temp4 = GTUtility.toSubscript(amount);
         }
-        if ((!single || mAmount > 1) && isMaterialListComplex(this)) {
+        if ((!single || amount > 1) && isMaterialListComplex(this)) {
             temp1 = "(";
             temp3 = ")";
         }
@@ -59,7 +59,7 @@ public class MaterialStack implements Cloneable {
     }
 
     private boolean isMaterialListComplex(MaterialStack materialStack) {
-        var list = MaterialUtils.materialList(materialStack.mMaterial);
+        var list = MaterialUtils.materialList(materialStack.material);
         if (list.size() > 1) {
             return true;
         }
@@ -71,6 +71,6 @@ public class MaterialStack implements Cloneable {
 
     @Override
     public int hashCode() {
-        return mMaterial.hashCode();
+        return material.hashCode();
     }
 }

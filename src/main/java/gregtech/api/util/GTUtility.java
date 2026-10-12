@@ -2619,7 +2619,7 @@ public class GTUtility {
      * there's no creative or 111 stack.
      */
     public static boolean consumeItems(EntityPlayer player, ItemStack stack, Material mat, int count) {
-        if (stack != null && MaterialData.get(stack).material.mMaterial == mat && stack.stackSize >= count) {
+        if (stack != null && MaterialData.get(stack).material.material == mat && stack.stackSize >= count) {
             if ((!player.capabilities.isCreativeMode) && (stack.stackSize != 111)) stack.stackSize -= count;
             return true;
         }

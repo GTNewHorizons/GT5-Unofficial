@@ -259,7 +259,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             && !OreDictUtils.isBlacklisted(aResult)
             && !tPrefixMaterial.prefix.mFamiliarPrefixes.isEmpty()) {
             for (OrePrefixes tPrefix : tPrefixMaterial.prefix.mFamiliarPrefixes) {
-                tResults.add(MaterialParts.stack(tPrefix, tPrefixMaterial.material.mMaterial, 1L));
+                tResults.add(MaterialParts.stack(tPrefix, tPrefixMaterial.material.material, 1L));
             }
         }
 
@@ -336,7 +336,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         tInputs.add(aInput);
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.prefix.mFamiliarPrefixes.isEmpty())) {
             for (OrePrefixes tPrefix : tPrefixMaterial.prefix.mFamiliarPrefixes) {
-                tInputs.add(MaterialParts.stack(tPrefix, tPrefixMaterial.material.mMaterial, 1L));
+                tInputs.add(MaterialParts.stack(tPrefix, tPrefixMaterial.material.material, 1L));
             }
         }
         if (aInput != null && ItemList.Tool_DataStick.isStackEqual(aInput, false, true)) {

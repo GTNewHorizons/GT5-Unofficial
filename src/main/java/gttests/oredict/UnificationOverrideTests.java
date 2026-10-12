@@ -218,7 +218,7 @@ public class UnificationOverrideTests {
         ItemData association = MaterialData.getAssociation(new ItemStack(item, 1, meta));
         if (association == null || association.prefix != prefix
             || association.material == null
-            || association.material.mMaterial != material) {
+            || association.material.material != material) {
             mismatches.add(pair + ": association is " + association);
         }
     }

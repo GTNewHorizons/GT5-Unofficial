@@ -66,26 +66,24 @@ public class AlloySmelterRecipes implements Runnable {
     @Override
     public void run() {
         for (MaterialStack[] materials : mAlloySmelterList) {
-            ItemStack dust1 = MaterialLibAPI.getStack(materials[0].mMaterial, Shapes.dust, (int) materials[0].mAmount);
-            ItemStack dust2 = MaterialLibAPI.getStack(materials[1].mMaterial, Shapes.dust, (int) materials[1].mAmount);
-            ItemStack ingot1 = MaterialLibAPI
-                .findStack(materials[0].mMaterial, Shapes.ingot, (int) materials[0].mAmount);
-            ItemStack ingot2 = MaterialLibAPI
-                .findStack(materials[1].mMaterial, Shapes.ingot, (int) materials[1].mAmount);
+            ItemStack dust1 = MaterialLibAPI.getStack(materials[0].material, Shapes.dust, (int) materials[0].amount);
+            ItemStack dust2 = MaterialLibAPI.getStack(materials[1].material, Shapes.dust, (int) materials[1].amount);
+            ItemStack ingot1 = MaterialLibAPI.findStack(materials[0].material, Shapes.ingot, (int) materials[0].amount);
+            ItemStack ingot2 = MaterialLibAPI.findStack(materials[1].material, Shapes.ingot, (int) materials[1].amount);
             ItemStack outputIngot = MaterialLibAPI
-                .getStack(materials[2].mMaterial, Shapes.ingot, (int) materials[2].mAmount);
+                .getStack(materials[2].material, Shapes.ingot, (int) materials[2].amount);
             if (ingot1 != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ingot1, dust2)
                     .itemOutputs(outputIngot)
-                    .duration((int) materials[2].mAmount * 50)
+                    .duration((int) materials[2].amount * 50)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(alloySmelterRecipes);
                 if (ingot2 != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(ingot1, ingot2)
                         .itemOutputs(outputIngot)
-                        .duration((int) materials[2].mAmount * 50)
+                        .duration((int) materials[2].amount * 50)
                         .eut(TierEU.RECIPE_LV / 2)
                         .addTo(alloySmelterRecipes);
                 }
@@ -95,7 +93,7 @@ public class AlloySmelterRecipes implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(dust1, ingot2)
                     .itemOutputs(outputIngot)
-                    .duration((int) materials[2].mAmount * 50)
+                    .duration((int) materials[2].amount * 50)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(alloySmelterRecipes);
             }
@@ -103,7 +101,7 @@ public class AlloySmelterRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(dust1, dust2)
                 .itemOutputs(outputIngot)
-                .duration((int) materials[2].mAmount * 50)
+                .duration((int) materials[2].amount * 50)
                 .eut(TierEU.RECIPE_LV / 2)
                 .addTo(alloySmelterRecipes);
         }

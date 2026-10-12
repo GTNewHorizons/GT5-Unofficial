@@ -135,11 +135,11 @@ public class ProcessingPipe implements PartRecipeGenerator {
                         MaterialLibAPI.getStack(
                             Materials.Steel,
                             Shapes.ring,
-                            (int) (prefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.getMaterialAmount())),
+                            (int) (prefix.mSecondaryMaterial.amount / OrePrefixes.ring.getMaterialAmount())),
                         MaterialLibAPI.getStack(material, unrestricted(prefix), 1))
                     .itemOutputs(GTUtility.copyAmount(1, stack))
                     .duration(
-                        ((int) (prefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.getMaterialAmount()))
+                        ((int) (prefix.mSecondaryMaterial.amount * 400L / OrePrefixes.ring.getMaterialAmount()))
                             * TICKS)
                     .eut(4)
                     .addTo(assemblerRecipes);
