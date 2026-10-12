@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -198,6 +199,22 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
                 flowingIcon = GregTechAPI.sBlockIcons.registerIcon(flowingIconResourceLocation.toString());
             }
         }
+    }
+
+    /// A source fluid that is not a [GTFluid] registers its icons on its own schedule, so they are read on each
+    /// call.
+    @Override
+    public IIcon getStillIcon() {
+        return copiesForeignIcons() ? iconsFrom.getStillIcon() : super.getStillIcon();
+    }
+
+    @Override
+    public IIcon getFlowingIcon() {
+        return copiesForeignIcons() ? iconsFrom.getFlowingIcon() : super.getFlowingIcon();
+    }
+
+    private boolean copiesForeignIcons() {
+        return iconsFrom != null && !(iconsFrom instanceof GTFluid);
     }
 
     @Override

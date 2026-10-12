@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,10 +16,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.interfaces.fluid.IGTFluidBuilder;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.Lazy;
-import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.GTItemCell;
 import tectech.recipe.TecTechRecipeMaps;
 
@@ -191,31 +188,13 @@ public enum CondensateType {
     public static void registerFluids() {
         for (CondensateType type : VALUES) {
             Material material = type.getMaterial();
-            IGTFluidBuilder builder = GTFluidFactory.builder("entangled_" + type.id)
+            type.entangledFluid = GTFluidFactory.builder("entangled_" + type.id)
                 .withColorRGBA(MaterialUtils.rgba(material))
-                .withStateAndTemperature(FluidState.GAS, 0);
-
-            FluidStack src = type.source.get();
-            if (src == null) {
-                // The backing fluid (e.g. "molten.hypogen") isn't registered yet at this point in the load
-                // order, so the texture comes from the material's texture set instead of the fluid's icons.
-                builder.withTextures(
-                    new ResourceLocation(
-                        Mods.ModIDs.G_T_PLUS_PLUS,
-                        "fluids/fluid.molten." + MaterialUtils.customTextureSetName(material)),
-                    null);
-            } else {
-                Fluid fluid = src.getFluid();
-                if (fluid instanceof GTFluid) {
-                    builder.withIconsFrom(fluid);
-                } else {
-                    builder.withTextures(
-                        new ResourceLocation("gregtech:fluids/condensate/fluid." + type.id + "_entangled"),
-                        null);
-                }
-            }
-
-            type.entangledFluid = builder.buildAndRegister()
+                .withStateAndTemperature(FluidState.GAS, 0)
+                .withIconsFrom(
+                    type.source.get()
+                        .getFluid())
+                .buildAndRegister()
                 .asFluid();
 
             type.entangledCell = new GTItemCell("entangled_" + type.id, "entangled_condensate", type.entangledFluid);
@@ -233,10 +212,6 @@ public enum CondensateType {
         }
     }
 
-    /*
-     * Built lazily rather than in registerFluids, where the GTPP-material sources cannot yet be resolved -- see the
-     * GTPP fluid registration comment there.
-     */
     private static final Lazy<Map<Fluid, CondensateType>> BY_SOURCE_FLUID = new Lazy<>(() -> {
         Map<Fluid, CondensateType> map = new HashMap<>();
 
