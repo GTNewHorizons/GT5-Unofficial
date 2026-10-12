@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
@@ -19,7 +18,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizon.gtnhlib.color.ColorResource;
 import com.ruling_0.materiallib.api.FluidMaterialInfo;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -253,10 +251,6 @@ public class MaterialUtils {
         return new short[] { (short) ((argb >>> 16) & 0xFF), (short) ((argb >>> 8) & 0xFF), (short) (argb & 0xFF),
             (short) ((argb >>> 24) & 0xFF) };
     }
-
-    /// The strong references [ColorResource]'s weak instance registry needs to keep re-resolving these colors
-    /// on a resource reload.
-    private static final Map<Material, ColorResource> moltenColors = new ConcurrentHashMap<>();
 
     /// The name of a material's [StandardProperties#TEXTURE_SET], i.e. the folder its art lives in under
     /// `textures/{items,blocks}/materials/`. Null when `material` is null.

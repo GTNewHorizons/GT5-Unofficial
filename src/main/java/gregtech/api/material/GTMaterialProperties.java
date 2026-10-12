@@ -104,10 +104,6 @@ public class GTMaterialProperties {
     /// The EU/t of every fluid extractor recipe melting a part into this material's molten fluid, in place of the
     /// formula derived from the fluid's temperature.
     public static final Property<Integer> MELTING_VOLTAGE = Property.of("gregtech", "meltingVoltage");
-    /// The ARGB molten-state tint, absent when the material uses its
-    /// [com.ruling_0.materiallib.api.StandardProperties#TINT]. A resource pack can override it through the lang
-    /// key `color.resource.gregtech.<MaterialName>.molten` (see [MaterialUtils#moltenRgba]).
-    public static final Property<Integer> MOLTEN_ARGB = Property.of("gregtech", "moltenArgb");
     public static final Property<Integer> OLD_SUB_ID = Property.of("gregtech", "oldSubId");
     public static final Property<Integer> ORE_MULTIPLIER = Property.of("gregtech", "oreMultiplier", 1);
     public static final Property<List<MaterialRefStack>> ORE_BYPRODUCTS = Property.of("gregtech", "oreByProducts");
