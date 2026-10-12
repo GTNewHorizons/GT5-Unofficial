@@ -70,6 +70,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleInformation;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
@@ -97,6 +98,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     protected static final int BASE_STRUCTURE_OFFSET_Z = 0;
 
     private boolean isConnected = false;
+
+    private final ModuleInformation moduleInfo = new ModuleInformation(getModuleType());
 
     private long availableEUt = 0;
     private int runningCooldown = 0;
@@ -666,7 +669,16 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             if (currentEU.compareTo(BigInteger.ZERO) <= 0 && mMaxProgresstime > 0) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
             }
+            updateModuleInformation(this.moduleInfo);
         }
+    }
+
+    public void updateModuleInformation(ModuleInformation moduleInfo) {
+        moduleInfo.setRunning(this.mMaxProgresstime > 0);
+    }
+
+    public ModuleInformation getModuleInfo() {
+        return moduleInfo;
     }
 
     @Override
