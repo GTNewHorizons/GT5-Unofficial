@@ -129,7 +129,7 @@ public class GT5OreLayerHelper {
             }
             // Fallback just in case so we at least show *some* ore
             if (stackList.isEmpty() && !validStones.isEmpty()) {
-                stackList.add(getLayerOre(veinLayer, validStones.get(0)));
+                stackList.add(getLayerOre(veinLayer, validStones.getFirst()));
             }
             return stackList;
         }

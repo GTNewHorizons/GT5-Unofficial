@@ -117,7 +117,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
                 if (!(tileEntity instanceof IGregTechTileEntity)) return true;
                 IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
                 if (mte instanceof MTEHatchDynamo || mte instanceof MTEHatchEnergy) {
-                    int intier = te.mEnergyHatches.get(0).mTier;
+                    int intier = te.mEnergyHatches.getFirst().mTier;
                     if (((MTETieredMachineBlock) mte).mTier == intier + (te.upstep ? te.mTiers : -te.mTiers)) {
                         te.addToMachineList((IGregTechTileEntity) tileEntity, CASING_INDEX);
                         return true;
@@ -204,7 +204,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
     @Override
     public long getInputTier() {
         if (!this.mEnergyHatches.isEmpty()) return GTUtility.getTier(
-            this.mEnergyHatches.get(0)
+            this.mEnergyHatches.getFirst()
                 .getBaseMetaTileEntity()
                 .getInputVoltage());
         return 0L;
@@ -213,7 +213,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
     @Override
     public long getOutputTier() {
         if (!this.mDynamoHatches.isEmpty()) return GTUtility.getTier(
-            this.mDynamoHatches.get(0)
+            this.mDynamoHatches.getFirst()
                 .getBaseMetaTileEntity()
                 .getOutputVoltage());
         return 0L;
@@ -283,7 +283,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
 
         if (!errors.isEmpty()) return; // don't crash the game for accessing the first elem
 
-        byte intier = this.mEnergyHatches.get(0).mTier;
+        byte intier = this.mEnergyHatches.getFirst().mTier;
         for (MTEHatchEnergy in : this.mEnergyHatches) {
             if (in.mTier != intier) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.manual_transformer_energy"));
@@ -291,7 +291,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
             }
         }
 
-        byte outtier = this.mDynamoHatches.get(0).mTier;
+        byte outtier = this.mDynamoHatches.getFirst().mTier;
         for (MTEHatchDynamo out : this.mDynamoHatches) {
             if (out.mTier != outtier) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.manual_transformer_dynamo"));

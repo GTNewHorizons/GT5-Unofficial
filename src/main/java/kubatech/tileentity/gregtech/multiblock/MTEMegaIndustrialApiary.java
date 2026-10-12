@@ -629,7 +629,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     if (this.lEUt > 0) this.lEUt = -this.lEUt;
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
-                    this.mOutputItems = new ItemStack[] { this.mStorage.get(0)
+                    this.mOutputItems = new ItemStack[] { this.mStorage.getFirst()
                         .createIgnobleCopy() };
                     this.updateSlots();
                 }

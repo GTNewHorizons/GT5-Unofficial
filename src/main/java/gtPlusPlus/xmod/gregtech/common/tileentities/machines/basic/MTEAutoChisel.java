@@ -159,7 +159,7 @@ public class MTEAutoChisel extends MTEBasicMachine {
         } else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
             tOutput = null;
         } else {
-            tOutput = getItemsForChiseling(aInput).get(0);
+            tOutput = getItemsForChiseling(aInput).getFirst();
         }
         return tOutput;
     }

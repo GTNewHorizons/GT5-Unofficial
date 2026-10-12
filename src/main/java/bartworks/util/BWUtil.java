@@ -557,7 +557,7 @@ public class BWUtil {
                 continue;
             }
 
-            Object first = list.get(0);
+            Object first = list.getFirst();
             if (!(first instanceof ItemStack stack)) {
                 return false;
             }

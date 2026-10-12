@@ -294,7 +294,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     public @NotNull CheckRecipeResult checkProcessing() {
         depth = 0;
 
-        if (mInputBusses.isEmpty() || !mInputBusses.get(0)
+        if (mInputBusses.isEmpty() || !mInputBusses.getFirst()
             .isValid()) {
             resetMachine();
             return SimpleCheckRecipeResult.ofFailure("no_mining_pipe");
@@ -312,7 +312,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        MTEHatchInputBus bus = mInputBusses.get(0);
+        MTEHatchInputBus bus = mInputBusses.getFirst();
         int numPipes = 0;
 
         for (int i = 0; i < mInventory.length; i++) {

@@ -274,7 +274,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
     void addAutoEnergy() {
         long exEU = this.getPowerFlow() * tEff / 10000;
         if (!mDynamoHatches.isEmpty()) {
-            MTEHatchDynamo tHatch = mDynamoHatches.get(0);
+            MTEHatchDynamo tHatch = mDynamoHatches.getFirst();
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
                 tHatch.setEUVar(
                     Math.min(
@@ -286,7 +286,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
             }
         }
         if (!eDynamoMulti.isEmpty()) {
-            MTEHatchDynamoMulti tHatch = eDynamoMulti.get(0);
+            MTEHatchDynamoMulti tHatch = eDynamoMulti.getFirst();
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
                 tHatch.setEUVar(
                     Math.min(

@@ -252,7 +252,7 @@ public class RecipeMapFrontend {
                 recipeInfo.drawText(
                     EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted(
                         "GT5U.recipes.recipe_by.original",
-                        recipe.owners.get(0)
+                        recipe.owners.getFirst()
                             .getName()));
                 for (int i = 1; i < recipe.owners.size(); i++) {
                     recipeInfo.drawText(
@@ -265,7 +265,7 @@ public class RecipeMapFrontend {
                 recipeInfo.drawText(
                     EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted(
                         "GT5U.recipes.recipe_by",
-                        recipe.owners.get(0)
+                        recipe.owners.getFirst()
                             .getName()));
             }
         }

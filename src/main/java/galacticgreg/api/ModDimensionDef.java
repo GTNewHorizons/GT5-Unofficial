@@ -140,7 +140,7 @@ public class ModDimensionDef {
             }
 
             if (tLst != null) {
-                if (tLst.size() == 1) tGen = tLst.get(0);
+                if (tLst.size() == 1) tGen = tLst.getFirst();
                 else if (tLst.size() > 1) tGen = tLst.get(random.nextInt(tLst.size()));
             }
         } catch (Exception e) {
@@ -263,7 +263,7 @@ public class ModDimensionDef {
         if (validAsteroidMaterials.isEmpty()) return null;
 
         if (validAsteroidMaterials.size() == 1) {
-            return validAsteroidMaterials.get(0);
+            return validAsteroidMaterials.getFirst();
         } else {
             return validAsteroidMaterials.get(rng.nextInt(validAsteroidMaterials.size()));
         }
@@ -280,7 +280,7 @@ public class ModDimensionDef {
         if (specialBlocksForAsteroids.isEmpty()) return null;
 
         if (specialBlocksForAsteroids.size() == 1) {
-            return specialBlocksForAsteroids.get(0);
+            return specialBlocksForAsteroids.getFirst();
         } else {
             return specialBlocksForAsteroids.get(rng.nextInt(specialBlocksForAsteroids.size()));
         }

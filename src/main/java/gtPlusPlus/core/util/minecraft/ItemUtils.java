@@ -55,7 +55,7 @@ public class ItemUtils {
 
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
         if (!oreDictList.isEmpty()) {
-            final ItemStack returnValue = oreDictList.get(0)
+            final ItemStack returnValue = oreDictList.getFirst()
                 .copy();
             returnValue.stackSize = amount;
             return returnValue;

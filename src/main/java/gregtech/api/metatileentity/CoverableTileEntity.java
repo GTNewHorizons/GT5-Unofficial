@@ -705,7 +705,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
                 + StatCollector.translateToLocal(GTUtility.getUnlocalizedSideName(side))
                 + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
-                + tooltip.get(0));
+                + tooltip.getFirst());
         builder.addAll(cover.getAdditionalTooltip());
         builder.addAll(
             IntStream.range(1, tooltip.size())

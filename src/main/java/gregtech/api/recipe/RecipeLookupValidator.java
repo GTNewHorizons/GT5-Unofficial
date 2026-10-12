@@ -161,13 +161,13 @@ public final class RecipeLookupValidator {
         if (recipe.stackTraces.isEmpty()) {
             return "[]";
         }
-        List<String> stackTrace = recipe.stackTraces.get(recipe.stackTraces.size() - 1);
+        List<String> stackTrace = recipe.stackTraces.getLast();
         for (String stackTraceElement : stackTrace) {
             if (!isInternalRecipeCallsite(stackTraceElement)) {
                 return stackTraceElement;
             }
         }
-        return stackTrace.isEmpty() ? "[]" : stackTrace.get(0);
+        return stackTrace.isEmpty() ? "[]" : stackTrace.getFirst();
     }
 
     private static boolean isInternalRecipeCallsite(String stackTraceElement) {
@@ -225,7 +225,7 @@ public final class RecipeLookupValidator {
         if (recipe.stackTraces.isEmpty()) {
             return "[]";
         }
-        List<String> stackTrace = recipe.stackTraces.get(recipe.stackTraces.size() - 1);
+        List<String> stackTrace = recipe.stackTraces.getLast();
         return stackTrace.stream()
             .limit(12)
             .collect(Collectors.joining(" <- ", "[", stackTrace.size() > 12 ? " <- ...]" : "]"));

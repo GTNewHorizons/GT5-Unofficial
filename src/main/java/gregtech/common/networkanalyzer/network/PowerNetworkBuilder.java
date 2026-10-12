@@ -157,7 +157,7 @@ public class PowerNetworkBuilder {
             .toList();
         if (consumers.isEmpty()) return;
 
-        processNode(consumers.get(0));
+        processNode(consumers.getFirst());
 
         for (ConsumerNode cNode : consumers) {
             final EnergyResult consumerStats = getPotentialConsumerStats(cNode);

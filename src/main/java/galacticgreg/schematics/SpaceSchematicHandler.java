@@ -52,7 +52,7 @@ public class SpaceSchematicHandler {
         if (_mSpaceSchematics.isEmpty()) return null;
 
         if (_mSpaceSchematics.size() == 1) {
-            tChoosenSchematic = _mSpaceSchematics.get(0);
+            tChoosenSchematic = _mSpaceSchematics.getFirst();
             if (tChoosenSchematic.getRarity() < tRandomChance) tChoosenSchematic = null;
         } else {
             for (int i = 0; i < _mSpaceSchematics.size(); i++) {

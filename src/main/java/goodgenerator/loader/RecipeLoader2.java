@@ -783,7 +783,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     OreDictionary.getOres("fuelCoke")
-                        .get(0))
+                        .getFirst())
                 .itemOutputs(Materials.Ash.getDust(1))
                 .outputChances(10)
                 .fluidOutputs(FluidRegistry.getFluidStack("fluid.coaltar", 250))

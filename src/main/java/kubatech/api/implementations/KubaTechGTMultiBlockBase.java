@@ -158,14 +158,14 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
         if (emptySlots == 0 && !ignoreEmptiness) return false;
         boolean wasSomethingRemoved = false;
         while (!list.isEmpty()) {
-            List<ItemStack> toOutputNow = mappingFunction.apply(list.get(0));
+            List<ItemStack> toOutputNow = mappingFunction.apply(list.getFirst());
             if (toOutputNow == null) {
-                list.remove(0);
+                list.removeFirst();
                 continue;
             }
             if (!ignoreEmptiness && emptySlots < toOutputNow.size()) break;
             emptySlots -= toOutputNow.size();
-            list.remove(0);
+            list.removeFirst();
             wasSomethingRemoved = true;
             for (ItemStack stack : toOutputNow) {
                 addOutputPartial(stack);

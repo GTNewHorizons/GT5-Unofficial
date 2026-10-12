@@ -333,7 +333,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
 
     public FluidStack getStoredFluidOutputs() {
         // Only one output Hatch, enforced in checkMachine.
-        return this.mOutputHatches.get(0)
+        return this.mOutputHatches.getFirst()
             .getFluid();
     }
 
@@ -646,7 +646,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mRadHatches.size() == 1) {
-                this.mSievert = this.mRadHatches.get(0)
+                this.mSievert = this.mRadHatches.getFirst()
                     .getSievert();
             } else {
                 this.mSievert = 0;

@@ -137,7 +137,7 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
     public int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
         if (aFluids.isEmpty()) return 0;
 
-        FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0);
+        FluidStack firstFuelType = new FluidStack(aFluids.getFirst(), 0);
         int fuelValue = getFuelValue(firstFuelType);
         if (fuelValue <= 0) return 0;
 

@@ -265,12 +265,12 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
 
     private void updateHatchRotation() {
         if (!mInputBeamline.isEmpty()) {
-            mInputBeamline.get(0)
+            mInputBeamline.getFirst()
                 .getBaseMetaTileEntity()
                 .setFrontFacing(getDirection());
         }
         if (!mOutputBeamline.isEmpty()) {
-            MTEHatchOutputBeamline beamOutput = mOutputBeamline.get(0);
+            MTEHatchOutputBeamline beamOutput = mOutputBeamline.getFirst();
             if (this.mTier == 2) {
                 beamOutput.getBaseMetaTileEntity()
                     .setFrontFacing(getDirection());

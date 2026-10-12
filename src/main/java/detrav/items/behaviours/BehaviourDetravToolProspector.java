@@ -185,7 +185,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             }
 
             // Only append ----- separator if text has been added
-            if (!oreMessagesSorted.get(oreMessagesSorted.size() - 1)
+            if (!oreMessagesSorted.getLast()
                 .getChatComponentText_TextValue()
                 .contains(CHAT_MSG_SEPARATOR)) {
                 oreMessagesSorted.add(new ChatComponentText(CHAT_MSG_SEPARATOR));
@@ -332,9 +332,9 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts / 4);
     }
 
-    void addOreToHashMap(String orename, EntityPlayer aPlayer) {
-        // orename + the textual distance of the ore
-        String oreDistance = orename + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex);
+    void addOreToHashMap(String oreName, EntityPlayer aPlayer) {
+        // oreName + the textual distance of the ore
+        String oreDistance = oreName + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex);
         if (!ores.containsKey(oreDistance)) {
             if (DetravScannerMod.DEBUG_ENABLED) aPlayer
                 .addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + " Adding to oremap " + oreDistance));

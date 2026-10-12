@@ -278,19 +278,19 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
         if (!mDynamoHatches.isEmpty()) tag.setLong(
             "energyTier",
             GTUtility.getTier(
-                mDynamoHatches.get(0)
+                mDynamoHatches.getFirst()
                     .maxEUOutput()));
         if (!eDynamoMulti.isEmpty()) tag.setLong(
             "energyTier",
             GTUtility.getTier(
-                eDynamoMulti.get(0)
+                eDynamoMulti.getFirst()
                     .maxEUOutput()));
     }
 
     void addAutoEnergy() {
         long exEU = this.getPowerFlow() * tEff / 10000;
         if (!mDynamoHatches.isEmpty()) {
-            MTEHatchDynamo tHatch = mDynamoHatches.get(0);
+            MTEHatchDynamo tHatch = mDynamoHatches.getFirst();
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
                 tHatch.setEUVar(
                     Math.min(
@@ -302,7 +302,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             }
         }
         if (!eDynamoMulti.isEmpty()) {
-            MTEHatchDynamoMulti tHatch = eDynamoMulti.get(0);
+            MTEHatchDynamoMulti tHatch = eDynamoMulti.getFirst();
             if (tHatch.maxEUOutput() * tHatch.maxAmperesOut() >= exEU) {
                 tHatch.setEUVar(
                     Math.min(

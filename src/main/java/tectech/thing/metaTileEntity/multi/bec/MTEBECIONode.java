@@ -454,7 +454,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             current += step.left();
         }
 
-        setRequiredTier(this.recipeSteps.get(0).nanite);
+        setRequiredTier(this.recipeSteps.getFirst().nanite);
     }
 
     private RecipeStep getCurrentStep() {

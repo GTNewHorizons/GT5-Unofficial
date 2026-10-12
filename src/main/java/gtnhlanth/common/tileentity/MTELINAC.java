@@ -212,7 +212,7 @@ public class MTELINAC extends MTEBeamMultiBase<MTELINAC> implements ISurvivalCon
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        FluidStack fluidCoolant = tFluidInputs.get(0);
+        FluidStack fluidCoolant = tFluidInputs.getFirst();
 
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;

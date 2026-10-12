@@ -96,7 +96,7 @@ public class PositionedStructureError implements StructureError {
         if (expectedBlocks.size() == 1) {
             return StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.structure_error.wrong_block_expected_single",
-                StatCollector.translateToLocal(expectedBlocks.get(0)),
+                StatCollector.translateToLocal(expectedBlocks.getFirst()),
                 x,
                 y,
                 z);

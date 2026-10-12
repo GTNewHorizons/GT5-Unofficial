@@ -465,7 +465,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     private ItemStack[] getAvailableMillingBalls() {
         if (mMillingBallBuses.size() != 1) return new ItemStack[0];
 
-        MTEHatchMillingBalls aBus = mMillingBallBuses.get(0);
+        MTEHatchMillingBalls aBus = mMillingBallBuses.getFirst();
 
         if (aBus == null) return new ItemStack[0];
         @NotNull

@@ -684,7 +684,7 @@ public class GTUtility {
     }
 
     public static void addSeparatorIfNeeded(List<String> tooltip) {
-        if (!tooltip.isEmpty() && !tooltip.get(tooltip.size() - 1)
+        if (!tooltip.isEmpty() && !tooltip.getLast()
             .trim()
             .isEmpty()) {
             tooltip.add("");
@@ -2297,8 +2297,8 @@ public class GTUtility {
 
     public static <E> E selectItemInList(int aIndex, E aReplacement, List<E> aList) {
         if (aList == null || aList.isEmpty()) return aReplacement;
-        if (aList.size() <= aIndex) return aList.get(aList.size() - 1);
-        if (aIndex < 0) return aList.get(0);
+        if (aList.size() <= aIndex) return aList.getLast();
+        if (aIndex < 0) return aList.getFirst();
         return aList.get(aIndex);
     }
 

@@ -145,7 +145,7 @@ public class Pollution {
 
         for (int chunksProcessed = 0; chunksProcessed < operationsPerTick; chunksProcessed++) {
             if (pollutionList.isEmpty()) break; // no more stuff to do
-            ChunkCoordIntPair actualPos = pollutionList.remove(pollutionList.size() - 1); // faster
+            ChunkCoordIntPair actualPos = pollutionList.removeLast(); // faster
             // get pollution
             ChunkData currentData = STORAGE.get(world, actualPos);
             int tPollution = currentData.getAmount();

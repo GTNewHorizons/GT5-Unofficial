@@ -606,7 +606,7 @@ public class MTESynchrotron extends MTEBeamMultiBase<MTESynchrotron>
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        FluidStack fluidCoolant = fluidList.get(0);
+        FluidStack fluidCoolant = fluidList.getFirst();
 
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;

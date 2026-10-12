@@ -472,7 +472,7 @@ public class MarkdownTooltipLoader {
                     paramList.add(paramBuffer.toString());
                 }
 
-                String key = paramList.remove(0)
+                String key = paramList.removeFirst()
                     .toString();
 
                 loc = new Localized(key, paramList.toArray(new Object[0]));

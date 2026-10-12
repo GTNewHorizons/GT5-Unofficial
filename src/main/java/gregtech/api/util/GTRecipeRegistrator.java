@@ -410,8 +410,8 @@ public class GTRecipeRegistrator {
     }
 
     private static boolean isNoOpReverseArcSmelting(ItemStack input, List<ItemStack> outputs) {
-        return outputs.size() == 1 && GTOreDictUnificator.isInputStackEqual(input, outputs.get(0))
-            && input.stackSize == outputs.get(0).stackSize;
+        return outputs.size() == 1 && GTOreDictUnificator.isInputStackEqual(input, outputs.getFirst())
+            && input.stackSize == outputs.getFirst().stackSize;
     }
 
     private static Set<Materials> getArcSmeltingGases(List<ItemStack> outputs) {

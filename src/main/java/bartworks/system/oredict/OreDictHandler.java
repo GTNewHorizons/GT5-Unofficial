@@ -51,7 +51,7 @@ public class OreDictHandler {
             if (!OreDictionary.getOres(s)
                 .isEmpty()) {
                 ItemStack tmpstack = OreDictionary.getOres(s)
-                    .get(0)
+                    .getFirst()
                     .copy();
                 Pair<Integer, Short> p = Pair
                     .of(Item.getIdFromItem(tmpstack.getItem()), (short) tmpstack.getItemDamage());
@@ -78,7 +78,7 @@ public class OreDictHandler {
             .isEmpty()) {
             ItemStack tmp = GTOreDictUnificator.get(
                 OreDictionary.getOres(prefixes + elementName.replace(" ", ""))
-                    .get(0)
+                    .getFirst()
                     .copy())
                 .copy();
             OreDictHandler.cache.put(

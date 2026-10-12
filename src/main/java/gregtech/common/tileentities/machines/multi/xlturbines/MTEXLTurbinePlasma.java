@@ -287,7 +287,7 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
 
             int fuelValue = 0;
             if (!tFluids.isEmpty()) {
-                fuelValue = getFuelValue(new FluidStack(tFluids.get(0), 0));
+                fuelValue = getFuelValue(new FluidStack(tFluids.getFirst(), 0));
             }
             if (euPerTurbine > 0) {
                 float magicValue = (fuelValue * 0.005f) * (fuelValue * 0.005f);
@@ -325,7 +325,7 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
             int tEU = 0;
             int actualOptimalFlow = 0;
 
-            FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0);
+            FluidStack firstFuelType = new FluidStack(aFluids.getFirst(), 0);
             int fuelValue = getFuelValue(firstFuelType);
             if (fuelValue <= 0) {
                 return 0;

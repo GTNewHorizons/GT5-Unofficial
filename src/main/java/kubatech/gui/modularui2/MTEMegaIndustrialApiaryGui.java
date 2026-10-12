@@ -533,7 +533,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
 
     private void creativePickBee(GTHelper.StackableItemSlot serverSlot, EntityPlayer player, EntityPlayerMP playerMP) {
         if (!player.capabilities.isCreativeMode || player.inventory.getItemStack() != null) return;
-        int realID = serverSlot.realSlots.get(0);
+        int realID = serverSlot.realSlots.getFirst();
         if (realID >= multiblock.mStorage.size()) return;
         ItemStack stack = multiblock.mStorage.get(realID).queenStack.copy();
         stack.stackSize = stack.getMaxStackSize();
@@ -544,7 +544,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
 
     private void extractBeeToInventory(GTHelper.StackableItemSlot serverSlot, EntityPlayer player,
         EntityPlayerMP playerMP) {
-        int realID = serverSlot.realSlots.get(0);
+        int realID = serverSlot.realSlots.getFirst();
         if (realID >= multiblock.mStorage.size()) return;
         BeeSimulator removed = multiblock.mStorage.remove(realID);
         multiblock.onStorageContentChanged(false);
@@ -560,7 +560,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         EntityPlayerMP playerMP) {
         ItemStack input = player.inventory.getItemStack();
         if (input.stackSize != 1) return;
-        int realID = serverSlot.realSlots.get(0);
+        int realID = serverSlot.realSlots.getFirst();
         if (realID >= multiblock.mStorage.size()) return;
         World world = multiblock.getBaseMetaTileEntity()
             .getWorld();
@@ -577,7 +577,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
 
     private void extractBeeToCursor(GTHelper.StackableItemSlot serverSlot, EntityPlayer player,
         EntityPlayerMP playerMP) {
-        int realID = serverSlot.realSlots.get(0);
+        int realID = serverSlot.realSlots.getFirst();
         if (realID >= multiblock.mStorage.size()) return;
         BeeSimulator removed = multiblock.mStorage.remove(realID);
         multiblock.onStorageContentChanged(false);

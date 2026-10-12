@@ -292,7 +292,7 @@ public class RecipeGenRecycling implements Runnable {
 
         final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
         if (!oreDictList.isEmpty()) {
-            final ItemStack returnValue = oreDictList.get(0)
+            final ItemStack returnValue = oreDictList.getFirst()
                 .copy();
             returnValue.stackSize = amount;
             return returnValue;

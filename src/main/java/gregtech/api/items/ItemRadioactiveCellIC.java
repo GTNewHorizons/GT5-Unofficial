@@ -118,14 +118,11 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
 
                     int dheat = heat / heatAcceptors.size();
                     heat -= dheat;
-                    dheat = ((IReactorComponent) heatAcceptors.get(0).stack.getItem()).alterHeat(
-                        reactor,
-                        heatAcceptors.get(0).stack,
-                        heatAcceptors.get(0).x,
-                        heatAcceptors.get(0).y,
-                        dheat);
+                    ItemStackCoord heatAcceptor = heatAcceptors.getFirst();
+                    dheat = ((IReactorComponent) heatAcceptor.stack.getItem())
+                        .alterHeat(reactor, heatAcceptor.stack, heatAcceptor.x, heatAcceptor.y, dheat);
                     heat += dheat;
-                    heatAcceptors.remove(0);
+                    heatAcceptors.removeFirst();
                 }
                 if (heat > 0) {
                     reactor.addHeat(heat);

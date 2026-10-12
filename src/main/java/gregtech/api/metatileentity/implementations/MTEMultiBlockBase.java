@@ -795,7 +795,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public void onDisableWorking() {
-        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.getFirst() instanceof MTEHatchDroneDownLink ddl) {
             ddl.findConnection(this)
                 .ifPresent(conn -> {
                     conn.setActive(false);
@@ -806,7 +806,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public void onEnableWorking() {
-        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.getFirst() instanceof MTEHatchDroneDownLink ddl) {
             ddl.findConnection(this)
                 .ifPresent(conn -> conn.setActive(true));
         }
@@ -824,7 +824,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     if (mProgresstime >= mMaxProgresstime) {
                         // Record production data
                         if (!mMaintenanceHatches.isEmpty()
-                            && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+                            && mMaintenanceHatches.getFirst() instanceof MTEHatchDroneDownLink ddl) {
                             MTEDroneCentre centre = ddl.getCentre();
                             if (centre != null) {
                                 ProductionRecord pdr = centre.productionDataRecorder;
@@ -893,10 +893,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             return false;
         } else if (mMufflerHatches.size() == 1) {
             // One muffler, use simple method for performance.
-            MTEHatchMuffler muffler = mMufflerHatches.get(0);
+            MTEHatchMuffler muffler = mMufflerHatches.getFirst();
             if (muffler == null || !muffler.isValid()) {
                 // Muffler invalid. Fail.
-                mMufflerHatches.remove(0);
+                mMufflerHatches.removeFirst();
                 return false;
             } else {
                 if (muffler.polluteEnvironment(this, VENT_AMOUNT)) {
@@ -1679,7 +1679,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public long getInputVoltageTier() {
         long rTier = 0;
         if (!mEnergyHatches.isEmpty()) {
-            rTier = mEnergyHatches.get(0)
+            rTier = mEnergyHatches.getFirst()
                 .getInputTier();
             for (int i = 1; i < mEnergyHatches.size(); i++) {
                 if (mEnergyHatches.get(i)

@@ -37,7 +37,7 @@ public class RecipeLoaderLFTR {
         }
         if (mNobleGases == null) {
             mNobleGases = new ArrayList<>();
-            mNobleGases.add(mSpargeGases.get(0));
+            mNobleGases.add(mSpargeGases.getFirst());
             mNobleGases.add(MaterialsElements.getInstance().XENON.getFluid());
             mNobleGases.add(MaterialsElements.getInstance().NEON.getFluid());
             mNobleGases.add(MaterialsElements.getInstance().ARGON.getFluid());

@@ -196,7 +196,7 @@ public class ColorGridWidget extends Flow {
 
     protected void onToggled() {
         if (selected.size() > maxSelected) {
-            int target = selected.get(0);
+            int target = selected.getFirst();
             IWidget targetChild = getChildren().get(target / 4)
                 .getChildren()
                 .get(target % 4);

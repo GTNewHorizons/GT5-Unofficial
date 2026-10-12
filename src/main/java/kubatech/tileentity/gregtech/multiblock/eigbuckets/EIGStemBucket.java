@@ -137,7 +137,7 @@ public class EIGStemBucket extends EIGBucket {
             // if the droped item is a block that places itself, assume this is the only possible drop
             // eg: pumpkin, redlon
             if (i == 0 && blockDrops.size() == 1) {
-                ItemStack drop = blockDrops.get(0);
+                ItemStack drop = blockDrops.getFirst();
                 if (drop != null && drop.stackSize >= 1 && drop.getItem() == Item.getItemFromBlock(cropBlock)) {
                     drops.addDrop(drop, drop.stackSize);
                     break;

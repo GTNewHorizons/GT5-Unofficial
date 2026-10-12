@@ -1315,7 +1315,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         } else if (element != null) {
             mChemicalFormula = element.toString();
         } else if (materialList.size() == 1) {
-            mChemicalFormula = materialList.get(0)
+            mChemicalFormula = materialList.getFirst()
                 .toString(true);
         } else if (materialList.size() > 1) {
             mChemicalFormula = materialList.stream()
@@ -1904,7 +1904,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         final String aChemicalFormula = getChemicalFormula();
         if (!aShowQuestionMarks && aChemicalFormula.equals("?")) return "";
         if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
-            return ((mElement != null || (mMaterialList.size() < 2 && mMaterialList.get(0).mAmount == 1))
+            return ((mElement != null || (mMaterialList.size() < 2 && mMaterialList.getFirst().mAmount == 1))
                 ? aChemicalFormula
                 : "(" + aChemicalFormula + ")") + aMultiplier;
         }
