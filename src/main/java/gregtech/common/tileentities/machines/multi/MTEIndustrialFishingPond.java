@@ -22,9 +22,11 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -33,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -48,6 +51,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTEIndustrialFishingPond>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -90,29 +94,33 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fish Trap, ZFP")
-            .addInfo("Can process (Tier + 1) * 2 recipes")
-            .addInfo("Put a numbered circuit into the input bus or controller")
-            .addInfo("Circuit " + FISH_MODE + " for Fish")
-            .addInfo("Circuit " + JUNK_MODE + " for Junk")
-            .addInfo("Circuit " + TREASURE_MODE + " for Treasure")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fish_trap"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-fishing-pond"),
+                ImmutableMap.<String, Object>builder()
+                    .put("fish_mode", FISH_MODE)
+                    .put("junk_mode", JUNK_MODE)
+                    .put("treasure_mode", TREASURE_MODE)
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 4, 11, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("160-167", "Aquatic Casing", false)
-            .addCasing("40", "Water", false)
-            .addCasing("12", "Stainless Steel Sheetmetal", false)
-            .addCasing("12", "Stainless Steel Frame Box", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("0+", "Any casing", 1)
-            .addInputHatch("0+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("160-167", Casings.AquaticCasing.getLocalizedName(), false)
+            .addCasing("40", StatCollector.translateToLocal("GT5U.structure.water"), false)
+            .addCasing("12", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterCost"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

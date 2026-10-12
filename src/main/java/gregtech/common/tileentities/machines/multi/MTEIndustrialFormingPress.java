@@ -193,7 +193,7 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 6F)
+        return new ProcessingLogic().setSpeedBonus(1.0D / 6.0D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

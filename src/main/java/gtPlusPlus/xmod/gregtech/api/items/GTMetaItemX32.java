@@ -66,7 +66,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                     this.getUnlocalizedName(tStack) + ".tooltip",
                     tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / GTValues.M));
                 if (tPrefix.isUnifiable()) {
-                    GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
+                    GTOreDictUnificator.add(tPrefix, tMaterial, tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
                 }
