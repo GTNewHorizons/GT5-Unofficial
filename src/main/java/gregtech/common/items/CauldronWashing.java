@@ -12,11 +12,14 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.ProcessingSubstitutes;
+import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTUtility;
 
 /// Washes items in a water cauldron, either dropped in or used on it. Impure and purified dusts become clean dust,
 /// or their material's processing substitute (see [ProcessingSubstitutes#washing]), crushed ore becomes purified
@@ -26,7 +29,8 @@ public final class CauldronWashing {
 
     private CauldronWashing() {}
 
-    /// Attaches washing to the dropped-item and item-use callbacks of the washable item shapes.
+    /// Attaches washing to the dropped-item and item-use callbacks of the washable item shapes, and shows each wash
+    /// in NEI as a cauldron recipe.
     public static void register() {
         attach(Shapes.dustImpure, OrePrefixes.dustImpure);
         attach(Shapes.dustPure, OrePrefixes.dustPure);
@@ -40,6 +44,20 @@ public final class CauldronWashing {
             .onItemUse(
                 (material, stack, player, world, x, y, z, side, hitX, hitY,
                     hitZ) -> washHeld(prefix, material, stack, player, world, x, y, z));
+        MaterialLibAPI.registerShapeConsumer("gregtech", shape, (s, material) -> addNeiRecipe(prefix, material, s));
+    }
+
+    private static void addNeiRecipe(OrePrefixes prefix, Material material, Shape shape) {
+        ItemStack output = result(prefix, material, 1);
+        if (output == null) return;
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialLibAPI.getStack(material, shape, 1))
+            .fluidInputs(GTUtility.getWater(333))
+            .itemOutputs(output)
+            .duration(0)
+            .eut(0)
+            .fake()
+            .addTo(RecipeMaps.cauldronRecipe);
     }
 
     /// Returns the washed form of `stackSize` items of `prefix` and `material`, or null when they do not wash.

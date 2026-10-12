@@ -30,7 +30,6 @@ public class GTMaterialProperties {
     /// The EU/t of the blast furnace recipe smelting this material's dust, in place of MV.
     public static final Property<Integer> BLAST_VOLTAGE = Property.of("gregtech", "blastVoltage");
     public static final Property<Integer> BYPRODUCT_MULTIPLIER = Property.of("gregtech", "byProductMultiplier", 1);
-    public static final Property<Boolean> CAN_BE_CRACKED = Property.of("gregtech", "canBeCracked", false);
     public static final Property<List<MaterialRefStack>> COMPOSITION = Property.of("gregtech", "composition");
     public static final Property<Integer> DENSITY_DIVIDER = Property.of("gregtech", "densityDivider");
     public static final Property<Integer> DENSITY_MULTIPLIER = Property.of("gregtech", "densityMultiplier");

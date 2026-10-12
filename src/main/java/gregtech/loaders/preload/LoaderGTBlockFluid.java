@@ -19,13 +19,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -43,7 +41,6 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTModHandler;
@@ -873,13 +870,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(
                 MaterialLibAPI.getStack(Materials.Ice, CellShapes.cellSolid, 1),
                 ItemList.Cell_Empty.get(1L));
-
-        for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MaterialUtils.canBeCracked(material)) {
-                GTMod.proxy.addHydroCrackingRecipes(material);
-                GTMod.proxy.addSteamCrackingRecipes(material);
-            }
-        }
 
         GTFluidFactory.builder("potion.awkward")
             .withDefaultLocalName("Awkward Brew")

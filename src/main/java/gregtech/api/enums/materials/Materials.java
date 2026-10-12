@@ -11442,7 +11442,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeLightBlue")
             .setProperty(GTMaterialProperties.FORMULA, "C₂H₆")
             .build();
@@ -11471,7 +11470,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .setProperty(GTMaterialProperties.FORMULA, "C₃H₈")
             .build();
@@ -11500,7 +11498,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeOrange")
             .setProperty(GTMaterialProperties.FORMULA, "C₄H₁" + CustomGlyphs.SUBSCRIPT0)
             .build();
@@ -11529,7 +11526,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeOrange")
             .setProperty(GTMaterialProperties.FORMULA, "C₄H₈")
             .build();
@@ -11558,7 +11554,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeOrange")
             .setProperty(GTMaterialProperties.FORMULA, "C₄H₆")
             .build();
@@ -12103,7 +12098,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeWhite")
             .setProperty(GTMaterialProperties.FORMULA, "C₂H₄")
             .build();
@@ -12132,7 +12126,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
             .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .setProperty(GTMaterialProperties.FORMULA, "C₃H₆")
             .build();
@@ -13010,7 +13003,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FUEL_TYPE, 1)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 735)
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeWhite")
             .build();
         Materials.SulfuricNaphtha = MaterialLibAPI.newMaterial("gregtech", "SulfuricNaphtha", TextureSet.of("gregtech", "FLUID"))
@@ -13070,7 +13062,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FUEL_TYPE, 1)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 739)
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .build();
         Materials.LightFuel = MaterialLibAPI.newMaterial("gregtech", "LightFuel", TextureSet.of("gregtech", "FLUID"))
@@ -13094,7 +13085,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FUEL_POWER, 305)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 740)
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .build();
         // spotless:on
@@ -13124,7 +13114,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.FUEL_TYPE, 3)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 741)
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
-            .setProperty(GTMaterialProperties.CAN_BE_CRACKED, true)
             .setProperty(GTMaterialProperties.DYE, "dyeBlack")
             .build();
         Materials.LPG = MaterialLibAPI.newMaterial("gregtech", "LPG", TextureSet.of("gregtech", "FLUID"))

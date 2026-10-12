@@ -17,7 +17,6 @@ public class GTMaterialPropertyDefaultsTest {
     private static Map<Property<?>, Object> declaredDefaults() {
         Map<Property<?>, Object> expected = new LinkedHashMap<>();
         expected.put(GTMaterialProperties.BLAST_REQUIRED, false);
-        expected.put(GTMaterialProperties.CAN_BE_CRACKED, false);
         expected.put(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE, false);
         expected.put(GTMaterialProperties.HAS_CORRESPONDING_FLUID, false);
         expected.put(GTMaterialProperties.HAS_CORRESPONDING_GAS, false);
@@ -52,7 +51,6 @@ public class GTMaterialPropertyDefaultsTest {
     @Test
     void nullMaterialAgreesWithTheDeclaredDefault() {
         assertEquals(GTMaterialProperties.BLAST_REQUIRED.getDefaultValue(), MaterialUtils.blastFurnaceRequired(null));
-        assertEquals(GTMaterialProperties.CAN_BE_CRACKED.getDefaultValue(), MaterialUtils.canBeCracked(null));
         assertEquals(
             GTMaterialProperties.HAS_CENTRIFUGE_RECIPE.getDefaultValue(),
             MaterialUtils.hasCentrifugeRecipe(null));

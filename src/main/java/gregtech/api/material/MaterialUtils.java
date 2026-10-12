@@ -323,11 +323,6 @@ public class MaterialUtils {
         return material != null && material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE);
     }
 
-    /// Whether a material can be cracked -- [GTMaterialProperties#CAN_BE_CRACKED], `false` when absent.
-    public static boolean canBeCracked(@Nullable Material material) {
-        return material != null && material.getProperty(GTMaterialProperties.CAN_BE_CRACKED);
-    }
-
     /// A material's [Dyes] -- [GTMaterialProperties#DYE], or [Dyes#_NULL] when absent or for a null `material`.
     public static Dyes dye(@Nullable Material material) {
         if (material == null) return Dyes._NULL;

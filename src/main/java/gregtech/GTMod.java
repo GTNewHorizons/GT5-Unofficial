@@ -118,6 +118,7 @@ import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
+import gregtech.loaders.materialrecipes.CrackingRecipes;
 import gregtech.loaders.materialrecipes.LoaderMaterialRecipes;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
@@ -322,6 +323,7 @@ public class GTMod {
         MaterialSystem.init();
         OrePrefixes.copyDataFromShapes();
         ShapeRecipeTable.register();
+        CrackingRecipes.register();
         RadioHatchMaterialLoader.registerMaterialRods();
         CauldronWashing.register();
     }
@@ -635,7 +637,6 @@ public class GTMod {
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
         NaquadahRecipePatches.patchCropsNhRecipes();
-        GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
         GTPostLoad.processToolboxBans();
 

@@ -9,9 +9,6 @@ import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
-import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -58,9 +55,7 @@ import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -71,7 +66,6 @@ import org.lwjgl.input.Keyboard;
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import com.gtnewhorizon.gtnhlib.teams.TeamDataRegistry;
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -104,7 +98,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
@@ -116,13 +109,10 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
 import gregtech.api.material.MaterialData;
-import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
@@ -1250,125 +1240,6 @@ public class GTProxy implements IFuelHandler {
             }
         }
         return seen ? best : 0;
-    }
-
-    /// Adds the hydrocracking recipes turning a material's liquid, or else its gas, into its three cracked fluids.
-    public void addHydroCrackingRecipes(Material aMaterial) {
-        final Fluid uncrackedFluid;
-        if (MaterialUtils.fluidOf(aMaterial) != null) {
-            uncrackedFluid = MaterialUtils.fluidOf(aMaterial);
-        } else if (MaterialUtils.gasOf(aMaterial) != null) {
-            uncrackedFluid = MaterialUtils.gasOf(aMaterial);
-        } else return;
-        for (int i = 0; i < 3; i++) {
-            Fluid crackedFluid = MaterialUtils.crackedFluid(aMaterial, MaterialUtils.CrackType.HYDRO, i);
-            int hydrogenAmount = 2 * i + 2;
-            GTValues.RA.stdBuilder()
-                .circuit(i + 1)
-                .fluidInputs(
-                    new FluidStack(uncrackedFluid, 1000),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (hydrogenAmount * 800)))
-                .fluidOutputs(new FluidStack(crackedFluid, 1000))
-                .duration((1 + i) * SECONDS)
-                .eut(TierEU.RECIPE_HV / 2)
-                .addTo(crackingRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, (int) (hydrogenAmount)))
-                .circuit(i + 1)
-                .itemOutputs(GTUtility.getEmptyCell(hydrogenAmount))
-                .fluidInputs(new FluidStack(uncrackedFluid, 1000))
-                .fluidOutputs(new FluidStack(crackedFluid, 800))
-                .duration((8 + 4 * i) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(RecipeMaps.chemicalReactorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.requireCell(aMaterial, 1))
-                .circuit(i + 1)
-                .itemOutputs(GTUtility.getEmptyCell(1L))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (hydrogenAmount * 1000)))
-                .fluidOutputs(new FluidStack(crackedFluid, 800))
-                .duration((8 + 4 * i) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(RecipeMaps.chemicalReactorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .circuit(i + 1)
-                .fluidInputs(
-                    new FluidStack(uncrackedFluid, 1000),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (hydrogenAmount * 1000)))
-                .fluidOutputs(new FluidStack(crackedFluid, 800))
-                .duration((4 + 2 * i) * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
-        }
-    }
-
-    /// Adds the steamcracking recipes turning a material's liquid, or else its gas, into its three cracked fluids.
-    public void addSteamCrackingRecipes(Material aMaterial) {
-        final Fluid uncrackedFluid;
-        if (MaterialUtils.fluidOf(aMaterial) != null) {
-            uncrackedFluid = MaterialUtils.fluidOf(aMaterial);
-        } else if (MaterialUtils.gasOf(aMaterial) != null) {
-            uncrackedFluid = MaterialUtils.gasOf(aMaterial);
-        } else return;
-        for (int i = 0; i < 3; i++) {
-            Fluid crackedFluid = MaterialUtils.crackedFluid(aMaterial, MaterialUtils.CrackType.STEAM, i);
-            GTValues.RA.stdBuilder()
-                .circuit(i + 1)
-                .fluidInputs(
-                    new FluidStack(uncrackedFluid, 1_000),
-                    MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1_000))
-                .fluidOutputs(new FluidStack(crackedFluid, 1_200))
-                .duration((1 + i) * SECONDS)
-                .eut(TierEU.RECIPE_HV / 2)
-                .addTo(crackingRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(MetaGeneratedItem98.FluidCell.STEAM.get(1))
-                .circuit(i + 1)
-                .itemOutputs(GTUtility.getEmptyCell(1L))
-                .fluidInputs(new FluidStack(uncrackedFluid, 1_000))
-                .fluidOutputs(new FluidStack(crackedFluid, 800))
-                .duration((8 + 4 * i) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(RecipeMaps.chemicalReactorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.requireCell(aMaterial, 1))
-                .circuit(i + 1)
-                .itemOutputs(GTUtility.getEmptyCell(1L))
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1_000))
-                .fluidOutputs(new FluidStack(crackedFluid, 800))
-                .duration((8 + 4 * i) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(RecipeMaps.chemicalReactorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.requireCell(aMaterial, 1))
-                .circuit(i + 1)
-                .itemOutputs(GTUtility.getEmptyCell(1L))
-                .fluidInputs(getFluidStack("ic2steam", 1000))
-                .fluidOutputs(new FluidStack(crackedFluid, 800))
-                .duration((8 + 4 * i) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(RecipeMaps.chemicalReactorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .circuit(i + 1)
-                .fluidInputs(
-                    new FluidStack(uncrackedFluid, 1_000),
-                    MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1_000))
-                .fluidOutputs(new FluidStack(crackedFluid, 800))
-                .duration((4 + 2 * i) * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
-        }
     }
 
     @SubscribeEvent
