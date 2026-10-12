@@ -39,12 +39,12 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
@@ -53,6 +53,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -202,7 +203,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             .addController(translateToLocal("gt.mbtt.structure.middle_center_4th_layer"))
             .addCasing("1662-1695", new ItemStack(getCasingBlock(), 1, getCasingMeta()).getDisplayName(), false)
             .addCasing("560", new ItemStack(getCoilBlock(), 1, getCoilMeta()).getDisplayName(), false)
-            .addCasing("128", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameBox()), false)
+            .addCasing("128", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameBox())), false)
             .addCasing("63-93", new ItemStack(getGlassBlock(), 1, getGlassMeta()).getDisplayName(), false)
             .addEnergyHatch("1-32", StatCollector.translateToLocalFormatted("gt.mbtt.structure.specific_casings_on_each_curve", GTValues.VN[tier()]), 2)
             .addInputHatch("1+", translateToLocal("gt.mbtt.structure.specific_glass_on_each_side"), 1)
@@ -261,7 +262,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         return ofBlock(glass, getGlassMeta());
     }
 
-    public abstract Materials getFrameBox();
+    public abstract Material getFrameBox();
 
     public int getMaxPara() {
         return 64;

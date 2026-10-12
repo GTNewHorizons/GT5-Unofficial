@@ -24,14 +24,16 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 /** This class holds cells for non-GT fluids. */
 public class MetaGeneratedItem98 extends MetaGeneratedItem {
@@ -176,20 +178,31 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         }
     }
 
+    /// The fluid fill each cell draws under its container, tinted per fluid at render. One texture serves every
+    /// [CellType].
+    private static final String CELL_FILL = "materials/NONE/cell";
+
+    /// The untinted container each [CellType] draws over its fill: the same two base textures
+    /// [gregtech.api.enums.materials.CellShapes] gives the cell and plasma-cell shapes.
+    private static final String CELL_BASE = "materials/cell_base";
+    private static final String CELL_PLASMA_BASE = "materials/cell_plasma_base";
+
     /** Cell type specifies the cell capacity, appearance, and item name format. */
     private enum CellType {
 
-        REGULAR(1_000, OrePrefixes.cell),
-        SMALL(1 * INGOTS, OrePrefixes.cell),
-        MOLTEN(1 * INGOTS, OrePrefixes.cellMolten),
-        PLASMA(1_000, OrePrefixes.cellPlasma);
+        REGULAR(1_000, OrePrefixes.cell, CELL_BASE),
+        SMALL(1 * INGOTS, OrePrefixes.cell, CELL_BASE),
+        MOLTEN(1 * INGOTS, OrePrefixes.cellMolten, CELL_PLASMA_BASE),
+        PLASMA(1_000, OrePrefixes.cellPlasma, CELL_PLASMA_BASE);
 
         private final int capacity;
         private final OrePrefixes prefix;
+        private final String baseIcon;
 
-        CellType(int capacity, OrePrefixes prefix) {
+        CellType(int capacity, OrePrefixes prefix, String baseIcon) {
             this.capacity = capacity;
             this.prefix = prefix;
+            this.baseIcon = baseIcon;
         }
     }
 
@@ -232,10 +245,9 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     public static synchronized void preInit() {
         if (INSTANCE == null) INSTANCE = new MetaGeneratedItem98();
 
-        // We'll just steal the icons from Water. They are all the same anyway (except _NULL is broken for cells).
         for (CellType cellType : CellType.values()) {
-            IIconContainer iconContainer = Materials.Water.mIconSet.mTextures[cellType.prefix.getTextureIndex()];
-            INSTANCE.iconContainerMap.put(cellType, iconContainer);
+            INSTANCE.iconContainerMap
+                .put(cellType, Textures.ItemIcons.custom(Mods.GregTech.resourceDomain, CELL_FILL, cellType.baseIcon));
         }
     }
 
@@ -301,22 +313,16 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     }
 
     private void registerOreDict() {
-        // The GregTech ore dictionary requires an entry in the Materials enum, and since the whole
-        // point of this class is to add cell items for non-GregTech fluids, the vast majority of
-        // cell items won't have an associated material. So only a rare few cell items will need to
-        // be registered.
-
-        // Register IC2 steam cell and Railcraft steam cell as synonyms.
-        // There is no steam material, so we'll use Water.cellMolten instead.
-        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, GTModHandler.getIC2Item("steamCell", 1L));
-        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
+        // These cells hold non-GregTech fluids, which mostly have no GregTech material and get no oredict entry.
+        // Steam has no material either, so its cell registers as Water's cellMolten.
+        OreDictUtils.registerAndAssociate(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
         RegisteredFluidData fluidData = registeredFluidDataMap.get(aStack.getItemDamage());
         if (fluidData == null) {
-            return Materials._NULL.mRGBa;
+            return MaterialUtils.rgba(Materials.NULL);
         }
 
         return fluidData.rgba;

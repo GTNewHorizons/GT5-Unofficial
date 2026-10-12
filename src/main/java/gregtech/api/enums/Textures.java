@@ -18,20 +18,14 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
-import gregtech.client.iconContainers.blocks.GTCustomAlphaBlockIconContainer;
-import gregtech.client.iconContainers.blocks.GTCustomAlphaFallbackBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomOptionalBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTOptionalBlockIconContainer;
-import gregtech.client.iconContainers.blocks.GTTextureSetBlockIconContainer;
 import gregtech.client.iconContainers.items.GTCustomItemIconContainer;
 import gregtech.client.iconContainers.items.GTItemIconContainer;
-import gregtech.client.iconContainers.items.GTTextureSetItemIconContainer;
 
 public class Textures {
 
-    public static final String TextureMaterialIconDirectory = "materialicons/";
-    public static final String TextureSetFallback = "NONE";
     public static final String OverlaySuffix = "_OVERLAY";
 
     // spotless:off
@@ -188,11 +182,6 @@ public class Textures {
             MACHINE_CASING_INSULATED_FLUID_PIPE = create("MACHINE_CASING_INSULATED_FLUID_PIPE"),
             MACHINE_CASING_BERYLLIUM_INTEGRATED_REACTOR = create("MACHINE_CASING_BERYLLIUM_INTEGRATED_REACTOR"),
             MACHINE_CASING_REFINED_GRAPHITE = create("MACHINE_CASING_REFINED_GRAPHITE"),
-
-            BLOCK_STEELEAF = create("BLOCK_STEELEAF"),
-            BLOCK_ICHORIUM = create("BLOCK_ICHORIUM"),
-            BLOCK_FIRESTONE = create("BLOCK_FIRESTONE"),
-            BLOCK_SHADOW = create("BLOCK_SHADOW"),
 
             OVERLAY_AUTOMAINTENANCE = createOptional("OVERLAY_AUTOMAINTENANCE"),
             OVERLAY_AUTOMAINTENANCE_GLOW = createOptional("OVERLAY_AUTOMAINTENANCE_GLOW"),
@@ -1668,206 +1657,8 @@ public class Textures {
             MACHINE_CASING_TURBINE_TITANIUM = create("MACHINE_CASING_TURBINE_TITANIUM"),
             MACHINE_CASING_TURBINE_TUNGSTENSTEEL = create("MACHINE_CASING_TURBINE_TUNGSTENSTEEL"),
 
-            BLOCK_ADAMANTIUM = create("BLOCK_ADAMANTIUM"),
-            BLOCK_ALUMINIUM = create("BLOCK_ALUMINIUM"),
-            BLOCK_AMERICIUM = create("BLOCK_AMERICIUM"),
-
-            BLOCK_ANNEALEDCOPPER = create("BLOCK_ANNEALEDCOPPER"),
-            BLOCK_ANTIMONY = create("BLOCK_ANTIMONY"),
-            BLOCK_ARSENIC = create("BLOCK_ARSENIC"),
-            BLOCK_ASTRALSILVER = create("BLOCK_ASTRALSILVER"),
-            BLOCK_BATTERYALLOY = create("BLOCK_BATTERYALLOY"),
-            BLOCK_BERYLLIUM = create("BLOCK_BERYLLIUM"),
-            BLOCK_BISMUTH = create("BLOCK_BISMUTH"),
-            BLOCK_BISMUTHBRONZE = create("BLOCK_BISMUTHBRONZE"),
-            BLOCK_BLACKBRONZE = create("BLOCK_BLACKBRONZE"),
-            BLOCK_BLACKSTEEL = create("BLOCK_BLACKSTEEL"),
-
-            BLOCK_BLUEALLOY = create("BLOCK_BLUEALLOY"),
-            BLOCK_BLUESTEEL = create("BLOCK_BLUESTEEL"),
-            BLOCK_BRASS = create("BLOCK_BRASS"),
-            BLOCK_BRONZE = create("BLOCK_BRONZE"),
-            BLOCK_CAESIUM = create("BLOCK_CAESIUM"),
-            BLOCK_CERIUM = create("BLOCK_CERIUM"),
-            BLOCK_CHROME = create("BLOCK_CHROME"),
-            BLOCK_CHROMIUMDIOXIDE = create("BLOCK_CHROMIUMDIOXIDE"),
-            BLOCK_COBALT = create("BLOCK_COBALT"),
-            BLOCK_COBALTBRASS = create("BLOCK_COBALTBRASS"),
-            BLOCK_COPPER = create("BLOCK_COPPER"),
-
-            BLOCK_CUPRONICKEL = create("BLOCK_CUPRONICKEL"),
-            BLOCK_DAMASCUSSTEEL = create("BLOCK_DAMASCUSSTEEL"),
-            BLOCK_DARKIRON = create("BLOCK_DARKIRON"),
-            BLOCK_DEEPIRON = create("BLOCK_DEEPIRON"),
-            BLOCK_DESH = create("BLOCK_DESH"),
-            BLOCK_DURANIUM = create("BLOCK_DURANIUM"),
-            BLOCK_DYSPROSIUM = create("BLOCK_DYSPROSIUM"),
-            BLOCK_ELECTRUM = create("BLOCK_ELECTRUM"),
-            BLOCK_ELECTRUMFLUX = create("BLOCK_ELECTRUMFLUX"),
-            BLOCK_ENDERIUM = create("BLOCK_ENDERIUM"),
-
-            BLOCK_ERBIUM = create("BLOCK_ERBIUM"),
-            BLOCK_EUROPIUM = create("BLOCK_EUROPIUM"),
-            BLOCK_FIERYSTEEL = create("BLOCK_FIERYSTEEL"),
-            BLOCK_GADOLINIUM = create("BLOCK_GADOLINIUM"),
-            BLOCK_GALLIUM = create("BLOCK_GALLIUM"),
-            BLOCK_HOLMIUM = create("BLOCK_HOLMIUM"),
-            BLOCK_HSLA = create("BLOCK_HSLA"),
-            BLOCK_INDIUM = create("BLOCK_INDIUM"),
-            BLOCK_INFUSEDGOLD = create("BLOCK_INFUSEDGOLD"),
-            BLOCK_INVAR = create("BLOCK_INVAR"),
-            BLOCK_IRIDIUM = create("BLOCK_IRIDIUM"),
-
-            BLOCK_IRONMAGNETIC = create("BLOCK_IRONMAGNETIC"),
-            BLOCK_IRONWOOD = create("BLOCK_IRONWOOD"),
-            BLOCK_KANTHAL = create("BLOCK_KANTHAL"),
-            BLOCK_KNIGHTMETAL = create("BLOCK_KNIGHTMETAL"),
-            BLOCK_LANTHANUM = create("BLOCK_LANTHANUM"),
-            BLOCK_LEAD = create("BLOCK_LEAD"),
-            BLOCK_LUTETIUM = create("BLOCK_LUTETIUM"),
-            BLOCK_MAGNALIUM = create("BLOCK_MAGNALIUM"),
-            BLOCK_MAGNESIUM = create("BLOCK_MAGNESIUM"),
-            BLOCK_MANGANESE = create("BLOCK_MANGANESE"),
-            BLOCK_METEORICIRON = create("BLOCK_METEORICIRON"),
-
-            BLOCK_METEORICSTEEL = create("BLOCK_METEORICSTEEL"),
-            BLOCK_MIDASIUM = create("BLOCK_MIDASIUM"),
-            BLOCK_TRINIUM = create("BLOCK_TRINIUM"),
-            BLOCK_MITHRIL = create("BLOCK_MITHRIL"),
-            BLOCK_MOLYBDENUM = create("BLOCK_MOLYBDENUM"),
-            BLOCK_NAQUADAH = create("BLOCK_NAQUADAH"),
-            BLOCK_NAQUADAHALLOY = create("BLOCK_NAQUADAHALLOY"),
-            BLOCK_NAQUADAHENRICHED = create("BLOCK_NAQUADAHENRICHED"),
-            BLOCK_NAQUADRIA = create("BLOCK_NAQUADRIA"),
-            BLOCK_NEODYMIUM = create("BLOCK_NEODYMIUM"),
-            BLOCK_NEODYMIUMMAGNETIC = create("BLOCK_NEODYMIUMMAGNETIC"),
-
-            BLOCK_NEUTRONIUM = create("BLOCK_NEUTRONIUM"),
-            BLOCK_NICHROME = create("BLOCK_NICHROME"),
-            BLOCK_NICKEL = create("BLOCK_NICKEL"),
-            BLOCK_NIOBIUM = create("BLOCK_NIOBIUM"),
-            BLOCK_NIOBIUMNITRIDE = create("BLOCK_NIOBIUMNITRIDE"),
-            BLOCK_NIOBIUMTITANIUM = create("BLOCK_NIOBIUMTITANIUM"),
-            BLOCK_OSMIRIDIUM = create("BLOCK_OSMIRIDIUM"),
-            BLOCK_OSMIUM = create("BLOCK_OSMIUM"),
-            BLOCK_PALLADIUM = create("BLOCK_PALLADIUM"),
-            BLOCK_PIGIRON = create("BLOCK_PIGIRON"),
-            BLOCK_PLATINUM = create("BLOCK_PLATINUM"),
-
-            BLOCK_PLUTONIUM = create("BLOCK_PLUTONIUM"),
-            BLOCK_PLUTONIUM241 = create("BLOCK_PLUTONIUM241"),
-            BLOCK_PRASEODYMIUM = create("BLOCK_PRASEODYMIUM"),
-            BLOCK_PROMETHIUM = create("BLOCK_PROMETHIUM"),
-            BLOCK_REDALLOY = create("BLOCK_REDALLOY"),
-            BLOCK_REDSTEEL = create("BLOCK_REDSTEEL"),
-            BLOCK_ROSEGOLD = create("BLOCK_ROSEGOLD"),
-            BLOCK_RUBIDIUM = create("BLOCK_RUBIDIUM"),
-            BLOCK_SAMARIUM = create("BLOCK_SAMARIUM"),
-            BLOCK_SCANDIUM = create("BLOCK_SCANDIUM"),
-            BLOCK_SHADOWIRON = create("BLOCK_SHADOWIRON"),
-
-            BLOCK_SHADOWSTEEL = create("BLOCK_SHADOWSTEEL"),
-            BLOCK_SILICON = create("BLOCK_SILICON"),
-            BLOCK_SILVER = create("BLOCK_SILVER"),
-            BLOCK_SOLDERINGALLOY = create("BLOCK_SOLDERINGALLOY"),
-            BLOCK_STAINLESSSTEEL = create("BLOCK_STAINLESSSTEEL"),
-            BLOCK_STEEL = create("BLOCK_STEEL"),
-            BLOCK_STEELMAGNETIC = create("BLOCK_STEELMAGNETIC"),
-            BLOCK_STERLINGSILVER = create("BLOCK_STERLINGSILVER"),
-            BLOCK_SUNNARIUM = create("BLOCK_SUNNARIUM"),
-            BLOCK_TANTALUM = create("BLOCK_TANTALUM"),
-
-            BLOCK_TELLURIUM = create("BLOCK_TELLURIUM"),
-            BLOCK_TERBIUM = create("BLOCK_TERBIUM"),
-            BLOCK_THAUMIUM = create("BLOCK_THAUMIUM"),
-            BLOCK_THORIUM = create("BLOCK_THORIUM"),
-            BLOCK_THULIUM = create("BLOCK_THULIUM"),
-            BLOCK_TIN = create("BLOCK_TIN"),
-            BLOCK_TINALLOY = create("BLOCK_TINALLOY"),
-            BLOCK_TITANIUM = create("BLOCK_TITANIUM"),
-            BLOCK_TRITANIUM = create("BLOCK_TRITANIUM"),
-            BLOCK_TUNGSTEN = create("BLOCK_TUNGSTEN"),
-            BLOCK_TUNGSTENSTEEL = create("BLOCK_TUNGSTENSTEEL"),
-            BLOCK_ULTIMET = create("BLOCK_ULTIMET"),
-            BLOCK_SPACETIME = create("BLOCK_SPACETIME"),
-
-            BLOCK_URANIUM = create("BLOCK_URANIUM"),
-            BLOCK_URANIUM235 = create("BLOCK_URANIUM235"),
-            BLOCK_VANADIUM = create("BLOCK_VANADIUM"),
-            BLOCK_VANADIUMGALLIUM = create("BLOCK_VANADIUMGALLIUM"),
-            BLOCK_CASTIRON = create("BLOCK_CASTIRON"),
-            BLOCK_YTTRBIUM = create("BLOCK_YTTRBIUM"),
-            BLOCK_YTTRIUM = create("BLOCK_YTTRIUM"),
-            BLOCK_YTTRIUMBARIUMCUPRATE = create("BLOCK_YTTRIUMBARIUMCUPRATE"),
-            BLOCK_ZINC = create("BLOCK_ZINC"),
-            BLOCK_TUNGSTENCARBIDE = create("BLOCK_TUNGSTENCARBIDE"),
-
-            BLOCK_VANADIUMSTEEL = create("BLOCK_VANADIUMSTEEL"),
-            BLOCK_HSSG = create("BLOCK_HSSG"),
-            BLOCK_HSSE = create("BLOCK_HSSE"),
-            BLOCK_HSSS = create("BLOCK_HSSS"),
-            BLOCK_AERCRYSTAL = create("BLOCK_AERCRYSTAL"),
-            BLOCK_AMBER = create("BLOCK_AMBER"),
-            BLOCK_AMETHYST = create("BLOCK_AMETHYST"),
-            BLOCK_AQUACRYSTAL = create("BLOCK_AQUACRYSTAL"),
-            BLOCK_BLUETOPAZ = create("BLOCK_BLUETOPAZ"),
-            BLOCK_CERTUSQUARTZ = create("BLOCK_CERTUSQUARTZ"),
-            BLOCK_DILITHIUM = create("BLOCK_DILITHIUM"),
-
-            BLOCK_ENDEREYE = create("BLOCK_ENDEREYE"),
-            BLOCK_ENDERPEARL = create("BLOCK_ENDERPEARL"),
-            BLOCK_FOOLSRUBY = create("BLOCK_FOOLSRUBY"),
-            BLOCK_FORCE = create("BLOCK_FORCE"),
-            BLOCK_FORCICIUM = create("BLOCK_FORCICIUM"),
-            BLOCK_FORCILLIUM = create("BLOCK_FORCILLIUM"),
-            BLOCK_GREENSAPPHIRE = create("BLOCK_GREENSAPPHIRE"),
-            BLOCK_IGNISCRYSTAL = create("BLOCK_IGNISCRYSTAL"),
-            BLOCK_JASPER = create("BLOCK_JASPER"),
-            BLOCK_LAZURITE = create("BLOCK_LAZURITE"),
-
-            BLOCK_LIGNITE = create("BLOCK_LIGNITE"),
-            BLOCK_MONAZITE = create("BLOCK_MONAZITE"),
-            BLOCK_NITER = create("BLOCK_NITER"),
-            BLOCK_OLIVINE = create("BLOCK_OLIVINE"),
-            BLOCK_OPAL = create("BLOCK_OPAL"),
-            BLOCK_ORDOCRYSTAL = create("BLOCK_ORDOCRYSTAL"),
-            BLOCK_PERDITIOCRYSTAL = create("BLOCK_PERDITIOCRYSTAL"),
-            BLOCK_PHOSPHORUS = create("BLOCK_PHOSPHORUS"),
-            BLOCK_QUARTZITE = create("BLOCK_QUARTZITE"),
-            BLOCK_REDGARNET = create("BLOCK_REDGARNET"),
-            BLOCK_RUBY = create("BLOCK_RUBY"),
-
-            BLOCK_SAPPHIRE = create("BLOCK_SAPPHIRE"),
-            BLOCK_SODALITE = create("BLOCK_SODALITE"),
-            BLOCK_TANZANITE = create("BLOCK_TANZANITE"),
-            BLOCK_TERRACRYSTAL = create("BLOCK_TERRACRYSTAL"),
-            BLOCK_TOPAZ = create("BLOCK_TOPAZ"),
-            BLOCK_VINTEUM = create("BLOCK_VINTEUM"),
-            BLOCK_YELLOWGARNET = create("BLOCK_YELLOWGARNET"),
-            BLOCK_NETHERSTAR = create("BLOCK_NETHERSTAR"),
-            BLOCK_CHARCOAL = create("BLOCK_CHARCOAL"),
-            BLOCK_BLAZE = create("BLOCK_BLAZE"),
-            BLOCK_CRYOLITE = create("BLOCK_CRYOLITE"),
             MARBLE_STONE = create("MARBLE_STONE"),
             MARBLE_COBBLE = create("MARBLE_COBBLE"),
-            BLOCK_NICKELALUMINIUM = create("BLOCK_NICKELALUMINIUM"),
-            BLOCK_SILICONSG = create("BLOCK_SILICONSG"),
-            BLOCK_TRANSCENDENTMETAL = create("BLOCK_TRANSCENDENTMETAL"),
-            BLOCK_UNIVERSIUM = create("BLOCK_UNIVERSIUM"),
-            BLOCK_ETERNITY = create("BLOCK_ETERNITY"),
-            BLOCK_MAGMATTER = create("BLOCK_MAGMATTER"),
-            BLOCK_SIXPHASEDCOPPER = create("BLOCK_SIXPHASEDCOPPER"),
-            BLOCK_HELLISHMETAL = create("BLOCK_HELLISHMETAL"),
-            BLOCK_MAGNETOHYDRODYNAMICALLYCONSTRAINEDSTARMATTER = create("BLOCK_MAGNETOHYDRODYNAMICALLYCONSTRAINEDSTARMATTER"),
-            BLOCK_HEXANITE = create("BLOCK_HEXANITE"),
-            BLOCK_SHIJIMA = create("BLOCK_SHIJIMA"),
-            BLOCK_CHURITSU = create("BLOCK_CHURITSU"),
-
-            BLOCK_ORIHARUKON = create("BLOCK_ORIHARUKON"),
-
-            BLOCK_WHITEDWARFMATTER = create("BLOCK_WHITEDWARFMATTER"),
-
-            BLOCK_BLACKDWARFMATTER = create("BLOCK_BLACKDWARFMATTER"),
 
             MARBLE_COBBLE_MOSSY = create("MARBLE_COBBLE_MOSSY"),
             MARBLE_BRICKS = create("MARBLE_BRICKS"),
@@ -2306,46 +2097,7 @@ public class Textures {
                 LARGETURBINE_NEW_ACTIVE8, LARGETURBINE_NEW_ACTIVE9 },
             TURBINE_NEW_EMPTY = { LARGETURBINE_NEW_EMPTY1, LARGETURBINE_NEW_EMPTY2, LARGETURBINE_NEW_EMPTY3,
                 LARGETURBINE_NEW_EMPTY4, LARGETURBINE_NEW_EMPTY5, LARGETURBINE_NEW_EMPTY6, LARGETURBINE_NEW_EMPTY7,
-                LARGETURBINE_NEW_EMPTY8, LARGETURBINE_NEW_EMPTY9 },
-            STORAGE_BLOCKS1 = { BLOCK_ADAMANTIUM, BLOCK_ALUMINIUM, BLOCK_AMERICIUM, BLOCK_ANNEALEDCOPPER,
-                BLOCK_ANTIMONY, BLOCK_ARSENIC, BLOCK_ASTRALSILVER, BLOCK_BATTERYALLOY, BLOCK_BERYLLIUM, BLOCK_BISMUTH,
-                BLOCK_BISMUTHBRONZE, BLOCK_BLACKBRONZE, BLOCK_BLACKSTEEL, BLOCK_BLUEALLOY, BLOCK_BLUESTEEL,
-                BLOCK_BRASS },
-            STORAGE_BLOCKS2 = { BLOCK_BRONZE, BLOCK_CAESIUM, BLOCK_CERIUM, BLOCK_CHROME, BLOCK_CHROMIUMDIOXIDE,
-                BLOCK_COBALT, BLOCK_COBALTBRASS, BLOCK_COPPER, BLOCK_CUPRONICKEL, BLOCK_DAMASCUSSTEEL, BLOCK_DARKIRON,
-                BLOCK_DEEPIRON, BLOCK_DESH, BLOCK_DURANIUM, BLOCK_DYSPROSIUM, BLOCK_ELECTRUM },
-            STORAGE_BLOCKS3 = { BLOCK_ELECTRUMFLUX, BLOCK_ENDERIUM, BLOCK_ERBIUM, BLOCK_EUROPIUM, BLOCK_FIERYSTEEL,
-                BLOCK_GADOLINIUM, BLOCK_GALLIUM, BLOCK_HOLMIUM, BLOCK_HSLA, BLOCK_INDIUM, BLOCK_INFUSEDGOLD,
-                BLOCK_INVAR, BLOCK_IRIDIUM, BLOCK_IRONMAGNETIC, BLOCK_IRONWOOD, BLOCK_KANTHAL },
-            STORAGE_BLOCKS4 = { BLOCK_KNIGHTMETAL, BLOCK_LANTHANUM, BLOCK_LEAD, BLOCK_LUTETIUM, BLOCK_MAGNALIUM,
-                BLOCK_MAGNESIUM, BLOCK_MANGANESE, BLOCK_METEORICIRON, BLOCK_METEORICSTEEL, BLOCK_TRINIUM, BLOCK_MITHRIL,
-                BLOCK_MOLYBDENUM, BLOCK_NAQUADAH, BLOCK_NAQUADAHALLOY, BLOCK_NAQUADAHENRICHED, BLOCK_NAQUADRIA },
-            STORAGE_BLOCKS5 = { BLOCK_NEODYMIUM, BLOCK_NEODYMIUMMAGNETIC, BLOCK_NEUTRONIUM, BLOCK_NICHROME,
-                BLOCK_NICKEL, BLOCK_NIOBIUM, BLOCK_NIOBIUMNITRIDE, BLOCK_NIOBIUMTITANIUM, BLOCK_OSMIRIDIUM,
-                BLOCK_OSMIUM, BLOCK_PALLADIUM, BLOCK_PIGIRON, BLOCK_PLATINUM, BLOCK_PLUTONIUM, BLOCK_PLUTONIUM241,
-                BLOCK_PRASEODYMIUM },
-            STORAGE_BLOCKS6 = { BLOCK_PROMETHIUM, BLOCK_REDALLOY, BLOCK_REDSTEEL, BLOCK_ROSEGOLD, BLOCK_RUBIDIUM,
-                BLOCK_SAMARIUM, BLOCK_SCANDIUM, BLOCK_SHADOWIRON, BLOCK_SHADOWSTEEL, BLOCK_SILICON, BLOCK_SILVER,
-                BLOCK_SOLDERINGALLOY, BLOCK_STAINLESSSTEEL, BLOCK_STEEL, BLOCK_STEELMAGNETIC, BLOCK_STERLINGSILVER },
-            STORAGE_BLOCKS7 = { BLOCK_SUNNARIUM, BLOCK_TANTALUM, BLOCK_TELLURIUM, BLOCK_TERBIUM, BLOCK_THAUMIUM,
-                BLOCK_THORIUM, BLOCK_THULIUM, BLOCK_TIN, BLOCK_TINALLOY, BLOCK_TITANIUM, BLOCK_TRITANIUM,
-                BLOCK_TUNGSTEN, BLOCK_TUNGSTENSTEEL, BLOCK_ULTIMET, BLOCK_URANIUM, BLOCK_URANIUM235 },
-            STORAGE_BLOCKS8 = { BLOCK_VANADIUM, BLOCK_VANADIUMGALLIUM, BLOCK_CASTIRON, BLOCK_YTTRBIUM, BLOCK_YTTRIUM,
-                BLOCK_YTTRIUMBARIUMCUPRATE, BLOCK_ZINC, BLOCK_TUNGSTENCARBIDE, BLOCK_VANADIUMSTEEL, BLOCK_HSSG,
-                BLOCK_HSSE, BLOCK_HSSS, BLOCK_STEELEAF, BLOCK_ICHORIUM, BLOCK_FIRESTONE, BLOCK_SHADOW },
-            STORAGE_BLOCKS9 = { BLOCK_AERCRYSTAL, BLOCK_AMBER, BLOCK_AMETHYST, BLOCK_AQUACRYSTAL, BLOCK_BLUETOPAZ,
-                BLOCK_CERTUSQUARTZ, BLOCK_DILITHIUM, BLOCK_ENDEREYE, BLOCK_ENDERPEARL, BLOCK_FOOLSRUBY, BLOCK_FORCE,
-                BLOCK_FORCICIUM, BLOCK_FORCILLIUM, BLOCK_GREENSAPPHIRE, BLOCK_IGNISCRYSTAL, BLOCK_JASPER },
-            STORAGE_BLOCKS10 = { BLOCK_LAZURITE, BLOCK_LIGNITE, BLOCK_MONAZITE, BLOCK_NITER, BLOCK_OLIVINE, BLOCK_OPAL,
-                BLOCK_ORDOCRYSTAL, BLOCK_PERDITIOCRYSTAL, BLOCK_PHOSPHORUS, BLOCK_QUARTZITE, BLOCK_REDGARNET,
-                BLOCK_RUBY, BLOCK_SAPPHIRE, BLOCK_SODALITE, BLOCK_TANZANITE, BLOCK_TERRACRYSTAL },
-            STORAGE_BLOCKS11 = { BLOCK_TOPAZ, BLOCK_VINTEUM, BLOCK_YELLOWGARNET, BLOCK_NETHERSTAR, BLOCK_CHARCOAL,
-                BLOCK_BLAZE },
-            STORAGE_BLOCKS12 = { BLOCK_CRYOLITE, BLOCK_SILICONSG, BLOCK_NICKELALUMINIUM, BLOCK_SPACETIME,
-                BLOCK_TRANSCENDENTMETAL, BLOCK_ORIHARUKON, BLOCK_WHITEDWARFMATTER, BLOCK_BLACKDWARFMATTER,
-                BLOCK_UNIVERSIUM, BLOCK_ETERNITY, BLOCK_MAGMATTER, BLOCK_SIXPHASEDCOPPER, BLOCK_HELLISHMETAL,
-                BLOCK_MAGNETOHYDRODYNAMICALLYCONSTRAINEDSTARMATTER, BLOCK_HEXANITE },
-            STORAGE_BLOCKS13 = { BLOCK_SHIJIMA, BLOCK_CHURITSU };
+                LARGETURBINE_NEW_EMPTY8, LARGETURBINE_NEW_EMPTY9 };
 
         public static final ITexture[] HIDDEN_TEXTURE = { TextureFactory.builder()
             .addIcon(HIDDEN_FACE)
@@ -2732,52 +2484,6 @@ public class Textures {
             return customOptional(location.getResourceDomain(), location.getResourcePath());
         }
 
-        /**
-         * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1)
-         *
-         * @param domain    The resource domain
-         * @param aIconName The colon-free {@code path/name} icon path<br>
-         *                  (see: {@link IIconRegister#registerIcon}).
-         * @return The {@link IIconContainer} instance
-         */
-        public static @NotNull IIconContainer customAlpha(@NotNull String domain, @NotNull String aIconName) {
-            return GTCustomAlphaBlockIconContainer.create(domain, aIconName);
-        }
-
-        /**
-         * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1) whose icon and
-         * _OVERLAY textures are both optional, delegating to the given fallback container when neither exists
-         *
-         * @param domain    The resource domain of the texture
-         * @param aIconName The colon-free {@code path/name} icon path<br>
-         *                  (see: {@link IIconRegister#registerIcon}).
-         * @param fallback  The {@link IIconContainer} to delegate to when no texture exists for this icon.
-         * @return The {@link IIconContainer} instance
-         */
-        public static @NotNull IIconContainer customAlphaFallback(@NotNull String domain, @NotNull String aIconName,
-            @NotNull IIconContainer fallback) {
-            return GTCustomAlphaFallbackBlockIconContainer.create(domain, aIconName, fallback);
-        }
-
-        /**
-         * Registers a Block {@link IIconContainer} for a {@link TextureSet}
-         *
-         * @param domain  The resource domain
-         * @param setName The colon-free name of the TextureSet
-         * @param prefix  The colon-free prefix for the file name
-         *
-         * @return The {@link IIconContainer} instance
-         */
-        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName,
-            @NotNull String prefix) {
-            return GTTextureSetBlockIconContainer.create(domain, setName, prefix, null);
-        }
-
-        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName,
-            @NotNull String prefix, IIconRegister register) {
-            return GTTextureSetBlockIconContainer.create(domain, setName, prefix, register);
-        }
-
         private static @NotNull IIconContainer create(@NotNull String name) {
             return GTBlockIconContainer.create(name);
         }
@@ -2813,9 +2519,7 @@ public class Textures {
         }
 
         public static void cleanup() {
-            GTTextureSetBlockIconContainer.cleanup();
             GTCustomBlockIconContainer.cleanup();
-            GTCustomAlphaFallbackBlockIconContainer.cleanup();
         }
     }
 
@@ -2895,22 +2599,18 @@ public class Textures {
         }
 
         /**
-         * Registers a Item {@link IIconContainer} for a {@link TextureSet}
+         * Registers a Custom Item {@link IIconContainer} whose overlay is the named texture, not the
+         * {@code _OVERLAY} sibling of {@code aIconName}.
          *
-         * @param domain  The resource domain
-         * @param setName The colon-free name of the TextureSet
-         * @param prefix  The colon-free prefix for the file name
+         * @param domain       The resource domain.
+         * @param aIconName    The colon-free path of the icon drawn first, which the item colour tints.
+         * @param aOverlayName The colon-free path of the untinted layer drawn over it.
          *
          * @return The {@link IIconContainer} instance
          */
-        public static @NotNull IIconContainer textureSet(@NotNull String domain, @NotNull String setName,
-            @NotNull String prefix) {
-            return GTTextureSetItemIconContainer.create(domain, setName, prefix, null);
-        }
-
-        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String domain, @NotNull String setName,
-            @NotNull String prefix, IIconRegister register) {
-            return GTTextureSetItemIconContainer.create(domain, setName, prefix, register);
+        public static @NotNull IIconContainer custom(@NotNull String domain, @NotNull String aIconName,
+            @NotNull String aOverlayName) {
+            return GTCustomItemIconContainer.create(domain, aIconName, aOverlayName);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
@@ -2918,7 +2618,6 @@ public class Textures {
         }
 
         public static void cleanup() {
-            GTTextureSetItemIconContainer.cleanup();
             GTCustomItemIconContainer.cleanup();
         }
 

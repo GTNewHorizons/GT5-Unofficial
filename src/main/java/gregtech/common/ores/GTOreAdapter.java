@@ -1,251 +1,188 @@
 package gregtech.common.ores;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
-import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
-import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
-import com.gtnewhorizons.postea.utility.BlockInfo;
+import com.ruling_0.materiallib.api.BlockMaterialInfo;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
-import codechicken.nei.api.API;
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials.OreShapes;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IStoneType;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.GTProxy.OreDropSystem;
-import gregtech.common.blocks.GTBlockOre;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
-public final class GTOreAdapter implements IOreAdapter<Materials> {
+/// The [IOreAdapter] for every material carrying the [OreShapes#ore] or [OreShapes#oreSmall] shape. Callers reach
+/// it through [OreManager]. A block's stone type is its shape variant ([OreShapes#stoneTypeOf]).
+///
+/// A material's ore exists on the stones [MaterialUtils#isValidStone] accepts, its small ore on the same stones
+/// except ice ones, and only where it carries the shape.
+public final class GTOreAdapter implements IOreAdapter {
 
     public static GTOreAdapter INSTANCE = new GTOreAdapter();
 
     private GTOreAdapter() {}
 
-    private final Map<StoneType, GTBlockOre> oreBlocksByStoneType = new EnumMap<>(StoneType.class);
+    /// Registers every material's ore on every stone type under that stone type's oredict prefix,
+    /// associating it with the material where the prefix unifies.
+    public void registerOreNames() {
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            for (StoneType stoneType : StoneType.VALUES) {
+                ItemStack stack = getVariantStack(material, stoneType, false);
+                if (stack == null) continue;
 
-    private GTBlockOre[] ores;
-
-    // spotless:off
-    private static final StoneType[] LEGACY_STONES = {
-        StoneType.Stone,
-        StoneType.Netherrack,
-        StoneType.Endstone,
-        StoneType.BlackGranite,
-        StoneType.RedGranite,
-        StoneType.Marble,
-        StoneType.Basalt,
-    };
-    // spotless:on
-
-    public void init() {
-        // spotless:off
-        GTBlockOre ores1 = new GTBlockOre(2, new StoneType[] {
-            StoneType.Stone,
-            StoneType.Netherrack,
-            StoneType.Endstone,
-            GTMod.proxy.enableBlackGraniteOres ? StoneType.BlackGranite : null,
-            GTMod.proxy.enableRedGraniteOres ? StoneType.RedGranite : null,
-            GTMod.proxy.enableMarbleOres ? StoneType.Marble : null,
-            GTMod.proxy.enableBasaltOres ? StoneType.Basalt : null,
-            StoneType.Moon,
-        });
-        GTBlockOre ores2 = new GTBlockOre(3, new StoneType[] {
-            StoneType.Mars,
-            StoneType.Asteroid,
-            StoneType.Phobos,
-            StoneType.Deimos,
-            StoneType.Ceres,
-            StoneType.Io,
-            StoneType.Europa,
-            StoneType.Ganymede,
-        });
-        GTBlockOre ores3 = new GTBlockOre(4, new StoneType[] {
-            StoneType.Callisto,
-            StoneType.Enceladus,
-            StoneType.Titan,
-            StoneType.Miranda,
-            StoneType.Oberon,
-            StoneType.Proteus,
-            StoneType.Triton,
-            StoneType.Pluto,
-        });
-        GTBlockOre ores4 = new GTBlockOre(5, new StoneType[] {
-            StoneType.Venus,
-            StoneType.Mercury,
-        });
-        GTBlockOre ores5 = new GTBlockOre(6, new StoneType[] {
-            StoneType.Haumea,
-            StoneType.MakeMake,
-            StoneType.AlphaCentauri,
-            StoneType.TCetiE,
-            StoneType.VegaB,
-            StoneType.BarnardaE,
-            StoneType.BarnardaF,
-            StoneType.Horus,
-        });
-        GTBlockOre ores6 = new GTBlockOre(7, new StoneType[] {
-            StoneType.AnubisAndMaahes,
-            StoneType.PackedIce,
-            StoneType.SethIce,
-            StoneType.SethClay,
-            StoneType.Deepslate,
-            StoneType.Tuff,
-            StoneType.BlueIce,
-        });
-
-        ores = new GTBlockOre[] { ores1, ores2, ores3, ores4, ores5, ores6 };
-        // spotless:on
-
-        TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", (tag, world, chunk) -> {
-            int meta = tag.getInteger("m");
-            boolean natural = tag.getBoolean("n");
-
-            ImmutableBlockMeta bm = transform(meta, natural);
-
-            return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
-        });
-
-        ItemStackReplacementManager.addSimpleReplacement("gregtech:gt.blockores", Item.getItemFromBlock(ores1), true);
-    }
-
-    public ImmutableBlockMeta transform(int meta, boolean natural) {
-        try (OreInfo<Materials> info = OreInfo.getNewInfo()) {
-            info.stoneType = GTUtility.getIndexSafe(LEGACY_STONES, (meta % 16000) / 1000);
-            info.material = GregTechAPI.sGeneratedMaterials[meta % 1000];
-            info.isSmall = meta >= 16000;
-            info.isNatural = natural;
-
-            if (!this.supports(info)) {
-                return new BlockMeta(Blocks.air, 0);
-            } else {
-                return this.getBlock(info);
+                OrePrefixes prefix = stoneType.getPrefix();
+                if (prefix.isUnifiable()) {
+                    OreDictUtils.registerAndAssociate(prefix, material, stack);
+                } else {
+                    OreDictUtils.registerOre(prefix, stack);
+                }
             }
         }
     }
 
-    public void registerOre(StoneType stoneType, GTBlockOre oreBlock) {
-        oreBlocksByStoneType.put(stoneType, oreBlock);
+    /// The runtime config gate for the four config-gated stone types, which are declared unconditionally as
+    /// [OreShapes] variants. Complements [StoneType#isEnabled]'s mod-loaded gate.
+    private static boolean isStoneConfigEnabled(StoneType stoneType) {
+        return switch (stoneType) {
+            case BlackGranite -> GTMod.proxy.enableBlackGraniteOres;
+            case RedGranite -> GTMod.proxy.enableRedGraniteOres;
+            case Marble -> GTMod.proxy.enableMarbleOres;
+            case Basalt -> GTMod.proxy.enableBasaltOres;
+            default -> true;
+        };
     }
 
-    public void hideOres() {
-        for (GTBlockOre ore : ores) {
-            API.hideItem(new ItemStack(ore, 1, 0));
-        }
+    /// Whether `material` has an ore block, or a small-ore block when `small`, on `stone`: the stone is enabled,
+    /// the material's ore may generate on it ([MaterialUtils#isValidStone]), small ore is not on ice stone, and
+    /// the material carries the shape.
+    private static boolean hasOre(@Nullable Material material, @Nullable IStoneType stone, boolean small) {
+        if (material == null || !(stone instanceof StoneType stoneType)) return false;
+        if (!stoneType.isEnabled() || !isStoneConfigEnabled(stoneType)) return false;
+        if (!MaterialUtils.isValidStone(material, stoneType)) return false;
+        if (small && stoneType.getCategory() == StoneCategory.Ice) return false;
+        return material.hasShape(small ? OreShapes.oreSmall : OreShapes.ore);
     }
 
     @Override
     public boolean supports(Block block, int meta) {
-        return GTUtility.contains(ores, block);
+        BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, meta);
+        return info != null && isOreShape(info.shape());
+    }
+
+    private static boolean isOreShape(Shape shape) {
+        return shape == OreShapes.ore || shape == OreShapes.oreSmall;
+    }
+
+    /// Whether `info` names an ore block. A null stone type stands for the first of the material's
+    /// [MaterialUtils#validStones].
+    @Override
+    public boolean supports(OreInfo info) {
+        if (info.material == null) return false;
+
+        IStoneType stoneType = info.stoneType;
+        if (stoneType == null) {
+            List<IStoneType> validStones = MaterialUtils.validStones(info.material);
+            if (validStones.isEmpty()) return false;
+            stoneType = validStones.get(0);
+        }
+
+        return hasOre(info.material, stoneType, info.isSmall);
     }
 
     @Override
-    public boolean supports(OreInfo<?> info) {
-        if (!(info.material instanceof Materials gtMat)) return false;
-        if (!OrePrefixes.ore.doGenerateItem(gtMat)) return false;
+    public OreInfo getOreInfo(Block block, int meta) {
+        BlockMaterialInfo blockInfo = MaterialLibAPI.lookupBlock(block, meta);
+        if (blockInfo == null || !isOreShape(blockInfo.shape()) || blockInfo.material() == null) return null;
 
-        IStoneType stoneType = info.stoneType == null ? gtMat.getValidStones()
-            .get(0) : info.stoneType;
+        StoneType stoneType = OreShapes.stoneTypeOf(blockInfo.variant());
+        if (stoneType == null) return null;
 
-        if (!(stoneType instanceof StoneType stoneType2)) return false;
-        if (!oreBlocksByStoneType.containsKey(stoneType2)) return false;
-        if (!stoneType2.isEnabled()) return false;
-        if (!gtMat.isValidForStone(stoneType2)) return false;
-        return stoneType2.getCategory() != StoneCategory.Ice || !info.isSmall;
-    }
+        OreInfo info = OreInfo.getNewInfo();
 
-    public static final int SMALL_ORE_META_OFFSET = 16000;
-    public static final int NATURAL_ORE_META_OFFSET = 8000;
-
-    @Override
-    public OreInfo<Materials> getOreInfo(Block block, int meta) {
-        if (!(block instanceof GTBlockOre oreBlock)) return null;
-
-        if (meta < 0) throw new IllegalArgumentException(
-            "illegal metadata: " + meta + "; a tool may be casting an int to a byte, which is incompatible with NEID");
-
-        int matId = meta % 1000;
-        int stoneId = ((meta % SMALL_ORE_META_OFFSET) % NATURAL_ORE_META_OFFSET) / 1000;
-        boolean small = meta >= SMALL_ORE_META_OFFSET;
-        boolean natural = (meta % SMALL_ORE_META_OFFSET) >= NATURAL_ORE_META_OFFSET;
-
-        Materials mat = GregTechAPI.sGeneratedMaterials[matId];
-
-        if (!OrePrefixes.ore.doGenerateItem(mat)) return null;
-
-        StoneType stoneType = GTUtility.getIndexSafe(oreBlock.stoneTypes, stoneId);
-        if (stoneType == null || !stoneType.isEnabled()) return null;
-        if (stoneType.getCategory() == StoneCategory.Ice && small) return null;
-
-        OreInfo<Materials> info = OreInfo.getNewInfo();
-
-        info.material = mat;
+        info.material = blockInfo.material();
         info.stoneType = stoneType;
-        info.isSmall = small;
-        info.isNatural = natural;
+        info.isSmall = blockInfo.shape() == OreShapes.oreSmall;
+        info.isNatural = true;
 
         return info;
     }
 
+    /// The ore block `info` names, or null when there is none. A null stone type stands for
+    /// [StoneType#Stone].
     @Override
-    public ImmutableBlockMeta getBlock(OreInfo<?> info) {
+    public ImmutableBlockMeta getBlock(OreInfo info) {
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
-
-        if (!(info.material instanceof Materials gtMat)) return null;
-        if (!OrePrefixes.ore.doGenerateItem(gtMat)) return null;
-
         if (!(info.stoneType instanceof StoneType stoneType)) return null;
-        if (!stoneType.isEnabled()) return null;
-        if (stoneType.getCategory() == StoneCategory.Ice && info.isSmall) return null;
 
-        GTBlockOre oreBlock = oreBlocksByStoneType.get(stoneType);
+        ItemStack stack = getVariantStack(info.material, stoneType, info.isSmall);
+        if (stack == null) return null;
 
-        if (oreBlock == null) return null;
-        int stoneIndex = oreBlock.stoneTypes.indexOf(stoneType);
-        if (stoneIndex == -1) return null;
+        return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
+    }
 
-        int meta = gtMat.mMetaItemSubID;
-        meta += stoneIndex * 1000;
-        if (info.isSmall) meta += SMALL_ORE_META_OFFSET;
-        if (info.isNatural) meta += NATURAL_ORE_META_OFFSET;
+    /// The ore stack a (material, stone type, small-ore) triple resolves to, or null when that stone type carries no
+    /// such block for the material. Unlike [#getStack], never falls back to another stone type.
+    public @Nullable ItemStack getVariantStack(@Nullable Material material, StoneType stoneType, boolean small) {
+        if (!hasOre(material, stoneType, small)) return null;
 
-        return new BlockMeta(oreBlock, meta);
+        Shape shape = small ? OreShapes.oreSmall : OreShapes.ore;
+        return MaterialLibAPI.getStack(material, shape, OreShapes.variantOf(stoneType.name()), 1);
+    }
+
+    /// The harvest level for an ore or small-ore block of `material`: its [GTMaterialProperties#ORE_HARVEST_LEVEL],
+    /// or else its tool quality, plus `bonus` (`-1` for small ore, `0` for ore).
+    public int harvestLevel(Material material, int bonus) {
+        Integer declared = material.getProperty(GTMaterialProperties.ORE_HARVEST_LEVEL);
+        int harvestLevel = declared != null ? declared : MaterialUtils.toolQuality(material);
+
+        return GTUtility.clamp(harvestLevel + bonus, 0, GTMod.proxy.mMaxHarvestLevel);
+    }
+
+    /// The drops for one ore or small-ore block. `variant` resolves back to a [StoneType] via
+    /// [OreShapes#stoneTypeOf].
+    public List<ItemStack> shapeDrops(Material material, String variant, int fortune, boolean isSilkTouch,
+        boolean isSmall) {
+        StoneType stoneType = OreShapes.stoneTypeOf(variant);
+        if (material == null || stoneType == null) return List.of();
+
+        try (OreInfo info = OreInfo.getNewInfo()) {
+            info.material = material;
+            info.stoneType = stoneType;
+            info.isSmall = isSmall;
+            info.isNatural = true;
+
+            return getOreDrops(ThreadLocalRandom.current(), info, isSilkTouch, fortune);
+        }
     }
 
     @Override
-    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
-        if (!supports(info2)) return new ArrayList<>();
-
-        @SuppressWarnings("unchecked")
-        OreInfo<Materials> info = (OreInfo<Materials>) info2;
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo info, boolean silktouch, int fortune) {
+        if (!supports(info)) return new ArrayList<>();
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
-
-        @SuppressWarnings("SuspiciousMethodCalls")
-        GTBlockOre oreBlock = oreBlocksByStoneType.get(info.stoneType);
-
-        if (oreBlock == null) return new ArrayList<>();
-
-        if (!info.isNatural) fortune = 0;
 
         if (info.isSmall) {
             return getSmallOreDrops(random, info, fortune);
@@ -259,11 +196,8 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
     }
 
     @Override
-    public List<ItemStack> getPotentialDrops(OreInfo<?> info2) {
-        if (!supports(info2)) return new ArrayList<>();
-
-        @SuppressWarnings("unchecked")
-        OreInfo<Materials> info = (OreInfo<Materials>) info2;
+    public List<ItemStack> getPotentialDrops(OreInfo info) {
+        if (!supports(info)) return new ArrayList<>();
 
         if (info.isSmall) {
             ObjectLinkedOpenHashSet<ItemId> drops = new ObjectLinkedOpenHashSet<>();
@@ -286,15 +220,14 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         }
     }
 
-    private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo<Materials> info, int fortune) {
+    private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo info, int fortune) {
         ArrayList<ItemStack> possibleDrops = SmallOreDrops.getDropList(info.material);
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         if (!possibleDrops.isEmpty()) {
-            int dropCount = Math.max(
-                1,
-                info.material.mOreMultiplier
-                    + (fortune > 0 ? random.nextInt(1 + fortune * info.material.mOreMultiplier) : 0) / 2);
+            int oreMultiplier = MaterialUtils.oreMultiplier(info.material);
+            int dropCount = Math
+                .max(1, oreMultiplier + (fortune > 0 ? random.nextInt(1 + fortune * oreMultiplier) : 0) / 2);
 
             for (int i = 0; i < dropCount; i++) {
                 drops.add(GTUtility.copyAmount(1, possibleDrops.get(random.nextInt(possibleDrops.size()))));
@@ -308,15 +241,14 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         return drops;
     }
 
-    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Materials> info,
-        int fortune) {
+    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo info, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         // For Sake of god of balance!
 
         switch (oreDropMode) {
             case Item -> drops
-                .add(GTOreDictUnificator.get(OrePrefixes.rawOre, info.material, info.stoneType.isRich() ? 2 : 1));
+                .add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
             case FortuneItem -> {
                 if (fortune > 0) {
                     // Max applicable fortune
@@ -328,18 +260,16 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
                     int amount = (info.stoneType.isRich() ? 2 : 1) * (addedDrops + 1);
 
                     for (int i = 0; i < amount; i++) {
-                        drops.add(GTOreDictUnificator.get(OrePrefixes.rawOre, info.material, 1));
+                        drops.add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, 1));
                     }
                 } else {
                     for (int i = 0; i < (info.stoneType.isRich() ? 2 : 1); i++) {
-                        drops.add(GTOreDictUnificator.get(OrePrefixes.rawOre, info.material, 1));
+                        drops.add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, 1));
                     }
                 }
             }
             case UnifiedBlock -> {
-                try (OreInfo<Materials> info2 = info.clone()) {
-                    info2.isNatural = false;
-
+                try (OreInfo info2 = info.clone()) {
                     for (int i = 0; i < (info2.stoneType.isRich() ? 2 : 1); i++) {
                         info2.stoneType = StoneType.Stone;
                         drops.add(getStack(info2, 1));
@@ -347,9 +277,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
                 }
             }
             case PerDimBlock -> {
-                try (OreInfo<Materials> info2 = info.clone()) {
-                    info2.isNatural = false;
-
+                try (OreInfo info2 = info.clone()) {
                     if (!info2.stoneType.isDimensionSpecific()) {
                         info2.stoneType = StoneType.Stone;
                     }
@@ -358,9 +286,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
                 }
             }
             case Block -> {
-                try (OreInfo<Materials> info2 = info.clone()) {
-                    info2.isNatural = false;
-
+                try (OreInfo info2 = info.clone()) {
                     drops.add(getStack(info2, 1));
                 }
             }

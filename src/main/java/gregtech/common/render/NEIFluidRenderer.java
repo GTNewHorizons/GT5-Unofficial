@@ -1,12 +1,11 @@
 package gregtech.common.render;
 
-import java.util.Map;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
@@ -16,7 +15,8 @@ import codechicken.nei.api.IFluidRenderer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.CondensateType;
-import gregtech.api.enums.Materials;
+import gregtech.api.material.MaterialRenderers;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
 /**
@@ -38,9 +38,10 @@ public class NEIFluidRenderer implements IFluidRenderer {
             register(type.getEntangledFluid());
         }
 
-        for (Map.Entry<Fluid, Materials> entry : Materials.FLUID_MAP.entrySet()) {
-            if (entry.getValue().renderer != null) {
-                register(entry.getKey());
+        for (Fluid fluid : FluidRegistry.getRegisteredFluids()
+            .values()) {
+            if (MaterialRenderers.rendererOf(MaterialUtils.materialOfFluid(fluid)) != null) {
+                register(fluid);
             }
         }
     }

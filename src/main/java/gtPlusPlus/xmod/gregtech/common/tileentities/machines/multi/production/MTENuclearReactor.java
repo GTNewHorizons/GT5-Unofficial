@@ -31,10 +31,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -62,8 +65,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -399,7 +400,9 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                 FluidStack aFuelFluid = null;
                 for (FluidStack aFluidInput : recipe.mFluidInputs) {
                     if (!aFluidInput.getFluid()
-                        .equals(MaterialsNuclides.Li2BeF4.getFluid())) {
+                        .equals(
+                            MaterialLibAPI
+                                .getFluid(Materials.LithiumTetrafluoroberyllateLFTB, FluidShapes.fluidLiquid))) {
                         aFuelFluid = aFluidInput;
                         break;
                     }
@@ -409,9 +412,11 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                         if (fluidStack.isFluidEqual(aFuelFluid)) {
                             mFuelRemaining += fluidStack.amount;
                         } else if (fluidStack.getFluid()
-                            .equals(MaterialsNuclides.Li2BeF4.getFluid())) {
-                                li2bef4 += fluidStack.amount;
-                            }
+                            .equals(
+                                MaterialLibAPI
+                                    .getFluid(Materials.LithiumTetrafluoroberyllateLFTB, FluidShapes.fluidLiquid))) {
+                                        li2bef4 += fluidStack.amount;
+                                    }
                     }
                 }
                 if (mFuelRemaining < 100) {
@@ -524,7 +529,8 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             // Try output some Uranium-233
             if (MathUtils.randInt(1, U233_CHANCE_TICKS) == 1) {
                 this.addOutputPartial(
-                    MaterialsElements.getInstance().URANIUM233.getFluidStack(MathUtils.randInt(1, 10)));
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Uranium233, FluidShapes.fluidMolten, MathUtils.randInt(1, 10)));
             }
         }
         return super.onRunningTick(aStack);

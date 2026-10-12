@@ -35,21 +35,22 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SubTag;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -512,7 +513,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
-            .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
+            .addCasing("15", MaterialUtils.internalName(getFrameMaterial()) + " Frame Box", false)
             .addCasing("5-7", casings, false)
             .addEnergyHatch("1-2", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)
@@ -935,7 +936,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     private boolean doUseMaceratorRecipe(ItemStack currentItem) {
-        ItemData itemData = GTOreDictUnificator.getItemData(currentItem);
+        ItemData itemData = MaterialData.get(currentItem);
         return itemData == null || itemData.mPrefix != OrePrefixes.crushed && itemData.mPrefix != OrePrefixes.dustImpure
             && itemData.mPrefix != OrePrefixes.dust
             && itemData.mPrefix != OrePrefixes.gem
@@ -944,7 +945,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             && itemData.mPrefix != OrePrefixes.gemFlawed
             && itemData.mPrefix != OrePrefixes.gemFlawless
             && itemData.mMaterial.mMaterial != Materials.Oilsands
-            && !itemData.mMaterial.mMaterial.contains(SubTag.ICE_ORE);
+            && !MaterialUtils.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.ICE_ORE);
     }
 
     private boolean tryConsumeDrillingFluid(boolean simulate) {

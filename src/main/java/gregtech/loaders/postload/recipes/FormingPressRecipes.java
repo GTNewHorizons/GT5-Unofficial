@@ -11,18 +11,17 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class FormingPressRecipes implements Runnable {
 
@@ -31,7 +30,7 @@ public class FormingPressRecipes implements Runnable {
         if (BuildCraftSilicon.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 1),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 1))
                 .duration(5 * SECONDS)
@@ -40,7 +39,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CastIron, 1L),
+                    MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 1))
                 .duration(5 * SECONDS)
@@ -49,7 +48,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1L),
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.plate, 1),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 2))
                 .duration(10 * SECONDS)
@@ -58,7 +57,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1L),
+                    MaterialLibAPI.getStack(Materials.Diamond, Shapes.plate, 1),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 3))
                 .duration(5 * SECONDS)
@@ -67,7 +66,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.EnderPearl, 1L),
+                    MaterialLibAPI.getStack(Materials.EnderPearl, Shapes.gem, 1),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 2L, 4))
                 .duration(10 * SECONDS)
@@ -76,7 +75,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.NetherQuartz, 1L),
+                    MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.plate, 1),
                     getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
                 .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 5))
                 .duration(15 * SECONDS)
@@ -105,7 +104,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CertusQuartz, 1L),
+                    MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.plate, 1),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 13))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
                 .duration(10 * SECONDS)
@@ -114,7 +113,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1L),
+                    MaterialLibAPI.getStack(Materials.Diamond, Shapes.plate, 1),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 14))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 17))
                 .duration(10 * SECONDS)
@@ -123,7 +122,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1L),
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.plate, 1),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 15))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 18))
                 .duration(10 * SECONDS)
@@ -132,7 +131,7 @@ public class FormingPressRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.SiliconSG, 1L),
+                    MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.plate, 1),
                     getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 19))
                 .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 20))
                 .duration(10 * SECONDS)
@@ -149,7 +148,7 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Cupronickel, 1L),
+                MaterialLibAPI.getStack(Materials.Cupronickel, Shapes.plate, 1),
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Greg_Cupronickel.get(4L))
             .duration(5 * SECONDS)
@@ -157,18 +156,14 @@ public class FormingPressRecipes implements Runnable {
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Brass, 1L),
-                ItemList.Shape_Mold_Credit.get(0L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Brass, Shapes.plate, 1), ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Coin_Doge.get(4L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                ItemList.Shape_Mold_Credit.get(0L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 1), ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Iron.get(4L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -176,7 +171,7 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CastIron, 1L),
+                MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1),
                 ItemList.Shape_Mold_Credit.get(0L))
             .itemOutputs(ItemList.Credit_Iron.get(4L))
             .duration(5 * SECONDS)
@@ -184,18 +179,14 @@ public class FormingPressRecipes implements Runnable {
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Brick, 1L),
-                ItemList.Shape_Mold_Ingot.get(0L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Brick, Shapes.dust, 1), ItemList.Shape_Mold_Ingot.get(0L))
             .itemOutputs(new ItemStack(Items.brick, 1, 0))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(formingPressRecipes);
         // Bartworks Glass Tube
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 2L),
-                ItemList.Shape_Mold_Rod_Long.get(0L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, 2), ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -203,13 +194,13 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 1L),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.WhiteDwarfMatter, 1L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 16L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 4L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 4L),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackDwarfMatter, 1L))
-            .fluidInputs(Materials.UUMatter.getFluid(4_096_000L))
+                MaterialLibAPI.getStack(Materials.Eternity, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.nanite, 16),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 4),
+                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.nanite, 4),
+                MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.plate, 1))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 4_096_000))
             .itemOutputs(ItemList.NaniteFramework.get(1))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -240,11 +231,11 @@ public class FormingPressRecipes implements Runnable {
         // Cutting Sawblades
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.getGear(16),
-                GGMaterial.marM200.get(OrePrefixes.plate, 8),
-                WerkstoffLoader.AdemicSteel.get(OrePrefixes.ring, 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 16L))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(10 * INGOTS))
+                MaterialLibAPI.getStack(Materials.TungstenTitaniumCarbide, Shapes.gearGt, 16),
+                MaterialLibAPI.getStack(Materials.MARM200Steel, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.AdemicSteel, Shapes.ring, 2),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, 16))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 10 * INGOTS))
             .itemOutputs(ItemList.T1Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -252,11 +243,11 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.gear, Materials.MysteriousCrystal, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8),
-                WerkstoffLoader.HDCS.get(OrePrefixes.ring, 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.PrismaticNaquadah, 16L))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
+                MaterialLibAPI.getStack(Materials.MysteriousCrystal, Shapes.gearGt, 16),
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.HighDurabilityCompoundSteel, Shapes.ring, 2),
+                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.screw, 16))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 10 * INGOTS))
             .itemOutputs(ItemList.T2Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -264,11 +255,12 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.gear, Materials.Neutronium, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 8),
-                GGMaterial.tairitsu.get(OrePrefixes.ring, 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.ElectrumFlux, 16L))
-            .fluidInputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS))
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.gearGt, 16),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.ring, 2),
+                MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.screw, 16))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 10 * INGOTS))
             .itemOutputs(ItemList.T3Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -276,11 +268,13 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.gear, Materials.TranscendentMetal, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ProtoHalkonite, 8),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Churitsu, 2),
-                GGMaterial.metastableOganesson.get(OrePrefixes.screw, 16))
-            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(10 * INGOTS))
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.gearGt, 16),
+                MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.Churitsu, Shapes.ring, 2),
+                MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.screw, 16))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 10 * INGOTS))
             .itemOutputs(ItemList.T4Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -290,10 +284,10 @@ public class FormingPressRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ItemRegistry.bw_glasses[0], 1, 0),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Netherite, 12),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
+                MaterialLibAPI.getStack(Materials.Netherite, Shapes.stick, 12),
+                MaterialLibAPI.getStack(Materials.Netherite, TEBlockShapes.frameGt, 1))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
-            .fluidInputs(Materials.UnformedHexanite.getFluid(8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UnformedHexanite, FluidShapes.fluidLiquid, 8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(formingPressRecipes);
@@ -301,10 +295,10 @@ public class FormingPressRecipes implements Runnable {
         // Peace Enforcement Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GGMaterial.tairitsu.get(OrePrefixes.frameGt, 1),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 2))
+                MaterialLibAPI.getStack(Materials.Tairitsu, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.Churitsu, Shapes.itemCasing, 2))
             .itemOutputs(ItemList.PeaceEnforcementCasing.get(1))
-            .fluidInputs(Materials.Shijima.getMolten(2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shijima, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(formingPressRecipes);
@@ -312,10 +306,10 @@ public class FormingPressRecipes implements Runnable {
         // Conflict Inducement Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Shijima, 1),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 2))
+                MaterialLibAPI.getStack(Materials.Shijima, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.Churitsu, Shapes.itemCasing, 2))
             .itemOutputs(ItemList.ConflictInducementCasing.get(1))
-            .fluidInputs(GGMaterial.tairitsu.getMolten(2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tairitsu, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(formingPressRecipes);

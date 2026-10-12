@@ -26,9 +26,9 @@ import com.sinthoras.visualprospecting.VisualProspecting_API;
 import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.UndergroundOil;
 import gregtech.common.items.behaviors.BehaviourNone;
@@ -271,7 +271,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             return;
         }
 
-        ItemData itemData = GTOreDictUnificator.getAssociation(blockStack);
+        ItemData itemData = MaterialData.getAssociation(blockStack);
 
         if (itemData != null) {
             try {
@@ -297,7 +297,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                         Block tBlock = chunk.getBlock(cx, cy, cz);
                         short tMetaID = (short) chunk.getBlockMetadata(cx, cy, cz);
 
-                        try (OreInfo<?> info = OreManager.getOreInfo(tBlock, tMetaID)) {
+                        try (OreInfo info = OreManager.getOreInfo(tBlock, tMetaID)) {
                             if (info != null) {
                                 if (!info.isNatural) continue;
                                 if (data != DetravMetaGeneratedTool01.MODE_ALL_ORES && info.isSmall) continue;
@@ -311,7 +311,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                         if (data == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
                             ItemStack oreStack = new ItemStack(tBlock, 1, tMetaID);
 
-                            itemData = GTOreDictUnificator.getAssociation(oreStack);
+                            itemData = MaterialData.getAssociation(oreStack);
                             if (itemData != null && itemData.mPrefix.toString()
                                 .startsWith("ore")) {
                                 addOreToHashMap(oreStack.getDisplayName(), aPlayer);

@@ -9,6 +9,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -17,10 +19,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galaxyspace.core.entity.mob.EntityEvolvedColdBlaze;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -38,6 +39,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy implements IFuelHandler {
@@ -106,19 +108,23 @@ public class CommonProxy implements IFuelHandler {
 
         // Blazes
         if (Mods.COFHCore.isModLoaded()) {
-            EntityUtils.registerDropsForMob(EntityBlaze.class, Materials.Pyrotheum.getDust(1), 1, 10);
-            EntityUtils.registerDropsForMob(EntityBlaze.class, Materials.Pyrotheum.getDust(1), 1, 10);
+            EntityUtils.registerDropsForMob(
+                EntityBlaze.class,
+                MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, 1),
+                1,
+                10);
+            EntityUtils.registerDropsForMob(
+                EntityBlaze.class,
+                MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, 1),
+                1,
+                10);
         }
 
         // GalaxySpace Support
         if (Mods.GalaxySpace.isModLoaded()) {
-            ItemStack aBlizz = Materials.Blizz.getDust(1);
-            ItemStack aCryo = Materials.Cryotheum.getDust(1);
-            EntityUtils.registerDropsForMob(
-                EntityEvolvedColdBlaze.class,
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1),
-                1,
-                2500);
+            ItemStack aBlizz = MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 1);
+            ItemStack aCryo = MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, 1);
+            EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, GregtechItemList.BlizzRod.get(1), 1, 2500);
             if (aBlizz != null) {
                 EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aBlizz, 1, 5000);
             }

@@ -21,10 +21,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicGeneratorBaseGui;
@@ -248,7 +248,7 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
      */
     public boolean solidFuelOverride(ItemStack stack) {
         // this could be used for a coal generator for example aswell...
-        ItemData association = GTOreDictUnificator.getAssociation(stack);
+        ItemData association = MaterialData.getAssociation(stack);
         // if it is a gregtech Item, make sure its not a VOLUMETRIC_FLASK or any type of cell, else do vanilla checks
         if (association != null) {
             return !OrePrefixes.CELL_TYPES.contains(association.mPrefix)

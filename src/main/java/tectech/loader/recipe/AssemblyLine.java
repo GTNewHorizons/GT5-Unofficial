@@ -9,13 +9,18 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.CustomItemList;
@@ -30,10 +35,12 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch_Adv.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
+                new Object[] { Circuits.LuV.getIngredient(), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1))
-            .fluidInputs(GTModHandler.getIC2Coolant(2_000), Materials.Hydrogen.getGas(1_000))
+            .fluidInputs(
+                GTModHandler.getIC2Coolant(2_000),
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .itemOutputs(CustomItemList.Machine_Multi_DataBank.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
@@ -45,18 +52,17 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.eM_Containment.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Europium, 2),
-                GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.Plutonium, 4),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 8),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Uranium, 16),
-                GTOreDictUnificator
-                    .get(OrePrefixes.screw, BaseRecipeLoader.getOrDefault("Quantium", Materials.Europium), 16))
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.plateDense, 2),
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.plateQuadruple, 4),
+                MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDouble, 8),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.plate, 16),
+                MaterialLibAPI
+                    .getStack(BaseRecipeLoader.getOrDefault("Quantium", Materials.Europium), Shapes.screw, 16))
             .fluidInputs(
-                BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
-                    .getMolten(9 * INGOTS),
-                Materials.Osmium.getMolten(9 * INGOTS),
+                MaterialUtils.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), 9 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),
-                Materials.Argon.getGas(1_000))
+                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 1_000))
             .itemOutputs(CustomItemList.eM_Hollow.get(2))
             .eut(200_000)
             .duration(10 * SECONDS)
@@ -70,14 +76,13 @@ public class AssemblyLine implements Runnable {
                 CustomItemList.eM_Hollow.get(1),
                 ItemList.Casing_Fusion_Coil.get(2),
                 ItemList.Casing_Coil_NaquadahAlloy.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 64))
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.foil, 64))
             .fluidInputs(
-                Materials.Glass.getMolten(16 * INGOTS),
-                Materials.RubberSilicone.getMolten(1872),
+                MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, 1872),
                 GTModHandler.getIC2Coolant(2_000),
-                BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
-                    .getMolten(9 * INGOTS))
+                MaterialUtils.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), 9 * INGOTS))
             .itemOutputs(CustomItemList.eM_Coil.get(4))
             .eut(200_000)
             .duration(40 * SECONDS)
@@ -93,13 +98,13 @@ public class AssemblyLine implements Runnable {
                 ItemList.Emitter_ZPM.get(8),
                 ItemList.Robot_Arm_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2) },
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 16) },
+                new Object[] { Circuits.UV.getIngredient(), 1 },
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt02, 2) },
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Naquadah, Shapes.wireFine, 16) },
                 CustomItemList.DATApipe.get(2))
             .fluidInputs(
-                Materials.UUMatter.getFluid(500),
-                Materials.Iridium.getMolten(9 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 500),
+                MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(1_000))
             .itemOutputs(CustomItemList.holder_Hatch.get(1))
             .eut(TierEU.RECIPE_UV)
@@ -112,18 +117,17 @@ public class AssemblyLine implements Runnable {
             .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch_Adv.get(1),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
+                new Object[] { Circuits.UV.getIngredient(), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8) },
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.SuperconductorUV, TEBlockShapes.wireGt04, 8) },
                 CustomItemList.DATApipe.get(8),
-                new ItemStack[] {
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Polybenzimidazole, 2) })
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.plateSuperdense, 2) })
             .fluidInputs(
-                Materials.UUMatter.getFluid(1_000),
-                Materials.Iridium.getMolten(9 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),
-                Materials.Hydrogen.getGas(1_000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .itemOutputs(CustomItemList.Machine_Multi_Computer.get(1))
             .eut(100_000)
             .duration(60 * SECONDS)
@@ -136,17 +140,17 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch_Adv.get(1),
                 ItemList.Sensor_ZPM.get(8),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
+                new Object[] { Circuits.UV.getIngredient(), 4 },
                 ItemList.Field_Generator_ZPM.get(1),
                 ItemList.Electric_Motor_ZPM.get(2),
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4) },
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 32) },
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Naquadah, TEBlockShapes.cableGt02, 4) },
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Naquadah, Shapes.wireFine, 32) },
                 CustomItemList.DATApipe.get(16))
             .fluidInputs(
-                Materials.UUMatter.getFluid(1_000),
-                Materials.Iridium.getMolten(9 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),
-                Materials.Osmium.getMolten(9 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 9 * INGOTS))
             .itemOutputs(CustomItemList.Machine_Multi_Research.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(3 * MINUTES)
@@ -160,10 +164,10 @@ public class AssemblyLine implements Runnable {
                 CustomItemList.Machine_Multi_Transformer.get(1),
                 CustomItemList.eM_Coil.get(8),
                 CustomItemList.eM_Power.get(8),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.NeodymiumMagnetic, 16))
+                MaterialLibAPI.getStack(Materials.NeodymiumMagnetic, Shapes.screw, 16))
             .fluidInputs(
-                Materials.Electrum.getMolten(2592),
-                Materials.Europium.getMolten(1872),
+                MaterialLibAPI.getFluidStack(Materials.Electrum, FluidShapes.fluidMolten, 2592),
+                MaterialLibAPI.getFluidStack(Materials.Europium, FluidShapes.fluidMolten, 1872),
                 GTModHandler.getIC2Coolant(2_000))
             .itemOutputs(CustomItemList.Machine_Multi_Infuser.get(1))
             .eut(200_000)
@@ -179,7 +183,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_ZPM.get(4),
                 new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 32),
                 ItemList.LargeMolecularAssembler.get(2))
-            .fluidInputs(Materials.UUMatter.getFluid(8000L))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 8000))
             .itemOutputs(ItemList.BeamCrafter.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(60 * SECONDS)

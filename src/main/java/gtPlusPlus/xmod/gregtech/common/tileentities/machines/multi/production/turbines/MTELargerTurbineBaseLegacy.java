@@ -31,8 +31,8 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -312,20 +312,20 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
         if (aTurbineAssemblies.size() < 12) {
             return false;
         }
-        ArrayList<Materials> aTurbineMats = new ArrayList<>();
+        ArrayList<Material> aTurbineMats = new ArrayList<>();
         ArrayList<Integer> aTurbineSizes = new ArrayList<>();
         for (MTEHatchTurbine aHatch : aTurbineAssemblies) {
-            aTurbineMats.add(MetaGeneratedTool.getPrimaryMaterial(aHatch.getTurbine()));
+            aTurbineMats.add(MetaGeneratedTool.getPrimaryMaterialML(aHatch.getTurbine()));
             aTurbineSizes.add(getTurbineSize(aHatch.getTurbine()));
         }
-        Materials aBaseMat = aTurbineMats.get(0);
+        Material aBaseMat = aTurbineMats.get(0);
         int aBaseSize = aTurbineSizes.get(0);
         for (int aSize : aTurbineSizes) {
             if (aBaseSize != aSize) {
                 return false;
             }
         }
-        for (Materials aMat : aTurbineMats) {
+        for (Material aMat : aTurbineMats) {
             if (aBaseMat != aMat) {
                 return false;
             }

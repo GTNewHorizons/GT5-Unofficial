@@ -40,15 +40,16 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -175,7 +176,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
             .beginStructureBlock(7, 7, 13, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
             .addCasing("100-115", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
-            .addCasing("72", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
+            .addCasing("72", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Polytetrafluoroethylene)), false)
             .addCasing("39", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
             .addCasing("20", Casings.EngineIntakeCasing.getLocalizedName(), false)
             .addCasing("12", Casings.TitaniumPipeCasing.getLocalizedName(), false)

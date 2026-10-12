@@ -52,17 +52,16 @@ import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.system.material.WerkstoffLoader;
+import com.ruling_0.materiallib.api.Material;
+
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IStoneType;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.WorldgenGTOreLayer;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.MaterialsOres;
-import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
+import gregtech.common.ores.GTOreAdapter;
 import gtneioreplugin.util.DimensionHelper;
 
 public enum OreMixes {
@@ -949,7 +948,7 @@ public enum OreMixes {
         .secondary(Materials.Barite)
         .inBetween(Materials.CertusQuartz)
         .sporadic(Materials.CertusQuartz)
-        .setLocalizedName(Materials.Quartz)),
+        .setLocalizedName(Materials.CertusQuartz)),
 
     Rutile(new OreMixBuilder().name("ore.mix.rutile")
         .heightRange(5, 20)
@@ -995,7 +994,7 @@ public enum OreMixes {
         .enableInDim(Horus, Neper)
         .primary(Materials.CertusQuartz)
         .secondary(Materials.CertusQuartz)
-        .inBetween(Materials.CertusQuartzCharged)
+        .inBetween(Materials.ChargedCertusQuartz)
         .sporadic(Materials.QuartzSand)),
 
     InfinityCatalyst(new OreMixBuilder().name("ore.mix.infinitycatalyst")
@@ -1145,10 +1144,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.AGARDITE_CD)
-        .secondary(MaterialsOres.AGARDITE_LA)
-        .inBetween(MaterialsOres.DEMICHELEITE_BR)
-        .sporadic(MaterialsOres.IRARSITE)),
+        .primary(Materials.AgarditeCd)
+        .secondary(Materials.AgarditeLa)
+        .inBetween(Materials.DemicheleiteBr)
+        .sporadic(Materials.Irarsite)),
 
     GTPP2(new OreMixBuilder().name("ore.mix.gtpp2")
         .heightRange(0, 60)
@@ -1156,10 +1155,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.AGARDITE_ND)
-        .secondary(MaterialsOres.AGARDITE_Y)
-        .inBetween(MaterialsOres.KASHINITE)
-        .sporadic(MaterialsOres.CERITE)),
+        .primary(Materials.AgarditeNd)
+        .secondary(Materials.AgarditeY)
+        .inBetween(Materials.Kashinite)
+        .sporadic(Materials.Cerite)),
 
     GTPP3(new OreMixBuilder().name("ore.mix.gtpp3")
         .heightRange(0, 60)
@@ -1167,10 +1166,10 @@ public enum OreMixes {
         .density(3)
         .size(32)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.CERITE)
-        .secondary(MaterialsOres.NICHROMITE)
-        .inBetween(MaterialsOres.XENOTIME)
-        .sporadic(MaterialsOres.HIBONITE)),
+        .primary(Materials.Cerite)
+        .secondary(Materials.Nichromite)
+        .inBetween(Materials.Xenotime)
+        .sporadic(Materials.Hibonite)),
 
     GTPP4(new OreMixBuilder().name("ore.mix.gtpp4")
         .heightRange(0, 60)
@@ -1178,10 +1177,10 @@ public enum OreMixes {
         .density(3)
         .size(32)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.GEIKIELITE)
-        .secondary(MaterialsOres.CRYOLITE)
-        .inBetween(MaterialsOres.GADOLINITE_CE)
-        .sporadic(MaterialsOres.AGARDITE_ND)),
+        .primary(Materials.Geikielite)
+        .secondary(Materials.CryoliteF)
+        .inBetween(Materials.GadoliniteCe)
+        .sporadic(Materials.AgarditeNd)),
 
     GTPP5(new OreMixBuilder().name("ore.mix.gtpp5")
         .heightRange(15, 58)
@@ -1189,10 +1188,10 @@ public enum OreMixes {
         .density(2)
         .size(48)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.HIBONITE)
-        .secondary(MaterialsOres.YTTRIALITE)
-        .inBetween(MaterialsOres.ZIRCONILITE)
-        .sporadic(MaterialsOres.CERITE)),
+        .primary(Materials.Hibonite)
+        .secondary(Materials.Yttrialite)
+        .inBetween(Materials.Zirconolite)
+        .sporadic(Materials.Cerite)),
 
     GTPP6(new OreMixBuilder().name("ore.mix.gtpp6")
         .heightRange(0, 40)
@@ -1200,10 +1199,10 @@ public enum OreMixes {
         .density(2)
         .size(48)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.XENOTIME)
-        .secondary(MaterialsOres.ZIRKELITE)
-        .inBetween(MaterialsOres.CROCROITE)
-        .sporadic(MaterialsOres.IRARSITE)),
+        .primary(Materials.Xenotime)
+        .secondary(Materials.Zirkelite)
+        .inBetween(Materials.Crocoite)
+        .sporadic(Materials.Irarsite)),
 
     GTPP7(new OreMixBuilder().name("ore.mix.gtpp7")
         .heightRange(20, 58)
@@ -1211,10 +1210,10 @@ public enum OreMixes {
         .density(2)
         .size(48)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.HONEAITE)
-        .secondary(MaterialsOres.MIESSIITE)
-        .inBetween(MaterialsOres.SAMARSKITE_Y)
-        .sporadic(MaterialsOres.SAMARSKITE_YB)),
+        .primary(Materials.Honeaite)
+        .secondary(Materials.Miessiite)
+        .inBetween(Materials.SamarskiteY)
+        .sporadic(Materials.SamarskiteYb)),
 
     GTPP8(new OreMixBuilder().name("ore.mix.gtpp8")
         .heightRange(0, 40)
@@ -1222,10 +1221,10 @@ public enum OreMixes {
         .density(2)
         .size(48)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.TITANITE)
-        .secondary(MaterialsOres.ZIMBABWEITE)
-        .inBetween(MaterialsOres.ZIRCON)
-        .sporadic(MaterialsOres.FLORENCITE)),
+        .primary(Materials.Titanite)
+        .secondary(Materials.Zimbabweite)
+        .inBetween(Materials.Zircon)
+        .sporadic(Materials.Florencite)),
 
     GTPP9(new OreMixBuilder().name("ore.mix.gtpp9")
         .heightRange(10, 30)
@@ -1233,10 +1232,10 @@ public enum OreMixes {
         .density(1)
         .size(48)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.LANTHANITE_CE)
-        .secondary(MaterialsFluorides.FLUORITE)
-        .inBetween(MaterialsOres.LAFOSSAITE)
-        .sporadic(MaterialsOres.FLORENCITE)),
+        .primary(Materials.LanthaniteCe)
+        .secondary(Materials.FluoriteF)
+        .inBetween(Materials.Lafossaite)
+        .sporadic(Materials.Florencite)),
 
     GTPP10(new OreMixBuilder().name("ore.mix.gtpp10")
         .heightRange(20, 50)
@@ -1244,10 +1243,10 @@ public enum OreMixes {
         .density(2)
         .size(32)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.GEIKIELITE)
-        .secondary(MaterialsOres.YTTROCERITE)
-        .inBetween(MaterialsOres.LANTHANITE_LA)
-        .sporadic(MaterialsOres.RADIOBARITE)),
+        .primary(Materials.Geikielite)
+        .secondary(Materials.Yttrocerite)
+        .inBetween(Materials.LanthaniteLa)
+        .sporadic(Materials.BariteRa)),
 
     GTPP11(new OreMixBuilder().name("ore.mix.gtpp11")
         .heightRange(18, 58)
@@ -1255,10 +1254,10 @@ public enum OreMixes {
         .density(1)
         .size(48)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsFluorides.FLUORITE)
-        .secondary(MaterialsOres.KASHINITE)
-        .inBetween(MaterialsOres.ZIRCON)
-        .sporadic(MaterialsOres.CRYOLITE)),
+        .primary(Materials.FluoriteF)
+        .secondary(Materials.Kashinite)
+        .inBetween(Materials.Zircon)
+        .sporadic(Materials.CryoliteF)),
 
     GTPP12(new OreMixBuilder().name("ore.mix.gtpp12")
         .heightRange(22, 58)
@@ -1266,10 +1265,10 @@ public enum OreMixes {
         .density(3)
         .size(32)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.CERITE)
-        .secondary(MaterialsOres.ALBURNITE)
-        .inBetween(MaterialsOres.MIESSIITE)
-        .sporadic(MaterialsOres.HIBONITE)),
+        .primary(Materials.Cerite)
+        .secondary(Materials.Alburnite)
+        .inBetween(Materials.Miessiite)
+        .sporadic(Materials.Hibonite)),
 
     GTPP13(new OreMixBuilder().name("ore.mix.gtpp13")
         .heightRange(5, 15)
@@ -1277,10 +1276,10 @@ public enum OreMixes {
         .density(1)
         .size(16)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.CRYOLITE)
-        .secondary(MaterialsOres.RADIOBARITE)
-        .inBetween(MaterialsOres.HONEAITE)
-        .sporadic(MaterialsOres.FLORENCITE)),
+        .primary(Materials.CryoliteF)
+        .secondary(Materials.BariteRa)
+        .inBetween(Materials.Honeaite)
+        .sporadic(Materials.Florencite)),
 
     GTPP14(new OreMixBuilder().name("ore.mix.gtpp14")
         .heightRange(10, 20)
@@ -1288,10 +1287,10 @@ public enum OreMixes {
         .density(2)
         .size(16)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.DEMICHELEITE_BR)
-        .secondary(MaterialsOres.PERROUDITE)
-        .inBetween(MaterialsOres.IRARSITE)
-        .sporadic(MaterialsOres.RADIOBARITE)),
+        .primary(Materials.DemicheleiteBr)
+        .secondary(Materials.Perroudite)
+        .inBetween(Materials.Irarsite)
+        .sporadic(Materials.BariteRa)),
 
     GTPP15(new OreMixBuilder().name("ore.mix.gtpp15")
         .heightRange(5, 25)
@@ -1299,10 +1298,10 @@ public enum OreMixes {
         .density(3)
         .size(24)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.FLUORCAPHITE)
-        .secondary(MaterialsOres.LAFOSSAITE)
-        .inBetween(MaterialsOres.GADOLINITE_CE)
-        .sporadic(MaterialsOres.GADOLINITE_Y)),
+        .primary(Materials.Fluorcaphite)
+        .secondary(Materials.Lafossaite)
+        .inBetween(Materials.GadoliniteCe)
+        .sporadic(Materials.GadoliniteY)),
 
     GTPP16(new OreMixBuilder().name("ore.mix.gtpp16")
         .heightRange(0, 25)
@@ -1310,10 +1309,10 @@ public enum OreMixes {
         .density(2)
         .size(32)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.YTTROCERITE)
-        .secondary(MaterialsOres.LEPERSONNITE)
-        .inBetween(MaterialsOres.LAUTARITE)
-        .sporadic(MaterialsFluorides.FLUORITE)),
+        .primary(Materials.Yttrocerite)
+        .secondary(Materials.Lepersonnite)
+        .inBetween(Materials.Lautarite)
+        .sporadic(Materials.FluoriteF)),
 
     GTPP17(new OreMixBuilder().name("ore.mix.gtpp17")
         .heightRange(10, 35)
@@ -1321,10 +1320,10 @@ public enum OreMixes {
         .density(1)
         .size(32)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.FLORENCITE)
-        .secondary(MaterialsOres.LAUTARITE)
-        .inBetween(MaterialsOres.SAMARSKITE_YB)
-        .sporadic(MaterialsOres.POLYCRASE)),
+        .primary(Materials.Florencite)
+        .secondary(Materials.Lautarite)
+        .inBetween(Materials.SamarskiteYb)
+        .sporadic(Materials.Polycrase)),
 
     GTPP18(new OreMixBuilder().name("ore.mix.gtpp18")
         .heightRange(15, 40)
@@ -1332,10 +1331,10 @@ public enum OreMixes {
         .density(1)
         .size(48)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsOres.GADOLINITE_CE)
-        .secondary(MaterialsOres.GADOLINITE_Y)
-        .inBetween(MaterialsOres.AGARDITE_LA)
-        .sporadic(MaterialsOres.AGARDITE_CD)),
+        .primary(Materials.GadoliniteCe)
+        .secondary(Materials.GadoliniteY)
+        .inBetween(Materials.AgarditeLa)
+        .sporadic(Materials.AgarditeCd)),
 
     GTPP19(new OreMixBuilder().name("ore.mix.gtpp19")
         .heightRange(0, 20)
@@ -1343,10 +1342,10 @@ public enum OreMixes {
         .density(1)
         .size(16)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsElements.STANDALONE.RUNITE)
-        .secondary(MaterialsElements.STANDALONE.RUNITE)
-        .inBetween(MaterialsElements.STANDALONE.RUNITE)
-        .sporadic(MaterialsElements.STANDALONE.RUNITE)),
+        .primary(Materials.Runite)
+        .secondary(Materials.Runite)
+        .inBetween(Materials.Runite)
+        .sporadic(Materials.Runite)),
 
     Thorianit(new OreMixBuilder().name("ore.mix.ross128.Thorianit")
         .heightRange(30, 60)
@@ -1354,7 +1353,7 @@ public enum OreMixes {
         .density(1)
         .size(16)
         .enableInDim(ROSS128B)
-        .primary(WerkstoffLoader.Thorianit)
+        .primary(Materials.Thorianite)
         .secondary(Materials.Uraninite)
         .inBetween(Materials.Lepidolite)
         .sporadic(Materials.Spodumene)),
@@ -1376,10 +1375,10 @@ public enum OreMixes {
         .density(1)
         .size(16)
         .enableInDim(ROSS128B)
-        .primary(WerkstoffLoader.Bismuthinit)
+        .primary(Materials.Bismuthinite)
         .secondary(Materials.Stibnite)
         .inBetween(Materials.Bismuth)
-        .sporadic(WerkstoffLoader.Bismutite)),
+        .sporadic(Materials.Bismutite)),
 
     TurmalinAlkali(new OreMixBuilder().name("ore.mix.ross128.TurmalinAlkali")
         .heightRange(5, 80)
@@ -1387,10 +1386,10 @@ public enum OreMixes {
         .density(4)
         .size(48)
         .enableInDim(ROSS128B)
-        .primary(WerkstoffLoader.Olenit)
-        .secondary(WerkstoffLoader.FluorBuergerit)
-        .inBetween(WerkstoffLoader.ChromoAluminoPovondrait)
-        .sporadic(WerkstoffLoader.VanadioOxyDravit)),
+        .primary(Materials.Olenite)
+        .secondary(Materials.FluorBuergerite)
+        .inBetween(Materials.ChromoAluminoPovondraite)
+        .sporadic(Materials.VanadioOxyDravite)),
 
     Roquesit(new OreMixBuilder().name("ore.mix.ross128.Roquesit")
         .heightRange(30, 50)
@@ -1398,10 +1397,10 @@ public enum OreMixes {
         .density(1)
         .size(12)
         .enableInDim(ROSS128B)
-        .primary(WerkstoffLoader.Arsenopyrite)
-        .secondary(WerkstoffLoader.Ferberite)
-        .inBetween(WerkstoffLoader.Loellingit)
-        .sporadic(WerkstoffLoader.Roquesit)),
+        .primary(Materials.Arsenopyrite)
+        .secondary(Materials.Ferberite)
+        .inBetween(Materials.Loellingite)
+        .sporadic(Materials.Roquesite)),
 
     RossTungstate(new OreMixBuilder().name("ore.mix.ross128.Tungstate")
         .heightRange(5, 40)
@@ -1409,9 +1408,9 @@ public enum OreMixes {
         .density(4)
         .size(14)
         .enableInDim(ROSS128B)
-        .primary(WerkstoffLoader.Ferberite)
-        .secondary(WerkstoffLoader.Huebnerit)
-        .inBetween(WerkstoffLoader.Loellingit)
+        .primary(Materials.Ferberite)
+        .secondary(Materials.Huebnerite)
+        .inBetween(Materials.Loellingite)
         .sporadic(Materials.Scheelite)),
 
     CopperSulfits(new OreMixBuilder().name("ore.mix.ross128.CopperSulfits")
@@ -1420,9 +1419,9 @@ public enum OreMixes {
         .density(3)
         .size(24)
         .enableInDim(ROSS128B)
-        .primary(WerkstoffLoader.Djurleit)
-        .secondary(WerkstoffLoader.Bornite)
-        .inBetween(WerkstoffLoader.Wittichenit)
+        .primary(Materials.Djurleite)
+        .secondary(Materials.Bornite)
+        .inBetween(Materials.Wittichenite)
         .sporadic(Materials.Tetrahedrite)),
 
     Forsterit(new OreMixBuilder().name("ore.mix.ross128.Forsterit")
@@ -1431,10 +1430,10 @@ public enum OreMixes {
         .density(2)
         .size(32)
         .enableInDim(ROSS128B)
-        .primary(WerkstoffLoader.Forsterit)
-        .secondary(WerkstoffLoader.Fayalit)
-        .inBetween(WerkstoffLoader.DescloiziteCUVO4)
-        .sporadic(WerkstoffLoader.DescloiziteZNVO4)),
+        .primary(Materials.Forsterite)
+        .secondary(Materials.Fayalite)
+        .inBetween(Materials.OrangeDescloizite)
+        .sporadic(Materials.RedDescloizite)),
 
     Hedenbergit(new OreMixBuilder().name("ore.mix.ross128.Hedenbergit")
         .heightRange(20, 90)
@@ -1442,10 +1441,10 @@ public enum OreMixes {
         .density(2)
         .size(32)
         .enableInDim(ROSS128B)
-        .primary(WerkstoffLoader.Hedenbergit)
-        .secondary(WerkstoffLoader.Fayalit)
-        .inBetween(WerkstoffLoader.DescloiziteCUVO4)
-        .sporadic(WerkstoffLoader.DescloiziteZNVO4)),
+        .primary(Materials.Hedenbergite)
+        .secondary(Materials.Fayalite)
+        .inBetween(Materials.OrangeDescloizite)
+        .sporadic(Materials.RedDescloizite)),
 
     RedZircon(new OreMixBuilder().name("ore.mix.ross128.RedZircon")
         .heightRange(10, 80)
@@ -1453,10 +1452,10 @@ public enum OreMixes {
         .density(3)
         .size(24)
         .enableInDim(ROSS128B)
-        .primary(WerkstoffLoader.Fayalit)
-        .secondary(WerkstoffLoader.FuchsitAL)
-        .inBetween(WerkstoffLoader.RedZircon)
-        .sporadic(WerkstoffLoader.FuchsitCR)),
+        .primary(Materials.Fayalite)
+        .secondary(Materials.GreenFuchsite)
+        .inBetween(Materials.RedZircon)
+        .sporadic(Materials.RedFuchsite)),
 
     Tiberium(new OreMixBuilder().name("ore.mix.ross128ba.tib")
         .heightRange(30, 60)
@@ -1464,8 +1463,8 @@ public enum OreMixes {
         .density(1)
         .size(16)
         .enableInDim(ROSS128BA)
-        .primary(WerkstoffLoader.Tiberium)
-        .secondary(WerkstoffLoader.Tiberium)
+        .primary(Materials.Tiberium)
+        .secondary(Materials.Tiberium)
         .inBetween(Materials.NaquadahEnriched)
         .sporadic(Materials.NaquadahEnriched)),
 
@@ -1475,9 +1474,9 @@ public enum OreMixes {
         .density(4)
         .size(14)
         .enableInDim(ROSS128BA)
-        .primary(WerkstoffLoader.Ferberite)
-        .secondary(WerkstoffLoader.Huebnerit)
-        .inBetween(WerkstoffLoader.Loellingit)
+        .primary(Materials.Ferberite)
+        .secondary(Materials.Huebnerite)
+        .inBetween(Materials.Loellingite)
         .sporadic(Materials.Scheelite)),
 
     Bart(new OreMixBuilder().name("ore.mix.ross128ba.bart")
@@ -1486,10 +1485,10 @@ public enum OreMixes {
         .density(1)
         .size(1)
         .enableInDim(ROSS128BA)
-        .primary(WerkstoffLoader.BArTiMaEuSNeK)
-        .secondary(WerkstoffLoader.BArTiMaEuSNeK)
-        .inBetween(WerkstoffLoader.BArTiMaEuSNeK)
-        .sporadic(WerkstoffLoader.BArTiMaEuSNeK)),
+        .primary(Materials.BArTiMaEuSNeK)
+        .secondary(Materials.BArTiMaEuSNeK)
+        .inBetween(Materials.BArTiMaEuSNeK)
+        .sporadic(Materials.BArTiMaEuSNeK)),
 
     Ross128baTurmalinAlkali(new OreMixBuilder().name("ore.mix.ross128ba.TurmalinAlkali")
         .heightRange(5, 80)
@@ -1497,10 +1496,10 @@ public enum OreMixes {
         .density(4)
         .size(48)
         .enableInDim(ROSS128BA)
-        .primary(WerkstoffLoader.Olenit)
-        .secondary(WerkstoffLoader.FluorBuergerit)
-        .inBetween(WerkstoffLoader.ChromoAluminoPovondrait)
-        .sporadic(WerkstoffLoader.VanadioOxyDravit)),
+        .primary(Materials.Olenite)
+        .secondary(Materials.FluorBuergerite)
+        .inBetween(Materials.ChromoAluminoPovondraite)
+        .sporadic(Materials.VanadioOxyDravite)),
 
     Ross128baAmethyst(new OreMixBuilder().name("ore.mix.ross128ba.Amethyst")
         .heightRange(5, 80)
@@ -1510,8 +1509,8 @@ public enum OreMixes {
         .enableInDim(ROSS128BA)
         .primary(Materials.Amethyst)
         .secondary(Materials.Olivine)
-        .inBetween(WerkstoffLoader.Prasiolite)
-        .sporadic(WerkstoffLoader.Hedenbergit)),
+        .inBetween(Materials.Prasiolite)
+        .sporadic(Materials.Hedenbergite)),
 
     Ross128baCopperSulfits(new OreMixBuilder().name("ore.mix.ross128ba.CopperSulfits")
         .heightRange(40, 70)
@@ -1519,9 +1518,9 @@ public enum OreMixes {
         .density(3)
         .size(24)
         .enableInDim(ROSS128BA)
-        .primary(WerkstoffLoader.Djurleit)
-        .secondary(WerkstoffLoader.Bornite)
-        .inBetween(WerkstoffLoader.Wittichenit)
+        .primary(Materials.Djurleite)
+        .secondary(Materials.Bornite)
+        .inBetween(Materials.Wittichenite)
         .sporadic(Materials.Tetrahedrite)),
 
     Ross128baRedZircon(new OreMixBuilder().name("ore.mix.ross128ba.RedZircon")
@@ -1530,10 +1529,10 @@ public enum OreMixes {
         .density(3)
         .size(24)
         .enableInDim(ROSS128BA)
-        .primary(WerkstoffLoader.Fayalit)
-        .secondary(WerkstoffLoader.FuchsitAL)
-        .inBetween(WerkstoffLoader.RedZircon)
-        .sporadic(WerkstoffLoader.FuchsitCR)),
+        .primary(Materials.Fayalite)
+        .secondary(Materials.GreenFuchsite)
+        .inBetween(Materials.RedZircon)
+        .sporadic(Materials.RedFuchsite)),
 
     Fluorspar(new OreMixBuilder().name("ore.mix.ross128ba.Fluorspar")
         .heightRange(10, 80)
@@ -1543,7 +1542,7 @@ public enum OreMixes {
         .enableInDim(ROSS128BA)
         .primary(Materials.Galena)
         .secondary(Materials.Sphalerite)
-        .inBetween(WerkstoffLoader.Fluorspar)
+        .inBetween(Materials.Fluorspar)
         .sporadic(Materials.Barite));
     // spotless : on
 
@@ -1567,16 +1566,16 @@ public enum OreMixes {
      * @param stackSize The stacksize of the variants
      * @return The array containing all the stone variants of the given ore, with the given stack size
      */
-    public static ItemStack[] getOreVariants(IOreMaterial material, int stackSize) {
+    public static ItemStack[] getOreVariants(Material material, int stackSize) {
         List<ItemStack> variants = new ArrayList<>();
         Set<StoneType> stoneTypes = getStoneTypesFromMixes(material);
         for (StoneType stoneType : stoneTypes) {
             OrePrefixes prefix = stoneType.getPrefix();
-            ItemStack ore = GTOreDictUnificator.get(prefix, material, 1L);
+            ItemStack ore = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, false);
             if (!GTUtility.isStackValid(ore)) {
                 continue;
             }
-            for (ItemStack variant : GTOreDictUnificator.getNonUnifiedStacks(ore)) {
+            for (ItemStack variant : OreDictUtils.getInterchangeableStacks(ore)) {
                 ItemStack sizedVariant = GTUtility.copyAmount(stackSize, variant);
                 if (!GTUtility.isStackValid(sizedVariant) || containsStack(variants, sizedVariant)) {
                     continue;
@@ -1595,18 +1594,18 @@ public enum OreMixes {
      * @param material The material of the ore
      * @return The array containing all the stone variants OrePrefixes of the given ore
      */
-    public static OrePrefixes[] getOrePrefixesVariants(IOreMaterial material) {
+    public static OrePrefixes[] getOrePrefixesVariants(Material material) {
         List<ItemStack> variants = new ArrayList<>();
         List<OrePrefixes> prefixes = new ArrayList<>();
         int stackSize = 1;
         Set<StoneType> stoneTypes = getStoneTypesFromMixes(material);
         for (StoneType stoneType : stoneTypes) {
             OrePrefixes prefix = stoneType.getPrefix();
-            ItemStack ore = GTOreDictUnificator.get(prefix, material, 1L);
+            ItemStack ore = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, false);
             if (!GTUtility.isStackValid(ore)) {
                 continue;
             }
-            for (ItemStack variant : GTOreDictUnificator.getNonUnifiedStacks(ore)) {
+            for (ItemStack variant : OreDictUtils.getInterchangeableStacks(ore)) {
                 ItemStack sizedVariant = GTUtility.copyAmount(stackSize, variant);
                 if (!GTUtility.isStackValid(sizedVariant) || containsStack(variants, sizedVariant)) {
                     continue;
@@ -1628,7 +1627,7 @@ public enum OreMixes {
         return false;
     }
 
-    public static List<OreMixes> getOreMixes(IOreMaterial material) {
+    public static List<OreMixes> getOreMixes(Material material) {
         List<OreMixes> mixes = new ArrayList<>();
         for (OreMixes mix : OreMixes.VALUES) {
             if (mix.containMaterial(material)) {
@@ -1639,7 +1638,7 @@ public enum OreMixes {
         return mixes;
     }
 
-    public static Set<StoneType> getStoneTypesFromMixes(IOreMaterial material) {
+    public static Set<StoneType> getStoneTypesFromMixes(Material material) {
         List<OreMixes> mixes = getOreMixes(material);
         Set<StoneType> stoneTypes = new HashSet<>();
         for (OreMixes mix : mixes) {
@@ -1695,7 +1694,8 @@ public enum OreMixes {
         }
     }
 
-    public boolean containMaterial(IOreMaterial material) {
+    public boolean containMaterial(Material material) {
+        if (material == null) return false;
         return oreMixBuilder.primary == material || oreMixBuilder.secondary == material
             || oreMixBuilder.sporadic == material
             || oreMixBuilder.between == material;

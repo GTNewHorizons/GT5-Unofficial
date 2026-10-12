@@ -1,39 +1,43 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.GTMaterialTextures;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.blocks.FrameShapeBlock;
 
+/// The frame-box tile entity behind the [FrameShapeBlock] shape. One instance serves every material, read from the
+/// host block's metadata.
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity {
 
     public static final String LOCALIZED_DESC_FORMAT = "gt.blockmachines.gt_frame.desc.format";
-    public final Materials mMaterial;
 
-    public MTEFrame(int aID, String aName, Materials aMaterial) {
-        super(aID, aName, 0);
-        mMaterial = aMaterial;
-        // Hide TileEntity frame in NEI, since we have the block version now that should always be used
-        codechicken.nei.api.API.hideItem(this.getStackForm(1));
+    public MTEFrame(int aID, String aName, FrameShapeBlock shape) {
+        super(aID, aName, 0, false, shape, 0);
     }
 
-    public MTEFrame(String aName, Materials aMaterial) {
-        super(aName, 0);
-        mMaterial = aMaterial;
+    public MTEFrame(String aName, FrameShapeBlock shape) {
+        super(aName, 0, shape, 0);
     }
 
     @Override
@@ -43,7 +47,7 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
 
     @Override
     public byte getTileEntityBaseType() {
-        final int level = (mMaterial == null) ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3);
+        final int level = GTUtility.clamp(MaterialUtils.toolQuality(shapeMaterial()), 0, 3);
 
         HarvestTool tool = switch (level) {
             case 0 -> HarvestTool.WrenchPipeLevel0;
@@ -58,15 +62,18 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEFrame(mName, mMaterial);
+        return new MTEFrame(mName, (FrameShapeBlock) getShapeHost());
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection, int connections,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        return new ITexture[] { TextureFactory.of(
-            mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()],
-            Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
+        final Material material = getMaterial();
+        final short[] materialRgba = MaterialUtils.rgba(material);
+        if (material == null || materialRgba == null) return Textures.BlockIcons.ERROR_RENDERING;
+        final IIconContainer frame = GTMaterialIcons.block("frameGt", material);
+        final short[] rgba = frame.hasOverrideIcon() ? UNCOLORED_RGBA : materialRgba;
+        return new ITexture[] { GTMaterialTextures.of(frame, Dyes.getModulation(colorIndex, rgba), false, false) };
     }
 
     @Override
@@ -137,12 +144,19 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
     }
 
     @Override
-    public Materials getMaterial() {
-        return mMaterial;
+    public Material getMaterial() {
+        return shapeMaterial();
+    }
+
+    @Override
+    public String getLocalizedName() {
+        Material material = shapeMaterial();
+        if (material != null) return FrameShapeBlock.displayName(material);
+        return ILocalizedMetaPipeEntity.super.getLocalizedName();
     }
 
     @Override
     public String getPrefixKey() {
-        return OrePrefixes.getOreprefixKey(BlockFrameBox.getLocalizedName(getMaterial()));
+        return OrePrefixes.frameGt.getOreprefixKey();
     }
 }

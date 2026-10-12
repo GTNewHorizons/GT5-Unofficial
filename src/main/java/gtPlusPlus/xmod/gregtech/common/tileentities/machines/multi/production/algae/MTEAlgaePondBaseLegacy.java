@@ -34,7 +34,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -271,7 +270,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
 
                 // trying to fill with water
                 for (FluidStack stored : this.getStoredFluids()) {
-                    if (!stored.isFluidEqual(Materials.Water.getFluid(1))) continue;
+                    if (!stored.isFluidEqual(GTUtility.getWater(1))) continue;
 
                     if (stored.amount < 1000) continue;
 

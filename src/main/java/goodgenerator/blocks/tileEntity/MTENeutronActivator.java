@@ -31,6 +31,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
@@ -38,10 +39,11 @@ import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -50,6 +52,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
@@ -209,12 +212,12 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             .addCasing("32", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("7-27", StatCollector.translateToLocal("gt.blockcasings4.1.name"), false)
             .addCasing("18", StatCollector.translateToLocal("gt.blockcasings2.6.name"), false)
-            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)), false)
             .addCasing("4", StatCollector.translateToLocal("speedingPipe.name"), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
             .addCasing("8", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
-            .addCasing("4", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("4", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)), false)
             .addCasing("1", StatCollector.translateToLocal("speedingPipe.name"), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
@@ -398,7 +401,8 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     private void tryUseModerator() {
         startRecipeProcessing();
         for (ItemStack input : getStoredInputs()) {
-            if (input.isItemEqual(Materials.Graphite.getDust(1)) || input.isItemEqual(Materials.Beryllium.getDust(1))) {
+            if (input.isItemEqual(MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 1))
+                || input.isItemEqual(MaterialLibAPI.getStack(Materials.Beryllium, Shapes.dust, 1))) {
                 int consume = Math.min(this.eV / 10000000, input.stackSize);
                 depleteInput(GTUtility.copyAmount(consume, input));
                 this.eV -= 10000000 * consume;

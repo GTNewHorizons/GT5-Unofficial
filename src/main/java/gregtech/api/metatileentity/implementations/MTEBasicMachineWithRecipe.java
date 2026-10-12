@@ -334,7 +334,6 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                     .voltage(V[this.mTier])
                     .cachedRecipe(this.mLastRecipe)
                     .dontCheckStackSizes(true)
-                    .notUnificated(true)
                     .find() != null;
             }
             case 2 -> {
@@ -353,7 +352,6 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                                 .voltage(V[this.mTier])
                                 .cachedRecipe(this.mLastRecipe)
                                 .dontCheckStackSizes(true)
-                                .notUnificated(true)
                                 .find() != null)));
             }
             default -> {

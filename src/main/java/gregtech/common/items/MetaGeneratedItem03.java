@@ -24,6 +24,7 @@ import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
+import static gregtech.common.items.IDMetaItem03.AdvancedAlloyPlate;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
 import static gregtech.common.items.IDMetaItem03.Armor_Chip_T1;
@@ -33,6 +34,8 @@ import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Blossoming_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Calabi_Yau_Manifold;
+import static gregtech.common.items.IDMetaItem03.CarbonAlloyPlate;
+import static gregtech.common.items.IDMetaItem03.CarbonMesh;
 import static gregtech.common.items.IDMetaItem03.Circuit_AdvancedIntegrated;
 import static gregtech.common.items.IDMetaItem03.Circuit_BasicElectronic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
@@ -226,6 +229,7 @@ import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_TERRIT
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_UNLIGHT;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER;
 import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nanoparticles;
+import static gregtech.common.items.IDMetaItem03.IridiumAlloyPlate;
 import static gregtech.common.items.IDMetaItem03.Isolated_BDM_Strands;
 import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
@@ -263,6 +267,7 @@ import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus4;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide1;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide2;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide3;
+import static gregtech.common.items.IDMetaItem03.MixedMetalIngot;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
@@ -285,6 +290,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
+import static gregtech.common.items.IDMetaItem03.RawCarbonFibre;
 import static gregtech.common.items.IDMetaItem03.Raw_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Realized_Quantum_Circuit_Rack;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
@@ -309,28 +315,24 @@ import static gregtech.common.items.IDMetaItem03.Unbound_WDM_Strands;
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.CircuitComponents;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
-import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.items.MetaGeneratedItemX32;
-import gregtech.api.objects.ItemData;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.powergoggles.ItemPowerGoggles;
@@ -339,25 +341,13 @@ import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
 import gregtech.common.render.items.UniversiumMetaItemRenderer;
-import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(
-    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
-    modid = Mods.ModIDs.RAILCRAFT)
-public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
+public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
 
     public static MetaGeneratedItem03 INSTANCE;
 
     public MetaGeneratedItem03() {
-        super(
-            "metaitem.03",
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.nanite,
-            OrePrefixes.rawOre,
-            OrePrefixes.plateSuperdense);
+        super("metaitem.03");
         INSTANCE = this;
         Object[] o = GTValues.emptyObjectArray;
         final String RAW = "gt.item.circuit.raw_circuit.tooltip";
@@ -397,7 +387,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Parts_ResistorSMD.ID,
                 "gt.item.circuit_part.resistor_smd.name",
                 "gt.item.circuit_part.resistor_smd.tooltip",
-                OrePrefixes.componentCircuit.get(Materials.Resistor),
+                CircuitComponents.RESISTOR.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_Glass_Tube.set(
             addItemWithLocalizationKeys(Circuit_Parts_Glass_Tube.ID, "gt.item.circuit_part.glass_tube.name", "", o));
@@ -412,27 +402,27 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Parts_DiodeSMD.ID,
                 "gt.item.circuit_part.diode_smd.name",
                 "gt.item.circuit_part.diode_smd.tooltip",
-                OrePrefixes.componentCircuit.get(Materials.Diode),
+                CircuitComponents.DIODE.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_TransistorSMD.set(
             addItemWithLocalizationKeys(
                 Circuit_Parts_TransistorSMD.ID,
                 "gt.item.circuit_part.transistor_smd.name",
                 "gt.item.circuit_part.transistor_smd.tooltip",
-                OrePrefixes.componentCircuit.get(Materials.Transistor),
+                CircuitComponents.TRANSISTOR.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_CapacitorSMD.set(
             addItemWithLocalizationKeys(
                 Circuit_Parts_CapacitorSMD.ID,
                 "gt.item.circuit_part.capacitor_smd.name",
                 "gt.item.circuit_part.capacitor_smd.tooltip",
-                OrePrefixes.componentCircuit.get(Materials.Capacitor),
+                CircuitComponents.CAPACITOR.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_GlassFiber.set(
             addItemWithLocalizationKeys(
                 Circuit_Parts_GlassFiber.ID,
                 "gt.item.circuit_part.glass_fiber.name",
-                Materials.BorosilicateGlass.getChemicalFormula(),
+                MaterialUtils.chemicalFormula(Materials.BorosilicateGlass),
                 o));
         ItemList.Circuit_Parts_PetriDish.set(
             addItemWithLocalizationKeys(
@@ -502,7 +492,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Parts_InductorSMD.ID,
                 "gt.item.circuit_part.inductor_smd.name",
                 "gt.item.circuit_part.inductor_smd.tooltip",
-                OrePrefixes.componentCircuit.get(Materials.Inductor),
+                CircuitComponents.INDUCTOR.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Parts_InductorASMD.set(
             addItemWithLocalizationKeys(
@@ -954,7 +944,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 NandChip.ID,
                 "gt.item.nand_chip.name",
                 "gt.item.nand_chip.tooltip",
-                OrePrefixes.circuit.get(Materials.ULV),
+                Circuits.ULV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         // Vacuum Tube Item01
@@ -970,7 +960,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Microprocessor.ID,
                 "gt.item.circuit.microprocessor.name",
                 "gt.item.circuit.microprocessor.tooltip",
-                OrePrefixes.circuit.get(Materials.LV),
+                Circuits.LV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Processor.set(
@@ -978,7 +968,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Processor.ID,
                 "gt.item.circuit.integrated_processor.name",
                 "gt.item.circuit.integrated_processor.tooltip",
-                OrePrefixes.circuit.get(Materials.MV),
+                Circuits.MV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Integrated_Good.set(
@@ -986,7 +976,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Integrated_Good.ID,
                 "gt.item.circuit.good_integrated.name",
                 "gt.item.circuit.good_integrated.tooltip",
-                OrePrefixes.circuit.get(Materials.MV),
+                Circuits.MV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Nanoprocessor.set(
@@ -994,7 +984,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Nanoprocessor.ID,
                 "gt.item.circuit.nano_processor.name",
                 "gt.item.circuit.nano_processor.tooltip",
-                OrePrefixes.circuit.get(Materials.HV),
+                Circuits.HV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Nanocomputer.set(
@@ -1002,7 +992,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Nanocomputer.ID,
                 "gt.item.circuit.nano_assembly.name",
                 "gt.item.circuit.nano_assembly.tooltip",
-                OrePrefixes.circuit.get(Materials.EV),
+                Circuits.EV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Elitenanocomputer.set(
@@ -1010,7 +1000,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Elitenanocomputer.ID,
                 "gt.item.circuit.nano_supercomputer.name",
                 "gt.item.circuit.nano_supercomputer.tooltip",
-                OrePrefixes.circuit.get(Materials.IV),
+                Circuits.IV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         // Quantum circuits
@@ -1019,7 +1009,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Quantumprocessor.ID,
                 "gt.item.circuit.quantum_processor.name",
                 "gt.item.circuit.quantum_processor.tooltip",
-                OrePrefixes.circuit.get(Materials.EV),
+                Circuits.EV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Quantumcomputer.set(
@@ -1027,7 +1017,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Quantumcomputer.ID,
                 "gt.item.circuit.quantum_assembly.name",
                 "gt.item.circuit.quantum_assembly.tooltip",
-                OrePrefixes.circuit.get(Materials.IV),
+                Circuits.IV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Masterquantumcomputer.set(
@@ -1035,7 +1025,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Masterquantumcomputer.ID,
                 "gt.item.circuit.quantum_supercomputer.name",
                 "gt.item.circuit.quantum_supercomputer.tooltip",
-                OrePrefixes.circuit.get(Materials.LuV),
+                Circuits.LuV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Quantummainframe.set(
@@ -1043,7 +1033,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Quantummainframe.ID,
                 "gt.item.circuit.quantum_mainframe.name",
                 "gt.item.circuit.quantum_mainframe.tooltip",
-                OrePrefixes.circuit.get(Materials.ZPM),
+                Circuits.ZPM.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         // Crystal circuits
@@ -1052,7 +1042,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Crystalprocessor.ID,
                 "gt.item.circuit.crystal_processor.name",
                 "gt.item.circuit.crystal_processor.tooltip",
-                OrePrefixes.circuit.get(Materials.IV),
+                Circuits.IV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Crystalcomputer.set(
@@ -1060,7 +1050,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Crystalcomputer.ID,
                 "gt.item.circuit.crystal_assembly.name",
                 "gt.item.circuit.crystal_assembly.tooltip",
-                OrePrefixes.circuit.get(Materials.LuV),
+                Circuits.LuV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Ultimatecrystalcomputer.set(
@@ -1068,7 +1058,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Ultimatecrystalcomputer.ID,
                 "gt.item.circuit.crystal_supercomputer.name",
                 "gt.item.circuit.crystal_supercomputer.tooltip",
-                OrePrefixes.circuit.get(Materials.ZPM),
+                Circuits.ZPM.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Crystalmainframe.set(
@@ -1076,7 +1066,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Crystalmainframe.ID,
                 "gt.item.circuit.crystal_mainframe.name",
                 "gt.item.circuit.crystal_mainframe.tooltip",
-                OrePrefixes.circuit.get(Materials.UV),
+                Circuits.UV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         // Wetware circuits
@@ -1085,7 +1075,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Neuroprocessor.ID,
                 "gt.item.circuit.wetware_processor.name",
                 "gt.item.circuit.wetware_processor.tooltip",
-                OrePrefixes.circuit.get(Materials.LuV),
+                Circuits.LuV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wetwarecomputer.set(
@@ -1093,7 +1083,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Wetwarecomputer.ID,
                 "gt.item.circuit.wetware_assembly.name",
                 "gt.item.circuit.wetware_assembly.tooltip",
-                OrePrefixes.circuit.get(Materials.ZPM),
+                Circuits.ZPM.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wetwaresupercomputer.set(
@@ -1101,7 +1091,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Wetwaresupercomputer.ID,
                 "gt.item.circuit.wetware_supercomputer.name",
                 "gt.item.circuit.wetware_supercomputer.tooltip",
-                OrePrefixes.circuit.get(Materials.UV),
+                Circuits.UV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wetwaremainframe.set(
@@ -1109,7 +1099,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Wetwaremainframe.ID,
                 "gt.item.circuit.wetware_mainframe.name",
                 "gt.item.circuit.wetware_mainframe.tooltip",
-                OrePrefixes.circuit.get(Materials.UHV),
+                Circuits.UHV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         // Bioware circuits
@@ -1118,7 +1108,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Bioprocessor.ID,
                 "gt.item.circuit.bioware_processor.name",
                 "gt.item.circuit.bioware_processor.tooltip",
-                OrePrefixes.circuit.get(Materials.ZPM),
+                Circuits.ZPM.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Biowarecomputer.set(
@@ -1126,7 +1116,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Biowarecomputer.ID,
                 "gt.item.circuit.bioware_assembly.name",
                 "gt.item.circuit.bioware_assembly.tooltip",
-                OrePrefixes.circuit.get(Materials.UV),
+                Circuits.UV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Biowaresupercomputer.set(
@@ -1134,7 +1124,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Biowaresupercomputer.ID,
                 "gt.item.circuit.bioware_supercomputer.name",
                 "gt.item.circuit.bioware_supercomputer.tooltip",
-                OrePrefixes.circuit.get(Materials.UHV),
+                Circuits.UHV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Biomainframe.set(
@@ -1142,7 +1132,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Biomainframe.ID,
                 "gt.item.circuit.bioware_mainframe.name",
                 "gt.item.circuit.bioware_mainframe.tooltip",
-                OrePrefixes.circuit.get(Materials.UEV),
+                Circuits.UEV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         // Circuit Boards
@@ -1227,28 +1217,28 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_OpticalProcessor.ID,
                 "gt.item.circuit.optical_processor.name",
                 "gt.item.circuit.optical_processor.tooltip",
-                OrePrefixes.circuit.get(Materials.UV),
+                Circuits.UV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_OpticalAssembly.set(
             addItemWithLocalizationKeys(
                 Circuit_OpticalAssembly.ID,
                 "gt.item.circuit.optical_assembly.name",
                 "gt.item.circuit.optical_assembly.tooltip",
-                OrePrefixes.circuit.get(Materials.UHV),
+                Circuits.UHV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_OpticalComputer.set(
             addItemWithLocalizationKeys(
                 Circuit_OpticalComputer.ID,
                 "gt.item.circuit.optical_computer.name",
                 "gt.item.circuit.optical_computer.tooltip",
-                OrePrefixes.circuit.get(Materials.UEV),
+                Circuits.UEV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_OpticalMainframe.set(
             addItemWithLocalizationKeys(
                 Circuit_OpticalMainframe.ID,
                 "gt.item.circuit.optical_mainframe.name",
                 "gt.item.circuit.optical_mainframe.tooltip",
-                OrePrefixes.circuit.get(Materials.UIV),
+                Circuits.UIV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         // Exotic circuits
@@ -1257,28 +1247,28 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_ExoticProcessor.ID,
                 "gt.item.circuit.exotic_processor.name",
                 "gt.item.circuit.exotic_processor.tooltip",
-                OrePrefixes.circuit.get(Materials.UHV),
+                Circuits.UHV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_ExoticAssembly.set(
             addItemWithLocalizationKeys(
                 Circuit_ExoticAssembly.ID,
                 "gt.item.circuit.exotic_assembly.name",
                 "gt.item.circuit.exotic_assembly.tooltip",
-                OrePrefixes.circuit.get(Materials.UEV),
+                Circuits.UEV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_ExoticComputer.set(
             addItemWithLocalizationKeys(
                 Circuit_ExoticComputer.ID,
                 "gt.item.circuit.exotic_computer.name",
                 "gt.item.circuit.exotic_computer.tooltip",
-                OrePrefixes.circuit.get(Materials.UIV),
+                Circuits.UIV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_ExoticMainframe.set(
             addItemWithLocalizationKeys(
                 Circuit_ExoticMainframe.ID,
                 "gt.item.circuit.exotic_mainframe.name",
                 "gt.item.circuit.exotic_mainframe.tooltip",
-                OrePrefixes.circuit.get(Materials.UMV),
+                Circuits.UMV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         // Cosmic circuits
@@ -1287,28 +1277,28 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_CosmicProcessor.ID,
                 "gt.item.circuit.cosmic_processor.name",
                 "gt.item.circuit.cosmic_processor.tooltip",
-                OrePrefixes.circuit.get(Materials.UEV),
+                Circuits.UEV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_CosmicAssembly.set(
             addItemWithLocalizationKeys(
                 Circuit_CosmicAssembly.ID,
                 "gt.item.circuit.cosmic_assembly.name",
                 "gt.item.circuit.cosmic_assembly.tooltip",
-                OrePrefixes.circuit.get(Materials.UIV),
+                Circuits.UIV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_CosmicComputer.set(
             addItemWithLocalizationKeys(
                 Circuit_CosmicComputer.ID,
                 "gt.item.circuit.cosmic_computer.name",
                 "gt.item.circuit.cosmic_computer.tooltip",
-                OrePrefixes.circuit.get(Materials.UMV),
+                Circuits.UMV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_CosmicMainframe.set(
             addItemWithLocalizationKeys(
                 Circuit_CosmicMainframe.ID,
                 "gt.item.circuit.cosmic_mainframe.name",
                 "gt.item.circuit.cosmic_mainframe.tooltip",
-                OrePrefixes.circuit.get(Materials.UXV),
+                Circuits.UXV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         // Transcendent circuits
@@ -1317,28 +1307,28 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_TranscendentProcessor.ID,
                 "gt.item.circuit.transcendent_processor.name",
                 "gt.item.circuit.transcendent_processor.tooltip",
-                OrePrefixes.circuit.get(Materials.UIV),
+                Circuits.UIV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_TranscendentAssembly.set(
             addItemWithLocalizationKeys(
                 Circuit_TranscendentAssembly.ID,
                 "gt.item.circuit.transcendent_assembly.name",
                 "gt.item.circuit.transcendent_assembly.tooltip",
-                OrePrefixes.circuit.get(Materials.UMV),
+                Circuits.UMV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_TranscendentComputer.set(
             addItemWithLocalizationKeys(
                 Circuit_TranscendentComputer.ID,
                 "gt.item.circuit.transcendent_computer.name",
                 "gt.item.circuit.transcendent_computer.tooltip",
-                OrePrefixes.circuit.get(Materials.UXV),
+                Circuits.UXV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_TranscendentMainframe.set(
             addItemWithLocalizationKeys(
                 Circuit_TranscendentMainframe.ID,
                 "gt.item.circuit.transcendent_mainframe.name",
                 "gt.item.circuit.transcendent_mainframe.tooltip",
-                OrePrefixes.circuit.get(Materials.MAX),
+                Circuits.MAX.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Tube_Wires.set(
@@ -1885,14 +1875,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_BasicElectronic.ID,
                 "gt.item.circuit.basic_electronic.name",
                 "gt.item.circuit.basic_electronic.tooltip",
-                OrePrefixes.circuit.get(Materials.LV),
+                Circuits.LV.getIngredient(),
                 SubTag.NO_UNIFICATION));
         ItemList.Circuit_Integrated_Advanced.set(
             addItemWithLocalizationKeys(
                 Circuit_AdvancedIntegrated.ID,
                 "gt.item.circuit.advanced_integrated.name",
                 "gt.item.circuit.advanced_integrated.tooltip",
-                OrePrefixes.circuit.get(Materials.HV),
+                Circuits.HV.getIngredient(),
                 SubTag.NO_UNIFICATION));
 
         ItemList.Circuit_Wafer_FPIC.set(
@@ -2021,6 +2011,36 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Realized_Quantum_Circuit_Rack.ID,
                 "gt.item.realized_quantum_circuit_rack.name",
                 "gt.item.realized_quantum_circuit_rack.tooltip"));
+
+        ItemList.IridiumAlloyPlate.set(
+            addItemWithLocalizationKeys(
+                IridiumAlloyPlate.ID,
+                "gt.item.iridium_alloy_plate.name",
+                "",
+                "plateAlloyIridium"));
+        setBaseIconName(IridiumAlloyPlate.ID, "ic2:itemPartIridium");
+        ItemList.AdvancedAlloyPlate.set(
+            addItemWithLocalizationKeys(
+                AdvancedAlloyPlate.ID,
+                "gt.item.advanced_alloy_plate.name",
+                "",
+                "plateAlloyAdvanced"));
+        setBaseIconName(AdvancedAlloyPlate.ID, "ic2:itemPartAlloy");
+        ItemList.CarbonAlloyPlate.set(
+            addItemWithLocalizationKeys(
+                CarbonAlloyPlate.ID,
+                "gt.item.carbon_alloy_plate.name",
+                "",
+                "plateAlloyCarbon"));
+        setBaseIconName(CarbonAlloyPlate.ID, "ic2:itemPartCarbonPlate");
+        ItemList.MixedMetalIngot
+            .set(addItemWithLocalizationKeys(MixedMetalIngot.ID, "gt.item.mixed_metal_ingot.name", ""));
+        setBaseIconName(MixedMetalIngot.ID, "ic2:resources/itemIngotAlloy");
+        ItemList.RawCarbonFibre
+            .set(addItemWithLocalizationKeys(RawCarbonFibre.ID, "gt.item.raw_carbon_fibre.name", ""));
+        setBaseIconName(RawCarbonFibre.ID, "ic2:itemPartCarbonFibre");
+        ItemList.CarbonMesh.set(addItemWithLocalizationKeys(CarbonMesh.ID, "gt.item.carbon_mesh.name", ""));
+        setBaseIconName(CarbonMesh.ID, "ic2:itemPartCarbonMesh");
 
         registerMetaMaterials();
 
@@ -2179,39 +2199,30 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void initOreDictUnificatorEntries() {
-        GTOreDictUnificator
-            .set(OrePrefixes.componentCircuit, Materials.Resistor, ItemList.Circuit_Parts_Resistor.get(1L));
-        GTOreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Diode, ItemList.Circuit_Parts_Diode.get(1L));
-        GTOreDictUnificator
-            .set(OrePrefixes.componentCircuit, Materials.Transistor, ItemList.Circuit_Parts_Transistor.get(1L));
-        GTOreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Inductor, ItemList.Circuit_Parts_Coil.get(1L));
-        GTOreDictUnificator
-            .set(OrePrefixes.componentCircuit, Materials.Capacitor, ItemList.Circuit_Parts_Capacitor.get(1L));
+        for (CircuitComponents component : CircuitComponents.values()) {
+            OreDictUtils.registerAndAssociate(OrePrefixes.componentCircuit, component.materialName(), component.get(1));
+        }
 
-        GTOreDictUnificator.addAssociation(
+        MaterialData.addAssociation(
             OrePrefixes.componentCircuit,
-            Materials.Resistor,
+            CircuitComponents.RESISTOR.materialName(),
             ItemList.Circuit_Parts_ResistorSMD.get(1L));
-        GTOreDictUnificator
-            .addAssociation(OrePrefixes.componentCircuit, Materials.Diode, ItemList.Circuit_Parts_DiodeSMD.get(1L));
-        GTOreDictUnificator.addAssociation(
+        MaterialData.addAssociation(
             OrePrefixes.componentCircuit,
-            Materials.Transistor,
+            CircuitComponents.DIODE.materialName(),
+            ItemList.Circuit_Parts_DiodeSMD.get(1L));
+        MaterialData.addAssociation(
+            OrePrefixes.componentCircuit,
+            CircuitComponents.TRANSISTOR.materialName(),
             ItemList.Circuit_Parts_TransistorSMD.get(1L));
-        GTOreDictUnificator.addAssociation(
+        MaterialData.addAssociation(
             OrePrefixes.componentCircuit,
-            Materials.Capacitor,
+            CircuitComponents.CAPACITOR.materialName(),
             ItemList.Circuit_Parts_CapacitorSMD.get(1L));
-        GTOreDictUnificator.addAssociation(
+        MaterialData.addAssociation(
             OrePrefixes.componentCircuit,
-            Materials.Inductor,
+            CircuitComponents.INDUCTOR.materialName(),
             ItemList.Circuit_Parts_InductorSMD.get(1L));
-
-        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_ResistorSMD.get(1L));
-        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_DiodeSMD.get(1L));
-        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_TransistorSMD.get(1L));
-        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_CapacitorSMD.get(1L));
-        GTOreDictUnificator.addToBlacklist(ItemList.Circuit_Parts_InductorSMD.get(1L));
     }
 
     private void initOrePrefixes() {
@@ -2273,37 +2284,4 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
     }
 
-    @Override
-    public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        String pref = aPrefix.toString()
-            .toLowerCase();
-        return aDoShowAllItems || pref.contains("nanite")
-            || pref.contains("rawore")
-            || pref.contains("platesuperdense");
-    }
-
-    @Override
-    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
-    public boolean shouldBurn(ItemStack itemStack) {
-        ItemData data = GTOreDictUnificator.getAssociation(itemStack);
-        if (data == null || data.mMaterial == null || data.mPrefix == null) {
-            return false;
-        }
-        return data.mMaterial.mMaterial == Materials.Firestone && data.mPrefix == OrePrefixes.rawOre;
-    }
-
-    @Override
-    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        super.addAdditionalToolTips(aList, aStack, aPlayer);
-
-        ItemData data = GTOreDictUnificator.getItemData(aStack);
-
-        if (data != null && data.mPrefix == OrePrefixes.nanite) {
-            NaniteTier tier = NaniteTier.fromStack(aStack);
-
-            if (tier != null) {
-                aList.add(StatCollector.translateToLocalFormatted("gt.tooltip.nanite-tier", tier.tier));
-            }
-        }
-    }
 }

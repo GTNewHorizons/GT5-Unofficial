@@ -31,21 +31,22 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.API.enums.CircuitImprint;
 import bartworks.MainMod;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
 
 /**
  * This class is used for all items to circuit generation. Such as: Circuit Imprints, Sliced Circuits and the wraps.
@@ -63,15 +64,13 @@ public class CircuitPartsItem extends Item {
     public static void init() {
         INSTANCE = new CircuitPartsItem();
 
-        GTOreDictUnificator.addToBlacklist(INSTANCE.getStack(0));
-        GTOreDictUnificator.addToBlacklist(INSTANCE.getStack(1));
         ItemList.RawImprintBoard.set(INSTANCE.getStack(2));
         ItemList.ImprintBoard.set(INSTANCE.getStack(3));
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 1),
-                WerkstoffLoader.ArInGaPhoBiBoTe.get(OrePrefixes.dust, 4))
+                MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.CircuitCompoundMK3, Shapes.dust, 4))
             .itemOutputs(ItemList.RawImprintBoard.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -80,7 +79,7 @@ public class CircuitPartsItem extends Item {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.RawImprintBoard.get(1), new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(ItemList.ImprintBoard.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(4 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .requiresCleanRoom()

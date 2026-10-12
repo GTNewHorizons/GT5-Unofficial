@@ -11,7 +11,6 @@ import gregtech.api.enums.Mods;
 public class Configuration {
 
     public static final Debug debug = new Debug();
-    public static final Features features = new Features();
     public static final Worldgen worldgen = new Worldgen();
 
     @Config.Comment("Debug section")
@@ -20,14 +19,6 @@ public class Configuration {
         @Config.Comment("Dumps all GT++ and Toxic Everglade Data to en_US.lang in the config folder. This config option can be used by foreign players to generate blank .lang files, which they can populate with their language of choice.")
         @Config.DefaultBoolean(false)
         public boolean dumpItemAndBlockData;
-    }
-
-    @Config.Comment("Features section")
-    public static class Features {
-
-        @Config.Comment("Hides every filled IC2 Universal Cell from NEI.")
-        @Config.DefaultBoolean(true)
-        public boolean hideUniversalCells;
     }
 
     @Config.Comment("Worldgen section")

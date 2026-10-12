@@ -28,7 +28,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,7 +40,6 @@ import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.GTCreativeTab;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
@@ -82,7 +80,7 @@ public class GregTechAPI {
             public ItemStack getIconItemStack() {
                 return ItemList.Casing_RobustTungstenSteel.get(1);
             }
-        }, TAB_GREGTECH_ORES = new GTCreativeTab("Ores", "Ores");
+        };
 
     public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
 
@@ -130,10 +128,6 @@ public class GregTechAPI {
      */
     public static final List<GTWorldgen> sWorldgenList = new ArrayList<>();
     /**
-     * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
-     */
-    public static final Materials[] sGeneratedMaterials = new Materials[1000];
-    /**
      * For the API Version check
      */
     public static volatile int VERSION = 509;
@@ -167,11 +161,7 @@ public class GregTechAPI {
      */
     public static Block sBlockMachines;
 
-    public static Block sBlockOres1,
-        /* sBlockGem, */
-        sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7, sBlockMetal8,
-        sBlockMetal9, sBlockMetal10, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced, sBlockSheetmetalGT,
-        sBlockSheetmetalBW, sBlockFramesBW;
+    public static Block sBlockReinforced;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
         sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sBlockCasings13,
@@ -181,7 +171,6 @@ public class GregTechAPI {
     public static Block sDroneRender;
     public static Block sBlockFenceMetal;
     public static Block sBlockPad;
-    public static Block sBlockFrames;
     public static Block sBlockGlass1;
     public static Block sBlockTintedGlass;
     public static Block sLaserRender;
@@ -193,10 +182,10 @@ public class GregTechAPI {
      * Getting assigned by the Config
      */
     public static boolean sTimber = true, sDrinksAlwaysDrinkable = false, sMultiThreadedSounds = false,
-        sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sMachineExplosions = true,
-        sMachineFlammable = true, sMachineNonWrenchExplosions = true, sMachineRainExplosions = true,
-        sMachineThunderExplosions = true, sMachineFireExplosions = true, sMachineWireFire = true, mOutputRF = false,
-        mInputRF = false, mRFExplosions = false, mServerStarted = false;
+        sColoredGUI = true, sMachineMetalGUI = false, sMachineExplosions = true, sMachineFlammable = true,
+        sMachineNonWrenchExplosions = true, sMachineRainExplosions = true, sMachineThunderExplosions = true,
+        sMachineFireExplosions = true, sMachineWireFire = true, mOutputRF = false, mInputRF = false,
+        mRFExplosions = false, mServerStarted = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
@@ -224,34 +213,6 @@ public class GregTechAPI {
 
     public static boolean isDummyWorld(@Nonnull World w) {
         return dummyWorlds.contains(w.getClass());
-    }
-
-    /**
-     * You want OreDict-Unification for YOUR Mod/Addon, when GregTech is installed? This Function is especially for YOU.
-     * Call this Function after the load-Phase, as I register the most of the Unification at that Phase (Redpowers
-     * Storageblocks are registered at postload). A recommended use of this Function is inside your Recipe-System itself
-     * (if you have one), as the unification then makes 100% sure, that every added non-unificated Output gets
-     * automatically unificated.
-     * <p/>
-     * I will personally make sure, that only common prefixes of Ores get registered at the Unificator, as of now there
-     * are: pulp, dust, dustSmall, ingot, nugget, gem, ore and block If another Mod-Author messes these up, then it's
-     * not my fault, and it's especially not your fault. As these are commonly used prefixes.
-     * <p/>
-     * This Unificator-API-Function uses the same Functions I use, for unificating Items. So if there is something
-     * messed up (very unlikely), then everything is messed up.
-     * <p/>
-     * You shouldn't use this to unificate the Inputs of your Recipes, this is only meant for the Outputs.
-     *
-     * @param aOreStack the Stack you want to get unificated. It is stackSize Sensitive.
-     * @return Either an unificated Stack or the stack you toss in, but it should never be null, unless you throw a
-     *         Null-Pointer into it.
-     */
-    public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
-        if (!GregTechAPI.sPreloadFinished) GT_FML_LOGGER.error(
-            "GregTechAPI ERROR: {}.{} - OreDict Unification Entries are not registered now, please call it in the postload phase.",
-            aOreStack.getItem(),
-            aOreStack.getItemDamage());
-        return GTOreDictUnificator.get(true, aOreStack);
     }
 
     /**

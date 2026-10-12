@@ -506,7 +506,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public final Packet getDescriptionPacket() {
+    public Packet getDescriptionPacket() {
         ByteBuf buffer = PooledByteBufAllocator.DEFAULT.directBuffer();
         try {
             writeDescriptionBuffer(buffer);

@@ -53,7 +53,7 @@ public class BartWorksRecipeMaps {
         .disableRegisterNEI()
         .build();
     public static final RecipeMap<FuelBackend> acidGenFuels = RecipeMapBuilder.of("bw.fuels.acidgens", FuelBackend::new)
-        .maxIO(1, 1, 0, 0)
+        .maxIO(1, 1, 1, 0)
         .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
         .build();
     public static final RecipeMap<RecipeMapBackend> circuitAssemblyLineRecipes = RecipeMapBuilder.of("bw.recipe.cal")

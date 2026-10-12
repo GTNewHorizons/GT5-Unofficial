@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -42,9 +43,10 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
+import gregtech.api.net.GTPacketFrameEntity;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.covers.Cover;
 import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -255,6 +257,19 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         return mte == null ? 0 : mte.getUpdateData();
     }
 
+    /// A frame-hosted tile entity describes itself through [GTPacketFrameEntity] instead of the vanilla
+    /// description packet; see [GTPacketFrameEntity] for why.
+    @Override
+    public Packet getDescriptionPacket() {
+        if (getBlockType() instanceof FrameShapeBlock) {
+            if (!worldObj.isRemote) {
+                GTValues.NW.sendPacketToAllPlayersInRange(worldObj, new GTPacketFrameEntity(this), xCoord, zCoord);
+            }
+            return null;
+        }
+        return super.getDescriptionPacket();
+    }
+
     @Override
     public final void tileWriteToStream(ByteBuf buffer) {
         super.tileWriteToStream(buffer);
@@ -389,8 +404,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         markDirty();
         mInventoryChanged = true;
-        if (canAccessData()) mMetaTileEntity
-            .setInventorySlotContents(aIndex, worldObj.isRemote ? aStack : GTOreDictUnificator.setStack(true, aStack));
+        if (canAccessData()) mMetaTileEntity.setInventorySlotContents(aIndex, aStack);
     }
 
     @Override
@@ -683,7 +697,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public ArrayList<ItemStack> getDrops() {
-        final ItemStack rStack = new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
+        final ItemStack rStack = hasValidMetaTileEntity() ? mMetaTileEntity.getStackForm(1)
+            : new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
         final NBTTagCompound tNBT = new NBTTagCompound();
 
         writeCoverNBT(tNBT, true);
@@ -1061,7 +1076,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             setInventorySlotContents(aIndex, aStack);
             return true;
         }
-        aStack = GTOreDictUnificator.get(aStack);
+        aStack = GTUtility.copyOrNull(aStack);
         if (GTUtility.areStacksEqual(tStack, aStack)
             && tStack.stackSize + aStack.stackSize <= Math.min(aStack.getMaxStackSize(), getInventoryStackLimit())) {
             markDirty();

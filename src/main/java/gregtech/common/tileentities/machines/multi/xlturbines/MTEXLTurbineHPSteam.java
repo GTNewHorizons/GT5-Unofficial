@@ -6,9 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -41,7 +45,7 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
+    protected Material getFrameMaterial() {
         return Materials.Titanium;
     }
 
@@ -148,9 +152,10 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
         if (isUsingDenseSteam) {
-            addOutputPartial(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
+            addOutputPartial(
+                MaterialLibAPI.getFluidStack(Materials.DenseSteam, FluidShapes.fluidGas, steamFlowForNextSteam));
         } else {
-            addOutputPartial(Materials.Steam.getGas(totalFlow));
+            addOutputPartial(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

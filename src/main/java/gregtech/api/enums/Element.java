@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +17,7 @@ public enum Element {
     He(2, 2, 0, "Helium", false),
     He_3(2, 1, 0, "Helium-3", true),
     Li(3, 4, 0, "Lithium", false),
+    Li_7(3, 4, 0, "Lithium-7", true),
     Be(4, 5, 0, "Beryllium", false),
     B(5, 5, 0, "Boron", false),
     C(6, 6, 0, "Carbon", false),
@@ -105,12 +105,17 @@ public enum Element {
     Ra(88, 136, 0, "Radium", false),
     Ac(89, 136, 0, "Actinium", false),
     Th(90, 140, 0, "Thorium", false),
+    Th_232(90, 142, 0, "Thorium-232", true),
+    Th_234(90, 144, 0, "Thorium-234", true),
     Pa(91, 138, 0, "Protactinium", false),
     U(92, 146, 0, "Uranium", false),
     U_235(92, 143, 0, "Uranium-235", true),
+    U_232(92, 140, 0, "Uranium-232", true),
+    U_233(92, 141, 0, "Uranium-233", true),
     Np(93, 144, 0, "Neptunium", false),
     Pu(94, 152, 0, "Plutonium", false),
     Pu_241(94, 149, 0, "Plutonium-241", true),
+    Pu_238(94, 144, 0, "Plutonium-238", true),
     Am(95, 150, 0, "Americium", false),
     Cm(96, 153, 0, "Curium", false),
     Bk(97, 152, 0, "Berkelium", false),
@@ -153,12 +158,6 @@ public enum Element {
     public final long mAdditionalMass;
     public final String mName;
     public final boolean mIsIsotope;
-
-    /**
-     * Links to every pure Material containing just this Element.
-     */
-    // bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsLoader reassigns it, so no final here
-    public ArrayList<Materials> mLinkedMaterials = new ArrayList<>();
 
     /**
      * @param aProtons  Amount of Protons. Antiprotons if negative.

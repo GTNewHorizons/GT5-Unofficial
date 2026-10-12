@@ -11,11 +11,17 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialUtils;
+import gregtech.common.ores.GTOreAdapter;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class TFGregtechRecipes {
@@ -28,8 +34,8 @@ public class TFGregtechRecipes {
 
         // Gelid Cryotheum
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cinnabar, 3L))
+            .itemInputs(GTOreAdapter.INSTANCE.getVariantStack(Materials.Cinnabar, StoneType.Stone, false))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cinnabar, Shapes.dust, 3))
             .fluidInputs(new FluidStack(TFFluids.fluidCryotheum, 1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -38,8 +44,8 @@ public class TFGregtechRecipes {
         // Blizz Powder
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_powder, 4))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 4L))
-            .fluidInputs(Materials.LiquidNitrogen.getGas(100L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 4))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidGas, 100))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(chemicalBathRecipes);
@@ -47,40 +53,40 @@ public class TFGregtechRecipes {
         // Blizz Rod
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_rod))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1L))
-            .duration(((int) Math.max((Materials.Blaze.getMass()) * 3L, 1L)) * TICKS)
+            .itemOutputs(GregtechItemList.BlizzRod.get(1))
+            .duration(((int) Math.max((MaterialUtils.mass(Materials.Blaze)) * 3L, 1L)) * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1L))
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Blaze, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, 1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L))
+                MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Snow, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, 1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Niter, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L))
+                MaterialLibAPI.getStack(Materials.Niter, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Snow, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, 1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);

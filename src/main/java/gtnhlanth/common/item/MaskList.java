@@ -8,7 +8,7 @@ import gregtech.api.enums.TierEU;
 
 public enum MaskList {
 
-    // There are absolutely better ways of doing this than a GT Materials-esque Enum, some method of automatically
+    // There are absolutely better ways of doing this than a large hand-rolled enum, some method of automatically
     // scraping the wafer types would be preferable in particular
     // Use Dyes._NULL to indicate a wafer's lack of a dedicated lens instead of null, if the wafer's mask is to be
     // generated

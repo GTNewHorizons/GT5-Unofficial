@@ -6,19 +6,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.interfaces.IOreMaterial;
-import gregtech.api.interfaces.fluid.IGTFluidBuilder;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.Lazy;
-import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.GTItemCell;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialsElements;
 import tectech.recipe.TecTechRecipeMaps;
 
 /// Each of these entries maps to a type of condensate used by the BEC multis. Condensate itself is just a fluid, but
@@ -36,103 +36,103 @@ public enum CondensateType {
         "neutronium",
         () -> Materials.Neutronium,
         144,
-        () -> Materials.Neutronium.getMolten(144), 40 * SECONDS, TierEU.RECIPE_UHV),
+        () -> MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 144), 40 * SECONDS, TierEU.RECIPE_UHV),
     CosmicNeutronium(
         "cosmicneutronium",
         () -> Materials.CosmicNeutronium,
         144,
-        () -> Materials.CosmicNeutronium.getMolten(144), 40 * SECONDS, TierEU.RECIPE_UHV),
+        () -> MaterialLibAPI.getFluidStack(Materials.CosmicNeutronium, FluidShapes.fluidMolten, 144), 40 * SECONDS, TierEU.RECIPE_UHV),
     Bedrockium(
         "bedrockium",
         () -> Materials.Bedrockium,
         144,
-        () -> Materials.Bedrockium.getMolten(144), 40 * SECONDS, TierEU.RECIPE_UHV),
+        () -> MaterialLibAPI.getFluidStack(Materials.Bedrockium, FluidShapes.fluidMolten, 144), 40 * SECONDS, TierEU.RECIPE_UHV),
     ChromaticGlass(
         "chromaticglass",
-        () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS,
+        () -> Materials.ChromaticGlass,
         144,
-        () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(144), 40 * SECONDS, TierEU.RECIPE_UEV),
+        () -> MaterialLibAPI.getFluidStack(Materials.ChromaticGlass, FluidShapes.fluidMolten, 144), 40 * SECONDS, TierEU.RECIPE_UEV),
     CelestialTungsten(
         "celestialtungsten",
-        () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN,
+        () -> Materials.CelestialTungsten,
         144,
-        () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(144), 40 * SECONDS, TierEU.RECIPE_UEV),
+        () -> MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidMolten, 144), 40 * SECONDS, TierEU.RECIPE_UEV),
     Infinity(
         "infinity",
         () -> Materials.Infinity,
         144,
-        () -> Materials.Infinity.getMolten(144), 40 * SECONDS, TierEU.RECIPE_UIV),
+        () -> MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 144), 40 * SECONDS, TierEU.RECIPE_UIV),
     Hypogen(
         "hypogen",
-        () -> MaterialsElements.STANDALONE.HYPOGEN,
+        () -> Materials.Hypogen,
         144,
-        () -> MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(144), 80 * SECONDS, TierEU.RECIPE_UMV),
+        () -> MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidMolten, 144), 80 * SECONDS, TierEU.RECIPE_UMV),
     TranscendentMetal(
         "transcendentmetal",
         () -> Materials.TranscendentMetal,
         144,
-        () -> Materials.TranscendentMetal.getMolten(144), 80 * SECONDS, TierEU.RECIPE_UMV),
+        () -> MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 144), 80 * SECONDS, TierEU.RECIPE_UMV),
     DimensionallyShiftedSuperfluid(
         "dimshiftedsuperfluid",
-        () -> Materials.DimensionallyShiftedSuperfluid,
+        () -> Materials.dimensionallyshiftedsuperfluid,
         1000,
-        () -> Materials.DimensionallyShiftedSuperfluid.getFluid(1000), 80 * SECONDS, TierEU.RECIPE_UIV),
+        () -> MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 1000), 80 * SECONDS, TierEU.RECIPE_UIV),
     PhononMedium(
         "phononmedium",
         () -> Materials.PhononMedium,
         1000,
-        () -> Materials.PhononMedium.getFluid(1000), 120 * SECONDS, TierEU.RECIPE_UIV),
+        () -> MaterialLibAPI.getFluidStack(Materials.PhononMedium, FluidShapes.fluidLiquid, 1000), 120 * SECONDS, TierEU.RECIPE_UIV),
     QuarkGluonPlasma(
         "quarkgluonplasma",
         () -> Materials.QuarkGluonPlasma,
         1000,
-        () -> Materials.QuarkGluonPlasma.getFluid(1000), 160 * SECONDS, TierEU.RECIPE_UIV),
+        () -> MaterialLibAPI.getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, 1000), 160 * SECONDS, TierEU.RECIPE_UIV),
     SpaceTime(
         "spacetime",
         () -> Materials.SpaceTime,
         144,
-        () -> Materials.SpaceTime.getMolten(144), 160 * SECONDS, TierEU.RECIPE_UMV),
+        () -> MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 144), 160 * SECONDS, TierEU.RECIPE_UMV),
     Time(
         "time",
-        () -> Materials.Time,
+        () -> Materials.temporalFluid,
         144,
-        () -> Materials.Time.getMolten(144), 160 * SECONDS, TierEU.RECIPE_UMV),
+        () -> MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, 144), 160 * SECONDS, TierEU.RECIPE_UMV),
     Space(
         "space",
-        () -> Materials.Space,
+        () -> Materials.spatialFluid,
         144,
-        () -> Materials.Space.getMolten(144), 160 * SECONDS, TierEU.RECIPE_UMV),
+        () -> MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, 144), 160 * SECONDS, TierEU.RECIPE_UMV),
     BoundlessCosmicSolder(
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,
         1000,
-        () -> Materials.BoundlessCosmicSolder.getFluid(1000), 160 * SECONDS, TierEU.RECIPE_UMV),
+        () -> MaterialLibAPI.getFluidStack(Materials.BoundlessCosmicSolder, FluidShapes.fluidLiquid, 1000), 160 * SECONDS, TierEU.RECIPE_UMV),
     MHDCSM(
         "mhdcsm",
-        () -> Materials.MHDCSM,
+        () -> Materials.MagnetohydrodynamicallyConstrainedStarMatter,
         144,
-        () -> Materials.MHDCSM.getMolten(144), 240 * SECONDS, TierEU.RECIPE_UXV),
+        () -> MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 144), 240 * SECONDS, TierEU.RECIPE_UXV),
     MagMatter(
         "magmatter",
-        () -> Materials.MagMatter,
+        () -> Materials.Magmatter,
         144,
-        () -> Materials.MagMatter.getMolten(144), 240 * SECONDS, TierEU.RECIPE_UXV),
+        () -> MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 144), 240 * SECONDS, TierEU.RECIPE_UXV),
     Universium(
         "universium",
         () -> Materials.Universium,
         144,
-        () -> Materials.Universium.getMolten(144), 240 * SECONDS, TierEU.RECIPE_UXV),
+        () -> MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 144), 240 * SECONDS, TierEU.RECIPE_UXV),
     Eternity(
         "eternity",
         () -> Materials.Eternity,
         144,
-        () -> Materials.Eternity.getMolten(144), 240 * SECONDS, TierEU.RECIPE_UXV),
+        () -> MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 144), 240 * SECONDS, TierEU.RECIPE_UXV),
     // spotless:on
     ;
 
     public static final CondensateType[] VALUES = values();
     private final String id;
-    private final Lazy<IOreMaterial> material;
+    private final Lazy<Material> material;
     private final int unit;
     private final Supplier<FluidStack> source;
     private final int duration;
@@ -140,8 +140,7 @@ public enum CondensateType {
     private Fluid entangledFluid;
     private GTItemCell entangledCell;
 
-    CondensateType(String id, Supplier<IOreMaterial> mat, int unit, Supplier<FluidStack> source, int duration,
-        long eut) {
+    CondensateType(String id, Supplier<Material> mat, int unit, Supplier<FluidStack> source, int duration, long eut) {
         this.id = id;
         this.material = new Lazy<>(mat);
         this.unit = unit;
@@ -150,7 +149,7 @@ public enum CondensateType {
         this.eut = eut;
     }
 
-    public IOreMaterial getMaterial() {
+    public Material getMaterial() {
         return material.get();
     }
 
@@ -188,31 +187,14 @@ public enum CondensateType {
 
     public static void registerFluids() {
         for (CondensateType type : VALUES) {
-            IOreMaterial material = type.getMaterial();
-            IGTFluidBuilder builder = GTFluidFactory.builder("entangled_" + type.id)
-                .withColorRGBA(material.getRGBA())
-                .withStateAndTemperature(FluidState.GAS, 0);
-
-            if (material instanceof Material) {
-                // GTPP fluids aren't registered yet at this point, so build as addGTFluidMolten/FluidGT6.run() does.
-                builder.withTextures(
-                    new ResourceLocation(
-                        Mods.ModIDs.G_T_PLUS_PLUS,
-                        "fluids/fluid.molten." + material.getTextureSet().aTextCustomAutogenerated),
-                    null);
-            } else {
-                Fluid fluid = type.source.get()
-                    .getFluid();
-                if (fluid instanceof GTFluid) {
-                    builder.withIconsFrom(fluid);
-                } else {
-                    builder.withTextures(
-                        new ResourceLocation("gregtech:fluids/condensate/fluid." + type.id + "_entangled"),
-                        null);
-                }
-            }
-
-            type.entangledFluid = builder.buildAndRegister()
+            Material material = type.getMaterial();
+            type.entangledFluid = GTFluidFactory.builder("entangled_" + type.id)
+                .withColorRGBA(MaterialUtils.rgba(material))
+                .withStateAndTemperature(FluidState.GAS, 0)
+                .withIconsFrom(
+                    type.source.get()
+                        .getFluid())
+                .buildAndRegister()
                 .asFluid();
 
             type.entangledCell = new GTItemCell("entangled_" + type.id, "entangled_condensate", type.entangledFluid);
@@ -230,10 +212,6 @@ public enum CondensateType {
         }
     }
 
-    /*
-     * Built lazily rather than in registerFluids, where the GTPP-material sources cannot yet be resolved -- see the
-     * GTPP fluid registration comment there.
-     */
     private static final Lazy<Map<Fluid, CondensateType>> BY_SOURCE_FLUID = new Lazy<>(() -> {
         Map<Fluid, CondensateType> map = new HashMap<>();
 

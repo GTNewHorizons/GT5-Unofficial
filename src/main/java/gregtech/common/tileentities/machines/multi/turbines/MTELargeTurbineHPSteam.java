@@ -14,9 +14,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -49,7 +53,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
     }
 
     @Override
-    public Materials getFrameMaterial() {
+    public Material getFrameMaterial() {
         return Materials.Titanium;
     }
 
@@ -141,7 +145,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
 
         tEU = totalFlow;
         // HP steam outputs regular steam instead of distilled water
-        addOutputPartial(Materials.Steam.getGas(totalFlow));
+        addOutputPartial(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, totalFlow));
 
         if (totalFlow == GTUtility.safeInt((long) realOptFlow)) {
             tEU = GTUtility

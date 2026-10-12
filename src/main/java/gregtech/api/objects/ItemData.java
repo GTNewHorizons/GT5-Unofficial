@@ -3,13 +3,25 @@ package gregtech.api.objects;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.minecraft.item.ItemStack;
-
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import com.ruling_0.materiallib.api.Material;
 
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MaterialUtils;
+
+/// What material an [net.minecraft.item.ItemStack] is made of and how much of it, for any item in the game.
+///
+/// A [com.ruling_0.materiallib.api.Shape] knows only the items MaterialLib generated. This also covers other
+/// mods' items.
+///
+/// Keyed by [OrePrefixes]. An association's [#mMaterial] amount comes from [OrePrefixes#getMaterialAmount]. See
+/// [OrePrefixes]'s class javadoc for why prefixes and shapes are not interchangeable.
+///
+/// An association names an oredict entry and is what unification keys on: a prefix plus a material, or a prefix
+/// plus a bare name for entries whose material side is not a material. A composition ([#hasExplicitComposition])
+/// lists what a stack is made of, for recycling. It carries no unification name unless it is merged onto an
+/// association.
 public class ItemData {
 
     private static final MaterialStack[] EMPTY_MATERIALSTACK_ARRAY = new MaterialStack[0];
@@ -19,49 +31,65 @@ public class ItemData {
     @NotNull
     public final MaterialStack[] mByProducts;
     public final boolean hasExplicitComposition;
-    public ItemStack mUnificationTarget = null;
+    private final String oreDictName;
+    /// The prefix-and-material name, built on first use since recipe matching reads it for every input.
+    private String pairName;
 
-    public ItemData(OrePrefixes aPrefix, Materials aMaterial) {
-        mPrefix = aPrefix;
-        mMaterial = aMaterial == null ? null : new MaterialStack(aMaterial, aPrefix.getMaterialAmount());
-        mByProducts = aPrefix.mSecondaryMaterial == null || aPrefix.mSecondaryMaterial.mMaterial == null
-            ? EMPTY_MATERIALSTACK_ARRAY
-            : new MaterialStack[] { aPrefix.mSecondaryMaterial.clone() };
-        hasExplicitComposition = false;
+    public ItemData(OrePrefixes prefix, Material material) {
+        this(prefix, material, null);
     }
 
-    public ItemData(MaterialStack aMaterial, MaterialStack... aByProducts) {
+    /// An ingredient that names an ore-dictionary entry and carries no composition, for the entries whose
+    /// material side is not a material at all.
+    public ItemData(OrePrefixes prefix, String materialName) {
+        mPrefix = prefix;
+        mMaterial = null;
+        mByProducts = EMPTY_MATERIALSTACK_ARRAY;
+        hasExplicitComposition = false;
+        oreDictName = prefix.oreDictName(materialName);
+    }
+
+    /// An ingredient that names `oreDictName`, or the pair's own name when null, while counting as `prefix` of
+    /// `material`. A [gregtech.api.enums.materials.Wildcard] entry's name belongs to no single material.
+    public ItemData(OrePrefixes prefix, Material material, String oreDictName) {
+        mPrefix = prefix;
+        mMaterial = material == null ? null : new MaterialStack(material, prefix.getMaterialAmount());
+        mByProducts = prefix.mSecondaryMaterial == null || prefix.mSecondaryMaterial.mMaterial == null
+            ? EMPTY_MATERIALSTACK_ARRAY
+            : new MaterialStack[] { prefix.mSecondaryMaterial.clone() };
+        hasExplicitComposition = false;
+        this.oreDictName = oreDictName;
+    }
+
+    public ItemData(MaterialStack material, MaterialStack... byProducts) {
         mPrefix = null;
-        mMaterial = aMaterial.mMaterial == null ? null : aMaterial.clone();
+        mMaterial = material.mMaterial == null ? null : material.clone();
         hasExplicitComposition = true;
 
-        if (aByProducts == null) {
+        if (byProducts == null) {
             mByProducts = EMPTY_MATERIALSTACK_ARRAY;
         } else {
-            MaterialStack[] tByProducts = aByProducts.length < 1 ? EMPTY_MATERIALSTACK_ARRAY
-                : new MaterialStack[aByProducts.length];
+            MaterialStack[] tByProducts = byProducts.length < 1 ? EMPTY_MATERIALSTACK_ARRAY
+                : new MaterialStack[byProducts.length];
             int j = 0;
-            for (MaterialStack aByProduct : aByProducts)
-                if (aByProduct != null && aByProduct.mMaterial != null) tByProducts[j++] = aByProduct.clone();
+            for (MaterialStack byProduct : byProducts)
+                if (byProduct != null && byProduct.mMaterial != null) tByProducts[j++] = byProduct.clone();
             mByProducts = j > 0 ? new MaterialStack[j] : EMPTY_MATERIALSTACK_ARRAY;
             System.arraycopy(tByProducts, 0, mByProducts, 0, mByProducts.length);
         }
+        oreDictName = null;
     }
 
-    public ItemData(Materials aMaterial, long aAmount, MaterialStack... aByProducts) {
-        this(new MaterialStack(aMaterial, aAmount), aByProducts);
+    public ItemData(Material material, long amount, MaterialStack... byProducts) {
+        this(new MaterialStack(material, amount), byProducts);
     }
 
-    public ItemData(Materials aMaterial, long aAmount, Materials aByProduct, long aByProductAmount) {
-        this(new MaterialStack(aMaterial, aAmount), new MaterialStack(aByProduct, aByProductAmount));
+    public ItemData(Material material, long amount, Material byProduct, long byProductAmount) {
+        this(new MaterialStack(material, amount), new MaterialStack(byProduct, byProductAmount));
     }
 
-    /**
-     * Builds material composition from multiple ingredients.
-     * <p>
-     * Materials from all ingredients are merged and sorted by amount. The largest material becomes {@link #mMaterial},
-     * with the remaining materials stored as {@link #mByProducts}.
-     */
+    /// Builds a material composition from multiple ingredients: their materials are merged and sorted by amount,
+    /// the largest becomes [#mMaterial] and the rest [#mByProducts].
     public ItemData(ItemData... ingredients) {
         ArrayList<MaterialStack> materials = mergeMaterials(ingredients);
 
@@ -69,14 +97,12 @@ public class ItemData {
         mMaterial = !materials.isEmpty() ? materials.removeFirst() : null;
         mByProducts = !materials.isEmpty() ? materials.toArray(new MaterialStack[0]) : EMPTY_MATERIALSTACK_ARRAY;
         hasExplicitComposition = true;
+        oreDictName = null;
     }
 
-    /**
-     * Applies explicit material composition to an existing OreDict association.
-     * <p>
-     * The associated material remains {@link #mMaterial}.
-     * Its amount is taken from the explicit composition, all remaining materials become {@link #mByProducts}.
-     */
+    /// Applies an explicit composition to an existing ore-dictionary association. The associated material stays
+    /// [#mMaterial] with its amount taken from the composition; every other material becomes a by-product. A
+    /// name-only association keeps its name.
     public ItemData(@NotNull ItemData association, @NotNull ItemData composition) {
         ArrayList<MaterialStack> materials = mergeMaterials(composition);
         MaterialStack associatedMaterial = null;
@@ -94,6 +120,27 @@ public class ItemData {
         mMaterial = associatedMaterial != null ? associatedMaterial : association.mMaterial;
         mByProducts = !materials.isEmpty() ? materials.toArray(new MaterialStack[0]) : EMPTY_MATERIALSTACK_ARRAY;
         hasExplicitComposition = true;
+        oreDictName = association.oreDictName;
+    }
+
+    private ItemData(OrePrefixes prefix, MaterialStack material, @NotNull MaterialStack[] byProducts,
+        boolean hasExplicitComposition, String oreDictName) {
+        mPrefix = prefix;
+        mMaterial = material;
+        mByProducts = byProducts;
+        this.hasExplicitComposition = hasExplicitComposition;
+        this.oreDictName = oreDictName;
+    }
+
+    /// A copy with every material amount divided by `divisor`.
+    public ItemData dividedBy(long divisor) {
+        MaterialStack[] byProducts = mByProducts.length == 0 ? EMPTY_MATERIALSTACK_ARRAY
+            : new MaterialStack[mByProducts.length];
+        for (int i = 0; i < byProducts.length; i++) {
+            byProducts[i] = mByProducts[i].copy(mByProducts[i].mAmount / divisor);
+        }
+        MaterialStack material = mMaterial == null ? null : mMaterial.copy(mMaterial.mAmount / divisor);
+        return new ItemData(mPrefix, material, byProducts, hasExplicitComposition, oreDictName);
     }
 
     private static ArrayList<@NotNull MaterialStack> mergeMaterials(ItemData... dataArray) {
@@ -131,6 +178,17 @@ public class ItemData {
         return mPrefix != null && mMaterial != null && mMaterial.mMaterial != null;
     }
 
+    /// Whether [#toString] names a unification target. True both for a prefix+material association and for the
+    /// composition-free name-only form.
+    public final boolean hasUnificationName() {
+        return oreDictName != null || hasValidPrefixMaterialData();
+    }
+
+    /// Whether this is a name-only association (see [#ItemData(OrePrefixes, String)]).
+    public final boolean isNameOnly() {
+        return oreDictName != null && mMaterial == null;
+    }
+
     public final boolean hasValidPrefixData() {
         return mPrefix != null;
     }
@@ -146,13 +204,15 @@ public class ItemData {
         return rList;
     }
 
-    public final MaterialStack getByProduct(int aIndex) {
-        return aIndex >= 0 && aIndex < mByProducts.length ? mByProducts[aIndex] : null;
+    public final MaterialStack getByProduct(int index) {
+        return index >= 0 && index < mByProducts.length ? mByProducts[index] : null;
     }
 
     @Override
     public String toString() {
+        if (oreDictName != null) return oreDictName;
         if (mPrefix == null || mMaterial == null || mMaterial.mMaterial == null) return "";
-        return mPrefix.getName() + mMaterial.mMaterial.mName;
+        if (pairName == null) pairName = mPrefix.getName() + MaterialUtils.internalName(mMaterial.mMaterial);
+        return pairName;
     }
 }

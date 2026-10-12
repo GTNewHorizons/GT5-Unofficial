@@ -45,16 +45,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
@@ -68,7 +69,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.render.IMTERenderer;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import io.netty.buffer.ByteBuf;
 
@@ -175,9 +175,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
             .beginStructureBlock(9, 4, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
             .addCasing("10-29", Casings.CuttingFactoryFrame.getLocalizedName(), false)
-            .addCasing("18", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.TANTALUM_CARBIDE), false)
+            .addCasing("18", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.TantalumCarbide)), false)
             .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
-            .addCasing("13", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.BlackSteel), false)
+            .addCasing("13", OrePrefixes.sheetmetal.getLocalizedNameForItem(MaterialUtils.internalName(Materials.BlackSteel)), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
             .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
@@ -202,7 +202,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                         { "BCCDDDDD ", "CD     C ", "CDB    C ", "CDCCCCCC " },
                         { "  DBBBBB ", " DDAAAADB", " DDAAAADB", " DDDDDDDB" } })
                 .addElement('A', chainAllGlasses())
-                .addElement('B', ofFrame(MaterialsAlloy.TANTALUM_CARBIDE))
+                .addElement('B', ofFrame(Materials.TantalumCarbide))
                 .addElement('C', ofSheetMetal(Materials.BlackSteel))
                 .addElement(
                     'D',

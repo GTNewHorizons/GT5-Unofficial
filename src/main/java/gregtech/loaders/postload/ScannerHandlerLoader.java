@@ -14,21 +14,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
+import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
@@ -95,7 +102,9 @@ public class ScannerHandlerLoader {
     public static @Nullable GTScannerResult scanForestryIndividual(@Nonnull MetaTileEntity aScanner,
         @Nonnull ItemStack aInput, @Nullable ItemStack aSpecialSlot, @Nullable FluidStack aFluid) {
         // must have at enough honey to start
-        if (aFluid == null || !aFluid.containsFluid(Materials.Honey.getFluid(FORESTRY_SCAN_HONEY_USAGE))) return null;
+        if (aFluid == null || !aFluid.containsFluid(
+            MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, FORESTRY_SCAN_HONEY_USAGE)))
+            return null;
         try {
             IIndividual tIndividual = AlleleManager.alleleRegistry.getIndividual(aInput);
             if (tIndividual == null) return null;
@@ -145,37 +154,45 @@ public class ScannerHandlerLoader {
         @Nullable ItemStack aSpecialSlot, @Nullable FluidStack aFluid) {
         if (aSpecialSlot == null) return null;
         if (!ItemList.Tool_DataOrb.isStackEqual(aSpecialSlot, false, true)) return null;
-        ItemData tData = GTOreDictUnificator.getAssociation(aInput);
+        ItemData tData = MaterialData.getAssociation(aInput);
         if (tData == null) return null;
         // must be a dust or a cell
         if (tData.mPrefix != OrePrefixes.dust && tData.mPrefix != OrePrefixes.cell) return null;
-        // must be a scannable element
         return getElementScanResult(tData.mMaterial.mMaterial);
     }
 
-    public static @Nullable GTScannerResult getElementScanResult(Materials aMaterial) {
-        if (!isScannableMaterial(aMaterial)) return null;
+    private static Material[] unscannableElements;
+
+    /// The materials that carry an element yet can be neither scanned nor replicated.
+    private static Material[] unscannableElements() {
+        if (unscannableElements == null) {
+            unscannableElements = new Material[] { Materials.Bromine, Materials.Californium, Materials.Curium,
+                Materials.Fermium, Materials.Germanium, Materials.Hafnium, Materials.Magic, Materials.Neptunium,
+                Materials.Polonium, Materials.Protactinium, Materials.Radium, Materials.Rhenium, Materials.Rhodium,
+                Materials.Ruthenium, Materials.Selenium, Materials.Technetium, Materials.Thallium, Materials.Tiberium,
+                Materials.Zirconium };
+        }
+        return unscannableElements;
+    }
+
+    /// The elemental-scanner result for a MaterialLib material, keyed on
+    /// [gregtech.api.material.GTMaterialProperties#ELEMENT], or null when `material` has no scannable element.
+    public static @Nullable GTScannerResult getElementScanResult(Material material) {
+        if (ArrayUtils.contains(unscannableElements(), material)) return null;
+        Element element = MaterialUtils.element(material);
+        if (element == null || element == Element._NULL) return null;
+        if (element.mIsIsotope) return null;
+        if (element.getMass() <= 0L) return null;
         ItemStack output = ItemList.Tool_DataOrb.get(1L);
         BehaviourDataOrb.setDataTitle(output, "Elemental-Scan");
-        BehaviourDataOrb.setDataName(output, aMaterial.mElement.name());
+        BehaviourDataOrb.setDataName(output, element.name());
         return new GTScannerResult(
             ELEMENT_SCAN_EUT,
-            GTUtility.safeInt(aMaterial.getMass() * ELEMENT_SCAN_DURATION_MULTIPLIER),
+            GTUtility.safeInt(element.getMass() * ELEMENT_SCAN_DURATION_MULTIPLIER),
             1,
             1,
             0,
             output);
-    }
-
-    public static boolean isScannableMaterial(Materials aMaterial) {
-        // must be a raw element
-        if (aMaterial.mElement == null) return false;
-        // must not be an isotope
-        if (aMaterial.mElement.mIsIsotope) return false;
-        // must not be magical
-        if (aMaterial == Materials.Magic) return false;
-        // must have mass > 1
-        return aMaterial.getMass() > 0L;
     }
 
     public static final int DATA_STICK_COPY_EUT = (int) TierEU.ULV;

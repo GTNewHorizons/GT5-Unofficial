@@ -25,23 +25,26 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
+
+import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.TieredVariant;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.pollution.Pollution;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -193,12 +196,12 @@ public class MTEBoilerBronze extends MTEBoiler {
             addProcessingEnergy(burnTime / 10);
             boolean isABlock = !Block.getBlockFromItem(fuel.getItem())
                 .equals(Blocks.air);
-            combustFuel(burnTime, isABlock).map(dustSize -> GTOreDictUnificator.get(dustSize, ashMaterial, 1L))
+            combustFuel(burnTime, isABlock).map(dustSize -> MaterialParts.stack(dustSize, ashMaterial, 1L))
                 .ifPresent(ashes -> aBaseMetaTileEntity.addStackToSlot(3, ashes));
         });
     }
 
-    private static Optional<Materials> getCombustionPotential(ItemStack fuel, int burnTime) {
+    private static Optional<Material> getCombustionPotential(ItemStack fuel, int burnTime) {
         if (burnTime / 10 <= 0 || FluidContainerRegistry.isFilledContainer(fuel)) {
             return Optional.empty();
         }
@@ -206,7 +209,7 @@ public class MTEBoilerBronze extends MTEBoiler {
             .getUnlocalizedName()
             .toLowerCase();
         if (couldProduceDarkAshes(fuel, lowerCaseBlockName)) {
-            return Optional.of(Materials.AshDark);
+            return Optional.of(Materials.DarkAsh);
         }
         if (couldProduceRegularAshes(fuel, lowerCaseBlockName, burnTime)) {
             return Optional.of(Materials.Ash);
@@ -215,17 +218,16 @@ public class MTEBoilerBronze extends MTEBoiler {
     }
 
     private static boolean couldProduceDarkAshes(ItemStack fuel, String lowerCaseBlockName) {
-        return GTUtility.isPartOfMaterials(fuel, Materials.Coal) || GTUtility.isPartOfMaterials(fuel, Materials.Lignite)
+        return MaterialParts.isPartOf(fuel, Materials.Coal) || MaterialParts.isPartOf(fuel, Materials.Lignite)
             || lowerCaseBlockName.matches("tile\\..+compressedcoal");
     }
 
     private static boolean couldProduceRegularAshes(ItemStack fuel, String lowerCaseBlockName, int burnTime) {
-        return GTUtility.isPartOfMaterials(fuel, Materials.Charcoal)
-            || GTUtility.isPartOfMaterials(fuel, Materials.Diamond)
+        return MaterialParts.isPartOf(fuel, Materials.Charcoal) || MaterialParts.isPartOf(fuel, Materials.Diamond)
             || (Stream.of("^tile\\..+charcoal", "^tile\\..+coke", "^tile\\..+railcraft.cube")
                 .anyMatch(lowerCaseBlockName::matches))
             || Stream.of("fuelCoke", "fuelCactusCharcoal", "fuelCactusCoke", "fuelSugarCharcoal", "fuelSugarCoke")
-                .anyMatch(name -> GTOreDictUnificator.isItemStackInstanceOf(fuel, name))
+                .anyMatch(name -> ArrayUtils.contains(OreDictionary.getOreIDs(fuel), OreDictionary.getOreID(name)))
             || burnTime >= 2000;
     }
 

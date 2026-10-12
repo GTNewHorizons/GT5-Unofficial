@@ -15,9 +15,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,7 +53,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbineBase {
     }
 
     @Override
-    public Materials getFrameMaterial() {
+    public Material getFrameMaterial() {
         return Materials.Iron;
     }
 

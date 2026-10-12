@@ -11,10 +11,12 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import appeng.api.AEApi;
 import appeng.api.storage.data.IAEFluidStack;
-import goodgenerator.items.GGMaterial;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTUtility;
 
 public class StackUtils {
@@ -89,33 +91,33 @@ public class StackUtils {
     public static FluidStack getTieredFluid(int aTier, int aAmount) {
         switch (aTier) {
             case 0: // ULV
-                return Materials.RedAlloy.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.RedAlloy, FluidShapes.fluidMolten, aAmount);
             case 1: // LV
-                return Materials.TinAlloy.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.TinAlloy, FluidShapes.fluidMolten, aAmount);
             case 2: // MV
-                return Materials.RoseGold.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.RoseGold, FluidShapes.fluidMolten, aAmount);
             case 3: // HV
-                return GGMaterial.zircaloy4.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.Zircaloy4, FluidShapes.fluidMolten, aAmount);
             case 4: // EV
-                return GGMaterial.incoloy903.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.Incoloy903, FluidShapes.fluidMolten, aAmount);
             case 5: // IV
-                return GGMaterial.titaniumBetaC.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.TanmolyiumBetaC, FluidShapes.fluidMolten, aAmount);
             case 6: // LuV
-                return GGMaterial.artheriumSn.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.ArtheriumSn, FluidShapes.fluidMolten, aAmount);
             case 7: // ZPM
-                return GGMaterial.dalisenite.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.Dalisenite, FluidShapes.fluidMolten, aAmount);
             case 8: // UV
-                return GGMaterial.tairitsu.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.Tairitsu, FluidShapes.fluidMolten, aAmount);
             case 9: // UHV
-                return GGMaterial.preciousMetalAlloy.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.PreciousMetalsAlloy, FluidShapes.fluidMolten, aAmount);
             case 10: // UEV
-                return GGMaterial.enrichedNaquadahAlloy.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.EnrichedNaquadahAlloy, FluidShapes.fluidMolten, aAmount);
             case 11: // UIV
-                return GGMaterial.metastableOganesson.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, aAmount);
             case 12: // UMV
-                return Materials.SpaceTime.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, aAmount);
             default:
-                return GGMaterial.shirabon.getMolten(aAmount);
+                return MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, aAmount);
         }
     }
 

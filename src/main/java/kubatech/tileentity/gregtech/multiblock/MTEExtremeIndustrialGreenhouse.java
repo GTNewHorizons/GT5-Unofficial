@@ -40,6 +40,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
@@ -78,15 +79,16 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -126,7 +128,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public static final int EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT = 1000;
     public static final int EIG_BALANCE_WATER_USAGE_PER_SEED = 1000;
 
-    private static final Fluid WEEDEX_FLUID = Materials.WeedEX9000.mFluid;
+    private static final Fluid WEEDEX_FLUID = MaterialLibAPI.getFluid(Materials.WeedEX9000, FluidShapes.fluidLiquid);
     private static final LinkedList<ItemStack> FERTILIZER_ITEM_LIST = new LinkedList<>();
 
     public static void addFertilizerItem(ItemStack fertilizer) {
@@ -251,7 +253,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 .casingIndex(CASING.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, CASING.asElement())))
-        .addElement('f', ofBlock(GregTechAPI.sBlockFrames, 316))
+        .addElement('f', ofFrame(Materials.TungstenSteel))
         .addElement(
             'l',
             ProjectRedIllumination.isModLoaded()

@@ -12,7 +12,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -30,7 +33,7 @@ public class MTELargerTurbineGasLegacy extends MTELargerTurbineBaseLegacy {
 
     static {
         BLACKLIST.add(
-            Materials.Benzene.getFluid(0)
+            MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 0)
                 .getFluid());
     }
 

@@ -22,10 +22,8 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -52,10 +50,14 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -147,15 +149,13 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final IntOpenHashSet isImpureDust = new IntOpenHashSet();
     private static final IntOpenHashSet isThermal = new IntOpenHashSet();
     private static final IntOpenHashSet isOre = new IntOpenHashSet();
+    private static final IntOpenHashSet isVoidableStoneDust = new IntOpenHashSet();
     private static boolean isInit = false;
 
-    private static final Set<ItemStack> VOIDABLE_STONE_DUSTS = new HashSet<>(
-        Arrays.asList(
-            Materials.Stone.getDust(1),
-            Materials.Netherrack.getDust(1),
-            Materials.Endstone.getDust(1),
-            Materials.Marble.getDust(1),
-            Materials.GraniteRed.getDust(1)));
+    /// The dusts the stone-voiding toggle discards. Held as materials rather than stacks because the shape items
+    /// do not exist yet when this class initializes; [#initHash] resolves them.
+    private static final Material[] VOIDABLE_STONE_MATERIALS = { Materials.Stone, Materials.Netherrack,
+        Materials.Endstone, Materials.Marble, Materials.GraniteRed };
 
     private ItemStack[] midProduct;
     private ProcessingMode mode = ProcessingMode.MAC_WASH_THERMAL_MAC;
@@ -190,6 +190,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             else if (name.startsWith("dustImpure")) registerOrePrefix(name, isImpureDust);
             else if (name.startsWith("dustPure")) registerOrePrefix(name, isPureDust);
             else if (name.startsWith("ore") || name.startsWith("rawOre")) registerOrePrefix(name, isOre);
+        }
+
+        for (Material material : VOIDABLE_STONE_MATERIALS) {
+            isVoidableStoneDust.add(GTUtility.stackToInt(MaterialLibAPI.getStack(material, Shapes.dust, 1)));
         }
     }
 
@@ -262,7 +266,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         for (FluidStack fluid : inputFluid) {
             if (fluid == null) continue;
             if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
-            else if (fluid.equals(Materials.Lubricant.getFluid(1L))) lubricantAmount += fluid.amount;
+            else if (fluid.equals(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1)))
+                lubricantAmount += fluid.amount;
         }
 
         final long parallelFromFluids = Math.min(lubricantAmount / LUBRICANT_PER_ORE, waterAmount / WATER_PER_ORE);
@@ -308,16 +313,20 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         long totalLubricantToDrain = (long) effectiveParallel * LUBRICANT_PER_ORE;
         while (totalLubricantToDrain > 0) {
             int tryDrain = (int) Math.min(totalLubricantToDrain, Integer.MAX_VALUE);
-            if (!depleteInput(Materials.Lubricant.getFluid(tryDrain))) {
+            if (!depleteInput(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, tryDrain))) {
                 int maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
-                    if (sf != null && sf.isFluidEqual(Materials.Lubricant.getFluid(1L)) && sf.amount > maxHatch) {
+                    if (sf != null
+                        && sf
+                            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1))
+                        && sf.amount > maxHatch) {
                         maxHatch = sf.amount;
                     }
                 }
                 if (maxHatch <= 0) break;
                 tryDrain = (int) Math.min(totalLubricantToDrain, maxHatch);
-                if (!depleteInput(Materials.Lubricant.getFluid(tryDrain))) break;
+                if (!depleteInput(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, tryDrain)))
+                    break;
             }
             totalLubricantToDrain -= tryDrain;
         }
@@ -507,7 +516,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         processStep(
             stack -> simpleWasherRecipes.findRecipeQuery()
                 .items(stack)
-                .fluids(Materials.Water.getFluid(100))
+                .fluids(GTUtility.getWater(100))
                 .find(),
             tables);
     }
@@ -604,9 +613,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private void doCompress(List<ItemStack> aList) {
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
-            if (doesVoidStone && VOIDABLE_STONE_DUSTS.stream()
-                .anyMatch(dust -> GTUtility.areStacksEqual(dust, stack))) continue;
             int id = GTUtility.stackToInt(stack);
+            if (doesVoidStone && isVoidableStoneDust.contains(id)) continue;
             if (id != 0) {
                 merged.merge(id, stack.stackSize, Integer::sum);
             }

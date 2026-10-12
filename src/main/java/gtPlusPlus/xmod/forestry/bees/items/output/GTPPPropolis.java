@@ -12,11 +12,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPropolisType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
@@ -76,16 +80,17 @@ public class GTPPPropolis extends Item {
         ItemStack tDrop;
         for (GTPPPropolisType aProp : GTPP_Bees.sPropolisMappings.values()) {
             tDrop = aProp.getStackForType(1);
-            ItemStack aOutput = aProp.mMaterial.getDust(1);
-            if (aOutput == null) {
+            if (aProp.mMaterial == null) {
                 continue;
             }
+            ItemStack aOutput = MaterialLibAPI.getStack(aProp.mMaterial, Shapes.dust, 1);
+            int tier = MaterialUtils.tier(aProp.mMaterial);
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)
                 .itemOutputs(aOutput)
-                .outputChances(Math.min(Math.max(10000 - (aProp.mMaterial.tier * 625), 100), 10000))
-                .duration(aProp.mMaterial.tier * 15 * SECONDS)
-                .eut(aProp.mMaterial.voltageMultiplier)
+                .outputChances(Math.min(Math.max(10000 - (tier * 625), 100), 10000))
+                .duration(tier * 15 * SECONDS)
+                .eut(MaterialUtils.voltageMultiplier(aProp.mMaterial))
                 .addTo(extractorRecipes);
 
         }

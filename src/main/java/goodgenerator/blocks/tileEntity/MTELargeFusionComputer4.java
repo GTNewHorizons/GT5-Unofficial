@@ -5,12 +5,14 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.ruling_0.materiallib.api.Material;
+
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import goodgenerator.loader.Loaders;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -92,7 +94,7 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputer {
     }
 
     @Override
-    public Materials getFrameBox() {
+    public Material getFrameBox() {
         return Materials.InfinityCatalyst;
     }
 

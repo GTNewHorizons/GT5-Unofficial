@@ -69,9 +69,16 @@ public class Configuration {
         @Config.Comment({
             "This is a blacklist for the Void Miner, blacklisted ores will not enter the drop prize pool.",
             "Please fill in the Unique Identifier of Ore and connect Damage with a colon,",
-            "For example: gregtech:gt.blockores:32" })
+            "For example: minecraft:quartz_ore:0" })
         @Config.DefaultStringList({})
         public String[] voidMinerBlacklist;
+
+        @Config.Comment({ "Void Miner blacklist by MaterialLib material name; stable when the material set changes.",
+            "Entry forms: \"<Material>\" = every ore and oreSmall variant of that material;",
+            "\"<Material>:ore\" or \"<Material>:oreSmall\" = every variant of that shape;",
+            "\"<Material>:ore_<stonetype>\" = one variant, e.g. \"Tellurium:ore_stone\"." })
+        @Config.DefaultStringList({})
+        public String[] voidMinerBlacklistMaterials;
 
         @Config.Comment("This switch completely disables piston animation in Electric Implosion Compressor multiblock")
         @Config.DefaultBoolean(false)

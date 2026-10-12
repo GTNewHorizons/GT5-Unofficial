@@ -3,15 +3,18 @@ package gregtech.common.gui.modularui.multiblock.godforge.data;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.base.Supplier;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
 public enum Fuels {
 
-    RESIDUE(() -> Materials.DTR.getFluid(1)),
-    STELLAR(() -> Materials.RawStarMatter.getFluid(1)),
-    MHDCSM(() -> Materials.MHDCSM.getMolten(1));
+    RESIDUE(() -> MaterialLibAPI.getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 1)),
+    STELLAR(() -> MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 1)),
+    MHDCSM(() -> MaterialLibAPI
+        .getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 1));
 
     public static final Fuels[] VALUES = values();
 

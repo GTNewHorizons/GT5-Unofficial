@@ -7,49 +7,50 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingCrystallized implements PartRecipeGenerator {
 
-    public ProcessingCrystallized() {
-        OrePrefixes.crystal.add(this);
-        OrePrefixes.crystalline.add(this);
-    }
+    public static final ProcessingCrystallized INSTANCE = new ProcessingCrystallized();
+
+    private ProcessingCrystallized() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
+        ProcessingUtils.addHammerRecipe(prefix, material, Shapes.dust, true);
 
-        if (aMaterial.mMacerateInto == null) {
-            return;
-        }
-
-        if (GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1) == null) {
+        Material target = MaterialUtils.macerateInto(material);
+        if (!target.hasShape(Shapes.dust)) {
             return;
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+            .itemInputs(GTUtility.copyAmount(1, stack))
+            .itemOutputs(MaterialLibAPI.getStack(target, Shapes.dust, 1))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+            .itemInputs(GTUtility.copyAmount(1, stack))
+            .itemOutputs(MaterialLibAPI.getStack(target, Shapes.dust, 1))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
     }
+
 }

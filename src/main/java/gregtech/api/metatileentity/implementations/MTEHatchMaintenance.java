@@ -19,6 +19,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -31,23 +34,25 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
+import gregtech.api.enums.materials.CellShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchMaintenanceGui;
 import gregtech.common.items.ItemGTToolbox;
@@ -90,9 +95,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
 
     public static ItemStack[] getAutoMaintenanceInputs() {
         if (sAutoMaintenanceInputs == null) sAutoMaintenanceInputs = new ItemStack[] { ItemList.Duct_Tape.get(4),
-            GTOreDictUnificator.get(OrePrefixes.cell, Materials.Lubricant, 2),
-            GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
-            GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2) };
+            MaterialLibAPI.getStack(Materials.Lubricant, CellShapes.cell, 2),
+            MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4), Circuits.HV.get(2) };
         return sAutoMaintenanceInputs;
     }
 
@@ -192,12 +196,13 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
                     applyToolbox(tStack, aPlayer);
                 } else if (tStack.getItem() instanceof ItemGTToolbox) {
                     applyGTToolbox(tStack, aPlayer);
-                } else if (GTOreDictUnificator.isItemStackInstanceOf(tStack, "craftingDuctTape")) {
-                    applyDuctTape();
-                    if (--tStack.stackSize == 0) {
-                        aPlayer.inventory.mainInventory[aPlayer.inventory.currentItem] = null;
-                    }
-                } else openGui(aPlayer);
+                } else if (ArrayUtils
+                    .contains(OreDictionary.getOreIDs(tStack), OreDictionary.getOreID("craftingDuctTape"))) {
+                        applyDuctTape();
+                        if (--tStack.stackSize == 0) {
+                            aPlayer.inventory.mainInventory[aPlayer.inventory.currentItem] = null;
+                        }
+                    } else openGui(aPlayer);
             } else {
                 openGui(aPlayer);
             }
@@ -318,8 +323,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
                 amt = tStack.stackSize;
                 boolean temp = true;
                 for (ItemStack aStack : mInventory) {
-                    if ((GTUtility.areUnificationsEqual(aStack, tStack, true)
-                        || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tStack, true))) {
+                    if (GTUtility.areStacksEqual(aStack, tStack, true)) {
                         amt -= aStack.stackSize;
                         if (amt < 1) {
                             temp = false;
@@ -336,8 +340,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
                 if (tStack != null) {
                     amt = tStack.stackSize;
                     for (ItemStack aStack : mInventory) {
-                        if ((GTUtility.areUnificationsEqual(aStack, tStack, true)
-                            || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tStack, true))) {
+                        if (GTUtility.areStacksEqual(aStack, tStack, true)) {
                             if (aStack.stackSize < amt) {
                                 amt -= aStack.stackSize;
                                 aStack.stackSize = 0;
@@ -403,7 +406,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             mSolderingTool = true;
             setMaintenanceSound(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1.0F);
         }
-        if (GTOreDictUnificator.isItemStackInstanceOf(aStack, "craftingDuctTape")) {
+        if (ArrayUtils.contains(OreDictionary.getOreIDs(aStack), OreDictionary.getOreID("craftingDuctTape"))) {
             applyDuctTape();
             aStack.stackSize--;
         }
@@ -455,8 +458,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
 
     public boolean IsAutoMaintenanceInput(ItemStack aStack) {
         for (ItemStack tInput : getAutoMaintenanceInputs()) {
-            if (GTUtility.areUnificationsEqual(tInput, aStack, true)
-                || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tInput, true)) return true;
+            if (GTUtility.areStacksEqual(tInput, aStack, true)) return true;
         }
         return false;
     }
@@ -471,9 +473,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (mAuto && GTMod.proxy.mAMHInteraction) {
-            for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
-                GTOreDictUnificator.get(false, aStack),
-                GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
+            for (int i = 0; i < getSizeInventory(); i++)
+                if (GTUtility.areStacksEqual(aStack, getStackInSlot(i))) return i == aIndex;
             return IsAutoMaintenanceInput(aStack);
         }
         return false;

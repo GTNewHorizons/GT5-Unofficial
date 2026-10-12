@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 public enum ItemList implements IItemContainer {
 
@@ -133,7 +133,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
         if (GTUtility.isStackInvalid(aStack)) return false;
-        return GTUtility.areUnificationsEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
+        return GTUtility.areStacksEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
     }
 
     @Override
@@ -141,7 +141,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmount(aAmount, mStack);
     }
 
     @Override
@@ -149,7 +149,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, mStack);
     }
 
     @Override
@@ -157,7 +157,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, 0, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, 0, mStack);
     }
 
     @Override
@@ -165,7 +165,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, mStack);
     }
 
     @Override
@@ -210,14 +210,14 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, mStack);
     }
 
     @Override
     public @NotNull IItemContainer registerOre(Object @NotNull... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, get(1));
+        for (Object tOreName : aOreNames) OreDictUtils.registerOre(tOreName, get(1));
         return this;
     }
 
@@ -225,7 +225,7 @@ public enum ItemList implements IItemContainer {
     public @NotNull IItemContainer registerWildcardAsOre(Object @NotNull... aOreNames) {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, getWildcard(1));
+        for (Object tOreName : aOreNames) OreDictUtils.registerOre(tOreName, getWildcard(1));
         return this;
     }
 

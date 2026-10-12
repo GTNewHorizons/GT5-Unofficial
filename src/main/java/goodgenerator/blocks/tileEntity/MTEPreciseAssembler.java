@@ -49,17 +49,18 @@ import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -295,7 +296,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addCasing("42-81", StatCollector.translateToLocal("preciseUnitCasing.name"), true)
             .addCasing("42", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.EV]), false)
             .addCasing("21", StatCollector.translateToLocal("GT5U.MBTT.Tiers.MachineCasing"), true)
-            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenSteel), false)
+            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.TungstenSteel)), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_unit_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_unit_casing"), 1)
             .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_unit_casing"), 1)

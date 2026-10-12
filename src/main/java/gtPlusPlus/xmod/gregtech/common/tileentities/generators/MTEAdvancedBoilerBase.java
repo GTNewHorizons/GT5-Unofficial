@@ -9,15 +9,16 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -261,9 +262,9 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
                 || fuel.getDisplayName()
                     .toLowerCase()
                     .contains("coke")) {
-                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+                tile.addStackToSlot(3, MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, 1));
             } else {
-                tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1L));
+                tile.addStackToSlot(3, MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 1));
             }
         }
     }

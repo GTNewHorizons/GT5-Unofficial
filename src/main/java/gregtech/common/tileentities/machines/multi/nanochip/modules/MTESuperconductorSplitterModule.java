@@ -18,11 +18,13 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -147,8 +149,9 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
 
     @Override
     public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-        if (!this.depleteInput(Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC), true))
-            return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+        if (!this.depleteInput(
+            MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, COOLANT_CONSUMED_PER_SEC),
+            true)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
         return super.validateRecipe(recipe);
     }
 
@@ -159,7 +162,8 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         }
 
         if (ticker % 20 == 0) {
-            FluidStack fluidToBeDrained = Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
+            FluidStack fluidToBeDrained = MaterialLibAPI
+                .getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, COOLANT_CONSUMED_PER_SEC);
             if (!drain(coolantInputHatch, fluidToBeDrained, true)) {
                 stopMachine(ShutDownReasonRegistry.outOfFluid(fluidToBeDrained));
                 return false;

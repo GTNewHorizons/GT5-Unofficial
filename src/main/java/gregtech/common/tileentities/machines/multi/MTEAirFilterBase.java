@@ -47,10 +47,10 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -61,6 +61,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
@@ -259,8 +260,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         IToolStats stats = tool.getToolStats(aStack);
         if (stats == null || stats.getSpeedMultiplier() <= 0) return false;
 
-        Materials material = MetaGeneratedTool.getPrimaryMaterial(aStack);
-        return material != null && material.mToolSpeed > 0;
+        Material material = MetaGeneratedTool.getPrimaryMaterialML(aStack);
+        return material != null && MaterialUtils.toolSpeed(material) > 0;
     }
 
     private float getTurbineDamage(ItemStack aStack) {

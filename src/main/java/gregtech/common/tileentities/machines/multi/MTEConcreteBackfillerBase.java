@@ -23,12 +23,15 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
@@ -115,7 +118,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                     .build())
             .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
-            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())), false)
             .addCasing("3-8", casings, false)
             .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_bottom_casing_min_tier", VN[getMinTier()]), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
@@ -221,7 +224,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     }
 
     private boolean tryConsumeFluid() {
-        if (!depleteInput(Materials.Concrete.getMolten(1 * INGOTS))) {
+        if (!depleteInput(MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, INGOTS))) {
             mMaxProgresstime = 0;
             return false;
         }

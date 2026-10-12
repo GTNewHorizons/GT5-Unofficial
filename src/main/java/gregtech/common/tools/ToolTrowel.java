@@ -7,9 +7,10 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.items.behaviors.BehaviourTrowel;
 
 public class ToolTrowel extends GTTool {
@@ -28,17 +29,14 @@ public class ToolTrowel extends GTTool {
 
     @Override
     public IIconContainer getIcon(final boolean aIsToolHead, final ItemStack aStack) {
-        return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_TROWEL
-                .ordinal()]
-            : MetaGeneratedTool
-                .getSecondaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.HANDLE_TROWEL.ordinal()];
+        return aIsToolHead ? GTMaterialIcons.item("toolTrowel", MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : GTMaterialIcons.item("handleTrowel", MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override
     public short[] getRGBa(final boolean aIsToolHead, final ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MaterialUtils.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

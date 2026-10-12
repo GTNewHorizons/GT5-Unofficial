@@ -33,22 +33,26 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -96,7 +100,7 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     private float currentHumidity;
 
     private FluidStack[] getWater() {
-        return new FluidStack[] { Materials.Water.getFluid(
+        return new FluidStack[] { GTUtility.getWater(
             calculateFinalWaterOutput() <= 250 && isMinWaterAllowedDim() ? 250 : calculateFinalWaterOutput()) };
     }
 
@@ -142,8 +146,8 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
                             { " A ", " A ", "AAA", " A " },
                             { " A ", "   ", "A A", " A " },
                             { "C~C", "CCC", "CCC", "CCC" } }))
-                .addElement('A', ofBlocksTiered(MTESteamWaterPump::getFrameTier, ImmutableList.of(Pair.of(GregTechAPI.sBlockFrames, Materials.Bronze.mMetaItemSubID),
-                    Pair.of(GregTechAPI.sBlockFrames, Materials.Steel.mMetaItemSubID)), -1, (pump, tier) -> pump.mSetTier = tier , pump -> pump.mSetTier))
+                .addElement('A', ofBlocksTiered(MTESteamWaterPump::getFrameTier, ImmutableList.of(Pair.of(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.Bronze.getIndex()),
+                    Pair.of(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.Steel.getIndex())), -1, (pump, tier) -> pump.mSetTier = tier , pump -> pump.mSetTier))
                 .addElement(
                     'C',
                         ofChain(
@@ -167,9 +171,9 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
 
     @Nullable
     public static Integer getFrameTier(Block block, int meta) {
-        if (block == GregTechAPI.sBlockFrames) {
-            if (meta == Materials.Bronze.mMetaItemSubID) return 1;
-            if (meta == Materials.Steel.mMetaItemSubID) return 2;
+        if (block == MaterialLibAPI.getBlock(TEBlockShapes.frameGt)) {
+            if (meta == Materials.Bronze.getIndex()) return 1;
+            if (meta == Materials.Steel.getIndex()) return 2;
         }
         return null;
     }
@@ -252,11 +256,17 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
             .addOutputHatch("1", TooltipHelper.anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
-            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bronze), false)
+            .addCasing(
+                "10",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Bronze)),
+                false)
             .addCasing("9", Casings.PrimitiveWoodenCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
-            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing(
+                "10",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)),
+                false)
             .addCasing("9", Casings.PrimitiveWoodenCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))

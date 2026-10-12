@@ -10,6 +10,12 @@ tasks.withType<Checkstyle>().configureEach {
     maxHeapSize = "1g"
 }
 
+// TEMPORARY (material unification): uncap javac's error limit so a full breaking-retype fan-out is
+// enumerable in one compile. Remove before the mu branch is finalized.
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.addAll(listOf("-Xmaxerrs", "10000"))
+}
+
 tasks.test.configure {
     useJUnitPlatform()
     testLogging {
@@ -79,6 +85,14 @@ tasks.assemble.configure {
 tasks.named<RunMinecraftTask>("runServer").configure {
     dependsOn(functionalTest.jarTaskName)
     classpath(configurations.named(functionalTest.runtimeClasspathConfigurationName), tasks.named(functionalTest.jarTaskName))
+    if (System.getProperty("gt.dumpMaterialData") != null) {
+        jvmArgs("-Dgt.dumpMaterialData=true")
+    }
+    // Forwarded for headless verification boots on a dev world whose FML registry misses items removed by
+    // material unification (RunMinecraftTask does not copy arbitrary -D flags from the Gradle JVM).
+    System.getProperty("fml.queryResult")?.let {
+        jvmArgs("-Dfml.queryResult=$it")
+    }
 }
 
 tasks.named<RunMinecraftTask>("runClient").configure {

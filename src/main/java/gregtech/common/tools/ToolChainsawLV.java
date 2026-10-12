@@ -17,12 +17,14 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialUtils;
 
 public class ToolChainsawLV extends ToolSaw {
 
@@ -125,14 +127,13 @@ public class ToolChainsawLV extends ToolSaw {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.Steel.mRGBa;
+        return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MaterialUtils.rgba(Materials.Steel);
     }
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadChainsaw
-                .getTextureIndex()]
+        return aIsToolHead ? GTMaterialIcons.item("toolHeadChainsaw", MetaGeneratedTool.getPrimaryMaterialML(aStack))
             : Textures.ItemIcons.POWER_UNIT_LV;
     }
 

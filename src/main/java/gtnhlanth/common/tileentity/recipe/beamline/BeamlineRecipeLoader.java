@@ -14,18 +14,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class BeamlineRecipeLoader {
 
@@ -42,30 +42,30 @@ public class BeamlineRecipeLoader {
          */
 
         coolantMap.put(
-            Materials.LiquidNitrogen.getGas(1L)
+            MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidGas, 1)
                 .getFluid()
                 .getName(),
-            Materials.Nitrogen.getGas(1L)
+            MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 1)
                 .getFluid());
         coolantMap.put(
-            Materials.LiquidOxygen.getGas(1L)
+            MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidGas, 1)
                 .getFluid()
                 .getName(),
-            Materials.Oxygen.getGas(1L)
+            MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1)
                 .getFluid());
         coolantMap.put("ic2coolant", FluidRegistry.getFluid("ic2hotcoolant"));
         coolantMap.put(
-            Materials.SuperCoolant.getFluid(1L)
+            MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 1)
                 .getFluid()
                 .getName(),
-            WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1_000)
+            MaterialLibAPI.getFluidStack(Materials.HotSuperCoolant, FluidShapes.fluidLiquid, 1_000)
                 .getFluid());
 
         /*
          * ELECTRON
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Tungsten, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Tungsten, Shapes.stick, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -79,7 +79,7 @@ public class BeamlineRecipeLoader {
             .addTo(sourceChamberRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.stickLong, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Shapes.stickLong, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -96,7 +96,7 @@ public class BeamlineRecipeLoader {
          * NEUTRON
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsElements.getInstance().CALIFORNIUM.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Californium, Shapes.dust, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -110,7 +110,7 @@ public class BeamlineRecipeLoader {
             .addTo(sourceChamberRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsElements.getInstance().BERYLLIUM.getLongRod(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Beryllium, Shapes.stickLong, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -127,8 +127,8 @@ public class BeamlineRecipeLoader {
          * ALPHA
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Uranium.getDust(1))
-            .itemOutputs(WerkstoffMaterialPool.Thorium234.get(OrePrefixes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Thorium234, Shapes.dust, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -145,7 +145,7 @@ public class BeamlineRecipeLoader {
          * PROTON
          */
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Hydrogen.getGas(1000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1000))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -162,8 +162,8 @@ public class BeamlineRecipeLoader {
          * OMEGA
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Unstable.getDust(1))
-            .itemOutputs(Materials.Ash.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Unstable, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 1))
             .outputChances(500)
             .metadata(
                 SOURCE_CHAMBER_METADATA,
@@ -256,7 +256,8 @@ public class BeamlineRecipeLoader {
                 focusItem,
                 GTUtility.copyAmountUnsafe(
                     MaskList.CSOC.getMaxUses(),
-                    WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1)))
+                    MaterialLibAPI
+                        .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.gemExquisite, 1)))
             .itemOutputs(
                 GTUtility.copyAmountUnsafe(64 * MaskList.CSOC.getMaxUses(), ItemList.Circuit_Chip_CrystalSoC.get(1)))
             .metadata(
@@ -277,7 +278,8 @@ public class BeamlineRecipeLoader {
                 focusItem,
                 GTUtility.copyAmountUnsafe(
                     MaskList.ACC.getMaxUses(),
-                    WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1)))
+                    MaterialLibAPI
+                        .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.gemExquisite, 1)))
             .itemOutputs(
                 GTUtility.copyAmountUnsafe(64 * MaskList.ACC.getMaxUses(), ItemList.Circuit_Chip_CrystalSoC2.get(1)))
             .metadata(

@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 public enum CustomItemList implements IItemContainer {
 
@@ -469,7 +469,7 @@ public enum CustomItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(aStack)) {
             return false;
         }
-        return GTUtility.areUnificationsEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
+        return GTUtility.areStacksEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
     }
 
     @Override
@@ -480,7 +480,7 @@ public enum CustomItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmount(aAmount, mStack);
     }
 
     @Override
@@ -491,7 +491,7 @@ public enum CustomItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, mStack);
     }
 
     @Override
@@ -502,7 +502,7 @@ public enum CustomItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, 0, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, 0, mStack);
     }
 
     @Override
@@ -513,7 +513,7 @@ public enum CustomItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, mStack);
     }
 
     @Override
@@ -544,7 +544,7 @@ public enum CustomItemList implements IItemContainer {
         if (GTUtility.isStackInvalid(mStack)) {
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, mStack);
     }
 
     @Override
@@ -553,7 +553,7 @@ public enum CustomItemList implements IItemContainer {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
         for (Object tOreName : aOreNames) {
-            GTOreDictUnificator.registerOre(tOreName, get(1));
+            OreDictUtils.registerOre(tOreName, get(1));
         }
         return this;
     }
@@ -564,7 +564,7 @@ public enum CustomItemList implements IItemContainer {
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         }
         for (Object tOreName : aOreNames) {
-            GTOreDictUnificator.registerOre(tOreName, getWildcard(1));
+            OreDictUtils.registerOre(tOreName, getWildcard(1));
         }
         return this;
     }

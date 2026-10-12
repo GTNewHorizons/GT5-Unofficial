@@ -19,8 +19,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_AC
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_GLOW;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasing;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasingAdvanced;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
+import static gregtech.api.util.GTStructureUtility.ofStorageBlock;
 import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
@@ -63,24 +66,24 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
-import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -263,14 +266,14 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
                 }
             ))
-        .addElement('a', lazy(()->ofSheetMetal(GGMaterial.preciousMetalAlloy)))
+        .addElement('a', lazy(()->ofSheetMetal(Materials.PreciousMetalsAlloy)))
         .addElement('b', ofBlock(GregTechAPI.sBlockCasings10, 13))
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings10, 14))
         .addElement('d', ofFrame(Materials.Erbium))
         .addElement('e', ofBlock(GregTechAPI.sBlockCasingsFoundry,8))
         .addElement('f', ofSheetMetal(Materials.Erbium))
-        .addElement('g',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
-        .addElement('h',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
+        .addElement('g', ofBlockCasingAdvanced(Materials.PreciousMetalsAlloy))
+        .addElement('h', ofBlockCasing(Materials.PreciousMetalsAlloy))
         .addShape(
             FoundryModule.POWER_EFFICIENT_SUBSYSTEMS.structureID,
             transpose(
@@ -308,7 +311,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('s', ofBlock(GregTechAPI.sBlockGlass1,3))
         .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
         .addElement('u', ofSheetMetal(Materials.CallistoIce))
-        .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
+        .addElement('v', ofSheetMetal(Materials.Longasssuperconductornameforuhvwire))
         .addElement(
             'w',
             lazy(
@@ -369,12 +372,12 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('Q', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
         .addElement('R', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
         .addElement('S', ofFrame(Materials.Universium))
-        .addElement('T', ofFrame(Materials.MHDCSM))
+        .addElement('T', ofFrame(Materials.MagnetohydrodynamicallyConstrainedStarMatter))
         .addElement('U', ofFrame(Materials.WhiteDwarfMatter))
         .addElement('V', ofFrame(Materials.BlackDwarfMatter))
-        .addElement('W', ofBlock(GregTechAPI.sBlockMetal9, 6))
-        .addElement('X',ofBlock(GregTechAPI.sBlockMetal9, 7))
-        .addElement('Y',ofBlock(GregTechAPI.sBlockMetal9, 13))
+        .addElement('W', ofStorageBlock(Materials.WhiteDwarfMatter))
+        .addElement('X',ofStorageBlock(Materials.BlackDwarfMatter))
+        .addElement('Y',ofStorageBlock(Materials.MagnetohydrodynamicallyConstrainedStarMatter))
         .addElement('Z', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
         .addShape(
             FoundryModule.UNSET.structureID,
@@ -1107,20 +1110,20 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     // data class
     public static class CoolingFluid {
 
-        public Materials material;
+        public Material material;
         public int grantedOC;
         public int amount;
 
-        public CoolingFluid(Materials material, int grantedOC, int amount) {
+        public CoolingFluid(Material material, int grantedOC, int amount) {
             this.material = material;
             this.grantedOC = grantedOC;
             this.amount = amount;
         }
 
         public FluidStack getStack() {
-            FluidStack stack = material.getFluid(amount);
+            FluidStack stack = MaterialUtils.fluid(material, amount);
             if (stack == null) {
-                return material.getMolten(amount);
+                return MaterialUtils.molten(material, amount);
             }
             return stack;
         }

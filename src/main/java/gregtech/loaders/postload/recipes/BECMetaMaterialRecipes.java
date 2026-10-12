@@ -8,19 +8,19 @@ import static gregtech.api.util.GTRecipeConstants.NANITE_TIERS;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import bartworks.system.material.Werkstoff;
-import goodgenerator.items.GGMaterial;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialsElements;
 import tectech.recipe.TecTechRecipeMaps;
 
 /// BEC Meta Material recipes
@@ -38,18 +38,18 @@ public class BECMetaMaterialRecipes implements Runnable {
     private static final int[] baseAmounts = { 1, 2, 4, 8 };
     private static final int baseDuration = 300 * SECONDS;
 
-    private static final Materials[] other3Tier = { Materials.ProtoHalkonite, Materials.Hexanite, Materials.MHDCSM };
-    private static final Object[] black3Tier = { GGMaterial.tairitsu, Materials.TranscendentMetal,
+    private static final Material[] other3Tier = { Materials.protohalkonite, Materials.Hexanite,
+        Materials.MagnetohydrodynamicallyConstrainedStarMatter };
+    private static final Material[] black3Tier = { Materials.Tairitsu, Materials.TranscendentMetal,
         Materials.BlackDwarfMatter };
-    private static final Materials[] gray3Tier = { Materials.Churitsu, Materials.SpaceTime, Materials.Eternity };
-    private static final Materials[] white3Tier = { Materials.Shijima, Materials.WhiteDwarfMatter,
-        Materials.MagMatter };
+    private static final Material[] gray3Tier = { Materials.Churitsu, Materials.SpaceTime, Materials.Eternity };
+    private static final Material[] white3Tier = { Materials.Shijima, Materials.WhiteDwarfMatter, Materials.Magmatter };
 
-    private static final Object[] black4Tier = { GGMaterial.tairitsu, MaterialsElements.STANDALONE.HYPOGEN,
-        GGMaterial.shirabon, Materials.SpaceTime };
-    private static final Materials[] gray4Tier = { Materials.Churitsu, Materials.WhiteDwarfMatter,
-        Materials.BlackDwarfMatter, Materials.MHDCSM };
-    private static final Materials[] white4Tier = { Materials.Shijima, Materials.ProtoHalkonite, Materials.Hexanite,
+    private static final Material[] black4Tier = { Materials.Tairitsu, Materials.Hypogen, Materials.Shirabon,
+        Materials.SpaceTime };
+    private static final Material[] gray4Tier = { Materials.Churitsu, Materials.WhiteDwarfMatter,
+        Materials.BlackDwarfMatter, Materials.MagnetohydrodynamicallyConstrainedStarMatter };
+    private static final Material[] white4Tier = { Materials.Shijima, Materials.protohalkonite, Materials.Hexanite,
         Materials.Eternity };
 
     private static final int[] chromatic4TierAmts = { 8, 12, 16, 24 };
@@ -83,9 +83,9 @@ public class BECMetaMaterialRecipes implements Runnable {
             ItemStack[] inputs = {
                 GTModHandler
                     .getModItem(NewHorizonsCoreMod.ID, "IrradiantReinforcedBedrockiumPlate", baseAmounts[t + 1]),
-                GTOreDictUnificator.get(OrePrefixes.foil, other3Tier[t], 4), platePart(black3Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.screw, gray3Tier[t], 8),
-                GTOreDictUnificator.get(OrePrefixes.bolt, white3Tier[t], 8) };
+                MaterialLibAPI.getStack(other3Tier[t], Shapes.foil, 4), platePart(black3Tier[t], 1),
+                MaterialLibAPI.getStack(gray3Tier[t], Shapes.screw, 8),
+                MaterialLibAPI.getStack(white3Tier[t], Shapes.bolt, 8) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
 
@@ -106,8 +106,8 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 3; t++) {
             ItemStack[] inputs = { coils[t].get(1L), longRodPart(other3Tier[t], 1), fineWirePart(black3Tier[t], 8),
-                GTOreDictUnificator.get(OrePrefixes.foil, gray3Tier[t], 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, white3Tier[t], 8) };
+                MaterialLibAPI.getStack(gray3Tier[t], Shapes.foil, 4),
+                MaterialLibAPI.getStack(white3Tier[t], Shapes.screw, 8) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
             final CondensateType[] becCondensates;
@@ -128,8 +128,8 @@ public class BECMetaMaterialRecipes implements Runnable {
         // 3-tier UIV/UMV/UXV 300s. Nanites: T4 T1 T1 T3 T1, +2 per tier
         ItemList[] outputs = { ItemList.MetaMaterial_EnergyConduit1, ItemList.MetaMaterial_EnergyConduit2,
             ItemList.MetaMaterial_EnergyConduit3 };
-        ItemStack[] superconductors = { GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 1),
-            GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 1),
+        ItemStack[] superconductors = { MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt04, 1),
+            MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt04, 1),
             ItemList.Thermal_Superconductor.get(1) };
         int[] chromaticAmts = { 4, 8, 16 };
         int[] transcendentMetalAmts = { 0, 2, 4 };
@@ -137,8 +137,8 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 3; t++) {
             ItemStack[] inputs = { superconductors[t], rodPart(other3Tier[t], 2), foilPart(black3Tier[t], 4),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, gray3Tier[t], 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, white3Tier[t], 8) };
+                MaterialLibAPI.getStack(gray3Tier[t], Shapes.itemCasing, 2),
+                MaterialLibAPI.getStack(white3Tier[t], Shapes.screw, 8) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
             final CondensateType[] becCondensates;
@@ -165,9 +165,9 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 3; t++) {
             ItemStack[] inputs = { GTModHandler.getModItem(Railcraft.ID, "machine.eta", baseAmounts[t + 1], 8),
-                GTOreDictUnificator.get(OrePrefixes.ring, other3Tier[t], 2), foilPart(black3Tier[t], 4),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, gray3Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.round, white3Tier[t], 9) };
+                MaterialLibAPI.getStack(other3Tier[t], Shapes.ring, 2), foilPart(black3Tier[t], 4),
+                MaterialLibAPI.getStack(gray3Tier[t], Shapes.gearGtSmall, 1),
+                MaterialLibAPI.getStack(white3Tier[t], Shapes.round, 9) };
             NaniteTier[] nanites = { nanite(4 + 2 * t), nanite(1 + 2 * t), nanite(1 + 2 * t), nanite(3 + 2 * t),
                 nanite(1 + 2 * t) };
 
@@ -203,8 +203,8 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 4; t++) {
             ItemStack[] inputs = { ItemList.Gravitational_Lens.get(1), ringPart(black4Tier[t], 2),
-                GTOreDictUnificator.get(OrePrefixes.ring, gray4Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.screw, white4Tier[t], 2) };
+                MaterialLibAPI.getStack(gray4Tier[t], Shapes.ring, 1),
+                MaterialLibAPI.getStack(white4Tier[t], Shapes.screw, 2) };
             reg4Tier(outputs, inputs, euts, t);
         }
     }
@@ -219,7 +219,7 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 4; t++) {
             ItemStack[] inputs = { emitters[t].get(2), rodPart(black4Tier[t], 2), foilPart(gray4Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, white4Tier[t], 1) };
+                MaterialLibAPI.getStack(white4Tier[t], Shapes.plate, 1) };
             reg4Tier(outputs, inputs, euts, t);
         }
     }
@@ -233,8 +233,8 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 4; t++) {
             ItemStack[] inputs = { sensors[t].get(2), platePart(black4Tier[t], 2),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, gray4Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.bolt, white4Tier[t], 16) };
+                MaterialLibAPI.getStack(gray4Tier[t], Shapes.itemCasing, 1),
+                MaterialLibAPI.getStack(white4Tier[t], Shapes.bolt, 16) };
             reg4Tier(outputs, inputs, euts, t);
         }
     }
@@ -249,8 +249,8 @@ public class BECMetaMaterialRecipes implements Runnable {
 
         for (int t = 0; t < 4; t++) {
             ItemStack[] inputs = { fieldGens[t].get(1), longRodPart(black4Tier[t], 2),
-                GTOreDictUnificator.get(OrePrefixes.ring, gray4Tier[t], 1),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, white4Tier[t], 2) };
+                MaterialLibAPI.getStack(gray4Tier[t], Shapes.ring, 1),
+                MaterialLibAPI.getStack(white4Tier[t], Shapes.plateDouble, 2) };
             reg4Tier(outputs, inputs, euts, t);
         }
     }
@@ -283,47 +283,27 @@ public class BECMetaMaterialRecipes implements Runnable {
             .addTo(TecTechRecipeMaps.condensateAssemblingRecipes);
     }
 
-    // Material-type adapters: Werkstoff / Materials / gtPlusPlus Material
-
-    private static ItemStack platePart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.plate, amount);
-        if (material instanceof Materials m) return GTOreDictUnificator.get(OrePrefixes.plate, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getPlate(amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack platePart(Material material, int amount) {
+        return MaterialLibAPI.getStack(material, Shapes.plate, amount);
     }
 
-    private static ItemStack foilPart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.foil, amount);
-        if (material instanceof Materials m) return GTOreDictUnificator.get(OrePrefixes.foil, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getFoil(amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack foilPart(Material material, int amount) {
+        return MaterialLibAPI.getStack(material, Shapes.foil, amount);
     }
 
-    private static ItemStack fineWirePart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.wireFine, amount);
-        if (material instanceof Materials m) return GTOreDictUnificator.get(OrePrefixes.wireFine, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getFineWire(amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack fineWirePart(Material material, int amount) {
+        return MaterialLibAPI.getStack(material, Shapes.wireFine, amount);
     }
 
-    private static ItemStack ringPart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.ring, amount);
-        if (material instanceof Materials m) return GTOreDictUnificator.get(OrePrefixes.ring, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getRing(amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack ringPart(Material material, int amount) {
+        return MaterialLibAPI.getStack(material, Shapes.ring, amount);
     }
 
-    private static ItemStack rodPart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.stick, amount);
-        if (material instanceof Materials m) return GTOreDictUnificator.get(OrePrefixes.stick, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getRod(amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack rodPart(Material material, int amount) {
+        return MaterialLibAPI.getStack(material, Shapes.stick, amount);
     }
 
-    private static ItemStack longRodPart(Object material, int amount) {
-        if (material instanceof Werkstoff w) return w.get(OrePrefixes.stickLong, amount);
-        if (material instanceof Materials m) return GTOreDictUnificator.get(OrePrefixes.stickLong, m, amount);
-        if (material instanceof gtPlusPlus.core.material.Material m) return m.getLongRod(amount);
-        throw new IllegalArgumentException("Unsupported material kind: " + material);
+    private static ItemStack longRodPart(Material material, int amount) {
+        return MaterialLibAPI.getStack(material, Shapes.stickLong, amount);
     }
 }

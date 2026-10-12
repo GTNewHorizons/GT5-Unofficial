@@ -1,36 +1,71 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.IntFunction;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.ItemStack;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
+import com.gtnewhorizons.postea.api.IBlockTransformationHandler;
 import com.gtnewhorizons.postea.api.IDExtenderCompat;
+import com.gtnewhorizons.postea.api.IItemStackTransformationHandler;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.common.blocks.BlockFrameBox;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.MaterialParts;
+import gregtech.common.blocks.FrameShapeBlock;
+import gregtech.common.blocks.PipeShapeBlock;
+import gregtech.common.items.MetaGeneratedItem98;
+import gregtech.crossmod.forgemultipart.MicroblockMaterials;
+import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
 
 public class PosteaTransformers implements Runnable {
 
-    // Offset from WerkstoffMaterialPool
+    // Legacy bartworks werkstoff id offset (see LegacyWerkstoffIndex)
     private static final int OFFSET_ID_3 = 11_300;
     private static final int[] WERKSTOFFS_REMOVED_IN_2_9 = new int[] { OFFSET_ID_3, OFFSET_ID_3 + 2, OFFSET_ID_3 + 6,
         OFFSET_ID_3 + 7, OFFSET_ID_3 + 8, OFFSET_ID_3 + 11, OFFSET_ID_3 + 12 };
 
+    /// Every legacy block/item registry name a transformer is registered for, collected by the
+    /// `addBlockTransformer`/`addBlockReplacement`/`addItemTransformer`/`addItemReplacement` wrappers. Legacy names
+    /// register only through those wrappers, never through the Postea managers directly, so every transformed name
+    /// is also claimed by [#claimMissingMappings].
+    private static final Set<String> transformedIds = new LinkedHashSet<>();
+
     @Override
     public void run() {
+        validateCutoverTables();
         registerFrameboxTransformers();
         registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
@@ -38,21 +73,585 @@ public class PosteaTransformers implements Runnable {
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
         registerBartworksLabPartTransformer();
+        registerMaterialLibCutoverTransformers();
+        if (Mods.ForgeMicroblocks.isModLoaded()) remapLegacyMicroblockMaterials();
+        claimMissingMappings();
     }
 
-    private static NBTTagCompound passthrough(NBTTagCompound tag) {
-        return tag;
+    /// Claims the FML missing mapping of every legacy registry name a transformer was registered for. Without
+    /// the claim FML discards the saved id before Postea's chunk and stack passes run.
+    ///
+    /// [BlockReplacementManager#ignoreMissingMapping] and [ItemStackReplacementManager#ignoreMissingMapping] feed one
+    /// shared ignore set, so a single call covers both the block and the item leg of a name.
+    private static void claimMissingMappings() {
+        for (String legacyId : transformedIds) {
+            BlockReplacementManager.ignoreMissingMapping(legacyId);
+        }
+        GT_FML_LOGGER.debug("PosteaTransformers: claimed missing mappings for {} legacy ids", transformedIds.size());
+    }
+
+    static void addBlockTransformer(String legacyId, IBlockTransformationHandler handler) {
+        transformedIds.add(legacyId);
+        BlockReplacementManager.addTransformationHandler(legacyId, handler);
+    }
+
+    private static void addBlockReplacement(String legacyId, Block block, int newMeta) {
+        transformedIds.add(legacyId);
+        BlockReplacementManager.addSimpleReplacement(legacyId, block, newMeta);
+    }
+
+    private static void addBlockReplacement(String legacyId, int legacyMeta, Block block, int newMeta) {
+        transformedIds.add(legacyId);
+        BlockReplacementManager.addSimpleReplacement(legacyId, legacyMeta, block, newMeta);
+    }
+
+    static void addItemTransformer(String legacyId, IItemStackTransformationHandler handler) {
+        transformedIds.add(legacyId);
+        ItemStackReplacementManager.addTransformationHandler(legacyId, handler);
+    }
+
+    private static void addItemReplacement(String legacyId, ItemStack stack) {
+        transformedIds.add(legacyId);
+        ItemStackReplacementManager.addSimpleReplacement(legacyId, stack);
+    }
+
+    private static void addItemReplacement(String legacyId, ItemStack stack, boolean skipBlockRemap) {
+        transformedIds.add(legacyId);
+        ItemStackReplacementManager.addSimpleReplacement(legacyId, stack, skipBlockRemap);
+    }
+
+    private static void addItemReplacement(String legacyId, Item item, boolean skipBlockRemap) {
+        transformedIds.add(legacyId);
+        ItemStackReplacementManager.addSimpleReplacement(legacyId, item, skipBlockRemap);
+    }
+
+    private static void addItemReplacement(String legacyId, int legacyMeta, Item item, int newMeta) {
+        transformedIds.add(legacyId);
+        ItemStackReplacementManager.addSimpleReplacement(legacyId, legacyMeta, item, newMeta);
+    }
+
+    /// Logs the gtPlusPlus item and ore, foreign part and pipe cutover rows that do not resolve to a MaterialLib
+    /// stack or block. Every row is expected to resolve. A row that deliberately never resolves is documented as
+    /// such in its table's javadoc.
+    private static void validateCutoverTables() {
+        List<String> unresolved = new ArrayList<>();
+
+        for (Entry entry : GtppItemCutoverTable.ENTRIES) {
+            if (resolveGtppCutoverStack(entry) == null) unresolved.add(entry.registryName());
+        }
+        for (GtppOreCutoverTable.Entry entry : GtppOreCutoverTable.ENTRIES) {
+            if (resolveGtppOreCutoverStack(entry) == null) unresolved.add(entry.registryName());
+        }
+        for (ForeignPartTable.Entry entry : ForeignPartTable.ENTRIES) {
+            if (resolveForeignPartStack(entry) == null) unresolved.add(entry.registryName() + "@" + entry.meta());
+        }
+        for (Map.Entry<Integer, LegacyPipeCutoverTable.Entry> row : LegacyPipeCutoverTable.entries()
+            .entrySet()) {
+            LegacyPipeCutoverTable.Entry entry = row.getValue();
+            if (MaterialLibAPI.getBlock(entry.shape()) == null || !entry.material()
+                .hasShape(entry.shape())) {
+                unresolved.add(
+                    "pipe MTE id " + row.getKey()
+                        + " ("
+                        + entry.material()
+                            .getName()
+                        + " "
+                        + entry.shape()
+                            .getName()
+                        + ")");
+            }
+        }
+
+        if (!unresolved.isEmpty()) {
+            GT_FML_LOGGER.error(
+                "PosteaTransformers: {} cutover rows no longer resolve: {}",
+                unresolved.size(),
+                unresolved.subList(0, Math.min(unresolved.size(), MAX_REPORTED_UNRESOLVED_ROWS)));
+        }
+    }
+
+    private static final int MAX_REPORTED_UNRESOLVED_ROWS = 50;
+
+    /// Registers the transformers that migrate saved legacy material parts, blocks, pipes and cells onto their
+    /// MaterialLib equivalents. The material parts of `gt.metaitem.01/02/03` (below damage 32000) and the
+    /// `gt.metaitem.99` molten and cracked cells decode through [LegacyMetaItemTable]. Hand-listed custom parts
+    /// (damage 32000 and up on `metaitem.01/02/03`) pass through unchanged.
+    private void registerMaterialLibCutoverTransformers() {
+        registerMetaItemCutoverTransformer("gt.metaitem.01");
+        registerMetaItemCutoverTransformer("gt.metaitem.02");
+        registerMetaItemCutoverTransformer("gt.metaitem.03");
+        registerMetaItem99CutoverTransformer();
+        registerStorageBlockCutoverTransformers();
+        registerFrameAndSheetmetalCutoverTransformers();
+        registerWerkstoffItemCutoverTransformers();
+        registerGtppItemCutoverTransformers();
+        registerGtppCarryoverCellTransformers();
+        registerGtppOreCutoverTransformers();
+        registerForeignPartTransformers();
+        registerGtppFrameCutoverTransformers();
+        registerPipeCutoverTransformers();
+        registerEmptyCellCutoverTransformer();
+        registerIC2FilledCellCutoverTransformers();
+        registerGtppIC2CellCutoverTransformers();
+        registerRailcraftCreosoteCellCutoverTransformer();
+        registerIC2ItemCasingCutoverTransformers();
+        registerGtppThermalDustCutoverTransformers();
+        LegacyOreTransformers.register();
+    }
+
+    /// Migrates saved IC2 item casings (`IC2:itemCasing`, metas 0-6) onto the MaterialLib casing of the same
+    /// material. The IC2 item stays registered, so the handlers run on its live id.
+    private static void registerIC2ItemCasingCutoverTransformers() {
+        Material[] materials = { Materials.Copper, Materials.Tin, Materials.Bronze, Materials.Gold, Materials.Iron,
+            Materials.Steel, Materials.Lead };
+        for (int meta = 0; meta < materials.length; meta++) {
+            ItemStack cutover = MaterialLibAPI.getStack(materials[meta], Shapes.itemCasing, 1);
+            addItemReplacement("IC2:itemCasing", meta, cutover.getItem(), cutover.getItemDamage());
+        }
+    }
+
+    /// Migrates the Blizz, Pyrotheum and Cryotheum dusts gtPlusPlus minted on its Thermal Foundation material item
+    /// (`miscutils:material`, metas 2-4) onto the MaterialLib dusts. Meta 1, the Blizz rod, keeps its item.
+    private static void registerGtppThermalDustCutoverTransformers() {
+        remapGtppThermalDust(2, Materials.Blizz);
+        remapGtppThermalDust(3, Materials.Pyrotheum);
+        remapGtppThermalDust(4, Materials.Cryotheum);
+    }
+
+    private static void remapGtppThermalDust(int meta, Material material) {
+        ItemStack cutover = MaterialLibAPI.getStack(material, Shapes.dust, 1);
+        addItemReplacement("miscutils:material", meta, cutover.getItem(), cutover.getItemDamage());
+    }
+
+    /// Migrates saved IC2 empty cells (`IC2:itemCellEmpty`) onto the gregtech-owned empty cell every cell shape
+    /// drains to ([ItemList#Cell_Empty]). Keyed on meta 0 alone. The filled cells sharing that id migrate through
+    /// [#registerIC2FilledCellCutoverTransformers] and [#registerGtppIC2CellCutoverTransformers].
+    private static void registerEmptyCellCutoverTransformer() {
+        ItemStack cutover = ItemList.Cell_Empty.get(1);
+        if (cutover == null) {
+            throw new IllegalStateException("The empty cell item is not registered");
+        }
+        addItemReplacement("IC2:itemCellEmpty", 0, cutover.getItem(), cutover.getItemDamage());
+    }
+
+    /// Migrates IC2's filled cells (`IC2:itemCellEmpty` metas 1-14) onto the equivalent gregtech cells: MaterialLib
+    /// cells, and [MetaGeneratedItem98.FluidCell#STEAM] for steam. Air is lossy, since the IC2 cell holds 2000 mB and
+    /// the MaterialLib cell 1000 mB. The meta-15 remap in [#registerGtppIC2CellCutoverTransformers] takes the same
+    /// halving.
+    private static void registerIC2FilledCellCutoverTransformers() {
+        remapIC2Cell(1, Materials.Water);
+        remapIC2Cell(2, Materials.Lava);
+        remapIC2Cell(3, Materials.UUMatter);
+        remapIC2Cell(4, Materials.ConstructionFoam);
+        remapIC2Cell(5, Materials.Air);
+        remapIC2Cell(6, Materials.IC2Biomass);
+        remapIC2Cell(7, Materials.Biogas);
+        remapIC2Cell(9, Materials.Coolant);
+        remapIC2Cell(10, Materials.HotCoolant);
+        remapIC2Cell(11, Materials.PahoehoeLava);
+        remapIC2Cell(12, Materials.DistilledWater);
+        remapIC2Cell(13, Materials.SuperheatedSteam);
+        ItemStack steam = MetaGeneratedItem98.FluidCell.STEAM.get();
+        addItemReplacement("IC2:itemCellEmpty", 14, steam.getItem(), steam.getItemDamage());
+    }
+
+    /// Migrates Railcraft's creosote cell, which drains into an IC2 empty cell, onto the MaterialLib creosote cell.
+    private static void registerRailcraftCreosoteCellCutoverTransformer() {
+        ItemStack cutover = MaterialParts.cell(Materials.Creosote, 1);
+        if (cutover == null) {
+            throw new IllegalStateException("No MaterialLib cell stack for the Railcraft creosote cell cutover");
+        }
+        addItemReplacement("Railcraft:fluid.creosote.cell", 0, cutover.getItem(), cutover.getItemDamage());
+    }
+
+    private static void remapIC2Cell(int meta, Material material) {
+        ItemStack cutover = MaterialParts.cell(material, 1);
+        if (cutover == null) {
+            throw new IllegalStateException(
+                "No MaterialLib cell stack for the IC2 cell cutover of " + material.getName());
+        }
+        addItemReplacement("IC2:itemCellEmpty", meta, cutover.getItem(), cutover.getItemDamage());
+    }
+
+    /// Migrates the filled cells gtPlusPlus registered on IC2's cell item (metas 15-20) onto the MaterialLib cells of
+    /// the same fluids.
+    private static void registerGtppIC2CellCutoverTransformers() {
+        remapIC2Cell(15, Materials.IndustrialStrengthHydrofluoricAcid);
+        remapIC2Cell(16, Materials.SulfurousAcid);
+        remapIC2Cell(17, Materials.SulfuricApatiteMix);
+        remapIC2Cell(18, Materials.IndustrialStrengthHydrogenChloride);
+        remapIC2Cell(19, Materials.SulfuricLithiumMix);
+        remapIC2Cell(20, Materials.LithiumHydroxide);
+    }
+
+    /// Migrates saved per-material wire, cable, fluid pipe and item pipe MTEs (see [LegacyPipeCutoverTable]) onto
+    /// the shape's [PipeShapeBlock], with the MaterialLib material index as meta. Placed pipes keep their tile entity
+    /// with `mID` rewritten to the shape's MTE id. The rest of the tag (connections, covers, paint, stored
+    /// fluids/items) carries over untouched. Inventory stacks (`gt.blockmachines`, damage = MTE id) become the shape
+    /// block's item at the material index. Ids outside the table pass through to the other `BaseMetaPipeEntity` and
+    /// `gt.blockmachines` handlers unchanged.
+    private static void registerPipeCutoverTransformers() {
+        Map<Integer, LegacyPipeCutoverTable.Entry> table = LegacyPipeCutoverTable.entries();
+
+        TileEntityReplacementManager.tileEntityTransformer("BaseMetaPipeEntity", (tag, world, chunk) -> {
+            LegacyPipeCutoverTable.Entry entry = table.get(tag.getInteger("mID"));
+            if (entry == null) return null;
+            PipeShapeBlock shapeBlock = (PipeShapeBlock) MaterialLibAPI.getBlock(entry.shape());
+            return new BlockInfo(
+                shapeBlock,
+                entry.material()
+                    .getIndex(),
+                pipeTag -> {
+                    pipeTag.setInteger("mID", shapeBlock.getMteId());
+                    return pipeTag;
+                });
+        });
+
+        addItemTransformer("gregtech:gt.blockmachines", (originalId, tag) -> {
+            LegacyPipeCutoverTable.Entry entry = table.get(tag.getInteger("Damage"));
+            if (entry == null) return false;
+            Item shapeItem = Item.getItemFromBlock(MaterialLibAPI.getBlock(entry.shape()));
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(shapeItem));
+            tag.setShort(
+                "Damage",
+                (short) entry.material()
+                    .getIndex());
+            return true;
+        });
+
+        GT_FML_LOGGER
+            .debug("PosteaTransformers: registered pipe-family transformers for {} legacy MTE ids", table.size());
+    }
+
+    /// Migrates saved placed and inventory gtPlusPlus ore blocks (`BlockBaseOre`, one registered block per material)
+    /// into the material's MaterialLib [OreShapes#ore] stack, through [GtppOreCutoverTable]'s rows. A material
+    /// without the `ore` shape is left on its legacy slot.
+    private static void registerGtppOreCutoverTransformers() {
+        for (GtppOreCutoverTable.Entry entry : GtppOreCutoverTable.ENTRIES) {
+            addItemTransformer(entry.registryName(), (originalId, tag) -> {
+                ItemStack cutover = resolveGtppOreCutoverStack(entry);
+                if (cutover == null) return false;
+                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+                tag.setShort("Damage", (short) cutover.getItemDamage());
+                return true;
+            });
+
+            addBlockTransformer(entry.registryName(), info -> {
+                ItemStack cutover = resolveGtppOreCutoverStack(entry);
+                if (cutover == null) return false;
+                info.blockID = Block.getIdFromBlock(Block.getBlockFromItem(cutover.getItem()));
+                info.metadata = cutover.getItemDamage();
+                return true;
+            });
+        }
+        GT_FML_LOGGER.debug(
+            "PosteaTransformers: registered gtpp ore transformers for {} legacy blocks",
+            GtppOreCutoverTable.ENTRIES.length);
+    }
+
+    private static ItemStack resolveGtppOreCutoverStack(GtppOreCutoverTable.Entry entry) {
+        Material ml = MaterialLibAPI.getMaterial("gregtech", entry.unlocalizedName());
+        if (ml == null || !ml.hasShape(OreShapes.ore)) return null;
+        return MaterialLibAPI.getStack(ml, OreShapes.ore, 1);
+    }
+
+    /// Migrates saved placed blocks and inventory stacks of a gtPlusPlus per-material frame block
+    /// (`miscutils:blockFrameGt<Name>`, one distinct registered block per material at meta 0) into the
+    /// equivalent MaterialLib `frameGt` shape stack. The material is fixed by the registry name rather than by
+    /// a damage value, so each of [GtppFrameCutoverTable]'s materials gets its own registration.
+    /// A material whose frame shape did not generate is left on its legacy slot.
+    private static void registerGtppFrameCutoverTransformers() {
+        Material[] materials = GtppFrameCutoverTable.materials();
+        int count = 0;
+        for (Material material : materials) {
+            if (!material.hasShape(TEBlockShapes.frameGt)) continue;
+            ItemStack cutover = MaterialLibAPI.getStack(material, TEBlockShapes.frameGt, 1);
+            String legacyId = "miscutils:blockFrameGt" + material.getName();
+            Block mlBlock = Block.getBlockFromItem(cutover.getItem());
+            addBlockReplacement(legacyId, 0, mlBlock, cutover.getItemDamage());
+            count++;
+        }
+        GT_FML_LOGGER.debug("PosteaTransformers: registered gtpp frame transformers for {} legacy blocks", count);
+    }
+
+    /// Migrates saved gtPlusPlus per-material part stacks (`miscutils:item*`/`miscutils:block*`, one distinct
+    /// registered item/block per (material, prefix), always damage 0) into the equivalent MaterialLib stack,
+    /// resolved through [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows. `cell` rows
+    /// resolve through [MaterialParts#cell] instead of plain [MaterialParts#stack]. Frames migrate through
+    /// [#registerGtppFrameCutoverTransformers]. `block` rows also get a [BlockReplacementManager] handler for placed
+    /// instances. A row whose material carries no shape for its prefix is left on its legacy slot.
+    private static void registerGtppItemCutoverTransformers() {
+        for (Entry entry : GtppItemCutoverTable.ENTRIES) {
+            addItemTransformer(entry.registryName(), (originalId, tag) -> {
+                ItemStack cutover = resolveGtppCutoverStack(entry);
+                if (cutover == null) return false;
+                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+                tag.setShort("Damage", (short) cutover.getItemDamage());
+                return true;
+            });
+            if (entry.prefix() == OrePrefixes.block) {
+                addBlockTransformer(entry.registryName(), info -> {
+                    ItemStack cutover = resolveGtppCutoverStack(entry);
+                    if (cutover == null) return false;
+                    info.blockID = Block.getIdFromBlock(Block.getBlockFromItem(cutover.getItem()));
+                    info.metadata = cutover.getItemDamage();
+                    return true;
+                });
+            }
+        }
+        GT_FML_LOGGER.debug(
+            "PosteaTransformers: registered gtpp item transformers for {} legacy items",
+            GtppItemCutoverTable.ENTRIES.length);
+    }
+
+    /// Migrates saved stacks of other mods' parts that GregTech unifies onto a MaterialLib pair into that pair's
+    /// stack, resolved through [ForeignPartTable]'s pinned (registry name, damage, prefix, material) rows.
+    private static void registerForeignPartTransformers() {
+        Map<String, Map<Integer, ForeignPartTable.Entry>> rowsByItem = new HashMap<>();
+        for (ForeignPartTable.Entry entry : ForeignPartTable.ENTRIES) {
+            rowsByItem.computeIfAbsent(entry.registryName(), k -> new HashMap<>())
+                .put(entry.meta(), entry);
+        }
+        rowsByItem.forEach((registryName, rows) -> addItemTransformer(registryName, (originalId, tag) -> {
+            ForeignPartTable.Entry entry = rows.get(tag.getInteger("Damage"));
+            if (entry == null) return false;
+            ItemStack target = resolveForeignPartStack(entry);
+            if (target == null) return false;
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(target.getItem()));
+            tag.setShort("Damage", (short) target.getItemDamage());
+            return true;
+        }));
+    }
+
+    private static ItemStack resolveForeignPartStack(ForeignPartTable.Entry entry) {
+        return MaterialParts.stack(entry.prefix(), MaterialLibAPI.getMaterial("gregtech", entry.materialName()), 1);
+    }
+
+    private static ItemStack resolveGtppCutoverStack(Entry entry) {
+        Material material = MaterialLibAPI.getMaterial("gregtech", entry.materialName());
+        if (entry.prefix() == OrePrefixes.cell) {
+            return MaterialParts.cell(material, 1);
+        }
+        return MaterialParts.stack(entry.prefix(), material, 1);
+    }
+
+    /// Migrates the gtPlusPlus cells (`miscutils:itemCell<Name>`) that [GtppItemCutoverTable] holds no row for onto
+    /// the material's [MaterialParts#cell] stack, as every other gtPlusPlus cell resolves.
+    private static void registerGtppCarryoverCellTransformers() {
+        registerGtppCarryoverCellTransformer("Iodine");
+        registerGtppCarryoverCellTransformer("ThoriumTetrafluoride");
+        registerGtppCarryoverCellTransformer("ZirconiumTetrafluoride");
+        registerGtppCarryoverCellTransformer("Xenon");
+        registerGtppCarryoverCellTransformer("Neon");
+        registerGtppCarryoverCellTransformer("Krypton");
+    }
+
+    private static void registerGtppCarryoverCellTransformer(String materialName) {
+        Material material = MaterialLibAPI.getMaterial("gregtech", materialName);
+        ItemStack cutover = MaterialParts.cell(material, 1);
+        if (cutover == null) {
+            throw new IllegalStateException("No MaterialLib cell stack for carryover material " + materialName);
+        }
+        addItemReplacement("miscutils:itemCell" + materialName, cutover);
+    }
+
+    /// The part prefixes the legacy bartworks meta items covered, one item each, registered as
+    /// `bartworks:gt.bwMetaGenerated<prefix>`.
+    private static final OrePrefixes[] LEGACY_WERKSTOFF_ITEM_PREFIXES = { OrePrefixes.dust, OrePrefixes.dustTiny,
+        OrePrefixes.dustSmall, OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget, OrePrefixes.gem,
+        OrePrefixes.gemChipped, OrePrefixes.gemExquisite, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless,
+        OrePrefixes.lens, OrePrefixes.crushed, OrePrefixes.crushedPurified, OrePrefixes.crushedCentrifuged,
+        OrePrefixes.dustPure, OrePrefixes.dustImpure, OrePrefixes.rawOre, OrePrefixes.cell, OrePrefixes.cellPlasma,
+        OrePrefixes.plate, OrePrefixes.foil, OrePrefixes.stick, OrePrefixes.stickLong, OrePrefixes.toolHeadWrench,
+        OrePrefixes.toolHeadHammer, OrePrefixes.toolHeadSaw, OrePrefixes.turbineBlade, OrePrefixes.gearGt,
+        OrePrefixes.gearGtSmall, OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.spring,
+        OrePrefixes.springSmall, OrePrefixes.rotor, OrePrefixes.wireFine, OrePrefixes.plateDouble,
+        OrePrefixes.plateDense, OrePrefixes.plateSuperdense, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple,
+        OrePrefixes.plateQuintuple, OrePrefixes.cellMolten };
+
+    /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =
+    /// werkstoff id) into the equivalent MaterialLib stack, resolved through [LegacyWerkstoffIndex] and
+    /// [MaterialParts#stack] ([MaterialParts#cell] for cells). Werkstoff ids unknown to [LegacyWerkstoffIndex] (a
+    /// third-party mod's own werkstoff ids) pass through unchanged. Ore and small ore migrate through
+    /// [LegacyOreTransformers]. Storage blocks and the two casing slots (`blockCasing`/`blockCasingAdvanced`) migrate
+    /// through [#registerWerkstoffBlockCutoverTransformer].
+    private static void registerWerkstoffItemCutoverTransformers() {
+        for (OrePrefixes prefix : LEGACY_WERKSTOFF_ITEM_PREFIXES) {
+            addItemTransformer("bartworks:gt.bwMetaGenerated" + prefix.getName(), (originalId, tag) -> {
+                int damage = tag.getInteger("Damage");
+                Material material = LegacyWerkstoffIndex.get(damage);
+                if (material == null) return false;
+                ItemStack cutover = prefix == OrePrefixes.cell ? MaterialParts.cell(material, 1)
+                    : MaterialParts.stack(prefix, material, 1);
+                if (cutover == null) return false;
+                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+                tag.setShort("Damage", (short) cutover.getItemDamage());
+                return true;
+            });
+        }
+        GT_FML_LOGGER.debug(
+            "PosteaTransformers: registered werkstoff item transformers for {} legacy items",
+            LEGACY_WERKSTOFF_ITEM_PREFIXES.length);
+    }
+
+    /// Migrates saved placed blocks and item stacks of the legacy storage blocks ([LegacyStorageBlockTable] and
+    /// the bartworks werkstoff blocks) into the equivalent MaterialLib block stack.
+    private static void registerStorageBlockCutoverTransformers() {
+        LegacyStorageBlockTable.BATCHES.forEach(PosteaTransformers::registerStorageBlockCutoverTransformer);
+        registerWerkstoffBlockCutoverTransformer(
+            "bw.werkstoffblockTE",
+            "bartworks:bw.werkstoffblocks.01",
+            OrePrefixes.block);
+        registerWerkstoffBlockCutoverTransformer(
+            "bw.werkstoffblockcasingTE",
+            "bartworks:bw.werkstoffblockscasing.01",
+            OrePrefixes.blockCasing);
+        registerWerkstoffBlockCutoverTransformer(
+            "bw.werkstoffblockscasingadvancedTE",
+            "bartworks:bw.werkstoffblockscasingadvanced.01",
+            OrePrefixes.blockCasingAdvanced);
+    }
+
+    /// Migrates saved placed (tile-entity) and inventory bartworks werkstoff storage blocks and casings
+    /// (`m`/`Damage` = werkstoff id) into the equivalent MaterialLib block. A casing whose material has no MaterialLib
+    /// casing becomes the material's storage block. A placed block of a werkstoff removed from the pack becomes dirt,
+    /// and one whose id resolves to no block becomes air.
+    private static void registerWerkstoffBlockCutoverTransformer(String teId, String itemId, OrePrefixes prefix) {
+        TileEntityReplacementManager.tileEntityTransformer(teId, (tag, world, chunk) -> {
+            int id = tag.getShort("m");
+            if (ArrayUtils.contains(WERKSTOFFS_REMOVED_IN_2_9, id)) return new BlockInfo(Blocks.dirt, 0);
+            ItemStack cutover = werkstoffBlockStack(prefix, id);
+            if (cutover == null) return new BlockInfo(Blocks.air, 0);
+            return new BlockInfo(Block.getBlockFromItem(cutover.getItem()), cutover.getItemDamage());
+        });
+
+        addItemTransformer(itemId, (originalId, tag) -> {
+            ItemStack cutover = werkstoffBlockStack(prefix, tag.getInteger("Damage"));
+            if (cutover == null) return false;
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+            tag.setShort("Damage", (short) cutover.getItemDamage());
+            return true;
+        });
+    }
+
+    private static @Nullable ItemStack werkstoffBlockStack(OrePrefixes prefix, int werkstoffId) {
+        Material material = LegacyWerkstoffIndex.get(werkstoffId);
+        if (material == null) return null;
+        ItemStack cutover = MaterialParts.stack(prefix, material, 1);
+        return cutover != null ? cutover : MaterialLibAPI.findStack(material, BlockShapes.block, 1);
+    }
+
+    /// Remaps the saved microblock materials of the legacy storage blocks onto the MaterialLib blocks' names (see
+    /// [MicroblockMaterials]), and those of `bartworks:BW_GlasBlocks` onto the tiered and extra bartworks glass.
+    private static void remapLegacyMicroblockMaterials() {
+        LegacyStorageBlockTable.BATCHES.forEach((block, batch) -> {
+            for (int meta = 0; meta < batch.length; meta++) {
+                if (batch[meta] != null) MicroblockMaterials.remapLegacy(block, meta, batch[meta]);
+            }
+        });
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            int id = LegacyWerkstoffIndex.idOf(material);
+            if (id >= 0) MicroblockMaterials.remapLegacy("bartworks:bw.werkstoffblocks.01", id, material);
+        }
+        for (int meta = 0; meta <= 12; meta++) {
+            String glass = meta == 12 ? "bartworks:BW_ExtraGlass" : "bartworks:BW_TieredGlass";
+            MicroblockMaterials.remapLegacy("bartworks:BW_GlasBlocks", meta, glass, meta <= 5 ? meta : 0);
+        }
+    }
+
+    private static void registerStorageBlockCutoverTransformer(String originalId, Material[] batch) {
+        for (int meta = 0; meta < batch.length; meta++) {
+            Material material = batch[meta];
+            if (material == null || !material.hasShape(BlockShapes.block)) continue;
+            ItemStack cutover = MaterialLibAPI.getStack(material, BlockShapes.block, 1);
+            Block mlBlock = Block.getBlockFromItem(cutover.getItem());
+            addBlockReplacement(originalId, meta, mlBlock, cutover.getItemDamage());
+        }
+    }
+
+    /// Migrates saved placed blocks and inventory stacks of the legacy frameGt/sheetmetal blocks
+    /// (`gregtech:bw.frames`, `gregtech:bw.sheetmetal`, `gregtech:gt.sheetmetal`, `gregtech:gt.blockframes`,
+    /// meta = material id) into the equivalent MaterialLib shape stack. The bw-named ids carry the gregtech
+    /// domain despite their name because gregtech registered them. None of these blocks carry a TileEntity.
+    private static void registerFrameAndSheetmetalCutoverTransformers() {
+        registerPartCutoverTransformer(
+            "gregtech:bw.frames",
+            OrePrefixes.frameGt,
+            PosteaTransformers::werkstoffMaterialAt);
+        registerPartCutoverTransformer(
+            "gregtech:bw.sheetmetal",
+            OrePrefixes.sheetmetal,
+            PosteaTransformers::werkstoffMaterialAt);
+        registerPartCutoverTransformer("gregtech:gt.sheetmetal", OrePrefixes.sheetmetal, LegacyMaterialIDIndex::get);
+        registerPartCutoverTransformer("gregtech:gt.blockframes", OrePrefixes.frameGt, LegacyMaterialIDIndex::get);
+    }
+
+    /// The MaterialLib material a legacy bartworks werkstoff id resolves to, or null when the id is unknown
+    /// (a third-party mod's own werkstoff id).
+    private static Material werkstoffMaterialAt(int meta) {
+        return LegacyWerkstoffIndex.get(meta);
+    }
+
+    /// Migrates saved placed blocks and inventory stacks of a legacy non-TE part block whose meta is a
+    /// material id into the equivalent MaterialLib `prefix` stack, resolving the id through `materialResolver`. An id
+    /// the resolver does not know, or a material without a `prefix` part, is left on its legacy slot.
+    private static void registerPartCutoverTransformer(String legacyId, OrePrefixes prefix,
+        IntFunction<Material> materialResolver) {
+        addBlockTransformer(legacyId, info -> {
+            Material material = materialResolver.apply(info.metadata);
+            if (material == null) return false;
+            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
+            if (cutover == null) return false;
+            info.blockID = Block.getIdFromBlock(Block.getBlockFromItem(cutover.getItem()));
+            info.metadata = cutover.getItemDamage();
+            return true;
+        });
+
+        addItemTransformer(legacyId, (originalId, tag) -> {
+            Material material = materialResolver.apply(tag.getInteger("Damage"));
+            if (material == null) return false;
+            ItemStack cutover = MaterialParts.stack(prefix, material, 1);
+            if (cutover == null) return false;
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+            tag.setShort("Damage", (short) cutover.getItemDamage());
+            return true;
+        });
+    }
+
+    private static void registerMetaItemCutoverTransformer(String itemName) {
+        addItemTransformer("gregtech:" + itemName, (originalId, tag) -> {
+            int damage = tag.getInteger("Damage");
+            OrePrefixes prefix = LegacyMetaItemTable.metaItemPrefix(itemName, damage);
+            if (prefix == null) return false;
+            ItemStack cutover = MaterialParts.stack(prefix, LegacyMaterialIDIndex.get(damage % 1000), 1);
+            if (cutover == null) return false;
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+            tag.setShort("Damage", (short) cutover.getItemDamage());
+            return true;
+        });
+    }
+
+    private static void registerMetaItem99CutoverTransformer() {
+        addItemTransformer("gregtech:gt.metaitem.99", (originalId, tag) -> {
+            int damage = tag.getInteger("Damage");
+            OrePrefixes prefix = LegacyMetaItemTable.cellPrefix(damage);
+            if (prefix == null) return false;
+            ItemStack cutover = MaterialParts.stack(prefix, LegacyMaterialIDIndex.get(damage % 1000), 1);
+            if (cutover == null) return false;
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+            tag.setShort("Damage", (short) cutover.getItemDamage());
+            return true;
+        });
     }
 
     private void registerIC2BlocksTransformer() {
         // These are used to convert ic2 blocks to their new counterparts.
         // I.e. Reinforced glass, iron fences, etc.
 
-        BlockReplacementManager.addSimpleReplacement("IC2:blockAlloyGlass", GregTechAPI.sBlockGlass1, 10);
-        BlockReplacementManager.addSimpleReplacement("IC2:blockRubber", ItemList.PadBouncy.getBlock(), 0);
-        BlockReplacementManager
-            .addSimpleReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
-        BlockReplacementManager.addSimpleReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
+        addBlockReplacement("IC2:blockAlloyGlass", GregTechAPI.sBlockGlass1, 10);
+        addBlockReplacement("IC2:blockRubber", ItemList.PadBouncy.getBlock(), 0);
+        addBlockReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
+        addBlockReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
     }
 
     private void registerFrameboxTransformers() {
@@ -62,76 +661,72 @@ public class PosteaTransformers implements Runnable {
         TileEntityReplacementManager.tileEntityTransformer("BaseMetaPipeEntity", (tag, world, chunk) -> {
             // Read the MTE ID from the NBT data and try to figure out if this is a frame box
             int id = tag.getInteger("mID");
-            // Framebox IDs start at 4096
+            // Legacy per-material framebox IDs are 4096 + the legacy material id
             int indexInMaterialList = id - 4096;
-            // The offset from 4096 is the index in the material list, so if this is outside the valid range then this
-            // is not a valid frame box, and we don't want to modify it
-            if (indexInMaterialList < 0 || indexInMaterialList >= GregTechAPI.sGeneratedMaterials.length) {
+            Material material = LegacyMaterialIDIndex.get(indexInMaterialList);
+            if (material == null || !material.hasShape(TEBlockShapes.frameGt)) {
                 // Do not modify this TE, so return null
                 return null;
             }
+            FrameShapeBlock frameBlock = (FrameShapeBlock) MaterialLibAPI.getBlock(TEBlockShapes.frameGt);
 
-            // Now we know for sure that the tileentity is a frame box
-            // If this frame has a cover on it, we need to keep it, but we still need to make sure the block
-            // is the new frame block. We can make sure to keep the TE using a pass-through transformer.
-            // This works because between the old and new frame systems, the TileEntity used for covered frames
-            // is still the same
+            // If this frame has a cover on it, we need to keep its TileEntity, rewritten to the single
+            // material-agnostic frame MTE the shape block binds
             if (tag.hasKey(GTValues.NBT.COVERS)) {
-                return new BlockInfo(
-                    GregTechAPI.sBlockFrames,
-                    indexInMaterialList | BlockFrameBox.MTE_BIT,
-                    PosteaTransformers::passthrough);
+                return new BlockInfo(frameBlock, material.getIndex(), coveredFrameTag -> {
+                    coveredFrameTag.setInteger("mID", frameBlock.getMteId());
+                    return coveredFrameTag;
+                });
             }
 
             // If this frame has no covers, simply return a block and delete the TileEntity
-            return new BlockInfo(GregTechAPI.sBlockFrames, indexInMaterialList);
+            return new BlockInfo(frameBlock, material.getIndex());
         });
 
-        ItemStackReplacementManager.addTransformationHandler("gregtech:gt.blockmachines", (originalId, tag) -> {
+        addItemTransformer("gregtech:gt.blockmachines", (originalId, tag) -> {
             // Get item meta id and see if this is a frame box, this works pretty much identically to the TE transformer
             int id = tag.getInteger("Damage");
             int indexInMaterialList = id - 4096;
-            // Not a frame box
-            if (indexInMaterialList < 0 || indexInMaterialList >= GregTechAPI.sGeneratedMaterials.length) {
-                return false;
-            }
             // Not a frame box if the material for this id does not have a frame box associated with it.
             // Apparently the DEFC ID overlaps with the material ID for a Bastnasite frame box for example
-            if (!GregTechAPI.sGeneratedMaterials[indexInMaterialList].hasMetalItems()) {
+            if (!LegacyMetalItemsTable.contains(indexInMaterialList)) {
                 return false;
             }
-            Item frameItem = Item.getItemFromBlock(GregTechAPI.sBlockFrames);
+            Material material = LegacyMaterialIDIndex.get(indexInMaterialList);
+            if (material == null || !material.hasShape(TEBlockShapes.frameGt)) {
+                return false;
+            }
+            Item frameItem = Item.getItemFromBlock(MaterialLibAPI.getBlock(TEBlockShapes.frameGt));
             int itemId = Item.getIdFromItem(frameItem);
             // Change this item into the correct frame item (make sure to keep amount)
-            tag.setInteger("id", itemId);
-            tag.setInteger("Damage", indexInMaterialList);
+            IDExtenderCompat.setItemStackID(tag, itemId);
+            tag.setShort("Damage", (short) material.getIndex());
             return true;
         });
     }
 
     // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
     private void registerProgrammedCircuitTransformers() {
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
+        addItemReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
+        addItemReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
         // For players updating from dailies
-        ItemStackReplacementManager
-            .addSimpleReplacement("dreamcraft:PotassiumHydroxideDust", Materials.PotassiumHydroxide.getDust(1), true);
+        addItemReplacement(
+            "dreamcraft:PotassiumHydroxideDust",
+            MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Shapes.dust, 1),
+            true);
         // For players updating directly from 2.8.4 or before
-        ItemStackReplacementManager.addSimpleReplacement(
+        addItemReplacement(
             "dreamcraft:item.PotassiumHydroxideDust",
-            Materials.PotassiumHydroxide.getDust(1),
+            MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Shapes.dust, 1),
             true); // FML Warning suppression in coremod
     }
 
     private void registerPTMEGTransformers() {
         removeWerkstoffMetaGeneratedItems();
         removeWerkstoffItems("bartworks:bw.werkstoffblocks.01");
-        removeWerkstoffTileEntities();
     }
 
     private static void removeWerkstoffMetaGeneratedItems() {
@@ -145,24 +740,8 @@ public class PosteaTransformers implements Runnable {
 
     private static void removeWerkstoffItems(String originalId) {
         for (int removedWerkstoff : WERKSTOFFS_REMOVED_IN_2_9) {
-            ItemStackReplacementManager
-                .addSimpleReplacement(originalId, removedWerkstoff, Item.getItemFromBlock(Blocks.dirt), 0);
+            addItemReplacement(originalId, removedWerkstoff, Item.getItemFromBlock(Blocks.dirt), 0);
         }
-    }
-
-    private static void removeWerkstoffTileEntities() {
-        TileEntityReplacementManager.tileEntityTransformer(
-            "bw.werkstoffblockTE",
-            (nbt, world, chunk) -> isWerkstoffRemoved(nbt.getShort("m")) ? new BlockInfo(Blocks.dirt, 0) : null);
-    }
-
-    private static boolean isWerkstoffRemoved(short meta) {
-        for (int j : WERKSTOFFS_REMOVED_IN_2_9) {
-            if (j == meta) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static int tieredGlassBlockId = -1;
@@ -177,7 +756,7 @@ public class PosteaTransformers implements Runnable {
         BlockReplacementManager.registerIDResolver("bartworks:BW_ExtraGlass", i -> extraGlassBlockId = i);
 
         // Block replacements
-        BlockReplacementManager.addTransformationHandler("bartworks:BW_GlasBlocks", info -> {
+        addBlockTransformer("bartworks:BW_GlasBlocks", info -> {
             // Normal through osmium glass metadata unchanged
             if (info.metadata >= 0 && info.metadata <= 5) {
                 info.blockID = tieredGlassBlockId;
@@ -216,7 +795,7 @@ public class PosteaTransformers implements Runnable {
             return true;
         });
 
-        BlockReplacementManager.addTransformationHandler("bartworks:BW_GlasBlocks2", info -> {
+        addBlockTransformer("bartworks:BW_GlasBlocks2", info -> {
             // Turn old transcendent glass into new hexanite glass
             if (info.metadata == 0) {
                 info.blockID = tieredGlassBlockId;
@@ -227,7 +806,7 @@ public class PosteaTransformers implements Runnable {
         });
 
         // Item replacements
-        ItemStackReplacementManager.addTransformationHandler("bartworks:BW_GlasBlocks", (name, nbt) -> {
+        addItemTransformer("bartworks:BW_GlasBlocks", (name, nbt) -> {
             int metadata = nbt.getShort("Damage");
 
             // Normal through osmium glass metadata unchanged
@@ -268,7 +847,7 @@ public class PosteaTransformers implements Runnable {
             return true;
         });
 
-        ItemStackReplacementManager.addTransformationHandler("bartworks:BW_GlasBlocks2", (name, nbt) -> {
+        addItemTransformer("bartworks:BW_GlasBlocks2", (name, nbt) -> {
             // Turn old transcendent glass into new hexanite glass
             if (nbt.getShort("Damage") == 0) {
                 IDExtenderCompat.setItemStackID(nbt, tieredGlassItemId);

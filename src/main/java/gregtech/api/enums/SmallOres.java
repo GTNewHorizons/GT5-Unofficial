@@ -35,6 +35,7 @@ import static galacticgreg.api.enums.DimensionDef.Triton;
 import static galacticgreg.api.enums.DimensionDef.VegaB;
 import static galacticgreg.api.enums.DimensionDef.Venus;
 
+import gregtech.api.enums.materials.Materials;
 import gregtech.common.SmallOreBuilder;
 import gregtech.common.WorldgenGTOreSmallPieces;
 
@@ -262,7 +263,7 @@ public enum SmallOres {
     Foolsruby(new SmallOreBuilder().name("ore.small.foolsruby")
         .heightRange(5, 35)
         .amount(2)
-        .ore(Materials.Spinel)
+        .ore(Materials.FoolsRuby)
         .enableInDim(Horus)
         .enableInDim(TWILIGHT_FOREST)),
 
@@ -353,7 +354,8 @@ public enum SmallOres {
         .heightRange(5, 15)
         .amount(2)
         .ore(Materials.Firestone)
-        .enableInDim(Io, Venus)),
+        .enableInDim(Io, Venus)
+        .enableInDim(NETHER)),
 
     Neutronium(new SmallOreBuilder().name("ore.small.neutronium")
         .heightRange(5, 15)
@@ -528,7 +530,7 @@ public enum SmallOres {
     Chargedcertus(new SmallOreBuilder().name("ore.small.chargedcertus")
         .heightRange(5, 115)
         .amount(4)
-        .ore(Materials.CertusQuartzCharged)
+        .ore(Materials.ChargedCertusQuartz)
         .enableInDim(Horus));
     // spotless : on
 

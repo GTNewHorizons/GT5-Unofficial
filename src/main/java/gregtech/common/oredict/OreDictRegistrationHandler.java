@@ -7,34 +7,71 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.jetbrains.annotations.Nullable;
+
+import com.ruling_0.materiallib.api.Material;
 
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ProgressManager;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTLoggers;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.CircuitComponents;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
+import gregtech.api.enums.materials.Wildcard;
+import gregtech.api.material.AspectRefStack;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialParts;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.config.OPStuff;
 
+/// Turns every `OreDictionary.OreRegisterEvent` into GregTech's view of that stack: the prefix it belongs to,
+/// the material it stands for, its aliases, its unification association, and (buffered until
+/// [#processBufferedRegistrations]) the ore-processing recipes for it.
+///
+/// A material-based name resolves its material side through [MaterialUtils#byLegacyName]. A name naming no
+/// material gets no association or recipes, except a name-only association for the names in
+/// [#NAME_ONLY_MATERIALS]. Every transparent material with a dye joins that dye's `craftingLens` group through its
+/// lens.
 public final class OreDictRegistrationHandler {
 
     private OreDictRegistrationHandler() {}
+
+    /// Material names of the tiered and circuit-component entries (`circuitBasic`, `batteryGood`,
+    /// `componentCircuitResistor`), which name no material. Every item under such a name gets a name-only
+    /// association, so recipes accept any of them.
+    private static final Set<String> NAME_ONLY_MATERIALS = new HashSet<>();
+
+    static {
+        for (Circuits circuit : Circuits.values()) NAME_ONLY_MATERIALS.add(circuit.materialName());
+        for (CircuitComponents component : CircuitComponents.values()) {
+            NAME_ONLY_MATERIALS.add(component.materialName());
+        }
+    }
 
     private static final HashSet<String> IGNORED_NAMES = new HashSet<>(
         Arrays.asList(
@@ -128,7 +165,20 @@ public final class OreDictRegistrationHandler {
     public static void registerOre(OreDictionary.OreRegisterEvent event) {
         ModContainer container = Loader.instance()
             .activeModContainer();
-        String modId = container == null ? "UNKNOWN" : container.getModId();
+        registerOre(event, container == null ? "UNKNOWN" : container.getModId());
+    }
+
+    /// Replays a registration that happened before this handler was listening, credited to the mod owning
+    /// the stack's item.
+    public static void registerPreExistingOre(OreDictionary.OreRegisterEvent event) {
+        GameRegistry.UniqueIdentifier id = event.Ore == null || event.Ore.getItem() == null ? null
+            : GameRegistry.findUniqueIdentifierFor(event.Ore.getItem());
+        String modId = id == null ? "UNKNOWN" : id.modId;
+        registerOre(event, modId);
+    }
+
+    private static void registerOre(OreDictionary.OreRegisterEvent event, String modId) {
+        if (!GTMod.sMaterialsReady) return;
 
         if (event == null || event.Ore == null
             || event.Ore.getItem() == null
@@ -136,7 +186,7 @@ public final class OreDictRegistrationHandler {
             || event.Name.isEmpty()) {
 
             String message = modId
-                + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.";
+                + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Enum Constants! (well, the registration is too invalid to even be shown properly)";
 
             GTLoggers.GT_ORE_DICT_LOGGER.info(message);
             throw new IllegalArgumentException(message);
@@ -156,10 +206,6 @@ public final class OreDictRegistrationHandler {
 
             String oreOriginPath = modId + (bufferRegistrationProcessing ? " -> " : " --Late--> ") + oreName;
 
-            if (GTUtility.getBlockFromStack(stack) != Blocks.air) {
-                GTOreDictUnificator.addToBlacklist(stack);
-            }
-
             registeredOres.add(stack);
 
             if (handleSpecialOreRegistration(oreName, stack, oreOriginPath)) {
@@ -170,6 +216,11 @@ public final class OreDictRegistrationHandler {
         } catch (Exception e) {
             GT_FML_LOGGER.error("Could not register ore (oredict name={}, item stack={})", event.Name, event.Ore, e);
         }
+    }
+
+    /// Whether GregTech ignores registrations under `oreName` and generates no recipes for its items.
+    public static boolean isIgnoredName(String oreName) {
+        return IGNORED_NAMES.contains(oreName);
     }
 
     private static boolean handleSpecialOreRegistration(String oreName, ItemStack stack, String oreOriginPath) {
@@ -186,7 +237,7 @@ public final class OreDictRegistrationHandler {
         if (oreName.contains(" ")) {
             GTLoggers.GT_ORE_DICT_LOGGER
                 .info("{} is getting re-registered because the OreDict Name containing invalid spaces.", oreOriginPath);
-            GTOreDictUnificator.registerOre(oreName.replace(" ", ""), stack);
+            OreDictUtils.registerOre(oreName.replace(" ", ""), stack);
             stack.setStackDisplayName("Invalid OreDictionary Tag");
             return true;
         }
@@ -201,13 +252,12 @@ public final class OreDictRegistrationHandler {
         }
 
         switch (oreName) {
-            case "stone" -> GTOreDictUnificator.registerOre("stoneSmooth", stack);
-            case "cobblestone" -> GTOreDictUnificator.registerOre("stoneCobble", stack);
-            case "shardOrder" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, stack);
-            case "shardEntropy" -> GTOreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, stack);
-            case "itemRubber" -> GTOreDictUnificator.registerOre(OrePrefixes.ingot, Materials.Rubber, stack);
-            case "compressedAluminum" -> GTOreDictUnificator
-                .registerOre(OrePrefixes.compressed, Materials.Aluminium, stack);
+            case "stone" -> OreDictUtils.registerOre("stoneSmooth", stack);
+            case "cobblestone" -> OreDictUtils.registerOre("stoneCobble", stack);
+            case "shardOrder" -> OreDictUtils.registerOre(OrePrefixes.gem, Materials.InfusedOrder, stack);
+            case "shardEntropy" -> OreDictUtils.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, stack);
+            case "itemRubber" -> OreDictUtils.registerOre(OrePrefixes.ingot, Materials.Rubber, stack);
+            case "compressedAluminum" -> OreDictUtils.registerOre(OrePrefixes.compressed, Materials.Aluminium, stack);
             default -> {
                 return false;
             }
@@ -231,10 +281,6 @@ public final class OreDictRegistrationHandler {
             return;
         }
 
-        if (prefix.skipActiveUnification()) {
-            GTOreDictUnificator.addToBlacklist(stack);
-        }
-
         String materialName = oreName.substring(
             prefix.getName()
                 .length());
@@ -246,22 +292,28 @@ public final class OreDictRegistrationHandler {
             return;
         }
 
-        Materials material = prefix.isMaterialBased() ? Materials.get(materialName) : Materials._NULL;
+        Material material = null;
+        if (prefix.isMaterialBased() && !materialName.isEmpty() && !NAME_ONLY_MATERIALS.contains(materialName)) {
+            material = MaterialUtils.byLegacyName(materialName);
+        }
 
         OreDictAliases.registerAliases(oreName, stack);
         handleSpecialRegistration(stack, prefix, material, materialName);
-        if (material.hasAlias()) {
-            API.setAliases(stack, material.getAliasKey());
+        String aliasKey = material == null ? null : material.getProperty(GTMaterialProperties.ALIAS_KEY);
+        if (aliasKey != null) {
+            API.setAliases(stack, aliasKey);
         }
         if (!prefix.isIgnored(material)) {
             prefix.add(GTUtility.copyAmount(1, stack));
         }
 
-        if (prefix.isMaterialBased() && processMaterialRegistration(oreName, stack, prefix, material, oreOriginPath)) {
+        if (prefix.isMaterialBased() && processMaterialRegistration(oreName, stack, prefix, material, materialName)) {
             return;
         }
 
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
+
+        Material registeredMaterial = material == null ? Materials.NULL : material;
 
         // GT++ registers cells for these materials that contain different fluids from their BartWorks counterparts.
         // They share OreDict names but must not unify. Remove this once the duplicate cells are removed.
@@ -271,11 +323,10 @@ public final class OreDictRegistrationHandler {
                 || oreName.equals("cellXenon"));
 
         if (prefix.isUnifiable() && !excludeGtppCells) {
-            GTOreDictUnificator.addAssociation(prefix, material, stack);
+            MaterialData.addAssociation(prefix, registeredMaterial, stack);
         }
 
-        OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, material, modId);
-        OreDictUnificationOverrides.handle(registration);
+        OreDictRegistration registration = new OreDictRegistration(oreName, stack, prefix, registeredMaterial);
 
         if (bufferRegistrationProcessing) {
             registrations.add(registration);
@@ -284,104 +335,77 @@ public final class OreDictRegistrationHandler {
         }
     }
 
-    private static void handleSpecialRegistration(ItemStack stack, OrePrefixes prefix, Materials material,
+    private static void handleSpecialRegistration(ItemStack stack, OrePrefixes prefix, @Nullable Material material,
         String materialName) {
 
-        if (prefix.isMaterialBased() && material == Materials._NULL) {
+        if (prefix.isMaterialBased() && material == null) {
             return;
         }
 
         switch (prefix.getName()) {
-            case "dye" -> GTOreDictUnificator.registerOre(OrePrefixes.dye, stack);
-            case "gearGt" -> GTOreDictUnificator.registerOre(OrePrefixes.gear, material, stack);
-            case "ingotHot" -> {
-                if (material == Materials.BrickNether) {
-                    // Allow type filtering without enabling unification for nether bricks.
-                    prefix.add(GTUtility.copyAmount(1, stack));
+            case "dye" -> OreDictUtils.registerOre(OrePrefixes.dye, stack);
+            case "gearGt" -> {
+                OreDictUtils.registerOre(OrePrefixes.gear, material, stack);
+                for (Wildcard wildcard : Wildcard.containing(material)) {
+                    OreDictUtils.registerOre(wildcard.oreDictName(OrePrefixes.gear), stack);
                 }
             }
             case "lens" -> {
-                if (material.contains(SubTag.TRANSPARENT) && material.mColor != Dyes._NULL) {
-                    String color = material.mColor.name();
+                if (MaterialUtils.hasFlag(material, GTMaterialFlag.TRANSPARENT)
+                    && MaterialUtils.dye(material) != Dyes._NULL) {
+                    String color = MaterialUtils.dye(material)
+                        .name();
                     if (color.startsWith("dye")) color = color.substring(3);
-                    GTOreDictUnificator.registerOre("craftingLens" + color, stack);
+                    OreDictUtils.registerOre("craftingLens" + color, stack);
                 }
             }
 
-            case "plate" -> {
-                if (material == Materials.Wood) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                }
-            }
             case "plank" -> {
                 if (materialName.equals("Wood")) {
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M));
+                    MaterialData.add(stack, new ItemData(Materials.Wood, GTValues.M));
                 }
             }
             case "slab" -> {
                 if (materialName.equals("Wood")) {
-                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Wood, GTValues.M / 2));
+                    MaterialData.add(stack, new ItemData(Materials.Wood, GTValues.M / 2));
                 }
             }
 
-            case "cell" -> {
-                if (material == Materials.Empty) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                }
-            }
             case "stick" -> {
                 if (!GTRecipeRegistrator.sRodMaterialList.contains(material)) {
                     GTRecipeRegistrator.sRodMaterialList.add(material);
                 } else if (material == Materials.Wood) {
-                    GTOreDictUnificator.addToBlacklist(stack);
+                    OreDictUtils.addToBlacklist(stack);
                 }
             }
         }
     }
 
+    /// Returns true when the registration stops here: an unknown material name or a material that never unifies.
     private static boolean processMaterialRegistration(String oreName, ItemStack stack, OrePrefixes prefix,
-        Materials material, String oreOriginPath) {
+        @Nullable Material material, String materialName) {
 
-        if (material != material.mMaterialInto) {
-            GTOreDictUnificator.registerOre(prefix, material.mMaterialInto, stack);
-            if (!GTOreDictUnificator.isRegisteringOres()) {
-                GTLoggers.GT_ORE_DICT_LOGGER.info(
-                    "{} uses a deprecated Material and is getting re-registered as {}",
-                    oreOriginPath,
-                    prefix.get(material.mMaterialInto));
+        if (material == null) {
+            if (NAME_ONLY_MATERIALS.contains(materialName)) {
+                MaterialData.addAssociation(prefix, materialName, stack);
             }
             return true;
         }
 
-        if (material == Materials._NULL) {
-            for (Dyes dye : Dyes.VALUES) {
-                String dyeName = dye.name()
-                    .substring("dye".length());
-                if (oreName.endsWith(dyeName)) {
-                    GTOreDictUnificator.addToBlacklist(stack);
-                    GTLoggers.GT_ORE_DICT_LOGGER.info("{} is a colored ore and is being blacklisted", oreOriginPath);
-                    return true;
-                }
-            }
-            return true;
+        for (Wildcard wildcard : Wildcard.containing(material)) {
+            OreDictUtils.registerOre(wildcard.oreDictName(prefix), stack);
         }
 
-        for (Materials reRegisteredMaterial : material.mOreReRegistrations) {
-            GTOreDictUnificator.registerOre(prefix, reRegisteredMaterial, stack);
-        }
-
-        material.add(GTUtility.copyAmount(1, stack));
-
-        if (GregTechAPI.sThaumcraftCompat != null && prefix.doGenerateItem(material) && !prefix.isIgnored(material)) {
-            ArrayList<TCAspects.TC_AspectStack> aspects = new ArrayList<>();
-            for (TCAspects.TC_AspectStack aspect : prefix.mAspects) {
+        if (GregTechAPI.sThaumcraftCompat != null && carriesAspects(prefix, material) && !prefix.isIgnored(material)) {
+            ArrayList<TC_AspectStack> aspects = new ArrayList<>();
+            for (TC_AspectStack aspect : prefix.mAspects) {
                 aspect.addToAspectList(aspects);
             }
 
             long materialAmount = prefix.getMaterialAmount();
             if (materialAmount >= GTValues.M || materialAmount < 0) {
-                for (TCAspects.TC_AspectStack aspect : material.mAspects) {
-                    aspect.addToAspectList(aspects);
+                for (AspectRefStack aspect : MaterialUtils.aspects(material)) {
+                    new TC_AspectStack(TCAspects.valueOf(aspect.name()), aspect.amount()).addToAspectList(aspects);
                 }
             }
 
@@ -389,7 +413,7 @@ public final class OreDictRegistrationHandler {
                 .registerThaumcraftAspectsToItem(GTUtility.copyAmount(1, stack), aspects, oreName);
         }
 
-        return prefix.isUnifiable() && !material.mUnifiable;
+        return prefix.isUnifiable() && !MaterialUtils.unifiable(material);
     }
 
     @SuppressWarnings("deprecation")
@@ -408,7 +432,8 @@ public final class OreDictRegistrationHandler {
                 progress += 5;
             }
 
-            progressBar.step(registration.material.getLocalizedName());
+            String label = MaterialUtils.localizedName(registration.material);
+            progressBar.step(label == null ? "" : label);
             registration.registerRecipes();
         }
 
@@ -416,7 +441,15 @@ public final class OreDictRegistrationHandler {
         registrations.clear();
     }
 
-    public static boolean isRegisteredOre(ItemStack stack) {
-        return registeredOres.contains(stack);
+    /// Whether items under `prefix` and `material` get Thaumcraft aspects: MaterialLib serves the pair, or the
+    /// prefix names an ore on one stone type and the material has ores.
+    private static boolean carriesAspects(OrePrefixes prefix, Material material) {
+        if (material == null) return false;
+        if (MaterialParts.isCutOver(prefix, material)) return true;
+        if (!material.hasShape(OreShapes.ore)) return false;
+        for (StoneType stoneType : StoneType.VALUES) {
+            if (stoneType.getPrefix() == prefix) return true;
+        }
+        return false;
     }
 }

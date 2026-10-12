@@ -30,12 +30,15 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -49,7 +52,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
@@ -103,7 +105,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .beginStructureBlock(5, 4, 7, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("46-56", Casings.AdvancedCryogenicCasing.getLocalizedName(), false)
-            .addCasing("24", MaterialsAlloy.LEAGRISIUM.getFrameBox(1).getDisplayName(), false)
+            .addCasing("24", MaterialLibAPI.getStack(Materials.Grisium, TEBlockShapes.frameGt, 1).getDisplayName(), false)
             .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.CryotheumHatch"), anyCasingText(), 1)
             .addEnergyHatch("1+", anyCasingText(), 1)
             .addMaintenanceHatch("1", anyCasingText(), 1)
@@ -126,7 +128,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
                         { "  B  ", " BBB ", " B B ", " BBB " }, { " ABA ", "ABBBA", "AB BA", "ABBBA" },
                         { "  B  ", " BBB ", " B B ", " BBB " }, { " ABA ", "ABBBA", "AB BA", "ABBBA" },
                         { "     ", " BBB ", " BBB ", " BBB " } })
-                .addElement('A', ofFrame(MaterialsAlloy.LEAGRISIUM))
+                .addElement('A', ofFrame(Materials.Grisium))
                 .addElement(
                     'B',
                     ofChain(

@@ -1,6 +1,7 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -27,21 +28,25 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -230,7 +235,8 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils
                 .addAll(convertItemToPlasma(randomizedItemInput, 9), convertFluidToPlasma(randomizedFluidInput, 1)),
-            new FluidStack[] { Materials.QuarkGluonPlasma.getFluid(1000 * actualParallel) },
+            new FluidStack[] { MaterialLibAPI
+                .getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, (int) (1000 * actualParallel)) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -243,8 +249,9 @@ public class MTEExoticModule extends MTEBaseModule {
         numberOfFluids = 2;
         int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
         int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
-        randomizedFluidInput = new FluidStack[] { Materials.Time.getMolten(timeAmount * 1000L),
-            Materials.Space.getMolten(spaceAmount * 1000L) };
+        randomizedFluidInput = new FluidStack[] {
+            MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, timeAmount * 1000),
+            MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, spaceAmount * 1000) };
 
         return new GTRecipe(
             null,
@@ -256,9 +263,10 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils.addAll(
                 convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount),
-                Materials.Time.getMolten(timeAmount),
-                Materials.Space.getMolten(spaceAmount)),
-            new FluidStack[] { Materials.MagMatter.getMolten(576 * actualParallel) },
+                MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidLiquid, timeAmount),
+                MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidLiquid, spaceAmount)),
+            new FluidStack[] { MaterialLibAPI
+                .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, (int) (576 * actualParallel)) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -349,26 +357,20 @@ public class MTEExoticModule extends MTEBaseModule {
 
     }
 
+    /// The plasma of each dust's material, `INGOTS * multiplier * stackSize` each. A dust whose material has
+    /// no plasma is skipped.
     private FluidStack[] convertItemToPlasma(ItemStack[] items, long multiplier) {
         List<FluidStack> plasmas = new ArrayList<>();
 
         for (ItemStack itemStack : items) {
-            int[] oreIDs = OreDictionary.getOreIDs(itemStack);
-
-            // Retry until it finds a falid vluid
-            for (int oreID : oreIDs) {
-                String oreDict = OreDictionary.getOreName(oreID);
-                // substring 4 because dust is 4 characters long and there is no other possible oreDict
-                String strippedOreDict = oreDict.substring(4);
-                FluidStack plasma = FluidRegistry.getFluidStack(
-                    "plasma." + strippedOreDict.toLowerCase(),
-                    (int) (INGOTS * multiplier * itemStack.stackSize));
-
-                if (plasma != null) {
-                    plasmas.add(plasma);
-                    break;
-                }
+            ItemData association = MaterialData.getAssociation(itemStack);
+            FluidStack plasma = association == null ? null
+                : MaterialUtils.plasma(association.mMaterial.mMaterial, INGOTS * multiplier * itemStack.stackSize);
+            if (plasma == null) {
+                GT_FML_LOGGER.error("MTEExoticModule.convertItemToPlasma: no plasma for {}", itemStack);
+                continue;
             }
+            plasmas.add(plasma);
         }
 
         return plasmas.toArray(new FluidStack[0]);
@@ -451,9 +453,11 @@ public class MTEExoticModule extends MTEBaseModule {
 
             FluidStack outputFluid;
             if (magmatterMode) {
-                outputFluid = Materials.MagMatter.getMolten(actualParallel * 4 * INGOTS);
+                outputFluid = MaterialLibAPI
+                    .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, (int) (actualParallel * 4 * INGOTS));
             } else {
-                outputFluid = Materials.QuarkGluonPlasma.getFluid(1000L * actualParallel);
+                outputFluid = MaterialLibAPI
+                    .getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, (int) (1000 * actualParallel));
             }
 
             setPlasmaRecipe(

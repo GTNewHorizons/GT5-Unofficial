@@ -54,15 +54,16 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.ruling_0.materiallib.api.Material;
 
 import forestry.api.arboriculture.IToolGrafter;
 import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.TreeManager;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -813,28 +814,28 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
         MetaGeneratedTool toolInstance = MetaGeneratedTool01.INSTANCE;
         altToolsForNEI = new ItemStack[][] {
             // Mode.LOG
-            { toolInstance.getToolWithStats(SAW.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(POCKET_SAW.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_LV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(CHAINSAW_LV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_MV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(CHAINSAW_MV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_HV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(CHAINSAW_HV.ID, 1, null, null, null), },
+            { toolInstance.getToolWithStats(SAW.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(POCKET_SAW.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_LV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_LV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_MV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_MV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_HV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_HV.ID, 1, (Material) null, null, null), },
             // Mode.SAPLING
-            { toolInstance.getToolWithStats(IDMetaTool01.BRANCHCUTTER.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_BRANCHCUTTER.ID, 1, null, null, null),
+            { toolInstance.getToolWithStats(IDMetaTool01.BRANCHCUTTER.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_BRANCHCUTTER.ID, 1, (Material) null, null, null),
                 GTModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
             // Mode.LEAVES
             { new ItemStack(Items.shears),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_LV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_MV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_HV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null), },
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_LV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_MV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_HV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, (Material) null, null, null), },
             // Mode.FRUIT
-            { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, null, null, null), } };
+            { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, (Material) null, null, null), } };
     }
 
     /**

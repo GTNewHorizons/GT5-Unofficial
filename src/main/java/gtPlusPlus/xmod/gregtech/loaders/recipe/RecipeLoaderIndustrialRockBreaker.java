@@ -7,13 +7,16 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class RecipeLoaderIndustrialRockBreaker {
 
@@ -33,7 +36,7 @@ public class RecipeLoaderIndustrialRockBreaker {
             .addTo(multiblockRockBreakerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1))
             .circuit(3)
             .itemOutputs(new ItemStack(Blocks.obsidian, 1))
             .duration(6 * SECONDS + 8 * TICKS)
@@ -41,7 +44,7 @@ public class RecipeLoaderIndustrialRockBreaker {
             .addTo(multiblockRockBreakerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, 1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.netherrack, 1))
             .duration(16 * TICKS)
@@ -54,7 +57,7 @@ public class RecipeLoaderIndustrialRockBreaker {
                     GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
                     new ItemStack(Blocks.soul_sand, 0))
                 .circuit(4)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
+                .itemOutputs(GTModHandler.getModItem(Mods.Botania.ID, "stone", 1, 1))
                 .duration(16 * TICKS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(multiblockRockBreakerRecipes);
@@ -78,7 +81,11 @@ public class RecipeLoaderIndustrialRockBreaker {
                 .itemOutputs(
                     new ItemStack(Blocks.netherrack, 1),
                     new ItemStack(Blocks.soul_sand, 1),
-                    new ItemStack(Blocks.quartz_ore, 1))
+                    MaterialLibAPI.getStack(
+                        Materials.NetherQuartz,
+                        OreShapes.ore,
+                        OreShapes.variantOf(StoneType.Netherrack.name()),
+                        1))
                 .outputChances(6000, 3000, 1000)
                 .duration(SECONDS)
                 .eut(TierEU.RECIPE_LV)

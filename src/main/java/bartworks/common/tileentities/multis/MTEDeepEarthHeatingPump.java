@@ -35,16 +35,18 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.ruling_0.materiallib.api.Material;
 
 import bartworks.MainMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.structure.error.StructureError;
@@ -106,7 +108,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     "unit", getFluidUnit()))
             .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
-            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Tungsten)), false)
             .addCasing("3-7", Casings.HeatProofMachineCasing.getLocalizedName(), false)
             .addEnergyHatch("1+", anyBottomCasing + " (HV+)", 1)
             .addMaintenanceHatch("1", anyBottomCasing, 1)
@@ -130,7 +132,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
+    protected Material getFrameMaterial() {
         return Materials.Tungsten;
     }
 

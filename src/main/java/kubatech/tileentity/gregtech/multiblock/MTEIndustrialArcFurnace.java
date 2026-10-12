@@ -19,6 +19,7 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.furnaceRecipes;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasing;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
@@ -55,6 +56,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -63,16 +65,19 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
@@ -85,7 +90,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -227,7 +231,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             return true;
         }, te -> te.coilTier))))
         .addElement('D', ofFrame(Materials.Steel))
-        .addElement('E', Casings.BoltedNaquadahCasing.asElement())
+        .addElement('E', ofBlockCasing(Materials.Naquadah))
         .addElement('F', Casings.InsulatedFluidPipeCasing.asElement())
         .addElement('G', Casings.HeatProofCokeOvenCasing.asElement())
         .addElement('H', Casings.BlastSmelterHeatContainmentCoil.asElement())
@@ -381,10 +385,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addSupportMultiAmp()
             .beginStructureBlock(17, 11, 19, true)
             .addController(translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-            .addCasing("175", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("175", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)), false)
             .addCasing("10-172", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
             .addCasing("101", Casings.SteelPipeCasing.getLocalizedName(), false)
-            .addCasing("72", Casings.BoltedNaquadahCasing.getLocalizedName(), false)
+            .addCasing("72", MaterialLibAPI.getStack(Materials.Naquadah, BlockShapes.blockCasing, 1).getDisplayName(), false)
             .addCasing("30", translateToLocal("GT5U.structure.heating_coil"), false)
             .addCasing("17", Casings.BlastSmelterHeatContainmentCoil.getLocalizedName(), false)
             .addCasing("15", Casings.RefinedGraphiteBlock.getLocalizedName(), false)
@@ -692,13 +696,13 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             for (ItemStack inputItem : getAllStoredInputs()) {
                 ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(inputItem, false, null);
                 if (smeltedOutput != null) {
-                    ItemData data = GTOreDictUnificator.getItemData(inputItem);
+                    ItemData data = MaterialData.get(inputItem);
                     if (data != null && data.mPrefix != null
                         && data.mPrefix.getMaterialPostfix()
                             .equals(" Ore")) {
-                        ItemData outputData = GTOreDictUnificator.getItemData(smeltedOutput);
+                        ItemData outputData = MaterialData.get(smeltedOutput);
                         if (outputData != null) {
-                            FluidStack output = outputData.mMaterial.mMaterial.getMolten(1);
+                            FluidStack output = MaterialUtils.molten(outputData.mMaterial.mMaterial, 1);
                             long amount = outputData.mPrefix.getMaterialAmount() / (GTValues.M / 144L)
                                 * smeltedOutput.stackSize;
                             if (output != null) {
@@ -882,7 +886,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 for (ItemStack inputItem : inputItems) {
                     ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(inputItem, false, null);
                     if (smeltedOutput != null) {
-                        ItemData data = GTOreDictUnificator.getItemData(inputItem);
+                        ItemData data = MaterialData.get(inputItem);
                         if (data != null && data.mPrefix != null
                             && data.mPrefix.getMaterialPostfix()
                                 .equals(" Ore")) {

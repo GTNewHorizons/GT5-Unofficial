@@ -12,9 +12,10 @@ import java.util.Set;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+import com.ruling_0.materiallib.api.Material;
+
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
@@ -27,7 +28,7 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
     public final short mMinY;
     public final short mMaxY;
     public final short mAmount;
-    private final IOreMaterial mMaterial;
+    private final Material mMaterial;
 
     public final String mBiome;
     private final Set<String> mAllowedDimensions;
@@ -83,12 +84,12 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
     }
 
     @Override
-    public boolean contains(IOreMaterial material) {
+    public boolean contains(Material material) {
         return material == mMaterial;
     }
 
     @Override
-    public IOreMaterial getOre(float k) {
+    public Material getOre(float k) {
         return mMaterial;
     }
 
@@ -106,7 +107,7 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
         return mAllowedDimensions;
     }
 
-    public IOreMaterial getMaterial() {
+    public Material getMaterial() {
         return mMaterial;
     }
 

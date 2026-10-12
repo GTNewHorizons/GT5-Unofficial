@@ -26,7 +26,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.MTEElectricAutoWorkbenchGui;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -355,20 +354,10 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
                                 }
                                 break;
                             }
-                            tTempStack = GTUtility.copy(mInventory[mCurrentSlot]);
-                            tTempStack.stackSize = 1;
-                            tRecipe[0] = tTempStack;
-                            tOutput = GTOreDictUnificator.get(true, tTempStack);
-                            if (GTUtility.areStacksEqual(tOutput, tTempStack)) {
-                                tOutput = null;
-                            }
-                            if (tOutput == null) {
-                                tRecipe[0] = null;
-                                if (mInventory[18] == null) {
-                                    mInventory[18] = mInventory[mCurrentSlot];
-                                    mInventory[mCurrentSlot] = null;
-                                    mTicksUntilNextUpdate = 1;
-                                }
+                            if (mInventory[18] == null) {
+                                mInventory[18] = mInventory[mCurrentSlot];
+                                mInventory[mCurrentSlot] = null;
+                                mTicksUntilNextUpdate = 1;
                             }
                         }
                         case 6 -> {
@@ -494,11 +483,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
                 if (tOutput == null) {
                     mLastCraftSuccessful = false;
                 } else {
-                    if ((tTempStack = GTOreDictUnificator.get(true, tOutput)) != null) {
-                        tTempStack.stackSize = tOutput.stackSize;
-                        tOutput = tTempStack;
-                    }
-
                     mInventory[28] = GTUtility.copy(tOutput);
                     ArrayList<ItemStack> tList = recipeContent(tRecipe), tContent = benchContent();
                     if (!tList.isEmpty() && !tContent.isEmpty()) {

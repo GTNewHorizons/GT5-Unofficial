@@ -33,11 +33,13 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -171,7 +173,8 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
 
                     if (super.depleteInput(liquid)) {
 
-                        if (!super.depleteInput(Materials.Oxygen.getGas(OXYGEN_PER_SEC))) {
+                        if (!super.depleteInput(
+                            MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, OXYGEN_PER_SEC))) {
                             super.mEUt = 0;
                             super.mEfficiency = 0;
                             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
@@ -181,7 +184,8 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                         super.mMaxProgresstime = 20;
                         super.mEfficiencyIncrease = 40;
                         if (super.mEfficiency == getMaxEfficiency(null)) {
-                            super.addOutputPartial(Materials.Steam.getGas(STEAM_PER_SEC));
+                            super.addOutputPartial(
+                                MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, STEAM_PER_SEC));
                         }
                         return CheckRecipeResultRegistry.GENERATING;
                     }

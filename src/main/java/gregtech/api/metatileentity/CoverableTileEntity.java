@@ -51,7 +51,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.net.GTPacketRequestCoverData;
 import gregtech.api.net.GTPacketSendCoverData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -307,7 +306,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         cover.onCoverRemoval();
         synchronizeCover(CoverRegistry.NO_COVER, side);
         updateOutputRedstoneSignal(side);
-        return GTOreDictUnificator.get(true, cover.asItemStack());
+        return cover.asItemStack();
     }
 
     @Override

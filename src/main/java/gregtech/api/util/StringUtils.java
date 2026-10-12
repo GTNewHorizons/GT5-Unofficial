@@ -130,17 +130,6 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static long uppercaseCount(String input) {
-        final char[] chars = input.toCharArray();
-        int count = 0;
-        for (char c : chars) {
-            if (Character.isUpperCase(c)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     public static String sanitizeStringKeepDashes(final String input) {
         final char[] chars = input.toCharArray();
         int i = 0;
@@ -204,24 +193,6 @@ public class StringUtils {
                 case '-':
                 case '_':
                 case '?':
-                case '!':
-                case '@':
-                case '#':
-                    continue;
-            }
-            chars[i++] = c;
-        }
-        return new String(chars, 0, i);
-    }
-
-    public static String sanitizeStringKeepBracketsQuestion(final String input) {
-        final char[] chars = input.toCharArray();
-        int i = 0;
-        for (final char c : chars) {
-            switch (c) {
-                case ' ':
-                case '-':
-                case '_':
                 case '!':
                 case '@':
                 case '#':

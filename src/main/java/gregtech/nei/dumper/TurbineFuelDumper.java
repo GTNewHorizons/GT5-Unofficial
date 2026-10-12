@@ -12,9 +12,11 @@ import net.minecraftforge.fluids.FluidStack;
 import com.github.bsideup.jabel.Desugar;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import codechicken.nei.config.DataDumper;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -144,6 +146,7 @@ public class TurbineFuelDumper extends DataDumper {
     }
 
     private static boolean isBenzene(FluidStack fluid) {
-        return fluid.getFluid() == Materials.Benzene.mFluid;
+        return fluid.getFluid() == MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 0)
+            .getFluid();
     }
 }

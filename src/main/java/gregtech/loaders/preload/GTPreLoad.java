@@ -1,26 +1,21 @@
 package gregtech.loaders.preload;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
-import static gregtech.api.enums.Mods.CraftTweaker;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 
-import org.apache.commons.lang3.StringUtils;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
@@ -30,8 +25,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
@@ -111,15 +105,13 @@ public class GTPreLoad {
         }
         GTLanguageManager.sEnglishFile.load();
 
-        Materials.getMaterialsMap()
-            .values()
+        MaterialLibAPI.getMaterials()
             .parallelStream()
-            .filter(Objects::nonNull)
+            .filter(material -> "gregtech".equals(material.getModId()))
             .forEach(
-                aMaterial -> {
-                    GTLanguageManager
-                        .addStringLocalization(aMaterial.getLocalizedNameKey(), aMaterial.mDefaultLocalName);
-                });
+                material -> GTLanguageManager.addStringLocalization(
+                    MaterialUtils.localizedNameKey(material),
+                    MaterialUtils.localName(material)));
     }
 
     public static void getConfiguration(File configDir) {
@@ -137,154 +129,6 @@ public class GTPreLoad {
         GTConfig.undergroundFluidsFile = new Configuration(tFile);
         GTConfig.undergroundFluidsFile.load();
         GTConfig.undergroundFluidsFile.save();
-    }
-
-    public static void runMineTweakerCompat() {
-        if (!CraftTweaker.isModLoaded()) return;
-
-        GT_FML_LOGGER.info("preReader");
-        final ArrayList<String> oreTags = new ArrayList<>();
-        final File globalDir = new File("scripts");
-        if (globalDir.exists()) {
-            final List<String> scripts = new ArrayList<>();
-            for (File file : Objects.requireNonNull(globalDir.listFiles())) {
-                if (file.getName()
-                    .endsWith(".zs")) {
-                    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            scripts.add(line);
-                        }
-                    } catch (Exception e) {
-                        GT_FML_LOGGER.error(e);;
-                    }
-                }
-            }
-
-            final Pattern p = Pattern.compile(Pattern.quote("<") + "(.*?)" + Pattern.quote(">"));
-            final String[] prefixes1 = { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed",
-                "crushedPurified", "crushedCentrifuged", "gem", "nugget", null, "ingot", "ingotHot", null, null, null,
-                null, "plate", "plateDouble", "plateTriple", "plateQuadruple", "plateQuintuple", "plateDense", "stick",
-                "lens", "round", "bolt", "screw", "ring", "foil", "cell", "cellPlasma", "cellMolten", "rawOre",
-                "plateSuperdense" };
-            final String[] prefixes2 = { "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe",
-                "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
-                "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
-                "toolHeadBuzzSaw", "turbineBlade", null, "itemCasing", "wireFine", "gearGtSmall", "rotor", "stickLong",
-                "springSmall", "spring", "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless",
-                "gemExquisite", "gearGt" };
-            final String[] prefixes3 = { "rawOre", "nanite", "plateSuperdense" };
-            for (String text : scripts) {
-                Matcher m = p.matcher(text);
-                while (m.find()) {
-                    String hit = m.group(1);
-                    if (hit.startsWith("ore:")) {
-                        hit = hit.substring(4);
-                        if (!oreTags.contains(hit)) oreTags.add(hit);
-                    } else if (hit.startsWith("gregtech:gt.metaitem.0")) {
-                        hit = hit.substring(22);
-                        int mIt = Integer.parseInt(hit.substring(0, 1));
-                        if (mIt > 0) {
-                            int meta = 0;
-                            try {
-                                hit = hit.substring(2);
-                                meta = Integer.parseInt(hit);
-                            } catch (Exception e) {
-                                GT_FML_LOGGER.info("parseError: {}", hit);
-                            }
-                            if (meta > 0 && meta < 32000) {
-                                int prefix = meta / 1000;
-                                int material = meta % 1000;
-                                String[] tags = null;
-                                if (mIt == 1) tags = prefixes1;
-                                if (mIt == 2) tags = prefixes2;
-                                if (mIt == 3) tags = prefixes3;
-                                if (tags == null) tags = GTValues.emptyStringArray;
-                                if (GregTechAPI.sGeneratedMaterials[material] != null) {
-                                    final String tag;
-                                    if (tags.length > prefix) {
-                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;
-                                    } else {
-                                        tag = GregTechAPI.sGeneratedMaterials[material].mName;
-                                    }
-                                    if (!oreTags.contains(tag)) oreTags.add(tag);
-                                } else if (material > 0) {
-                                    GT_FML_LOGGER.info("MaterialDisabled: {} {}", material, m.group(1));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (oreTags.isEmpty()) return;
-
-        final String[] preS = { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed", "crushedPurified",
-            "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "plate", "plateDouble", "plateTriple",
-            "plateQuadruple", "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring", "foil",
-            "cell", "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe",
-            "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
-            "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw",
-            "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
-            "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "nanite",
-            "cellMolten", "rawOre", "plateSuperdense" };
-
-        final ArrayList<String> mMTTags = new ArrayList<>();
-        // noinspection ForLoopReplaceableByForEach
-        for (int i = 0, size = oreTags.size(); i < size; i++) {
-            final String str = oreTags.get(i);
-            if (StringUtils.startsWithAny(str, preS)) {
-                mMTTags.add(str);
-                if (GTValues.D1) GT_FML_LOGGER.info("oretag: {}", str);
-            }
-        }
-
-        GT_FML_LOGGER.info("reenableMetaItems");
-
-        // noinspection ForLoopReplaceableByForEach
-        for (int i = 0, size = mMTTags.size(); i < size; i++) {
-            final String reEnable = mMTTags.get(i);
-            OrePrefixes tPrefix = OrePrefixes.getOrePrefix(reEnable);
-            if (tPrefix != null) {
-                Materials tName = Materials.get(
-                    reEnable.substring(
-                        tPrefix.getName()
-                            .length()));
-                tPrefix.mDisabledItems.remove(tName);
-                tPrefix.mGeneratedItems.add(tName);
-                if (tPrefix == OrePrefixes.screw) {
-                    OrePrefixes.bolt.mDisabledItems.remove(tName);
-                    OrePrefixes.bolt.mGeneratedItems.add(tName);
-                    OrePrefixes.stick.mDisabledItems.remove(tName);
-                    OrePrefixes.stick.mGeneratedItems.add(tName);
-                }
-                if (tPrefix == OrePrefixes.round) {
-                    OrePrefixes.nugget.mDisabledItems.remove(tName);
-                    OrePrefixes.nugget.mGeneratedItems.add(tName);
-                }
-                if (tPrefix == OrePrefixes.spring) {
-                    OrePrefixes.stickLong.mDisabledItems.remove(tName);
-                    OrePrefixes.stickLong.mGeneratedItems.add(tName);
-                    OrePrefixes.stick.mDisabledItems.remove(tName);
-                    OrePrefixes.stick.mGeneratedItems.add(tName);
-                }
-                if (tPrefix == OrePrefixes.springSmall) {
-                    OrePrefixes.stick.mDisabledItems.remove(tName);
-                    OrePrefixes.stick.mGeneratedItems.add(tName);
-                }
-                if (tPrefix == OrePrefixes.stickLong) {
-                    OrePrefixes.stick.mDisabledItems.remove(tName);
-                    OrePrefixes.stick.mGeneratedItems.add(tName);
-                }
-                if (tPrefix == OrePrefixes.rotor) {
-                    OrePrefixes.ring.mDisabledItems.remove(tName);
-                    OrePrefixes.ring.mGeneratedItems.add(tName);
-                }
-            } else {
-                GT_FML_LOGGER.info("noPrefix {}", reEnable);
-            }
-        }
     }
 
     public static void adjustScrap() {
@@ -327,7 +171,6 @@ public class GTPreLoad {
         GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = Gregtech.general.millisecondThesholdUntilLagWarning;
         GregTechAPI.sTimber = Gregtech.general.timber;
         GregTechAPI.sDrinksAlwaysDrinkable = Gregtech.general.drinksAlwaysDrinkable;
-        GregTechAPI.sDoShowAllItemsInCreative = Gregtech.general.doShowAllItemsInCreative;
         GregTechAPI.sMultiThreadedSounds = Gregtech.general.multiThreadedSounds;
         GTMod.proxy.mMaxEqualEntitiesAtOneSpot = Gregtech.general.maxEqualEntitiesAtOneSpot;
         GTMod.proxy.mFlintChance = Gregtech.general.flintChance;
@@ -337,20 +180,17 @@ public class GTPreLoad {
         GTMod.proxy.mIncreaseDungeonLoot = Gregtech.general.increaseDungeonLoot;
         GTMod.proxy.mAxeWhenAdventure = Gregtech.general.axeWhenAdventure;
         GTMod.proxy.mSurvivalIntoAdventure = Gregtech.general.survivalIntoAdventure;
-        GTMod.proxy.mInventoryUnification = Gregtech.general.inventoryUnification;
         GTMod.proxy.mGTBees = Gregtech.general.GTBees;
-        GTMod.proxy.mCraftingUnification = Gregtech.general.craftingUnification;
         GTMod.proxy.mNerfedWoodPlank = Gregtech.general.nerfedWoodPlank;
         GTMod.proxy.mChangeWoodenVanillaTools = Gregtech.general.changedWoodenVanillaTools;
         GTMod.proxy.mAchievements = Gregtech.general.achievements;
-        GTMod.proxy.mEnableAllMaterials = Gregtech.general.enableAllMaterials;
         GTMod.proxy.mExplosionItemDrop = Gregtech.general.explosionItemDrop;
         GTMod.proxy.mEnableCleanroom = Gregtech.general.enableCleanroom;
         GTMod.proxy.mLowGravProcessing = GalacticraftCore.isModLoaded() && Gregtech.general.lowGravProcessing;
         GTMod.proxy.mAMHInteraction = Gregtech.general.autoMaintenaceHatchesInteraction;
         GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = Gregtech.general.mixedOreOnlyYieldsTwoThirdsOfPureOre;
-        GTMod.proxy.mRichOreYieldMultiplier = Gregtech.general.richOreYieldMultiplier;
         GTMod.proxy.mNetherOreYieldMultiplier = Gregtech.general.netherOreYieldMultiplier;
+        GTMod.proxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
         GTMod.proxy.mEndOreYieldMultiplier = Gregtech.general.endOreYieldMultiplier;
         GTMod.proxy.gt6Pipe = Gregtech.general.gt6Pipe;
         GTMod.proxy.gt6Cable = Gregtech.general.gt6Cable;

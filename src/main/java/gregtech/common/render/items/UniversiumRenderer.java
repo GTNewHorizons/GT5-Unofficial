@@ -1,5 +1,7 @@
 package gregtech.common.render.items;
 
+import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -19,6 +21,7 @@ import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.common.config.Client;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
@@ -42,7 +45,10 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
             return;
         }
 
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
+        IGT_ItemWithMaterialRenderer aItem = IGT_ItemWithMaterialRenderer.resolve(aStack);
+        if (aItem == null) return;
+
+        IIconContainer container = aItem.getIconContainer(aMetaData);
 
         int passes = 1;
         if (aItem.requiresMultipleRenderPasses()) {
@@ -50,23 +56,34 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
         }
 
         for (int pass = 0; pass < passes; pass++) {
-            IIcon tIcon = aItem.getIcon(aMetaData, pass);
-            IIcon tOverlay = aItem.getOverlayIcon(aMetaData, pass);
-
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-            if (tIcon != null) {
-                magicRenderMethod(type, tIcon, false, data);
-            }
+            if (container != null) {
+                IIcon base = container.getLayerIcon(0);
+                if (base != null && base != INVISIBLE_ICON) {
+                    magicRenderMethod(type, base, false, data);
+                }
 
-            GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_LIGHTING);
 
-            if (tOverlay != null) {
-                GL11.glColor3f(1.0F, 1.0F, 1.0F);
-                TextureUtils.bindAtlas(aItem.getSpriteNumber());
-                renderItemOverlay(type, tOverlay);
+                renderUpperLayers(type, aStack, aItem, container);
+            } else {
+                IIcon tIcon = aItem.getIcon(aMetaData, pass);
+                IIcon tOverlay = aItem.getOverlayIcon(aMetaData, pass);
+
+                if (tIcon != null) {
+                    magicRenderMethod(type, tIcon, false, data);
+                }
+
+                GL11.glDisable(GL11.GL_LIGHTING);
+
+                if (tOverlay != null) {
+                    GL11.glColor3f(1.0F, 1.0F, 1.0F);
+                    TextureUtils.bindAtlas(aItem.getSpriteNumber());
+                    renderItemOverlay(type, tOverlay);
+                }
             }
 
             GL11.glDisable(GL11.GL_BLEND);

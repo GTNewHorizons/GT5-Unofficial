@@ -4,13 +4,15 @@ import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import bartworks.system.material.WerkstoffLoader;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.CellShapes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 
 public class Electrolyzer implements Runnable {
 
@@ -19,130 +21,134 @@ public class Electrolyzer implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Forsterit.get(OrePrefixes.dust, 7))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Forsterite, Shapes.dust, 7))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L))
-            .fluidOutputs(Materials.Oxygen.getGas(2_000))
+                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
             .duration(10 * SECONDS)
             .eut(90)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.RedZircon.get(OrePrefixes.dust, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.RedZircon, Shapes.dust, 6))
             .itemOutputs(
-                WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L))
-            .fluidOutputs(Materials.Oxygen.getGas(2_000))
+                MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(90)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Fayalit.get(OrePrefixes.dust, 7))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Fayalite, Shapes.dust, 7))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 1L))
-            .fluidOutputs(Materials.Oxygen.getGas(2_000))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
             .duration(16 * SECONDS)
             .eut(90)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Prasiolite.get(OrePrefixes.dust, 16))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Prasiolite, Shapes.dust, 16))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 5L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L))
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 5),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
             .duration(29 * SECONDS)
             .eut(90)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Hedenbergit.get(OrePrefixes.dust, 10))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hedenbergite, Shapes.dust, 10))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 2L))
-            .fluidOutputs(Materials.Oxygen.getGas(2_000))
+                MaterialLibAPI.getStack(Materials.Calcium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 2))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
             .duration(15 * SECONDS)
             .eut(90)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.FuchsitAL.get(OrePrefixes.dust, 21), ItemList.Cell_Empty.get(2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.GreenFuchsite, Shapes.dust, 21), ItemList.Cell_Empty.get(2))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Potassium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 3L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3L),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2))
-            .fluidOutputs(Materials.Oxygen.getGas(2_000))
+                MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
             .duration(19 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.FuchsitCR.get(OrePrefixes.dust, 21), ItemList.Cell_Empty.get(2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.RedFuchsite, Shapes.dust, 21), ItemList.Cell_Empty.get(2))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Potassium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 3L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3L),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2))
-            .fluidOutputs(Materials.Oxygen.getGas(2_000))
+                MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
             .duration(23 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.VanadioOxyDravit.get(OrePrefixes.dust, 53), ItemList.Cell_Empty.get(3))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.VanadioOxyDravite, Shapes.dust, 53),
+                ItemList.Cell_Empty.get(3))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 3L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnalium, 6L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 3))
-            .fluidOutputs(Materials.Oxygen.getGas(19_000))
+                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Magnalium, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 3))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 19_000))
             .duration(35 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.ChromoAluminoPovondrait.get(OrePrefixes.dust, 53), ItemList.Cell_Empty.get(3))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.ChromoAluminoPovondraite, Shapes.dust, 53),
+                ItemList.Cell_Empty.get(3))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 3L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnalium, 6L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 3))
-            .fluidOutputs(Materials.Oxygen.getGas(19_000))
+                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Magnalium, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 3))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 19_000))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.FluorBuergerit.get(OrePrefixes.dust, 50), ItemList.Cell_Empty.get(3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.FluorBuergerite, Shapes.dust, 50), ItemList.Cell_Empty.get(3))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 6L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 3))
-            .fluidOutputs(Materials.Oxygen.getGas(6_000))
+                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Fluorine, CellShapes.cellGas, 3))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 6_000))
             .duration(36 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Olenit.get(OrePrefixes.dust, 51), ItemList.Cell_Empty.get(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Olenite, Shapes.dust, 51), ItemList.Cell_Empty.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 9L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 6L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Boron, 3),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1))
-            .fluidOutputs(Materials.Oxygen.getGas(1_000))
+                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(39 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);

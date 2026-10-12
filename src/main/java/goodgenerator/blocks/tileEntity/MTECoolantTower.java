@@ -19,13 +19,16 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -117,7 +120,7 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
             .beginStructureBlock(11, 13, 11, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("252-277", StatCollector.translateToLocal("gt.blockconcretes.8.name"), false)
-            .addCasing("28", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenCarbide), false)
+            .addCasing("28", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.TungstenCarbide)), false)
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_concrete"), 1)
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_edge_concrete"), 1)
             .toolTipFinisher();
@@ -165,7 +168,9 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
 
     private int maybeDrainSteam(MTEHatchInput tHatch, FluidStack maybeSteam) {
         if (maybeSteam == null) return 0;
-        if (!GTUtility.areFluidsEqual(maybeSteam, Materials.Steam.getGas(1))) return 0;
+        if (!GTUtility
+            .areFluidsEqual(maybeSteam, MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1)))
+            return 0;
         FluidStack defoSteam = tHatch.drain(ForgeDirection.UNKNOWN, maybeSteam, true);
         return defoSteam.amount;
     }

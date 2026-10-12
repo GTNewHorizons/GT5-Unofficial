@@ -48,16 +48,17 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -456,7 +457,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing("25-57", StatCollector.translateToLocal("yottaFluidTankCasing.name"), false)
-            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)), false)
             .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing("9", StatCollector.translateToLocal("yottaFluidTankCell.name"), true)
             .addStructureInfo("")

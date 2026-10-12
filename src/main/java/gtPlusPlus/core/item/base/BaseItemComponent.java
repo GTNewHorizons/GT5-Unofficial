@@ -2,44 +2,25 @@ package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.covers.CoverRegistry;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.StringUtils;
-import gregtech.common.config.Client;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class BaseItemComponent extends Item {
 
-    public final Material componentMaterial;
     public final String materialName;
     public final String unlocalName;
     public final String materialKey;
@@ -52,26 +33,6 @@ public class BaseItemComponent extends Item {
     @SideOnly(Side.CLIENT)
     protected IIcon iconOverlay;
 
-    public BaseItemComponent(final Material material, final ComponentTypes componentType) {
-        this.componentMaterial = material;
-        this.unlocalName = "item" + componentType.COMPONENT_NAME + material.getUnlocalizedName();
-        this.materialName = material.getDefaultLocalName();
-        this.materialKey = material.getLocalizedNameKey();
-        this.componentType = componentType;
-        this.setCreativeTab(AddToCreativeTab.tabMisc);
-        this.setUnlocalizedName(this.unlocalName);
-        this.setMaxStackSize(64);
-        this.componentColour = material.getRgbAsHex();
-        GameRegistry.registerItem(this, this.unlocalName);
-
-        GTOreDictUnificator
-            .registerOre(componentType.getOreDictName() + material.getUnlocalizedName(), new ItemStack(this));
-        if (componentType == ComponentTypes.GEAR) {
-            GTOreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), new ItemStack(this));
-        }
-        registerComponent();
-    }
-
     // For Cell Generation
     public BaseItemComponent(final String unlocalName, final Fluid fluid, final String localName, final short[] RGBA) {
 
@@ -82,7 +43,6 @@ public class BaseItemComponent extends Item {
         } else {
             aFormattedNameForFluids = unlocalName;
         }
-        this.componentMaterial = Material.mMaterialCache.get(localName.toLowerCase());
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
         this.materialKey = fluid.getUnlocalizedName();
@@ -95,40 +55,9 @@ public class BaseItemComponent extends Item {
 
         this.setTextureName(GTPlusPlus.ID + ":" + "item" + ComponentTypes.CELL.COMPONENT_NAME);
         GameRegistry.registerItem(this, aFormattedNameForFluids);
-        GTOreDictUnificator.registerOre(
+        OreDictUtils.registerOre(
             ComponentTypes.CELL.getOreDictName() + StringUtils.sanitizeStringKeepBrackets(localName),
             new ItemStack(this));
-        registerComponent();
-    }
-
-    public boolean registerComponent() {
-        if (this.componentMaterial == null) {
-            return false;
-        }
-        // Register Component
-        Map<String, ItemStack> aMap = Material.mComponentMap.get(componentMaterial.getUnlocalizedName());
-        if (aMap == null) {
-            aMap = new HashMap<>();
-        }
-        String aKey = componentType.getGtOrePrefix()
-            .getName();
-        ItemStack x = aMap.get(aKey);
-        if (x == null) {
-            aMap.put(aKey, new ItemStack(this));
-            Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
-            if (componentType == ComponentTypes.PLATE) {
-                CoverRegistry.registerDecorativeCover(
-                    componentMaterial.getPlate(1),
-                    TextureFactory.of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA()));
-            } else if (componentType == ComponentTypes.PLATEDOUBLE) {
-                CoverRegistry.registerDecorativeCover(
-                    componentMaterial.getPlateDouble(1),
-                    TextureFactory.of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA()));
-            }
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public final String getMaterialName() {
@@ -137,71 +66,7 @@ public class BaseItemComponent extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        if (componentMaterial != null) {
-            return componentType.getGtOrePrefix()
-                .getLocalizedNameForItem(componentMaterial);
-        }
-        return OrePrefixes.getLocalizedNameForItem(componentType.getName(), "@", materialKey);
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
-        final boolean bool) {
-
-        try {
-            if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
-
-                this.componentMaterial.addTooltips(list);
-
-                if (Client.tooltip.showHotIngotText) {
-                    if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
-                        if (this.unlocalName.toLowerCase()
-                            .contains("hot")) {
-                            list.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
-                        }
-                    }
-                }
-
-                if (Client.tooltip.showCtrlText) {
-                    // Hidden Tooltip
-                    if (GuiScreen.isCtrlKeyDown()) {
-                        String type = this.componentMaterial.getTextureSet().mSetName;
-                        String output = type.substring(0, 1)
-                            .toUpperCase() + type.substring(1);
-                        list.add(
-                            EnumChatFormatting.GRAY
-                                + StatCollector.translateToLocalFormatted("GTPP.tooltip.material.type", output));
-                        list.add(
-                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                                "GTPP.tooltip.material.state",
-                                this.componentMaterial.getState()
-                                    .name()));
-                        list.add(
-                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                                "GTPP.tooltip.material.radioactivity",
-                                this.componentMaterial.radiationLevel));
-                    } else {
-                        list.add(
-                            EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
-                    }
-                }
-            }
-        } catch (Exception ignored) {}
-
-        super.addInformation(stack, aPlayer, list, bool);
-    }
-
-    @Override
-    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-        final boolean p_77663_5_) {
-        if (this.componentMaterial != null) {
-            EntityUtils.applyRadiationDamageToEntity(
-                iStack.stackSize,
-                this.componentMaterial.radiationLevel,
-                world,
-                entityHolding);
-        }
+        return OrePrefixes.getLocalizedNameForItemForKey(componentType.getName(), "@", materialKey);
     }
 
     /**
@@ -227,20 +92,9 @@ public class BaseItemComponent extends Item {
                 return Utils.rgbtoHexValue(255, 255, 255);
             }
 
-            if (this.componentMaterial == null) {
-                if (extraData != null) {
-                    return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
-                }
-                return this.componentColour;
+            if (extraData != null) {
+                return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
             }
-
-            if (this.componentMaterial.getRGBA()[3] <= 1) {
-                return this.componentColour;
-            } else {
-                // Animated materials ship baked animated textures; render them untinted.
-                return Utils.rgbtoHexValue(255, 255, 255);
-            }
-
         } catch (Exception ignored) {}
         return this.componentColour;
     }
@@ -257,21 +111,9 @@ public class BaseItemComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister i) {
-        String metType = null;
-        if (this.componentMaterial != null) {
-            TextureSet u = this.componentMaterial.getTextureSet();
-            if (u != null) {
-                metType = u.mSetName;
-            }
-        }
-        metType = (metType == null ? "METALLIC" : metType);
-        IIconContainer container = Textures.ItemIcons.textureSetWithRegister(
-            Mods.GregTech.resourceDomain,
-            metType,
-            "/" + this.componentType.getOreDictName(),
-            i);
-        iconBase = container.getIcon();
-        iconOverlay = container.getOverlayIcon();
+        String path = GTMaterialIcons.itemIconPath("METALLIC", this.componentType.getOreDictName());
+        iconBase = i.registerIcon(path);
+        iconOverlay = i.registerIcon(path + "_OVERLAY");
     }
 
     public enum ComponentTypes {

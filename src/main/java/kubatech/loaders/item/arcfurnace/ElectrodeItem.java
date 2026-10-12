@@ -12,8 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.material.MaterialRenderers;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import kubatech.loaders.ArcFurnaceElectrode;
 
@@ -113,9 +115,7 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
         ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(aMetaData);
-        if (electrode != null && electrode.associatedMaterial.getGTMaterial() != null)
-            return electrode.associatedMaterial.getGTMaterial().renderer;
-        return null;
+        return electrode == null ? null : MaterialRenderers.rendererOf(electrode.associatedMaterial);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
     @Override
     public short[] getRGBa(ItemStack aStack) {
         ArcFurnaceElectrode electrode = getElectrodeFromStack(aStack);
-        if (electrode != null) return electrode.associatedMaterial.getRGBA();
-        return Materials._NULL.getRGBA();
+        if (electrode != null) return MaterialUtils.rgba(electrode.associatedMaterial);
+        return MaterialUtils.rgba(Materials.NULL);
     }
 }

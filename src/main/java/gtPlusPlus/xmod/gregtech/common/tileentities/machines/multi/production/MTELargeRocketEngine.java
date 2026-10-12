@@ -33,11 +33,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -246,7 +248,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     public static void setAir() {
         if (sAirFluidStack == null) {
-            sAirFluidStack = Materials.Air.getGas(1);
+            sAirFluidStack = MaterialLibAPI.getFluidStack(Materials.Air, FluidShapes.fluidGas, 1);
         }
         if (sAirFluid == null && sAirFluidStack != null) {
             sAirFluid = sAirFluidStack.getFluid();
@@ -394,7 +396,8 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     public boolean consumeCO2() {
-        return this.depleteInput(Materials.CarbonDioxide.getGas(this.boostEu ? 3 : 1));
+        return this.depleteInput(
+            MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (this.boostEu ? 3 : 1)));
     }
 
     public boolean consumeLOH() {

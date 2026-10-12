@@ -44,11 +44,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -153,8 +155,10 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
 
     private int itemPipeTier = -1;
     private int base_parallel = 8;
-    private static final FluidStack[] valid_rubbers = { Materials.Rubber.getMolten(1L),
-        Materials.RubberSilicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L) };
+    private static final FluidStack[] valid_rubbers = {
+        MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, 1),
+        MaterialLibAPI.getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, 1),
+        MaterialLibAPI.getFluidStack(Materials.StyreneButadieneRubber, FluidShapes.fluidMolten, 1) };
     private static ItemStack SINGULARITY;
 
     @Override

@@ -16,16 +16,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.configs.Configuration;
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTLoggers;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.DiscreteDistribution;
 import gregtech.api.util.GTUtility;
@@ -38,9 +40,11 @@ import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 
 public class VoidMinerUtility {
 
-    public static final FluidStack[] NOBLE_GASSES = { WerkstoffLoader.Neon.getFluidOrGas(1),
-        WerkstoffLoader.Krypton.getFluidOrGas(1), WerkstoffLoader.Xenon.getFluidOrGas(1),
-        WerkstoffLoader.Oganesson.getFluidOrGas(1) };
+    public static final FluidStack[] NOBLE_GASSES = {
+        MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, 1) };
     public static final int[] NOBLE_GASSES_MULTIPLIER = { 4, 8, 16, 64 };
 
     public static class DropMap {
@@ -58,8 +62,9 @@ public class VoidMinerUtility {
         public DropMap() {
             internalMap = new Object2FloatOpenHashMap<>();
             totalWeight = 0;
-            voidMinerBlacklistedDrops = Collections
-                .unmodifiableSet(new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist)));
+            Set<String> blacklist = new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist));
+            blacklist.addAll(VoidMinerMaterialBlacklist.cached());
+            voidMinerBlacklistedDrops = Collections.unmodifiableSet(blacklist);
         }
 
         /**
@@ -70,8 +75,8 @@ public class VoidMinerUtility {
          * @param weight   the non normalised weight
          * @param stone    the stone types
          */
-        public void addDrop(IOreMaterial material, List<StoneType> stone, float weight) {
-            try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
+        public void addDrop(Material material, List<StoneType> stone, float weight) {
+            try (OreInfo info = OreInfo.getNewInfo()) {
                 info.material = material;
 
                 for (IStoneType stones : stone) {
@@ -79,8 +84,9 @@ public class VoidMinerUtility {
                     ItemStack stack = OreManager.getStack(info, 1);
 
                     if (stack == null) {
-                        GTLoggers.GT_FML_LOGGER.error("Could not add ore {} to void miner drop map!", material);
-                        return;
+                        GTLoggers.GT_FML_LOGGER
+                            .error("Could not add ore {} on {} to void miner drop map!", material, stones);
+                        continue;
                     }
 
                     addDrop(stack, weight);
@@ -94,8 +100,8 @@ public class VoidMinerUtility {
          * @param material the material
          * @param weight   the non normalised weight
          */
-        public void addDrop(IOreMaterial material, float weight) {
-            try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
+        public void addDrop(Material material, float weight) {
+            try (OreInfo info = OreInfo.getNewInfo()) {
                 info.material = material;
 
                 ItemStack stack = OreManager.getStack(info, 1);
@@ -282,7 +288,7 @@ public class VoidMinerUtility {
      * @param material the material with an ore version
      * @param weight   the non normalised version of the given weight
      */
-    public static void addMaterialToDimensionList(String dimName, IOreMaterial material, float weight) {
+    public static void addMaterialToDimensionList(String dimName, Material material, float weight) {
         DropMap map = dropMapsByDimName.computeIfAbsent(dimName, ignored -> new DropMap());
 
         map.addDrop(material, weight);

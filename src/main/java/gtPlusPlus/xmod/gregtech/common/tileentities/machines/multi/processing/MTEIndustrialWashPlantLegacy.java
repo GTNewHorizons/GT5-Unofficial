@@ -46,7 +46,6 @@ import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -330,7 +329,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
                     boolean waterSourceProcessed = false;
 
                     for (FluidStack stored : storedFluids) {
-                        if (!stored.isFluidEqual(Materials.Water.getFluid(1))) continue;
+                        if (!stored.isFluidEqual(GTUtility.getWater(1))) continue;
 
                         if (stored.amount < 1000) continue;
 

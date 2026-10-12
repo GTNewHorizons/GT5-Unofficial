@@ -12,11 +12,11 @@ import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
@@ -29,33 +29,38 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialParts;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
-import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.oredict.OreDictRegistrationHandler;
-import gregtech.common.oredict.OreDictUnificationOverrides;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
+import gregtech.loaders.oreprocessing.ForeignPartRecipes;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -67,7 +72,8 @@ public class GTPostLoad {
         Stopwatch stopwatch = Stopwatch.createStarted();
 
         OreDictRegistrationHandler.processBufferedRegistrations();
-        OreDictUnificationOverrides.finalizeUnification();
+        ForeignPartRecipes.registerTable();
+        GTRecipe.reInit();
 
         // noinspection UnstableApiUsage// Stable enough for this project
         GT_FML_LOGGER.info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());
@@ -107,10 +113,14 @@ public class GTPostLoad {
         GT_FML_LOGGER.debug("IC2 Removal ({}). Have a Cake.", stopwatch.stop());
     }
 
+    /// Registers canner recipes filling and emptying every registered fluid container, except those that empty into
+    /// an IC2 cell, which [PosteaTransformers] migrates onto GregTech cells. Containers of molten ruthenium, rhodium,
+    /// osmium, iridium and platinum get only a filling recipe.
     public static void registerFluidCannerRecipes() {
+        ItemStack ic2EmptyCell = GTModHandler.getIC2Item("cell", 1L);
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
-            if (tData.fluid.amount <= 0) {
+            if (tData.fluid.amount <= 0 || GTUtility.areStacksEqual(tData.emptyContainer, ic2EmptyCell)) {
                 continue;
             }
             // lava clay bucket is registered with empty container with 0 stack size
@@ -123,11 +133,21 @@ public class GTPostLoad {
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
                 .addTo(cannerRecipes);
-            if (GTUtility.areFluidsEqual(WerkstoffLoader.Ruthenium.getMolten(1), tData.fluid)
-                || GTUtility.areFluidsEqual(WerkstoffLoader.Rhodium.getMolten(1), tData.fluid)
-                || GTUtility.areFluidsEqual(Materials.Osmium.getMolten(1), tData.fluid)
-                || GTUtility.areFluidsEqual(Materials.Iridium.getMolten(1), tData.fluid)
-                || GTUtility.areFluidsEqual(Materials.Platinum.getMolten(1), tData.fluid)) {
+            if (GTUtility.areFluidsEqual(
+                MaterialLibAPI.getFluidStack(Materials.Ruthenium, FluidShapes.fluidMolten, 1),
+                tData.fluid)
+                || GTUtility.areFluidsEqual(
+                    MaterialLibAPI.getFluidStack(Materials.Rhodium, FluidShapes.fluidMolten, 1),
+                    tData.fluid)
+                || GTUtility.areFluidsEqual(
+                    MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 1),
+                    tData.fluid)
+                || GTUtility.areFluidsEqual(
+                    MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 1),
+                    tData.fluid)
+                || GTUtility.areFluidsEqual(
+                    MaterialLibAPI.getFluidStack(Materials.Platinum, FluidShapes.fluidMolten, 1),
+                    tData.fluid)) {
                 continue;
             }
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
@@ -244,61 +264,21 @@ public class GTPostLoad {
                 }
             }
         }
-        Materials.getMaterialsMap()
-            .values()
-            .forEach(tMaterial -> {
-                // check if material is scannable
-                GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(tMaterial);
-                if (scannerResult == null || scannerResult.isNotMet()) return;
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(material);
+            if (scannerResult == null || scannerResult.isNotMet()) continue;
 
-                // add recipe if a dust exists.
-                GTRecipeBuilder builder = null;
-                ItemStack dustItem = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L);
-                if (dustItem != null) {
-                    builder = GTValues.RA.stdBuilder()
-                        .itemInputs(dustItem);
-                    // add corresponding fluid replicator recipe.
-                    GTValues.RA.stdBuilder()
-                        .itemOutputs(dustItem)
-                        .special(scannerResult.output)
-                        .metadata(GTRecipeConstants.MATERIAL, tMaterial)
-                        .addTo(RecipeMaps.replicatorRecipes);
-                }
-                // else try to add a recipe for the cell.
-                if (builder == null) {
-                    ItemStack cellItem = GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
-                    if (cellItem == null) return;
-                    // create builder
-                    builder = GTValues.RA.stdBuilder()
-                        .itemInputs(cellItem);
-                    // add corresponding replicator recipe
-                    FluidStack fluidStack = GTUtility.getFluidForFilledItem(cellItem, false);
-                    GTRecipeBuilder replicatorRecipeBuilder = GTValues.RA.stdBuilder();
-                    if (fluidStack != null) {
-                        replicatorRecipeBuilder.fluidOutputs(fluidStack);
-                    } else {
-                        // if there is no fluid for some reason, add a cell recipe, with cell input.
-                        replicatorRecipeBuilder.itemInputs(Materials.Empty.getCells(1))
-                            .itemOutputs(cellItem);
-                    }
-                    replicatorRecipeBuilder.special(scannerResult.output)
-                        .metadata(GTRecipeConstants.MATERIAL, tMaterial)
-                        .addTo(RecipeMaps.replicatorRecipes);
-                }
-
-                builder.itemOutputs(scannerResult.output)
-                    .special(ItemList.Tool_DataOrb.get(1L))
-                    .duration(scannerResult.duration)
-                    .eut(scannerResult.eut)
-                    .fake()
-                    .ignoreCollision()
-                    .addTo(scannerFakeRecipes);
-            });
+            addElementScannerAndReplicatorRecipes(
+                scannerResult,
+                material,
+                MaterialLibAPI.findStack(material, Shapes.dust, 1),
+                MaterialParts.stack(OrePrefixes.cell, material, 1L));
+        }
 
         if (!MTEMassfabricator.sRequiresUUA) {
 
             MTEMassfabricator.nonUUARecipe = GTValues.RA.stdBuilder()
-                .fluidOutputs(Materials.UUMatter.getFluid(1L))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1))
                 .duration(MTEMassfabricator.sDurationMultiplier)
                 .eut(MTEMassfabricator.BASE_EUT)
                 .ignoreCollision()
@@ -312,8 +292,12 @@ public class GTPostLoad {
 
         MTEMassfabricator.uuaRecipe = GTValues.RA.stdBuilder()
             .circuit(1)
-            .fluidInputs(Materials.UUAmplifier.getFluid(MTEMassfabricator.sUUAperUUM))
-            .fluidOutputs(Materials.UUMatter.getFluid(1L))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials.UUAmplifier,
+                    FluidShapes.fluidLiquid,
+                    (int) (MTEMassfabricator.sUUAperUUM)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1))
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
             .eut(MTEMassfabricator.BASE_EUT)
             .ignoreCollision()
@@ -338,7 +322,7 @@ public class GTPostLoad {
         MTERockBreaker.addRockBreakerRecipe(
             b -> b.sideBlocks(Blocks.water)
                 .anywhereBlocks(Blocks.lava)
-                .inputItem(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), true)
+                .inputItem(MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1), true)
                 .circuit(1)
                 .outputItem(new ItemStack(Blocks.obsidian, 1))
                 .duration(6 * SECONDS + 8 * TICKS));
@@ -346,7 +330,7 @@ public class GTPostLoad {
         MTERockBreaker.addRockBreakerRecipe(
             b -> b.sideBlocks(Blocks.water)
                 .anywhereBlocks(Blocks.lava)
-                .inputItem(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), true)
+                .inputItem(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, 1), true)
                 .circuit(6)
                 .outputItem(new ItemStack(Blocks.netherrack, 1))
                 .duration(16 * TICKS));
@@ -357,7 +341,7 @@ public class GTPostLoad {
                     .bottomBlock(Blocks.soul_sand)
                     .inputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0), false)
                     .circuit(1)
-                    .outputItem(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
+                    .outputItem(GTModHandler.getModItem(Mods.Botania.ID, "stone", 1, 1))
                     .duration(16 * TICKS));
 
             MTERockBreaker.addRockBreakerRecipe(
@@ -368,6 +352,51 @@ public class GTPostLoad {
                     .outputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "cobbled_deepslate", 1, 0))
                     .duration(16 * TICKS));
         }
+    }
+
+    /// Adds the elemental-scan scanner recipe (and, when the material resolves in MaterialLib, the matching
+    /// replicator recipe) for one scannable element, preferring a dust form over a cell form.
+    private static void addElementScannerAndReplicatorRecipes(GTScannerResult scannerResult, Material material,
+        ItemStack dustItem, ItemStack cellItem) {
+        GTRecipeBuilder builder = null;
+        if (dustItem != null) {
+            builder = GTValues.RA.stdBuilder()
+                .itemInputs(dustItem);
+            if (material != null) {
+                GTValues.RA.stdBuilder()
+                    .itemOutputs(dustItem)
+                    .special(scannerResult.output)
+                    .metadata(GTRecipeConstants.MATERIAL, material)
+                    .addTo(RecipeMaps.replicatorRecipes);
+            }
+        }
+        if (builder == null) {
+            if (cellItem == null) return;
+            builder = GTValues.RA.stdBuilder()
+                .itemInputs(cellItem);
+            if (material != null) {
+                FluidStack fluidStack = GTUtility.getFluidForFilledItem(cellItem, false);
+                GTRecipeBuilder replicatorRecipeBuilder = GTValues.RA.stdBuilder();
+                if (fluidStack != null) {
+                    replicatorRecipeBuilder.fluidOutputs(fluidStack);
+                } else {
+                    // if there is no fluid for some reason, add a cell recipe, with cell input.
+                    replicatorRecipeBuilder.itemInputs(GTUtility.getEmptyCell(1))
+                        .itemOutputs(cellItem);
+                }
+                replicatorRecipeBuilder.special(scannerResult.output)
+                    .metadata(GTRecipeConstants.MATERIAL, material)
+                    .addTo(RecipeMaps.replicatorRecipes);
+            }
+        }
+
+        builder.itemOutputs(scannerResult.output)
+            .special(ItemList.Tool_DataOrb.get(1L))
+            .duration(scannerResult.duration)
+            .eut(scannerResult.eut)
+            .fake()
+            .ignoreCollision()
+            .addTo(scannerFakeRecipes);
     }
 
     public static void changeWoodenVanillaTools() {
@@ -387,15 +416,11 @@ public class GTPostLoad {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
         GT_FML_LOGGER.debug("Replacing Vanilla Materials in recipes, please wait.");
-        Set<Materials> replaceVanillaItemsSet = Arrays.stream(Materials.values())
-            .filter(GTRecipeRegistrator::hasVanillaRecipes)
-            .collect(Collectors.toSet());
-
         ProgressManager.ProgressBar progressBar = ProgressManager
-            .push("Register materials", replaceVanillaItemsSet.size());
+            .push("Register materials", GTRecipeRegistrator.VANILLA_MATS.size());
 
-        for (Materials material : replaceVanillaItemsSet) {
-            progressBar.step(material.getLocalizedName());
+        for (Material material : GTRecipeRegistrator.VANILLA_MATS) {
+            progressBar.step(MaterialUtils.localizedName(material));
             doActualRegistration(material);
         }
 
@@ -404,69 +429,47 @@ public class GTPostLoad {
         GT_FML_LOGGER.debug("Replaced Vanilla Materials ({}). Have a Cake.", stopwatch.stop());
     }
 
-    public static void doActualRegistration(Materials m) {
-        String plateName = OrePrefixes.plate.get(m)
+    public static void doActualRegistration(Material ml) {
+        String plateName = OrePrefixes.plate.oreDictName(ml)
             .toString();
-        boolean noSmash = !m.contains(SubTag.NO_SMASHING);
-        if (m.hasMetalItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
-        if (m.hasGemItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
-        if (m.getBlocks(1) != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, m.getBlocks(1));
+        boolean noSmash = !MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_SMASHING);
+        ItemStack ingot = MaterialLibAPI.findStack(ml, Shapes.ingot, 1);
+        if (ingot != null) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, ingot);
+        ItemStack gem = MaterialLibAPI.findStack(ml, Shapes.gem, 1);
+        if (gem != null) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, gem);
+        ItemStack blocks = MaterialLibAPI.findStack(ml, BlockShapes.block, 1);
+        if (blocks != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, blocks);
     }
 
     public static void addSolidFakeLargeBoilerFuels() {
         RecipeMaps.largeBoilerFakeFuels.getBackend()
             .addSolidRecipes(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 1),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1),
-                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Coal, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lignite, 1),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1),
-                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Lignite, 1),
-                GTOreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Caesium, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
-                GTOreDictUnificator.get(ItemList.Block_SSFUEL.get(1)),
-                GTOreDictUnificator.get(ItemList.Block_MSSFUEL.get(1)),
-                GTOreDictUnificator.get(OrePrefixes.rod, Materials.Blaze, 1));
+                MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Charcoal, Shapes.gem, 1),
+                MaterialLibAPI.getStack(Materials.Charcoal, BlockShapes.block, 1),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.gem, 1),
+                MaterialLibAPI.getStack(Materials.Coal, BlockShapes.block, 1),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.crushed, 1),
+                MaterialLibAPI.getStack(Materials.Lignite, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lignite, Shapes.gem, 1),
+                MaterialLibAPI.getStack(Materials.Lignite, BlockShapes.block, 1),
+                MaterialLibAPI.getStack(Materials.Lignite, Shapes.crushed, 1),
+                new ItemStack(Blocks.log, 1, WILDCARD),
+                new ItemStack(Blocks.planks, 1, WILDCARD),
+                MaterialLibAPI.getStack(Materials.Wood, Shapes.stick, 1),
+                new ItemStack(Blocks.wooden_slab, 1, WILDCARD),
+                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Caesium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
+                ItemList.Block_SSFUEL.get(1),
+                ItemList.Block_MSSFUEL.get(1),
+                MaterialLibAPI.getStack(Materials.Blaze, Shapes.stick, 1));
         if (Thaumcraft.isModLoaded()) {
             RecipeMaps.largeBoilerFakeFuels.getBackend()
                 .addSolidRecipe(GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));
-        }
-    }
-
-    public static void addCauldronRecipe() {
-        OrePrefixes[] washablePrefixes = { OrePrefixes.dustImpure, OrePrefixes.dustPure, OrePrefixes.crushed,
-            OrePrefixes.dust };
-
-        for (Materials material : Materials.getAll()) {
-            for (OrePrefixes prefix : washablePrefixes) {
-                ItemStack input = GTOreDictUnificator.get(prefix, material, 1);
-                ItemStack output = MetaGeneratedItem01.getCauldronWashingResult(prefix, material, 1);
-
-                if (input == null || output == null) {
-                    continue;
-                }
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(input)
-                    .fluidInputs(Materials.Water.getFluid(333))
-                    .itemOutputs(output)
-                    .duration(0)
-                    .eut(0)
-                    .fake()
-                    .addTo(RecipeMaps.cauldronRecipe);
-            }
         }
     }
 

@@ -26,6 +26,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTAuthors.AuthorKuba;
 import static gregtech.api.enums.GTAuthors.AuthorPxx500;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -54,23 +55,27 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.items.SimpleSubItemClass;
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -139,7 +144,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         .addElement('L', ofBlock(GregTechAPI.sBlockCasings2, 13)) // Steel Pipe Casing
         .addElement('M', ofBlock(GregTechAPI.sBlockCasings2, 14)) // Titanium Pipe Casing
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15)) // Tungstensteel Pipe Casing
-        .addElement('P', ofBlock(GregTechAPI.sBlockFrames, 81)) // Tungsten Frame Box
+        .addElement('P', ofFrame(Materials.Tungsten))
         .addElement(
             'e',
             buildHatchAdder(MTEHighTempGasCooledReactor.class)
@@ -197,8 +202,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     private int heliumSupply;
     private double fuelsupply = 0;
-    private final HashMap<Materials, Double> mStoredFuels = new HashMap<>();
-    private final HashMap<Materials, Double> mStoredBurnedFuels = new HashMap<>();
+    private final HashMap<Material, Double> mStoredFuels = new HashMap<>();
+    private final HashMap<Material, Double> mStoredBurnedFuels = new HashMap<>();
     private boolean empty;
     private int emptyticksnodiff = 0;
     private int coolanttaking = 0;
@@ -347,7 +352,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("273", Casings.BerylliumIntegratedReactorCasing.getLocalizedName(), false)
             .addCasing("272", Casings.PressureContainmentCasing.getLocalizedName(), false)
-            .addCasing("164", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("164", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Tungsten)), false)
             .addCasing("162", Casings.GraphiteModeratorCasing.getLocalizedName(), false)
             .addCasing("45", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
             .addCasing("41", Casings.InsulatedFluidPipeCasing.getLocalizedName(), false)
@@ -478,7 +483,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         for (int i = 0; i < fuels; i++) {
             String name = aNBT.getString("fuels" + i);
             double amount = aNBT.getDouble("fuelsamount" + i);
-            Materials m = Materials.get(name);
+            Material m = MaterialUtils.byLegacyName(name);
             if (m != null) {
                 this.mStoredFuels.put(m, amount);
             }
@@ -486,7 +491,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         for (int i = 0; i < burnedfuels; i++) {
             String name = aNBT.getString("burnedfuels" + i);
             double amount = aNBT.getDouble("burnedfuelsamount" + i);
-            Materials m = Materials.get(name);
+            Material m = MaterialUtils.byLegacyName(name);
             if (m != null) {
                 this.mStoredBurnedFuels.put(m, amount);
             }
@@ -504,14 +509,14 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         aNBT.setInteger("fuels", this.mStoredFuels.size());
         aNBT.setInteger("burnedfuels", this.mStoredBurnedFuels.size());
         int i = 0;
-        for (Map.Entry<Materials, Double> entry : this.mStoredFuels.entrySet()) {
-            aNBT.setString("fuels" + i, entry.getKey().mName);
+        for (Map.Entry<Material, Double> entry : this.mStoredFuels.entrySet()) {
+            aNBT.setString("fuels" + i, MaterialUtils.internalName(entry.getKey()));
             aNBT.setDouble("fuelsamount" + i, entry.getValue());
             i++;
         }
         i = 0;
-        for (Map.Entry<Materials, Double> entry : this.mStoredBurnedFuels.entrySet()) {
-            aNBT.setString("burnedfuels" + i, entry.getKey().mName);
+        for (Map.Entry<Material, Double> entry : this.mStoredBurnedFuels.entrySet()) {
+            aNBT.setString("burnedfuels" + i, MaterialUtils.internalName(entry.getKey()));
             aNBT.setDouble("burnedfuelsamount" + i, entry.getValue());
             i++;
         }
@@ -524,7 +529,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             boolean updateneeded = false;
             if (this.heliumSupply < MTEHighTempGasCooledReactor.HELIUM_NEEDED) {
                 this.startRecipeProcessing();
-                FluidStack fluidStack = this.getInputFromHatch(heliumInputHatch, Materials.Helium.getGas(1));
+                FluidStack fluidStack = this.getInputFromHatch(
+                    heliumInputHatch,
+                    MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1));
                 if (fluidStack != null) {
                     int toGet = Math
                         .min(MTEHighTempGasCooledReactor.HELIUM_NEEDED - this.heliumSupply, fluidStack.amount);
@@ -538,7 +545,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 this.startRecipeProcessing();
                 for (ItemStack itemStack : this.getStoredInputs()) {
                     if (itemStack == null || itemStack.getItem() != HTGRItem.TRISO) continue;
-                    Materials m = HTGRItem.getItemMaterial(itemStack);
+                    Material m = HTGRItem.getItemMaterial(itemStack);
                     int toget = (int) Math.min(MAX_CAPACITY - this.fuelsupply, itemStack.stackSize);
                     this.fuelsupply += toget;
                     itemStack.stackSize -= toget;
@@ -589,8 +596,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         fuelMultiplier = 1d;
         fuelExponent = 1d;
 
-        for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
-            Materials m = entry.getKey();
+        for (Map.Entry<Material, Double> entry : mStoredFuels.entrySet()) {
+            Material m = entry.getKey();
             double amount = entry.getValue();
             if (amount > 0) {
                 sum += amount;
@@ -612,9 +619,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         ArrayList<ItemStack> toOutput = new ArrayList<>();
 
-        for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
+        for (Map.Entry<Material, Double> entry : mStoredBurnedFuels.entrySet()) {
             if (entry.getValue() >= 1.d) {
-                Materials m = entry.getKey();
+                Material m = entry.getKey();
                 double output = Math.floor(entry.getValue());
                 ItemStack stack = HTGRItem.createBurnedTRISOFuel(m);
                 stack.stackSize = (int) output;
@@ -624,7 +631,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         if (this.canOutputAll(toOutput.toArray(new ItemStack[0]))) {
             for (ItemStack itemStack : toOutput) {
-                Materials m = HTGRItem.getItemMaterial(itemStack);
+                Material m = HTGRItem.getItemMaterial(itemStack);
                 if (m != null) {
                     mStoredBurnedFuels.merge(m, (double) -itemStack.stackSize, Double::sum);
                 }
@@ -683,7 +690,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 return true;
             }
             if (this.fuelsupply >= 1d) {
-                for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
+                for (Map.Entry<Material, Double> entry : mStoredFuels.entrySet()) {
                     if (entry.getValue() >= 1d) {
                         ItemStack fuelStack = HTGRItem.createTRISOFuel(entry.getKey());
                         int toOutput = (int) Math.floor(entry.getValue());
@@ -738,7 +745,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
 
             if (drainedAmount > 0) {
-                addOutputToHatch(steamOutputHatch, Materials.Steam.getGas(drainedAmount * 160L));
+                addOutputToHatch(
+                    steamOutputHatch,
+                    MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, drainedAmount * 160));
 
                 double eff = drainedAmount / ((double) this.watertaking);
                 double addedTime = (int) (this.mMaxProgresstime * WATER_SPEEDUP
@@ -764,13 +773,12 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         StringBuilder sb = new StringBuilder();
         sb.append("kubatech.infodata.htgr.stored_fuel")
             .append("\n");
-        for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
+        for (Map.Entry<Material, Double> entry : mStoredFuels.entrySet()) {
             Triple<Double, Double, Double> prop = HTGRItem.getFuelProperties(entry.getKey());
             sb.append(
                 IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.stored_fuel_entry",
-                    entry.getKey()
-                        .getLocalizedNameForItem("%material"),
+                    MaterialUtils.localizedName(entry.getKey()),
                     formatNumber(entry.getValue()),
                     formatNumber(prop.getLeft()),
                     formatNumber(prop.getMiddle()),
@@ -792,12 +800,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .append("\n");
         sb.append("kubatech.infodata.htgr.burned_fuel")
             .append("\n");
-        for (Map.Entry<Materials, Double> entry : mStoredBurnedFuels.entrySet()) {
+        for (Map.Entry<Material, Double> entry : mStoredBurnedFuels.entrySet()) {
             sb.append(
                 IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.burned_fuel_entry",
-                    entry.getKey()
-                        .getLocalizedNameForItem("%material"),
+                    MaterialUtils.localizedName(entry.getKey()),
                     formatNumber(entry.getValue() * 100d)))
                 .append("\n");
         }
@@ -1048,34 +1055,44 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         public static final int MATERIALS_PER_FUEL = sHTGR_Bases.length;
         static final int USABLE_FUEL_INDEX = 4;
         static final int BURNED_OUT_FUEL_INDEX = 5;
-        public static final Fuel_[] sHTGR_Fuel = { new Fuel_(
-            "Thorium",
-            "Thorium",
-            WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 64),
-            Materials.Uranium235.getDust(4),
-            GTValues.NF,
-            new ItemStack[] { Materials.Silicon.getDust(1), Materials.Graphite.getDust(1), Materials.Carbon.getDust(1),
-                Materials.Lutetium.getDust(1), WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1) },
-            new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
-            "Multiplies coolant by 1"),
+        public static final Fuel_[] sHTGR_Fuel = {
+            new Fuel_(
+                "Thorium",
+                "Thorium",
+                MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 4),
+                GTValues.NF,
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1) },
+                new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
+                "Multiplies coolant by 1"),
             new Fuel_(
                 "Uranium",
                 "Uranium",
-                Materials.Uranium.getDust(64),
-                Materials.Uranium235.getDust(8),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 8),
                 FluidRegistry.getFluidStack("krypton", 4),
-                new ItemStack[] { Materials.Silicon.getDust(1), Materials.Graphite.getDust(1),
-                    Materials.Carbon.getDust(1), Materials.Lead.getDust(1), Materials.Uranium.getDust(1) },
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 1) },
                 new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 5000 / 4, 5000 / 4 },
                 "Multiplies coolant by 1.5"),
             new Fuel_(
                 "Plutonium",
                 "Plutonium",
-                Materials.Plutonium.getDust(64),
-                Materials.Plutonium241.getDust(4),
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 4),
                 FluidRegistry.getFluidStack("xenon", 4),
-                new ItemStack[] { Materials.Silicon.getDust(1), Materials.Graphite.getDust(1),
-                    Materials.Carbon.getDust(1), Materials.Lead.getDust(1), Materials.Plutonium.getDust(1) },
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 1) },
                 new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 5000 / 4, 5000 / 4 },
                 "Multiplies coolant by 2"), };
         public static final CustomHTGRSimpleSubItemClass aHTGR_Materials;

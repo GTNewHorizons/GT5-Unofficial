@@ -11,12 +11,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTToolHarvestHelper;
 
 public class ToolDrillLV extends GTTool {
@@ -79,13 +80,14 @@ public class ToolDrillLV extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadDrill
-            .getTextureIndex()] : Textures.ItemIcons.POWER_UNIT_LV;
+        return aIsToolHead ? GTMaterialIcons.item("toolHeadDrill", MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : Textures.ItemIcons.POWER_UNIT_LV;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.Steel.mRGBa;
+        return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MaterialUtils.rgba(Materials.Steel);
     }
 
     @Override

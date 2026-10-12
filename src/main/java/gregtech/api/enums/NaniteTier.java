@@ -4,8 +4,14 @@ import java.text.MessageFormat;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 
 public enum NaniteTier {
 
@@ -38,7 +44,7 @@ public enum NaniteTier {
         return tier;
     }
 
-    public Materials getMaterial() {
+    public Material getMaterial() {
         return switch (this) {
             case Carbon -> Materials.Carbon;
             case Glowstone -> Materials.Glowstone;
@@ -50,24 +56,24 @@ public enum NaniteTier {
             case BlackDwarf -> Materials.BlackDwarfMatter;
             case SixPhasedCopper -> Materials.SixPhasedCopper;
             case Universium -> Materials.Universium;
-            case MagMatter -> Materials.MagMatter;
+            case MagMatter -> Materials.Magmatter;
             case Eternity -> Materials.Eternity;
         };
     }
 
     public ItemStack getStack() {
         if (this.stack == null) {
-            stack = GTOreDictUnificator.get(OrePrefixes.nanite, getMaterial(), 1);
+            stack = MaterialLibAPI.getStack(getMaterial(), Shapes.nanite, 1);
         }
 
         return stack.copy();
     }
 
     public String describe() {
-        return MessageFormat.format("{0} (Tier {1})", getMaterial().getLocalizedName(), tier);
+        return MessageFormat.format("{0} (Tier {1})", MaterialUtils.localizedName(getMaterial()), tier);
     }
 
-    public static NaniteTier fromMaterial(Materials mat) {
+    public static NaniteTier fromMaterial(Material mat) {
         if (mat == Materials.Carbon) return Carbon;
         if (mat == Materials.Glowstone) return Glowstone;
         if (mat == Materials.Silver) return Silver;
@@ -78,7 +84,7 @@ public enum NaniteTier {
         if (mat == Materials.BlackDwarfMatter) return BlackDwarf;
         if (mat == Materials.SixPhasedCopper) return SixPhasedCopper;
         if (mat == Materials.Universium) return Universium;
-        if (mat == Materials.MagMatter) return MagMatter;
+        if (mat == Materials.Magmatter) return MagMatter;
         if (mat == Materials.Eternity) return Eternity;
 
         return null;
@@ -87,7 +93,7 @@ public enum NaniteTier {
     public static NaniteTier fromStack(ItemStack stack) {
         if (stack == null) return null;
 
-        ItemData data = GTOreDictUnificator.getAssociation(stack);
+        ItemData data = MaterialData.getAssociation(stack);
 
         if (data == null) return null;
         if (data.mPrefix != OrePrefixes.nanite) return null;

@@ -21,18 +21,18 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.common.ores.OreManager;
 import ic2.core.Ic2Items;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -226,15 +226,11 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
         int tMetaID = getBaseMetaTileEntity().getWorld()
             .getBlockMetadata(x, y, z);
 
-        if (OreManager.getMaterial(tBlock, tMetaID) instanceof Materials gtMat) {
-            return gtMat.mDefaultLocalName;
-        } else {
-            ItemStack is = new ItemStack(tBlock, 1, tMetaID);
-            ItemData association = GTOreDictUnificator.getAssociation(is);
-            if ((association != null) && (association.mPrefix.toString()
-                .startsWith("ore"))) return association.mMaterial.mMaterial.mDefaultLocalName;
-            else if (GTUtility.isOre(tBlock, tMetaID)) return tBlock.getLocalizedName();
-        }
+        ItemStack is = new ItemStack(tBlock, 1, tMetaID);
+        ItemData association = MaterialData.getAssociation(is);
+        if ((association != null) && (association.mPrefix.toString()
+            .startsWith("ore"))) return MaterialUtils.localName(association.mMaterial.mMaterial);
+        else if (GTUtility.isOre(tBlock, tMetaID)) return tBlock.getLocalizedName();
         return null;
     }
 

@@ -469,14 +469,6 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Sets whether to show oredict equivalent item outputs on NEI.
-     */
-    public RecipeMapBuilder<B> unificateOutputNEI(boolean unificateOutputNEI) {
-        neiPropertiesBuilder.unificateOutput(unificateOutputNEI);
-        return this;
-    }
-
-    /**
      * Sets NEI recipe handler to use a custom filter method {@link OverclockDescriber#canHandle} to limit the shown
      * recipes when searching recipes with recipe catalyst. Without calling this method, the voltage of the recipe is
      * the only factor to filter recipes by default.

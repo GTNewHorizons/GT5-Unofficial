@@ -8,31 +8,33 @@ import static gregtech.api.util.GTRecipeRegistrator.registerWiremillRecipes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class WiremillRecipes implements Runnable {
 
     @Override
     public void run() {
 
-        registerWiremillRecipes(Materials.Graphene, 20 * SECONDS, 2, OrePrefixes.dust, OrePrefixes.stick, 1);
+        registerWiremillRecipes(Materials.Graphene, 20 * SECONDS, 2, Shapes.dust, Shapes.stick, 1);
 
         registerWiremillRecipes(Materials.SpaceTime, 8 * SECONDS + 8 * TICKS, (int) TierEU.RECIPE_LuV);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Polycaprolactam, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Polycaprolactam, Shapes.ingot, 1))
             .itemOutputs(new ItemStack(Items.string, 32))
             .duration(4 * SECONDS)
             .eut(48)
             .addTo(wiremillRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Steel, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, TEBlockShapes.pipeTiny, 1))
             .itemOutputs(GTModHandler.getIC2Item("miningPipe", 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)

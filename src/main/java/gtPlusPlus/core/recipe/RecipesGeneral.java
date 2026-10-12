@@ -1,6 +1,6 @@
 package gtPlusPlus.core.recipe;
 
-import static gregtech.api.enums.Materials.Obsidian;
+import static gregtech.api.enums.materials.Materials.Obsidian;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -50,8 +50,6 @@ import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompress
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedObsidian;
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedSugarCharcoal;
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompressedSugarCoke;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
-import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -59,15 +57,17 @@ import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
@@ -84,7 +84,7 @@ public class RecipesGeneral {
 
         // Potin
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialsAlloy.POTIN.getDust(5),
+            MaterialLibAPI.getStack(Materials.Potin, Shapes.dust, 5),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "dustLead", "dustBronze", "dustTin", "dustLead", "dustBronze" });
 
@@ -94,7 +94,7 @@ public class RecipesGeneral {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "dustGold", "dustGold", "dustCopper" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialsAlloy.TUMBAGA.getDust(10),
+            MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.dust, 10),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { GregtechItemList.TumbagaMixDust.get(1), GregtechItemList.TumbagaMixDust.get(1),
                 GregtechItemList.TumbagaMixDust.get(1), "dustGold" });
@@ -117,7 +117,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Large_Fluid_Cell_Aluminium.get(1))
             .itemOutputs(GregtechItemList.VOLUMETRIC_FLASK_8k.get(2))
-            .fluidInputs(Materials.BorosilicateGlass.getMolten(4000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.BorosilicateGlass, FluidShapes.fluidMolten, 4000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidSolidifierRecipes);
@@ -126,7 +126,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1))
             .itemOutputs(GregtechItemList.VOLUMETRIC_FLASK_32k.get(2))
-            .fluidInputs(Materials.BorosilicateGlass.getMolten(16000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.BorosilicateGlass, FluidShapes.fluidMolten, 16000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(fluidSolidifierRecipes);
@@ -135,7 +135,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(16 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ChromaticGlass, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
@@ -145,7 +145,7 @@ public class RecipesGeneral {
             GregtechItemList.MiningExplosives.get(3),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "ITI", "TFT", "STS", 'I', Ic2Items.industrialTnt.copy(), 'T', new ItemStack(Blocks.tnt), 'F',
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1), 'S', "dustSulfur" });
+                MaterialLibAPI.getStack(Materials.Iron, TEBlockShapes.frameGt, 1), 'S', "dustSulfur" });
 
         // Alkalus Disk
         GTModHandler.addCraftingRecipe(
@@ -169,11 +169,11 @@ public class RecipesGeneral {
                 new ItemStack(Items.feather, 64),
                 new ItemStack(Blocks.emerald_block, 32),
                 new ItemStack(Blocks.diamond_block, 32),
-                Materials.Ruby.getBlocks(32),
-                Materials.Sapphire.getBlocks(32),
+                MaterialLibAPI.getStack(Materials.Ruby, BlockShapes.block, 32),
+                MaterialLibAPI.getStack(Materials.Sapphire, BlockShapes.block, 32),
                 new ItemStack(Blocks.gold_block, 32))
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
-            .fluidInputs(Materials.Silver.getMolten(32 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Silver, FluidShapes.fluidMolten, 32 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -187,7 +187,6 @@ public class RecipesGeneral {
         addCompressedGlowstone();
 
         migratedRecipes();
-        addPipesAndWires();
     }
 
     private static void addCompressedCactusCharcoal() {
@@ -255,13 +254,13 @@ public class RecipesGeneral {
     }
 
     private static void addCompressedObsidian() {
-        addCompressionRecipe(Obsidian.getBlocks(9), CompressedObsidian.get(1));
+        addCompressionRecipe(MaterialLibAPI.getStack(Obsidian, BlockShapes.block, 9), CompressedObsidian.get(1));
         addCompressionRecipe(CompressedObsidian.get(9), DoubleCompressedObsidian.get(1));
         addCompressionRecipe(DoubleCompressedObsidian.get(9), TripleCompressedObsidian.get(1));
         addCompressionRecipe(TripleCompressedObsidian.get(9), QuadrupleCompressedObsidian.get(1));
         addCompressionRecipe(QuadrupleCompressedObsidian.get(9), QuintupleCompressedObsidian.get(1));
 
-        addDecompressionRecipe(CompressedObsidian.get(1), Obsidian.getBlocks(9));
+        addDecompressionRecipe(CompressedObsidian.get(1), MaterialLibAPI.getStack(Obsidian, BlockShapes.block, 9));
         addDecompressionRecipe(DoubleCompressedObsidian.get(1), CompressedObsidian.get(9));
         addDecompressionRecipe(TripleCompressedObsidian.get(1), DoubleCompressedObsidian.get(9));
         addDecompressionRecipe(QuadrupleCompressedObsidian.get(1), TripleCompressedObsidian.get(9));
@@ -308,30 +307,6 @@ public class RecipesGeneral {
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(hammerRecipes);
-    }
-
-    private static void addPipesAndWires() {
-        generateWireRecipes(MaterialsElements.getInstance().ZIRCONIUM);
-        generateWireRecipes(MaterialsAlloy.HG1223);
-        generateWireRecipes(MaterialsAlloy.LEAGRISIUM);
-        generateWireRecipes(MaterialsAlloy.TRINIUM_TITANIUM);
-        generateWireRecipes(MaterialsElements.STANDALONE.HYPOGEN);
-        generateWireRecipes(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
-        generateWireRecipes(MaterialsElements.STANDALONE.DRAGON_METAL);
-        generateWireRecipes(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        generateWireRecipes(MaterialsElements.STANDALONE.RHUGNOR);
-
-        generatePipeRecipes(MaterialsAlloy.STABALLOY);
-        generatePipeRecipes(MaterialsAlloy.TANTALLOY_60);
-        generatePipeRecipes(MaterialsAlloy.TANTALLOY_61);
-        generatePipeRecipes(MaterialsAlloy.POTIN);
-        generatePipeRecipes(MaterialsAlloy.MARAGING300);
-        generatePipeRecipes(MaterialsAlloy.MARAGING350);
-        generatePipeRecipes(MaterialsAlloy.INCONEL_690);
-        generatePipeRecipes(MaterialsAlloy.INCONEL_792);
-        generatePipeRecipes(MaterialsAlloy.HASTELLOY_X);
-        generatePipeRecipes(MaterialsAlloy.TRINIUM_NAQUADAH_CARBON);
-        generatePipeRecipes(null, Materials.Clay.mDefaultLocalName, 15);
     }
 
     private static void migratedRecipes() {

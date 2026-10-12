@@ -31,15 +31,16 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,7 +52,6 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
@@ -146,11 +146,10 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
 
     private static ItemStack[] getRepairItems() {
         if (sRepairItems == null) {
-            sRepairItems = new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1L),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Iron, 1L),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 1L),
-                ItemList.Electric_Motor_LV.get(1L) };
+            sRepairItems = new ItemStack[] { MaterialLibAPI.getStack(Materials.Iron, Shapes.screw, 1),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 1),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.gearGtSmall, 1),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 1), ItemList.Electric_Motor_LV.get(1L) };
         }
         return sRepairItems;
     }

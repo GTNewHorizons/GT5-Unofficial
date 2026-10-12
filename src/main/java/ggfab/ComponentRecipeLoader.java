@@ -8,14 +8,16 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.material.MaterialsAlloy;
 
 class ComponentRecipeLoader implements Runnable {
 
@@ -27,11 +29,13 @@ class ComponentRecipeLoader implements Runnable {
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Machine_Multi_Assemblyline.get(1L),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
-                new Object[] { OrePrefixes.circuit.get(Materials.EV), 8 },
+                new Object[] { Circuits.LuV.getIngredient(), 2 },
+                new Object[] { Circuits.IV.getIngredient(), 4 },
+                new Object[] { Circuits.EV.getIngredient(), 8 },
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS), Materials.Lubricant.getFluid(2_000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 9 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 2_000))
             .itemOutputs(GGItemList.AdvAssLine.get(1L))
             .eut(TierEU.RECIPE_LuV)
             .duration(3 * MINUTES)
@@ -42,10 +46,10 @@ class ComponentRecipeLoader implements Runnable {
                 ItemList.Hatch_Input_Bus_IV.get(1L),
                 ItemList.Emitter_IV.get(1L),
                 ItemList.Sensor_IV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L))
+                MaterialLibAPI.getStack(Materials.Enderium, Shapes.plateDense, 1))
             .circuit(12)
             .itemOutputs(GGItemList.LinkedInputBus.get(1L))
-            .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

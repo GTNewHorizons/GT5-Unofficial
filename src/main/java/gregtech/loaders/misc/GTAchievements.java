@@ -18,6 +18,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
@@ -25,11 +28,13 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -110,32 +115,26 @@ public class GTAchievements {
 
         registerAchievement("recycling", -2, 4, ItemList.Machine_LV_ArcFurnace.get(1), "tools", false);
 
-        registerAchievement(
-            "crushed",
-            0,
-            6,
-            GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Tin, 1L),
-            "tools",
-            false);
+        registerAchievement("crushed", 0, 6, MaterialLibAPI.getStack(Materials.Tin, Shapes.crushed, 1), "tools", false);
         registerAchievement(
             "cleandust",
             0,
             10,
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+            MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
             "crushed",
             false);
         registerAchievement(
             "washing",
             -2,
             6,
-            GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Iron, 1L),
+            MaterialLibAPI.getStack(Materials.Iron, Shapes.crushedPurified, 1),
             "crushed",
             false);
         registerAchievement(
             "spinit",
             -4,
             6,
-            GTOreDictUnificator.get(OrePrefixes.crushedCentrifuged, Materials.Redstone, 1L),
+            MaterialLibAPI.getStack(Materials.Redstone, Shapes.crushedCentrifuged, 1),
             "crushed",
             false);
 
@@ -144,7 +143,7 @@ public class GTAchievements {
             "newmetal",
             -4,
             10,
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
+            MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 1),
             "newfuel",
             false);
         registerAchievement("reflect", -2, 9, ItemList.Neutron_Reflector.get(1), "newfuel", false);
@@ -153,7 +152,7 @@ public class GTAchievements {
             "bronze",
             2,
             0,
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 1L),
+            MaterialLibAPI.getStack(Materials.Bronze, Shapes.dust, 1),
             "gettingstartedwithgt",
             false);
         registerAchievement(
@@ -202,13 +201,7 @@ public class GTAchievements {
         registerAchievement("whereistheocean", 2, -14, ItemList.Quantum_Tank_IV.get(1), "superbuffer", false);
         registerAchievement("luck", 2, -6, ItemList.ZPM.get(1), "", false);
 
-        registerAchievement(
-            "steel",
-            4,
-            0,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L),
-            "bronze",
-            false);
+        registerAchievement("steel", 4, 0, MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, 1), "bronze", false);
         registerAchievement("highpressure", 4, 2, ItemList.Machine_Steel_Boiler.get(1), "steel", false);
         registerAchievement(
             "extremepressure",
@@ -222,7 +215,7 @@ public class GTAchievements {
             "complexalloys",
             6,
             3,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.BlueSteel, 1L),
+            MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.ingot, 1),
             "cheapermac",
             false);
 
@@ -230,7 +223,7 @@ public class GTAchievements {
             "magneticiron",
             4,
             -2,
-            GTOreDictUnificator.get(OrePrefixes.stick, Materials.IronMagnetic, 1L),
+            MaterialLibAPI.getStack(Materials.IronMagnetic, Shapes.stick, 1),
             "steel",
             false);
         registerAchievement("lvmotor", 4, -6, ItemList.Electric_Motor_LV.get(1), "magneticiron", false);
@@ -255,7 +248,7 @@ public class GTAchievements {
             "gtaluminium",
             8,
             0,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 1L),
+            MaterialLibAPI.getStack(Materials.Aluminium, Shapes.ingot, 1),
             "steel",
             false);
         registerAchievement("highpowersmelt", 8, 2, ItemList.Machine_Multi_Furnace.get(1), "gtaluminium", false);
@@ -268,7 +261,7 @@ public class GTAchievements {
             "titan",
             14,
             0,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 1L),
+            MaterialLibAPI.getStack(Materials.Titanium, Shapes.ingot, 1),
             "upgrade",
             false);
         registerAchievement("magic", 14, 3, ItemList.MagicEnergyConverter_LV.get(1), "titan", false);
@@ -282,14 +275,14 @@ public class GTAchievements {
             "tungsten",
             16,
             2,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tungsten, 1L),
+            MaterialLibAPI.getStack(Materials.Tungsten, Shapes.ingot, 1),
             "upgrade2",
             false);
         registerAchievement(
             "osmium",
             16,
             -2,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Osmium, 1L),
+            MaterialLibAPI.getStack(Materials.Osmium, Shapes.ingot, 1),
             "upgrade2",
             false);
         registerAchievement("hightech", 15, -3, ItemList.Field_Generator_LV.get(1), "osmium", false);
@@ -303,23 +296,17 @@ public class GTAchievements {
             "tungstensteel",
             16,
             4,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1L),
+            MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ingot, 1),
             "tungsten",
             false);
         registerAchievement("upgrade3", 15, 5, ItemList.Casing_Coil_TungstenSteel.get(1), "tungstensteel", false);
-        registerAchievement(
-            "hssg",
-            13,
-            5,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.HSSG, 1L),
-            "upgrade3",
-            false);
+        registerAchievement("hssg", 13, 5, MaterialLibAPI.getStack(Materials.HSSG, Shapes.ingot, 1), "upgrade3", false);
         registerAchievement("upgrade4", 11, 5, ItemList.Casing_Coil_HSSG.get(1), "hssg", false);
         registerAchievement(
             "stargatematerial",
             11,
             7,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1L),
+            MaterialLibAPI.getStack(Materials.Naquadah, Shapes.ingot, 1),
             "upgrade4",
             false);
         registerAchievement("conducting", 14, 6, ItemList.Casing_Coil_Superconductor.get(1), "upgrade3", false);
@@ -335,7 +322,7 @@ public class GTAchievements {
             "alienmetallurgy",
             9,
             7,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.NaquadahAlloy, 1L),
+            MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.ingot, 1),
             "upgrade5",
             false);
         registerAchievement("over9000", 7, 7, ItemList.Casing_Coil_NaquadahAlloy.get(1), "alienmetallurgy", false);
@@ -343,7 +330,7 @@ public class GTAchievements {
             "finalpreparations",
             7,
             9,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadria, 1L),
+            MaterialLibAPI.getStack(Materials.Naquadria, Shapes.ingot, 1),
             "over9000",
             false);
         registerAchievement("denseaspossible", 6, 10, ItemList.FusionComputer_UV.get(1), "finalpreparations", false);
@@ -364,9 +351,6 @@ public class GTAchievements {
                 .register(this);
         }
     }
-
-    public static void registerOre(Materials aMaterial, int min, int max, int chance, boolean overworld, boolean nether,
-        boolean end) {}
 
     public Achievement registerAchievement(String textId, int x, int y, ItemStack icon, Achievement requirement,
         boolean special) {
@@ -416,10 +400,6 @@ public class GTAchievements {
         return achievement;
     }
 
-    public Achievement registerOreAchievement(Materials aMaterial) {
-        return null;
-    }
-
     public Achievement registerAssAchievement(GTRecipe recipe) {
         if (recipe == null) {
             GT_FML_LOGGER.error("Invalid achievement registration attempt for null recipe", new Exception());
@@ -465,28 +445,29 @@ public class GTAchievements {
         if (player == null || stack == null) {
             return;
         }
-        ItemData data = GTOreDictUnificator.getItemData(stack);
+        ItemData data = MaterialData.get(stack);
 
         if ((data != null) && (data.mPrefix == OrePrefixes.ingot)) {
-            if (data.mMaterial.mMaterial == Materials.Aluminium) {
+            Material tMaterial = data.mMaterial.mMaterial;
+            if (tMaterial == Materials.Aluminium) {
                 issueAchievement(player, "gtaluminium");
-            } else if (data.mMaterial.mMaterial == Materials.Titanium) {
+            } else if (tMaterial == Materials.Titanium) {
                 issueAchievement(player, "titan");
-            } else if (data.mMaterial.mMaterial == Materials.BlueSteel) {
+            } else if (tMaterial == Materials.BlueSteel) {
                 issueAchievement(player, "complexalloys");
-            } else if (data.mMaterial.mMaterial == Materials.Tungsten) {
+            } else if (tMaterial == Materials.Tungsten) {
                 issueAchievement(player, "tungsten");
-            } else if (data.mMaterial.mMaterial == Materials.Osmium) {
+            } else if (tMaterial == Materials.Osmium) {
                 issueAchievement(player, "osmium");
-            } else if (data.mMaterial.mMaterial == Materials.TungstenSteel) {
+            } else if (tMaterial == Materials.TungstenSteel) {
                 issueAchievement(player, "tungstensteel");
-            } else if (data.mMaterial.mMaterial == Materials.HSSG) {
+            } else if (tMaterial == Materials.HSSG) {
                 issueAchievement(player, "hssg");
-            } else if (data.mMaterial.mMaterial == Materials.Naquadah) {
+            } else if (tMaterial == Materials.Naquadah) {
                 issueAchievement(player, "stargatematerial");
-            } else if (data.mMaterial.mMaterial == Materials.NaquadahAlloy) {
+            } else if (tMaterial == Materials.NaquadahAlloy) {
                 issueAchievement(player, "alienmetallurgy");
-            } else if (data.mMaterial.mMaterial == Materials.Naquadria) {
+            } else if (tMaterial == Materials.Naquadria) {
                 issueAchievement(player, "finalpreparations");
             }
         }
@@ -518,7 +499,7 @@ public class GTAchievements {
         if (player == null || stack == null) {
             return;
         }
-        ItemData data = GTOreDictUnificator.getItemData(stack);
+        ItemData data = MaterialData.get(stack);
         if (data != null) {
             if (data.mPrefix == OrePrefixes.dust && data.mMaterial.mMaterial == Materials.Bronze) {
                 issueAchievement(player, "bronze");
@@ -685,7 +666,7 @@ public class GTAchievements {
         if (player == null || stack == null) {
             return;
         }
-        ItemData data = GTOreDictUnificator.getItemData(stack);
+        ItemData data = MaterialData.get(stack);
         if (data != null && data.mPrefix != null) {
             if (data.mPrefix == OrePrefixes.dust) {
                 if (data.mMaterial.mMaterial == Materials.Lutetium) {
@@ -701,12 +682,9 @@ public class GTAchievements {
                     for (int i = 0; i < data_getAllMaterialStacks_sS; i++) {
                         issueAchievement(
                             player,
-                            data.getAllMaterialStacks()
-                                .get(i).mMaterial.mName);
-                        if (data.getAllMaterialStacks()
-                            .get(i).mMaterial == Materials.AnyIron) {
-                            issueAchievement(player, "iron");
-                        }
+                            MaterialUtils.internalName(
+                                data.getAllMaterialStacks()
+                                    .get(i).mMaterial));
                         if (data.getAllMaterialStacks()
                             .get(i).mMaterial == Materials.Copper
                             || data.getAllMaterialStacks()
