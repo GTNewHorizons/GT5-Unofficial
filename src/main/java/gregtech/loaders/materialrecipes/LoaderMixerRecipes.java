@@ -52,13 +52,12 @@ public final class LoaderMixerRecipes {
         for (Material material : CARRIERS) {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_MIXER_RECIPE))) {
                 GT_FML_LOGGER.error(
-                    "LoaderMixerRecipes: declared carrier {} no longer declares HAS_MIXER_RECIPE",
+                    "LoaderMixerRecipes: declared carrier {} does not declare HAS_MIXER_RECIPE",
                     material.getName());
                 continue;
             }
             if (!material.hasShape(Shapes.dust)) {
-                GT_FML_LOGGER
-                    .error("LoaderMixerRecipes: declared carrier {} no longer carries dust", material.getName());
+                GT_FML_LOGGER.error("LoaderMixerRecipes: declared carrier {} has no dust shape", material.getName());
                 continue;
             }
             registerMixer(material);

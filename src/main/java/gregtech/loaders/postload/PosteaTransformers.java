@@ -229,7 +229,7 @@ public class PosteaTransformers implements Runnable {
     private static void registerEmptyCellCutoverTransformer() {
         ItemStack cutover = ItemList.Cell_Empty.get(1);
         if (cutover == null) {
-            throw new IllegalStateException("No MaterialLib stack for the empty cell cutover");
+            throw new IllegalStateException("The empty cell item is not registered");
         }
         addItemReplacement("IC2:itemCellEmpty", 0, cutover.getItem(), cutover.getItemDamage());
     }

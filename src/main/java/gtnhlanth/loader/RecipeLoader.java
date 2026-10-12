@@ -141,14 +141,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
 
-        // Add .iCircuit(4) to this if it ever gets re-activated
-        /*
-         * //Permalloy GT_Values.RA.addMixerRecipe( MaterialLibAPI.getStack(Materials.Nickel,
-         * Shapes.dust, 4),
-         * MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
-         * MaterialLibAPI.getStack(Materials.Molybdenum, Shapes.dust, 1), null, null,
-         * MaterialLibAPI.getStack(Materials.Permalloy, Shapes.dust, 6), 1920, 200 );
-         */
         // Mu-metal
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -525,16 +517,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_LuV)
             .addTo(autoclaveRecipes);
 
-        /*
-         * Unsure what was intended with this recipe? GT_Values.RA.stdBuilder() .itemInputs(new
-         * ItemStack(LanthItemList.IRON_COATED_QUARTZ), MaterialLibAPI.getStack(Materials.Chrome,
-         * Shapes.dust, 1))
-         * .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas,
-         * 1_000)) .itemOutputs(new
-         * ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2))) .outputChances(10000).requiresCleanRoom().duration(12
-         * * SECONDS).eut(7980).addTo(autoclaveRecipes);
-         */
-
         // Grow the first silicon
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Glass, Shapes.plate, 1))
@@ -557,18 +539,6 @@ public class RecipeLoader {
             .specialValue(3200)
             .requiresCleanRoom()
             .addTo(blastFurnaceRecipes);
-
-        /*
-         * GT_Values.RA.stdBuilder().itemInputs(MaterialLibAPI.getStack(Materials.Silicon,
-         * Shapes.foil, 1))
-         * .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SiliconTetrachloride,
-         * FluidShapes.fluidLiquid, 3_000), MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas,
-         * 4_000))
-         * .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 12_000))
-         * .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconNitride, Shapes.plate, 1))
-         * .duration(GTRecipeBuilder.SECONDS *
-         * 30) .eut(TierEU.RECIPE_EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
-         */
 
         for (ItemStack lens : OreDictionary.getOres("craftingLensYellow")) {
 

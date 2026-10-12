@@ -39,13 +39,12 @@ public final class LoaderChemicalRecipes {
         for (Material material : CARRIERS) {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE))) {
                 GT_FML_LOGGER.error(
-                    "LoaderChemicalRecipes: declared carrier {} no longer declares HAS_CHEMICAL_RECIPE",
+                    "LoaderChemicalRecipes: declared carrier {} does not declare HAS_CHEMICAL_RECIPE",
                     material.getName());
                 continue;
             }
             if (!material.hasShape(Shapes.dust)) {
-                GT_FML_LOGGER
-                    .error("LoaderChemicalRecipes: declared carrier {} no longer carries dust", material.getName());
+                GT_FML_LOGGER.error("LoaderChemicalRecipes: declared carrier {} has no dust shape", material.getName());
                 continue;
             }
             registerChemical(material);
