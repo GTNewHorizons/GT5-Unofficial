@@ -464,7 +464,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
     private static Map<String, Colors> lensColors;
 
-    /// The laser colour each lens renders, keyed by [#getUniqueIdentifier]. Built on first use; a material
+    /// The laser colour each lens renders, keyed by [#getUniqueIdentifier]. Built on first use. A material
     /// carrying no lens contributes no entry.
     private static Map<String, Colors> lensColors() {
         if (lensColors != null) return lensColors;

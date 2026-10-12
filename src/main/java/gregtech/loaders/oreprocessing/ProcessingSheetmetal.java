@@ -16,8 +16,7 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
-/// Registers the bender recipe that presses two plates into a `sheetmetal`. Called once per sheetmetal material by
-/// [ShapeRecipeTable].
+/// Registers the bender recipe that presses two plates into a `sheetmetal`.
 public class ProcessingSheetmetal implements PartRecipeGenerator {
 
     public static final ProcessingSheetmetal INSTANCE = new ProcessingSheetmetal();

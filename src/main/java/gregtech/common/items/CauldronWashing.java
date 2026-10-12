@@ -23,8 +23,7 @@ import gregtech.api.util.GTUtility;
 
 /// Washes items in a water cauldron, either dropped in or used on it. Impure and purified dusts become clean dust,
 /// or their material's processing substitute (see [ProcessingSubstitutes#washing]), crushed ore becomes purified
-/// crushed ore, and wheat dust becomes
-/// dough. Each wash lowers the water by one level.
+/// crushed ore, and wheat dust becomes dough. Each wash lowers the water by one level.
 public final class CauldronWashing {
 
     private CauldronWashing() {}

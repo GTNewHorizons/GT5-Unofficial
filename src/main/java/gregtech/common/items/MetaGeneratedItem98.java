@@ -313,12 +313,8 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     }
 
     private void registerOreDict() {
-        // The GregTech ore dictionary requires an entry in Materials, and since the whole
-        // point of this class is to add cell items for non-GregTech fluids, the vast majority of
-        // cell items won't have an associated material. So only a rare few cell items will need to
-        // be registered.
-
-        // Register the steam cell. There is no steam material, so we'll use Water.cellMolten instead.
+        // These cells hold non-GregTech fluids, which mostly have no GregTech material and get no oredict entry.
+        // Steam has no material either, so its cell registers as Water's cellMolten.
         OreDictUtils.registerAndAssociate(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 

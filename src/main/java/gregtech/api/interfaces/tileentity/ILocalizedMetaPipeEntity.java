@@ -14,7 +14,7 @@ public interface ILocalizedMetaPipeEntity {
 
     /// The material of the pipe.
     ///
-    /// @apiNote a null return here requires overriding {@link #getLocalizedName()}.
+    /// @apiNote a null return here requires overriding [#getLocalizedName()].
     Material getMaterial();
 
     /**

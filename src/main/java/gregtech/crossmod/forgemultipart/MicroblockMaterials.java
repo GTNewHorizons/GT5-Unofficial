@@ -81,7 +81,7 @@ public final class MicroblockMaterials {
             BlockMicroMaterial.materialKey(block, meta));
     }
 
-    /// The microblock material name of `material`'s storage block, or null when it has none.
+    /// The microblock material name of `material`'s storage block, or null when `material` is not in [#MATERIALS].
     public static String name(Material material) {
         for (Material registered : MATERIALS) {
             if (registered == material) return "ml:" + MaterialUtils.internalName(material) + ":block";

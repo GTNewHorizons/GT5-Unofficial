@@ -74,8 +74,8 @@ public class RadioHatchMaterialLoader {
         loadRadioHatchNEI();
     }
 
-    /// Registers the rods of every radioactive material as radio hatch fuel, as MaterialLib generates them. Runs from
-    /// GregTech's [com.ruling_0.materiallib.api.MaterialRegistrationEvent] handler.
+    /// Registers the rods of every radioactive material as radio hatch fuel, as MaterialLib generates them. Call from
+    /// a [com.ruling_0.materiallib.api.MaterialRegistrationEvent] handler.
     public static void registerMaterialRods() {
         MaterialLibAPI
             .registerShapeConsumer("bartworks", Shapes.stick, (shape, material) -> addRod(material, shape, 1));

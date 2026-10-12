@@ -19,7 +19,8 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-/// Reinforced glass and windmill recipes for the advanced and carbon alloy plates, GregTech's own and IC2's.
+/// Reinforced glass recipes for the advanced and carbon alloy plates and windmill recipes for the carbon plates,
+/// for GregTech's own plates and IC2's.
 final class AlloyPlateRecipes {
 
     private AlloyPlateRecipes() {}

@@ -18,8 +18,8 @@ import gregtech.loaders.oreprocessing.ForeignPartRecipeTable.ForeignPart;
 
 /// Recipes for items GregTech has no MaterialLib pair for. MaterialLib parts get theirs from [ShapeRecipeTable].
 ///
-/// Logs, planks, slabs and crops follow a rule: every ore-dictionary registration under those prefixes gets its
-/// recipes from [#run], whichever mod registers it. Every other foreign item is listed in [ForeignPartRecipeTable] and
+/// Logs, planks, slabs and crops follow a rule: every oredict registration under those prefixes gets its recipes
+/// from [#run], whichever mod registers it. Every other foreign item is listed in [ForeignPartRecipeTable] and
 /// processed once by [#registerTable].
 ///
 /// [gregtech.common.oredict.OreDictRegistration] decides which registrations reach [#run].
@@ -61,8 +61,8 @@ public final class ForeignPartRecipes {
         }
     }
 
-    /// Clamps the stack size of one ore-dictionary registration of `stack` under `prefix`, and generates its recipes
-    /// when `prefix` is a log, plank, slab or crop. Does nothing for a [GTMaterialFlag#NO_RECIPES] material or an
+    /// Clamps the stack size of one oredict registration of `stack` under `prefix`, and generates its recipes when
+    /// `prefix` is a log, plank, slab or crop. Does nothing for a [GTMaterialFlag#NO_RECIPES] material or an
     /// invalid stack, or under a material-based prefix whose name named no material.
     public static void run(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == null || MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;

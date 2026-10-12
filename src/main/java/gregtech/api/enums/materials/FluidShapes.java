@@ -22,7 +22,8 @@ import gregtech.api.material.GTMaterialProperties;
 /// Fluid [Shape] declarations: liquid, gas, plasma and molten, plus the six cracked fluids.
 ///
 /// A fluid listed in [MaterialFluidNames] registers under the Forge name and texture declared there, since world NBT
-/// stores fluid stacks by name. Any other fluid takes MaterialLib's default name and the shape's default texture.
+/// stores fluid stacks by name. Other liquids, gases, plasmas and molten fluids take MaterialLib's default name and
+/// the shape's default texture.
 /// Temperatures come from the material's [GTMaterialProperties] (`LIQUID_TEMPERATURE` and its siblings).
 public class FluidShapes {
 

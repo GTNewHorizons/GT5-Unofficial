@@ -872,7 +872,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             .get(border);
     }
 
-    /// The per-pipe throughput in liters per tick; see [#getCapacity] for the total tank volume.
+    /// The per-channel throughput in liters per tick; see [#getCapacity] for the total tank volume.
     public int getBaseCapacity() {
         Material material = shapeMaterial();
         if (material == null) return 0;

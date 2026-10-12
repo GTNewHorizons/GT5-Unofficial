@@ -13,7 +13,7 @@ import gregtech.api.render.ISBRContext;
 /// Faces draw from several chunk meshing threads, so the rebuild is lock free. A race costs at most a duplicate
 /// build.
 ///
-/// [#isValidTexture] is constant since [gregtech.api.covers.CoverRegistry] checks cover textures on dedicated
+/// [#isValidTexture] is always true, since [gregtech.api.covers.CoverRegistry] checks cover textures on dedicated
 /// servers, which have no atlas.
 public final class GTStitchedMaterialTexture implements ITexture {
 

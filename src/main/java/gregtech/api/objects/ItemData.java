@@ -10,19 +10,18 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MaterialUtils;
 
-/// What material an [ItemStack] is made of and how much of it, for any item in the game.
+/// What material an [net.minecraft.item.ItemStack] is made of and how much of it, for any item in the game.
 ///
-/// This is GregTech's cross-mod material index. A [com.ruling_0.materiallib.api.Shape] knows only the items
-/// MaterialLib itself generated; this answers for a foreign mod's items too.
+/// A [com.ruling_0.materiallib.api.Shape] knows only the items MaterialLib generated. This also covers other
+/// mods' items.
 ///
-/// Keyed by [OrePrefixes]: an association is created from an ore-dictionary name, and a tenth of the prefixes
-/// named here have no shape at all. [#mMaterial]'s amount comes from [OrePrefixes#getMaterialAmount]; see
-/// [OrePrefixes]'s class javadoc for how the two spaces divide.
+/// Keyed by [OrePrefixes]. An association's [#mMaterial] amount comes from [OrePrefixes#getMaterialAmount]. See
+/// [OrePrefixes]'s class javadoc for why prefixes and shapes are not interchangeable.
 ///
-/// An association names an ore-dictionary entry (prefix plus material, or prefix plus a bare name for the
-/// entries whose material side is not a material at all) and is what unification keys on. A composition
-/// ([#hasExplicitComposition]) lists what a stack is made of, for recycling; it never carries a unification name
-/// unless it was merged onto an existing association.
+/// An association names an oredict entry and is what unification keys on: a prefix plus a material, or a prefix
+/// plus a bare name for entries whose material side is not a material. A composition ([#hasExplicitComposition])
+/// lists what a stack is made of, for recycling. It carries no unification name unless it is merged onto an
+/// association.
 public class ItemData {
 
     private static final MaterialStack[] EMPTY_MATERIALSTACK_ARRAY = new MaterialStack[0];

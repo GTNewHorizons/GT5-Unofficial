@@ -34,20 +34,18 @@ import gregtech.api.util.OreDictUtils;
 import gregtech.common.GTProxy.OreDropSystem;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
-/// The [IOreAdapter] for every material carrying the [OreShapes#ore] or [OreShapes#oreSmall] shape: worldgen,
-/// mining, prospecting, and the void miner place and read those blocks through this singleton, via [OreManager].
-/// A block's stone type is its shape variant ([OreShapes#stoneTypeOf]).
+/// The [IOreAdapter] for every material carrying the [OreShapes#ore] or [OreShapes#oreSmall] shape. Callers reach
+/// it through [OreManager]. A block's stone type is its shape variant ([OreShapes#stoneTypeOf]).
 ///
-/// Every material follows the same rules, driven by its declared data: its ore exists on the stones
-/// [MaterialUtils#isValidStone] accepts, its small ore on the same stones except ice ones, and only where it
-/// carries the shape. Its harvest level is [GTMaterialProperties#ORE_HARVEST_LEVEL], or else its tool quality.
+/// A material's ore exists on the stones [MaterialUtils#isValidStone] accepts, its small ore on the same stones
+/// except ice ones, and only where it carries the shape.
 public final class GTOreAdapter implements IOreAdapter {
 
     public static GTOreAdapter INSTANCE = new GTOreAdapter();
 
     private GTOreAdapter() {}
 
-    /// Registers every material's ore on every stone type under that stone type's ore-dictionary prefix,
+    /// Registers every material's ore on every stone type under that stone type's oredict prefix,
     /// associating it with the material where the prefix unifies.
     public void registerOreNames() {
         for (Material material : MaterialLibAPI.getMaterials()) {

@@ -39,7 +39,7 @@ import gregtech.common.items.ItemIntegratedCircuit;
 /// - [#generateFromExistingBlastFurnaceRecipes] mirrors registered blast furnace recipes, skipping duplicates of
 /// recipes already present. It runs after the other two.
 ///
-/// The per-material recipes take their molten fluid from [MaterialUtils#anyFluid].
+/// The per-material recipes output the fluid [MaterialUtils#anyFluid] picks, molten first.
 public class ProcessingAlloyBlastSmelter {
 
     private ProcessingAlloyBlastSmelter() {}
@@ -101,7 +101,7 @@ public class ProcessingAlloyBlastSmelter {
         Materials.TungstenTitaniumCarbide, Materials.WatertightSteel, Materials.Zeron100);
     // spotless:on
 
-    /// Registers [#SINGLE_DUST]'s recipes for the materials that declare `BLAST_REQUIRED` and have a molten fluid.
+    /// Registers [#SINGLE_DUST]'s recipes for the materials that declare `BLAST_REQUIRED` and have a fluid.
     public static void generateSingleDust() {
         for (Material material : SINGLE_DUST) {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED))) continue;

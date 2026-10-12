@@ -102,8 +102,9 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
     }
 
     /**
-     * Draws every icon layer of {@code container} above layer 0, each in its own color, through
-     * {@link #renderItemOverlay}. Binds the item atlas ahead of them.
+     * Draws every icon layer of {@code container} above layer 0 through {@link #renderItemOverlay}, tinted with the
+     * layer's color, or with the stack's color for a color-modulated layer. Override icons draw untinted. Binds the
+     * item atlas ahead of them.
      */
     protected void renderUpperLayers(ItemRenderType type, ItemStack aStack, IGT_ItemWithMaterialRenderer aItem,
         IIconContainer container) {

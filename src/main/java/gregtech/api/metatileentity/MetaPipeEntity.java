@@ -87,11 +87,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      */
     private IGregTechTileEntity mBaseMetaTileEntity;
 
-    /// The MaterialLib shape block hosting this pipe, or null for a legacy per-material instance. A
-    /// shape-scoped instance carries no material of its own: the material is the host block's metadata
+    /// The MaterialLib shape block hosting this pipe, or null for a pipe that is not a material shape, such as a
+    /// data pipe. A shape-scoped instance carries no material of its own: the material is the host block's metadata
     /// (the material's global index), resolved through [#shapeMaterial] and cached per tile entity.
     private final ShapeBlock shapeHost;
-    /// The size step within the pipe family for a shape-scoped instance; -1 for legacy instances.
+    /// The size step within the pipe family for a shape-scoped instance, otherwise -1.
     private final int shapeSizeIndex;
     private Material shapeMaterialCache;
     private Material shapeRenderMaterial;
@@ -155,9 +155,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         this.shapeSizeIndex = shapeSizeIndex;
     }
 
-    /// Whether this instance is hosted by a MaterialLib shape block instead of carrying a per-material
-    /// registration. A shape-scoped instance's item form is the shape block's item, never a machine-block
-    /// stack at its id.
+    /// Whether a MaterialLib shape block hosts this instance. A shape-scoped instance's item form is the shape
+    /// block's item, never a machine-block stack at its id.
     public final boolean isShapeScoped() {
         return shapeHost != null;
     }
@@ -188,8 +187,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return shapeRenderMaterial;
     }
 
-    /// Called once each time [#shapeMaterial] resolves the host block's material anew (after construction or
-    /// a rebind); material-sized state hooks in here.
+    /// Called once each time [#shapeMaterial] resolves the host block's material anew, after construction or a
+    /// rebind. Material-sized state is set up here.
     protected void onShapeMaterialResolved(Material material) {}
 
     /// Drops the cached [#shapeMaterial] so the next read resolves from the host block again.
@@ -687,11 +686,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return withShapeMaterial(material, () -> renderInInventory(ctx));
     }
 
-    /// Handles a sneaking left-click on a shape-scoped pipe with a pipe-family shape item in hand: an
-    /// in-place swap onto the held shape and material. The same shape swaps by rewriting the host block's
-    /// metadata; a different shape of the same pipe kind replaces the block and respawns the tile entity
-    /// carrying the old one's NBT (connections, covers, contents). A held item that is not a shape item of
-    /// this instance's own class, or a legacy-instance target, is left untouched.
+    /// Swaps a shape-scoped pipe in place onto the shape and material of `handItem`. The same shape swaps by
+    /// rewriting the host block's metadata. A different shape of the same pipe kind replaces the block and respawns
+    /// the tile entity carrying the old one's NBT (connections, covers, contents). Outside creative mode, takes one
+    /// `handItem` and gives the player the replaced pipe. A held item that is not a shape item of this instance's
+    /// own class, or a target that is not shape-scoped, is left untouched.
     protected final void trySwapShape(IGregTechTileEntity base, EntityPlayer player, ItemStack handItem) {
         if (!isShapeScoped() || handItem == null) return;
         if (!(handItem.getItem() instanceof PipeShapeItemBlock shapeItem)) return;
@@ -765,8 +764,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         }
     }
 
-    /// Called on the pipe now occupying the position after [#trySwapShape] lands, for material-sized state
-    /// fixups (inventory resizing, fluid capacity clamping).
+    /// Called on the pipe occupying the position after [#trySwapShape] swaps it, for material-sized state fixups
+    /// (inventory resizing, fluid capacity clamping).
     protected void onShapeSwapped() {}
 
     @Override

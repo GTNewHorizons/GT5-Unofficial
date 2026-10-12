@@ -151,9 +151,9 @@ public class ProcessingBlock implements PartRecipeGenerator {
 
     private ProcessingBlock() {}
 
-    /// Removes other mods' recipes that unpack the storage blocks in [#BLOCK_RECIPE_REMOVALS] and those of the
-    /// materials in [#OWN_BLOCK_RECIPE_REMOVALS], and that pack nine ingots, gems or dusts of the materials in
-    /// [#PACKING_RECIPE_REMOVALS]. GregTech's own block recipes replace them.
+    /// Removes other mods' recipes that unpack the storage blocks in [#BLOCK_RECIPE_REMOVALS] or the blocks of the
+    /// [#OWN_BLOCK_RECIPE_REMOVALS] materials, and those that pack nine ingots, gems or dusts of the
+    /// [#PACKING_RECIPE_REMOVALS] materials. GregTech's own block recipes replace them.
     public static void removeForeignBlockRecipes() {
         for (String key : BLOCK_RECIPE_REMOVALS) {
             int at = key.lastIndexOf('@');

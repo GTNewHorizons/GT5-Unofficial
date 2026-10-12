@@ -799,8 +799,8 @@ public class GTRecipeRegistrator {
      *
      * @param material     material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
-     * @param eut          EU/t for recipe If you provide a proper EU tier for recipe processing then eut will be
-     *                     overriden with it.
+     * @param eut          EU/t for recipe, overridden by the material's
+     *                     {@link GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU} when set.
      */
     public static void registerWiremillRecipes(Material material, int baseDuration, int eut) {
         registerWiremillRecipes(
@@ -956,10 +956,10 @@ public class GTRecipeRegistrator {
     }
 
     /// The recipes one [RecipeShape] may match, indexed by the rod stacks their inputs name, so a rod is only tried
-    /// against recipes that can take it. Recipes other than plain [ShapedOreRecipe]s and [ShapedRecipes], whose inputs
-    /// cannot be read, are tried with every rod, as are all recipes for a rod whose item was not a rod item when the
-    /// index was built. GregTech's own recipes are never tried, as [GTModHandler#getRecipeOutputs] skips them, and a
-    /// recipe that produced an output is not tried again.
+    /// against recipes that can take it. Recipes whose inputs cannot be read (see [#readableInputs]) are tried with
+    /// every rod, as are all recipes for a rod whose item was not a rod item when the index was built. GregTech's own
+    /// recipes are never tried, as [GTModHandler#getRecipeOutputs] skips them, and a recipe that produced an output is
+    /// not tried again.
     private static final class ShapeCandidates {
 
         private final List<IRecipe> recipes;

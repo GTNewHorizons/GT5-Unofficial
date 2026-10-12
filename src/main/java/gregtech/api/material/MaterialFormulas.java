@@ -11,8 +11,7 @@ import gregtech.api.util.GTUtility;
 /// Resolves a [Material]'s chemical formula display string from [GTMaterialProperties#FORMULA], translating it
 /// through the material's `.ChemicalFormula` lang key when [GTMaterialProperties#FORMULA_LOCALIZED] is set.
 ///
-/// [#forSearch] returns the raw string, `"?"` and `"??"` placeholders included. [#forTooltip] returns the display
-/// line and hides the `"?"` placeholder.
+/// [#forSearch] keeps the `"?"` and `"??"` placeholders. [#forTooltip] hides the `"?"` placeholder.
 public final class MaterialFormulas {
 
     private MaterialFormulas() {}

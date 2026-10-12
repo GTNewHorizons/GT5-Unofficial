@@ -71,7 +71,7 @@ public class DustDecayable extends BaseItemTickable implements IRadioactiveItem 
                     .getDisplayName()));
     }
 
-    /// Decay advances only in a decayables chest, never in an inventory.
+    /// Decay advances only in a decayables chest or a decay warehouse, never in an inventory.
     @Override
     public void onUpdate(final ItemStack stack, final World world, final Entity entityHolding, final int slot,
         final boolean heldInHand) {}

@@ -13,12 +13,12 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.OreDictUtils;
 import gregtech.loaders.oreprocessing.ForeignPartRecipes;
 
-/// One buffered ore-dictionary registration: the stack, the prefix its name resolved to, and the material its
-/// name names -- the `NULL` placeholder under a prefix that is not material-based.
+/// One buffered oredict registration: the stack, the prefix its name resolved to, and the material its name names
+/// (the `NULL` placeholder under a prefix that is not material-based).
 ///
-/// A MaterialLib item runs no prefix registrators unless its ore name is the target of an [OreDictAliases] prefix
-/// alias (`plankWood`, ...): [gregtech.loaders.oreprocessing.ShapeRecipeTable] processes every
-/// MaterialLib item once per (shape, material), but not under an alias prefix.
+/// A MaterialLib item reaches [ForeignPartRecipes#run] only when its ore name is the target of an [OreDictAliases]
+/// prefix alias (`plankWood`, ...). [gregtech.loaders.oreprocessing.ShapeRecipeTable] makes the recipes of every
+/// MaterialLib item once per (shape, material), but not those under an alias prefix.
 final class OreDictRegistration {
 
     @NotNull

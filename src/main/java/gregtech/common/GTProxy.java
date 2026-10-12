@@ -426,8 +426,8 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    /// Registers oredict entries other mods (or Forge itself) already registered before this proxy was
-    /// constructed. Must run after [gregtech.api.enums.OrePrefixes#lateStaticInit].
+    /// Passes every oredict entry registered so far, by other mods or Forge, to [OreDictRegistrationHandler]. Must
+    /// run after [OrePrefixes#lateStaticInit].
     public void catchUpPreExistingOreDictEntries() {
         for (String tOreName : OreDictionary.getOreNames()) {
             for (ItemStack itemStack : OreDictionary.getOres(tOreName)) {

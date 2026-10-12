@@ -5,10 +5,10 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 
-/// The legacy generated-material ids whose materials had the metal item set. [PosteaTransformers] uses it to tell
-/// legacy frame box items apart from other machine items.
+/// The legacy generated-material ids of the materials that generated metal items. [PosteaTransformers] uses it to
+/// tell legacy frame box items apart from other machine items.
 ///
-/// Rows are the legacy ids of the materials that generated metal items, in ascending order.
+/// Rows are those materials, in ascending order of legacy id.
 public final class LegacyMetalItemsTable {
 
     private static final boolean[] IDS = build();

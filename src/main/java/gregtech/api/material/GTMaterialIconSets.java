@@ -14,8 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 /// faces, and decorative cover faces. Each [IconSet] resolves through the material's texture set the same way a
 /// shape's icons do.
 ///
-/// The names are plain strings so common code can check them on a dedicated server, where MaterialLib's
-/// client-only icon API must not classload. [#register] creates the [IconSet]s client-side.
+/// [#register] creates the [IconSet]s client-side.
 public final class GTMaterialIconSets {
 
     private GTMaterialIconSets() {}
@@ -33,7 +32,7 @@ public final class GTMaterialIconSets {
     // spotless:on
 
     /// The block-atlas names: the pipe and cable end face, the two decorative cover faces, the block-atlas foil
-    /// cover, and the two bartworks casing faces.
+    /// cover, and the two material casing faces.
     public static final Set<String> BLOCK_NAMES = Set
         .of("pipeSide", "block1", "block2", "foil", "blockCasing", "blockCasingAdvanced");
 

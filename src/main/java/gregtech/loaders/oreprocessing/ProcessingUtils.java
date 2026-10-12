@@ -32,7 +32,7 @@ public class ProcessingUtils {
         return key;
     }
 
-    /// Adds a simple washer recipe washing `input` into `output`; does nothing when either is null.
+    /// Adds a simple washer recipe washing `input` into `output`. Does nothing when either is null.
     static void addSimpleWasherRecipe(ItemStack input, ItemStack output) {
         if (input == null || output == null) return;
         GTValues.RA.stdBuilder()

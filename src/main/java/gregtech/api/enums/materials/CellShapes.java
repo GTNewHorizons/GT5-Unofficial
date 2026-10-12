@@ -18,13 +18,13 @@ import gregtech.common.items.GTSolidCellShapeItem;
 /// [#cellPlasmaLight] instead.
 /// - `cell` covers [#cell] for liquids, [#cellGas] for gases and [#cellSolid] for materials with no fluid.
 ///
-/// [gregtech.api.material.MaterialParts] resolves each group back to its prefix.
+/// [gregtech.api.material.MaterialParts] resolves each prefix to its group of shapes.
 public class CellShapes {
 
     /// The empty cell every cell shape drains to, bound to `ItemList.Cell_Empty`.
     public static EmptyContainerHandle emptyCell;
 
-    /// Untinted container base for [#cell] and the six cracked-cell shapes.
+    /// Untinted container base for [#emptyCell], [#cell], [#cellGas], [#cellSolid] and the six cracked-cell shapes.
     private static final String CELL_BASE = "gregtech:materials/cell_base";
 
     /// Untinted container base for [#cellPlasma], [#cellPlasmaLight] and [#cellMolten]. There is no separate

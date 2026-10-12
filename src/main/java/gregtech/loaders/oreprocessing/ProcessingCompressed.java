@@ -22,8 +22,8 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-/// Another mod's compressed plate of a material: a decorative cover, made by imploding the material's triple plate in
-/// place of its own recipes.
+/// Generates the recipes of another mod's compressed plate. The plate's own recipes are removed, it becomes a
+/// decorative cover, and it is made by imploding the material's triple plate.
 public class ProcessingCompressed implements PartRecipeGenerator {
 
     public static final ProcessingCompressed INSTANCE = new ProcessingCompressed();

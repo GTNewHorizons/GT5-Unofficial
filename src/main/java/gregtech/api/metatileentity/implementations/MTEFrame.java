@@ -25,8 +25,8 @@ import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.FrameShapeBlock;
 
-/// The material-agnostic frame-box tile entity backing the [FrameShapeBlock] shape: identity comes from the
-/// hosting block, and the material resolves from the host block's metadata.
+/// The frame-box tile entity behind the [FrameShapeBlock] shape. One instance serves every material, read from the
+/// host block's metadata.
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity {
 

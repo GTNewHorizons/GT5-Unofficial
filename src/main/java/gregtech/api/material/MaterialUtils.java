@@ -40,10 +40,10 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
 import gregtech.common.config.Client;
 
-/// Accessors for everything GregTech attaches to a MaterialLib [Material] through [GTMaterialProperties], grouped
-/// by domain (fluids, ores, tools, names, flags, colour).
+/// Accessors for the GregTech data attached to a MaterialLib [Material] through [GTMaterialProperties], such as its
+/// fluids, ore and tool stats, names, flags and color.
 ///
-/// Accessors tolerate a null material and answer what an unset property would. Plain-constant defaults live on the
+/// Most accessors tolerate a null material and answer what an unset property would. Plain-constant defaults live on the
 /// [com.ruling_0.materiallib.api.Property] key itself.
 public class MaterialUtils {
 
@@ -178,9 +178,8 @@ public class MaterialUtils {
         PLASMA
     }
 
-    /// The shapes that can back each fluid state, in resolution order. A state usually maps to its own shape,
-    /// but a material declaring both a liquid and a gas registers only one MaterialLib fluid when the two
-    /// share a Forge fluid name, so each of those two states falls back to the other's shape.
+    /// The shapes that can back each fluid state, in resolution order. A material whose liquid and gas share a
+    /// Forge fluid name registers only one MaterialLib fluid, so liquid and gas each fall back to the other's shape.
     private static final EnumMap<FluidState, Shape[]> STATE_SHAPES = new EnumMap<>(
         Map.of(
             FluidState.LIQUID,
@@ -209,7 +208,7 @@ public class MaterialUtils {
         return null;
     }
 
-    /// The material whose fluid `fluid` is, or null when it is no material's ([MaterialLibAPI#lookupFluid]).
+    /// Returns the material that owns `fluid` per [MaterialLibAPI#lookupFluid], or null when no material does.
     public static @Nullable Material materialOfFluid(@Nullable Fluid fluid) {
         FluidMaterialInfo info = MaterialLibAPI.lookupFluid(fluid);
         return info == null ? null : info.material();
@@ -238,8 +237,8 @@ public class MaterialUtils {
         return MaterialLibAPI.getFluid(material, CRACKED_SHAPES.get(type)[severity]);
     }
 
-    /// The metadata index a material was assigned, such as its frame and storage block variant
-    /// ([GTMaterialProperties#OLD_SUB_ID]). `-1` if unset.
+    /// The material's legacy generated-material id ([GTMaterialProperties#OLD_SUB_ID]), which old saves encode in
+    /// its parts' metadata. `-1` if unset.
     public static int oldSubId(@Nullable Material material) {
         if (material == null) return -1;
         Integer id = material.getProperty(GTMaterialProperties.OLD_SUB_ID);

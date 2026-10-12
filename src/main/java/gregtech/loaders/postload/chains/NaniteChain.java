@@ -192,8 +192,7 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUMVTierLens,
-                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 1)), // Magneto
-                // lens
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 1)),
                 GregtechItemList.Laser_Lens_Special.get(0), // Quantum Anomaly, couldn't find any better
                                                             // naming
                 MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, BlockShapes.block, 8),
@@ -213,8 +212,7 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUMVTierLens,
-                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 1)), // Magneto
-                // lens
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 1)),
                 GregtechItemList.Laser_Lens_Special.get(0), // Quantum Anomaly, couldn't find any better
                                                             // naming
                 MaterialLibAPI.getStack(Materials.BlackDwarfMatter, BlockShapes.block, 8),
@@ -234,8 +232,7 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUMVTierLens,
-                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 1)), // Magneto
-                // lens
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 1)),
                 // Quantum Anomaly, couldn't find any better naming.
                 GregtechItemList.Laser_Lens_Special.get(0),
                 MaterialLibAPI.getStack(Materials.Universium, BlockShapes.block, 8),

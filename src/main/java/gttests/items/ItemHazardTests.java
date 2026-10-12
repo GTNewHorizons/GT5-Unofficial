@@ -12,7 +12,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.hazards.ItemHazards;
 
-/// [ItemHazards] reads carry hazards off MaterialLib parts.
+/// Checks that [ItemHazards] reads the hazards of MaterialLib parts from their materials.
 @GameTestHolder(Mods.ModIDs.GREG_TECH)
 public class ItemHazardTests {
 

@@ -39,26 +39,24 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 
-/// The legacy form namespace: the ore-dictionary prefix strings GregTech and every other mod name item forms
-/// with, and the data those forms carry.
+/// The oredict prefixes, such as `plate` or `ore`, that GregTech and other mods name item forms with, and the data
+/// each form carries.
 ///
 /// A prefix and a MaterialLib [com.ruling_0.materiallib.api.Shape] both name a form, but they are not
-/// interchangeable and neither replaces the other:
+/// interchangeable:
 ///
-/// - **A shape owns the data.** For the 88 prefixes a shape serves, the per-form values below --
-/// [#getMaterialAmount], [#getTextureIndex], [#mSecondaryMaterial], the behaviour flags -- are declared on
-/// the shape (see [ShapeData]) and copied here at load by
-/// [#copyDataFromShapes]. The 220 prefixes no shape serves -- tool and armor forms, containers, the ore
-/// stone variants, and the foreign-mod marker names -- declare their own.
-/// - **A prefix owns the names.** Prefix names and the [#VALUES] ordinals are frozen by saved data: a type
-/// filter writes its prefix name into NBT, and the Postea transformers build registry-name strings from
-/// them. `___placeholder___` exists purely to hold an ordinal. Nothing may rename or reorder them.
-/// - **Only a prefix can read a foreign mod's oredict entry.** Another mod registering `plateCopper` gives
-/// GregTech a string; [#getOrePrefix] parses it back to a prefix, and the shape space cannot help, because
-/// a shape knows only the items MaterialLib itself generated.
+/// - **A shape owns the data.** For a prefix a shape serves, the per-form values ([#getMaterialAmount],
+/// [#mSecondaryMaterial], [#mHeatDamage], the aspects and the behaviour flags) are declared on the shape (see
+/// [gregtech.api.enums.materials.ShapeData]) and copied here by [#copyDataFromShapes]. Prefixes no shape serves,
+/// such as tool and armor forms, containers, ore stone variants and foreign-mod marker names, declare their own.
+/// - **A prefix owns the names.** Saved data freezes prefix names and [#VALUES] ordinals: a type filter writes its
+/// prefix name into NBT, and the Postea transformers build registry names from them. `___placeholder___` only
+/// holds an ordinal. Nothing may rename or reorder them.
+/// - **Only a prefix can read a foreign mod's oredict entry.** [#getOrePrefix] parses another mod's `plateCopper`
+/// back to a prefix. A shape knows only the items MaterialLib generated.
 ///
-/// Shape-side code reads the shape. Code holding a prefix at runtime reads the prefix, and gets the shape's
-/// values for free wherever a shape serves it.
+/// Code holding a shape reads the shape. Code holding a prefix reads the prefix, which carries the shape's values
+/// wherever a shape serves it.
 @SuppressWarnings({ "PointlessArithmeticExpression", "unused" })
 public class OrePrefixes {
 
@@ -1683,11 +1681,12 @@ public class OrePrefixes {
         VALUES_LIST.add(this);
     }
 
-    /// Copies the per-form data of every prefix a [Shape] serves off that shape, making the shape the one
-    /// declaration of it (see [ShapeData]). Prefixes no shape serves keep the values their own builder declared.
+    /// Copies the per-form data of every prefix a [Shape] serves from that shape, making the shape the one
+    /// declaration of it (see [gregtech.api.enums.materials.ShapeData]). Prefixes no shape serves keep the values
+    /// their own builder declared.
     ///
-    /// Must run during `MaterialRegistrationEvent`, after [ShapeData] declares the values and before any
-    /// consumer or loader reads a prefix.
+    /// Must run during `MaterialRegistrationEvent`, after `ShapeData` declares the values and before any consumer or
+    /// loader reads a prefix.
     public static void copyDataFromShapes() {
         for (OrePrefixes prefix : VALUES) {
             List<Shape> shapes = MaterialParts.shapes(prefix);
@@ -1814,9 +1813,8 @@ public class OrePrefixes {
         cellSteamCracked2,
         cellSteamCracked3);
 
-    /// The subset of {@link OrePrefixes} static setup that references `Materials` constants, called explicitly
-    /// from GT's preInit and never from a `static {}` block: this class is already loaded before any mod's
-    /// preInit runs, well before `Materials` data can resolve.
+    /// Runs the static setup that references [Materials] fields. Called from GregTech's preInit, never from a
+    /// `static {}` block: this class loads before any mod's preInit, before the [Materials] fields are set.
     public static void lateStaticInit() {
         block.ignoreMaterials(
             Materials.Ice,

@@ -40,11 +40,11 @@ public class ProcessingStick implements PartRecipeGenerator {
 
     private ProcessingStick() {}
 
-    /// Molds `stack`, `material`'s `prefix` part, when [ProcessingShaping] does not shape that material from
-    /// ingots: from its molten fluid, or else from the liquid or gas its dust converts to, taking the part's share
-    /// of the fluid a whole ingot or dust holds, and melts the part back into the same fluid unless
-    /// [GTRecipeRegistrator] recycling already melts it. Skipped for a part another mod's item stands in for, whose
-    /// material amount need not match its own recipes.
+    /// Adds recipes that mold `stack`, `material`'s `prefix` part, from fluid and melt it back, for a material
+    /// [ProcessingShaping] does not shape from ingots. The fluid is the material's molten fluid, else the liquid or
+    /// gas its dust converts to, at the part's share of what a whole ingot or dust holds. The melting recipe is
+    /// skipped when [GTRecipeRegistrator] recycling already melts the material. Both are skipped for a part another
+    /// mod's item stands in for.
     static void addMeltMoldRecipe(OrePrefixes prefix, Material material, ItemStack stack, ItemList mold, int duration) {
         if (ProcessingShaping.shapesFromIngots(material) || !MaterialParts.isMinted(prefix, material)) return;
         ItemStack part = GTUtility.copyAmount(1, stack);

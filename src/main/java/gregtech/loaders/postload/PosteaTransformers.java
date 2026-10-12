@@ -57,10 +57,10 @@ public class PosteaTransformers implements Runnable {
     private static final int[] WERKSTOFFS_REMOVED_IN_2_9 = new int[] { OFFSET_ID_3, OFFSET_ID_3 + 2, OFFSET_ID_3 + 6,
         OFFSET_ID_3 + 7, OFFSET_ID_3 + 8, OFFSET_ID_3 + 11, OFFSET_ID_3 + 12 };
 
-    /// Every legacy block/item registry name a transformer has been registered for, collected by the
-    /// `addBlockTransformer`/`addBlockReplacement`/`addItemTransformer`/`addItemReplacement` wrappers.
-    /// Registration goes through those wrappers and never
-    /// through the Postea managers directly, so a name can never be transformed without also being claimed.
+    /// Every legacy block/item registry name a transformer is registered for, collected by the
+    /// `addBlockTransformer`/`addBlockReplacement`/`addItemTransformer`/`addItemReplacement` wrappers. Legacy names
+    /// register only through those wrappers, never through the Postea managers directly, so every transformed name
+    /// is also claimed by [#claimMissingMappings].
     private static final Set<String> transformedIds = new LinkedHashSet<>();
 
     @Override
@@ -130,8 +130,9 @@ public class PosteaTransformers implements Runnable {
         ItemStackReplacementManager.addSimpleReplacement(legacyId, legacyMeta, item, newMeta);
     }
 
-    /// Resolves every generated cutover row up front, naming the ones that no longer resolve. Every row is
-    /// expected to resolve; a row that deliberately never cuts over belongs in its table's javadoc as such.
+    /// Logs the gtPlusPlus item and ore, foreign part and pipe cutover rows that do not resolve to a MaterialLib
+    /// stack or block. Every row is expected to resolve. A row that deliberately never resolves is documented as
+    /// such in its table's javadoc.
     private static void validateCutoverTables() {
         List<String> unresolved = new ArrayList<>();
 
@@ -171,10 +172,10 @@ public class PosteaTransformers implements Runnable {
 
     private static final int MAX_REPORTED_UNRESOLVED_ROWS = 50;
 
-    /// Migrates saved material stacks of the legacy meta-items (`gt.metaitem.01/02/03` below damage 32000, and
-    /// the `gt.metaitem.99` molten and cracked cells) into the equivalent MaterialLib stack, decoded through
-    /// [LegacyMetaItemTable]. Hand-listed custom parts (damage 32000 and up on `metaitem.01/02/03`) pass through
-    /// unchanged.
+    /// Registers the transformers that migrate saved legacy material parts, blocks, pipes and cells onto their
+    /// MaterialLib equivalents. The material parts of `gt.metaitem.01/02/03` (below damage 32000) and the
+    /// `gt.metaitem.99` molten and cracked cells decode through [LegacyMetaItemTable]. Hand-listed custom parts
+    /// (damage 32000 and up on `metaitem.01/02/03`) pass through unchanged.
     private void registerMaterialLibCutoverTransformers() {
         registerMetaItemCutoverTransformer("gt.metaitem.01");
         registerMetaItemCutoverTransformer("gt.metaitem.02");
@@ -223,9 +224,8 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Migrates saved IC2 empty cells (`IC2:itemCellEmpty`) onto the gregtech-owned empty cell every cell shape
-    /// drains to ([ItemList#Cell_Empty]). Keyed on meta 0 alone: metas 6-13 of that id are IC2's own filled cells,
-    /// which keep their meaning, and the metas gregtech took over are handled by
-    /// [#registerIC2FilledCellCutoverTransformers].
+    /// drains to ([ItemList#Cell_Empty]). Keyed on meta 0 alone. The filled cells sharing that id migrate through
+    /// [#registerIC2FilledCellCutoverTransformers] and [#registerGtppIC2CellCutoverTransformers].
     private static void registerEmptyCellCutoverTransformer() {
         ItemStack cutover = ItemList.Cell_Empty.get(1);
         if (cutover == null) {
@@ -234,11 +234,10 @@ public class PosteaTransformers implements Runnable {
         addItemReplacement("IC2:itemCellEmpty", 0, cutover.getItem(), cutover.getItemDamage());
     }
 
-    /// Migrates IC2's filled cells onto the equivalent gregtech cell: water (meta 1), lava (2), UU-Matter (3),
-    /// construction foam (4), air (5), biomass (6), biogas (7), coolant (9), hot coolant (10), pahoehoe lava (11),
-    /// distilled water (12) and superheated steam (13) become MaterialLib cells, and steam (meta 14) becomes
-    /// [MetaGeneratedItem98.FluidCell#STEAM]. Air is lossy -- the IC2 cell held 2000 mB against the MaterialLib
-    /// cell's 1000 mB -- the same halving the meta-15 remap in [#registerGtppIC2CellCutoverTransformers] takes.
+    /// Migrates IC2's filled cells (`IC2:itemCellEmpty` metas 1-14) onto the equivalent gregtech cells: MaterialLib
+    /// cells, and [MetaGeneratedItem98.FluidCell#STEAM] for steam. Air is lossy, since the IC2 cell holds 2000 mB and
+    /// the MaterialLib cell 1000 mB. The meta-15 remap in [#registerGtppIC2CellCutoverTransformers] takes the same
+    /// halving.
     private static void registerIC2FilledCellCutoverTransformers() {
         remapIC2Cell(1, Materials.Water);
         remapIC2Cell(2, Materials.Lava);
@@ -274,8 +273,8 @@ public class PosteaTransformers implements Runnable {
         addItemReplacement("IC2:itemCellEmpty", meta, cutover.getItem(), cutover.getItemDamage());
     }
 
-    /// Migrates the filled cells gtpp minted onto IC2's cell item, which no longer register, onto the MaterialLib
-    /// cells of the same acids.
+    /// Migrates the filled cells gtPlusPlus registered on IC2's cell item (metas 15-20) onto the MaterialLib cells of
+    /// the same fluids.
     private static void registerGtppIC2CellCutoverTransformers() {
         remapIC2Cell(15, Materials.IndustrialStrengthHydrofluoricAcid);
         remapIC2Cell(16, Materials.SulfurousAcid);
@@ -285,15 +284,12 @@ public class PosteaTransformers implements Runnable {
         remapIC2Cell(20, Materials.LithiumHydroxide);
     }
 
-    /// Migrates saved legacy pipe-family instances (per-material wire/cable/fluid-pipe/item-pipe MTE ids,
-    /// see [LegacyPipeCutoverTable]) onto the material-agnostic MaterialLib shape blocks: block = the
-    /// shape's [PipeShapeBlock], meta = the MaterialLib material index. Every legacy pipe was TE-backed and
-    /// every shape block hosts an eager TE, so placed instances keep their tile entity with `mID` rewritten
-    /// to the shape's single MTE id; the rest of the tag (connections, covers, paint, stored fluids/items)
-    /// rides along untouched. Inventory stacks (`gt.blockmachines`, damage = MTE id) become the shape
-    /// block's ItemBlock at the material index, mirroring [#registerFrameboxTransformers]' item idiom.
-    /// Ids outside the table -- gaps inside the freed ranges and every live MTE id -- pass through to the
-    /// other `BaseMetaPipeEntity`/`gt.blockmachines` handlers unchanged.
+    /// Migrates saved per-material wire, cable, fluid pipe and item pipe MTEs (see [LegacyPipeCutoverTable]) onto
+    /// the shape's [PipeShapeBlock], with the MaterialLib material index as meta. Placed pipes keep their tile entity
+    /// with `mID` rewritten to the shape's MTE id. The rest of the tag (connections, covers, paint, stored
+    /// fluids/items) carries over untouched. Inventory stacks (`gt.blockmachines`, damage = MTE id) become the shape
+    /// block's item at the material index. Ids outside the table pass through to the other `BaseMetaPipeEntity` and
+    /// `gt.blockmachines` handlers unchanged.
     private static void registerPipeCutoverTransformers() {
         Map<Integer, LegacyPipeCutoverTable.Entry> table = LegacyPipeCutoverTable.entries();
 
@@ -327,12 +323,9 @@ public class PosteaTransformers implements Runnable {
             .debug("PosteaTransformers: registered pipe-family transformers for {} legacy MTE ids", table.size());
     }
 
-    /// Migrates saved legacy `BlockBaseOre` placed/inventory stacks into the equivalent MaterialLib
-    /// [OreShapes#ore] stack, resolved through
-    /// [GtppOreCutoverTable]'s (unlocalized name, registry name) rows the same way
-    /// [gregtech.common.ores.GTOreAdapter#getBlock] resolves it live. Each row is one distinct registered
-    /// instance per material with no meta multiplexing, so a single item + block transformer pair per row is
-    /// enough. A material that never gained `ore` membership resolves null and is left on its legacy slot.
+    /// Migrates saved placed and inventory gtPlusPlus ore blocks (`BlockBaseOre`, one registered block per material)
+    /// into the material's MaterialLib [OreShapes#ore] stack, through [GtppOreCutoverTable]'s rows. A material
+    /// without the `ore` shape is left on its legacy slot.
     private static void registerGtppOreCutoverTransformers() {
         for (GtppOreCutoverTable.Entry entry : GtppOreCutoverTable.ENTRIES) {
             addItemTransformer(entry.registryName(), (originalId, tag) -> {
@@ -384,10 +377,9 @@ public class PosteaTransformers implements Runnable {
     /// Migrates saved gtPlusPlus per-material part stacks (`miscutils:item*`/`miscutils:block*`, one distinct
     /// registered item/block per (material, prefix), always damage 0) into the equivalent MaterialLib stack,
     /// resolved through [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows. `cell` rows
-    /// resolve through [MaterialParts#cell] instead of plain [MaterialParts#stack] -- see that method's
-    /// javadoc. `frameGt` is out of the table and migrates separately. `block` rows additionally get a
-    /// [BlockReplacementManager] handler for placed instances, since a storage block is placeable. A row whose
-    /// material carries no shape for its prefix is left on its legacy slot.
+    /// resolve through [MaterialParts#cell] instead of plain [MaterialParts#stack]. Frames migrate through
+    /// [#registerGtppFrameCutoverTransformers]. `block` rows also get a [BlockReplacementManager] handler for placed
+    /// instances. A row whose material carries no shape for its prefix is left on its legacy slot.
     private static void registerGtppItemCutoverTransformers() {
         for (Entry entry : GtppItemCutoverTable.ENTRIES) {
             addItemTransformer(entry.registryName(), (originalId, tag) -> {
@@ -443,9 +435,8 @@ public class PosteaTransformers implements Runnable {
         return MaterialParts.stack(entry.prefix(), material, 1);
     }
 
-    /// The materials whose legacy `cell` item was `miscutils:itemCell<Name>` but for which
-    /// [GtppItemCutoverTable] holds no row. They are migrated by hand here, to the same [MaterialParts#cell]
-    /// fallback every other gtpp cell resolves through.
+    /// Migrates the gtPlusPlus cells (`miscutils:itemCell<Name>`) that [GtppItemCutoverTable] holds no row for onto
+    /// the material's [MaterialParts#cell] stack, as every other gtPlusPlus cell resolves.
     private static void registerGtppCarryoverCellTransformers() {
         registerGtppCarryoverCellTransformer("Iodine");
         registerGtppCarryoverCellTransformer("ThoriumTetrafluoride");
@@ -479,11 +470,11 @@ public class PosteaTransformers implements Runnable {
         OrePrefixes.plateQuintuple, OrePrefixes.cellMolten };
 
     /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =
-    /// werkstoff id) into the equivalent MaterialLib stack, resolved through [LegacyWerkstoffIndex] exactly
-    /// like the live item path ([MaterialParts#stack]), with cells resolving through [MaterialParts#cell].
-    /// Damages of werkstoffe unknown to MaterialLib (a third-party mod's own werkstoff ids) pass through
-    /// unchanged. Ore and small ore migrate through [LegacyOreTransformers]; storage blocks and the two casing slots
-    /// (`blockCasing`/`blockCasingAdvanced`) migrate through [#registerWerkstoffBlockCutoverTransformer].
+    /// werkstoff id) into the equivalent MaterialLib stack, resolved through [LegacyWerkstoffIndex] and
+    /// [MaterialParts#stack] ([MaterialParts#cell] for cells). Werkstoff ids unknown to [LegacyWerkstoffIndex] (a
+    /// third-party mod's own werkstoff ids) pass through unchanged. Ore and small ore migrate through
+    /// [LegacyOreTransformers]. Storage blocks and the two casing slots (`blockCasing`/`blockCasingAdvanced`) migrate
+    /// through [#registerWerkstoffBlockCutoverTransformer].
     private static void registerWerkstoffItemCutoverTransformers() {
         for (OrePrefixes prefix : LEGACY_WERKSTOFF_ITEM_PREFIXES) {
             addItemTransformer("bartworks:gt.bwMetaGenerated" + prefix.getName(), (originalId, tag) -> {
@@ -521,9 +512,10 @@ public class PosteaTransformers implements Runnable {
             OrePrefixes.blockCasingAdvanced);
     }
 
-    /// Migrates saved placed (tile-entity) and inventory bartworks werkstoff storage blocks and casings (`m`/`Damage` =
-    /// werkstoff id) into the equivalent MaterialLib block. A casing whose material has no MaterialLib casing becomes
-    /// the material's storage block, and a werkstoff removed from the pack becomes dirt.
+    /// Migrates saved placed (tile-entity) and inventory bartworks werkstoff storage blocks and casings
+    /// (`m`/`Damage` = werkstoff id) into the equivalent MaterialLib block. A casing whose material has no MaterialLib
+    /// casing becomes the material's storage block. A placed block of a werkstoff removed from the pack becomes dirt,
+    /// and one whose id resolves to no block becomes air.
     private static void registerWerkstoffBlockCutoverTransformer(String teId, String itemId, OrePrefixes prefix) {
         TileEntityReplacementManager.tileEntityTransformer(teId, (tag, world, chunk) -> {
             int id = tag.getShort("m");
@@ -549,8 +541,8 @@ public class PosteaTransformers implements Runnable {
         return cutover != null ? cutover : MaterialLibAPI.findStack(material, BlockShapes.block, 1);
     }
 
-    /// Points the microblock materials saves recorded for the legacy storage blocks at the MaterialLib blocks'
-    /// names (see [MicroblockMaterials]), and those of the deprecated bartworks glass at the glass that replaced it.
+    /// Remaps the saved microblock materials of the legacy storage blocks onto the MaterialLib blocks' names (see
+    /// [MicroblockMaterials]), and those of `bartworks:BW_GlasBlocks` onto the tiered and extra bartworks glass.
     private static void remapLegacyMicroblockMaterials() {
         LegacyStorageBlockTable.BATCHES.forEach((block, batch) -> {
             for (int meta = 0; meta < batch.length; meta++) {
@@ -601,9 +593,8 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Migrates saved placed blocks and inventory stacks of a legacy non-TE part block whose meta is a
-    /// material id into the equivalent MaterialLib [prefix] stack, resolving the id through
-    /// `materialResolver`. Materials the resolver cannot place (unknown legacy id) or that have not cut over
-    /// to `prefix` are left on their legacy slot.
+    /// material id into the equivalent MaterialLib `prefix` stack, resolving the id through `materialResolver`. An id
+    /// the resolver does not know, or a material without a `prefix` part, is left on its legacy slot.
     private static void registerPartCutoverTransformer(String legacyId, OrePrefixes prefix,
         IntFunction<Material> materialResolver) {
         addBlockTransformer(legacyId, info -> {
@@ -670,7 +661,7 @@ public class PosteaTransformers implements Runnable {
         TileEntityReplacementManager.tileEntityTransformer("BaseMetaPipeEntity", (tag, world, chunk) -> {
             // Read the MTE ID from the NBT data and try to figure out if this is a frame box
             int id = tag.getInteger("mID");
-            // Legacy per-material framebox IDs start at 4096; the offset is the index in the material list
+            // Legacy per-material framebox IDs are 4096 + the legacy material id
             int indexInMaterialList = id - 4096;
             Material material = LegacyMaterialIDIndex.get(indexInMaterialList);
             if (material == null || !material.hasShape(TEBlockShapes.frameGt)) {

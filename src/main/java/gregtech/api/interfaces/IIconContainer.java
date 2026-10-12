@@ -9,13 +9,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * A texture's icons on one atlas, drawn as a stack of {@link #getIconPasses} layers from layer 0 upwards. Each layer
- * takes either its own {@link #getIconColor} or the consumer's color modulation, as {@link #isUsingColorModulation}
- * decides. Those four methods are the ones a consumer draws from.
+ * A texture's icons on one atlas, drawn as a stack of layers. A consumer draws {@link #getIconPasses} layers from
+ * layer 0 upwards, each from {@link #getLayerIcon} and colored either by {@link #getIconColor} or by the consumer's own
+ * color modulation, as {@link #isUsingColorModulation} decides.
  * <p>
- * {@link #getIcon} and {@link #getOverlayIcon} are the shortcut for a container whose stack is no deeper than a base
- * and one icon over it: the layer defaults read that pair, so implementing it alone gives two layers, or one when the
- * overlay is null.
+ * A container with at most a base and one icon over it only needs {@link #getIcon} and {@link #getOverlayIcon}: the
+ * layer defaults read that pair, giving two layers, or one when the overlay is null.
  */
 public interface IIconContainer {
 

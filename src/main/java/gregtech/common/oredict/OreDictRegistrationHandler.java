@@ -53,9 +53,10 @@ import gregtech.common.config.OPStuff;
 /// the material it stands for, its aliases, its unification association, and (buffered until
 /// [#processBufferedRegistrations]) the ore-processing recipes for it.
 ///
-/// A material-based name resolves its material side through [MaterialUtils#byLegacyName]; a name naming no
-/// material is dropped as unknown. Every transparent material with a dye joins that dye's `craftingLens` group
-/// through its lens.
+/// A material-based name resolves its material side through [MaterialUtils#byLegacyName]. A name naming no
+/// material gets no association or recipes, except a name-only association for the names in
+/// [#NAME_ONLY_MATERIALS]. Every transparent material with a dye joins that dye's `craftingLens` group through its
+/// lens.
 public final class OreDictRegistrationHandler {
 
     private OreDictRegistrationHandler() {}
@@ -217,7 +218,7 @@ public final class OreDictRegistrationHandler {
         }
     }
 
-    /// Whether GregTech generates no recipes for items under `oreName`.
+    /// Whether GregTech ignores registrations under `oreName` and generates no recipes for its items.
     public static boolean isIgnoredName(String oreName) {
         return IGNORED_NAMES.contains(oreName);
     }

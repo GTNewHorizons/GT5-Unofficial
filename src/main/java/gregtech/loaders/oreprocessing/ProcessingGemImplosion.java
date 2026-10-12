@@ -28,10 +28,10 @@ import gregtech.api.util.GTUtility;
 
 /// Generates the implosion recipes turning four dust into three gems and tiny piles of Dark Ash.
 ///
-/// The gems in `YIELDS` take their listed Dark Ash and explosive amounts; Diamond yields IC2 Industrial Diamonds.
-/// Every other material with a gem MaterialLib mints itself takes 8 Dark Ash and 24 explosives; a gem another mod's
-/// item stands in for qualifies only when listed in `FOREIGN_GEMS`. Amalgatite, Fluix and `NoBlast` materials never
-/// implode.
+/// The gems in `YIELDS` take their listed Dark Ash and explosive amounts. Diamond yields IC2 Industrial Diamonds.
+/// Every other material with a gem MaterialLib mints itself takes 8 Dark Ash and 24 explosives. A gem another mod's
+/// item stands in for qualifies only when listed in `FOREIGN_GEMS`. Outside `YIELDS`, Amalgatite, Fluix and
+/// [GTMaterialFlag#NO_BLAST] materials never implode.
 public final class ProcessingGemImplosion implements PartRecipeGenerator {
 
     public static final ProcessingGemImplosion INSTANCE = new ProcessingGemImplosion();

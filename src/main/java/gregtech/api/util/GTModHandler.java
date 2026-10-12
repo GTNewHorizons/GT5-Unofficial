@@ -1004,9 +1004,9 @@ public class GTModHandler {
     /**
      * Internal realisation of the Crafting Recipe adding Process.
      */
-    /// The stack standing in for an [ItemData] ingredient when looking for an existing recipe the new one collides
-    /// with: the pair's MaterialLib stack when MaterialLib serves the pair, else [#collisionProbe(String)] for the
-    /// ingredient's name.
+    /// The stack that stands in for an [ItemData] ingredient when checking a new recipe for collisions. That is the
+    /// pair's MaterialLib stack when MaterialLib serves the pair, else [#collisionProbe(String)] for the ingredient's
+    /// name.
     public static ItemStack collisionProbe(ItemData ingredient) {
         if (ingredient.hasValidPrefixMaterialData()
             && MaterialParts.isCutOver(ingredient.mPrefix, ingredient.mMaterial.mMaterial)) {
@@ -1015,9 +1015,9 @@ public class GTModHandler {
         return collisionProbe(ingredient.toString());
     }
 
-    /// The stack standing in for the ore-dictionary ingredient `oreName` when looking for an existing recipe the new
-    /// one collides with: the name's unification target, else the first item registered under it that is not
-    /// blacklisted, else the first item registered under it. Null when nothing is registered under the name.
+    /// The stack that stands in for the oredict ingredient `oreName` when checking a new recipe for collisions. That
+    /// is the name's unification target, else the first item registered under it that is not blacklisted, else the
+    /// first item registered under it. Null when nothing is registered under the name.
     @Nullable
     public static ItemStack collisionProbe(String oreName) {
         ItemStack target = OreDictUtils.unificationTarget(oreName);
@@ -1386,8 +1386,8 @@ public class GTModHandler {
         return stack.hasTagCompound() ? hashCraftingKey(key, stack.getTagCompound()) : mixCraftingKey(key, -1);
     }
 
-    /// Hashes `tag` by structure. A compound's entries combine regardless of order, so equal compounds hash equal;
-    /// list elements of a type the list has no getter for hash through the list's text.
+    /// Hashes `tag` by structure. A compound's entries combine in any order, so equal compounds hash equal. List
+    /// elements of a type the list has no getter for hash through the list's text.
     private static long hashCraftingKey(long key, NBTBase tag) {
         key = mixCraftingKey(key, tag.getId());
         if (tag instanceof NBTTagCompound compound) {
@@ -1986,9 +1986,9 @@ public class GTModHandler {
         return occupiedSlots;
     }
 
-    /// Whether `recipe` can match a grid whose non-empty slots are `occupiedSlots`: a shaped recipe's pattern must
-    /// cover exactly those slots at some offset, mirrored or not, and a shapeless recipe must take as many items.
-    /// Recipe types it cannot read always can.
+    /// Whether `recipe` can match a grid whose non-empty slots are `occupiedSlots`. A shaped recipe's pattern must
+    /// cover exactly those slots at some offset, mirrored or not. A shapeless recipe must take as many items as there
+    /// are occupied slots. Any other recipe type can always match.
     private static boolean canMatchRecipeShape(IRecipe recipe, int occupiedSlots) {
         Class<?> recipeClass = recipe.getClass();
         if (recipeClass == ShapedRecipes.class) {

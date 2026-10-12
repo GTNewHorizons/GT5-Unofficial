@@ -70,9 +70,8 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
             }
 
             // Workaround for cell and comb:
-            // 1. BW capsule needs `renderContainedFluid` call as it has no capsule art of its own
-            // 2. Without these 2 GL calls fluid texture leaks out of the cell / capsule
-            // 3. Comb texture doesn't like depth enabled
+            // 1. Without these 2 GL calls fluid texture leaks out of the cell
+            // 2. Comb texture doesn't like depth enabled
             if (passes == 1) {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
             }

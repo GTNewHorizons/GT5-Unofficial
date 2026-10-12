@@ -25,8 +25,8 @@ import gregtech.api.util.OreDictUtils;
 /// `aliasToPrefix` registers an ore under another prefix.
 /// `aliasToMaterial` registers an ore under another prefix and material.
 ///
-/// A row taking a [Material] builds both names from the material's internal name; the string form names an
-/// ore-dictionary entry whose material side is not a material at all, such as vanilla's `gemQuartz`.
+/// A [Material] argument builds the oredict name on its side from the prefix and the material's internal name. A
+/// string argument names an oredict entry directly, such as vanilla's `gemQuartz`.
 final class OreDictAliases {
 
     private static final HashMap<String, List<Consumer<ItemStack>>> ALIASES = new HashMap<>();

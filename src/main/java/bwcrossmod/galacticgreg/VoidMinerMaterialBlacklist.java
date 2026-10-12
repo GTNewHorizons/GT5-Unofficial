@@ -55,8 +55,9 @@ public final class VoidMinerMaterialBlacklist {
         return Collections.unmodifiableSet(keys);
     }
 
-    /// Adds the keys of one config entry, either `<Material>` over every ore shape or `<Material>:<shapeToken>`
-    /// over one. Returns false when the entry names no registered material or matches no ore block.
+    /// Adds the keys of one config entry, either `<Material>` over the `ore` and `oreSmall` shapes or
+    /// `<Material>:<shapeToken>` over one shape. Returns false when the entry names no registered material or matches
+    /// no ore block.
     private static boolean addEntry(String entry, Set<String> keys) {
         int separator = entry.indexOf(':');
         Material material = StackResolver.getMaterial(separator == -1 ? entry : entry.substring(0, separator));

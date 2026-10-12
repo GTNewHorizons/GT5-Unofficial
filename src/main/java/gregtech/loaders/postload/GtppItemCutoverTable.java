@@ -5,8 +5,8 @@ import gregtech.api.enums.OrePrefixes;
 /// Save migration table for gtPlusPlus per-material parts (`miscutils:item*` and `miscutils:block*`) that map onto
 /// MaterialLib shapes. See [PosteaTransformers] for the migration.
 ///
-/// Frame blocks are in [GtppFrameCutoverTable]. Six gtPlusPlus `cell` items have no row here and are migrated
-/// directly in [PosteaTransformers].
+/// Frame blocks are in [GtppFrameCutoverTable]. The six gtPlusPlus fluid cells on IC2's cell item have no row here and
+/// are migrated directly in [PosteaTransformers].
 ///
 /// Rows are never removed. A missing row orphans that item in existing worlds.
 public final class GtppItemCutoverTable {

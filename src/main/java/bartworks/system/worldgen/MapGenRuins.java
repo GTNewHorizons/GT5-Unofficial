@@ -184,8 +184,8 @@ public abstract class MapGenRuins extends WorldGenerator {
         BTE.setFrontFacing(facing);
     }
 
-    /// Places one [PipeShapeBlock] of the ruin's power line, wired west/east along the line and north into the
-    /// machine row.
+    /// Places one [PipeShapeBlock] of the ruin's power line, wired west and east along the line, and north when a
+    /// tile entity sits there.
     protected void setGTCable(World worldObj, int x, int y, int z, LegacyPipeCutoverTable.Entry cable) {
         try {
             RunnableMachineUpdate.setDisabled();

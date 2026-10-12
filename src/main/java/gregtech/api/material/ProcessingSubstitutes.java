@@ -14,10 +14,12 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTUtility;
 
 /// Applies each material's [ProcessingSubstitute] to the outputs of the recipes ore processing generates. An output
-/// whose material declares a substitute becomes the same dust form of the substitute, scaled by the substitute's
-/// [ProcessingSubstitute.Rule]. Outputs are rewritten in place and returned.
+/// whose material declares a substitute becomes a dust of the substitute. The substitute's
+/// [ProcessingSubstitute.Rule] decides which outputs change and their amounts. Outputs are rewritten in place and
+/// returned.
 ///
-/// `input` is the material the recipe processes; a null input spares no output.
+/// `input` is the material the recipe processes. Platinum-group substitutes leave the outputs of an input with
+/// [GTMaterialFlag#KEEPS_PLATINUM_GROUP_OUTPUTS] alone.
 public final class ProcessingSubstitutes {
 
     private ProcessingSubstitutes() {}

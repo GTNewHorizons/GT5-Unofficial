@@ -169,9 +169,9 @@ public class GTRecipeBuilder {
 
     // region helper methods
 
-    /// Moves the item a recipe should store for an ore-dictionary input to the front of its alternatives, since a
-    /// recipe stores and shows the first alternative: the item the name unifies to, a wildcard's representative part
-    /// for a name such as `plateAnyIron`, or else the first alternative that is not another mod's unified copy.
+    /// Moves the alternative a recipe should store for an oredict input to the front, as a recipe stores and shows
+    /// the first alternative. That is the item the name unifies to, else a wildcard's representative part for a name
+    /// such as `plateAnyIron`, else the first alternative that is not another mod's unified copy.
     private static void putCanonicalFirst(ArrayList<ItemStack> alternatives, String oreName) {
         ItemStack canonical = OreDictUtils.unificationTarget(oreName);
         if (canonical == null) canonical = Wildcard.representativeStack(oreName);
@@ -753,10 +753,9 @@ public class GTRecipeBuilder {
 
     private static @Nullable ItemStack omittedInput;
 
-    /// Runs `body` leaving out every machine recipe it adds that takes `stack` as an item input, for an item that
-    /// recipe inputs holding another item already accept ([OreDictUtils#isInterchangeableWithTarget]): its own
-    /// recipes would repeat that item's, while NEI cycles it into them. Recipe removals and crafting-table and
-    /// furnace recipes, which match exactly, are unaffected.
+    /// Runs `body`, leaving out every machine recipe it adds that takes `stack` as an item input. Meant for an item
+    /// that inputs holding another item already accept ([OreDictUtils#isInterchangeableWithTarget]), whose own
+    /// recipes would repeat that item's. Recipe removals and crafting-table and furnace recipes are unaffected.
     public static void withoutRecipesTaking(ItemStack stack, Runnable body) {
         ItemStack previous = omittedInput;
         omittedInput = stack;

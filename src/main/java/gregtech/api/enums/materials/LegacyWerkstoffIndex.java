@@ -12,7 +12,8 @@ import gregtech.api.material.GTMaterialProperties;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
-/// Akin to [LegacyMaterialIDIndex], but for old Werkstoff materials.
+/// The material occupying each werkstoff id addressed by saved bartworks blocks and items, built from every
+/// material's [GTMaterialProperties#WERKSTOFF_IDS]. The werkstoff counterpart of [LegacyMaterialIDIndex].
 public class LegacyWerkstoffIndex {
 
     private static final Int2ObjectMap<Material> INDEX = new Int2ObjectOpenHashMap<>();

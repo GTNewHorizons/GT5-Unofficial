@@ -360,8 +360,8 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
-    /// Adds `material`'s ore processing yield -- its direct smelting result, its electromagnetic separation
-    /// extras and its byproducts -- to `outputMap`, each scaled by `mainMultiplier * probability`.
+    /// Adds `material`'s ore processing yield -- its direct smelting result, its washing and electromagnetic
+    /// separation extras, and its byproducts -- to `outputMap`, each scaled by `mainMultiplier * probability`.
     public static void processHelper(HashMapHelper outputMap, Material material, double mainMultiplier,
         double probability) {
         if (material == null) return;

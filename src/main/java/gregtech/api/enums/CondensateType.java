@@ -198,7 +198,7 @@ public enum CondensateType {
             FluidStack src = type.source.get();
             if (src == null) {
                 // The backing fluid (e.g. "molten.hypogen") isn't registered yet at this point in the load
-                // order, so build as addGTFluidMolten/FluidGT6.run() does instead of reading its icons.
+                // order, so the texture comes from the material's texture set instead of the fluid's icons.
                 builder.withTextures(
                     new ResourceLocation(
                         Mods.ModIDs.G_T_PLUS_PLUS,

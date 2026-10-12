@@ -22,7 +22,7 @@ import gregtech.nei.GTNEIDefaultHandler.CachedDefaultRecipe;
 
 /// Collapses the per-stone-variant ore recipes into one NEI entry per material and action. Recipes sharing a
 /// [GTRecipeConstants#VARIANT_GROUP] tag and other inputs merge, and their stacks become permutations of one
-/// displayed recipe. This is display only; the recipe map keeps every variant.
+/// displayed recipe. This is display only. The recipe map keeps every variant.
 ///
 /// NEI cycles each input slot on its own and never cycles outputs, so a [Cycle] keeps every slot of the entry
 /// on the variant the ore slot shows.

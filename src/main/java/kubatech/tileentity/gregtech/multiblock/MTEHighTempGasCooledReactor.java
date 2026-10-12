@@ -144,7 +144,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         .addElement('L', ofBlock(GregTechAPI.sBlockCasings2, 13)) // Steel Pipe Casing
         .addElement('M', ofBlock(GregTechAPI.sBlockCasings2, 14)) // Titanium Pipe Casing
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15)) // Tungstensteel Pipe Casing
-        // Tungsten Frame Box
         .addElement('P', ofBlock(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.Tungsten.getIndex()))
         .addElement(
             'e',

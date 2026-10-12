@@ -66,8 +66,8 @@ public class Godforge implements Runnable {
     public static final List<ItemStack> quarkGluonItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterItemsForNEI = new ArrayList<>();
 
-    /// The molten fluid of each dust's material, index-aligned with `items`. An entry whose material has no
-    /// molten fluid is a null slot, not a missing one.
+    /// The molten fluid of each dust's material, index-aligned with `items`. The entry is null for a dust with no
+    /// association or a material with no molten fluid.
     private FluidStack[] convertToFluid(ItemStack[] items) {
         FluidStack[] molten = new FluidStack[items.length];
 

@@ -61,8 +61,8 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     private volatile ITexture[][] inventoryTextureCache;
 
     /**
-     * Inventory of this block. Sized at construction; a shape-scoped pipe whose slot count depends on the
-     * host block's material reassigns it once the material resolves (see MTEItemPipe).
+     * Inventory of this block, sized at construction. A shape-scoped pipe whose slot count depends on the host
+     * block's material reassigns it once the material resolves (see MTEItemPipe).
      */
     public ItemStack[] mInventory;
 

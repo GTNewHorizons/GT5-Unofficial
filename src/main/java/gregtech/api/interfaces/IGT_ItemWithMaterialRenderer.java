@@ -20,9 +20,8 @@ public interface IGT_ItemWithMaterialRenderer {
      */
     boolean shouldUseCustomRenderer(int aMetaData);
 
-    /// Resolves `stack`'s material-render surface: the stack's own {@link Item} directly when it implements
-    /// this interface, or an adapter over its MaterialLib {@link ShapeItem}. Returns null for neither, e.g. a
-    /// plain vanilla item.
+    /// Returns `stack`'s item when it implements this interface, or an adapter over its MaterialLib [ShapeItem].
+    /// Null for any other item.
     static IGT_ItemWithMaterialRenderer resolve(ItemStack stack) {
         if (stack.getItem() instanceof IGT_ItemWithMaterialRenderer legacy) return legacy;
         if (stack.getItem() instanceof ShapeItem shape) return new ShapeItemMaterialRenderAdapter(shape);
@@ -50,8 +49,8 @@ public interface IGT_ItemWithMaterialRenderer {
     IIcon getOverlayIcon(int aMetaData, int pass);
 
     /**
-     * @return The {@link IIconContainer} holding the icon layers of {@code aMetaData}, or null when the icons come
-     *         from elsewhere.
+     * @return The {@link IIconContainer} holding the icon layers of {@code aMetaData}, or null to render from
+     *         {@link #getIcon} and {@link #getOverlayIcon}.
      */
     default IIconContainer getIconContainer(int aMetaData) {
         return null;

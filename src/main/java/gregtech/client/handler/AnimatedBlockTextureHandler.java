@@ -20,7 +20,7 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.TEBlockShapes;
 
-/// Keeps the animated storage-block and frame-box icons of [#ANIMATED] ticking every client frame. Angelica
+/// Advances the animated storage-block and frame-box icons of [#ANIMATED] every client tick. Angelica
 /// pauses animations of off-screen block icons, and these must keep animating.
 @SideOnly(Side.CLIENT)
 public class AnimatedBlockTextureHandler implements IResourceManagerReloadListener {

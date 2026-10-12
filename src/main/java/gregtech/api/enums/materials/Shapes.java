@@ -8,7 +8,7 @@ import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.common.items.GTNaniteShapeItem;
 
-/// Basic item [Shape]s
+/// Item [Shape] declarations for GregTech's material parts, from dusts and ingots to tool heads.
 public class Shapes {
 
     // spotless:off

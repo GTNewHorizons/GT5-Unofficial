@@ -403,7 +403,7 @@ public class ProcessingGem implements PartRecipeGenerator {
                 }
 
                 if (!noWorking) {
-                    // Lathe recipes; LatheRecipes turns Lanthanum Hexaboride on its own, slower recipe
+                    // Lathe recipes. LatheRecipes adds a separate, slower one for Lanthanum Hexaboride.
                     if (material != Materials.LanthanumHexaboride && material.hasShape(Shapes.stickLong)
                         && material.hasShape(Shapes.dust)) {
                         GTValues.RA.stdBuilder()

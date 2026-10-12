@@ -176,7 +176,7 @@ public class ScannerHandlerLoader {
     }
 
     /// The elemental-scanner result for a MaterialLib material, keyed on
-    /// [gregtech.api.material.GTMaterialProperties#ELEMENT], or null for the materials excluded from scanning.
+    /// [gregtech.api.material.GTMaterialProperties#ELEMENT], or null when `material` has no scannable element.
     public static @Nullable GTScannerResult getElementScanResult(Material material) {
         if (ArrayUtils.contains(unscannableElements(), material)) return null;
         Element element = MaterialUtils.element(material);

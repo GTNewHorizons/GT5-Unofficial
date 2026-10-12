@@ -600,7 +600,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         public void readFromNBT(NBTTagCompound tag) {
             data.clear();
             CustomDataReplacementManager.transform("gregtech:linkedInputBusses", tag);
-            // every key of this tag is a channel, so the version stamps the transform left must not become one
+            // every key of this tag is a channel, so the version stamp the transform writes must not become one
             tag.removeTag(VersionStamps.KEY);
             @SuppressWarnings("unchecked")
             Set<Map.Entry<String, NBTBase>> set = tag.tagMap.entrySet();

@@ -95,8 +95,8 @@ public class GTMaterialPropertyDefaultsTest {
             MaterialUtils.smeltingMultiplier(null));
     }
 
-    /// `OLD_SUB_ID` must stay default-free: [LegacyMaterialIDIndex] and [LegacyWerkstoffIndex] both branch on
-    /// the property being unset. [MaterialUtils#oldSubId]'s `-1` is its own sentinel.
+    /// `OLD_SUB_ID` must stay default-free: [gregtech.api.enums.materials.LegacyMaterialIDIndex] indexes only the
+    /// materials that set it. [MaterialUtils#oldSubId]'s `-1` is its own sentinel.
     @Test
     void oldSubIdDeclaresNoDefault() {
         assertNull(GTMaterialProperties.OLD_SUB_ID.getDefaultValue());

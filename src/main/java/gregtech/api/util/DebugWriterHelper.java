@@ -80,7 +80,7 @@ public class DebugWriterHelper {
             return null;
         });
 
-        // Frames and Sheet Metal
+        // MaterialLib block shapes
         registerBlockAssociation((block, meta, symbol) -> {
             BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, meta);
             if (info == null || info.material() == null) return null;

@@ -19,7 +19,7 @@ import gregtech.api.material.GTMaterialProperties;
 /// A row applies only when its mod is loaded. Without the mod the material has no shapes, so call sites check
 /// `Material#hasShape` or go through `MaterialParts` instead of fetching a part directly.
 ///
-/// Oredict names with no MaterialLib shape (`crystalFluix`, `pearlFluix`) reach the material through
+/// `crystalFluix`, an oredict name with no MaterialLib shape, reaches the material through
 /// [gregtech.common.oredict.OreDictAliases].
 public class XModMaterials {
 
