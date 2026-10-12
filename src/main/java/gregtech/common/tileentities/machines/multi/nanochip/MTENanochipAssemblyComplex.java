@@ -782,20 +782,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (aNBT.hasKey("euBufferMax")) euBufferMax = aNBT.getLong("euBufferMax");
     }
 
-    public List<ModuleTypes> getModuleTypes() {
-        return moduleTypes;
-    }
-
-    public void setModuleTypes(List<ModuleTypes> incomingList) {
-        this.moduleTypes.clear();
-        this.moduleTypes.addAll(incomingList);
-    }
-
-    public boolean isModuleRunning() {
-        for (var module : modules) {
-            if (module.mMaxProgresstime > 0) return true;
-        }
-        return false;
+    public List<MTENanochipAssemblyModuleBase<?>> getModules() {
+        return modules;
     }
 
     public void setMatrixPowerPortion(int portion) {

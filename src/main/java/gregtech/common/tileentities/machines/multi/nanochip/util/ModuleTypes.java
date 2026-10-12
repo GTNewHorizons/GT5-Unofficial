@@ -5,7 +5,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -60,13 +59,5 @@ public enum ModuleTypes {
 
     public ItemStack getDisplayStack() {
         return displayStack.get();
-    }
-
-    public static void writeToBuffer(PacketBuffer buf, ModuleTypes type) {
-        buf.writeInt(type.ordinal());
-    }
-
-    public static ModuleTypes readFromBuffer(PacketBuffer buf) {
-        return VALUES[buf.readInt()];
     }
 }

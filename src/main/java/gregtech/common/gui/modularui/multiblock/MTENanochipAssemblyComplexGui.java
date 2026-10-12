@@ -58,6 +58,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleInformation;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -70,6 +71,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
     private boolean isTalkModeActive = false;
+    private final List<ModuleInformation> moduleInfo = new ArrayList<>();
 
     private static final String TALK_MODE_COMMAND = "'talk'";
     private static final String EXIT_MODE_COMMAND = "'exit'";
@@ -103,8 +105,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        GenericListSyncHandler<ModuleTypes> moduleList = syncManager
-            .findSyncHandler("moduleTypes", GenericListSyncHandler.class);
+        GenericListSyncHandler<ModuleInformation> moduleInfoSync = syncManager
+            .findSyncHandler("moduleInfo", GenericListSyncHandler.class);
 
         DynamicSyncHandler moduleListHolder = new DynamicSyncHandler().widgetProvider((_, _) -> {
             ListWidget<IWidget, ?> listWidget = new ListWidget<>().crossAxisAlignment(Alignment.CrossAxis.START)
@@ -113,8 +115,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             Object2IntMap<ModuleTypes> moduleAmountMap = new Object2IntOpenHashMap<>();
             List<Pair<ModuleTypes, Integer>> moduleDisplayList;
 
-            for (ModuleTypes type : moduleList.getValue()) {
-                moduleAmountMap.put(type, moduleAmountMap.getOrDefault(type, 0) + 1);
+            for (ModuleInformation info : moduleInfo) {
+                moduleAmountMap.put(info.getType(), moduleAmountMap.getOrDefault(info.getType(), 0) + 1);
             }
 
             moduleDisplayList = moduleAmountMap.object2IntEntrySet()
@@ -133,7 +135,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             return listWidget;
         })
             .allowC2S();
-        moduleList.setChangeListener(() -> moduleListHolder.notifyUpdate(_ -> {}));
+        moduleInfoSync.setChangeListener(() -> moduleListHolder.notifyUpdate(_ -> {}));
         return super.createTerminalTextWidget(syncManager, parent).child(
             new DynamicSyncedWidget<>().coverChildren()
                 .syncHandler(moduleListHolder))
@@ -603,14 +605,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     private Widget<?> createPowerSlider(ModularPanel panel, PanelSyncManager syncManager) {
         IntSyncValue portionSync = syncManager.findSyncHandler("matrixPowerPortion", IntSyncValue.class);
         LongSyncValue maxEUSync = syncManager.findSyncHandler("maxInputEU", LongSyncValue.class);
-        BooleanSyncValue runningSync = syncManager.findSyncHandler("moduleRunning", BooleanSyncValue.class);
 
         return new ParentWidget<>().size(102, 14)
             .marginTop(4)
             .child(new SegmentedBarWidget(100, 1, () -> {
                 int matrix = 0;
                 int nonMatrix = 0;
-                for (ModuleTypes type : multiblock.getModuleTypes()) {
+                for (ModuleInformation info : moduleInfo) {
+                    ModuleTypes type = info.getType();
                     if (type == ModuleTypes.Splitter) continue;
                     if (type == ModuleTypes.AssemblyMatrix) matrix++;
                     else nonMatrix++;
@@ -687,9 +689,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .sliderSize(2, 14)
                     .size(102, 14)
                     .tooltipDynamic(t -> {
+                        boolean moduleRunning = false;
                         int matrix = 0;
                         int nonMatrix = 0;
-                        for (ModuleTypes type : multiblock.getModuleTypes()) {
+                        for (ModuleInformation info : moduleInfo) {
+                            if (info.isRunning()) moduleRunning = true;
+
+                            ModuleTypes type = info.getType();
                             if (type == ModuleTypes.Splitter) continue;
                             if (type == ModuleTypes.AssemblyMatrix) matrix++;
                             else nonMatrix++;
@@ -700,7 +706,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                             return;
                         }
 
-                        if (runningSync.getBoolValue()) {
+                        if (moduleRunning) {
                             t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.running"));
                         }
 
@@ -874,14 +880,22 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         syncManager.syncValue("maxInputEU", new LongSyncValue(multiblock::getMaxInputEu));
         syncManager.syncValue("allModuleToggle", new BooleanSyncValue(multiblock::getAllModuleToggle));
 
-        GenericListSyncHandler<ModuleTypes> moduleTypesSync = GenericListSyncHandler.<ModuleTypes>builder()
-            .getter(multiblock::getModuleTypes)
-            .setter(multiblock::setModuleTypes)
-            .adapter(ByteBufAdapters.makeAdapter(ModuleTypes::readFromBuffer, ModuleTypes::writeToBuffer, null))
+        GenericListSyncHandler<ModuleInformation> moduleInfoSync = GenericListSyncHandler.<ModuleInformation>builder()
+            .getter(() -> {
+                List<ModuleInformation> list = new ArrayList<>();
+                for (var module : multiblock.getModules()) {
+                    list.add(module.getModuleInfo());
+                }
+                return list;
+            })
+            .setter(val -> {
+                this.moduleInfo.clear();
+                this.moduleInfo.addAll(val);
+            })
+            .adapter(
+                ByteBufAdapters.makeAdapter(ModuleInformation::readFromBuffer, ModuleInformation::writeToBuffer, null))
             .build();
-        syncManager.syncValue("moduleTypes", moduleTypesSync);
-
-        syncManager.syncValue("moduleRunning", new BooleanSyncValue(multiblock::isModuleRunning));
+        syncManager.syncValue("moduleInfo", moduleInfoSync);
 
         syncManager.registerSyncedAction("toggleModules", Side.SERVER, buf -> {
             boolean to = buf.readBoolean();
