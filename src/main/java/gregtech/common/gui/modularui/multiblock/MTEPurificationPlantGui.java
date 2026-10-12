@@ -182,7 +182,7 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
                     .isAllowedToWork()) {
                     return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
                 }
-                return GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT;
+                return GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_DEFAULT;
 
             })
 

@@ -405,7 +405,7 @@ public class DynamicInventory<T> {
         final int perRow = width / 18;
         for (int i = 0, imax = ((buttons.size() - 1) / perRow); i <= imax; i++) {
             DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
-            for (int j = 0, jmax = (i == imax ? (buttons.size() - 1) % perRow : (perRow - 1)); j <= jmax; j++) {
+            for (int j = 0, jMax = (i == imax ? (buttons.size() - 1) % perRow : (perRow - 1)); j <= jMax; j++) {
                 final int finalI = i * perRow;
                 final int ID = finalI + j;
                 row.widget(buttons.get(ID));

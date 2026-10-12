@@ -20,10 +20,10 @@ public class CoverSteamValve extends CoverPump {
 
     public static boolean isFluidCompatible(FluidStack fluid) {
         if (fluid == null || fluid.getFluid() == null) return false;
-        String fluidname = fluid.getFluid()
+        String fluidName = fluid.getFluid()
             .getName();
         return GTModHandler.isAnySteam(fluid) || GTModHandler.isSuperHeatedSteam(fluid)
-            || fluidname.equals("supercriticalsteam")
+            || fluidName.equals("supercriticalsteam")
             || fluid.getFluid() == Materials.DenseSteam.mGas
             || fluid.getFluid() == Materials.DenseSuperheatedSteam.mGas
             || fluid.getFluid() == Materials.DenseSupercriticalSteam.mGas;

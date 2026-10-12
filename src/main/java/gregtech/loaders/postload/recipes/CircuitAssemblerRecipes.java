@@ -184,14 +184,14 @@ public class CircuitAssemblerRecipes implements Runnable {
             GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.EnderEye, 2L),
             GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Uranium, 2L), };
 
-        for (int metaid = 0; metaid < rodMaterials.length; metaid++) {
+        for (int metaId = 0; metaId < rodMaterials.length; metaId++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1),
                     GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 2),
                     GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2),
-                    rodMaterials[metaid])
-                .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, metaid))
+                    rodMaterials[metaId])
+                .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, metaId))
                 .fluidInputs(Materials.Glass.getMolten(4 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)

@@ -75,13 +75,13 @@ public class CropRenderer extends EntityFX {
             Blocks.wheat.getMixedBrightnessForBlock(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ));
         tessellator.setColorRGBA(255, 255, 255, 255);
         double f12 = this.posY - interpPosY;
-        int zmin = -1, zmax = 1;
+        int zMin = -1, zMax = 1;
         if (!isOldStructure) {
-            zmin = 0;
-            zmax = 6;
+            zMin = 0;
+            zMax = 6;
         }
         int i = 0;
-        for (int x = -1; x <= 1; x++) for (int z = zmin; z <= zmax; z++) {
+        for (int x = -1; x <= 1; x++) for (int z = zMin; z <= zMax; z++) {
             if (isOldStructure && x == 0 && z == 0) continue;
             double[] abc = new double[] { x, 0, z };
             double[] xyz = new double[] { 0, 0, 0 };

@@ -457,8 +457,8 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_WASHPLANT);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_SIMPLEWASHER);
     }
 
     @Override
@@ -547,8 +547,8 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTESteamMultiBlockBaseGui(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_WASHPLANT,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_SIMPLEWASHER);
     }
 
 }

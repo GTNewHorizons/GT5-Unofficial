@@ -15,7 +15,7 @@ public class FluidGT6 extends Fluid implements Runnable {
 
     private final short[] mRGBa;
     public final String mTextureName;
-    private String oreprefixKey;
+    private String orePrefixKey;
     private Material material;
 
     public FluidGT6(final @NotNull String aName, final String aTextureName, final short[] aRGBa, String aLocalName) {
@@ -50,14 +50,14 @@ public class FluidGT6 extends Fluid implements Runnable {
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName(), aLocalName);
     }
 
-    private boolean generateLocalizedNameHasOreprefix(String aLocalName, String oreprefixFormat) {
-        String oreprefixFormatRemoved = oreprefixFormat.replace("%s", "");
-        if (aLocalName.contains(oreprefixFormatRemoved)) {
-            String materialName = aLocalName.replace(oreprefixFormatRemoved, "");
+    private boolean generateLocalizedNameHasOreprefix(String aLocalName, String orePrefixFormat) {
+        String prefixRemoved = orePrefixFormat.replace("%s", "");
+        if (aLocalName.contains(prefixRemoved)) {
+            String materialName = aLocalName.replace(prefixRemoved, "");
             Material material = Material.mMaterialCache.get(materialName.toLowerCase());
             if (material != null) {
                 this.material = material;
-                this.oreprefixKey = oreprefixFormat;
+                this.orePrefixKey = orePrefixFormat;
                 return true;
             }
         }
@@ -67,8 +67,8 @@ public class FluidGT6 extends Fluid implements Runnable {
     @Override
     public String getLocalizedName() {
         if (material != null) {
-            return oreprefixKey == null ? material.getLocalizedName()
-                : OrePrefixes.getLocalizedNameForItem(oreprefixKey, "%s", material);
+            return orePrefixKey == null ? material.getLocalizedName()
+                : OrePrefixes.getLocalizedNameForItem(orePrefixKey, "%s", material);
         }
         return super.getLocalizedName();
     }

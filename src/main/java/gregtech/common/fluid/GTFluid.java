@@ -183,17 +183,17 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
         return this;
     }
 
-    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String[] oreprefixNames) {
-        return Arrays.stream(oreprefixNames)
-            .anyMatch(oreprefixName -> addLocalizedNameHasOreprefix(material, oreprefixName));
+    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String[] orePrefixNames) {
+        return Arrays.stream(orePrefixNames)
+            .anyMatch(orePrefixName -> addLocalizedNameHasOreprefix(material, orePrefixName));
     }
 
-    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String oreprefixName) {
-        final String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
-        if (defaultLocalName.contains(oreprefixNameRemovedFormat)) {
-            if (String.format(oreprefixName, material.getDefaultLocalName())
+    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String orePrefixName) {
+        final String removedFormat = orePrefixName.replace("%s", "");
+        if (defaultLocalName.contains(removedFormat)) {
+            if (String.format(orePrefixName, material.getDefaultLocalName())
                 .equals(defaultLocalName)) {
-                localizedName = () -> OrePrefixes.getLocalizedNameForItem(oreprefixName, "%s", material);
+                localizedName = () -> OrePrefixes.getLocalizedNameForItem(orePrefixName, "%s", material);
                 return true;
             }
         }

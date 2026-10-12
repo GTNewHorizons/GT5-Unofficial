@@ -36,7 +36,7 @@ public class CommonProxy implements IGuiHandler {
 
     }
 
-    public void sendPlayerExeption(String s) {
+    public void sendPlayerException(String s) {
 
     }
 }

@@ -23,7 +23,7 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        var thresholdSyncValue = new LongSyncValue(cover::fetchMaxthreshold, cover::setMaxThreshold);
+        var thresholdSyncValue = new LongSyncValue(cover::fetchMaxThreshold, cover::setMaxThreshold);
         syncManager.syncValue("max_threshold", thresholdSyncValue);
         cover.setMaxThreshold(thresholdSyncValue.getLongValue());
         column.child(

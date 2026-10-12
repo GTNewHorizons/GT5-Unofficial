@@ -378,7 +378,7 @@ public class MTELESU extends MTEMultiBlockBase {
             aBaseMetaTileEntity.getZCoord(),
             ItemRegistry.BW_BLOCKS[1]);
 
-        if (this.connectedcells.getMetaOfSideblocks(
+        if (this.connectedcells.getMetaOfSideBlocks(
             aBaseMetaTileEntity.getWorld(),
             this.getBaseMetaTileEntity()
                 .getMetaTileID(),

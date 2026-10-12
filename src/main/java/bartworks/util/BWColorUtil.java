@@ -163,16 +163,16 @@ public class BWColorUtil {
         return rgba[0] * 2 >= rgba[1] + rgba[2];
     }
 
-    public static boolean isGrayScale(short[] rgba, int magin) {
+    public static boolean isGrayScale(short[] rgba, int margin) {
         rgba = correctColorArray(rgba);
-        return rgba[0] >> magin == rgba[1] >> magin && rgba[1] >> magin == rgba[2] >> magin;
+        return rgba[0] >> margin == rgba[1] >> margin && rgba[1] >> margin == rgba[2] >> margin;
     }
 
-    public static short[] roundColor(short[] rgba, int magin) {
+    public static short[] roundColor(short[] rgba, int margin) {
         short[] tmp = Arrays.copyOf(rgba, 4);
-        tmp[0] = (short) (rgba[0] >> magin);
-        tmp[1] = (short) (rgba[1] >> magin);
-        tmp[2] = (short) (rgba[2] >> magin);
+        tmp[0] = (short) (rgba[0] >> margin);
+        tmp[1] = (short) (rgba[1] >> margin);
+        tmp[2] = (short) (rgba[2] >> margin);
         return tmp;
     }
 

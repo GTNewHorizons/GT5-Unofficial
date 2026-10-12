@@ -336,8 +336,8 @@ public class MTEIndustrialElectromagneticSeparator
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_SEPARATOR);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINE_MODE_POLARIZER);
     }
 
     @Override
@@ -413,7 +413,7 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_SEPARATOR,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_POLARIZER);
     }
 }

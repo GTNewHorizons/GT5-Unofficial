@@ -118,7 +118,7 @@ public class ConnectedBlocksChecker {
         return ret;
     }
 
-    public boolean getMetaOfSideblocks(World w, int n, int[] xyz, boolean GT) {
+    public boolean getMetaOfSideBlocks(World w, int n, int[] xyz, boolean GT) {
 
         int wID = w.provider.dimensionId;
         Coords Controller = new Coords(xyz[0], xyz[1], xyz[2], wID);

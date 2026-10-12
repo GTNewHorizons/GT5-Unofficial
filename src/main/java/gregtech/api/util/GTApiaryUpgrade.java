@@ -165,7 +165,7 @@ public enum GTApiaryUpgrade {
         UNIQUE_INDEX.class);
 
     private int meta = 0;
-    private int maxnumber = 1;
+    private int maxNumber = 1;
 
     private final GTUtility.ItemId id;
     private final UNIQUE_INDEX unique_index;
@@ -173,10 +173,10 @@ public enum GTApiaryUpgrade {
 
     private final HashSet<GTUtility.ItemId> blacklistedUpgrades = new HashSet<>();
 
-    GTApiaryUpgrade(UNIQUE_INDEX unique_index, int meta, int maxnumber, BiConsumer<GTApiaryModifier, Integer> applier) {
+    GTApiaryUpgrade(UNIQUE_INDEX unique_index, int meta, int maxNumber, BiConsumer<GTApiaryModifier, Integer> applier) {
         this.unique_index = unique_index;
         this.meta = meta;
-        this.maxnumber = maxnumber;
+        this.maxNumber = maxNumber;
         this.applier = applier;
         this.id = GTUtility.ItemId.createNoCopy(get(1));
     }
@@ -207,7 +207,7 @@ public enum GTApiaryUpgrade {
     }
 
     public int getMaxNumber() {
-        return maxnumber;
+        return maxNumber;
     }
 
     public void applyModifiers(GTApiaryModifier mods, ItemStack stack) {

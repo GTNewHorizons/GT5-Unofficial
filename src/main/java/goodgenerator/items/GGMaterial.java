@@ -11,6 +11,7 @@ import goodgenerator.util.CharExchanger;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 
+// TODO: UPPER_SNAKE_CASE as per java conventions, even java-lized Snake_Case would be fine imo
 public class GGMaterial implements Runnable {
 
     protected static final int OffsetID = 10001;

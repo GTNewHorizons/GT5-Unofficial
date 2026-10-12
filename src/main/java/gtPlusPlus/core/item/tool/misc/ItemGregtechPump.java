@@ -638,11 +638,11 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
 
     public void storeFluid(ItemStack aStack, FluidStack aFluid) {
         if (aFluid != null) {
-            final String fluidname = aFluid.getFluid()
+            final String fluidName = aFluid.getFluid()
                 .getName();
             final int amount = aFluid.amount;
-            if (fluidname != null && !fluidname.isEmpty() && amount > 0) {
-                ItemStackNBT.setString(aStack, "mFluid", fluidname);
+            if (fluidName != null && !fluidName.isEmpty() && amount > 0) {
+                ItemStackNBT.setString(aStack, "mFluid", fluidName);
                 ItemStackNBT.setInteger(aStack, "mFluidAmount", amount);
             }
         }

@@ -170,12 +170,12 @@ public class DistilleryRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
-        ItemStack[] fertOutput = Mods.CropsNH.isModLoaded()
+        ItemStack[] fertilizerOutput = Mods.CropsNH.isModLoaded()
             ? new ItemStack[] { GTModHandler.getModItem(Mods.CropsNH.ID, "fertilizer", 1L) }
             : GTValues.emptyItemStackArray;
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .itemOutputs(fertOutput)
+            .itemOutputs(fertilizerOutput)
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.AceticAcid.getFluid(25))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -184,7 +184,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(2)
-            .itemOutputs(fertOutput)
+            .itemOutputs(fertilizerOutput)
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Water.getFluid(375))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -193,7 +193,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(3)
-            .itemOutputs(fertOutput)
+            .itemOutputs(fertilizerOutput)
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Ethanol.getFluid(150))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -202,7 +202,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(4)
-            .itemOutputs(fertOutput)
+            .itemOutputs(fertilizerOutput)
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Methanol.getFluid(150))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -211,7 +211,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(5)
-            .itemOutputs(fertOutput)
+            .itemOutputs(fertilizerOutput)
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Ammonia.getGas(100))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -220,7 +220,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(6)
-            .itemOutputs(fertOutput)
+            .itemOutputs(fertilizerOutput)
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(400))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -229,7 +229,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(7)
-            .itemOutputs(fertOutput)
+            .itemOutputs(fertilizerOutput)
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(Materials.Methane.getGas(600))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -238,7 +238,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(17)
-            .itemOutputs(fertOutput)
+            .itemOutputs(fertilizerOutput)
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 1_800))
             .duration(1 * MINUTES + 20 * SECONDS)
@@ -585,11 +585,11 @@ public class DistilleryRecipes implements Runnable {
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 
-        ItemStack[] fertOutput = Mods.CropsNH.isModLoaded()
+        ItemStack[] fertilizerOutput = Mods.CropsNH.isModLoaded()
             ? new ItemStack[] { GTModHandler.getModItem(Mods.CropsNH.ID, "fertilizer", 1L) }
             : GTValues.emptyItemStackArray;
         GTValues.RA.stdBuilder()
-            .itemOutputs(fertOutput)
+            .itemOutputs(fertilizerOutput)
             .fluidInputs(Materials.FermentedBiomass.getFluid(1_000))
             .fluidOutputs(
                 Materials.AceticAcid.getFluid(25),
@@ -604,7 +604,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemOutputs(fertOutput)
+            .itemOutputs(fertilizerOutput)
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3_000))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8_000), Materials.Water.getFluid(125))
             .duration(12 * SECONDS + 10 * TICKS)

@@ -792,8 +792,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEResearchStationGui(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_RESEARCH,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SCANNER);
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_RESEARCH,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_SCANNER);
     }
 
     public long getComputationConsumed() {

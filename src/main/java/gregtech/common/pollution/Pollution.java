@@ -221,10 +221,7 @@ public class Pollution {
                             switch (XSTR_INSTANCE.nextInt(4)) {
                                 case 1:
                                     tEnt.addPotionEffect(
-                                        new PotionEffect(
-                                            Potion.confusion.id,
-                                            Math.min(tPollution / 2000, 1000),
-                                            1));
+                                        new PotionEffect(Potion.confusion.id, Math.min(tPollution / 2000, 1000), 1));
                                 case 2:
                                     tEnt.addPotionEffect(
                                         new PotionEffect(
@@ -233,10 +230,7 @@ public class Pollution {
                                             tPollution / 500000));
                                 case 3:
                                     tEnt.addPotionEffect(
-                                        new PotionEffect(
-                                            Potion.blindness.id,
-                                            Math.min(tPollution / 2000, 1000),
-                                            1));
+                                        new PotionEffect(Potion.blindness.id, Math.min(tPollution / 2000, 1000), 1));
                                 default:
                                     tEnt.addPotionEffect(new PotionEffect(Potion.hunger.id, tPollution / 500000));
                             }

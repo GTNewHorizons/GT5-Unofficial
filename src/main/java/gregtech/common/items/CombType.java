@@ -9,6 +9,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
 
+// TODO: Rename them to UPPER_SNAKE_CASE or java-lized Snake_Case
 public enum CombType {
 
     // Organic Line

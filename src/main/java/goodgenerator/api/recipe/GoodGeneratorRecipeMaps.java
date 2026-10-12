@@ -19,6 +19,7 @@ import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 
 public class GoodGeneratorRecipeMaps {
 
+    // TODO: UPPER_SNAKE_CASE as per java conventions, even java-lized Snake_Case would be fine imo
     public static final RecipeMap<FuelBackend> naquadahReactorFuels = RecipeMapBuilder
         .of("gg.recipe.naquadah_reactor", FuelBackend::new)
         .maxIO(0, 0, 1, 1)

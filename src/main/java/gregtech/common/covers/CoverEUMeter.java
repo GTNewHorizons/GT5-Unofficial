@@ -238,7 +238,7 @@ public class CoverEUMeter extends Cover implements Invertable {
         return new EUMeterUIFactory(buildContext).createWindow();
     }
 
-    public long fetchMaxthreshold() {
+    public long fetchMaxThreshold() {
         return getType().getTileEntityEnergyCapacity(getTile());
     }
 

@@ -538,8 +538,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return super.getGui().withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_ARC,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_ARC,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINE_MODE_PLASMA_ARC,
             GTGuiTextures.TT_OVERLAY_BUTTON_FURNACE_MODE);
     }
 
