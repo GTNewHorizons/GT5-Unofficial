@@ -7,6 +7,6 @@ Optionally supply {aqua:{var:min_cryo}-{var:max_cryo} {var:fluid_unit}/s} of {aq
 Upgrade to Tier 2 to unlock {gold:Subspace Cooling}
 Optionally supply an {blue:Exotic Coolant} to run {light_purple:Perfect Overclocks}
 {blue:{var:booster_drain} {var:fluid_unit}/s} of {blue:Molten Infinity}: {light_purple:1}
-{blue:{var:booster_drain} {var:fluid_unit}/s} of {blue:Molten Spacetime}: {light_purple:2}
+{blue:{var:booster_drain} {var:fluid_unit}/s} of {blue:Zero-Entropy Coolant}: {light_purple:2}
 {blue:{var:booster_drain} {var:fluid_unit}/s} of {blue:Molten Eternity}: {light_purple:3}
 {gray:{hr}}

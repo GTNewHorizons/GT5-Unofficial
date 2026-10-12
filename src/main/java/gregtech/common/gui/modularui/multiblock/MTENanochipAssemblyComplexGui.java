@@ -512,7 +512,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 createContributorEntry("Nockyx", Color.YELLOW.brighterSafe(1)),
                 createContributorEntry("Serenibyss", 0xFFFFA3FB),
                 createContributorEntry("Chrom", 0xFF9DC183),
-                createContributorEntry("SpicierSpace153", 0xFF0096FF)));
+                createContributorEntry("SpicierSpace153", 0xFF0096FF),
+                createContributorEntry("Tungstate", Color.YELLOW.brighterSafe(1))));
 
         contributorColumn.child(
             createContributorSection(
