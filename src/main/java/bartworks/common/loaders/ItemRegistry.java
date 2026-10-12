@@ -170,6 +170,7 @@ public class ItemRegistry {
 
         MainMod.BIO_TAB);
 
+    @Deprecated
     public static final Block bw_deprecatedglass = new BWBlocksGlass(
         "BW_GlasBlocks",
         new String[] { MainMod.MOD_ID + ":BoronSilicateGlassBlock",
@@ -185,6 +186,7 @@ public class ItemRegistry {
             MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock",
             MainMod.MOD_ID + ":InfinityReinforcedBoronSilicateGlassBlock", },
         MainMod.BIO_TAB);
+    @Deprecated
     public static final Block bw_deprecatedglass2 = new BWBlocksGlass2(
         "BW_GlasBlocks2",
         new String[] { MainMod.MOD_ID + ":TranscendentallyReinforcedBoronSilicateGlassBlock" },
