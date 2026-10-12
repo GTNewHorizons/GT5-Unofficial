@@ -1,10 +1,8 @@
 package detrav.gui;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -31,21 +29,23 @@ class OresList extends GuiScrollingList {
         super(parent.mc, width, height, top, bottom, left, entryHeight);
         this.parent = parent;
         this.onSelected = onSelected;
-        allKeys = packet.objects.short2ObjectEntrySet()
-            .stream()
-            .map(
-                e -> e.getValue()
-                    .left())
-            .collect(Collectors.toList());
-        Collections.sort(allKeys);
         if (packet.ptype == DetravMetaGeneratedTool01.MODE_POLLUTION) {
-            allKeys.clear();
+            allKeys = new ArrayList<>();
             allKeys.add(StatCollector.translateToLocal("gui.detrav.scanner.pollution"));
-        } else if (allKeys.size() > 1) {
-            allKeys.add(0, "All");
+        } else {
+            allKeys = packet.objects.short2ObjectEntrySet()
+                .stream()
+                .map(
+                    e -> e.getValue()
+                        .left())
+                .sorted()
+                .toList();
+        }
+        if (allKeys.size() > 1) {
+            keys.addFirst("All");
         }
         keys.addAll(allKeys);
-        selectedName = keys.isEmpty() ? null : keys.get(0);
+        selectedName = keys.isEmpty() ? null : keys.getFirst();
 
         for (var e : packet.objects.short2ObjectEntrySet()) {
             this.colors.put(
