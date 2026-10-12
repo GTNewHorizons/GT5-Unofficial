@@ -197,7 +197,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     /**
      * Shared method for this and {@link gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyModuleBaseGui}
      * Prevents duplicated code and de-sync info between updates.
-     * 
+     *
      * @return the info panel text list
      */
     public static ModularPanel openInfoPanel(ModularPanel parent) {
@@ -233,7 +233,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         TextWidget<?> moduleBasicsBody4 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.4");
         TextWidget<?> moduleBasicsBody5 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.5");
         TextWidget<?> moduleBasicsBody6 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.6");
-        TextWidget<?> moduleBasicsBody7 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.7");
 
         TextWidget<?> calibrationHeader = createHeader("GT5U.gui.text.nac.info.calibration.header");
         ButtonWidget<?> calibrationToC = createToCEntry(
@@ -348,7 +347,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         infoTextList.child(moduleBasicsBody4);
         infoTextList.child(moduleBasicsBody5);
         infoTextList.child(moduleBasicsBody6);
-        infoTextList.child(moduleBasicsBody7);
         infoTextList.child(calibrationHeader);
         infoTextList.child(calibrationBody1);
         infoTextList.child(calibrationBody2);
