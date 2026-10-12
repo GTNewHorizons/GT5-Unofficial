@@ -542,17 +542,50 @@ public enum CircuitComponent {
         1917,
         "gt.circuitcomponent.thermalsuperconductor",
         () -> ItemList.Thermal_Superconductor.get(1)),
-    BoltCopper(1918,"gt.circuitcomponent.bolt.copper",()->MaterialLibAPI.getStack(Materials.Copper, Shapes.bolt, 1)),
-    BoltRedAlloy(1919,"gt.circuitcomponent.bolt.redalloy",()->MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.bolt, 1)),
-    BoltPlatinum(1920,"gt.circuitcomponent.bolt.platinum",()->MaterialLibAPI.getStack(Materials.Platinum, Shapes.bolt, 1)),
-    BoltNiobiumTitanium(1921,"gt.circuitcomponent.bolt.niobiumtitanium",()->MaterialLibAPI.getStack(Materials.NiobiumTitanium, Shapes.bolt, 1)),
-    CasingKevlar(1922,"gt.circuitcomponent.casing.kevlar", ()->MaterialLibAPI.getStack(Materials.Kevlar, Shapes.itemCasing, 1)),
-    ScrewEnrichedNaquadahAlloy(1923, "gt.circuitcomponent.screw.enrichednaquadahalloy", ()->MaterialLibAPI.getStack(Materials.EnrichedNaquadahAlloy, Shapes.screw, 1)),
-    ScrewQuantum(1924, "gt.circuitcomponent.screw.quantum", ()->MaterialLibAPI.getStack(Materials.Quantum, Shapes.screw, 1)),
-    ScrewEternity(1925, "gt.circuitcomponent.screw.eternity", ()->MaterialLibAPI.getStack(Materials.Eternity, Shapes.screw, 1)),
-    BoltRhugnor(1926, "gt.circuitcomponent.bolt.rhugnor", ()->MaterialLibAPI.getStack(Materials.Rhugnor, Shapes.bolt, 1)),
-    BoltMetastableOganesson(1927, "gt.circuitcomponent.bolt.metastableoganesson", ()->MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.bolt, 1)),
-    BoltHexanite(1928, "gt.circuitcomponent.bolt.hexanite", ()->MaterialLibAPI.getStack(Materials.Hexanite, Shapes.bolt, 1)),
+    BoltCopper(
+        1918,
+        "gt.circuitcomponent.bolt.copper",
+        () -> MaterialLibAPI.getStack(Materials.Copper, Shapes.bolt, 1)),
+    BoltRedAlloy(
+        1919,
+        "gt.circuitcomponent.bolt.redalloy",
+        () -> MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.bolt, 1)),
+    BoltPlatinum(
+        1920,
+        "gt.circuitcomponent.bolt.platinum",
+        () -> MaterialLibAPI.getStack(Materials.Platinum, Shapes.bolt, 1)),
+    BoltNiobiumTitanium(
+        1921,
+        "gt.circuitcomponent.bolt.niobiumtitanium",
+        () -> MaterialLibAPI.getStack(Materials.NiobiumTitanium, Shapes.bolt, 1)),
+    CasingKevlar(
+        1922,
+        "gt.circuitcomponent.casing.kevlar",
+        () -> MaterialLibAPI.getStack(Materials.Kevlar, Shapes.itemCasing, 1)),
+    ScrewEnrichedNaquadahAlloy(
+        1923,
+        "gt.circuitcomponent.screw.enrichednaquadahalloy",
+        () -> MaterialLibAPI.getStack(Materials.EnrichedNaquadahAlloy, Shapes.screw, 1)),
+    ScrewQuantum(
+        1924,
+        "gt.circuitcomponent.screw.quantum",
+        () -> MaterialLibAPI.getStack(Materials.Quantum, Shapes.screw, 1)),
+    ScrewEternity(
+        1925,
+        "gt.circuitcomponent.screw.eternity",
+        () -> MaterialLibAPI.getStack(Materials.Eternity, Shapes.screw, 1)),
+    BoltRhugnor(
+        1926,
+        "gt.circuitcomponent.bolt.rhugnor",
+        () -> MaterialLibAPI.getStack(Materials.Rhugnor, Shapes.bolt, 1)),
+    BoltMetastableOganesson(
+        1927,
+        "gt.circuitcomponent.bolt.metastableoganesson",
+        () -> MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.bolt, 1)),
+    BoltHexanite(
+        1928,
+        "gt.circuitcomponent.bolt.hexanite",
+        () -> MaterialLibAPI.getStack(Materials.Hexanite, Shapes.bolt, 1)),
 
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
