@@ -91,6 +91,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         { " VVVVV ", "       ", " VVVVV " } };
     // spotless:on
 
+    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int BASE_STRUCTURE_OFFSET_X = 3;
     protected static final int BASE_STRUCTURE_OFFSET_Y = 0;
     protected static final int BASE_STRUCTURE_OFFSET_Z = 0;
@@ -112,7 +113,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return baseMulti;
     }
 
-    public MTENanochipAssemblyComplex setBaseMulti(MTENanochipAssemblyComplex baseMulti) {
+    public void setBaseMulti(MTENanochipAssemblyComplex baseMulti) {
         this.baseMulti = baseMulti;
         for (var hatchList : this.vacuumConveyorInputs.allHatches()) {
             for (var hatch : hatchList) {
@@ -124,7 +125,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 hatch.setMainController(baseMulti);
             }
         }
-        return baseMulti;
     }
 
     public void clearBaseMulti() {
@@ -153,8 +153,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .addElement('P', Casings.NanochipMeshInterfaceCasing.asElement())
             .addElement('Z', Casings.NanochipReinforcementCasing.asElement());
     }
-
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
 
     public abstract int structureOffsetX();
 
@@ -789,11 +787,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
