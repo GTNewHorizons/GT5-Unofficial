@@ -5,6 +5,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.ge
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.Chisel;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -68,6 +69,7 @@ import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.CauldronFrontend;
 import gregtech.api.recipe.maps.ChemicalPlantFrontend;
 import gregtech.api.recipe.maps.ChiselBackend;
+import gregtech.api.recipe.maps.ConditioningFrontend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
 import gregtech.api.recipe.maps.EFRBlastingBackend;
 import gregtech.api.recipe.maps.EFRSmokingBackend;
@@ -1974,6 +1976,14 @@ public final class RecipeMaps {
         .of("gt.recipe.nanochip.exoticentangleengine", RecipeMapBackend::new)
         .maxIO(4, 2, 2, 1)
         .minInputs(1, 0)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipExoticConditioningFluids = RecipeMapBuilder
+        .of("gt.recipe.nanochip.exoticconditioningfluids", RecipeMapBackend::new)
+        .maxIO(0, 0, 1, 0)
+        .minInputs(0, 1)
+        .logo(UITexture.fullImage(GregTech.ID, "gui/picture/nanochip_logo.png"))
+        .frontend(ConditioningFrontend::new)
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.NanoChipModule_ExoticEntangleEngine.get(1)))
         .build();
     public static final RecipeMap<RecipeMapBackend> industrialCokeOvenRecipes = RecipeMapBuilder
         .of("gt.recipe.industrialcokeoven")

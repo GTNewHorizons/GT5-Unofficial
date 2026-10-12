@@ -31,6 +31,8 @@ public class MTEHatchNanochipRedstone extends MTEHatch {
 
     private byte redstoneInput = 0;
     private int channel = 1;
+    private boolean outputMode = false;
+    private byte stabilitySignal = 0;
     public int MAX_CHANNEL = 20;
 
     public MTEHatchNanochipRedstone(int aID, String aName, String aNameRegional, int aTier) {
@@ -81,12 +83,14 @@ public class MTEHatchNanochipRedstone extends MTEHatch {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         channel = aNBT.getInteger("mChannel");
+        outputMode = aNBT.getBoolean("outputMode");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mChannel", channel);
+        aNBT.setBoolean("outputMode", outputMode);
         super.saveNBTData(aNBT);
     }
 
@@ -95,7 +99,8 @@ public class MTEHatchNanochipRedstone extends MTEHatch {
         return new String[] { translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.1"),
             translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.2"),
             translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.3"),
-            translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.4") };
+            translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.4"),
+            translateToLocal("GT5U.tooltip.nac.hatch.redstone.body.5") };
     }
 
     @Override
@@ -143,4 +148,32 @@ public class MTEHatchNanochipRedstone extends MTEHatch {
         this.channel = channel;
     }
 
+    public boolean isOutputMode() {
+        return outputMode;
+    }
+
+    public void setOutputMode(boolean outputMode) {
+        this.outputMode = outputMode;
+        markDirty();
+    }
+
+    public byte getStabilitySignal() {
+        return stabilitySignal;
+    }
+
+    // Called by the attached module with the current emission value for this hatch's channel.
+    public void setStabilitySignal(byte signal) {
+        if (!outputMode || signal == stabilitySignal) return;
+        stabilitySignal = signal;
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null || !base.isServerSide()) return;
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            base.setOutputRedstoneSignal(side, signal);
+        }
+    }
+
+    @Override
+    public boolean allowGeneralRedstoneOutput() {
+        return outputMode;
+    }
 }

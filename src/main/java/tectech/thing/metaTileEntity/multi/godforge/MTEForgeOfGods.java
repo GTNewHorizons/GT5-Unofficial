@@ -446,9 +446,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 if (!moduleHatches.isEmpty() && data.getInternalBattery() > 0
                     && moduleHatches.size() <= maxModuleCount) {
                     for (MTEBaseModule module : moduleHatches) {
+                        // Heat is tracked even while a fracture keeps the module offline, so cooling the
+                        // forge can lift the overheat lockout
+                        calculateMaxHeatForModules(module, data);
                         if (allowModuleConnection(module, data)) {
                             module.connect();
-                            calculateMaxHeatForModules(module, data);
                             // parallel depend on heat
                             calculateMaxParallelForModules(module, data);
                             // speed bonus depend on max parallel and heat
@@ -483,13 +485,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     }
 
     private void checkSiphonOverheat() {
-        if (data.isUpgradeActive(EHSR) || data.isOverheatLockout()) return;
-        for (MTEBaseModule module : moduleHatches) {
-            if (module.isConnected() && module.getHeat() > SIPHON_FRACTURE_HEAT) {
-                fractureSiphonRings();
-                return;
-            }
+        if (data.isUpgradeActive(EHSR)) return;
+        if (isSiphonOverheated()) {
+            // The lockout latches the fracture, so a running forge only shatters once per overheat
+            if (!data.isOverheatLockout()) fractureSiphonRings();
+        } else if (data.isOverheatLockout() && mMachine && isAllowedToWork()) {
+            // A cooled forge that the player has switched back on lets its modules come online again
+            data.setOverheatLockout(false);
         }
+    }
+
+    private boolean isSiphonOverheated() {
+        for (MTEBaseModule module : moduleHatches) {
+            if (module.getHeat() > SIPHON_FRACTURE_HEAT) return true;
+        }
+        return false;
     }
 
     private void fractureSiphonRings() {

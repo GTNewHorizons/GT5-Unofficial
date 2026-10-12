@@ -742,8 +742,8 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.ProtoHalkonite, 64))
             .fluidInputs(Materials.PhononMedium.getFluid(10))
             .itemOutputs(ItemList.Sintered_Halkonite_Clump.get(1))
-            .duration(60 * SECONDS)
-            .eut((int) TierEU.RECIPE_UEV)
+            .duration(10 * SECONDS)
+            .eut((int) TierEU.RECIPE_UXV)
             .metadata(COIL_HEAT, 25001)
             .addTo(blastFurnaceRecipes);
     }

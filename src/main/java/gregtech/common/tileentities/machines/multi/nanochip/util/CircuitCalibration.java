@@ -37,9 +37,9 @@ public enum CircuitCalibration {
         new CalibrationThreshold("Perfected", 0.75, nac -> {nac.opticalT3Active = true;})
     ),
     EXOTIC(
-        new CalibrationThreshold("TODO", 0.2, nac -> {}),
-        new CalibrationThreshold("TODO", 0.4, nac -> {}),
-        new CalibrationThreshold("TODO", 0.6, nac -> {})
+        new CalibrationThreshold("Intertwined", 0.2, nac -> {nac.globalEUMultiplier = 0.8f;}),
+        new CalibrationThreshold("Superposed", 0.4, nac -> {nac.globalDurationMultiplier = 0.8f;}),
+        new CalibrationThreshold("Eternal", 0.6, nac -> {nac.exoticT3Active = true;})
     ),
     COSMIC(
         new CalibrationThreshold("TODO", 0.2, nac -> {}),

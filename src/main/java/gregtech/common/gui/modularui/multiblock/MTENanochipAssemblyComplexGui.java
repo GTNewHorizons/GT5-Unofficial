@@ -304,6 +304,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect2");
         TextWidget<?> opticalBody3 = createTextEntry(
             "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect3");
+        TextWidget<?> exoticHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.line_specifics.exotic.header");
+        TextWidget<?> exoticPowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.exotic.power_distribution");
+        TextWidget<?> exoticModuleCount = createTextEntry("GT5U.gui.text.nac.info.line_specifics.exotic.module_count");
+        TextWidget<?> exoticBody1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.exotic.calibration.effect1");
+        TextWidget<?> exoticBody2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.exotic.calibration.effect2");
+        TextWidget<?> exoticBody3 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.exotic.calibration.effect3");
         TextWidget<?> specialHeader = createCalibrationSubHeader(
             "GT5U.gui.text.nac.info.line_specifics.special.header");
         TextWidget<?> specialPowerDistribution = createTextEntry(
@@ -381,6 +388,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         textList.child(opticalBody1);
         textList.child(opticalBody2);
         textList.child(opticalBody3);
+
+        textList.child(exoticHeader);
+        textList.child(exoticPowerDistribution);
+        textList.child(exoticModuleCount);
+        textList.child(exoticBody1);
+        textList.child(exoticBody2);
+        textList.child(exoticBody3);
 
         textList.child(specialHeader);
         textList.child(specialPowerDistribution);

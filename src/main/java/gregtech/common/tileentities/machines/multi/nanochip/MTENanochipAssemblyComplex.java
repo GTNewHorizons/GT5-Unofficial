@@ -591,6 +591,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public boolean wetwareT3Active = false;
     public boolean bioT3Active = false;
     public boolean opticalT3Active = false;
+    public boolean exoticT3Active = false;
 
     public void setCurrentThreshold(CircuitCalibration.CalibrationThreshold currentThreshold) {
         this.currentThreshold = currentThreshold;
@@ -609,6 +610,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         wetwareT3Active = false;
         bioT3Active = false;
         opticalT3Active = false;
+        exoticT3Active = false;
     }
 
     public String getCalibrationTitle() {

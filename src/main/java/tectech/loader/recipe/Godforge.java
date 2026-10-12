@@ -765,7 +765,7 @@ public class Godforge implements Runnable {
             ForgeOfGodsUpgrade.EHSR.addExtraCost(
                 CustomItemList.Godforge_ProtoHalkoniteSiphonCasing.get(32),
                 CustomItemList.Godforge_StellarEnergySiphonCasing.get(16),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.ExoHalkonite, 9),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.ExoHalkonite, 4),
                 CustomItemList.Godforge_SingularityShieldingCasing.get(32),
                 CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(16),
                 ItemList.Field_Generator_UEV.get(64),
