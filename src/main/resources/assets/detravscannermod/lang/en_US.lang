@@ -56,5 +56,5 @@ gt.detrav.metatool.01.name=Prospector's Scanner (%s)
 gt.detrav.metatool.01.electric.name=Electric Prospector's Scanner (%s)
 
 # Chats
-gui.detrav.scanner.chat.cancel=Cancelled pending scan
-gui.detrav.scanner.chat.scanning=Scanning...
+detrav.scanner.chat.cancel=Cancelled pending scan
+detrav.scanner.chat.scanning=Scanning...
