@@ -156,7 +156,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     protected void setElectricityStats() {
         batchMultiplier = batchMode ? BATCH_MULTIPLIER : 1;
-        this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
+        this.mEUt = -Math.abs(Math.toIntExact(GTValues.VP[this.getMinTier()]));
         this.mOutputItems = GTValues.emptyItemStackArray;
         this.mProgresstime = 0;
         this.mMaxProgresstime = RECIPE_DURATION_TICKS * batchMultiplier;
@@ -178,7 +178,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .addMarkdown(
                 new ResourceLocation("gregtech", "void-miner"),
                 ImmutableMap.<String, Object>builder()
-                    .put("power", formatNumber(GTValues.V[this.getMinTier()]))
+                    .put("power", formatNumber(GTValues.VP[this.getMinTier()]))
                     .put("gas_rate", NOBLE_GAS_CONSUMPTION_PER_TIER)
                     .put("unit", getFluidUnit())
                     .put("neon_boost", NEON_BOOST)
