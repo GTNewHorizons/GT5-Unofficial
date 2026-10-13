@@ -167,8 +167,7 @@ public class CircuitComponentPacket {
                     continue;
                 }
                 if (cc.realComponent == null || cc.realComponent.get() == null) continue;
-                ItemStack stack = cc.realComponent.get()
-                    .copy();
+                ItemStack stack = cc.realComponent.get();
                 stack.stackSize = stackSize;
                 if (name != null) {
                     stack.setStackDisplayName(name);
