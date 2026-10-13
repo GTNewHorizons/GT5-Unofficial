@@ -303,15 +303,24 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .stream()
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
-
         if (canVoidMine) {
-            final ItemStack output = this.nextOre();
-            output.stackSize = multiplier * batchMultiplier;
+            ItemStack[] outputs = new ItemStack[batchMultiplier];
 
-            boolean matchesFilter = contains(selected.getStacks(), output) || contains(inputOres, output);
+            for (int i = 0; i < batchMultiplier; i++) {
+                outputs[i] = this.nextOre();
+            }
 
-            if ((isSelectedEmpty() && inputOres.isEmpty()) || (this.blacklist != matchesFilter)) {
-                this.addOutputPartial(output);
+            for (ItemStack output : outputs) {
+                if (output != null) {
+                    output.stackSize = multiplier;
+
+                    boolean matchesFilter = contains(selected.getStacks(), output) || contains(inputOres, output);
+
+                    if ((isSelectedEmpty() && inputOres.isEmpty())
+                        || (this.blacklist ? !matchesFilter : matchesFilter)) {
+                        this.addOutputPartial(output);
+                    }
+                }
             }
         }
 
