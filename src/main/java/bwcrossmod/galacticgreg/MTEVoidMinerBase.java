@@ -300,7 +300,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
         if (canVoidMine) {
-            ItemStack[] outputs = new ItemStack[16];
+            ItemStack[] outputs = new ItemStack[batchMultiplier];
 
             for (int i = 0; i < batchMultiplier; i++) {
                 outputs[i] = this.nextOre();
