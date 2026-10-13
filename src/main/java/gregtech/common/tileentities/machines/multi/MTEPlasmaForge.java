@@ -1118,7 +1118,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         }
     }
 
-    // todo: figure out how to make two leases exist in harmony without sucking
     public LongArrayList bridges = new LongArrayList();
     private GTCoilTracker.MultiCoilLease bridgeLease = null;
 
