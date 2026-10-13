@@ -78,6 +78,12 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return false;
     }
 
+    // disables hoverable widget in GUI
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
