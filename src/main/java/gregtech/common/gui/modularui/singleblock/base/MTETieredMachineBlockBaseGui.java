@@ -280,7 +280,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
             .addLine(StatCollector.translateToLocalFormatted("GT5U.machines.battery_slot.tooltip.2", tierName));
     }
 
-    /// Sets a static tooltip using the machine's tooltip cache. This means the tooltip **can not** change while the Gui
+    /// Sets a static tooltip using the machine's tooltip cache. This means the tooltip **cannot** change while the Gui
     /// is open.
     ///
     /// Accounts for extended tooltips shown when shift is held down.
