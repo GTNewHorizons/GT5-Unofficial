@@ -1,6 +1,5 @@
 package tectech.thing.metaTileEntity.hatch.bec;
 
-import com.cleanroommc.modularui.network.NetworkUtils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +14,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
