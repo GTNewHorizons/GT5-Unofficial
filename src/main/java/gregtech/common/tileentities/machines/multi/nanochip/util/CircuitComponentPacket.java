@@ -161,17 +161,18 @@ public class CircuitComponentPacket {
                 String name = pair.getLeft();
                 long amount = pair.getRight();
                 int stackSize = Math.toIntExact(Math.min(Integer.MAX_VALUE, amount));
-                if (cc.isProcessed) {
-                    // PCs cant be renamed
-                    stacks.add(cc.getFakeStack(stackSize));
-                    continue;
+                ItemStack stack;
+                if (cc.isProcessed || cc.realComponent == null || cc.realComponent.get() == null) {
+                    stack = cc.getFakeStack(stackSize);
+                } else {
+                    stack = cc.realComponent.get();
+                    stack.stackSize = stackSize;
                 }
-                if (cc.realComponent == null || cc.realComponent.get() == null) continue;
-                ItemStack stack = cc.realComponent.get();
-                stack.stackSize = stackSize;
+
                 if (name != null) {
                     stack.setStackDisplayName(name);
                 }
+                stacks.add(stack);
                 stacks.add(stack);
             }
         }
