@@ -3,6 +3,7 @@ package gregtech.common.gui.modularui.hatch.base;
 import java.util.function.Predicate;
 
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidTank;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -28,6 +29,16 @@ public class MTEHatchBaseGui<T extends MTEHatch> extends MTEMachineWithFluidScre
     }
 
     @Override
+    protected int getInputSlotIndex() {
+        return machine.getInputSlot();
+    }
+
+    @Override
+    protected int getOutputSlotIndex() {
+        return machine.getOutputSlot();
+    }
+
+    @Override
     protected boolean supportsTopRightCornerFlow() {
         return false;
     }
@@ -35,5 +46,10 @@ public class MTEHatchBaseGui<T extends MTEHatch> extends MTEMachineWithFluidScre
     @Override
     protected Predicate<FluidStack> getFluidSlotFilter() {
         return machine::isFluidInputAllowed;
+    }
+
+    @Override
+    protected IFluidTank getMachineFluidTank() {
+        return machine.getFluidTank();
     }
 }
