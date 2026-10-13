@@ -226,11 +226,7 @@ public class MTEExoticEntangleEngineModule extends MTENanochipAssemblyModuleBase
 
     public void setTemperatureRatio(double ratio) {
         if (!isTemperatureFrozen()) return;
-        temperatureRatio = clamp((float) ratio, 0f, 1f);
-    }
-
-    private static float clamp(float value, float min, float max) {
-        return Math.max(min, Math.min(max, value));
+        temperatureRatio = GTUtility.clamp((float) ratio, 0f, 1f);
     }
 
     @Override
@@ -415,7 +411,7 @@ public class MTEExoticEntangleEngineModule extends MTENanochipAssemblyModuleBase
 
     private byte computeRedstoneSignal(int channel) {
         float value = channel == 3 ? temperatureRatio * 100f : stability;
-        return (byte) clamp((int) (value * 15f / 100f), 0, 15);
+        return (byte) GTUtility.clamp((int) (value * 15f / 100f), 0, 15);
     }
 
     @Override

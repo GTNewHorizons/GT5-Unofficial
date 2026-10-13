@@ -7,19 +7,17 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEExoticEntangleEngineModule;
 
 public class MTEExoticEntangleEngineModuleGui extends MTENanochipAssemblyModuleBaseGui<MTEExoticEntangleEngineModule> {
@@ -41,26 +39,6 @@ public class MTEExoticEntangleEngineModuleGui extends MTENanochipAssemblyModuleB
         syncManager.syncValue("enthalpy", new DoubleSyncValue(() -> (double) multiblock.getConditioningEnthalpy()));
         syncManager.syncValue("entropy", new DoubleSyncValue(() -> (double) multiblock.getConditioningEntropy()));
         syncManager.syncValue("temperatureFrozen", new BooleanSyncValue(multiblock::isTemperatureFrozen));
-    }
-
-    @Override
-    protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
-        return Flow.row()
-            .size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
-            .paddingLeft(4)
-            .paddingRight(0)
-            .childPadding(3)
-            .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-            .child(
-                createTerminalTextWidget(syncManager, panel)
-                    .size(getTerminalWidgetWidth() - 4, getTerminalWidgetHeight() - 8)
-                    .collapseDisabledChild())
-            .childIf(
-                multiblock.supportsTerminalRightCornerColumn(),
-                () -> createTerminalRightCornerColumn(panel, syncManager))
-            .childIf(
-                multiblock.supportsTerminalLeftCornerColumn(),
-                () -> createTerminalLeftCornerColumn(panel, syncManager));
     }
 
     @Override
@@ -107,14 +85,19 @@ public class MTEExoticEntangleEngineModuleGui extends MTENanochipAssemblyModuleB
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .child(new TextWidget<>(IKey.lang("GT5U.gui.text.nac.exotic_engine.panel")).width(PANEL_WIDTH))
                     .child(
-                        new SegmentedBarWidget(
-                            100,
-                            1,
-                            new SegmentedBarWidget.SegmentInfo(
-                                () -> (int) stability.getDoubleValue(),
-                                Color.PURPLE,
-                                "GT5U.gui.text.nac.bar.label.stability")).width(PANEL_WIDTH)
-                                    .height(10))
+                        new ProgressWidget().direction(ProgressWidget.Direction.RIGHT)
+                            .value(new DoubleValue.Dynamic(() -> stability.getDoubleValue() / 100d, null))
+                            .texture(
+                                GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_BACKGROUND,
+                                GTGuiTextures.PROGRESSBAR_GODFORGE_MILESTONE_PURPLE,
+                                130)
+                            .size(PANEL_WIDTH, 10)
+                            .tooltipAutoUpdate(true)
+                            .tooltipDynamic(
+                                t -> t.addLine(
+                                    translateToLocal("GT5U.gui.text.nac.bar.label.stability") + ": "
+                                        + (int) stability.getDoubleValue()
+                                        + "%")))
                     .child(
                         IKey.dynamic(
                             () -> translateToLocal("GT5U.gui.text.nac.exotic_engine.temperature") + ": "
