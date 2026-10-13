@@ -135,11 +135,6 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return false;
-    }
-
-    @Override
     public void clearHatches() {
         super.clearHatches();
 

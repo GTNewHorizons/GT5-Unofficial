@@ -84,6 +84,12 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return false;
     }
 
+    // bec multiblocks do not support this by default, not that they need to be.
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
