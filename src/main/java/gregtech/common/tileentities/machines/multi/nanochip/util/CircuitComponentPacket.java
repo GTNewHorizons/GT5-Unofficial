@@ -173,7 +173,6 @@ public class CircuitComponentPacket {
                     stack.setStackDisplayName(name);
                 }
                 stacks.add(stack);
-                stacks.add(stack);
             }
         }
         return stacks;
