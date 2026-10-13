@@ -612,7 +612,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     public String getCalibrationTitle() {
-        if (currentThreshold == null) return "Standard";
+        if (currentThreshold == null) return "GT5U.gui.text.nac.title.standard";
         return currentThreshold.title;
     }
 
@@ -781,14 +781,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return modules;
     }
 
-    public void setModules(List<MTENanochipAssemblyModuleBase<?>> incomingList) {
-        this.modules.clear();
-        this.modules.addAll(incomingList);
-    }
-
     public void setMatrixPowerPortion(int portion) {
-        if (matrixPowerPortion != portion && updateModuleEU(portion, false)) {
-            matrixPowerPortion = portion;
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (matrixPowerPortion != portion && updateModuleEU(portion, false)) {
+                matrixPowerPortion = portion;
+            }
         }
     }
 
