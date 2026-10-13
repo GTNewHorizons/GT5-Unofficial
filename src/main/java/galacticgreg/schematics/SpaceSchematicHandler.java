@@ -19,7 +19,7 @@ import galacticgreg.GalacticGreg;
 /**
  * Class for XML Structure files. You only should edit/use this file/class if you want to add/fix stuff with
  * GalacticGreg itself, and never if you're a mod developer and want to add support for GGreg to your mod. However, feel
- * free to copy this code to your own mod to implement structures. If you have questions, find me on github and ask
+ * free to copy this code to your own mod to implement structures. If you have questions, find me on GitHub and ask
  */
 public class SpaceSchematicHandler {
 
@@ -45,15 +45,15 @@ public class SpaceSchematicHandler {
     public SpaceSchematic getRandomSpaceSchematic() {
         int tRandomChance = GalacticGreg.GalacticRandom.nextInt(100);
         List<Integer> tRandomIDs = new ArrayList<>();
-        SpaceSchematic tChoosenSchematic = null;
+        SpaceSchematic tChosenSchematic = null;
 
         if (_mSpaceSchematics == null) return null;
 
         if (_mSpaceSchematics.isEmpty()) return null;
 
         if (_mSpaceSchematics.size() == 1) {
-            tChoosenSchematic = _mSpaceSchematics.getFirst();
-            if (tChoosenSchematic.getRarity() < tRandomChance) tChoosenSchematic = null;
+            tChosenSchematic = _mSpaceSchematics.getFirst();
+            if (tChosenSchematic.getRarity() < tRandomChance) tChosenSchematic = null;
         } else {
             for (int i = 0; i < _mSpaceSchematics.size(); i++) {
                 if (_mSpaceSchematics.get(i)
@@ -63,10 +63,10 @@ public class SpaceSchematicHandler {
 
         if (!tRandomIDs.isEmpty()) {
             int tRnd = GalacticGreg.GalacticRandom.nextInt(tRandomIDs.size());
-            tChoosenSchematic = _mSpaceSchematics.get(tRandomIDs.get(tRnd));
+            tChosenSchematic = _mSpaceSchematics.get(tRandomIDs.get(tRnd));
         }
 
-        return tChoosenSchematic;
+        return tChosenSchematic;
     }
 
     /**

@@ -1314,14 +1314,14 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         syncManager.syncValue("voidExcess", voidExcessSyncer);
 
         IntSyncValue maintSyncer = new IntSyncValue(() -> {
-            int maintIsuses = 0;
-            maintIsuses += multiblock.mCrowbar ? 0 : 1;
-            maintIsuses += multiblock.mHardHammer ? 0 : 1;
-            maintIsuses += multiblock.mScrewdriver ? 0 : 1;
-            maintIsuses += multiblock.mSoftMallet ? 0 : 1;
-            maintIsuses += multiblock.mSolderingTool ? 0 : 1;
-            maintIsuses += multiblock.mWrench ? 0 : 1;
-            return maintIsuses;
+            int maintIssues = 0;
+            maintIssues += multiblock.mCrowbar ? 0 : 1;
+            maintIssues += multiblock.mHardHammer ? 0 : 1;
+            maintIssues += multiblock.mScrewdriver ? 0 : 1;
+            maintIssues += multiblock.mSoftMallet ? 0 : 1;
+            maintIssues += multiblock.mSolderingTool ? 0 : 1;
+            maintIssues += multiblock.mWrench ? 0 : 1;
+            return maintIssues;
         });
 
         syncManager.syncValue("maintCount", maintSyncer);

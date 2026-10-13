@@ -1024,8 +1024,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         @Override
         public IGTHatchAdder<MTEBECIONode> adder() {
-            return (self, igtme, id) -> {
-                IMetaTileEntity imte = igtme.getMetaTileEntity();
+            return (self, igtte, id) -> {
+                IMetaTileEntity imte = igtte.getMetaTileEntity();
 
                 if (imte instanceof MTEHatchNaniteDetector hatch) {
                     hatch.updateTexture(id);
@@ -1074,8 +1074,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         @Override
         public IGTHatchAdder<MTEBECIONode> adder() {
-            return (self, igtme, id) -> {
-                IMetaTileEntity imte = igtme.getMetaTileEntity();
+            return (self, igtte, id) -> {
+                IMetaTileEntity imte = igtte.getMetaTileEntity();
 
                 if (imte instanceof MTEHatchIONodeController hatch) {
                     hatch.updateTexture(id);
@@ -1123,8 +1123,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         @Override
         public IGTHatchAdder<MTEBECIONode> adder() {
-            return (self, igtme, id) -> {
-                IMetaTileEntity imte = igtme.getMetaTileEntity();
+            return (self, igtte, id) -> {
+                IMetaTileEntity imte = igtte.getMetaTileEntity();
 
                 if (self.losHatch == null && imte instanceof MTEHatchLoS hatch) {
                     hatch.updateTexture(id);

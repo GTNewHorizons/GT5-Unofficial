@@ -64,8 +64,8 @@ public class MTETeleporter extends MTEBasicTank {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int sPassiveEnergyDrain = 2048;
-    private static int sPowerMultiplyer = 100;
-    private static double sFPowerMultiplyer = 1.0;
+    private static int sPowerMultiplier = 100;
+    private static double sFPowerMultiplier = 1.0;
     private int mTargetX = 0;
     private int mTargetY = 0;
     private int mTargetZ = 0;
@@ -273,8 +273,8 @@ public class MTETeleporter extends MTEBasicTank {
     public void onConfigLoad() {
         sInterDimensionalTeleportAllowed = MachineStats.teleporter.interDimensionalTPAllowed;
         sPassiveEnergyDrain = MachineStats.teleporter.passiveEnergyDrain;
-        sPowerMultiplyer = MachineStats.teleporter.powerMultiplier;
-        sFPowerMultiplyer = sPowerMultiplyer / 100.0;
+        sPowerMultiplier = MachineStats.teleporter.powerMultiplier;
+        sFPowerMultiplier = sPowerMultiplier / 100.0;
     }
 
     @Override
@@ -330,7 +330,7 @@ public class MTETeleporter extends MTEBasicTank {
                         int transferred = transfer.transfer();
 
                         getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                            (long) (Math.pow(tDistance, 1.5) * tDistance * transferred * sFPowerMultiplyer),
+                            (long) (Math.pow(tDistance, 1.5) * tDistance * transferred * sFPowerMultiplier),
                             false);
                     }
 
@@ -348,7 +348,7 @@ public class MTETeleporter extends MTEBasicTank {
                     for (Object tObject : entities_in_box) {
                         if (((tObject instanceof Entity tEntity)) && (!tEntity.isDead)) {
                             if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                                (long) (Math.pow(tDistance, 1.5) * calculateWeight(tEntity) * sFPowerMultiplyer),
+                                (long) (Math.pow(tDistance, 1.5) * calculateWeight(tEntity) * sFPowerMultiplier),
                                 false)) {
 
                                 if (tEntity.ridingEntity != null) {

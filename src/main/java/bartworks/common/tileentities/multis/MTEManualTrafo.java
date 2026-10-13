@@ -117,8 +117,8 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
                 if (!(tileEntity instanceof IGregTechTileEntity)) return true;
                 IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
                 if (mte instanceof MTEHatchDynamo || mte instanceof MTEHatchEnergy) {
-                    int intier = te.mEnergyHatches.getFirst().mTier;
-                    if (((MTETieredMachineBlock) mte).mTier == intier + (te.upstep ? te.mTiers : -te.mTiers)) {
+                    int inTier = te.mEnergyHatches.getFirst().mTier;
+                    if (((MTETieredMachineBlock) mte).mTier == inTier + (te.upstep ? te.mTiers : -te.mTiers)) {
                         te.addToMachineList((IGregTechTileEntity) tileEntity, CASING_INDEX);
                         return true;
                     }
@@ -258,13 +258,13 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
         else this.mode = (byte) Math.min(3, itemStack.getItemDamage());
 
         this.upstep = this.mode % 2 == 0;
-        boolean tapmode = this.mode > 1;
+        boolean tapMode = this.mode > 1;
 
         if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
 
         int mHeight;
         for (mHeight = 1; mHeight <= 8; mHeight++) {
-            if (tapmode) {
+            if (tapMode) {
                 this.mTiers = mHeight;
                 if (!this.checkPiece(STRUCTURE_PIECE_TAP_LAYER, 2, mHeight, 1, errors)) break;
             } else if (!this.checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) break;
@@ -283,17 +283,17 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
 
         if (!errors.isEmpty()) return; // don't crash the game for accessing the first elem
 
-        byte intier = this.mEnergyHatches.getFirst().mTier;
+        byte inTier = this.mEnergyHatches.getFirst().mTier;
         for (MTEHatchEnergy in : this.mEnergyHatches) {
-            if (in.mTier != intier) {
+            if (in.mTier != inTier) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.manual_transformer_energy"));
                 break;
             }
         }
 
-        byte outtier = this.mDynamoHatches.getFirst().mTier;
+        byte outTier = this.mDynamoHatches.getFirst().mTier;
         for (MTEHatchDynamo out : this.mDynamoHatches) {
-            if (out.mTier != outtier) {
+            if (out.mTier != outTier) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.manual_transformer_dynamo"));
                 return;
             }
@@ -316,19 +316,19 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound ntag) {
-        super.saveNBTData(ntag);
-        ntag.setInteger("mTiers", this.mTiers);
-        ntag.setByte("mMode", this.mode);
-        ntag.setBoolean("upstep", this.upstep);
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("mTiers", this.mTiers);
+        aNBT.setByte("mMode", this.mode);
+        aNBT.setBoolean("upstep", this.upstep);
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound ntag) {
-        super.loadNBTData(ntag);
-        this.mTiers = ntag.getInteger("mTiers");
-        this.mode = ntag.getByte("mMode");
-        this.upstep = ntag.getBoolean("upstep");
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.mTiers = aNBT.getInteger("mTiers");
+        this.mode = aNBT.getByte("mMode");
+        this.upstep = aNBT.getBoolean("upstep");
     }
 
     @Override
@@ -356,10 +356,10 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
             .startsWith("gt.integrated_circuit")) this.mode = 0;
         else this.mode = (byte) Math.min(3, this.mInventory[1].getItemDamage());
         int mHeight = Math.min(itemStack.stackSize, 8);
-        boolean tapmode = this.mode > 1;
+        boolean tapMode = this.mode > 1;
         this.buildPiece(STRUCTURE_PIECE_BASE, itemStack, b, 1, 0, 0);
         for (int i = 0; i < mHeight; i++) {
-            if (tapmode) this.buildPiece(STRUCTURE_PIECE_TAP_LAYER, itemStack, b, 2, i + 1, 1);
+            if (tapMode) this.buildPiece(STRUCTURE_PIECE_TAP_LAYER, itemStack, b, 2, i + 1, 1);
             else this.buildPiece(STRUCTURE_PIECE_LAYER, itemStack, b, 1, i + 1, 0);
         }
         this.buildPiece(STRUCTURE_PIECE_TOP, itemStack, b, 1, mHeight + 1, 0);
@@ -374,13 +374,13 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
 
         int mHeight = Math.min(stackSize.stackSize, 8);
         mTiers = 0;
-        boolean tapmode = this.mode > 1;
+        boolean tapMode = this.mode > 1;
         int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
 
         for (int i = 0; i < mHeight; i++) {
             mTiers = i;
-            if (tapmode) built = survivalBuildPiece(
+            if (tapMode) built = survivalBuildPiece(
                 STRUCTURE_PIECE_TAP_LAYER,
                 stackSize,
                 2,

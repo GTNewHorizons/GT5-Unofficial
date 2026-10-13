@@ -104,8 +104,8 @@ public class MaterialUtils {
 
             if (name.toLowerCase()
                 .contains("infused")) {
-                final String tempname = name.substring(7);
-                name = "Infused " + tempname;
+                final String tempName = name.substring(7);
+                name = "Infused " + tempName;
             }
             if (hasValidRGBA(rgba) || (element == Element.H)
                 || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire)

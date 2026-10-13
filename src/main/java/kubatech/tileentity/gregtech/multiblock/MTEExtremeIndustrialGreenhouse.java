@@ -757,8 +757,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      */
     public static boolean isFertilizer(ItemStack item) {
         if (item == null || item.stackSize <= 0) return false;
-        for (ItemStack fert : FERTILIZER_ITEM_LIST) {
-            if (GTUtility.areStacksEqual(item, fert)) return true;
+        for (ItemStack fertilizer : FERTILIZER_ITEM_LIST) {
+            if (GTUtility.areStacksEqual(item, fertilizer)) return true;
         }
         return false;
     }

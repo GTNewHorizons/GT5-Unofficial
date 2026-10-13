@@ -377,7 +377,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
-    public IMEInventory<IAEFluidStack> getNetworkInvtory() throws GridAccessException {
+    public IMEInventory<IAEFluidStack> getNetworkInventory() throws GridAccessException {
         return getProxy().getStorage()
             .getFluidInventory();
     }

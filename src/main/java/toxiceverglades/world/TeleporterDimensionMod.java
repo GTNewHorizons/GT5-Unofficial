@@ -431,7 +431,7 @@ public class TeleporterDimensionMod extends Teleporter {
     }
 
     /**
-     * called periodically to remove out-of-date portal locations from the cache list. Argument par1 is a
+     * Called periodically to remove out-of-date portal locations from the cache list. Argument par1 is a
      * WorldServer.getTotalWorldTime() value.
      */
     @Override
@@ -441,12 +441,12 @@ public class TeleporterDimensionMod extends Teleporter {
             long j = par1 - 600L;
 
             while (iterator.hasNext()) {
-                long olong = iterator.nextLong();
-                Teleporter.PortalPosition portalposition = this.destinationCoordinateCache.get(olong);
+                long next = iterator.nextLong();
+                Teleporter.PortalPosition portalposition = this.destinationCoordinateCache.get(next);
 
                 if (portalposition == null || portalposition.lastUpdateTime < j) {
                     iterator.remove();
-                    this.destinationCoordinateCache.remove(olong);
+                    this.destinationCoordinateCache.remove(next);
                 }
             }
         }

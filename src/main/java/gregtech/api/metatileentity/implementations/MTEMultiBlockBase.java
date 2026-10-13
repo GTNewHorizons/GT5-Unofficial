@@ -693,7 +693,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (MTEHatchMaintenance tHatch : validMTEList(mMaintenanceHatches)) {
                 boolean tDidRepair = false;
 
-                if (tHatch.mAuto) tDidRepair = tHatch.autoMaintainance();
+                if (tHatch.mAuto) tDidRepair = tHatch.autoMaintenance();
 
                 // For each tool, only if needed, collect the tool flags
                 // that this Maintenance Hatch has provided

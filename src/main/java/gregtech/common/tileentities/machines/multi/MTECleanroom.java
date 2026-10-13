@@ -740,10 +740,10 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         int x = baseEntity.getXCoord();
         int y = baseEntity.getYCoord();
         int z = baseEntity.getZCoord();
-        int yoff = Math.max(i * 2, 3);
-        for (int X = x - i; X <= x + i; X++) for (int Y = y; Y >= y - yoff; Y--) for (int Z = z - i; Z <= z + i; Z++) {
+        int yOff = Math.max(i * 2, 3);
+        for (int X = x - i; X <= x + i; X++) for (int Y = y; Y >= y - yOff; Y--) for (int Z = z - i; Z <= z + i; Z++) {
             if (X == x && Y == y && Z == z) continue;
-            if (X == x - i || X == x + i || Z == z - i || Z == z + i || Y == y - yoff) {
+            if (X == x - i || X == x + i || Z == z - i || Z == z + i || Y == y - yOff) {
                 if (hintsOnly) StructureLibAPI.hintParticle(world, X, Y, Z, CASING_BLOCK, CASING_META);
                 else world.setBlock(X, Y, Z, CASING_BLOCK, CASING_META, 2);
             } else if (Y == y) {

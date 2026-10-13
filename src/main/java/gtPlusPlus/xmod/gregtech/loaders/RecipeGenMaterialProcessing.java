@@ -61,12 +61,12 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 }
             }
             ArrayList<Pair<Integer, Material>> componentMap = new ArrayList<>();
-            int alnsnfds = 0;
+            int index = 0;
             for (MaterialStack r : material.getComposites()) {
                 if (r != null) {
-                    componentMap.add(Pair.of(partSizes[alnsnfds], r.getStackMaterial()));
+                    componentMap.add(Pair.of(partSizes[index], r.getStackMaterial()));
                 }
-                alnsnfds++;
+                index++;
             }
 
             /*

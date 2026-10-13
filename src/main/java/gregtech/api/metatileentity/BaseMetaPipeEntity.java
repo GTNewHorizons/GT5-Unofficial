@@ -1132,7 +1132,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 // Trigger a checking of connections in case someone placed down a block that the pipe/wire shouldn't be
                 // connected to.
                 // However; don't do it immediately in case the world isn't finished loading
-                // (This caused issues with AE2 GTEU p2p connections.
+                // (This caused issues with AE2 GTEU p2p connections)
                 pipe.setCheckConnections();
             }
         }

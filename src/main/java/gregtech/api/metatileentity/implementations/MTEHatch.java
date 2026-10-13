@@ -324,11 +324,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
         if (author != null) {
             additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
         }
-        final String[] suffixs = additionalTooltips.toArray(new String[0]);
+        final String[] suffixes = additionalTooltips.toArray(new String[0]);
         if (formatted.length == 0) {
-            return GTSplit.splitLocalizedWithSuffix(key, suffixs);
+            return GTSplit.splitLocalizedWithSuffix(key, suffixes);
         }
-        return GTSplit.splitLocalizedFormattedWithSuffix(key, suffixs, formatted);
+        return GTSplit.splitLocalizedFormattedWithSuffix(key, suffixes, formatted);
     }
 
     public static void addColorChannelInfo(List<String> tooltip, byte color) {

@@ -471,8 +471,8 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     /**
      * Sets whether to show oredict equivalent item outputs on NEI.
      */
-    public RecipeMapBuilder<B> unificateOutputNEI(boolean unificateOutputNEI) {
-        neiPropertiesBuilder.unificateOutput(unificateOutputNEI);
+    public RecipeMapBuilder<B> unificateOutputNEI(boolean unifyOutputNEI) {
+        neiPropertiesBuilder.unificateOutput(unifyOutputNEI);
         return this;
     }
 

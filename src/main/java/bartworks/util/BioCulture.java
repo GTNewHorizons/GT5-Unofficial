@@ -84,7 +84,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
 
     public Fluid getFluid() {
         if (this.mFluid == null)
-            throw new IllegalStateException("Fluid has not been set yet! The issuring Culture is: " + this.name);
+            throw new IllegalStateException("Fluid has not been set yet! The issuing Culture is: " + this.name);
         return this.mFluid;
     }
 

@@ -100,13 +100,13 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
         RenderBlocks renderer) {
         if (!(block instanceof BlockBioFluid blockFluidBase)) return false;
         Tessellator tessellator = Tessellator.instance;
-        Coords blockat = new Coords(
+        Coords blockAt = new Coords(
             x,
             y,
             z,
             iBlockAccess.getTileEntity(x, y, z)
                 .getWorldObj().provider.dimensionId);
-        Integer rgb = MTEBioVat.staticColorMap.get(blockat);
+        Integer rgb = MTEBioVat.staticColorMap.get(blockAt);
 
         int r, g, b;
 

@@ -78,7 +78,7 @@ public class WorldgenStone extends GTWorldgen {
             return false;
         }
         // I think the real size of the balls is mSize/8, but the original code was difficult to understand.
-        // Overall there will be less GT stones since they aren't spheres any more. /16 since this code uses it as a
+        // Overall, there will be fewer GT stones since they aren't spheres anymore. /16 since this code uses it as a
         // radius.
         double realSize = mSize / 16;
         int windowWidth = ((int) realSize) / 16 + 1; // Width of chunks to check for a potential stoneseed
@@ -155,7 +155,7 @@ public class WorldgenStone extends GTWorldgen {
                 // 1 = full size, 1.333 = 75%, 2 = 50%, 4 = 25%
                 // (x * Sx)^2 + (y * Sy)^2 + (z * sZ)^2 <= (mSize)^2
 
-                // So, we setup the initial boundaries to be the size of the boulder plus a block in each direction
+                // So, we set up the initial boundaries to be the size of the boulder plus a block in each direction
                 int tMinX = tX - (int) (realSize / xSize - 1.0);
                 int tMaxX = tX + (int) (realSize / xSize + 2.0);
                 int tMinY = tY - (int) (realSize / ySize - 1.0);
@@ -192,8 +192,8 @@ public class WorldgenStone extends GTWorldgen {
                         mWorldGenName, tX, tY, tZ, realSize, realSize / xSize, realSize / ySize, realSize / zSize, wX, eX, tMinY, tMaxY, sZ, nZ);
                 // spotless:on
 
-                double rightHandSide = realSize * realSize + 1; // Precalc the right hand side
-                for (int iY = tMinY; iY < tMaxY; iY++) { // Do placement from the bottom up layer up. Maybe better on
+                double rightHandSide = realSize * realSize + 1; // Precalc the right-hand side
+                for (int iY = tMinY; iY < tMaxY; iY++) { // Do placement from the bottom-up layer up. Maybe better on
                                                          // cache usage?
                     double yCalc = ((double) (iY - tY) * ySize);
                     yCalc = yCalc * yCalc; // (y*Sy)^2

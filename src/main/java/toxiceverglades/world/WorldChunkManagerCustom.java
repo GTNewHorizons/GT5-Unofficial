@@ -64,11 +64,11 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
             listToReuse = new float[width * length];
         }
 
-        int[] aint = this.biomeIndexLayer.getInts(x, z, width, length);
+        int[] ints = this.biomeIndexLayer.getInts(x, z, width, length);
 
         for (int i1 = 0; i1 < width * length; ++i1) {
             try {
-                float f = BiomeGenBase.getBiome(aint[i1])
+                float f = BiomeGenBase.getBiome(ints[i1])
                     .getIntRainfall() / 65536.0F;
 
                 if (f > 1.0F) {
@@ -113,11 +113,11 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
             par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
         }
 
-        int[] aint = this.genBiomes.getInts(par2, par3, par4, par5);
+        int[] ints = this.genBiomes.getInts(par2, par3, par4, par5);
 
         try {
             for (int i = 0; i < par4 * par5; ++i) {
-                par1ArrayOfBiomeGenBase[i] = BiomeGenBase.getBiome(aint[i]);
+                par1ArrayOfBiomeGenBase[i] = BiomeGenBase.getBiome(ints[i]);
             }
 
             return par1ArrayOfBiomeGenBase;
@@ -156,13 +156,13 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
         }
 
         if (cacheFlag && width == 16 && length == 16 && (x & 15) == 0 && (y & 15) == 0) {
-            BiomeGenBase[] abiomegenbase1 = this.biomeCache.getCachedBiomes(x, y);
-            System.arraycopy(abiomegenbase1, 0, listToReuse, 0, width * length);
+            BiomeGenBase[] genBases = this.biomeCache.getCachedBiomes(x, y);
+            System.arraycopy(genBases, 0, listToReuse, 0, width * length);
         } else {
-            int[] aint = this.biomeIndexLayer.getInts(x, y, width, length);
+            int[] ints = this.biomeIndexLayer.getInts(x, y, width, length);
 
             for (int i = 0; i < width * length; ++i) {
-                listToReuse[i] = BiomeGenBase.getBiome(aint[i]);
+                listToReuse[i] = BiomeGenBase.getBiome(ints[i]);
             }
         }
         return listToReuse;
@@ -180,11 +180,11 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
         int k1 = y + z >> 2;
         int l1 = j1 - l + 1;
         int i2 = k1 - i1 + 1;
-        int[] aint = this.genBiomes.getInts(l, i1, l1, i2);
+        int[] ints = this.genBiomes.getInts(l, i1, l1, i2);
 
         try {
             for (int j2 = 0; j2 < l1 * i2; ++j2) {
-                BiomeGenBase biomegenbase = BiomeGenBase.getBiome(aint[j2]);
+                BiomeGenBase biomegenbase = BiomeGenBase.getBiome(ints[j2]);
 
                 if (!par4List.contains(biomegenbase)) {
                     return false;
@@ -218,14 +218,14 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
         int k1 = p_150795_2_ + p_150795_3_ >> 2;
         int l1 = j1 - l + 1;
         int i2 = k1 - i1 + 1;
-        int[] aint = this.genBiomes.getInts(l, i1, l1, i2);
+        int[] ints = this.genBiomes.getInts(l, i1, l1, i2);
         ChunkPosition chunkposition = null;
         int j2 = 0;
 
         for (int k2 = 0; k2 < l1 * i2; ++k2) {
             int l2 = l + k2 % l1 << 2;
             int i3 = i1 + k2 / l1 << 2;
-            BiomeGenBase biomegenbase = BiomeGenBase.getBiome(aint[k2]);
+            BiomeGenBase biomegenbase = BiomeGenBase.getBiome(ints[k2]);
 
             if (p_150795_4_.contains(biomegenbase) && (chunkposition == null || p_150795_5_.nextInt(j2 + 1) == 0)) {
                 chunkposition = new ChunkPosition(l2, 0, i3);

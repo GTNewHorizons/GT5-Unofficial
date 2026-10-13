@@ -4177,7 +4177,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 .glow()
                 .build());
 
-        final ITexture playerDectectorCoverTexture = TextureFactory.of(
+        final ITexture playerDetectorCoverTexture = TextureFactory.of(
             TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
             TextureFactory.builder()
                 .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
@@ -4474,8 +4474,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         CoverRegistry.registerCover(
             ItemList.Cover_PlayerDetector.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], playerDectectorCoverTexture),
-            context -> new CoverPlayerDetector(context, playerDectectorCoverTexture));
+            TextureFactory.of(MACHINE_CASINGS[2][0], playerDetectorCoverTexture),
+            context -> new CoverPlayerDetector(context, playerDetectorCoverTexture));
         CoverRegistry.registerCover(
             ItemList.Cover_FluidStorageMonitor.get(1L),
             TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0),

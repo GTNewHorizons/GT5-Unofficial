@@ -439,7 +439,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         super.loadNBTData(aNBT);
         mPrimaryMode = aNBT.getInteger("mPrimaryMode");
         mSecondaryMode = aNBT.getInteger("mSecondaryMode");
-        for (int i = 0, isize = aNBT.getInteger("mStorageSize"); i < isize; i++)
+        for (int i = 0, invSize = aNBT.getInteger("mStorageSize"); i < invSize; i++)
             mStorage.add(new BeeSimulator(aNBT.getCompoundTag("mStorage." + i)));
         megaApiaryStorageVersion = aNBT.getInteger("MEGA_APIARY_STORAGE_VERSION");
         onStorageContentChanged(true);
@@ -846,9 +846,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             isValid = tag.getBoolean("isValid");
             drops = new ArrayList<>();
             specialDrops = new ArrayList<>();
-            for (int i = 0, isize = tag.getInteger("dropssize"); i < isize; i++)
+            for (int i = 0, dropSize = tag.getInteger("dropssize"); i < dropSize; i++)
                 drops.add(new BeeDrop(tag.getCompoundTag("drops" + i)));
-            for (int i = 0, isize = tag.getInteger("specialDropssize"); i < isize; i++)
+            for (int i = 0, specialSize = tag.getInteger("specialDropssize"); i < specialSize; i++)
                 specialDrops.add(new BeeDrop(tag.getCompoundTag("specialDrops" + i)));
             beeSpeed = tag.getFloat("beeSpeed");
             maxBeeCycles = tag.getFloat("maxBeeCycles");
@@ -892,16 +892,16 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             return tag;
         }
 
-        static final Map<ItemId, ItemStack> dropstacks = new HashMap<>();
+        static final Map<ItemId, ItemStack> dropStacks = new HashMap<>();
 
         public List<ItemStack> getDrops(final MTEMegaIndustrialApiary MTE, final double timePassed) {
             drops.forEach(d -> {
                 MTE.dropProgress.merge(d.id, d.getAmount(timePassed / 550d), Double::sum);
-                if (!dropstacks.containsKey(d.id)) dropstacks.put(d.id, d.stack);
+                if (!dropStacks.containsKey(d.id)) dropStacks.put(d.id, d.stack);
             });
             specialDrops.forEach(d -> {
                 MTE.dropProgress.merge(d.id, d.getAmount(timePassed / 550d), Double::sum);
-                if (!dropstacks.containsKey(d.id)) dropstacks.put(d.id, d.stack);
+                if (!dropStacks.containsKey(d.id)) dropStacks.put(d.id, d.stack);
             });
             List<ItemStack> currentDrops = new ArrayList<>();
             MTE.dropProgress.entrySet()
@@ -909,7 +909,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     double v = e.getValue();
                     while (v > 1.f) {
                         int size = Math.min((int) v, 64);
-                        ItemStack stack = dropstacks.get(e.getKey())
+                        ItemStack stack = dropStacks.get(e.getKey())
                             .copy();
                         stack.stackSize = size;
                         currentDrops.add(stack);

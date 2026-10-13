@@ -130,14 +130,14 @@ public abstract class MapGenRuins extends WorldGenerator {
         return this.setGTMachineBlock(worldObj, x, y, z, meta);
     }
 
-    protected void setGTMachineBlockWChance(World worldObj, int x, int y, int z, Random rand, int airchance, int meta) {
-        if (rand.nextInt(100) > airchance) {
+    protected void setGTMachineBlockWChance(World worldObj, int x, int y, int z, Random rand, int airChance, int meta) {
+        if (rand.nextInt(100) > airChance) {
             this.setGTMachineBlock(worldObj, x, y, z, meta);
         } else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
 
-    protected void setGTCablekWChance(World worldObj, int x, int y, int z, Random rand, int airchance, int meta) {
-        if (rand.nextInt(100) > airchance) {
+    protected void setGTCableWChance(World worldObj, int x, int y, int z, Random rand, int airChance, int meta) {
+        if (rand.nextInt(100) > airChance) {
             this.setGTCable(worldObj, x, y, z, meta);
         } else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
@@ -229,7 +229,7 @@ public abstract class MapGenRuins extends WorldGenerator {
             boolean useColor = rand.nextBoolean();
             byte set = 0;
             byte toSet = (byte) (rand.nextInt(Configuration.RossRuinMetas.maxTierRoss - tier) + 1);
-            int cablemeta = BWWorldGenUtil.getCable(secureRandom, tier);
+            int cableMeta = BWWorldGenUtil.getCable(secureRandom, tier);
             byte treeinaRow = 0;
             boolean lastset = rand.nextBoolean();
             for (int dx = -6; dx <= 6; dx++) {
@@ -337,10 +337,10 @@ public abstract class MapGenRuins extends WorldGenerator {
                                             owner,
                                             ForgeDirection.WEST);
                                     } else {
-                                        this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cablemeta);
+                                        this.setGTCableWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cableMeta);
                                     }
                                 } else if (dx < 3 && dx > -5 && dz == 4) {
-                                    this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cablemeta);
+                                    this.setGTCableWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cableMeta);
                                 } else if (dx < 3 && dx > -5 && dz == 3 && set < toSet) {
                                     if (!lastset || treeinaRow > 2) {
                                         int meta = BWWorldGenUtil.getMachine(secureRandom, tier);

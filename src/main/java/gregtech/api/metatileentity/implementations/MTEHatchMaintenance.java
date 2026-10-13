@@ -264,7 +264,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
         setMaintenanceSound((String) null, 1.0F, 1.0F);
     }
 
-    public boolean autoMaintainance() {
+    public boolean autoMaintenance() {
         return isRecipeInputEqual(true);
     }
 

@@ -308,7 +308,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                                 rng2.nextFloat());
                         }
 
-                        // no smallores either? do normal block
+                        // no small ores either? do normal block
                         if (!placedAnything) {
                             world.setBlock(
                                 x,
@@ -395,13 +395,13 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             if (entityChestInventory != null) {
                 // and if we're on the server...
                 if (!world.isRemote) {
-                    // Fill the chest with stuffz!
+                    // Fill the chest with stuffs!
                     WeightedRandomChestContent
                         .generateChestContents(rng, tRandomLoot, entityChestInventory, tNumLootItems);
                     LOGGER.trace("Loot chest successfully generated");
                 }
             } else {
-                // Something made a boo..
+                // Something made a boo...
                 LOGGER
                     .warn("Could not create lootchest at X[{}] Y[{}] Z[{}]. getTileEntity() returned null", cX, cY, cZ);
             }

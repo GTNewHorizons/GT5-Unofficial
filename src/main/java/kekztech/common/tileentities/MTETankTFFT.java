@@ -559,9 +559,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
                     if (isFluidSelected) {
                         if (isFluidLocked && !lockedFluidName.equals(sFluid.name())) continue;
                         if (!isFluidEmpty && !sFluid.contains(tFluid)) continue;
-                        FluidStack tofill = this.push(sFluid.get(remaining), true);
-                        tHatch.fill(tofill, true);
-                        notifyMultiHatch(false, tofill);
+                        FluidStack toFill = this.push(sFluid.get(remaining), true);
+                        tHatch.fill(toFill, true);
+                        notifyMultiHatch(false, toFill);
                     } else if (isFluidLocked) {
                         if (!isFluidEmpty && !lockedFluidName.equals(
                             tFluid.getFluid()
@@ -569,19 +569,19 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
                             continue;
 
                         FluidStack aFluid = FluidRegistry.getFluidStack(lockedFluidName, remaining);
-                        FluidStack tofill = this.push(aFluid, true);
-                        tHatch.fill(tofill, true);
-                        notifyMultiHatch(false, tofill);
+                        FluidStack toFill = this.push(aFluid, true);
+                        tHatch.fill(toFill, true);
+                        notifyMultiHatch(false, toFill);
                     } else if (isFluidEmpty) {
                         if (this.firstNotNull() != null) {
-                            FluidStack tofill = this.push(hatchCapacity, true);
-                            tHatch.fill(tofill, true);
-                            notifyMultiHatch(false, tofill);
+                            FluidStack toFill = this.push(hatchCapacity, true);
+                            tHatch.fill(toFill, true);
+                            notifyMultiHatch(false, toFill);
                         }
                     } else {
-                        FluidStack tofill = this.push(new FluidStack(tFluid, remaining), true);
-                        tHatch.fill(tofill, true);
-                        notifyMultiHatch(false, tofill);
+                        FluidStack toFill = this.push(new FluidStack(tFluid, remaining), true);
+                        tHatch.fill(toFill, true);
+                        notifyMultiHatch(false, toFill);
                     }
                 }
             }

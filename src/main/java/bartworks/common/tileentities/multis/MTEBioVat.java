@@ -375,7 +375,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     private void sendAllRequiredRendererPackets(int offsetX_L, int offsetY_L, int offsetZ_L, int offsetX_U,
         int offsetY_U, int offsetZ_U) {
         int height = this.reCalculateHeight();
-        if (this.mFluid != null && height > 1 && this.reCalculateFluidAmmount() > 0) {
+        if (this.mFluid != null && height > 1 && this.reCalculateFluidAmount() > 0) {
             for (int x = offsetX_L; x <= offsetX_U; x++) {
                 for (int y = offsetY_L; y <= offsetY_U; y++) {
                     for (int z = offsetZ_L; z <= offsetZ_U; z++) {
@@ -470,7 +470,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
         this.isVisibleFluid = true;
         this.height = this.reCalculateHeight();
-        if (this.mFluid != null && this.height > 1 && this.reCalculateFluidAmmount() > 0) {
+        if (this.mFluid != null && this.height > 1 && this.reCalculateFluidAmount() > 0) {
             for (int x = offsetX_L; x <= offsetX_U; x++) {
                 for (int y = offsetY_L; y <= offsetY_U; y++) {
                     for (int z = offsetZ_L; z <= offsetZ_U; z++) {
@@ -522,7 +522,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
         }
     }
 
-    private int reCalculateFluidAmmount() {
+    private int reCalculateFluidAmount() {
         return this.getStoredFluids()
             .stream()
             .mapToInt(fluidStack -> fluidStack.amount)
@@ -530,8 +530,8 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     }
 
     private int reCalculateHeight() {
-        return this.reCalculateFluidAmmount() > this.getCapacity() / 4 - 1
-            ? this.reCalculateFluidAmmount() >= this.getCapacity() / 2 ? 3 : 2
+        return this.reCalculateFluidAmount() > this.getCapacity() / 4 - 1
+            ? this.reCalculateFluidAmount() >= this.getCapacity() / 2 ? 3 : 2
             : 1;
     }
 
@@ -575,7 +575,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                 }
 
                 this.height = this.reCalculateHeight();
-                if (this.mFluid == null || this.height <= 1 || this.reCalculateFluidAmmount() <= 0) {
+                if (this.mFluid == null || this.height <= 1 || this.reCalculateFluidAmount() <= 0) {
                     return;
                 }
                 if (BWUtil.areStacksEqualOrNull(aStack, this.mStack)

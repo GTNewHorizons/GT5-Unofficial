@@ -19,7 +19,8 @@ import galacticgreg.schematics.SpaceSchematicFactory;
 import gregtech.commands.GTBaseCommand;
 
 /**
- * This command allows to export any structure that has been stored inside a spatial storage cell to a xml file that can
+ * This command allows exporting any structure that has been stored inside a spatial storage cell to an XML file that
+ * can
  * later be enabled for spawning in dimensions.
  */
 public class AEStorageCommand extends GTBaseCommand {
@@ -97,7 +98,7 @@ public class AEStorageCommand extends GTBaseCommand {
                                             lY,
                                             lZ);
                                         if (!tTEWarningSend) {
-                                            // Send a warning ingame, once per export command
+                                            // Send a warning in-game, once per export command
                                             tTEWarningSend = true;
                                             PlayerChatHelper.SendWarn(sender, "TileEntity states are not exported!");
                                         }

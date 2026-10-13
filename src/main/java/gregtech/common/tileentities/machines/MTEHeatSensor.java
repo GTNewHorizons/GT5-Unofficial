@@ -176,10 +176,10 @@ public class MTEHeatSensor extends MTEHatch {
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
 
         HeatSensorHatchElement(String name, IGTHatchAdder<IHeatProducer> adder,
-            Class<? extends IMetaTileEntity> mteClasse) {
+            Class<? extends IMetaTileEntity> mteClasses) {
             this.name = name;
             this.adder = adder;
-            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasse));
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
         }
 
         @Override

@@ -2104,7 +2104,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     /**
      * Shifts the machine Inventory index according to the change in Input/Output Slots. This is NOT done automatically.
-     * If you want to change slot count for a machine this method needs to be adapted. Currently this method only works
+     * If you want to change the slot count for a machine, this method needs to be adapted. Currently, this method only
+     * works
      * for MTEBasicMachine
      *
      * @param slotIndex  The original Inventory index

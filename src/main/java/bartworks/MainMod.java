@@ -187,7 +187,7 @@ public final class MainMod {
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent postinit) {
+    public void postInit(FMLPostInitializationEvent postInit) {
 
         RecipeLoader.run();
 

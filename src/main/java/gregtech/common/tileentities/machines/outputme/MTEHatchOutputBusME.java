@@ -185,7 +185,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public IMEInventory<IAEItemStack> getNetworkInvtory() throws GridAccessException {
+    public IMEInventory<IAEItemStack> getNetworkInventory() throws GridAccessException {
         return getProxy().getStorage()
             .getItemInventory();
     }

@@ -382,14 +382,14 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 if (aEntity.attackEntityFrom(tStats.getDamageSource(aPlayer, aEntity), tDamage)) {
                     if (aEntity instanceof EntityLivingBase)
                         aEntity.setFire(EnchantmentHelper.getFireAspectModifier(aPlayer) * 4);
-                    int tKnockcack = (aPlayer.isSprinting() ? 1 : 0) + (aEntity instanceof EntityLivingBase
+                    int knockback = (aPlayer.isSprinting() ? 1 : 0) + (aEntity instanceof EntityLivingBase
                         ? EnchantmentHelper.getKnockbackModifier(aPlayer, (EntityLivingBase) aEntity)
                         : 0);
-                    if (tKnockcack > 0) {
+                    if (knockback > 0) {
                         aEntity.addVelocity(
-                            -MathHelper.sin(aPlayer.rotationYaw * (float) Math.PI / 180.0F) * tKnockcack * 0.5F,
+                            -MathHelper.sin(aPlayer.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F,
                             0.1D,
-                            MathHelper.cos(aPlayer.rotationYaw * (float) Math.PI / 180.0F) * tKnockcack * 0.5F);
+                            MathHelper.cos(aPlayer.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
                         aPlayer.motionX *= 0.6D;
                         aPlayer.motionZ *= 0.6D;
                         aPlayer.setSprinting(false);
