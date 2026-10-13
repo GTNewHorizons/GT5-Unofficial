@@ -177,9 +177,9 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.durability",
-                getDurabilityFormatted(durability, this.durability) + EnumChatFormatting.RESET
+                getModifierFormatted(EnumChatFormatting.BLUE, this.durability, "", "") + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY,
-                getModifierFormatted(EnumChatFormatting.BLUE, this.durability, "", "")));
+                getDurabilityFormatted(durability, this.durability)));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.parallel_limit",
