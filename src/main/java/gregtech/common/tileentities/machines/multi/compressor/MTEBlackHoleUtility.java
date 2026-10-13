@@ -1,8 +1,10 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -10,6 +12,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
@@ -72,8 +75,39 @@ public class MTEBlackHoleUtility extends MTEHatch implements IDataCopyable {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        openGui(aPlayer);
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.black_hole_utility.invalid"));
+            return false;
+        }
+
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.black_hole_utility.loaded"));
         return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            return;
+        }
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return;
+        }
+
+        dataStick.stackTagCompound = getCopiedData(aPlayer);
+        dataStick.setStackDisplayName("Black Hole Utility Hatch Configuration");
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.black_hole_utility.saved"));
     }
 
     // 1 -> static
