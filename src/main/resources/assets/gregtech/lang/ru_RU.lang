@@ -3771,6 +3771,7 @@ gt.circuitcomponent.sheet.processed.eternity=Катушка обёртки из 
 
 gt.circuitcomponent.casing.processed.basicmainframe=Корпус схемы базового мейнфрейма
 gt.circuitcomponent.casing.processed.advancedmainframe=Корпус схемы продвинутого мейнфрейма
+gt.circuitcomponent.casing.processed.pico=Корпус пикосхемы
 gt.circuitcomponent.casing.processed.quantum=Корпус квантовой схемы
 gt.circuitcomponent.casing.processed.planck=Корпус схемы планковского масштаба
 

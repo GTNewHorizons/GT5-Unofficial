@@ -206,7 +206,7 @@ public enum CircuitComponent {
         "gt.circuitcomponent.board.optical",
         () -> ItemList.Circuit_Board_Optical.get(1)),
     BoardExotic(
-        407, 
+        404,
         "gt.circuitcomponent.board.exotic",
         () -> ItemList.Circuit_Board_Exotic.get(1)),
     BioProcessingUnit(
@@ -217,6 +217,7 @@ public enum CircuitComponent {
         406,
         "gt.circuitcomponent.livingbiochip",
         () -> ItemList.Circuit_Parts_Chip_Bioware.get(1)),
+    BoardPico(407, "gt.circuitcomponent.processed.board.pico", null, true),
     BoardQuantum(408, "gt.circuitcomponent.processed.board.quantum", null, true),
     BoardPlanck(409, "gt.circuitcomponent.processed.board.planck", null, true),
 
@@ -224,10 +225,11 @@ public enum CircuitComponent {
     ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", () -> BoardWetwareLifesupport, true),
     ProcessedBoardBioMutated(502, "gt.circuitcomponent.processed.board.biomutated", () -> BoardBioMutated, true),
     ProcessedBoardOptical(503, "gt.circuitcomponent.processed.board.optical", () -> BoardOptical, true),
-    ProcessedBoardExotic(508, "gt.circuitcomponent.processed.board.exotic",()-> BoardExotic,true),
+    ProcessedBoardExotic(504, "gt.circuitcomponent.processed.board.exotic",()-> BoardExotic,true),
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
     UnattunedCircuitry(507,"gt.circuitcomponent.unattunedcircuitry", null, true),
+    CleansedBoardPico(508, "gt.circuitcomponent.processed.board.cleansedpico", () -> BoardPico, true),
     CleansedBoardQuantum(509, "gt.circuitcomponent.processed.board.cleansedquantum", () -> BoardQuantum, true),
     CleansedBoardPlanck(510, "gt.circuitcomponent.processed.board.cleansedplanck", () -> BoardPlanck, true),
 
@@ -445,6 +447,7 @@ public enum CircuitComponent {
     // IDs: 1800-1899
     ProcessedBasicMainframeCasing(1800, "gt.circuitcomponent.casing.processed.basicmainframe", null, true),
     ProcessedAdvancedMainframeCasing(1801, "gt.circuitcomponent.casing.processed.advancedmainframe", null, true),
+    ProcessedPicoCircuitCasing(1802, "gt.circuitcomponent.casing.processed.pico", null, true),
     ProcessedQuantumCircuitCasing(1803, "gt.circuitcomponent.casing.processed.quantum", null, true),
     ProcessedPlanckCircuitCasing(1804, "gt.circuitcomponent.casing.processed.planck", null, true),
     ProcessedCoiledThermalSuperconductor(1805, "gt.circuitcomponent.planck.processed.coiledthermalsuperconductor", null, true),
@@ -453,10 +456,14 @@ public enum CircuitComponent {
     ProcessedCircuitOpticalComputer(1808, "gt.circuitcomponent.circuit.processed.opticalcomputer", CircuitCalibration.OPTICAL, 0.5f),
     ProcessedCircuitOpticalMainframe(1809, "gt.circuitcomponent.circuit.processed.opticalmainframe", CircuitCalibration.OPTICAL, 1.0f),
 
-    //Quantum Chain
+    // Pico Chain
+    OpticalMainframeRack(1810, "gt.circuitcomponent.pico.processed.opticalmainframerack", null, true),
+    PicoCPU(1811, "gt.circuitcomponent.pico.processed.picocpu", null, true),
+
+    // Quantum Chain
     CompressionResidue(1812, "gt.circuitcomponent.quantum.processed.compressionresidue", null, true),
-    OrganizedExoticMainframe(1813, "gt.circuitcomponent.quantum.processed.organizedexoticmainframe", null, true),
-    ExoticMainframeRack(1814, "gt.circuitcomponent.quantum.processed.exoticmainframerack", null, true),
+    OrganizedPicoCircuit(1813, "gt.circuitcomponent.quantum.processed.organizedpicocircuit", null, true),
+    PicoCircuitRack(1814, "gt.circuitcomponent.quantum.processed.picocircuitrack", null, true),
     QuantumCPU(1815, "gt.circuitcomponent.quantum.processed.quantumcpu", null, true),
 
     DisorderlySpool(1816, "gt.circuitcomponent.quantum.processed.disorderlyspool", null, true),
@@ -492,6 +499,10 @@ public enum CircuitComponent {
 
     CalabiYauManifold(1837, "gt.circuitcomponent.planck.processed.calabiyaumanifold", () -> ItemList.CalabiYauManifold.get(1)),
 
+    // Exotic Chain
+    OrganizedExoticMainframe(1838, "gt.circuitcomponent.quantum.processed.organizedexoticmainframe", null, true),
+    ExoticMainframeRack(1839, "gt.circuitcomponent.quantum.processed.exoticmainframerack", null, true),
+
     // Bolts and other small components
     // IDs: 1900-1999 CC, 2000-2099 PC
     BoltEnrichedHolmium(
@@ -522,6 +533,14 @@ public enum CircuitComponent {
         1906,
         "gt.circuitcomponent.plate.metastableoganesson",
         () -> GGMaterial.metastableOganesson.get(OrePrefixes.plate, 1)),
+    ScrewAstralTitanium(
+        1907,
+        "gt.circuitcomponent.screw.astraltitanium",
+        () -> MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getScrew(1)),
+    CasingUEVSuperconductor(
+        1908,
+        "gt.circuitcomponent.casing.uevsuperconductor",
+        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.SuperconductorUEVBase, 1)),
     ScrewSixPhasedCopper(
         1909,
         "gt.circuitcomponent.screw.sixphasedcopper",
@@ -578,14 +597,18 @@ public enum CircuitComponent {
         1922,
         "gt.circuitcomponent.casing.kevlar",
         () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Kevlar, 1)),
-    ScrewEternity(
-        1925,
-        "gt.circuitcomponent.screw.eternity",
-        () -> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
+    ScrewEnrichedNaquadahAlloy(
+        1923,
+        "gt.circuitcomponent.screw.enrichednaquadahalloy",
+        () -> GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.screw, 1)),
     ScrewQuantum(
         1924,
         "gt.circuitcomponent.screw.quantum",
         () -> MaterialsAlloy.QUANTUM.getScrew(1)),
+    ScrewEternity(
+        1925,
+        "gt.circuitcomponent.screw.eternity",
+        () -> GTOreDictUnificator.get(OrePrefixes.screw, Materials.Eternity, 1)),
     BoltRhugnor(
         1926,
         "gt.circuitcomponent.bolt.rhugnor",
@@ -692,6 +715,10 @@ public enum CircuitComponent {
         2115,
         "gt.circuitcomponent.opticalmainframe",
         () -> ItemList.Circuit_OpticalMainframe.get(1), CircuitCalibration.OPTICAL, 1),
+    PicoCircuit(
+        2116,
+        "gt.circuitcomponent.picocircuit",
+        () -> getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL, 1),
     QuantumCircuit(
         2117,
         "gt.circuitcomponent.quantumcircuit",
