@@ -29,6 +29,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -222,7 +224,7 @@ public class ScannerHelper {
             if (tileEntity instanceof IInventory inv) {
                 nameKey = inv.getInventoryName();
             }
-            if (nameKey == null || nameKey.isEmpty()) {
+            if (StringUtils.isEmpty(nameKey)) {
                 nameKey = block.getUnlocalizedName() + ".name";
             }
             IChatComponent nameComp = new ChatComponentTranslation(nameKey)
