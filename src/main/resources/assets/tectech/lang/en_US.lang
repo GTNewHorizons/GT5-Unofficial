@@ -20,6 +20,7 @@ tile.reactorSim.desc.1=Explodes, but not as much...
 
 gt.spacetime_compression_field_generator.name=Spacetime Compression Field Generator
 gt.time_acceleration_field_generator.name=Time Dilation Field Generator
+gt.stabilisation_field_generator.name=Stabilisation Field Generator
 
 tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
 
