@@ -2736,7 +2736,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
         // disables progress time display if recipe text is hidden
-        if(this.showRecipeTextInGUI()) {
+        if (this.showRecipeTextInGUI()) {
             currentTip.add(
                 GTWaila.getMachineProgressString(
                     isActive,
