@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import tectech.Reference;
+import tectech.TecTech;
 
 public class EnderWorldSavedData extends WorldSavedData {
 
@@ -53,23 +54,23 @@ public class EnderWorldSavedData extends WorldSavedData {
                     byte[] bytes = nbtTagCompound.getByteArray(ENDER_LIQUID_TAG_LINK);
 
                     try (InputStream is = new ByteArrayInputStream(bytes);
-                        ObjectInputStream objectStream = new MigratingObjectInputStream(is);) {
+                        ObjectInputStream objectStream = new MigratingObjectInputStream(is)) {
                         EnderLiquidTagLink = (Map<EnderLinkTag, EnderFluidContainer>) objectStream.readObject();
                     }
                 } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("ENDER_LIQUID_TAG_LINK LOAD FAILED");
-                    e.printStackTrace();
+                    TecTech.LOGGER.error("ENDER_LIQUID_TAG_LINK LOAD FAILED");
+                    TecTech.LOGGER.error(e);
                 }
 
                 try {
                     byte[] bytes = nbtTagCompound.getByteArray(ENDER_LIQUID_TANK_LINK);
                     try (InputStream is = new ByteArrayInputStream(bytes);
-                        ObjectInputStream objectStream = new MigratingObjectInputStream(is);) {
+                        ObjectInputStream objectStream = new MigratingObjectInputStream(is)) {
                         EnderLiquidTankLink = (Map<EnderLinkTank, EnderLinkTag>) objectStream.readObject();
                     }
                 } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("ENDER_LIQUID_TANK_LINK LOAD FAILED");
-                    e.printStackTrace();
+                    TecTech.LOGGER.error("ENDER_LIQUID_TANK_LINK LOAD FAILED");
+                    TecTech.LOGGER.error(e);
                 }
                 break;
             }

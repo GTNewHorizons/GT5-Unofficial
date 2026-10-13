@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
@@ -7,7 +8,6 @@ import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 
@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -43,7 +45,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.IntFraction;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -55,7 +56,6 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import it.unimi.dsi.fastutil.Pair;
 import tectech.mechanics.boseEinsteinCondensate.BECInventory;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
-import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECStorageGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchCondensateDetector;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -64,6 +64,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.LongParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implements BECInventory, IParametrized {
 
     private final CondensateList storedCondensate = new CondensateList();
@@ -96,9 +97,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @Override
     public IStructureDefinition<MTEBECStorage> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
+            .withHatches(1, 42, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
@@ -141,31 +142,31 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECStorage> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Storage, Entangled Condensate Storage")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-storage"));
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_storage"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-storage"))
+            .addSupportAny();
 
-        tt.beginStructureBlock();
-        tt.addController(GTUtility.translate("GT5U.chat.bec-storage-controller-pos"));
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
-        tt.addAllCasingInfo(
-            Arrays.asList(
-                SuperconductivePlasmaEnergyConduit,
-                ElectromagneticallyIsolatedCasing,
-                FineStructureConstantManipulator,
-                ConflictInducementCasing,
-                PeaceEnforcementCasing,
-                CondensateTransformativeCoil,
-                CondensateGuidanceCoil,
-                ElectromagneticWaveguide),
-            null);
-
-        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
-
+        tt.beginStructureBlock(45, 17, 45, true)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-storage.controller-pos"))
+            .addCasing("1236", ElectromagneticWaveguide.getLocalizedName(), false)
+            .addCasing("1045", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
+            .addCasing("896", ConflictInducementCasing.getLocalizedName(), false)
+            .addCasing("568", PeaceEnforcementCasing.getLocalizedName(), false)
+            .addCasing("508", CondensateGuidanceCoil.getLocalizedName(), false)
+            .addCasing("439-442", FineStructureConstantManipulator.getLocalizedName(), false)
+            .addCasing("322-343", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("292", CondensateTransformativeCoil.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
+            .addMiscHatch("1-4", "Bose-Einstein Condensate Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.bec-hatch-pos"), 2)
+            .addMiscHatch("0+", "Bose-Einstein Condensate Detector Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
+            .toolTipFinisher(GTAuthors.AuthorPineapple);
+        // spotless:on
         return tt;
     }
 
     @Override
-    protected ITexture getCasingTexture() {
+    public ITexture getCasingTexture() {
         return FineStructureConstantManipulator.getCasingTexture();
     }
 
@@ -212,9 +213,14 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         return sum;
     }
 
+    public void refreshContentForHatch() {
+        contentsChanged = true;
+    }
+
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
+        contentsChanged = true;
         storedCondensate.clear();
     }
 
@@ -237,6 +243,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public void addCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
             // Should be cleared by stopMachine, but just to be sure let's do it again here
+            contentsChanged = true;
             storedCondensate.clear();
             return;
         }
@@ -251,6 +258,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public boolean removeCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
             // Should be cleared by stopMachine, but just to be sure let's do it again here
+            contentsChanged = true;
             storedCondensate.clear();
             return false;
         }
@@ -292,7 +300,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
 
     @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive()) {
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
             if (torus == null) {
                 torus = new GTSoundLoop(
                     SoundResource.GT_MACHINES_BEC_GENERATOR.resourceLocation,
@@ -338,9 +346,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                     .playSound(pillar);
             }
         } else {
-            if (pillar != null) pillar.stop();
-            if (torus != null) torus.stop();
-            if (torusFar != null) torusFar.stop();
+            if (pillar != null) pillar.setFadeMe(true);
+            if (torus != null) torus.setFadeMe(true);
+            if (torusFar != null) torusFar.setFadeMe(true);
 
             pillar = null;
             torus = null;
@@ -366,9 +374,15 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
             .collect(Collectors.toList());
     }
 
-    private static class DetectorHatchElement implements IHatchElement<MTEBECStorage> {
+    private enum DetectorHatchElement implements IHatchElement<MTEBECStorage> {
 
-        public static final DetectorHatchElement INSTANCE = new DetectorHatchElement();
+        INSTANCE("GT5U.MBTT.CondensateDetectorHatch");
+
+        private final String name;
+
+        DetectorHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -383,7 +397,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 if (imte instanceof MTEHatchCondensateDetector hatch) {
                     hatch.updateTexture(texture);
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.bindBECStorage(self);
                     self.condensateDetectors.add(hatch);
+                    self.contentsChanged = true;
                     return true;
                 } else {
                     return false;
@@ -392,13 +408,13 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         }
 
         @Override
-        public String name() {
-            return "DetectorHatchElement";
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
         }
 
         @Override
-        public String getDisplayName() {
-            return CustomItemList.Hatch_BEC_CondensateDetector.getDisplayName();
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override

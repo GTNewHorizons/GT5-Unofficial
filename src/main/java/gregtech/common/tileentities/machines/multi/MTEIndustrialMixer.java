@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -20,14 +21,19 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -39,15 +45,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMixer>
@@ -61,8 +66,8 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     private static final int OFFSET_Z = 0;
 
     private static final int PARALLEL_PER_TIER = 8;
-    private static final float SPEED_INCREASE_TIER = 1f;
-    private static final float SPEED_BASIC = 1f;
+    private static final double SPEED_INCREASE_TIER = 1.0D;
+    private static final double SPEED_BASIC = 1.0D;
 
     private int glassTier = -1;
 
@@ -176,35 +181,36 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Mixer, IMM")
-            .addVoltageParallelInfo(8)
-            .addStaticSpeedInfo(SPEED_BASIC)
-            .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
-            .addStaticEuEffInfo(1)
-            .addInfo(
-                TIER_COLORS[VoltageIndex.UIV] + "UIV+ "
-                    + EnumChatFormatting.GRAY
-                    + "glass allows for single multi-amp energy hatch")
-            .addMultiAmpHatchInfo()
+            .addVoltageParallelInfo(PARALLEL_PER_TIER)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-mixer"),
+                ImmutableMap.<String, Object>builder()
+                    .put("speed_increase", formatNumber(SPEED_INCREASE_TIER * 100))
+                    .put("eu_eff", 100)
+                    .put("tier", TIER_COLORS[VoltageIndex.UIV] + GTValues.VN[VoltageIndex.UIV])
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Mixer Casing", 5, false)
-            .addCasingInfoExactly("Titanium Turbine Casing", 5, false)
-            .addCasingInfoExactly("Any Tiered Glass", 30, false)
-            .addCasingInfoExactly("Tungsten Sheetmetal", 24, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addCasing("5-45", "Mixer Casing", false)
+            .addCasing("30", "Any Tiered Glass", false)
+            .addCasing("24", "Tungsten Sheetmetal", false)
+            .addCasing("10", "Item Pipe Casing", true)
+            .addCasing("5", "Titanium Turbine Casing", false)
+            .addEnergyHatch("1+", "Any mixer casing", 1)
+            .addMaintenanceHatch("1", "Any mixer casing", 1)
+            .addMufflerHatch("1", "Any mixer casing", 1)
+            .addInputAny("1+", "Any mixer casing", 1)
+            .addOutputAny("1+", "Any mixer casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Shiray")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -220,7 +226,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     }
 
     public double getSpeedBonus() {
-        return 1F / (SPEED_INCREASE_TIER + (itemPipeTier + 1));
+        return 1.0D / (SPEED_INCREASE_TIER + (itemPipeTier + 1));
     }
 
     private int casingAmount;
@@ -288,7 +294,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.mixerNonCellRecipes;
+        return RecipeMaps.mixerNonCellRecipes;
     }
 
     @Override
@@ -300,18 +306,14 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_MIXER;
     }
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

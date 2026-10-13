@@ -128,31 +128,26 @@ public abstract class HTGRItem extends Item {
 
     public static ItemStack createTRISOMixture(Materials material) {
         addKnownMaterial(material);
-        ItemStack stack = getItemWithMaterial(material, TRISO_MIX);
-        return stack;
+        return getItemWithMaterial(material, TRISO_MIX);
     }
 
     public static ItemStack createIncompleteBISOFuel(Materials material) {
         addKnownMaterial(material);
-        ItemStack stack = getItemWithMaterial(material, INCOMPLETE_BISO);
-        return stack;
+        return getItemWithMaterial(material, INCOMPLETE_BISO);
     }
 
     public static ItemStack createIncompleteTRISOFuel(Materials material) {
         addKnownMaterial(material);
-        ItemStack stack = getItemWithMaterial(material, INCOMPLETE_TRISO);
-        return stack;
+        return getItemWithMaterial(material, INCOMPLETE_TRISO);
     }
 
     public static ItemStack createTRISOFuel(Materials material) {
         addKnownMaterial(material);
-        ItemStack stack = getItemWithMaterial(material, TRISO);
-        return stack;
+        return getItemWithMaterial(material, TRISO);
     }
 
     public static ItemStack createBurnedTRISOFuel(Materials material) {
         addKnownMaterial(material);
-        ItemStack stack = getItemWithMaterial(material, BURNED_TRISO);
-        return stack;
+        return getItemWithMaterial(material, BURNED_TRISO);
     }
 }

@@ -17,6 +17,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.StringUtils;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
@@ -130,7 +131,7 @@ public class MaterialUtils {
                 return M;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return null;
     }

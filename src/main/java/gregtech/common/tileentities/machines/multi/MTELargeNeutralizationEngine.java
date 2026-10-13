@@ -64,10 +64,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -363,17 +361,19 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     "Ultimate Static Machine Casing",
                     700,
                     formatNumber(2500000)))
+            .addSupportAny()
             .beginStructureBlock(11, 7, 3, true)
-            .addController("Top center")
-            .addCasingInfoRange("Tiered Casing", 30, 46, false)
-            .addCasingInfoExactly("Polytetrafluoroethylene Frame Box", 34, false)
-            .addCasingInfoExactly("PTFE Pipe Casing", 15, false)
-            .addInputBus("Any Tiered Casing", 1)
-            .addInputHatch("Any Tiered Casing", 1)
-            .addMaintenanceHatch("Any Tiered Casing", 1)
-            .addDynamoHatch("Any Tiered Casing", 1)
-            .addOtherStructurePart("Toxic Residue Sensor Hatch", "Any Tiered Casing")
-            .addTecTechHatchInfo()
+            .addController("Top center, 6th layer")
+            .addCasing("30-43", "Machine Casing", true)
+            .addCasing("34", "PTFE Frame Box", false)
+            .addCasing("15", "PTFE Pipe Casing", false)
+            .addMiscHatch("0+", "Toxic Residue Sensor Hatch", "Any machine casing", 1)
+            .addDynamoHatch("1+", "Any machine casing", 1)
+            .addMaintenanceHatch("1", "Any machine casing", 1)
+            .addInputBus("0+", "Any machine casing", 1)
+            .addInputHatch("1+", "Any machine casing", 1)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher();
         return tt;
     }
@@ -389,11 +389,10 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             return;
         }
         checkCasingMin(errors, mCasing, 30);
+        checkHasAnyDynamo(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
-        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
-            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
-        }
+
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         updateHatchTexture();
         updateResidueCapacity();
@@ -605,6 +604,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         this.residueIncrease = 0;
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
         for (MTEToxicResidueSensor toxicResidueSensorHatch : sensorHatches) { // done in onPostTick so it can update
                                                                               // even when multi is off
             toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, residueCapacity);
@@ -694,7 +694,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private enum SpecialHatchElement implements IHatchElement<MTELargeNeutralizationEngine> {
 
-        ToxicResidueSensor(MTELargeNeutralizationEngine::addSensorHatchToMachineList, MTEToxicResidueSensor.class) {
+        ToxicResidueSensor("GT5U.MBTT.ToxicResidueSensorHatch",
+            MTELargeNeutralizationEngine::addSensorHatchToMachineList, MTEToxicResidueSensor.class) {
 
             @Override
             public long count(MTELargeNeutralizationEngine gtMetaTileEntityLargeNeutralizationEngine) {
@@ -702,12 +703,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTELargeNeutralizationEngine> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTELargeNeutralizationEngine> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTELargeNeutralizationEngine> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -719,6 +722,16 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
         public IGTHatchAdder<? super MTELargeNeutralizationEngine> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

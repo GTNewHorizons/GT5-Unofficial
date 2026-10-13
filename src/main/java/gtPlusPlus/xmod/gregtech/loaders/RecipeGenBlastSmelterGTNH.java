@@ -19,7 +19,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemIntegratedCircuit;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class RecipeGenBlastSmelterGTNH {
@@ -104,7 +103,7 @@ public class RecipeGenBlastSmelterGTNH {
             }
         }
 
-        GTRecipe[] recipeCandidates = GTPPRecipeMaps.alloyBlastSmelterRecipes.getAllRecipes()
+        GTRecipe[] recipeCandidates = RecipeMaps.alloyBlastSmelterRecipes.getAllRecipes()
             .stream()
             .filter(r -> r.mOutputs.length == 0 && r.mFluidOutputs.length == 1)
             .toArray(GTRecipe[]::new);
@@ -182,13 +181,13 @@ public class RecipeGenBlastSmelterGTNH {
                 .eut(voltage)
                 .recipeCategory(
                     baseItemCount == 1 ? RecipeCategories.absNonAlloyRecipes
-                        : GTPPRecipeMaps.alloyBlastSmelterRecipes.getDefaultRecipeCategory());
+                        : RecipeMaps.alloyBlastSmelterRecipes.getDefaultRecipeCategory());
 
             if (!circuitFound) {
                 builder.circuit(inputs.length);
             }
 
-            builder.addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
+            builder.addTo(RecipeMaps.alloyBlastSmelterRecipes);
         }
         mCachedIngotToFluidRegistry = null;
         mCachedHotToColdRegistry = null;

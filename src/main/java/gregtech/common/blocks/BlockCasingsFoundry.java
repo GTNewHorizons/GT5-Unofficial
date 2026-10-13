@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -30,6 +31,9 @@ import gregtech.common.render.GTRendererBlock;
  */
 public class BlockCasingsFoundry extends BlockCasingsAbstract
     implements IBlockWithActiveOffset, IBlockWithClientMeta, IBlockWithTextures {
+
+    private final AtomicReferenceArray<ITexture[][]> textureCache = new AtomicReferenceArray<>(ACTIVE_OFFSET * 2);
+    private volatile ITexture[][] inventoryCollapserTextures;
 
     public BlockCasingsFoundry() {
         super(ItemCasingsFoundry.class, "gt.foundrycasings", MaterialCasings.INSTANCE, 16);
@@ -134,6 +138,10 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
 
     @Override
     public @Nullable ITexture[][] getTextures(int metadata) {
+        final int cacheIndex = Math.floorMod(metadata, ACTIVE_OFFSET) + (metadata >= ACTIVE_OFFSET ? ACTIVE_OFFSET : 0);
+        ITexture[][] cached = textureCache.get(cacheIndex);
+        if (cached != null) return cached;
+
         List<ITexture> textures = new ArrayList<>();
         List<ITexture> topTextures = new ArrayList<>();
         IIconContainer texture = switch (metadata % ACTIVE_OFFSET) {
@@ -181,17 +189,24 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
         topTextures.add(TextureFactory.of(topTexture));
         ITexture[] standardLayers = textures.toArray(new ITexture[0]);
         ITexture[] topLayers = topTextures.toArray(new ITexture[0]);
-        return new ITexture[][] { topLayers, topLayers, standardLayers, standardLayers, standardLayers,
+        cached = new ITexture[][] { topLayers, topLayers, standardLayers, standardLayers, standardLayers,
             standardLayers };
+        if (textureCache.compareAndSet(cacheIndex, null, cached)) return cached;
+        return textureCache.get(cacheIndex);
     }
 
     @Override
     public @Nullable ITexture[][] getInventoryTextures(int meta) {
         if (meta % ACTIVE_OFFSET == 4) {
+            ITexture[][] cached = inventoryCollapserTextures;
+            if (cached != null) return cached;
+
             ITexture[] standard = new ITexture[] { TextureFactory.builder()
                 .addIcon(Textures.BlockIcons.EXOFOUNDRY_UNIVERSAL_COLLAPSER_ACTIVE)
                 .build() };
-            return new ITexture[][] { standard, standard, standard, standard, standard, standard };
+            cached = new ITexture[][] { standard, standard, standard, standard, standard, standard };
+            inventoryCollapserTextures = cached;
+            return cached;
         } else {
             return getTextures(meta);
         }

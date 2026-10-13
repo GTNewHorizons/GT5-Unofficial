@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
@@ -24,12 +25,14 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,9 +43,11 @@ import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IOutputBus {
+@IMetaTileEntity.SkipGenerateName
+public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IOutputBus, ISmartInputHatch {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -72,6 +77,12 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
     public MTEHatchOutputBus(String name, int tier, int slots, String[] description, ITexture[][][] textures) {
         super(name, tier, slots, description, textures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.output_bus.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -105,7 +116,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
             openGui(aPlayer);
             return true;
         }
@@ -128,7 +139,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
             return;
         }
         final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
@@ -249,6 +260,12 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
                 GTUtility.cleanInventory(this);
             }
         }
+        // A drained output bus frees up space, which can unblock a recipe that failed with ITEM_OUTPUT_FULL. This must
+        // run AFTER the auto-eject above: that eject marks the inventory dirty within this same tick, and the dirty
+        // flag is cleared at the end of the tick, so a self-eject that frees space would otherwise never push a check.
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
+        }
     }
 
     @Override
@@ -293,8 +310,18 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
     }
 
     @Override
-    public boolean acceptsItemLock() {
+    public boolean acceptsConfigCopy() {
         return true;
+    }
+
+    @OCMethod
+    public ItemStack getFilter() {
+        return lockedItem == null ? null : lockedItem.copy();
+    }
+
+    @OCMethod
+    public void setFilter(@Nullable ItemStack aStack) {
+        setLockedItem(aStack);
     }
 
     @Override
@@ -368,7 +395,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         }
 
         @Override
-        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack, long totalPerParallel, long perParallel) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             int maxStackSize = getStackSizeLimit(-1, stack);
@@ -405,7 +432,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             for (int i = 0, invLength = inventory.length; i < invLength; i++) {

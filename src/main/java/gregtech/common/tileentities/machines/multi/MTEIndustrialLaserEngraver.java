@@ -20,12 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -64,6 +66,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<MTEIndustrialLaserEngraver>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -91,7 +94,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             buildHatchAdder(MTEIndustrialLaserEngraver.class).anyOf(LaserSource)
                 .adder(MTEIndustrialLaserEngraver::addLaserSource)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
-                .hint(3)
+                .hint(2)
                 .build())
         .build();
 
@@ -219,39 +222,31 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Laser Engraver, HILE")
-            .addStaticSpeedInfo(3.5F)
-            .addStaticEuEffInfo(0.8F)
-            .addInfo("Laser source hatch determines maximum recipe tier and parallels")
-            .addInfo("Recipe tier and overclocks limited to laser source tier + 1")
-            .addInfo(
-                "When using a " + GTValues.TIER_COLORS[VoltageIndex.UEV]
-                    + GTValues.VN[VoltageIndex.UEV]
-                    + EnumChatFormatting.GRAY
-                    + "+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches")
-            .addInfo("Parallels equal to the cube root of laser source amperage input")
-            .addInfo(
-                EnumChatFormatting.WHITE + "Glass "
-                    + EnumChatFormatting.GRAY
-                    + "tier determines maximum laser source tier")
-            .addInfo("Use screwdriver to disable laser rendering")
-            .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-laser-engraver"),
+                ImmutableMap.<String, Object>builder()
+                    .put("speed", 350)
+                    .put("eu_eff", 80)
+                    .put("tier", GTValues.TIER_COLORS[VoltageIndex.UEV] + GTValues.VN[VoltageIndex.UEV])
+                    .build())
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Laser Containment Casing", 35, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
-            .addCasingInfoExactly("Any Tiered Glass", 3, true)
-            .addOtherStructurePart("Laser Resistant Plate", "x1")
-            .addOtherStructurePart(StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "x1", 3)
-            .addInputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("35-58", "Laser Containment Casing", false)
+            .addCasing("9", "Tungstensteel Frame Box", false)
+            .addCasing("3", "Any Tiered Glass", true)
+            .addCasing("1", "Laser Resistant Plate", false)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "Casing above glass", 2)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -306,8 +301,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             checkHasEnergyHatch(errors);
         }
         checkHasMaintenanceHatch(errors);
-        checkHasAnyOutput(errors);
         checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
 
         if (glassTier < laserSource.mTier) {
             errors.add(StructureErrors.glassTierNotEnough(laserSource.mTier));
@@ -365,8 +360,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 if (renderer != null) renderer.setShouldRender(false);
                 return super.clear();
             }
-        }.setSpeedBonus(1F / 3.5F)
-            .setEuModifier(0.8F)
+        }.setSpeedBonus(1.0D / 3.5D)
+            .setEuModifier(0.8D)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -420,18 +415,15 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("tierName", tierName);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.maxtier") + ": "
                 + EnumChatFormatting.WHITE
                 + tag.getString("tierName")

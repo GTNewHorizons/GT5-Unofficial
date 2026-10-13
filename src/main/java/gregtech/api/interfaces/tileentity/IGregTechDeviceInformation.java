@@ -1,5 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -9,17 +11,12 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import gregtech.api.enums.GTValues;
 
 /**
  * You are allowed to include this File in your Download, as i will not change it.
  */
 public interface IGregTechDeviceInformation {
-
-    Logger LOG = LogManager.getLogger(IGregTechDeviceInformation.class);
 
     /**
      * Is this even a TileEntity which allows GregTech Sensor Kits? I need things like this Function for
@@ -99,9 +96,12 @@ public interface IGregTechDeviceInformation {
     static IChatComponent toComponent(String encoded) {
         if (encoded == null) return new ChatComponentTranslation("");
         String[] parts = encoded.split("\\\\\\\\");
-        parts[0] = parts[0].replaceAll("%", "%%");
+        parts[0] = parts[0].replace("%", "%%");
         if (parts.length == 1) return new ChatComponentTranslation(parts[0]);
-        Object[] args = Arrays.copyOfRange(parts, 1, parts.length);
+        Object[] args = new Object[parts.length - 1];
+        // we have to rely on the native array copy here, as Arrays.copyOfRange(String[],...) results in a String[]
+        // and ChatComponentTranslation can't be assigned to a String
+        System.arraycopy(parts, 1, args, 0, parts.length - 1);
         for (int i = 0; i < args.length; i++) {
             String arg = (String) args[i];
             if (arg != null && !arg.isEmpty() && arg.charAt(0) == TRANSLATABLE_MARKER) {
@@ -133,7 +133,8 @@ public interface IGregTechDeviceInformation {
         try {
             return String.format(translated, (Object[]) args);
         } catch (Exception e) {
-            LOG.warn("IGregTechDeviceInformation.decode: failed to format key '{}': {}", parts[0], e.getMessage());
+            GT_FML_LOGGER
+                .warn("IGregTechDeviceInformation.decode: failed to format key '{}': {}", parts[0], e.getMessage());
             StringBuilder sb = new StringBuilder(translated);
             for (int i = 1; i < parts.length; i++) sb.append(" ")
                 .append(parts[i]);

@@ -20,6 +20,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -50,8 +52,8 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
     private static final int OFFSET_Z = 0;
 
     private static final int PARALLEL_PER_TIER = 4;
-    private static final float SPEED_INCREASE_TIER = 0.5f;
-    private static final float EU_EFFICIENCY = 0.75f;
+    private static final double SPEED_INCREASE_TIER = 0.5D;
+    private static final double EU_EFFICIENCY = 0.75D;
 
     public MTEIndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -131,21 +133,22 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Wiremill, IWF")
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
-            .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
-            .addStaticEuEffInfo(EU_EFFICIENCY)
+            .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
+            .addStaticEuEffInfo((float) EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 3, 3, false)
+            .beginStructureBlock(3, 3, 7, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Wire Factory Casing", 14, false)
-            .addCasingInfoExactly("Any Tiered Glass", 15, false)
-            .addCasingInfoExactly("Item Pipe", 3, true)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addCasing("14-35", "Wire Factory Casing", false)
+            .addCasing("15", "Any Tiered Glass", false)
+            .addCasing("3", "Item Pipe Casing", true)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
         return tt;
     }
@@ -163,7 +166,7 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     public double getSpeedBonus() {
-        return 1F / (SPEED_INCREASE_TIER * itemPipeTier);
+        return 1.0D / (SPEED_INCREASE_TIER * itemPipeTier);
     }
 
     private int mCasingAmount;
@@ -210,9 +213,9 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
         checkCasingMin(errors, mCasingAmount, 14);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
-        checkHasMufflerHatch(errors);
     }
 
     @Override
@@ -225,8 +228,9 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
         return PollutionConfig.pollutionPerSecondMultiIndustrialWireMill;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_MOTOR;
     }
 
@@ -237,11 +241,6 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

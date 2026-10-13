@@ -36,6 +36,7 @@ import gregtech.loaders.postload.recipes.ForgeHammerRecipes;
 import gregtech.loaders.postload.recipes.FormingPressRecipes;
 import gregtech.loaders.postload.recipes.FuelRecipes;
 import gregtech.loaders.postload.recipes.FusionReactorRecipes;
+import gregtech.loaders.postload.recipes.IceCreamMachineRecipes;
 import gregtech.loaders.postload.recipes.ImplosionCompressorRecipes;
 import gregtech.loaders.postload.recipes.LaserEngraverRecipes;
 import gregtech.loaders.postload.recipes.LatheRecipes;
@@ -96,6 +97,7 @@ public class MachineRecipeLoader implements Runnable {
         new FormingPressRecipes().run();
         new FuelRecipes().run();
         new FusionReactorRecipes().run();
+        new IceCreamMachineRecipes().run();
         new ImplosionCompressorRecipes().run();
         new LargeHadronColliderRecipes().run();
         new LaserEngraverRecipes().run();

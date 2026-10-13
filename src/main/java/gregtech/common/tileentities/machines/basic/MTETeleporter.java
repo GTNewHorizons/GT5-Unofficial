@@ -52,6 +52,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.singleblock.MTETeleporterGui;
@@ -76,7 +77,7 @@ public class MTETeleporter extends MTEBasicTank {
     }
 
     public String[] getDescription() {
-        return GTUtility.translateMultiline("gt.blockmachines.basicmachine.teleporter.tooltip");
+        return GTSplit.splitLocalized("gt.blockmachines.basicmachine.teleporter.tooltip");
     }
 
     public MTETeleporter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

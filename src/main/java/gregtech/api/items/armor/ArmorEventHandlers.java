@@ -3,16 +3,19 @@ package gregtech.api.items.armor;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_BOOTS;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
 
+import java.util.ListIterator;
 import java.util.WeakHashMap;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.player.PlayerDropsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
 
@@ -137,7 +140,16 @@ public class ArmorEventHandlers {
 
             ArmorContext context = MechArmorBase.load(player, boots);
 
-            float jumpBoost = context.getArmorState().jumpBoost;
+            float displayLevel = context.getArmorState().jumpBoostMulti;
+
+            float effectiveLevel = displayLevel - 1.0f;
+            float jumpBoost = 0.0f;
+
+            if (effectiveLevel > 0) {
+                float baseBoost = 0.275f;
+                jumpBoost = baseBoost * (float) Math.pow(effectiveLevel, 1.08f);
+            }
+
             if (jumpBoost > 0 && context.drainEnergy(50)) {
                 player.motionY += jumpBoost;
                 player.fallDistance = player.fallDistance - (jumpBoost * 10);
@@ -148,8 +160,7 @@ public class ArmorEventHandlers {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onLivingFall(LivingFallEvent event) {
-        if (event.entityLiving instanceof EntityPlayerMP player) {
-
+        if (event.entityLiving instanceof EntityPlayer player) {
             ItemStack chest = player.getCurrentArmor(SLOT_CHEST);
             if (chest != null && chest.getItem() instanceof MechArmorBase) {
                 ArmorContext chestContext = MechArmorBase.load(player, chest);
@@ -172,10 +183,110 @@ public class ArmorEventHandlers {
 
             if (context.hasBehavior(BehaviorName.FallProtection)
                 && context.drainEnergy(500 * (player.fallDistance - 1.2f))) {
+                event.distance = 0;
                 player.fallDistance = 0;
                 event.setCanceled(true);
-                context.save();
+
+                if (!player.worldObj.isRemote) {
+                    context.save();
+                }
             }
         }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onPlayerDeath(PlayerDropsEvent event) {
+        if (event.entityPlayer == null || event.isCanceled()) {
+            return;
+        }
+
+        if (event.entityPlayer.worldObj.getGameRules()
+            .getGameRuleBooleanValue("keepInventory")) {
+            return;
+        }
+
+        EntityPlayer player = event.entityPlayer;
+        ListIterator<EntityItem> iter = event.drops.listIterator();
+
+        while (iter.hasNext()) {
+            EntityItem drop = iter.next();
+            ItemStack armorStack = drop.getEntityItem();
+
+            if (armorStack != null && armorStack.getItem() instanceof MechArmorBase) {
+                ArmorContext context = MechArmorBase.load(player, armorStack);
+
+                if (context.hasBehavior(BehaviorName.Soulbound)) {
+                    if (addToPlayerInventory(player, armorStack)) {
+                        iter.remove();
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerClone(PlayerEvent.Clone event) {
+        if (!event.wasDeath || event.isCanceled()) {
+            return;
+        }
+        if (event.original == null || event.entityPlayer == null) {
+            return;
+        }
+        if (event.entityPlayer.worldObj.getGameRules()
+            .getGameRuleBooleanValue("keepInventory")) {
+            return;
+        }
+
+        EntityPlayer originalPlayer = event.original;
+        EntityPlayer newPlayer = event.entityPlayer;
+
+        for (int i = 0; i < originalPlayer.inventory.armorInventory.length; i++) {
+            ItemStack armorStack = originalPlayer.inventory.armorInventory[i];
+            if (armorStack != null && armorStack.getItem() instanceof MechArmorBase) {
+                ArmorContext context = MechArmorBase.load(originalPlayer, armorStack);
+                if (context.hasBehavior(BehaviorName.Soulbound)) {
+                    if (addToPlayerInventory(newPlayer, armorStack)) {
+                        originalPlayer.inventory.armorInventory[i] = null;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < originalPlayer.inventory.mainInventory.length; i++) {
+            ItemStack armorStack = originalPlayer.inventory.mainInventory[i];
+            if (armorStack != null && armorStack.getItem() instanceof MechArmorBase) {
+                ArmorContext context = MechArmorBase.load(originalPlayer, armorStack);
+                if (context.hasBehavior(BehaviorName.Soulbound)) {
+                    if (addToPlayerInventory(newPlayer, armorStack)) {
+                        originalPlayer.inventory.mainInventory[i] = null;
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean addToPlayerInventory(EntityPlayer player, ItemStack armorStack) {
+        if (armorStack == null || player == null) {
+            return false;
+        }
+
+        if (armorStack.getItem() instanceof MechArmorBase armorItem) {
+            int armorSlot = 3 - armorItem.getArmorType()
+                .ordinal();
+
+            if (player.inventory.armorInventory[armorSlot] == null) {
+                player.inventory.armorInventory[armorSlot] = armorStack;
+                return true;
+            }
+        }
+
+        for (int i = 0; i < player.inventory.mainInventory.length; i++) {
+            if (player.inventory.mainInventory[i] == null) {
+                player.inventory.mainInventory[i] = armorStack.copy();
+                return true;
+            }
+        }
+
+        return false;
     }
 }

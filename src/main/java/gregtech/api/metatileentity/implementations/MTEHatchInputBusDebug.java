@@ -100,11 +100,6 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
     }
 
     @Override
-    public boolean allowSelectCircuit() {
-        return true;
-    }
-
-    @Override
     public int getCircuitSlotX() {
         return 152;
     }
@@ -134,6 +129,12 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
         returnStack.stackSize = finiteMode ? stackSizeParseAs : Integer.MAX_VALUE;
 
         return returnStack;
+    }
+
+    @Override
+    public boolean shouldDropItemAt(int index) {
+        // no-op so that the world doesn't get flooded with infinite item stacks
+        return false;
     }
 
     @Override

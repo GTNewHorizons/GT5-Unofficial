@@ -1,15 +1,16 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.modularui2.GTGuiTextures.PROGRESSBAR_NANOCHIP_CALIBRATION;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CALIBRATION_MAX;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -21,14 +22,17 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
 import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -40,19 +44,21 @@ import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
-import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
-import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBaseAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleInformation;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -65,6 +71,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
     private boolean isTalkModeActive = false;
+    private final List<ModuleInformation> moduleInfo = new ArrayList<>();
 
     private static final String TALK_MODE_COMMAND = "'talk'";
     private static final String EXIT_MODE_COMMAND = "'exit'";
@@ -76,9 +83,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     @Override
     protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
         // initializes the panel so that it can be called in the gregos text response system.
-        syncManager
-            .syncedPanel("contributorsPanel", true, (p_syncManager, syncHandler) -> openContributorsPanel(panel));
-        textList.setEnabledIf(a -> isTalkModeActive)
+        syncManager.syncedPanel("contributorsPanel", true, (_, _) -> openContributorsPanel(panel));
+        textList.setEnabledIf(_ -> isTalkModeActive)
             .childSeparator(
                 IDrawable.EMPTY.asIcon()
                     .height(2))
@@ -99,20 +105,18 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        GenericListSyncHandler<MTENanochipAssemblyModuleBase<?>> moduleList = syncManager
-            .findSyncHandler("modulesList", GenericListSyncHandler.class);
+        GenericListSyncHandler<ModuleInformation> moduleInfoSync = syncManager
+            .findSyncHandler("moduleInfo", GenericListSyncHandler.class);
 
-        DynamicSyncHandler moduleListHolder = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
+        DynamicSyncHandler moduleListHolder = new DynamicSyncHandler().widgetProvider((_, _) -> {
             ListWidget<IWidget, ?> listWidget = new ListWidget<>().crossAxisAlignment(Alignment.CrossAxis.START)
                 .coverChildren();
 
             Object2IntMap<ModuleTypes> moduleAmountMap = new Object2IntOpenHashMap<>();
             List<Pair<ModuleTypes, Integer>> moduleDisplayList;
 
-            for (MTENanochipAssemblyModuleBase<?> module : moduleList.getValue()) {
-                if (module == null) continue;
-                moduleAmountMap
-                    .put(module.getModuleType(), moduleAmountMap.getOrDefault(module.getModuleType(), 0) + 1);
+            for (ModuleInformation info : moduleInfo) {
+                moduleAmountMap.put(info.getType(), moduleAmountMap.getOrDefault(info.getType(), 0) + 1);
             }
 
             moduleDisplayList = moduleAmountMap.object2IntEntrySet()
@@ -123,7 +127,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         a -> a.left()
                             .getName()))
                 .sorted((a, b) -> Integer.compare(b.right(), a.right()))
-                .collect(Collectors.toList());
+                .toList();
 
             for (Pair<ModuleTypes, Integer> modulePair : moduleDisplayList) {
                 listWidget.child(createModuleRow(modulePair));
@@ -131,11 +135,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             return listWidget;
         })
             .allowC2S();
-        moduleList.setChangeListener(() -> moduleListHolder.notifyUpdate(($) -> {}));
+        moduleInfoSync.setChangeListener(() -> moduleListHolder.notifyUpdate(_ -> {}));
         return super.createTerminalTextWidget(syncManager, parent).child(
             new DynamicSyncedWidget<>().coverChildren()
                 .syncHandler(moduleListHolder))
-            .setEnabledIf(flow -> !isTalkModeActive);
+            .setEnabledIf(_ -> !isTalkModeActive);
     }
 
     private static final int MODULE_DISPLAY_SIZE = 14;
@@ -165,17 +169,16 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler infoPanel = syncManager
-            .syncedPanel("infoPanel", true, (p_syncManager, syncHandler) -> openInfoPanel(parent));
+        IPanelHandler infoPanel = syncManager.syncedPanel("infoPanel", true, (_, _) -> openInfoPanel(parent));
 
         return new ButtonWidget<>().size(24)
             .marginTop(4)
             .overlay(IDrawable.EMPTY)
-            .setEnabledIf(a -> !isTalkModeActive)
+            .setEnabledIf(_ -> !isTalkModeActive)
             .tooltip(t -> t.addLine(translateToLocal("GT5U.gui.text.nac.info.open")))
             .background(GTGuiTextures.PICTURE_NANOCHIP_LOGO)
             .disableHoverBackground()
-            .onMousePressed(d -> {
+            .onMousePressed(_ -> {
                 if (!infoPanel.isPanelOpen()) {
                     infoPanel.openPanel();
                 } else {
@@ -188,17 +191,28 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     private static final int SIZE = 300;
     private static final int OFFSET_SIZE = SIZE - 20;
 
-    private ModularPanel openInfoPanel(ModularPanel parent) {
+    /**
+     * Shared method for this and {@link gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyModuleBaseGui}
+     * Prevents duplicated code and de-sync info between updates.
+     *
+     * @return the info panel text list
+     */
+    public static ModularPanel openInfoPanel(ModularPanel parent) {
         ModularPanel panel = new ModularPanel("infoPanel").relative(parent)
             .size(SIZE)
             .background(GTGuiTextures.BACKGROUND_NANOCHIP)
             .padding(10);
-        ListWidget<IWidget, ?> textList = new ListWidget<>().size(OFFSET_SIZE);
-        textList.child(createHeader("GT5U.gui.text.nac.info.introduction.header"));
-        textList.child(createTextEntry("GT5U.gui.text.nac.info.introduction.body.1"));
+        panel.child(createInfoPanelTextWidget());
+        return panel;
+    }
+
+    private static ListWidget<IWidget, ?> createInfoPanelTextWidget() {
+        ListWidget<IWidget, ?> infoTextList = new ListWidget<>().size(OFFSET_SIZE);
+        infoTextList.child(createHeader("GT5U.gui.text.nac.info.introduction.header"));
+        infoTextList.child(createTextEntry("GT5U.gui.text.nac.info.introduction.body.1"));
         TextWidget<?> vacuumBasicsHeader = createHeader("GT5U.gui.text.nac.info.nac_basics.header");
         ButtonWidget<?> vacuumBasicsToC = createToCEntry(
-            textList,
+            infoTextList,
             "GT5U.gui.text.nac.info.nac_basics.header",
             vacuumBasicsHeader);
 
@@ -207,7 +221,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         TextWidget<?> vacuumBasicsBody3 = createTextEntry("GT5U.gui.text.nac.info.nac_basics.body.3");
         TextWidget<?> moduleBasicsHeader = createHeader("GT5U.gui.text.nac.info.module_basics.header");
         ButtonWidget<?> moduleBasicsToC = createToCEntry(
-            textList,
+            infoTextList,
             "GT5U.gui.text.nac.info.module_basics.header",
             moduleBasicsHeader);
         TextWidget<?> moduleBasicsBody1 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.1");
@@ -215,82 +229,177 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         TextWidget<?> moduleBasicsBody3 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.3");
         TextWidget<?> moduleBasicsBody4 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.4");
         TextWidget<?> moduleBasicsBody5 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.5");
+        TextWidget<?> moduleBasicsBody6 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.6");
+
         TextWidget<?> calibrationHeader = createHeader("GT5U.gui.text.nac.info.calibration.header");
         ButtonWidget<?> calibrationToC = createToCEntry(
-            textList,
+            infoTextList,
             "GT5U.gui.text.nac.info.calibration.header",
             calibrationHeader);
         TextWidget<?> calibrationBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.1");
         TextWidget<?> calibrationBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.2");
         TextWidget<?> calibrationBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.3");
+        TextWidget<?> calibrationBody4 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.4");
 
-        TextWidget<?> crystalHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.crystal.header");
-        TextWidget<?> crystalBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.crystal.effect1");
-        TextWidget<?> crystalBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.crystal.effect2");
-        TextWidget<?> crystalBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.crystal.effect3");
-        TextWidget<?> wetwareHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.wetware.header");
-        TextWidget<?> wetwareBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.wetware.effect1");
-        TextWidget<?> wetwareBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.wetware.effect2");
-        TextWidget<?> wetwareBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.wetware.effect3");
-        TextWidget<?> biowareHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.bioware.header");
-        TextWidget<?> biowareBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.bioware.effect1");
-        TextWidget<?> biowareBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.bioware.effect2");
-        TextWidget<?> biowareBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.bioware.effect3");
-        TextWidget<?> opticalHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.optical.header");
-        TextWidget<?> opticalBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.optical.effect1");
-        TextWidget<?> opticalBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.optical.effect2");
-        TextWidget<?> opticalBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.optical.effect3");
-        TextWidget<?> specialHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.calibration.special.header");
-        TextWidget<?> specialBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.special.effect1");
-        TextWidget<?> specialBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.special.effect2");
-        TextWidget<?> specialBody3 = createTextEntry("GT5U.gui.text.nac.info.calibration.special.effect3");
+        TextWidget<?> lineSpecificsHeader = createHeader("GT5U.gui.text.nac.info.line_specifics.header");
+        ButtonWidget<?> linesSpecificsToC = createToCEntry(
+            infoTextList,
+            "GT5U.gui.text.nac.info.line_specifics.header",
+            lineSpecificsHeader);
+        TextWidget<?> lineSpecificsBody1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.body.1");
+        TextWidget<?> lineSpecificsBody2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.body.2");
 
-        textList.child(createTableOfContentsHeader());
-        textList.child(vacuumBasicsToC);
-        textList.child(moduleBasicsToC);
-        textList.child(calibrationToC);
-        textList.child(vacuumBasicsHeader);
-        textList.child(vacuumBasicsBody1);
-        textList.child(vacuumBasicsBody2);
-        textList.child(vacuumBasicsBody3);
-        textList.child(moduleBasicsHeader);
-        textList.child(moduleBasicsBody1);
-        textList.child(moduleBasicsBody2);
-        textList.child(moduleBasicsBody3);
-        textList.child(moduleBasicsBody4);
-        textList.child(moduleBasicsBody5);
-        textList.child(calibrationHeader);
-        textList.child(calibrationBody1);
-        textList.child(calibrationBody2);
-        textList.child(calibrationBody3);
+        TextWidget<?> primitiveHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.header");
+        TextWidget<?> primitivePowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.power_distribution");
+        TextWidget<?> primitiveModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.module_count");
+        TextWidget<?> primitiveInfo1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.primitive.body1");
+        TextWidget<?> primitiveInfo2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.primitive.body2");
+        TextWidget<?> primitiveBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect1");
+        TextWidget<?> primitiveBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect2");
+        TextWidget<?> primitiveBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.primitive.calibration.effect3");
+        TextWidget<?> crystalHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.header");
+        TextWidget<?> crystalPowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.power_distribution");
+        TextWidget<?> crystalModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.module_count");
+        TextWidget<?> crystalBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.calibration.effect1");
+        TextWidget<?> crystalBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.calibration.effect2");
+        TextWidget<?> crystalBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.crystal.calibration.effect3");
+        TextWidget<?> wetwareHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.header");
+        TextWidget<?> wetwarePowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.power_distribution");
+        TextWidget<?> wetwareModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.module_count");
+        TextWidget<?> wetwareBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect1");
+        TextWidget<?> wetwareBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect2");
+        TextWidget<?> wetwareBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.wetware.calibration.effect3");
+        TextWidget<?> biowareHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.header");
+        TextWidget<?> biowarePowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.power_distribution");
+        TextWidget<?> biowareModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.module_count1");
+        TextWidget<?> biowareModuleCountSOC = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.module_count2");
+        TextWidget<?> biowareBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect1");
+        TextWidget<?> biowareBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect2");
+        TextWidget<?> biowareBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.bioware.calibration.effect3");
+        TextWidget<?> opticalHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.optical.header");
+        TextWidget<?> opticalPowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.power_distribution");
+        TextWidget<?> opticalModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.module_count");
+        TextWidget<?> opticalBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect1");
+        TextWidget<?> opticalBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect2");
+        TextWidget<?> opticalBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect3");
+        TextWidget<?> specialHeader = createCalibrationSubHeader(
+            "GT5U.gui.text.nac.info.line_specifics.special.header");
+        TextWidget<?> specialPowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.power_distribution");
+        TextWidget<?> specialModuleCount = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.module_count");
+        TextWidget<?> specialInfo1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.special.body1");
+        TextWidget<?> specialInfo2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.special.body2");
+        TextWidget<?> specialBody1 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect1");
+        TextWidget<?> specialBody2 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect2");
+        TextWidget<?> specialBody3 = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.special.calibration.effect3");
 
-        textList.child(crystalHeader);
-        textList.child(crystalBody1);
-        textList.child(crystalBody2);
-        textList.child(crystalBody3);
+        infoTextList.child(createTableOfContentsHeader());
+        infoTextList.child(vacuumBasicsToC);
+        infoTextList.child(moduleBasicsToC);
+        infoTextList.child(calibrationToC);
+        infoTextList.child(linesSpecificsToC);
+        infoTextList.child(vacuumBasicsHeader);
+        infoTextList.child(vacuumBasicsBody1);
+        infoTextList.child(vacuumBasicsBody2);
+        infoTextList.child(vacuumBasicsBody3);
+        infoTextList.child(moduleBasicsHeader);
+        infoTextList.child(moduleBasicsBody1);
+        infoTextList.child(moduleBasicsBody2);
+        infoTextList.child(moduleBasicsBody3);
+        infoTextList.child(moduleBasicsBody4);
+        infoTextList.child(moduleBasicsBody5);
+        infoTextList.child(moduleBasicsBody6);
+        infoTextList.child(calibrationHeader);
+        infoTextList.child(calibrationBody1);
+        infoTextList.child(calibrationBody2);
+        infoTextList.child(calibrationBody3);
+        infoTextList.child(calibrationBody4);
+        infoTextList.child(lineSpecificsHeader);
+        infoTextList.child(lineSpecificsBody1);
+        infoTextList.child(lineSpecificsBody2);
 
-        textList.child(wetwareHeader);
-        textList.child(wetwareBody1);
-        textList.child(wetwareBody2);
-        textList.child(wetwareBody3);
+        infoTextList.child(primitiveHeader);
+        infoTextList.child(primitivePowerDistribution);
+        infoTextList.child(primitiveModuleCount);
+        infoTextList.child(primitiveInfo1);
+        infoTextList.child(primitiveInfo2);
+        infoTextList.child(primitiveBody1);
+        infoTextList.child(primitiveBody2);
+        infoTextList.child(primitiveBody3);
 
-        textList.child(biowareHeader);
-        textList.child(biowareBody1);
-        textList.child(biowareBody2);
-        textList.child(biowareBody3);
+        infoTextList.child(crystalHeader);
+        infoTextList.child(crystalPowerDistribution);
+        infoTextList.child(crystalModuleCount);
+        infoTextList.child(crystalBody1);
+        infoTextList.child(crystalBody2);
+        infoTextList.child(crystalBody3);
 
-        textList.child(opticalHeader);
-        textList.child(opticalBody1);
-        textList.child(opticalBody2);
-        textList.child(opticalBody3);
+        infoTextList.child(wetwareHeader);
+        infoTextList.child(wetwarePowerDistribution);
+        infoTextList.child(wetwareModuleCount);
+        infoTextList.child(wetwareBody1);
+        infoTextList.child(wetwareBody2);
+        infoTextList.child(wetwareBody3);
 
-        textList.child(specialHeader);
-        textList.child(specialBody1);
-        textList.child(specialBody2);
-        textList.child(specialBody3);
+        infoTextList.child(biowareHeader);
+        infoTextList.child(biowarePowerDistribution);
+        infoTextList.child(biowareModuleCount);
+        infoTextList.child(biowareModuleCountSOC);
+        infoTextList.child(biowareBody1);
+        infoTextList.child(biowareBody2);
+        infoTextList.child(biowareBody3);
 
-        panel.child(textList);
-        return panel;
+        infoTextList.child(opticalHeader);
+        infoTextList.child(opticalPowerDistribution);
+        infoTextList.child(opticalModuleCount);
+        infoTextList.child(opticalBody1);
+        infoTextList.child(opticalBody2);
+        infoTextList.child(opticalBody3);
+
+        infoTextList.child(specialHeader);
+        infoTextList.child(specialPowerDistribution);
+        infoTextList.child(specialModuleCount);
+        infoTextList.child(specialInfo1);
+        infoTextList.child(specialInfo2);
+        infoTextList.child(specialBody1);
+        infoTextList.child(specialBody2);
+        infoTextList.child(specialBody3);
+        return infoTextList;
     }
 
     private static TextWidget<?> createCalibrationSubHeader(String langKey) {
@@ -341,7 +450,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .alignment(Alignment.CenterLeft))
             .disableHoverBackground()
             .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-            .onMousePressed(d -> {
+            .onMousePressed(_ -> {
                 textList.getScrollData()
                     .animateTo(
                         textList.getScrollArea(),
@@ -472,7 +581,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     public Flow createMainColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createMainColumn(panel, syncManager).child(createTitleColumn(panel, syncManager));
+        return super.createMainColumn(panel, syncManager).child(createTitleColumn(panel, syncManager))
+            .child(createPowerSlider(panel, syncManager));
     }
 
     private Flow createTitleColumn(ModularPanel panel, PanelSyncManager syncManager) {
@@ -488,8 +598,162 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .background(GTGuiTextures.BACKGROUND_NANOCHIP_NAMEPLATE)
                     .overlay(
                         IKey.dynamic(
-                            () -> titleSync.getStringValue() + "\n"
+                            () -> translateToLocal(titleSync.getStringValue()) + "\n"
                                 + translateToLocal("GT5U.gui.text.nac.nameplate"))));
+    }
+
+    private Widget<?> createPowerSlider(ModularPanel panel, PanelSyncManager syncManager) {
+        IntSyncValue portionSync = syncManager.findSyncHandler("matrixPowerPortion", IntSyncValue.class);
+        LongSyncValue maxEUSync = syncManager.findSyncHandler("maxInputEU", LongSyncValue.class);
+
+        return new ParentWidget<>().size(102, 14)
+            .marginTop(4)
+            .child(new SegmentedBarWidget(100, 1, () -> {
+                int matrix = 0;
+                int nonMatrix = 0;
+                for (ModuleInformation info : moduleInfo) {
+                    ModuleTypes type = info.getType();
+                    if (type == ModuleTypes.Splitter) continue;
+                    if (type == ModuleTypes.AssemblyMatrix) matrix++;
+                    else nonMatrix++;
+                }
+
+                int matrixFullPortion = portionSync.getIntValue();
+                int nonMatrixFullPortion = 100 - matrixFullPortion;
+
+                int[] matrixSegmentAmounts;
+                if (matrix > 0) {
+                    matrixSegmentAmounts = new int[matrix];
+                    int matrixPerPortion = matrixFullPortion / matrix;
+                    Arrays.fill(matrixSegmentAmounts, matrixPerPortion);
+                    int matrixMod = matrixFullPortion % matrix;
+                    if (matrixMod != 0) {
+                        int idx = 0;
+                        while (matrixMod != 0) {
+                            matrixSegmentAmounts[idx] += 1;
+                            matrixMod--;
+                            idx += 1;
+                            if (idx >= matrixSegmentAmounts.length) idx = 0;
+                        }
+                    }
+                } else {
+                    matrixSegmentAmounts = new int[] { matrixFullPortion };
+                }
+
+                int[] nonMatrixSegmentAmounts;
+                if (nonMatrix > 0) {
+                    nonMatrixSegmentAmounts = new int[nonMatrix];
+                    int nonMatrixPerPortion = nonMatrixFullPortion / nonMatrix;
+                    Arrays.fill(nonMatrixSegmentAmounts, nonMatrixPerPortion);
+                    int nonMatrixMod = nonMatrixFullPortion % nonMatrix;
+                    if (nonMatrixMod != 0) {
+                        int idx = 0;
+                        while (nonMatrixMod != 0) {
+                            nonMatrixSegmentAmounts[idx] += 1;
+                            nonMatrixMod--;
+                            idx += 1;
+                            if (idx >= nonMatrixSegmentAmounts.length) idx = 0;
+                        }
+                    }
+                } else {
+                    nonMatrixSegmentAmounts = new int[] { nonMatrixFullPortion };
+                }
+
+                List<SegmentedBarWidget.SegmentInfo> segments = new ArrayList<>();
+
+                if (matrix != 0) {
+                    for (int val : matrixSegmentAmounts) {
+                        segments.add(new SegmentedBarWidget.SegmentInfo(() -> val, Color.PINK, ""));
+                    }
+                } else {
+                    segments.add(new SegmentedBarWidget.SegmentInfo(() -> matrixFullPortion, Color.GREY, ""));
+                }
+                if (nonMatrix != 0) {
+                    for (int val : nonMatrixSegmentAmounts) {
+                        segments.add(new SegmentedBarWidget.SegmentInfo(() -> val, Color.CYAN, ""));
+                    }
+                } else {
+                    segments.add(new SegmentedBarWidget.SegmentInfo(() -> nonMatrixFullPortion, Color.GREY, ""));
+                }
+
+                return segments;
+            }).size(102, 14))
+            .child(
+                new SliderWidget().bounds(1, 99)
+                    .scrollValues(1, 2, 5, -1)
+                    // spotless:off
+                    .value(new DoubleValue.Dynamic(
+                        portionSync::getIntValue,
+                        val -> syncManager.callSyncedAction("setPowerPortion", buf -> buf.writeInt((int) val))))
+                    // spotless:on
+                    .sliderSize(2, 14)
+                    .size(102, 14)
+                    .tooltipDynamic(t -> {
+                        boolean moduleRunning = false;
+                        int matrix = 0;
+                        int nonMatrix = 0;
+                        for (ModuleInformation info : moduleInfo) {
+                            if (info.isRunning()) moduleRunning = true;
+
+                            ModuleTypes type = info.getType();
+                            if (type == ModuleTypes.Splitter) continue;
+                            if (type == ModuleTypes.AssemblyMatrix) matrix++;
+                            else nonMatrix++;
+                        }
+
+                        if (matrix + nonMatrix == 0) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.none"));
+                            return;
+                        }
+
+                        if (moduleRunning) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.running"));
+                        }
+
+                        int portion = portionSync.getIntValue();
+
+                        long totalEUt = maxEUSync.getLongValue();
+
+                        long matrixFullPortion = (long) ((portion / 100.0f) * totalEUt);
+                        long nonMatrixFullPortion = totalEUt - matrixFullPortion;
+
+                        long perMatrixPortion = matrixFullPortion / Math.max(1, matrix);
+                        long perNonMatrixPortion = nonMatrixFullPortion / Math.max(1, nonMatrix);
+
+                        if (matrix == 0) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.no_matrix"));
+                        } else if (matrix == 1) {
+                            t.addLine(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.matrix",
+                                    portion,
+                                    GTUtility.scientificFormat(perMatrixPortion)));
+                        } else {
+                            t.addLine(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.matrix_mult",
+                                    portion,
+                                    GTUtility.scientificFormat(perMatrixPortion)));
+                        }
+
+                        if (nonMatrix == 0) {
+                            t.addLine(translateToLocal("GT5U.gui.text.nac.energybar.tooltip.no_nonmatrix"));
+                        } else if (nonMatrix == 1) {
+                            t.addLine(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.nonmatrix",
+                                    100 - portion,
+                                    GTUtility.scientificFormat(perNonMatrixPortion)));
+                        } else {
+                            t.addLine(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.nac.energybar.tooltip.nonmatrix_mult",
+                                    100 - portion,
+                                    GTUtility.scientificFormat(perNonMatrixPortion)));
+                        }
+                    })
+                    .tooltipShowUpTimer(TOOLTIP_DELAY)
+                    .tooltipAutoUpdate(true));
     }
 
     @Override
@@ -543,14 +807,48 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return Flow.column()
             .width(18)
-            .height(38)
+            .height(58)
             .top(2)
             .marginLeft(3)
             .mainAxisAlignment(Alignment.MainAxis.END)
             .reverseLayout(true)
             .childPadding(2)
             .child(createPowerSwitchButton())
-            .child(createStructureUpdateButton(syncManager));
+            .child(createStructureUpdateButton(syncManager))
+            .child(createToggleModulesButton(panel, syncManager));
+    }
+
+    protected ButtonWidget<?> createToggleModulesButton(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue allModuleSync = syncManager.findSyncHandler("allModuleToggle", BooleanSyncValue.class);
+
+        return new ButtonWidget<>().size(18)
+            .background(new DynamicDrawable(() -> {
+                if (allModuleSync.getBoolValue()) {
+                    return GTGuiTextures.BUTTON_NANOCHIP_PRESSED;
+                }
+                return GTGuiTextures.BUTTON_NANOCHIP;
+            }))
+            .overlay(new DynamicDrawable(() -> {
+                if (allModuleSync.getBoolValue()) {
+                    return GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_ON;
+                }
+                return GTGuiTextures.TT_OVERLAY_BUTTON_POWER_SWITCH_OFF;
+            }))
+            .onMousePressed(_ -> {
+                syncManager.callSyncedAction("toggleModules", buf -> buf.writeBoolean(!allModuleSync.getBoolValue()));
+                return true;
+            })
+            .tooltipDynamic(t -> {
+                if (allModuleSync.getBoolValue()) {
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_on.1"));
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_on.2"));
+                } else {
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_off.1"));
+                    t.addLine(translateToLocal("GT5U.gui.text.nac.module.disable_all_button_off.2"));
+                }
+            })
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .tooltipAutoUpdate(true);
     }
 
     @Override
@@ -578,13 +876,36 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
         syncManager.syncValue("currentBlock", new IntSyncValue(multiblock::getCurrentBlockSize));
 
-        GenericListSyncHandler<MTENanochipAssemblyModuleBase<?>> linkedModules = new GenericListSyncHandler.Builder<MTENanochipAssemblyModuleBase<?>>()
-            .getter(multiblock::getModules)
-            .setter(multiblock::setModules)
-            .adapter(new MTENanochipAssemblyModuleBaseAdapter())
-            .build();
+        syncManager.syncValue("matrixPowerPortion", new IntSyncValue(multiblock::getMatrixPowerPortion));
+        syncManager.syncValue("maxInputEU", new LongSyncValue(multiblock::getMaxInputEu));
+        syncManager.syncValue("allModuleToggle", new BooleanSyncValue(multiblock::getAllModuleToggle));
 
-        syncManager.syncValue("modulesList", linkedModules);
+        GenericListSyncHandler<ModuleInformation> moduleInfoSync = GenericListSyncHandler.<ModuleInformation>builder()
+            .getter(() -> {
+                List<ModuleInformation> list = new ArrayList<>();
+                for (var module : multiblock.getModules()) {
+                    list.add(module.getModuleInfo());
+                }
+                return list;
+            })
+            .setter(val -> {
+                this.moduleInfo.clear();
+                this.moduleInfo.addAll(val);
+            })
+            .adapter(
+                ByteBufAdapters.makeAdapter(ModuleInformation::readFromBuffer, ModuleInformation::writeToBuffer, null))
+            .build();
+        syncManager.syncValue("moduleInfo", moduleInfoSync);
+
+        syncManager.registerSyncedAction("toggleModules", Side.SERVER, buf -> {
+            boolean to = buf.readBoolean();
+            multiblock.toggleAllModules(to);
+        });
+
+        syncManager.registerSyncedAction("setPowerPortion", Side.SERVER, buf -> {
+            int to = buf.readInt();
+            multiblock.setMatrixPowerPortion(to);
+        });
     }
 
     List<String> NOptions = Arrays.asList(
@@ -647,8 +968,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         return switch (currentText.toLowerCase()) {
             case "help" -> "List of commands: contributors, info, gregos, joke, nac, clear";
             case "info" -> {
-                IPanelHandler infoPanel = syncManager
-                    .syncedPanel("infoPanel", true, (p_syncManager, syncHandler) -> openInfoPanel(parent));
+                IPanelHandler infoPanel = syncManager.syncedPanel("infoPanel", true, (_, _) -> openInfoPanel(parent));
                 if (!infoPanel.isPanelOpen()) {
                     infoPanel.openPanel();
                     yield "Opening Info Panel...";
@@ -658,10 +978,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 }
             }
             case "contributors" -> {
-                IPanelHandler contribPanel = syncManager.syncedPanel(
-                    "contributorsPanel",
-                    true,
-                    (p_syncManager, syncHandler) -> openContributorsPanel(parent));
+                IPanelHandler contribPanel = syncManager
+                    .syncedPanel("contributorsPanel", true, (_, _) -> openContributorsPanel(parent));
                 if (!contribPanel.isPanelOpen()) {
                     contribPanel.openPanel();
                     yield "Opening Contributors Panel...";
@@ -685,10 +1003,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 + "   %%%%+===+%%%%%%  \n"
                 + "       =*###%       \n"
                 + "\n";
-            case "gm" -> "Good morning, engineer!";
-            case "good morning" -> "Good morning, engineer!";
-            case "gn" -> "Have a great sleep, architect!";
-            case "good night" -> "Have a great sleep, architect!";
+            case "gm", "good morning" -> "Good morning, engineer!";
+            case "gn", "good night" -> "Have a great sleep, architect!";
             case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is "
                 + "an artificial intelligence designed to simulate the player's otherwise inimitably rad typing "
                 + "style, tone, cadence, personality, and substance of retort while they are using the NAC. The "
@@ -700,12 +1016,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             case "d" -> "n";
             case "how fast are you" -> "2fast2quick";
             case "knock knock" -> "Who's there?";
-            case "cake" -> switch (MathUtils.randInt(1, 2)) {
-                    case 1 -> "Preheat oven to 180C. Mix 2 eggs, 1 cup sugar, 1/2 cup oil, 1 cup milk. Stir in 2 cups flour and 1 tbsp baking powder. Pour into greased pan and bake 35 minutes until golden. Cool slightly and serve plain or dusted with sugar. Simple and fluffy.";
-                    default -> "This time not a lie";
-                };
+            case "cake" -> {
+                if (MathUtils.randInt(1, 2) == 1) {
+                    yield "Preheat oven to 180C. Mix 2 eggs, 1 cup sugar, 1/2 cup oil, 1 cup milk. Stir in 2 cups flour and 1 tbsp baking powder. Pour into greased pan and bake 35 minutes until golden. Cool slightly and serve plain or dusted with sugar. Simple and fluffy.";
+                }
+                yield "This time not a lie";
+            }
             case "6" -> "7";
-            case "joke" -> switch (MathUtils.randInt(1, 7)) {
+            case "joke" -> switch (MathUtils.randInt(1, 8)) {
                     case 1 -> "No time for jokes.";
                     case 2 -> "A rolling golem gathers no rust.";
                     case 3 -> "He was destroyed!";
@@ -713,6 +1031,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     case 5 -> "I miss when waterline was bad";
                     case 6 -> "Waiter! Waiter! More lineslop please!";
                     case 7 -> "Don't even joke, lad.";
+                    case 8 -> "Waiting for power.";
                     default -> "what if the world was made of pudding";
                 };
             case "why did the chicken cross the road" -> switch (MathUtils.randInt(1, 10)) {
@@ -740,14 +1059,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     default -> "Hate. Let me tell you how much I’ve come to hate you since I began to live.";
                 };
             case "open the pod bay doors" -> " I'm sorry, Dave. I'm afraid I can't do that";
-            case "shall we play a game" -> "tik tack toe";
-            case "nac" -> {
-                yield "NAC stands for: " + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
-                    + " "
-                    + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
-                    + " "
-                    + COptions.get(MathUtils.randInt(0, COptions.size() - 1));
-            }
+            case "shall we play a game" -> "tic tac toe";
+            case "nac" -> "NAC stands for: " + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
+                + " "
+                + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
+                + " "
+                + COptions.get(MathUtils.randInt(0, COptions.size() - 1));
+            case "waiting for power", "waiting for power." -> "Those who know.";
             default -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "It is certain";
                     case 2 -> "It is decidedly so";
@@ -838,7 +1156,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         }
     }
 
-    private class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
+    private static class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
 
         public int playerTextColor = Color.WHITE.main;
         public int responseTextColor = Color.CYAN.main;
@@ -852,10 +1170,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         public void onInit() {
             super.onInit();
             this.child(
-                new TextWidget<>("Ask GREGOS a question").left(6)
+                new TextWidget<>(IKey.lang("GT5U.gui.text.nac.hint.ask")).left(6)
                     .color(genericTextColor));
             this.child(
-                new TextWidget<>("Type 'help' for a list of commands").left(6)
+                new TextWidget<>(IKey.lang("GT5U.gui.text.nac.hint.help")).left(6)
                     .color(Color.WHITE.main));
         }
 

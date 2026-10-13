@@ -3,6 +3,8 @@ package gregtech.common.gui.modularui.cover;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MAX;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
 
+import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.GuiAxis;
@@ -17,7 +19,6 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.modes.MachineProcessingCondition;
 import gregtech.common.covers.modes.TransferMode;
@@ -136,9 +137,9 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
     }
 
     private @NotNull String getAverageSpeedText() {
-        return GTUtility.translate("gt.interact.desc.fluid_regulator.Average") + " "
+        return StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Average") + " "
             + numberFormat.format(cover.getTickRateForUi() == 0 ? 0 : cover.getSpeed() * 20d / cover.getTickRateForUi())
             + " "
-            + GTUtility.translate("gt.interact.desc.fluid_regulator.L_Sec");
+            + StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.L_Sec");
     }
 }

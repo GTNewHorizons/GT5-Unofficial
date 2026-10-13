@@ -2,6 +2,8 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -10,8 +12,6 @@ import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -36,8 +36,6 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 public class RecipeLoaderGenericChem {
 
     public static void generate() {
-        recipeCatalystRed();
-        recipeCatalystYellow();
         recipeCatalystBlue();
         recipeCatalystOrange();
         recipeCatalystPurple();
@@ -238,34 +236,6 @@ public class RecipeLoaderGenericChem {
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
-    }
-
-    private static void recipeCatalystRed() {
-        // Assembler Recipe
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.EmptyCatalystCarrier.get(10),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 2))
-            .circuit(4)
-            .itemOutputs(GregtechItemList.RedMetalCatalyst.get(10))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-    }
-
-    private static void recipeCatalystYellow() {
-        // Assembler Recipe
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.EmptyCatalystCarrier.get(10),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4))
-            .circuit(12)
-            .itemOutputs(GregtechItemList.YellowMetalCatalyst.get(10))
-            .duration(1 * MINUTES)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
     }
 
     private static void recipeCatalystBlue() {

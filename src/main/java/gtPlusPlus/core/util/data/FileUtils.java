@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.util.Utils;
 
 public class FileUtils {
@@ -33,15 +34,15 @@ public class FileUtils {
     }
 
     public static File getFile(String path, String filename, String extension) {
-        if (path == null || path.length() == 0) {
+        if (path == null || path.isEmpty()) {
             path = "";
         } else {
             path = path + "/";
         }
-        if (filename == null || filename.length() == 0) {
+        if (filename == null || filename.isEmpty()) {
             return null;
         }
-        if (extension == null || extension.length() == 0) {
+        if (extension == null || extension.isEmpty()) {
             extension = ".txt";
         } else {
             extension = "." + extension;
@@ -63,7 +64,7 @@ public class FileUtils {
                 try {
                     Files.write(p, content, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    GTplusplus.logger.error(e);
                 }
             }
         }

@@ -422,7 +422,7 @@ public abstract class MTELargeTurbineLegacy extends MTEEnhancedMultiBlockBase<MT
                 "GT5U.infodata.turbine.pollution",
                 EnumChatFormatting.GREEN + "" + getAveragePollutionPercentage() + EnumChatFormatting.RESET), /* 8 */
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.multiblock.recipes_done",
+                "GT5U.multiblock.recipesDone.fmt",
                 EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) /* 9 */
         };
     }

@@ -2,7 +2,6 @@ package tectech.thing.gui.bec;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
-import static gregtech.api.util.GTUtility.translate;
 import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.MAX_PARALLEL_PARAMETER;
 import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.MIN_PARALLEL_PARAMETER;
 import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.SPEED_DIVISOR_PARAMETER;
@@ -11,6 +10,7 @@ import java.util.Collections;
 import java.util.function.Function;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -24,6 +24,8 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.enums.CondensateType;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.NaniteTier;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.gui.modularui.adapter.CondensateListAdapter;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
@@ -46,6 +48,8 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
             .findSyncHandler("state", EnumSyncValue.class);
         NaniteTierSyncValue providedTierSyncer = syncManager.findSyncHandler("providedTier", NaniteTierSyncValue.class);
         NaniteTierSyncValue requiredTierSyncer = syncManager.findSyncHandler("requiredTier", NaniteTierSyncValue.class);
+        NaniteTierSyncValue nextTierSyncer = syncManager.findSyncHandler("nextTier", NaniteTierSyncValue.class);
+        IntSyncValue nextSwitchSyncer = syncManager.findSyncHandler("nextSwitch", IntSyncValue.class);
         GenericSyncValue<CondensateList, ?> requiredCondensateSyncer = syncManager
             .findSyncHandler("requiredCondensate", GenericSyncValue.class);
         GenericSyncValue<CondensateList, ?> consumedCondensateSyncer = syncManager
@@ -55,18 +59,18 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
             StringBuilder ret = new StringBuilder();
 
             ret.append(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.ionode_status",
-                    translate(
+                    StatCollector.translateToLocal(
                         "GT5U.gui.text.ionode_status." + stateSyncer.getValue()
                             .name())));
             ret.append("\n");
 
             ret.append(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.provided_nanite",
-                    providedTierSyncer.getEnumValue() == null ? translate("GT5U.gui.text.nil")
-                        : translate(
+                    providedTierSyncer.getEnumValue() == null ? StatCollector.translateToLocal("GT5U.gui.text.nil")
+                        : StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.nanite_desc",
                             availableNanitesSyncer.getIntValue(),
                             providedTierSyncer.getEnumValue()
@@ -74,16 +78,28 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
             ret.append("\n");
 
             ret.append(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.required_nanite",
-                    requiredTierSyncer.getEnumValue() == null ? translate("GT5U.gui.text.nil")
+                    requiredTierSyncer.getEnumValue() == null ? StatCollector.translateToLocal("GT5U.gui.text.nil")
                         : GOLD + requiredTierSyncer.getEnumValue()
                             .describe() + WHITE));
             ret.append("\n");
 
+            if (multiblock.getMaxProgresstime() > 0) {
+                NaniteTier nextTier = nextTierSyncer.getEnumValue();
+
+                ret.append(
+                    nextTier == null ? StatCollector.translateToLocal("GT5U.gui.text.next_nanite_none")
+                        : StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.next_nanite",
+                            GOLD + nextTier.describe() + WHITE,
+                            nextSwitchSyncer.getIntValue()));
+                ret.append("\n");
+            }
+
             boolean hasAny = false;
 
-            ret.append(translate("GT5U.gui.text.required_condensate"));
+            ret.append(StatCollector.translateToLocal("GT5U.gui.text.required_condensate"));
             ret.append("\n");
 
             if (requiredCondensateSyncer.getValue() != null && consumedCondensateSyncer.getValue() != null
@@ -96,16 +112,17 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
                         .getLong(e.getKey());
 
                     ret.append(
-                        translate(
+                        StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.remaining_condensate",
                             CondensateType.getCondensateName(e.getKey()),
                             consumed,
                             e.getLongValue()));
+                    ret.append("\n");
                 }
             }
 
             if (!hasAny) {
-                ret.append(translate("GT5U.gui.text.nil"));
+                ret.append(StatCollector.translateToLocal("GT5U.gui.text.nil"));
             }
 
             return ret.toString();
@@ -136,17 +153,17 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
                     case MIN_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation("gregtech", "bec-ionode/min-parallels"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/min-parallels"),
                                 Collections.emptyMap())));
                     case MAX_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation("gregtech", "bec-ionode/max-parallels"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/max-parallels"),
                                 Collections.emptyMap())));
                     case SPEED_DIVISOR_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation("gregtech", "bec-ionode/speed-divisor"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/speed-divisor"),
                                 Collections.emptyMap())));
                     default -> {}
                 }
@@ -158,19 +175,17 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
 
-        IntSyncValue availableNanitesSyncer = new IntSyncValue(
-            multiblock::getAvailableNanites,
-            multiblock::setAvailableNanites);
+        IntSyncValue availableNanitesSyncer = new IntSyncValue(multiblock::getAvailableNanites);
         EnumSyncValue<MTEBECIONode.NodeState, ?> stateSyncer = new EnumSyncValue<>(
             MTEBECIONode.NodeState.class,
             multiblock::getStateEnum,
             multiblock::setState);
-        NaniteTierSyncValue providedTierSyncer = new NaniteTierSyncValue(
-            multiblock::getProvidedTier,
-            multiblock::setProvidedTier);
+        NaniteTierSyncValue providedTierSyncer = new NaniteTierSyncValue(multiblock::getProvidedTier);
         NaniteTierSyncValue requiredTierSyncer = new NaniteTierSyncValue(
             multiblock::getRequiredTier,
             multiblock::setRequiredTier);
+        NaniteTierSyncValue nextTierSyncer = new NaniteTierSyncValue(multiblock::getNextNaniteTier);
+        IntSyncValue nextSwitchSyncer = new IntSyncValue(multiblock::getNextNaniteSwitchProgress);
         GenericSyncValue<CondensateList, ?> requiredCondensateSyncer = GenericSyncValue.builder(CondensateList.class)
             .getter(multiblock::getRequiredCondensateSimple)
             .setter(multiblock::setRequiredCondensate)
@@ -186,6 +201,8 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
         syncManager.syncValue("state", stateSyncer);
         syncManager.syncValue("providedTier", providedTierSyncer);
         syncManager.syncValue("requiredTier", requiredTierSyncer);
+        syncManager.syncValue("nextTier", nextTierSyncer);
+        syncManager.syncValue("nextSwitch", nextSwitchSyncer);
         syncManager.syncValue("requiredCondensate", requiredCondensateSyncer);
         syncManager.syncValue("consumedCondensate", consumedCondensateSyncer);
     }

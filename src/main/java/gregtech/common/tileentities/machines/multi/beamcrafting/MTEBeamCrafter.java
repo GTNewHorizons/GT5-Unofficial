@@ -305,42 +305,29 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8",
                     MAX_PARALLEL))
             .addSeparator()
-            .beginStructureBlock(17, 5, 11, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoMin(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                224,
+            .addSupportAny()
+            .beginStructureBlock(17, 5, 11, true)
+            .addController("Front center, 3rd layer")
+            .addCasing(
+                "224-227",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
-                26,
+            .addCasing("26", "Any Tiered Glass", false)
+            .addCasing(
+                "16",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                16,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                2,
-                false)
-            .addInputBus(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addOutputBus(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addInputHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addOutputHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addEnergyHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addTecTechHatchInfo()
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"),
+                "Center of both ends of the structure",
+                2)
+            .addEnergyHatch("1+", "Any accelerator casing", 1)
+            .addInputAny("1+", "Any accelerator casing", 1)
+            .addOutputBus("1+", "Any accelerator casing", 1)
+            .addOutputHatch("0+", "Any accelerator casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
@@ -366,7 +353,20 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     @Override
     protected void incrementProgressTime() {
+        contributeToProgress();
+        if (mProgresstime >= mMaxProgresstime) {
+            currentRecipeCurrentAmountA = 0;
+            currentRecipeCurrentAmountB = 0;
+        }
+    }
 
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        absorbInputParticles();
+        super.runMachine(aBaseMetaTileEntity, aTick);
+    }
+
+    private void absorbInputParticles() {
         for (int n = 0; n < this.mInputBeamline.size(); n++) {
             BeamInformation inputParticle = this.getNthInputParticle(n);
             int id = inputParticle.getParticleId();
@@ -376,12 +376,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             bufferMap.put(id, Math.min(newAmount, MAX_BUFFER));
             this.mInputBeamline.get(n)
                 .setContents(null);
-        }
-
-        contributeToProgress();
-        if (mProgresstime >= mMaxProgresstime) {
-            currentRecipeCurrentAmountA = 0;
-            currentRecipeCurrentAmountB = 0;
         }
     }
 
@@ -464,7 +458,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 }
                 return result;
             }
-        }.setEuModifier(0) // Set eu/t to 0 for parallel calculation
+        }.setEuModifier(0.0D) // Set eu/t to 0 for parallel calculation
             .setMaxParallel(MAX_PARALLEL)
             .setUnlimitedTierSkips();
     }

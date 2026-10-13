@@ -4,8 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.HatchElement.BeamlineInput;
-import static gregtech.api.enums.HatchElement.BeamlineOutput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -18,10 +16,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTUtility.max;
-import static gtnhlanth.util.DescTextLocalization.addHintNumber;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineInput;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineOutput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -47,18 +48,18 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
@@ -68,6 +69,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -76,10 +78,11 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
-import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
 
-public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron> implements ISurvivalConstructable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTESynchrotron extends MTEBeamMultiBase<MTESynchrotron>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTESynchrotron> STRUCTURE_DEFINITION;
 
@@ -460,7 +463,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('k', Casings.SuperconductingCoilBlock.asElement())
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
                 // Adder overriden due to ExoticEnergy originally calling its own adder, giving false positives
-                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).hint(6).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).hint(4).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', GTStructureChannels.SYNCHROTRON_ANTENNA.use(StructureUtility.ofBlocksTiered(
                 		MTESynchrotron::getAntennaBlockTier,
@@ -468,15 +471,21 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
                 				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
                 		-1, MTESynchrotron::setAntennaTier, MTESynchrotron::getAntennaTier)))
-                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).hint(4).casingIndex(ShieldedAccCasingTextureID).build())
-                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).hint(5).casingIndex(ShieldedAccCasingTextureID).build())
-                .addElement('v', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID)
-                        .hint(1).build())
-                .addElement('b', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineOutput).casingIndex(ShieldedAccCasingTextureID)
-                        .hint(2).build())
+                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).hint(2).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).hint(3).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('v', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineInput)
+                .casingIndex(ShieldedAccCasingTextureID)
+                .hint(1)
+                .exclusive()
+                .build())
+                .addElement('b', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineOutput)
+                .casingIndex(ShieldedAccCasingTextureID)
+                .hint(6)
+                .exclusive()
+                .build())
                 .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('j',
-                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).hint(3).casingIndex(ShieldedAccCasingTextureID)
+                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).hint(5).casingIndex(ShieldedAccCasingTextureID)
                 		.buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
                 .build();
     }
@@ -484,10 +493,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     public MTESynchrotron(String aName) {
         super(aName);
+        this.hasMaintenanceChecks = true;
     }
 
     public MTESynchrotron(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        this.hasMaintenanceChecks = true;
     }
 
     @Override
@@ -497,50 +508,36 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        final Map<String, Object> tooltipVars = Map.of("fluidUnit", getFluidUnit());
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.synch.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info1"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info2"))
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gtnhlanth.tt.synch.info3", getFluidUnit()))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.oxygen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.nitrogen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.coolant"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.Scoolant"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info4"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info5"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info6"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info7"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info8"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info9"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info10"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info11"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info12"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info13"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
-            .addTecTechHatchInfo()
+            .addMarkdown(new ResourceLocation("gregtech", "synchrotron"), tooltipVars)
+            .addSupportAny()
             .beginStructureBlock(36, 7, 34, true)
-            .addController("Front center")
-            .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 676, false)
-            .addCasingInfoExactly(Casings.SuperdenseCastingBasinCasing.getLocalizedName(), 90, false)
-            .addCasingInfoExactly(LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), 64, false)
-            .addCasingInfoExactly(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 28, false)
-            .addCasingInfoExactly("Any Tiered Glass (LuV+)", 16, false)
-            .addCasingInfoExactly("Antenna Casing (must match)", 4, true)
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), addHintNumber(1))
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), addHintNumber(2))
-            .addMaintenanceHatch(addHintNumber(3))
-            .addInputHatch(addHintNumber(4))
-            .addOutputHatch(addHintNumber(5))
-            .addEnergyHatch(addHintNumber(6))
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.SYNCHROTRON_ANTENNA)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("1690", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("90", Casings.SuperconductingCoilBlock.getLocalizedName(), false)
+            .addCasing("64", LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), false)
+            .addCasing("28", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
+            .addCasing("16", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.LuV]), false)
+            .addCasing("4", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.antenna_casing"), true)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.beam_input_pos"), 1)
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"),
+                StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.beam_output_pos"),
+                6)
+            .addEnergyHatch("4", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.energy_pos"), 4)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 5)
+            .addInputHatch("2", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.input_hatch_pos"), 2)
+            .addOutputHatch("2", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.output_hatch_pos"), 3)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.SYNCHROTRON_ANTENNA)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -674,10 +671,10 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private void outputPacketAfterRecipe() {
-        if (!this.mBeamlineOutputHatches.isEmpty()) {
+        if (!this.mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
-            for (MTEHatchOutputBeamline o : this.mBeamlineOutputHatches) {
+            for (MTEHatchOutputBeamline o : this.mOutputBeamline) {
                 o.dataPacket = packet;
             }
         }
@@ -695,7 +692,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mBeamlineInputHatches) {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
             if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
             return in.dataPacket.getContent();
         }
@@ -720,7 +717,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private static float getMachineFocus(int temperature) {
-        return (float) Math.max(Math.min(Math.pow(1.5, -1.0 / 40.0 * (temperature - 480)), 90), 10);
+        return (float) Math.clamp(Math.pow(1.5, -1.0 / 40.0 * (temperature - 480)), 10, 90);
     }
 
     private static float getOutputRatio(float voltageFactor, int antennaTier) {
@@ -759,9 +756,9 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     max(this.mEnergyHatches.size(), this.mExoticEnergyHatches.size()),
                     4));
         }
+        checkHasMaintenanceHatch(errors);
         checkHatchMin(errors, InputHatch, 2);
         checkHatchMin(errors, OutputHatch, 2);
-        checkHasMaintenanceHatch(errors);
         if (glassTier < VoltageIndex.LuV) {
             errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.LuV));
         }
@@ -785,36 +782,22 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean active, boolean aRedstone) {
-        // Placeholder
-        if (side == facing) {
-            if (active) return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_OIL_CRACKER,
+            OVERLAY_FRONT_OIL_CRACKER_GLOW,
+            OVERLAY_FRONT_OIL_CRACKER_ACTIVE,
+            OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW);
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("Synchrotron.hint", 12);
+    public ITexture getCasingTexture() {
+        return Casings.ShieldedAcceleratorCasing.getCasingTexture();
     }
 
     @Override

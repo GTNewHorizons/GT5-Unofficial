@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.hatch;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -14,7 +16,6 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.core.localization.GuiText;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
@@ -31,6 +32,10 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
         IntSyncValue prioritySyncer = new IntSyncValue(provider::getPriority, provider::setPriority).allowC2S();
         BooleanSyncValue isCaching = new BooleanSyncValue(provider::getCacheMode, provider::setCacheMode).allowC2S();
         BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode).allowC2S();
+        // The provider stores ticks, the player sets seconds.
+        IntSyncValue refreshSyncer = new IntSyncValue(
+            () -> provider.getRefreshTime() / MTEHatchOutputMEBase.TICKS_PER_SECOND,
+            seconds -> provider.setRefreshTime(seconds * MTEHatchOutputMEBase.TICKS_PER_SECOND)).allowC2S();
 
         Flow mainRow = Flow.row()
             .coverChildren()
@@ -44,25 +49,42 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
         mainRow.child(
             new ToggleButton().value(isCaching)
                 .overlay(GuiTextures.FOLDER)
-                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_caching")));
+                .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.outputme.toggle_caching")));
 
         // priority input text field
         mainRow.child(
-            new TextFieldWidget().size(75, 14)
+            new TextFieldWidget().size(60, 14)
                 .formatAsInteger(true)
                 .value(prioritySyncer)
-                .numbersInt(1, Integer.MAX_VALUE)
+                .numbersInt(Integer.MIN_VALUE, Integer.MAX_VALUE)
                 .setMaxLength(10)
                 .tooltip(t -> t.addLine(GuiText.Priority.getLocal()))
                 .setEnabledIf(t -> isCaching.getBoolValue())
-                .marginLeft(5));
+                .marginLeft(4));
 
         // check mode toggle
         mainRow.child(
             new ToggleButton().value(isChecking)
                 .overlay(GuiTextures.SEARCH)
-                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking"))
-                .setEnabledIf(t -> isCaching.getBoolValue()));
+                .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.outputme.toggle_checking")));
+
+        // refresh time input text field
+        mainRow.child(
+            new TextFieldWidget().size(40, 14)
+                .formatAsInteger(true)
+                .value(refreshSyncer)
+                .numbersInt(
+                    MTEHatchOutputMEBase.MIN_REFRESH_TIME / MTEHatchOutputMEBase.TICKS_PER_SECOND,
+                    Integer.MAX_VALUE / MTEHatchOutputMEBase.TICKS_PER_SECOND)
+                .setMaxLength(10)
+                .tooltip(t -> {
+                    t.addLine(StatCollector.translateToLocal("GT5U.hatch.outputme.refresh_time"));
+                    t.addLine(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.hatch.outputme.refresh_time.tooltip",
+                            MTEHatchOutputMEBase.MIN_REFRESH_TIME / MTEHatchOutputMEBase.TICKS_PER_SECOND));
+                })
+                .marginLeft(3));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }

@@ -4,7 +4,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.ModIDs.G_G_FAB, filename = "ggfab")
+@Config(modid = Mods.ModIDs.G_G_FAB, filename = Mods.ModIDs.G_G_FAB)
 @Config.RequiresMcRestart
 public class ConfigurationHandler {
 

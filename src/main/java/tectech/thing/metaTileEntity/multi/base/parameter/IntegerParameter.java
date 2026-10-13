@@ -1,10 +1,16 @@
 package tectech.thing.metaTileEntity.multi.base.parameter;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+
+import gregtech.common.gui.modularui.widget.WidgetConfigurator;
+import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
 
 public class IntegerParameter extends NumericParameter<Integer, IntSyncValue> {
 
@@ -44,5 +50,16 @@ public class IntegerParameter extends NumericParameter<Integer, IntSyncValue> {
     @Override
     public Integer validate(Integer value) {
         return Math.clamp(value, this.getMin(), this.getMax());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void addToSettingsPanel(SettingsPanelBuilder builder, IKey label, WidgetConfigurator<?> configure,
+        String prefix, Function<Parameter<?, ?>, WidgetConfigurator<?>> configurator) {
+        builder.addIntEditor(
+            label,
+            this.getSyncHandler(),
+            this::validate,
+            (WidgetConfigurator<TextFieldWidget>) configure);
     }
 }

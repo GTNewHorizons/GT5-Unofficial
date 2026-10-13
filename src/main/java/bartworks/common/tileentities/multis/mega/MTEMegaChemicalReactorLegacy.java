@@ -86,11 +86,11 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addPerfectOCInfo()
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(5, 5, 9, false)
+            .addEnergyHatchGlassTier()
             .addController("Front center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 46, false)
             .addCasingInfoExactly("Fusion Coil Block", 7, false)
@@ -102,7 +102,7 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
             .addInputBus("Hint block ", 1)
             .addOutputBus("Hint block ", 1)
             .addOutputHatch("Hint block ", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

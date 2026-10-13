@@ -39,6 +39,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 
 public class CommandHandler extends CommandBase {
 
@@ -89,7 +90,7 @@ public class CommandHandler extends CommandBase {
 
     @Override
     public String getCommandName() {
-        return "kubatech";
+        return Mods.ModIDs.KUBA_TECH;
     }
 
     @Override

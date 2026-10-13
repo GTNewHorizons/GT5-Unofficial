@@ -2,7 +2,10 @@ package kubatech.tileentity.gregtech.multiblock.eigmodes;
 
 import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 
-import net.minecraft.util.EnumChatFormatting;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
@@ -64,25 +67,17 @@ public class EIGNormalMode extends EIGMode {
 
     @Override
     public MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder) {
-        String minVoltageTier = voltageTooltipFormatted(this.getMinVoltageTier());
-        String minVoltageTierMinus1 = voltageTooltipFormatted(this.getMinVoltageTier() - 1);
+        Map<String, Object> ttVars = new HashMap<>();
+        ttVars.put("minVoltageTier", voltageTooltipFormatted(this.getMinVoltageTier()));
+        ttVars.put("minVoltageTierMinus1", voltageTooltipFormatted(this.getMinVoltageTier() - 1));
+        ttVars.put("startingSlotCount", this.getStartingSlotCount());
+        ttVars.put("slotPerTierMultiplier", this.getSlotPerTierMultiplier());
+        ttVars.put("seedCapacityPerSlot", this.getSeedCapacityPerSlot());
+        ttVars.put("maxFertilizerUsagePerSeed", this.getMaxFertilizerUsagePerSeed());
+        ttVars.put("fertilizerBonus", String.format("%.0f%%", this.getFertilizerBoost() * 100));
 
-        double fertilizerBonusMultiplier = this.getFertilizerBoost() * 100;
-        String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
-
-        return builder.addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Normal Crops:")
-            .addInfo("Minimal voltage tier: " + minVoltageTier)
-            .addInfo("Starting with " + this.getStartingSlotCount() + " slot")
-            .addInfo(
-                "Every tier past " + minVoltageTier + ", slots are multiplied by " + this.getSlotPerTierMultiplier())
-            .addInfo("Every slot adds " + this.getSeedCapacityPerSlot() + " seed to the total seed capacity")
-            .addInfo("Base process time: 5 sec")
-            .addInfo("Process time is divided by number of tiers past " + minVoltageTierMinus1 + " (Minimum 1 sec)")
-            .addInfo("All crops are grown at the end of the operation")
-            .addInfo("Does not drop seeds")
-            .addInfo("Can consume up to " + this.getMaxFertilizerUsagePerSeed() + " fertilizer per seed per cycle")
-            .addInfo("Boost per fertilizer: " + fertilizerBonus);
+        return builder
+            .addMarkdown(new ResourceLocation("gregtech", "extreme-industrial-greenhouse-normal-mode"), ttVars);
     }
 
     @Override

@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.covers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -245,10 +244,7 @@ public class CoverOverflowValve extends Cover {
         if (overflowPoint > maxOverflowPoint) overflowPoint = minOverflowPoint;
         if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector
-                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint));
+        GTUtility.sendChatTrans(aPlayer, "GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint);
     }
 
     @Override
@@ -263,10 +259,7 @@ public class CoverOverflowValve extends Cover {
         if (overflowPoint > maxOverflowPoint) overflowPoint = minOverflowPoint;
         if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector
-                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint));
+        GTUtility.sendChatTrans(aPlayer, "GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint);
         return true;
     }
     // GUI

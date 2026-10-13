@@ -183,6 +183,7 @@ public class MTEHatchTurbine extends MTEHatch {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
         if (this.mHasController) {
             if (aTick % 20 == 0) {
                 boolean active = isControllerActive();

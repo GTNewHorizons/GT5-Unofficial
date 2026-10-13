@@ -44,6 +44,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -84,21 +85,23 @@ public class HatchElementBuilder<T> {
                 e -> e.getDescriptionLangKeys()
                     .stream())
             .collect(Collectors.toList());
-        List<? extends Class<? extends IMetaTileEntity>> mteClasses = Arrays.stream(elements)
-            .map(IHatchElement::mteClasses)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
         return adder(
             Arrays.stream(elements)
                 .map(
                     e -> e.adder()
                         .rebrand())
                 .reduce(IGTHatchAdder::orElse)
-                .get()).hatchItemFilter(obj -> GTStructureUtility.filterByMTEClass(mteClasses))
+                .get()).hatchItemFilter(obj -> is -> {
+                    IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
+                    return tile != null && Arrays.stream(elements)
+                        .anyMatch(
+                            e -> !e.mteBlacklist()
+                                .contains(tile.getClass()) && e.matchesHatch(tile));
+                })
                     .shouldSkip(
                         (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
-                            t) -> t != null && mteClasses.stream()
-                                .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())))
+                            t) -> t != null && Arrays.stream(elements)
+                                .anyMatch(e -> e.matchesHatch(t.getMetaTileEntity())))
                     .cacheHint(
                         () -> Arrays.stream(elements)
                             .map(IHatchElement::getDisplayName)
@@ -156,13 +159,8 @@ public class HatchElementBuilder<T> {
             .stream()
             .map(IHatchElement::mteBlacklist)
             .flatMap(Collection::stream)
-            .collect(Collectors.toList());
+            .toList();
 
-        List<Class<? extends IMetaTileEntity>> list = elements.keySet()
-            .stream()
-            .map(IHatchElement::mteClasses)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
         // map cannot be null or empty, so assert Optional isPresent
         return adder(
             elements.keySet()
@@ -171,22 +169,23 @@ public class HatchElementBuilder<T> {
                     e -> e.adder()
                         .rebrand())
                 .reduce(IGTHatchAdder::orElse)
-                .orElseThrow(AssertionError::new))
-                    .hatchItemFilter(
-                        obj -> GTStructureUtility.filterByMTEClassWithBlacklist(
-                            elements.entrySet()
-                                .stream()
-                                .filter(
-                                    entry -> entry.getKey()
-                                        .count(obj)
-                                        < entry.getValue()
-                                            .longValue())
-                                .flatMap(
-                                    entry -> entry.getKey()
-                                        .mteClasses()
-                                        .stream())
-                                .collect(Collectors.toList()),
-                            blacklist))
+                .orElseThrow(AssertionError::new)).hatchItemFilter(obj -> {
+                    List<IHatchElement<? super T>> neededElements = elements.entrySet()
+                        .stream()
+                        .filter(
+                            entry -> entry.getKey()
+                                .count(obj)
+                                < entry.getValue()
+                                    .longValue())
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toList());
+                    return is -> {
+                        IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
+                        return tile != null && !blacklist.contains(tile.getClass())
+                            && neededElements.stream()
+                                .anyMatch(e -> e.matchesHatch(tile));
+                    };
+                })
                     .shouldReject(
                         obj -> elements.entrySet()
                             .stream()
@@ -197,8 +196,9 @@ public class HatchElementBuilder<T> {
                                         .longValue()))
                     .shouldSkip(
                         (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
-                            t) -> t != null && list.stream()
-                                .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())))
+                            t) -> t != null && elements.keySet()
+                                .stream()
+                                .anyMatch(e -> e.matchesHatch(t.getMetaTileEntity())))
                     .cacheHint(
                         () -> elements.keySet()
                             .stream()
@@ -311,7 +311,13 @@ public class HatchElementBuilder<T> {
         mCacheHint = true;
         return this;
     }
-    // endregion
+
+    public String getHatchItemTypeName() {
+        if (mHatchItemType != null) {
+            return mHatchItemType.get();
+        }
+        return "unspecified GT hatch";
+    }
 
     public HatchElementBuilder<T> continueIfSuccess() {
         mNoStop = true;
@@ -322,6 +328,55 @@ public class HatchElementBuilder<T> {
         mNoStop = false;
         return this;
     }
+
+    public IGTHatchAdder<? super T> getAdder() {
+        return mAdder;
+    }
+
+    public int getCasingIndex() {
+        return mCasingIndex;
+    }
+
+    public int getHint() {
+        return mHint;
+    }
+
+    public BiPredicate<? super T, ? super IGregTechTileEntity> getShouldSkip() {
+        return mShouldSkip;
+    }
+
+    public BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> getHatchItemFilter() {
+        return mHatchItemFilter;
+    }
+
+    public Supplier<String> getHatchItemType() {
+        return mHatchItemType;
+    }
+
+    public Predicate<? super T> getReject() {
+        return mReject;
+    }
+
+    public Supplier<List<String>> getDescriptionNames() {
+        return mDescriptionNames;
+    }
+
+    public boolean isCacheHint() {
+        return mCacheHint;
+    }
+
+    public boolean isNoStop() {
+        return mNoStop;
+    }
+
+    public boolean isExclusive() {
+        return mExclusive;
+    }
+
+    public EnumSet<ForgeDirection> getDisallowedDirection() {
+        return mDisallowedDirection;
+    }
+    // endregion
 
     /**
      * Help automatic hatch side determination code by ruling out some directions. Note the automatic hatch side
@@ -402,7 +457,8 @@ public class HatchElementBuilder<T> {
     public HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
         mDescriptionNames = () -> Collections.singletonList(clazz.getSimpleName());
         return hatchItemFilter(c -> is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)))
-            .cacheHint(() -> StatCollector.translateToLocal("gt.hatch_element_of_class") + clazz.getSimpleName())
+            .cacheHint(
+                () -> StatCollector.translateToLocalFormatted("gt.hatch_element_of_class", clazz.getSimpleName()))
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz
                     .isInstance(t.getMetaTileEntity()));
@@ -446,7 +502,7 @@ public class HatchElementBuilder<T> {
         };
         return hatchItemFilter(
             c -> is -> GTUtility.isStackValid(is) && is.getItem() instanceof ItemMachines && is.getItemDamage() == aId)
-                .cacheHint(() -> StatCollector.translateToLocal("gt.hatch_element_of_id") + aId)
+                .cacheHint(() -> StatCollector.translateToLocalFormatted("gt.hatch_element_of_id", aId))
                 .shouldSkip(
                     (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null
                         && t.getMetaTileID() == aId);
@@ -533,13 +589,15 @@ public class HatchElementBuilder<T> {
         }
         return new IStructureElement<>() {
 
-            private String mHint = mHatchItemType == null ? "unspecified GT hatch" : mHatchItemType.get();
-
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 return tileEntity instanceof IGregTechTileEntity
                     && mAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) mCasingIndex);
+            }
+
+            private String getHatchItemTypeName() {
+                return HatchElementBuilder.this.getHatchItemTypeName();
             }
 
             @Override
@@ -563,22 +621,24 @@ public class HatchElementBuilder<T> {
             }
 
             @Override
-            public boolean placeBlock(T t, World world, int i, int i1, int i2, ItemStack itemStack) {
-                // TODO
-                return false;
-            }
-
-            private String getHint() {
-                if (mHint != null) return mHint;
-                String tHint = mHatchItemType.get();
-                if (tHint == null) return "?";
-                if (mCacheHint) {
-                    mHint = tHint;
-                    if (mHint != null)
-                        // yeet the getter, since its product is retrieved and cached
-                        mHatchItemType = null;
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                IGregTechTileEntity base = null;
+                if (t instanceof IMetaTileEntity mte) {
+                    base = mte.getBaseMetaTileEntity();
                 }
-                return tHint;
+                if (base == null) return false;
+
+                EntityPlayerMP player = GTUtility.getFakePlayer(base);
+                if (player == null) return false;
+
+                AutoPlaceEnvironment env = AutoPlaceEnvironment
+                    .fromLegacy(GTCreativeHatchSource.instance, player, chat -> {});
+                PlaceResult result = survivalPlaceBlock(t, world, x, y, z, trigger, env);
+
+                if (t instanceof MTEMultiBlockBase multi) {
+                    multi.checkStructure(true, base);
+                }
+                return result == PlaceResult.ACCEPT || result == PlaceResult.ACCEPT_STOP || result == PlaceResult.SKIP;
             }
 
             @Override
@@ -592,7 +652,7 @@ public class HatchElementBuilder<T> {
                 if (mDescriptionNames != null) {
                     return mDescriptionNames.get();
                 }
-                return Collections.singletonList(getHint());
+                return Collections.singletonList(getHatchItemTypeName());
             }
 
             @Deprecated
@@ -621,7 +681,7 @@ public class HatchElementBuilder<T> {
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
                 if (!GTStructureChannels.HATCH.hasValue(trigger) && !mExclusive) {
-                    String type = getHint();
+                    String type = getHatchItemTypeName();
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_placeable", type));
                     return PlaceResult.REJECT;
@@ -629,7 +689,7 @@ public class HatchElementBuilder<T> {
                 ItemStack taken = env.getSource()
                     .takeOne(mHatchItemFilter.apply(t, trigger), true);
                 if (GTUtility.isStackInvalid(taken)) {
-                    String type = getHint();
+                    String type = getHatchItemTypeName();
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;
@@ -653,7 +713,8 @@ public class HatchElementBuilder<T> {
                 if (env.getAPILevel() == AutoPlaceEnvironment.APILevel.Legacy) {
                     // a legacy decorator isn't passing down necessary information
                     // in that case, we just assume all facing is allowed
-                    allowed.addAll(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
+                    // we use the default of the block placing direction, skip the rotation by using empty list.
+                    // allowed.addAll(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
                 } else {
                     for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
                         // as noted on getWorldDirection Y axis should be flipped before use

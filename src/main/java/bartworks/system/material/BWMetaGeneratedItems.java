@@ -44,6 +44,7 @@ import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.config.Client;
 import ic2.core.IC2Potion;
 
 public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMaterial {
@@ -117,6 +118,8 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
             aList.add(translateToLocal("GT5U.tooltip.purify.1"));
         }
         if (this.orePrefixes == OrePrefixes.crushed) aList.add(translateToLocal("GT5U.tooltip.purify.2"));
+        if (this.orePrefixes == OrePrefixes.ingotHot && Client.tooltip.showHotIngotText)
+            aList.add(translateToLocal("gtpp.tooltip.ingot.very_hot"));
 
         if (aStack != null && aStack.getItem() instanceof BWMetaGeneratedItems
             && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())

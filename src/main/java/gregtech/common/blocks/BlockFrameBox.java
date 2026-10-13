@@ -38,7 +38,6 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererBlock;
 
 public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
@@ -59,8 +58,6 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         super(new MaterialMachines());
         this.mUnlocalizedName = "gt.blockframes";
         setBlockName(this.mUnlocalizedName);
-        GTLanguageManager.addAnySubBlockLocalization(getUnlocalizedName());
-
         GameRegistry.registerBlock(this, ItemFrames.class, getUnlocalizedName());
 
         for (int meta = 1; meta < GregTechAPI.sGeneratedMaterials.length; meta++) {
@@ -412,9 +409,8 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         drops.add(getStackForm(1, metadata & MATERIAL_MASK));
         // If there is one, grab all attached covers and drop them
         if (tempTe != null) {
-            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-                ItemStack cover = tempTe.getCoverItemAtSide(direction);
-                if (cover != null) drops.add(cover);
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (tempTe.hasCoverAtSide(side)) tempTe.dropCover(side, side);
             }
         }
         // Make sure to clear the temporary TE

@@ -35,7 +35,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -56,6 +58,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteam
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator> implements ISurvivalConstructable {
 
     public MTESteamMacerator(String aName) {
@@ -73,7 +76,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Override
     public String getMachineType() {
-        return "Macerator";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.macerator");
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -334,31 +337,28 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyNormalCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_normal_casing");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
-            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
+            .addInfo(StatCollector.translateToLocal("GT5U.MBTT.Steam.HighPressure"))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Front center")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any Casing")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addSteamHatch("1", anyNormalCasing, 1)
+            .addSteamInputBus("1+", anyNormalCasing, 1)
+            .addSteamOutputBus("1+", anyNormalCasing, 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "14-20x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Bronze Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
+            .addCasing("14-17", Casings.BronzePlatedBricks.getLocalizedName(), false)
+            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bronze), false)
+            .addCasing("1", Casings.BronzeGearBoxCasing.getLocalizedName(), false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "14-20x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
+            .addCasing("14-17", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("1", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "Citrusss")
             .toolTipFinisher();
         return tt;
@@ -367,28 +367,21 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add(StatCollector.translateToLocalFormatted("gtpp.infodata.multi.steam.tier", tierMachine));
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi.steam.tier",
-                "" + EnumChatFormatting.YELLOW + tierMachine));
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi.steam.parallel",
-                "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
+            StatCollector.translateToLocalFormatted("gtpp.infodata.multi.steam.parallel", getMaxParallelRecipes()));
         return info.toArray(new String[0]);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
                 + getSteamTierTextForWaila(tag)
                 + EnumChatFormatting.RESET);
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("parallel")
@@ -396,9 +389,8 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
         tag.setInteger("parallel", getTrueParallel());
     }

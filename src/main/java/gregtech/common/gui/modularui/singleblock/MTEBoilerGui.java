@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
@@ -17,8 +18,10 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 
@@ -26,9 +29,11 @@ public class MTEBoilerGui {
 
     // the base gui for all Steam Boilers of all types
     MTEBoiler base;
+    IGregTechTileEntity baseMetaTileEntity;
 
     public MTEBoilerGui(MTEBoiler base) {
         this.base = base;
+        baseMetaTileEntity = base.getBaseMetaTileEntity();
     }
 
     // author: miozune
@@ -36,6 +41,12 @@ public class MTEBoilerGui {
         syncManager.registerSlotGroup("item_inv", 0);
         FloatSyncValue heat = new FloatSyncValue(() -> (float) base.mTemperature / base.maxProgresstime());
         syncManager.syncValue("heat", heat);
+
+        BooleanSyncValue mufflerSyncer = new BooleanSyncValue(
+            baseMetaTileEntity::isMuffled,
+            baseMetaTileEntity::setMuffler).allowC2S();
+        syncManager.syncValue("mufflerSyncer", mufflerSyncer);
+
         IWidget waterSlots = Flow.column()
             .coverChildren()
             .child(
@@ -93,6 +104,15 @@ public class MTEBoilerGui {
                 .margin(2))
             .childIf(base.doesAddFuelSlot(), () -> base.createFuelSlot());
 
+        IWidget mufflerSlot = Flow.column()
+            .coverChildren()
+            .topRel(0)
+            .rightRel(0)
+            .child(
+                CommonButtons.createMuffleButton("mufflerSyncer")
+                    .disableThemeBackground(true)
+                    .disableHoverThemeBackground(true));
+
         return GTGuis.mteTemplatePanelBuilder(base, data, syncManager, uiSettings)
             .build()
             .child(
@@ -103,7 +123,12 @@ public class MTEBoilerGui {
                     .childPadding(9)
                     .child(waterSlots)
                     .child(indicators)
-                    .child(fuelSlots));
+                    .child(fuelSlots))
+            .child(
+                Flow.row()
+                    .full()
+                    .padding(4)
+                    .child(mufflerSlot));
     }
 
 }

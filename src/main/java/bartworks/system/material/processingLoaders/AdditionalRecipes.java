@@ -56,6 +56,7 @@ import java.util.Objects;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -195,6 +196,9 @@ public class AdditionalRecipes {
         ItemStack Outp = ItemList.Tool_DataOrb.get(1L);
         BehaviourDataOrb.setDataTitle(Outp, "DNA Sample");
         BehaviourDataOrb.setDataName(Outp, "Any DNA");
+        ItemStack resulting = ItemList.EmptyPetriDish.get(1)
+            .setStackDisplayName("The Culture made from DNA");
+        resulting.setTagInfo("NEI", new NBTTagByte((byte) 1));
         // Clonal Cellular Synthesis- [Liquid DNA] + Medium Petri Dish + Plasma Membrane + Stem Cells + Genome Data
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -202,9 +206,7 @@ public class AdditionalRecipes {
                 ItemList.PlasmaMembrane.get(1),
                 ItemList.Circuit_Chip_Stemcell.get(2L),
                 Outp)
-            .itemOutputs(
-                ItemList.EmptyPetriDish.get(1)
-                    .setStackDisplayName("The Culture made from DNA"))
+            .itemOutputs(resulting)
             .outputChances(75_00)
             .fluidInputs(GTModHandler.getLiquidDNA(8_000))
             .special(BioItemList.mBioLabParts[4])

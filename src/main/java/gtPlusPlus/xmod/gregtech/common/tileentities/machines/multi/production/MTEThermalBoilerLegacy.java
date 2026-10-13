@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,15 +41,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -103,7 +103,7 @@ public class MTEThermalBoilerLegacy extends GTPPMultiBlockBase<MTEThermalBoilerL
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.thermalBoilerRecipes;
+        return RecipeMaps.thermalBoilerRecipes;
     }
 
     @Override
@@ -275,10 +275,10 @@ public class MTEThermalBoilerLegacy extends GTPPMultiBlockBase<MTEThermalBoilerL
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addStructureDeprecatedLine()
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc1"))
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc2"))
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
-            .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc3"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc4"))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoMin("Thermal Containment Casing", 10, false)

@@ -7,8 +7,6 @@ import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -22,16 +20,7 @@ public class FilterSlot extends PhantomItemSlot {
         background(GuiTextures.SLOT_ITEM, GTGuiTextures.OVERLAY_SLOT_FILTER);
     }
 
-    public FilterSlot(ModularSlot slot) {
-        this();
-        slot(slot);
-    }
-
-    public FilterSlot(IItemHandlerModifiable handler, int index) {
-        this(new ModularSlot(handler, index));
-    }
-
     public FilterSlot(Supplier<ItemStack> getter, Consumer<ItemStack> setter) {
-        this(new PhantomSingleSlotItemStackHandler(getter, setter), 0);
+        slot(new PhantomSingleSlotItemStackHandler(getter, setter), 0);
     }
 }

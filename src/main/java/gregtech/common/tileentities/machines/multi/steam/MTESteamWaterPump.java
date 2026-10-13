@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,6 +27,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,6 +40,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -48,11 +51,13 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasings9;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump> implements ISurvivalConstructable {
 
     public MTESteamWaterPump(String aName) {
@@ -70,7 +75,7 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
 
     @Override
     public String getMachineType() {
-        return "Water Pump";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.water_pump");
     }
 
     private static IStructureDefinition<MTESteamWaterPump> STRUCTURE_DEFINITION = null;
@@ -202,9 +207,9 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET, errors)) return;
 
+        checkCasingMin(errors, mCountCasing, 9);
         checkHasSteamInput(errors);
         checkOneOutputHatch(errors);
-        checkCasingMin(errors, mCountCasing, 9);
         currentHumidity = getHumidity();
     }
 
@@ -232,43 +237,29 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Pumps Water based on humidity")
-            .addInfo("Has 2 tiers: Bronze and Steel")
-            .addInfo("Steel tier extracts 2x Water")
-            .addInfo(
-                EnumChatFormatting.AQUA + "Generates: "
-                    + EnumChatFormatting.WHITE
-                    + "tier * humidity * "
-                    + BASE_WATER_PER_SECOND
-                    + " L/s"
-                    + EnumChatFormatting.AQUA
-                    + " of Water, to a minimum of 250L/s"
-                    + EnumChatFormatting.RESET)
-            .addInfo(
-                EnumChatFormatting.RED + "Consumes: "
-                    + EnumChatFormatting.WHITE
-                    + BASE_STEAM_PER_SECOND
-                    + " L/s"
-                    + EnumChatFormatting.RED
-                    + " of Steam"
-                    + EnumChatFormatting.RESET)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "steam-water-pump"),
+                ImmutableMap.<String, Object>of(
+                    "water",
+                    BASE_WATER_PER_SECOND,
+                    "min_water",
+                    250,
+                    "steam",
+                    BASE_STEAM_PER_SECOND))
             .beginStructureBlock(3, 3, 4, false)
-            .addController("Front bottom center")
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any Casing")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addSteamHatch("1", TooltipHelper.anyCasingText(), 1)
+            .addOutputHatch("1", TooltipHelper.anyCasingText(), 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
-            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Bronze Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
+            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bronze), false)
+            .addCasing("9", Casings.PrimitiveWoodenCasing.getLocalizedName(), false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
-            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "9 " + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
+            .addCasing("10", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("9", Casings.PrimitiveWoodenCasing.getLocalizedName(), false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
         return tt;
     }
@@ -322,10 +313,8 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         int tierMachine = tag.getInteger("mSetTier");
         String tierMachineText;
@@ -337,12 +326,12 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
             tierMachineText = String.valueOf(tierMachine);
         }
 
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.BLUE
                 + tierMachineText
                 + EnumChatFormatting.RESET);
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.biomes.humidity") + " "
                 + EnumChatFormatting.BLUE
                 + tag.getFloat("humidity")
@@ -351,9 +340,8 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("humidity", currentHumidity * 100);
         tag.setInteger("mSetTier", mSetTier);
     }

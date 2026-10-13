@@ -34,6 +34,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
@@ -46,7 +47,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtchingArrayModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int ETCHING_OFFSET_X = 3;
     protected static final int ETCHING_OFFSET_Y = 4;
     protected static final int ETCHING_OFFSET_Z = 0;
@@ -81,7 +81,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             buildHatchAdder(MTEEtchingArrayModule.class).anyOf(HatchElement.LaserSource)
                 .adder(MTEEtchingArrayModule::addLaserSource)
                 .casingIndex(Casings.NanochipMeshInterfaceCasing.getTextureId())
-                .hint(1)
+                .hint(4)
                 .build())
         .build();
 
@@ -155,13 +155,13 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     }
 
     @Override
-    protected float getEUDiscountModifier() {
-        return 1f / (GTUtility.log4ceil(laserAmps) - 3);
+    protected float getEUDiscountModifier(GTRecipe recipe) {
+        return 1f / (GTUtility.log4ceil(laserAmps) - 3 + (baseMulti.crystalT3Active ? 1 : 0));
     }
 
     @Override
     protected float getModuleDurationModifier() {
-        return 1f / (Math.max(1, laserTier - 9));
+        return 1f / (Math.max(1, laserTier - 9 + (baseMulti.crystalT3Active ? 1 : 0)));
     }
 
     @Override
@@ -173,52 +173,54 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.1"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.2"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.3"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.4"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
             .beginStructureBlock(7, 7, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 28, false)
+            .addCasing("28", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 24, false)
+            .addCasing("24", translateToLocal("gt.blockcasings12.1.name"), false)
             // Enriched Holmium Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name")
-                    .replace("%material", Materials.EnrichedHolmium.getLocalizedName()),
-                17,
-                false)
+            .addCasing("17", "Enriched Holmium Frame Box", false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 13, false)
+            .addCasing("13", translateToLocal("gt.blockglass1.8.name"), false)
             // Shielded Accelerator Casing
-            .addCasingInfoExactly(translateToLocal("casing.shielded_accelerator.name"), 9, false)
+            .addCasing("9", translateToLocal("casing.shielded_accelerator.name"), false)
             // Non-Photonic Matter Exclusion Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.3.name"), 4, false)
+            .addCasing("4", translateToLocal("gt.blockglass1.3.name"), false)
             // Laser Source Hatch
-            .addCasingInfoExactly(translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), 1, true)
-            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addMiscHatch("1", translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "Front center casing", 4)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setBoolean("installed", laserSource != null);
         tag.setInteger("laserAmps", laserAmps);
         tag.setInteger("laserTier", laserTier);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         if (tag.getBoolean("installed")) {
-            currentTip.add(
+            list.add(
                 EnumChatFormatting.LIGHT_PURPLE + translateToLocal("GT5U.tooltip.nac.module.etching_array.installed")
                     + ": "
                     + tag.getInteger("laserAmps")

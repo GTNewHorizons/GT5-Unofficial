@@ -1,5 +1,5 @@
 {
-  "format_version": 1,
+  "format_version": 2,
   "size": [3, 4, 3],
   "palette": {
     "B": {"name": "gregtech:gt.blockcasings", "meta": 11, "label": "Heat Proof Machine Casing"},

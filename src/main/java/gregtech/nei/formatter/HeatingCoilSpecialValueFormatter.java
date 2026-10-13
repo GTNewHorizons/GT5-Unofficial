@@ -2,7 +2,7 @@ package gregtech.nei.formatter;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -22,10 +22,10 @@ public class HeatingCoilSpecialValueFormatter implements INEISpecialInfoFormatte
     @Override
     public List<String> format(RecipeDisplayInfo recipeInfo) {
         int heat = recipeInfo.recipe.mSpecialValue;
-        return Collections.singletonList(
+        return Arrays.asList(
+            StatCollector.translateToLocalFormatted("GT5U.nei.heat_capacity", formatNumber(heat)),
             StatCollector.translateToLocalFormatted(
-                "GT5U.nei.heat_capacity",
-                formatNumber(heat),
+                "GT5U.nei.heat_capacity.material",
                 HeatingCoilLevel.getDisplayNameFromHeat(heat, false)));
     }
 }

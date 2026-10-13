@@ -18,58 +18,66 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements ISurvivalConstructable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int OFFSET_X = 3;
     private static final int OFFSET_Y = 4;
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    protected final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
-    protected final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
-    protected final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
-    protected final double EFFICIENCY_CEILING = 1.5D;
-    protected final int HEATING_TIMER = TickTime.SECOND * 10;
+    private static final double DIESEL_EFFICIENCY_COEFFICIENT = 0.04D;
+    private static final double GAS_EFFICIENCY_COEFFICIENT = 0.04D;
+    private static final double ROCKET_EFFICIENCY_COEFFICIENT = 0.005D;
+    private static final double EFFICIENCY_CEILING = 1.5D;
+    private static final int HEATING_TIMER = TickTime.SECOND * 10;
 
     private long tEff;
     private int heatingTicks;
@@ -88,42 +96,15 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
         super.useLongPower = true;
     }
 
-    public final boolean addInputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchInput) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-            }
-        }
-        return false;
-    }
-
-    public final boolean addDynamoHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchDynamo) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
-            }
-        }
-        return false;
-    }
-
     @Override
     public IStructureDefinition<MTEUniversalChemicalFuelEngine> getStructure_EM() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEUniversalChemicalFuelEngine>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
-                    new String[][] { { "       ", "       ", "       ", "  BBB  ", "  B~B  ", "  BBB  ", "       " },
+                    new String[][] {
+                        // spotless:off
+                        { "       ", "       ", "       ", "  BBB  ", "  B~B  ", "  BBB  ", "       " },
                         { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
                         { "       ", " D   D ", " D   D ", "  BBB  ", "  B B  ", "  CBC  ", "  EEE  " },
                         { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
@@ -135,7 +116,9 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
                         { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
                         { "       ", " D   D ", " D   D ", "  BBB  ", "  B B  ", "  CBC  ", "  EEE  " },
                         { "B     B", "FB   BF", "FAFEFAF", " FBBBF ", " EB BE ", " FBBBF ", "  FEF  " },
-                        { "       ", "       ", "       ", "  BBB  ", "  BGB  ", "  BBB  ", "       " } })
+                        { "       ", "       ", "       ", "  BBB  ", "  BGB  ", "  BBB  ", "       " }}
+                        //spotless:on
+                )
                 .addElement('A', Casings.TitaniumPipeCasing.asElement())
                 .addElement(
                     'B',
@@ -159,24 +142,15 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkHatch(errors);
         checkCasingMin(errors, casingAmount, 100);
-    }
-
-    public void checkHatch(List<StructureError> errors) {
-        checkHasMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputHatch(errors);
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("UniversalChemicalFuelEngine.hint", 8);
     }
 
     @Override
@@ -187,45 +161,32 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Engine, UCFE")
-            .addInfo("BURNING BURNING BURNING")
-            .addInfo("Use combustible liquid to generate power")
-            .addInfo("You need to supply Combustion Promoter to keep it running")
-            .addInfo("It will consume all the fuel and combustion promoter in the hatch every second")
-            .addInfo("Energy output to the dynamo will be distributed over the next second")
-            .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop")
-            .addInfo(
-                "If the amount of energy to be produced is higher "
-                    + "than the dynamo hatch can handle then all produced energy will void")
-            .addInfo("When turned on, there is a 10-second period where the machine will not stop")
-            .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed")
-            .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
-            .addInfo("The higher the amount of promoter, the higher the efficiency")
-            .addInfo(
-                "Follows an exponential curve exp(-C/(p/x))*1.5, "
-                    + "where x is the amount of fuel in liters, p is the amount of promoter in liters")
-            .addInfo("and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
-            .addInfo("It creates sqrt(Current Output Power) pollution every second")
-            .addInfo(
-                "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
-                    + EnumChatFormatting.YELLOW
-                    + "without outputting energy")
-            .addInfo("The efficiency is up to 150%")
-            .addTecTechHatchInfo()
-            .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center")
-            .addCasingInfoMin("Stable Titanium Machine Casing", 100, false)
-            .addCasingInfoExactly("Titanium Pipe Casing", 12, false)
-            .addCasingInfoExactly("Engine Intake Casing", 20, false)
-            .addCasingInfoExactly("Titanium Firebox Casing", 10, false)
-            .addCasingInfoExactly("Chemically Inert Machine Casing", 39, false)
-            .addCasingInfoExactly("PTFE Frame Box", 72, false)
-            .addMaintenanceHatch("Any Stable Titanium Machine Casing", 1)
-            .addMufflerHatch("Any Stable Titanium Machine Casing", 1)
-            .addInputHatch("Any Stable Titanium Machine Casing", 1)
-            .addDynamoHatch("Back center of the machine", 2)
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_engine"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "universal-chemical-fuel-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("efficiency_ceiling", formatNumber(EFFICIENCY_CEILING, new FormatOptions().setDecimalPlaces(1)))
+                    .put("gas_coefficient", formatNumber(GAS_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+                    .put("rocket_coefficient", formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+                    .build())
+            .addSupportAny()
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(7, 7, 13, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("100-115", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
+            .addCasing("72", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
+            .addCasing("39", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.EngineIntakeCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.TitaniumPipeCasing.getLocalizedName(), false)
+            .addCasing("10", Casings.TitaniumFireboxCasing.getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "TimTems")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -244,7 +205,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
         result = processFuel(tFluids, RecipeMaps.gasTurbineFuels, PromoterAmount, GAS_EFFICIENCY_COEFFICIENT, 1);
         if (result.wasSuccessful()) return result;
 
-        result = processFuel(tFluids, GTPPRecipeMaps.rocketFuels, PromoterAmount, ROCKET_EFFICIENCY_COEFFICIENT, 3);
+        result = processFuel(tFluids, RecipeMaps.rocketFuels, PromoterAmount, ROCKET_EFFICIENCY_COEFFICIENT, 3);
         if (result.wasSuccessful()) return result;
 
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
@@ -304,6 +265,27 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
             this.getIdealStatus() - this.getRepairStatus(),
             formatNumber(tEff / 100D) + " %");
         return info;
+    }
+
+    @Override
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+
+        // we produce power, so we need to apply a unary minus to the power
+        // for waila to display it correctly since:
+        // https://github.com/GTNewHorizons/GT5-Unofficial/blob/39af6c67/src/main/java/gregtech/api/metatileentity/implementations/GT_MetaTileEntity_MultiBlockBase.java#L1251-L1253
+        tag.setLong("energyUsage", -this.getPowerFlow() * (tEff / 10000));
+        tag.setFloat("efficiency", tEff / 100F);
+        if (!mDynamoHatches.isEmpty()) tag.setLong(
+            "energyTier",
+            GTUtility.getTier(
+                mDynamoHatches.get(0)
+                    .maxEUOutput()));
+        if (!eDynamoMulti.isEmpty()) tag.setLong(
+            "energyTier",
+            GTUtility.getTier(
+                eDynamoMulti.get(0)
+                    .maxEUOutput()));
     }
 
     void addAutoEnergy() {
@@ -370,30 +352,22 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.StableTitaniumMachineCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_DIESEL_ENGINE,
+            OVERLAY_FRONT_DIESEL_ENGINE_GLOW,
+            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE,
+            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.StableTitaniumMachineCasing.getCasingTexture();
     }
 
     @Override
@@ -424,7 +398,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(GTPPRecipeMaps.rocketFuels, RecipeMaps.dieselFuels, RecipeMaps.gasTurbineFuels);
+        return Arrays.asList(RecipeMaps.rocketFuels, RecipeMaps.dieselFuels, RecipeMaps.gasTurbineFuels);
     }
 
     @Override

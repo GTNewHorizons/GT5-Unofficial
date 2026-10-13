@@ -29,6 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -44,6 +45,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -68,6 +70,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteam
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESteamFurnaceMulti extends MTESteamMultiBlockBase<MTESteamFurnaceMulti>
     implements ISurvivalConstructable {
 
@@ -105,7 +108,9 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBlockBase<MTESteamFurnace
 
     @Override
     public String getMachineType() {
-        return "Furnace, Blaster, Smoker";
+        return StatCollector.translateToLocal(
+            EtFuturumRequiem.isModLoaded() ? "gt.mbtt.machine_type.furnace_blaster_smoker"
+                : "gt.mbtt.machine_type.furnace");
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -174,64 +179,35 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBlockBase<MTESteamFurnace
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyNormalCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_normal_casing");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f);
         if (EtFuturumRequiem.isModLoaded()) {
-            tt.addInfo(
-                "Can operate in " + EnumChatFormatting.RED
-                    + "Blasting"
-                    + EnumChatFormatting.GRAY
-                    + " and "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Smoking"
-                    + EnumChatFormatting.GRAY
-                    + " modes, which double "
-                    + EnumChatFormatting.GREEN
-                    + "Speed"
-                    + EnumChatFormatting.GRAY
-                    + " and "
-                    + EnumChatFormatting.AQUA
-                    + "Steam Usage")
-                .addInfo(
-                    EnumChatFormatting.RED + "Blasting"
-                        + EnumChatFormatting.GRAY
-                        + " mode can only process "
-                        + EnumChatFormatting.RED
-                        + "Metals")
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE + "Smoking"
-                        + EnumChatFormatting.GRAY
-                        + " can only process "
-                        + EnumChatFormatting.LIGHT_PURPLE
-                        + "Food Items")
-                .addInfo("Mode can be switched by using a screwdriver on the controller")
+            tt.addMarkdown(new ResourceLocation("gregtech", "steam-furnace-modes"))
                 .addSeparator();
         }
 
-        tt.addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(3, 3, 4, false)
-            .addController("Front center")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any Casing")
+        tt.addInfo(StatCollector.translateToLocal("GT5U.MBTT.Steam.HighPressure"))
+            .beginStructureBlock(3, 3, 3, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addSteamHatch("1", anyNormalCasing, 1)
+            .addSteamInputBus("1+", anyNormalCasing, 1)
+            .addSteamOutputBus("1+", anyNormalCasing, 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2-6" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Bronze Gearbox Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Bronze Firebox Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
+            .addCasing("2-6", Casings.BronzePlatedBricks.getLocalizedName(), false)
+            .addCasing("4", Casings.BronzeGearBoxCasing.getLocalizedName(), false)
+            .addCasing("4", Casings.BronzePipeCasing.getLocalizedName(), false)
+            .addCasing("3", Casings.BronzeFireboxCasing.getLocalizedName(), false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2-6" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Gearbox Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Steel Firebox Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
+            .addCasing("2-6", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("4", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addCasing("4", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("3", Casings.SteelFireboxCasing.getLocalizedName(), false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher();
         return tt;
     }
@@ -439,33 +415,26 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBlockBase<MTESteamFurnace
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add(StatCollector.translateToLocalFormatted("gtpp.infodata.multi.steam.tier", tierMachine));
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi.steam.tier",
-                "" + EnumChatFormatting.YELLOW + tierMachine));
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi.steam.parallel",
-                "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
+            StatCollector.translateToLocalFormatted("gtpp.infodata.multi.steam.parallel", getMaxParallelRecipes()));
         return info.toArray(new String[0]);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                 + EnumChatFormatting.WHITE
                 + tag.getString("mode")
                 + EnumChatFormatting.RESET);
-        currenttip.add(
+        list.add(
             translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
                 + getSteamTierTextForWaila(tag)
                 + EnumChatFormatting.RESET);
-        currenttip.add(
+        list.add(
             translateToLocal("GT5U.multiblock.curparallelism") + ": "
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("parallel")
@@ -473,12 +442,16 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBlockBase<MTESteamFurnace
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
         tag.setInteger("parallel", getTrueParallel());
         tag.setString("mode", getMachineModeName());
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override

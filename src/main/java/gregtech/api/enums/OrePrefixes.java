@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 
+import gregtech.GTLoggers;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreMaterial;
@@ -31,7 +32,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTInflectionManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.config.Gregtech;
@@ -2780,7 +2780,6 @@ public class OrePrefixes {
     public ItemStack mContainerItem = null;
     public ICondition<ISubTagContainer> mCondition = null;
     public MaterialStack mSecondaryMaterial = null;
-    public OrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
     private final ObjectSet<ItemStack> mContainsTestCache = new ObjectOpenCustomHashSet<>(
         512,
@@ -2834,29 +2833,31 @@ public class OrePrefixes {
         if (!this.mDisabledItems.contains(aMaterial)) this.mDisabledItems.add(aMaterial);
     }
 
-    public static OrePrefixes getOrePrefix(String aOre) {
-        for (OrePrefixes tPrefix : VALUES) if (aOre.startsWith(tPrefix.toString())) {
-            if (tPrefix == orePluto && aOre.equals("orePlutonium")) return ore;
-            if (tPrefix == orePluto && aOre.equals("orePlutonium241")) return ore;
-            if (tPrefix == oreTitan && aOre.equals("oreTitanium")) return ore;
-            if (tPrefix == oreCallisto && aOre.equals("oreCallistoIce")) return ore;
-            if (tPrefix == oreNether && aOre.equals("oreNetherQuartz")) return ore;
-            if (tPrefix == oreNether && aOre.equals("oreNetherStar")) return ore;
-            if (tPrefix == oreBasalt && aOre.equals("oreBasalticMineralSand")) return ore;
-            if (tPrefix == stickLong && aOre.equals("stickLongasssuperconductornameforuvwire")) return stick;
-            if (tPrefix == stickLong && aOre.equals("stickLongasssuperconductornameforuhvwire")) return stick;
-            return tPrefix;
+    public static OrePrefixes getOrePrefix(String oreDictName) {
+        for (OrePrefixes prefix : VALUES) {
+            if (!oreDictName.startsWith(prefix.name)) {
+                continue;
+            }
+
+            if (prefix == orePluto && oreDictName.equals("orePlutonium")) return ore;
+            if (prefix == orePluto && oreDictName.equals("orePlutonium241")) return ore;
+            if (prefix == oreTitan && oreDictName.equals("oreTitanium")) return ore;
+            if (prefix == oreCallisto && oreDictName.equals("oreCallistoIce")) return ore;
+            if (prefix == oreNether && oreDictName.equals("oreNetherQuartz")) return ore;
+            if (prefix == oreNether && oreDictName.equals("oreNetherStar")) return ore;
+            if (prefix == oreBasalt && oreDictName.equals("oreBasalticMineralSand")) return ore;
+            if (prefix == stickLong && oreDictName.equals("stickLongasssuperconductornameforuvwire")) return stick;
+            if (prefix == stickLong && oreDictName.equals("stickLongasssuperconductornameforuhvwire")) return stick;
+            return prefix;
         }
+
         return null;
     }
 
-    public static String stripPrefix(String aOre) {
-        for (OrePrefixes tPrefix : VALUES) {
-            if (aOre.startsWith(tPrefix.toString())) {
-                return aOre.replaceFirst(tPrefix.toString(), "");
-            }
-        }
-        return aOre;
+    public static String stripPrefix(String oreDictName) {
+        OrePrefixes prefix = getOrePrefix(oreDictName);
+        if (prefix == null) return oreDictName;
+        return oreDictName.substring(prefix.name.length());
     }
 
     public static class ParsedOreDictName {
@@ -2894,14 +2895,10 @@ public class OrePrefixes {
         }
     }
 
-    public static ParsedOreDictName detectPrefix(String oredictName) {
-        for (OrePrefixes prefix : VALUES) {
-            if (oredictName.startsWith(prefix.name)) {
-                return new ParsedOreDictName(prefix, oredictName.substring(prefix.name.length()));
-            }
-        }
-
-        return null;
+    public static ParsedOreDictName detectPrefix(String oreDictName) {
+        OrePrefixes prefix = getOrePrefix(oreDictName);
+        if (prefix == null) return null;
+        return new ParsedOreDictName(prefix, oreDictName.substring(prefix.name.length()));
     }
 
     private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<ParsedOreDictName>>> PREFIX_CACHE = ThreadLocal
@@ -2937,13 +2934,10 @@ public class OrePrefixes {
         return prefixes;
     }
 
-    public static String replacePrefix(String aOre, OrePrefixes aPrefix) {
-        for (OrePrefixes tPrefix : VALUES) {
-            if (aOre.startsWith(tPrefix.toString())) {
-                return aOre.replaceFirst(tPrefix.toString(), aPrefix.toString());
-            }
-        }
-        return "";
+    public static String replacePrefix(String oreDictName, OrePrefixes replacement) {
+        OrePrefixes prefix = getOrePrefix(oreDictName);
+        if (prefix == null) return "";
+        return replacement.name + oreDictName.substring(prefix.name.length());
     }
 
     private static final Map<String, OrePrefixes> NAME_TO_OREPREFIX = new ConcurrentHashMap<>();
@@ -3061,14 +3055,12 @@ public class OrePrefixes {
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
             if (D2) {
-                GTLog.ore.println(
-                    "Processing '" + aOreDictName
-                        + "' with the Prefix '"
-                        + name
-                        + "' and the Material '"
-                        + aMaterial.mName
-                        + "' at "
-                        + GTUtility.getClassName(tRegistrator));
+                GTLoggers.GT_ORE_DICT_LOGGER.info(
+                    "Processing '{}' with the Prefix '{}' and the Material '{}' at {}",
+                    aOreDictName,
+                    name,
+                    aMaterial.mName,
+                    GTUtility.getClassName(tRegistrator));
             }
             tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }

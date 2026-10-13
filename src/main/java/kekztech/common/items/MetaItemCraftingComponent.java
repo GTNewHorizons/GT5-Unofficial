@@ -11,7 +11,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import kekztech.KekzCore;
+import gregtech.api.enums.Mods;
 
 public class MetaItemCraftingComponent extends Item {
 
@@ -37,13 +37,13 @@ public class MetaItemCraftingComponent extends Item {
     public void registerIcons(IIconRegister reg) {
         int counter = 9;
         // Ceramics
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "YSZCeramicDust");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "GDCCeramicDust");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "YttriaDust");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "ZirconiaDust");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "CeriaDust");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "YSZCeramicPlate");
-        icons[counter++] = reg.registerIcon(KekzCore.MODID + ":" + "GDCCeramicPlate");
+        icons[counter++] = reg.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "YSZCeramicDust");
+        icons[counter++] = reg.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "GDCCeramicDust");
+        icons[counter++] = reg.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "YttriaDust");
+        icons[counter++] = reg.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "ZirconiaDust");
+        icons[counter++] = reg.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "CeriaDust");
+        icons[counter++] = reg.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "YSZCeramicPlate");
+        icons[counter++] = reg.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "GDCCeramicPlate");
     }
 
     @Override

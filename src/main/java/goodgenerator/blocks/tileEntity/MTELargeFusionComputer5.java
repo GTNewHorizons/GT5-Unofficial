@@ -1,17 +1,13 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import bartworks.common.loaders.ItemRegistry;
-import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputerPP;
+import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -21,15 +17,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.AdvancedFusionOverclockDescriber;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
-public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTELargeFusionComputer5 extends MTELargeFusionComputer {
 
     public MTELargeFusionComputer5(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
@@ -40,43 +37,8 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("Galaxy Collapse")
-            .addInfo(
-                EnumChatFormatting.AQUA + formatNumber(getSingleHatchPower())
-                    + EnumChatFormatting.GRAY
-                    + " EU/t and "
-                    + EnumChatFormatting.AQUA
-                    + formatNumber(capableStartupCanonical() / 32 / M)
-                    + "M"
-                    + EnumChatFormatting.GRAY
-                    + " EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .addInfo(
-                "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
-                    + EnumChatFormatting.GRAY
-                    + " , you can't do it either")
-            .addInfo("Performs 4/4 overclock")
-            .addInfo(createParallelText())
-            .addTecTechHatchInfo()
-            .beginStructureBlock(47, 7, 47, false)
-            .addCasingInfoMin("Fusion Machine Casing MK IV", 1664, false)
-            .addCasingInfoMin("Compact Fusion Coil MK-II Finaltype", 560, false)
-            .addCasingInfoMin("Infinity Frame Box", 128, false)
-            .addCasingInfoMin("Infinity Reinforced Borosilicate Glass Block", 63, false)
-            .addEnergyHatch("1-32, Hint block number 2", 2)
-            .addInputHatch("1-16, Hint block number 1", 1)
-            .addOutputHatch("1-16, Hint block number 1", 1)
-            .addStructureInfo("Supports Crafting Input Buffer")
-            .addStructureInfo(
-                "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
-                    + EnumChatFormatting.GRAY
-                    + " or better")
-            .toolTipFinisher();
-        return tt;
+    protected OverclockDescriber createOverclockDescriber() {
+        return new AdvancedFusionOverclockDescriber((byte) tier(), capableStartupCanonical());
     }
 
     @Override
@@ -120,8 +82,13 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    public int energyHatchTier() {
-        return 10;
+    public Block getGlassBlock2() {
+        return ItemRegistry.bw_realglas2;
+    }
+
+    @Override
+    public int getGlassMeta2() {
+        return 2;
     }
 
     @Override
@@ -146,22 +113,12 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    public int getMaxPara() {
-        return 64;
-    }
-
-    @Override
     public int extraPara(long startEnergy) {
         if (startEnergy < 160000000L) return 5;
         if (startEnergy < 320000000L) return 4;
         if (startEnergy < 640000000L) return 3;
         if (startEnergy < 5120000000L) return 2;
         return 1;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("LargeFusion5.hint", 9);
     }
 
     @Override

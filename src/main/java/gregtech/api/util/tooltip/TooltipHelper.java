@@ -35,6 +35,14 @@ public class TooltipHelper {
     public static final DecimalFormat percentageFormat = new DecimalFormat("0.##%");
 
     /**
+     * Get the "Any casing" text for structure tooltips.
+     */
+    public static String anyCasingText() {
+        // Translated on every call so it follows an in-game language change
+        return StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+    }
+
+    /**
      * Wraps input string in parallel colors
      *
      * @param parallels Amount of parallels turned into {@link TooltipHelper#PARALLEL_COLOR}
@@ -203,7 +211,7 @@ public class TooltipHelper {
      * @return A string of the form "[lossPerMeter] EU-Volt"
      */
     public static String cableLossText(long lossPerMeter) {
-        return GTUtility.translate(
+        return StatCollector.translateToLocalFormatted(
             "GT5U.item.cable.loss.eu_volt",
             CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter) + EnumChatFormatting.GRAY);
     }
@@ -212,7 +220,7 @@ public class TooltipHelper {
      * @return The given number of L, formatted.
      */
     public static String fluidText(long liters) {
-        String text = NumberFormatUtil.formatNumber(liters) + GTUtility.translate("gt.unit.liter");
+        String text = NumberFormatUtil.formatNumber(liters) + StatCollector.translateToLocal("gt.unit.liter");
         return coloredText(text, L_COLOR);
     }
 
@@ -220,7 +228,8 @@ public class TooltipHelper {
      * @return The given number of L per sec, formatted.
      */
     public static String fluidRateText(long litersPerSecond) {
-        String text = NumberFormatUtil.formatNumber(litersPerSecond) + GTUtility.translate("gt.unit.liter_per_second");
+        String text = NumberFormatUtil.formatNumber(litersPerSecond)
+            + StatCollector.translateToLocal("gt.unit.liter_per_second");
         return coloredText(text, L_COLOR);
     }
 

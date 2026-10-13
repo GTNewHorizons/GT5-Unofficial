@@ -16,6 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
@@ -25,7 +26,7 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> {
+public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> implements ISmartInputHatch {
 
     private boolean delDelay = true;
 
@@ -81,6 +82,8 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     public void setContents(QuantumDataPacket qIn) {
+        Long old = this.q == null ? null : this.q.getContent();
+
         if (qIn == null) {
             this.q = null;
         } else {
@@ -93,6 +96,9 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
             history = q == null ? 0 : q.getContent();
         }
+
+        Long now = this.q == null ? null : this.q.getContent();
+        if (now != null && !now.equals(old)) notifyWatchers();
     }
 
     @Override

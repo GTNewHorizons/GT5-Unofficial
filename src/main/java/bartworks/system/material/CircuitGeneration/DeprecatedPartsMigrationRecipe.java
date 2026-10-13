@@ -11,8 +11,7 @@ public class DeprecatedPartsMigrationRecipe implements IRecipe {
 
     @Override
     public boolean matches(InventoryCrafting inv, World p_77569_2_) {
-        if (getCraftingResult(inv) != null) return true;
-        return false;
+        return getCraftingResult(inv) != null;
     }
 
     @Override

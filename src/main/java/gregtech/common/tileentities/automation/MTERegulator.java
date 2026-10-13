@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -15,15 +16,19 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.item.ItemStackPredicate;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.MTERegulatorGui;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTERegulator extends MTEBuffer {
 
     public static final int FILTER_SLOT_INDEX = 9;
@@ -33,14 +38,7 @@ public class MTERegulator extends MTEBuffer {
     private boolean charge = false, decharge = false;
 
     public MTERegulator(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            20,
-            new String[] { "Filters up to 9 different Items", "Allows Item-specific output stack size",
-                "Allows Item-specific output slot" });
+        super(aID, aName, aNameRegional, aTier, 20, GTValues.emptyStringArray);
     }
 
     public MTERegulator(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
@@ -53,6 +51,20 @@ public class MTERegulator extends MTEBuffer {
 
     public void setTargetSlots(int targetSlot, int index) {
         mTargetSlots[index] = targetSlot;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.automation.regulator.desc");
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.automation.regulator.name",
+            GTValues.getLocalizedLongVoltageName(mTier),
+            GTValues.VN[mTier]);
     }
 
     @Override

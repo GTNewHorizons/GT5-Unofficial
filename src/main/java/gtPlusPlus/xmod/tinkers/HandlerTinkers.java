@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.tinkers;
 
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 
 import net.minecraftforge.fluids.Fluid;
 

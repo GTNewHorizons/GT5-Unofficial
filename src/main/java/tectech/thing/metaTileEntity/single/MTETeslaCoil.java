@@ -25,6 +25,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
@@ -37,6 +38,7 @@ import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.ITeslaConnectableSimple;
 import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnectable {
 
     // Interface fields
@@ -267,17 +269,19 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
         // TODO Encapsulate the spark sender
         sparkCount--;
-        if (sparkCount == 0) {
+        if (sparkCount <= 0) {
             sparkCount = 20;
             if (!sparkList.isEmpty()) {
-                NetworkDispatcher.INSTANCE.sendToAllAround(
-                    new RendererMessage.RendererData(sparkList),
-                    new NetworkRegistry.TargetPoint(
-                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord(),
-                        256));
+                if (ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
+                    NetworkDispatcher.INSTANCE.sendToAllAround(
+                        new RendererMessage.RendererData(sparkList),
+                        new NetworkRegistry.TargetPoint(
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256));
+                }
                 sparkList.clear();
             }
         }

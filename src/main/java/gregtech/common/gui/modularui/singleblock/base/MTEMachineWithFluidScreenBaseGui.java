@@ -6,6 +6,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.function.Predicate;
 
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -35,6 +36,12 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
 
     public MTEMachineWithFluidScreenBaseGui(T machine) {
         super(machine);
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        syncManager.registerSlotGroup("fluid_inv", 1);
     }
 
     protected boolean supportsFluidScreen() {
@@ -89,11 +96,12 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
             .fullHeight()
             .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
 
+        RealCapacityFluidTank realCapacityFluidTank = new RealCapacityFluidTank(fluidTank, machine.getRealCapacity());
         ioColumn.child(createInputSlot(panel, syncManager, inputSlot));
         ioColumn.child(
             new FluidSlot().size(16)
                 .syncHandler(
-                    new FluidSlotSyncHandler(fluidTank).controlsAmount(false)
+                    new FluidSlotSyncHandler(realCapacityFluidTank).controlsAmount(false)
                         .canDrainSlot(false)
                         .canFillSlot(false))
                 .alwaysShowFull(false)
@@ -106,12 +114,14 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
     }
 
     protected ItemSlot createInputSlot(ModularPanel panel, PanelSyncManager syncManager, int inputSlot) {
-        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, inputSlot).singletonSlotGroup())
+        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, inputSlot).slotGroup("fluid_inv"))
             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_IN_STANDARD);
     }
 
     protected ItemSlot createOutputSlot(ModularPanel panel, PanelSyncManager syncManager, int outputSlot) {
-        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, outputSlot).canPut(false))
+        return new ItemSlot().slot(
+            new ModularSlot(machine.inventoryHandler, outputSlot).slotGroup("fluid_inv")
+                .canPut(false))
             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD);
     }
 
@@ -158,5 +168,46 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
                 .background(GTGuiTextures.SLOT_FLUID_TANK));
 
         return screen;
+    }
+
+    private static class RealCapacityFluidTank implements IFluidTank {
+
+        private final IFluidTank wrappedTank;
+        private final int capacity;
+
+        private RealCapacityFluidTank(IFluidTank fluidTank, int capacity) {
+            this.wrappedTank = fluidTank;
+            this.capacity = capacity;
+        }
+
+        @Override
+        public FluidStack getFluid() {
+            return wrappedTank.getFluid();
+        }
+
+        @Override
+        public int getFluidAmount() {
+            return wrappedTank.getFluidAmount();
+        }
+
+        @Override
+        public int getCapacity() {
+            return capacity;
+        }
+
+        @Override
+        public FluidTankInfo getInfo() {
+            return wrappedTank.getInfo();
+        }
+
+        @Override
+        public int fill(FluidStack resource, boolean doFill) {
+            return 0;
+        }
+
+        @Override
+        public FluidStack drain(int maxDrain, boolean doDrain) {
+            return null;
+        }
     }
 }

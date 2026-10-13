@@ -2,8 +2,10 @@ package detrav.proxies;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
 
 import detrav.DetravScannerMod;
+import detrav.client.DetravOreMarkerRenderer;
 import detrav.gui.DetravScannerGUI;
 import detrav.items.tools.DetravToolElectricProspectorBase;
 
@@ -25,6 +27,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onLoad() {
         super.onLoad();
+        MinecraftForge.EVENT_BUS.register(new DetravOreMarkerRenderer());
     }
 
     @Override

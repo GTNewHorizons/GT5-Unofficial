@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.value.IIntValue;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.github.bsideup.jabel.Desugar;
@@ -24,18 +25,20 @@ record EnumCycleSettingRow<E extends Enum<E>> (IKey label, Class<E> clazz, IIntV
     @Override
     public @NotNull Pair<IKey, EnumCycleButtonWidget<E>> build(ModularPanel panel, PanelSyncManager syncManager,
         SettingsPanel settings) {
-        FontRenderer fontRenderer = TextRenderer.getFontRenderer();
 
         EnumCycleButtonWidget<E> button = new EnumCycleButtonWidget<>(clazz).value(value);
 
         if (configure != null) configure.configure(panel, syncManager, button);
 
-        if (button.hasDefaultOverlay()) button.width(
-            Arrays.stream(clazz.getEnumConstants())
-                .map(Enum::toString)
-                .mapToInt(fontRenderer::getStringWidth)
-                .max()
-                .getAsInt() + 10);
+        if (button.hasDefaultOverlay() && NetworkUtils.isClient()) {
+            FontRenderer fontRenderer = TextRenderer.getFontRenderer();
+            button.width(
+                Arrays.stream(clazz.getEnumConstants())
+                    .map(Enum::toString)
+                    .mapToInt(fontRenderer::getStringWidth)
+                    .max()
+                    .getAsInt() + 10);
+        }
 
         return Pair.of(label, button);
     }

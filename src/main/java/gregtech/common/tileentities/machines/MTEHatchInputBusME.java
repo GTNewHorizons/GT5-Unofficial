@@ -60,12 +60,14 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -80,13 +82,14 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusMEGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProcessingAwareHatch, IPowerChannelState,
-    ISmartInputHatch, IDataCopyable, IMEConnectable, IGridProxyable, IStackWatcherHost {
+    ISmartInputHatch, IDataCopyable, IMEConnectable, IGridProxyable, IStackWatcherHost, IPhysicalCircuitDisplay {
 
     public static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
@@ -100,8 +103,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     protected int autoPullRefreshTime = 100;
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
-    protected boolean expediteRecipeCheck = false;
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this bus. Only valid while processing a recipe. This avoids several expensive operations.
      */
@@ -140,10 +141,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
                 refreshItemList();
-                if (justHadNewItems && expediteRecipeCheck) {
-                    for (var multi : watchers) {
-                        multi.scheduleRecipeCheckImmediate();
-                    }
+                if (justHadNewItems) {
+                    // Advanced hatch auto pull always have immediate check, to not break automations
+                    scheduleRecipeCheck(RecipeCheckReason.IMMEDIATE);
                     justHadNewItems = false;
                 }
             }
@@ -166,18 +166,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
         AENetworkProxy proxy = getProxy();
 
-        if (!proxy.isActive()) return false;
-
-        return true;
+        return proxy.isActive();
     }
 
     @Override
     public void onEnableWorking() {
         super.onEnableWorking();
 
-        if (expediteRecipeCheck) {
-            justHadNewItems = true;
-        }
+        justHadNewItems = true;
     }
 
     @Override
@@ -268,11 +264,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (base.getWorld() != null && base.getOwnerUuid() != null) {
-                    gridProxy.setOwner(
-                        base.getWorld()
-                            .func_152378_a(base.getOwnerUuid()));
-                }
             }
         }
         return this.gridProxy;
@@ -310,7 +301,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
         aNBT.setBoolean("additionalConnection", additionalConnection);
-        aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
 
@@ -330,26 +320,32 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
     }
 
+    @OCMethod
     public int getMinAutoPullStackSize() {
         return minAutoPullStackSize;
     }
 
+    @OCMethod
     public void setMinAutoPullStackSize(int minAutoPullStackSize) {
         this.minAutoPullStackSize = minAutoPullStackSize;
     }
 
+    @OCMethod
     public int getAutoPullRefreshTime() {
         return autoPullRefreshTime;
     }
 
+    @OCMethod
     public void setAutoPullRefreshTime(int autoPullRefreshTime) {
         this.autoPullRefreshTime = autoPullRefreshTime;
     }
 
+    @OCMethod
     public boolean isAutoPullItemList() {
         return autoPullItemList;
     }
 
+    @OCMethod
     public void setAutoPullItemList(boolean pullItemList) {
         if (!autoPullAvailable) {
             return;
@@ -369,21 +365,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
     }
 
-    public boolean doFastRecipeCheck() {
-        return expediteRecipeCheck;
-    }
-
-    public void setRecipeCheck(boolean value) {
-        expediteRecipeCheck = value;
-
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
-
-        // Changing this field requires a structure check/update, so let's do that automatically
-        if (igte.isServerSide()) {
-            GregTechAPI.causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
-        }
-    }
-
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
@@ -391,11 +372,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         autoPullItemList = aNBT.getBoolean("autoStock");
         minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
         additionalConnection = aNBT.getBoolean("additionalConnection");
-        expediteRecipeCheck = aNBT.getBoolean("expediteRecipeCheck");
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         clearSlotConfigs();
@@ -544,7 +524,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             if (nbt.hasKey("refreshTime")) {
                 autoPullRefreshTime = nbt.getInteger("refreshTime");
             }
-            setRecipeCheck(nbt.getBoolean("expediteRecipeCheck"));
         }
 
         additionalConnection = nbt.getBoolean("additionalConnection");
@@ -557,6 +536,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             for (int i = 0; i < stockingItems.tagCount(); i++) {
                 slots[i] = new Slot(GTUtility.loadItem(stockingItems.getCompoundTagAt(i)));
             }
+            // The writes above bypass setSlotConfig, so re-sync the AE stack watcher with the pasted config.
+            configureWatchers();
         }
 
         updateValidGridProxySides();
@@ -575,7 +556,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         tag.setBoolean("autoPull", autoPullItemList);
         tag.setInteger("minStackSize", minAutoPullStackSize);
         tag.setInteger("refreshTime", autoPullRefreshTime);
-        tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setByte("color", this.getColor());
         tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
@@ -615,6 +595,39 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     }
 
     @Override
+    public List<Integer> getPhysicalCircuitNumbers() {
+        List<Integer> numbers = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot == null || slot.config == null) continue;
+            if (GTUtility.isAnyIntegratedCircuit(slot.config)) {
+                numbers.add(slot.config.getItemDamage());
+            }
+        }
+        return numbers;
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        List<ItemStack> result = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot == null) continue;
+            if (INonConsumedItemDisplay.isDisplayableItem(mRecipeMap, slot.config)) {
+                result.add(slot.config);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<ItemStack> getItemsForHoloGlasses() {
+        List<ItemStack> result = new ArrayList<>();
+        for (Slot slot : slots) {
+            if (slot != null && slot.extracted != null) result.add(slot.extracted);
+        }
+        return result;
+    }
+
+    @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
         if (processingRecipe) {
             return true;
@@ -630,6 +643,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     @Override
     public void removeWatcher(IHatchWatcher watcher) {
         watchers.remove(watcher);
+    }
+
+    @Override
+    public boolean needsPeriodicChecks() {
+        return !MachineStats.machines.useStackWatcher;
     }
 
     @Override
@@ -731,7 +749,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                     justHadNewItems = true; // different type
                 }
             }
-            if (expediteRecipeCheck && !((oldStack == null && newStack == null) || sametype)) {
+            if (!((oldStack == null && newStack == null) || sametype)) {
                 configChanged = true;
             }
             index++;
@@ -801,6 +819,29 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     public void setSlotConfig(int index, ItemStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
+        configureWatchers();
+    }
+
+    @OCMethod
+    public ItemStack getSlotConfig(int index) {
+        Slot slot = GTDataUtils.getIndexSafe(slots, index);
+
+        return slot == null || slot.config == null ? null : slot.config.copy();
+    }
+
+    @OCMethod
+    public boolean setSlotConfigAndUpdate(int index, ItemStack config) {
+        if (index < 0 || index >= slots.length) return false;
+
+        setSlotConfig(index, config);
+
+        try {
+            updateInformationSlot(index);
+        } catch (GridAccessException e) {
+            // :)
+        }
+
+        return true;
     }
 
     /**
@@ -830,6 +871,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     protected void clearSlotConfigs() {
         Arrays.fill(slots, null);
+        configureWatchers();
     }
 
     protected void clearExtractedStacks() {
@@ -1117,11 +1159,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            if (expediteRecipeCheck) for (Slot slot : slots) {
-                if (slot != null && slot.config != null) {
-                    watcher.add(AEItemStack.create(slot.config));
+            if (MachineStats.machines.useStackWatcher) {
+                for (Slot slot : slots) {
+                    if (slot != null && slot.config != null) {
+                        watcher.add(AEItemStack.create(slot.config));
+                    }
                 }
             }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
         }
     }
 
@@ -1134,6 +1179,15 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     @Override
     public void onStackChange(IItemList o, IAEStack fullStack, IAEStack diffStack, BaseActionSource src,
         StorageChannel chan) {
-        if (expediteRecipeCheck && diffStack.getStackSize() > 0) justHadNewItems = true;
+        if (diffStack.getStackSize() > 0) {
+            justHadNewItems = true;
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+        }
+    }
+
+    private void scheduleRecipeCheck(RecipeCheckReason reason) {
+        for (var multi : watchers) {
+            multi.scheduleRecipeCheck(reason);
+        }
     }
 }

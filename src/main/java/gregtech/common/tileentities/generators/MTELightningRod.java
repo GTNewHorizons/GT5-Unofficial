@@ -18,7 +18,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTELightningRod extends MTETieredMachineBlock {
@@ -29,7 +29,7 @@ public class MTELightningRod extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.lightningrod.tooltip");
+        return GTSplit.splitLocalized("gt.blockmachines.basicgenerator.lightningrod.tooltip");
     }
 
     public MTELightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription,

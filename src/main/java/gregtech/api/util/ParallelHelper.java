@@ -401,7 +401,7 @@ public class ParallelHelper {
             result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
             return;
         }
-        if (!calculator.getAllowedTierSkip()) {
+        if (recipe.mEUt > calculator.getMaxAllowedRecipeEUt()) {
             result = CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
             return;
         }

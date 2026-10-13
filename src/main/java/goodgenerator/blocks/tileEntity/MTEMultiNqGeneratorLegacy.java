@@ -399,7 +399,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
             .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
             .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
             .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom center")
             .addCasingInfoExactly("Field Restriction Casing", 48, false)

@@ -27,7 +27,6 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
@@ -64,8 +63,8 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
     Parameters.Group.ParameterOut energyDisplay;
 
     /** Name of the stored energy display */
-    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
+    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
     /** Status of the stored energy display */
     private static final IStatusFunction<TileEntityModuleBase> ENERGY_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(
@@ -370,7 +369,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.INTERGALACTIC_STANDARD;
     }
 
@@ -426,7 +425,8 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.multimachine.incomplete_structure"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 

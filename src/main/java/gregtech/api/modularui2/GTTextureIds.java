@@ -19,6 +19,7 @@ public final class GTTextureIds {
     public static final String BACKGROUND_TITLE_NANOCHIP = "gregtech:bg_title_nanochip";
 
     public static final String BACKGROUND_TERMINAL_TECTECH = "gregtech:bg_terminal_tectech";
+    public static final String BACKGROUND_DRONE_CAMERA = "gregtech:bg_drone_camera";
 
     public static final String SLOT_ITEM_STANDARD = "gregtech:slot_item_standard";
     public static final String SLOT_ITEM_STEAM = "gregtech:slot_item_%s";
@@ -58,6 +59,8 @@ public final class GTTextureIds {
     public static final String OVERLAY_SLOT_OUT_BRONZE = "gregtech:overlay_slot_out_bronze";
     public static final String OVERLAY_SLOT_OUT_STEEL = "gregtech:overlay_slot_out_steel";
 
+    public static final String PROGRESSBAR_WINDMILL_GRINDSTONE = "gregtech:progressbar_windmill_grindstone";
+
     public static final String PROGRESSBAR_BOILER_HEAT = "gregtech:progressbar_boiler_heat";
 
     public static final String PROGRESSBAR_FUEL_STANDARD = "gregtech:progressbar_fuel_standard";
@@ -74,6 +77,7 @@ public final class GTTextureIds {
     public static final String BUTTON_STEAM_PRESSED = "gregtech:button_%s_pressed";
     public static final String BUTTON_FOUNDRY_PRESSED = "gregtech:button_foundry_pressed";
     public static final String BUTTON_NANOCHIP_PRESSED = "gregtech:button_nanochip_pressed";
+    public static final String BUTTON_GORGE = "gregtech:button_gorge";
 
     public static final String BUTTON_COVER_TAB_NORMAL_STANDARD = "gregtech:button_cover_tab_normal_standard";
     public static final String BUTTON_COVER_TAB_NORMAL_STEAM = "gregtech:button_cover_tab_normal_%s";
@@ -96,4 +100,6 @@ public final class GTTextureIds {
 
     public static final String PICTURE_ERROR = "gregtech:picture_error";
     public static final String PICTURE_ERROR_STEAM = "gregtech:picture_error_steam";
+
+    public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";
 }

@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
+import static gregtech.api.casing.Casings.CoherencePreservingPlasmaConduit;
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
@@ -7,7 +8,6 @@ import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
 import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
-import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 
@@ -18,15 +18,18 @@ import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -45,13 +48,15 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECAssemblerGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
+
+    public static final int MAX_NANITES = 2048 * 15;
 
     private final List<MTEHatchLoS> losHatches = new ArrayList<>();
 
@@ -97,18 +102,19 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
     @Override
     public IStructureDefinition<MTEBECAssembler> compile(String[][] definition) {
-        structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
-        structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, NaniteHatchElement.INSTANCE));
+        structure.addCasing('A', CoherencePreservingPlasmaConduit);
+        structure.addCasing('B', ElectromagneticallyIsolatedCasing);
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
         structure.addCasing('F', CondensateTransformativeCoil);
         structure.addCasing('G', CondensateGuidanceCoil);
         structure.addCasing('H', ElectromagneticWaveguide);
-        structure.addCasing('1', FineStructureConstantManipulator)
-            .withHatches(2, 2, Arrays.asList(BECHatches.Hatch));
+        structure.addCasing('1', ElectromagneticallyIsolatedCasing)
+            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, NaniteHatchElement.INSTANCE));
         structure.addCasing('2', FineStructureConstantManipulator)
+            .withHatches(2, 2, Arrays.asList(BECHatches.Hatch));
+        structure.addCasing('3', FineStructureConstantManipulator)
             .withHatches(3, 16, Arrays.asList(AssemblerLineOfSightHatch.INSTANCE));
 
         return structure.buildStructure(definition);
@@ -136,21 +142,35 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Assembler, Observation Array")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"));
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_assembler"))
+            .addMarkdown(
+                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"),
+                ImmutableMap.of("max-nanites", NumberFormatUtil.formatNumber(MAX_NANITES)))
+            .addSupportAny();
 
-        tt.beginStructureBlock();
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
-        tt.addAllCasingInfo();
-
-        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
-
+        tt.beginStructureBlock(61, 31, 31, true)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.controller-pos"))
+            .addCasing("1700", FineStructureConstantManipulator.getLocalizedName(), false)
+            .addCasing("1515", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
+            .addCasing("1444-1458", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("838", ConflictInducementCasing.getLocalizedName(), false)
+            .addCasing("790", PeaceEnforcementCasing.getLocalizedName(), false)
+            .addCasing("664", ElectromagneticWaveguide.getLocalizedName(), false)
+            .addCasing("560", CondensateTransformativeCoil.getLocalizedName(), false)
+            .addCasing("464", CondensateGuidanceCoil.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.NaniteContainmentBus"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.los-hatch-pos"), 3)
+            .addMiscHatch("1-2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"), 2)
+            .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
+        // spotless:on
     }
 
     @Override
-    protected ITexture getCasingTexture() {
-        return SuperconductivePlasmaEnergyConduit.getCasingTexture();
+    public ITexture getCasingTexture() {
+        return CoherencePreservingPlasmaConduit.getCasingTexture();
     }
 
     @Override
@@ -226,14 +246,10 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
                     this.availableNanites += hatch.getItemCount();
                 }
 
-                for (var node : nodes) {
-                    // Intentionally share the same nanite count between every io node even though it doesn't make
-                    // physical sense, so that proper automation is incentivized even more.
-                    node.setNaniteShare(this.currentNaniteTier, this.availableNanites);
-                }
-
                 igte.setActive(!nodes.isEmpty());
             }
+
+            this.availableNanites = Math.min(MAX_NANITES, this.availableNanites);
 
             lEUt = 0;
 
@@ -279,11 +295,17 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
     private enum NaniteHatchElement implements IHatchElement<MTEBECAssembler> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.NaniteContainmentBus");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Arrays.asList(MTEHatchNanite.class);
+        }
+
+        NaniteHatchElement(String name) {
+            this.name = name;
         }
 
         @Override
@@ -305,7 +327,12 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
         @Override
         public String getDisplayName() {
-            return ItemList.Hatch_Nanite.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -316,16 +343,27 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
     public enum AssemblerLineOfSightHatch implements IHatchElement<MTEBECAssembler> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.LineOfSightHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return List.of(MTEHatchLoS.class);
         }
 
+        AssemblerLineOfSightHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_LineOfSight_Connector.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override

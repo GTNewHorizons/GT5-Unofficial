@@ -48,10 +48,11 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -59,7 +60,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -143,20 +143,21 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         .build();
 
     private static IStructureElement<MTEMegaAlloyBlastSmelter> getCoilElement() {
-        IStructureElement<MTEMegaAlloyBlastSmelter> heatingCoilElem = GTStructureChannels.HEATING_COIL
-            .use(activeCoils(ofCoil(MTEMegaAlloyBlastSmelter::setCoilLevel, MTEMegaAlloyBlastSmelter::getCoilLevel)));
+        IStructureElement<MTEMegaAlloyBlastSmelter> heatingCoilElem = activeCoils(
+            ofCoil(MTEMegaAlloyBlastSmelter::setCoilLevel, MTEMegaAlloyBlastSmelter::getCoilLevel));
         IStructureElement<MTEMegaAlloyBlastSmelter> basicCoilElem = ofBlock(ModBlocks.blockCasingsMisc, 14);
-        return partitionBy(
-            te -> te.coilType,
-            ImmutableMap.of(
-                CoilType.Unknown,
-                ofChain(
-                    onElementPass(te -> te.coilType = CoilType.HeatingCoil, heatingCoilElem),
-                    onElementPass(te -> te.coilType = CoilType.BasicCoil, basicCoilElem)),
-                CoilType.HeatingCoil,
-                heatingCoilElem,
-                CoilType.BasicCoil,
-                basicCoilElem));
+        return GTStructureChannels.HEATING_COIL.use(
+            partitionBy(
+                te -> te.coilType,
+                ImmutableMap.of(
+                    CoilType.Unknown,
+                    ofChain(
+                        onElementPass(te -> te.coilType = CoilType.HeatingCoil, heatingCoilElem),
+                        onElementPass(te -> te.coilType = CoilType.BasicCoil, basicCoilElem)),
+                    CoilType.HeatingCoil,
+                    heatingCoilElem,
+                    CoilType.BasicCoil,
+                    basicCoilElem)));
     }
 
     public MTEMegaAlloyBlastSmelter(int aID, String aName, String aNameRegional) {
@@ -215,16 +216,18 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         coilType = CoilType.Unknown;
         if (!checkPiece("main", 5, 16, 0, errors)) return;
         if (coilType == CoilType.BasicCoil) coilLevel = HeatingCoilLevel.None;
-        checkOneMufflerHatch(errors);
-        checkHasMaintenanceHatch(errors);
+
         checkHasAnyEnergy(errors);
-        checkHasOutputHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkOneMufflerHatch(errors);
         checkHasAnyInput(errors);
+        checkHasOutputHatch(errors);
+
         // Disallow lasers if the glass is below UV tier
         if (glassTier < VoltageIndex.UV) {
             for (MTEHatch hatchEnergy : getExoticEnergyHatches()) {
                 if (hatchEnergy.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                    errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
                     break;
                 }
             }
@@ -284,20 +287,23 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo("Recipe Tier limited by " + TooltipHelper.tierText(TooltipTier.GLASS) + " Tier")
             .addInfo("Can also use normal ABS coils in their place instead, if you don't like the bonuses :)")
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(11, 20, 11, false)
-            .addController("Front center")
-            .addCasingInfoExactly("Blast Smelter Casing Block", 218, false)
-            .addCasingInfoExactly("Blast Smelter Heat Containment Coil", 56, false)
-            .addCasingInfoExactly("Coil", 360, true)
-            .addCasingInfoExactly("Any Tiered Glass", 339, true)
-            .addMaintenanceHatch("Around the controller", 2)
-            .addOtherStructurePart(GTUtility.translate("GTPP.tooltip.structure.many_bus_hatch"), "Bottom Casing", 1)
-            .addMufflerHatch("1 in the center of the top layer", 3)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .beginStructureBlock(11, 20, 11, true)
+            .addController("Front center, 4th layer")
+            .addCasing("360", "Heating Coil", true)
+            .addCasing("339", "Any Tiered Glass", true)
+            .addCasing("129-220", "Blast Smelter Casing Block", false)
+            .addCasing("56", "Blast Smelter Heat Containment Coil", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any casing around controller", 2)
+            .addMufflerHatch("1", "Top center casing", 3)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputHatch("1+", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -366,7 +372,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.alloyBlastSmelterRecipes;
+        return RecipeMaps.alloyBlastSmelterRecipes;
     }
 
     public HeatingCoilLevel getCoilLevel() {

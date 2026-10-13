@@ -1,8 +1,15 @@
 package tectech.thing.metaTileEntity.multi.base.parameter;
 
+import java.util.function.Function;
+
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+
+import gregtech.common.gui.modularui.widget.WidgetConfigurator;
+import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
 
 public class StringParameter extends Parameter<String, StringSyncValue> {
 
@@ -36,5 +43,11 @@ public class StringParameter extends Parameter<String, StringSyncValue> {
     @Override
     protected StringSyncValue createSyncHandler() {
         return new StringSyncValue(this::getValue, this::setValue).allowC2S();
+    }
+
+    @Override
+    public void addToSettingsPanel(SettingsPanelBuilder builder, IKey label, WidgetConfigurator<?> configure,
+        String prefix, Function<Parameter<?, ?>, WidgetConfigurator<?>> configurator) {
+        builder.addStringEditor(label, this.getSyncHandler(), (WidgetConfigurator<TextFieldWidget>) configure);
     }
 }

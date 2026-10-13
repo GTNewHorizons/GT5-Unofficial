@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2_COLORS;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -15,6 +16,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -24,6 +26,7 @@ import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchMultiInputGui;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchMultiInput extends MTEHatchInput {
 
     private final FluidStack[] mStoredFluid;
@@ -44,11 +47,40 @@ public class MTEHatchMultiInput extends MTEHatchInput {
         mCapacityPer = getCapacityPerTank(aTier, aSlot);
         for (int i = 0; i < aSlot; i++) {
             final int index = i;
+            // GUI fluid edits go through the tank's fill()/drain() (the setter is only hit when filling an empty
+            // slot; topping up an existing fluid mutates it in place). Override both so any GUI change marks the tile
+            // dirty, which detectInventoryChange() turns into an event-based recipe check next tick.
             fluidTanks[i] = new FluidStackTank(
                 () -> mStoredFluid[index],
                 fluid -> mStoredFluid[index] = fluid,
-                mCapacityPer);
+                mCapacityPer) {
+
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    int filled = super.fill(resource, doFill);
+                    if (doFill && filled > 0) markDirtyFromGui();
+                    return filled;
+                }
+
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    FluidStack drained = super.drain(maxDrain, doDrain);
+                    if (doDrain && drained != null) markDirtyFromGui();
+                    return drained;
+                }
+            };
         }
+    }
+
+    private void markDirtyFromGui() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null) base.markDirty();
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.multi.input.name", GTValues.VN[mTier]);
     }
 
     @Override

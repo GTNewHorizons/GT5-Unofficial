@@ -71,17 +71,20 @@ public class BookHandler {
         // Thermal Boiler
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(ModItems.itemCustomBook, 1, 0),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { new ItemStack(Items.writable_book), new ItemStack(Items.lava_bucket) });
 
         // Power Substation
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(ModItems.itemCustomBook, 1, 1),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { new ItemStack(Items.writable_book),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tin, 1) });
 
         // Nuclear Manual
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(ModItems.itemCustomBook, 1, 4),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { new ItemStack(Items.writable_book),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1) });
 
