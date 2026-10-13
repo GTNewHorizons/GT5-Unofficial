@@ -170,15 +170,7 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
         return screen;
     }
 
-    private static class RealCapacityFluidTank implements IFluidTank {
-
-        private final IFluidTank wrappedTank;
-        private final int capacity;
-
-        private RealCapacityFluidTank(IFluidTank fluidTank, int capacity) {
-            this.wrappedTank = fluidTank;
-            this.capacity = capacity;
-        }
+    private record RealCapacityFluidTank(IFluidTank wrappedTank, int realCapacity) implements IFluidTank {
 
         @Override
         public FluidStack getFluid() {
@@ -192,7 +184,7 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
 
         @Override
         public int getCapacity() {
-            return capacity;
+            return realCapacity;
         }
 
         @Override
