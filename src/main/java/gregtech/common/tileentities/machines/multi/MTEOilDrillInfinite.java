@@ -107,7 +107,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .addInfo("Use a Screwdriver to configure range")
             .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
             .addInfo("If total circuit # is greater than output per operation, the machine will halt.")
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+            .addInfo("Minimum Energy Hatch Tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
                 "Base cycle time: "
                     + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + (baseCycleTime == 1 ? " tick" : " ticks")

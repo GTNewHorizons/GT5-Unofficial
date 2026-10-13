@@ -143,7 +143,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         StructureWrapperTooltipBuilder<MTEBECStorage> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         // spotless:off
-        tt.addMachineType("BEC Storage, Entangled Condensate Storage")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_storage"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-storage"))
             .addSupportAny();
 
