@@ -124,6 +124,22 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
     }
 
     @Override
+    public boolean hasRunningText() {
+        return false;
+    }
+
+    // recipe doesn't actually do anything player-facing.
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public void clearHatches() {
         super.clearHatches();
 
