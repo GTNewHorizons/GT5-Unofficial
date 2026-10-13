@@ -2901,8 +2901,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }
 
     /**
-     * Diese neue Funtion erlaubt Mutationsraten unter 1%. Setze dazu die Mutationsrate als Bruch mit chance /
-     * chanceDivider This new function allows Mutation percentages under 1%. Set them as a fraction with chance /
+     * This new function allows Mutation percentages under 1%. Set them as a fraction with chance /
      * chanceDivider
      */
     private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance,
