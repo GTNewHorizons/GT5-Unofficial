@@ -278,7 +278,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
             meInventoryHandler.notifyListeners(count - savedCount, stack);
             if (count != savedCount) {
                 getBaseMetaTileEntity().markDirty();
-                notifyWatchers();
             }
             detectInventoryChange();
         }

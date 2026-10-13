@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch.bec;
 
+import com.cleanroommc.modularui.network.NetworkUtils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +74,7 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
     protected void loadConfig(@Nullable NBTTagCompound tag) {
         configuredTier = tag == null ? 0 : tag.getInteger("configuredTier");
         comparison = ComparisonWithAnalog.values()[tag == null ? 0 : tag.getInteger("op")];
+        refreshOutput();
     }
 
     @Override
@@ -107,14 +109,17 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
             .build() };
     }
 
-    public void setRequiredTier(@Nullable NaniteTier requiredTier) {
-        this.requiredTier = requiredTier;
-
+    private void refreshOutput() {
         if (comparison == ComparisonWithAnalog.ANALOG) {
             setOutput(requiredTier == null ? 0 : requiredTier.tier);
         } else {
             setOutput(requiredTier != null && comparison.test(requiredTier.tier, configuredTier));
         }
+    }
+
+    public void setRequiredTier(@Nullable NaniteTier requiredTier) {
+        this.requiredTier = requiredTier;
+        refreshOutput();
     }
 
     @Override
@@ -156,13 +161,21 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                         IKey.lang("GT5U.gui.text.bec-operation"),
                         ComparisonWithAnalog.class,
                         () -> comparison,
-                        v -> comparison = v)
+                        v -> {
+                            comparison = v;
+                            if (!NetworkUtils.isClient()) {
+                                refreshOutput();
+                            }
+                        })
                     .addIntEditor(
                         IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> configuredTier,
                         i -> {
                             if (comparison != ComparisonWithAnalog.ANALOG) {
                                 configuredTier = i;
+                                if (!NetworkUtils.isClient()) {
+                                    refreshOutput();
+                                }
                             }
                         },
                         i -> Math.clamp(i, 1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt()),
