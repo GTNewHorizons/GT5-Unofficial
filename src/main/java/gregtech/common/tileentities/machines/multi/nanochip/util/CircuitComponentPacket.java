@@ -166,7 +166,7 @@ public class CircuitComponentPacket {
                     stacks.add(cc.getFakeStack(stackSize));
                     continue;
                 }
-                if (cc.realComponent.get() == null) continue;
+                if (cc.realComponent == null || cc.realComponent.get() == null) continue;
                 ItemStack stack = cc.realComponent.get()
                     .copy();
                 stack.stackSize = stackSize;
