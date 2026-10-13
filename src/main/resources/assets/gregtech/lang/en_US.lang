@@ -3671,7 +3671,7 @@ GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect2=§3Tier 2§r -
 GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect3=§3Tier 3§r - §275%% Threshold§r - Water Bonuses are applied twice in the Optical Organizer
 GT5U.gui.text.nac.info.line_specifics.exotic.header=Exotic Circuits
 # Derived from UHV-normalized NAC recipe times, see the Exotic section in ScriptNanochipRecipes.java
-GT5U.gui.text.nac.info.line_specifics.exotic.power_distribution=Suggested Power Distribution: §d50%% Matrix§r / §350%% Non-Matrix
+GT5U.gui.text.nac.info.line_specifics.exotic.power_distribution=Suggested Power Distribution: §d60%% Matrix§r / §340%% Non-Matrix
 GT5U.gui.text.nac.info.line_specifics.exotic.module_count=Suggested Additional Modules:§a 1 Exotic Entangle Engine
 GT5U.gui.text.nac.info.line_specifics.exotic.calibration.effect1=§3Tier 1§r - §220%% Threshold§r - 0.8x EU Multiplier to all Modules
 GT5U.gui.text.nac.info.line_specifics.exotic.calibration.effect2=§3Tier 2§r - §240%% Threshold§r - 0.8x Recipe Time on Exotic Circuits in the Assembly Matrix
@@ -6665,8 +6665,6 @@ gt.item.quantum_entangled_computation_unit.name=Quantum Entangled Computation Un
 gt.item.quantum_entangled_computation_unit.tooltip=Instant Transmission\n§7Falls back to a §bCasimir Container§7 when the Exotic Entangle Engine drops below §c80%§7 Stability
 gt.item.singularity_tolerant_cache_matrix.name=Singularity-Tolerant Cache Matrix
 gt.item.singularity_tolerant_cache_matrix.tooltip=Tolerates Singularity-Grade Gravity\n§7Falls back to a §bMajorana Zero Mode§7 when the Exotic Entangle Engine drops below §c80%§7 Stability
-gt.item.degenerate_cache_matrix.name=Degenerate Cache Matrix
-gt.item.degenerate_cache_matrix.tooltip=Compressed Until The States Collapse
 gt.item.casimir_container.name=Casimir Container
 gt.item.casimir_container.tooltip=Keeps Virtual Particles In Check
 gt.item.decoherence_lattice.name=Decoherence Lattice

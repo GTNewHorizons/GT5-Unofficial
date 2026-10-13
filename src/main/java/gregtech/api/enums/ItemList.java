@@ -2104,7 +2104,6 @@ public enum ItemList implements IItemContainer {
     YangMillsMask,
     QuantumEntangledComputationUnit,
     SingularityTolerantCacheMatrix,
-    DegenerateCacheMatrix,
     CasimirContainer,
     DecoherenceLattice,
 

@@ -768,10 +768,6 @@ public enum CircuitComponent {
         2138,
         "gt.circuitcomponent.singularitytolerantcachematrix",
         () -> ItemList.SingularityTolerantCacheMatrix.get(1), CircuitCalibration.EXOTIC,0),
-    DegenerateCacheMatrix(
-        2139,
-        "gt.circuitcomponent.degeneratecachematrix",
-        () -> ItemList.DegenerateCacheMatrix.get(1), CircuitCalibration.EXOTIC,0),
     CasimirContainer(
         2140,
         "gt.circuitcomponent.casimircontainer",

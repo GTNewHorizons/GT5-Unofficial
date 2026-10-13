@@ -300,7 +300,6 @@ public enum IDMetaItem03 {
     YangMillsMask(739),
     QuantumEntangledComputationUnit(740),
     SingularityTolerantCacheMatrix(741),
-    DegenerateCacheMatrix(742),
     CasimirContainer(743),
     DecoherenceLattice(744),
 

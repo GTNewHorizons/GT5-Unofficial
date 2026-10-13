@@ -192,7 +192,6 @@ import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
 import static gregtech.common.items.IDMetaItem03.DecoherenceLattice;
-import static gregtech.common.items.IDMetaItem03.DegenerateCacheMatrix;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
@@ -1298,12 +1297,6 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 SingularityTolerantCacheMatrix.ID,
                 "gt.item.singularity_tolerant_cache_matrix.name",
                 "gt.item.singularity_tolerant_cache_matrix.tooltip",
-                o));
-        ItemList.DegenerateCacheMatrix.set(
-            addItemWithLocalizationKeys(
-                DegenerateCacheMatrix.ID,
-                "gt.item.degenerate_cache_matrix.name",
-                "gt.item.degenerate_cache_matrix.tooltip",
                 o));
         ItemList.CasimirContainer.set(
             addItemWithLocalizationKeys(
