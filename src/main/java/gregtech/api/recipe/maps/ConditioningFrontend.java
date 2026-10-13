@@ -5,7 +5,6 @@ import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.nei.RecipeDisplayInfo;
 
-
 public class ConditioningFrontend extends RecipeMapFrontend {
 
     public ConditioningFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
