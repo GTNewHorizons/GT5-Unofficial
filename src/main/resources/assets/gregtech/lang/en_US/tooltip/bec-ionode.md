@@ -3,7 +3,7 @@ Recipe logic is the same as all other multiblocks.
 Condensate does not have to be present for a recipe to start.
 Link it to {gold:{item:gregtech:gt.blockmachines:15756}} using {gold:{item:gregtech:gt.blockmachines:15481}}.
 {dark_gray:{hr}}
-Each item slot in a recipe has an associated nanite tier.
+Each item slot in a recipe has an associated Nanite Tier.
 For the teleportation node to progress through an item slot, it must receive a nanite with the same or higher tier.
 Excess nanites linearly increase the speed at which recipes are crafted.
 Providing a higher tier nanite than is requested slows progress by {italic:2^(provided tier - requested tier)} times.
