@@ -111,7 +111,7 @@ public class BorosilicateGlass {
     }
 
     /**
-     * Register a new block as valid borosilicate glass with given tier (even if it doesn't contain boron at all)
+     * Register a new block as valid borosilicate glass with a given tier (even if it doesn't contain boron at all)
      * <p>
      * Does not support matching by more complex stuff like tile entity!
      * <p>
@@ -127,7 +127,7 @@ public class BorosilicateGlass {
     }
 
     /**
-     * Check if there is at least one type of boroglass in that tier.
+     * Check if there is at least one type of borosilicate glass in that tier.
      */
     public static boolean hasGlassInTier(int tier) {
         return getAllLevels().containsKey((byte) tier);
@@ -135,10 +135,10 @@ public class BorosilicateGlass {
 
     /**
      * Get a structure element for a certain tier of <b>borosilicate</b> glass. DOES NOT accept other glass like
-     * reinforced glass, magic mirror, vanilla glass, etc. unless these glass are explicitly registered as a
+     * reinforced glass, magic mirror, vanilla glass, etc. unless that glass is explicitly registered as a
      * borosilicate glass.
      * <p>
-     * Use this if you just want boroglass here and doesn't care what tier it is.
+     * Use this if you just want borosilicate glass here and doesn't care what tier it is.
      */
     @Deprecated
     public static <T> @NotNull IStructureElement<T> ofBoroGlass(int tier) {
@@ -151,9 +151,9 @@ public class BorosilicateGlass {
 
     /**
      * Get a structure element for any kind of <b>borosilicate</b> glass. DOES NOT accept other glass like reinforced
-     * glass, magic mirror, vanilla glass, etc. unless these glass are explicitly registered as a borosilicate glass.
+     * glass, magic mirror, vanilla glass, etc. unless that glass is explicitly registered as a borosilicate glass.
      * <p>
-     * Use this if you just want boroglass here and doesn't care what tier it is.
+     * Use this if you just want borosilicate glass here and doesn't care what tier it is.
      */
     @Deprecated
     public static <T> @NotNull IStructureElement<T> ofBoroGlassAnyTier() {
@@ -162,7 +162,7 @@ public class BorosilicateGlass {
 
     /**
      * Get a structure element for <b>borosilicate</b> glass. DOES NOT accept other glass like reinforced glass, magic
-     * mirror, vanilla glass, etc. unless these glass are explicitly registered as a borosilicate glass.
+     * mirror, vanilla glass, etc. unless that glass is explicitly registered as a borosilicate glass.
      * <p>
      * This assumes you want all glass used to be of the same tier.
      * <p>

@@ -116,7 +116,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
     @Override
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         super.onBlockAdded(aWorld, aX, aY, aZ);
-        // Waste some time to allow the TE to be set, do not use thread sleep here, it doesnt allow for nanoseconds.
+        // Waste some time to allow the TE to be set, do not use thread sleep here, it doesn't allow for nanoseconds.
         // This will just waste a few cpu cycles to allow the TE to be set
         BWUtil.shortSleep(0);
     }

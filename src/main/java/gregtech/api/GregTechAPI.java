@@ -126,7 +126,7 @@ public class GregTechAPI {
      */
     public static final Collection<Integer> sDimensionalList = new HashSet<>();
     /**
-     * Lists of all the active World generation Features, these are getting Initialized in Postload!
+     * Lists of all the active World generation Features, these are getting Initialized in PostLoad!
      */
     public static final List<GTWorldgen> sWorldgenList = new ArrayList<>();
     /**
@@ -229,21 +229,22 @@ public class GregTechAPI {
     /**
      * You want OreDict-Unification for YOUR Mod/Addon, when GregTech is installed? This Function is especially for YOU.
      * Call this Function after the load-Phase, as I register the most of the Unification at that Phase (Redpowers
-     * Storageblocks are registered at postload). A recommended use of this Function is inside your Recipe-System itself
-     * (if you have one), as the unification then makes 100% sure, that every added non-unificated Output gets
+     * Storageblocks are registered at post-load). A recommended use of this Function is inside your Recipe-System
+     * itself
+     * (if you have one), as the unification then makes 100% sure that every added non-unificated Output gets
      * automatically unificated.
      * <p/>
-     * I will personally make sure, that only common prefixes of Ores get registered at the Unificator, as of now there
-     * are: pulp, dust, dustSmall, ingot, nugget, gem, ore and block If another Mod-Author messes these up, then it's
+     * I will personally make sure that only common prefixes of Ores get registered at the Unificator; as of now there
+     * are: pulp, dust, dustSmall, ingot, nugget, gem, ore, and block. If another Mod-Author messes these up, then it's
      * not my fault, and it's especially not your fault. As these are commonly used prefixes.
      * <p/>
-     * This Unificator-API-Function uses the same Functions I use, for unificating Items. So if there is something
+     * This Unificator-API-Function uses the same Functions I use for unifying items. So if there is something
      * messed up (very unlikely), then everything is messed up.
      * <p/>
-     * You shouldn't use this to unificate the Inputs of your Recipes, this is only meant for the Outputs.
+     * You shouldn't use this to unify the Inputs of your Recipes, this is only meant for the Outputs.
      *
      * @param aOreStack the Stack you want to get unificated. It is stackSize Sensitive.
-     * @return Either an unificated Stack or the stack you toss in, but it should never be null, unless you throw a
+     * @return Either a unificated stack or the stack you toss in, but it should never be null unless you throw a
      *         Null-Pointer into it.
      */
     public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
@@ -356,7 +357,7 @@ public class GregTechAPI {
      * Buildcraft Wrenches.
      * <p/>
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
-     * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * certain Cases during post-load (When IToolWrench or similar Interfaces are implemented).
      * <p/>
      * -----
      * <p/>
@@ -364,7 +365,7 @@ public class GregTechAPI {
      * Single-Item-Mod, people can choose if they want your infinite durability or not. So that's not really a Problem.
      * I even have a new Config to auto-disable most infinite BC Wrenches (but that one is turned off).
      * <p/>
-     * One last Bug for you to fix: My Auto-registration detects Railcraft's Crowbars, Buildcraft's Wrenches and alike,
+     * One last Bug for you to fix: My Auto-registration detects Railcraft's Crowbars, Buildcraft's Wrenches, and alike,
      * due to their Interfaces. Guess what now became a Crowbar by accident. Try registering the Wrench at the load
      * phase to prevent things like that from happening. Yes, I know that "You need to register Tools in the Load
      * Phase"-Part wasn't there before this. Sorry about that.
@@ -377,18 +378,18 @@ public class GregTechAPI {
      * Register a Crowbar to extract Covers from Machines Crowbars are NOT Wrenches btw.
      * <p/>
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
-     * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * certain Cases during post-load (When IToolWrench or similar Interfaces are implemented).
      */
     public static boolean registerCrowbar(ItemStack aTool) {
         return registerTool(aTool, sCrowbarList);
     }
 
     /**
-     * Register a Screwdriver to interact directly with Machines and Covers Did I mention, that it is intentionally not
+     * Register a Screwdriver to interact directly with Machines and Covers Did I mention that it is intentionally not
      * possible to make a Multi-tool, which doesn't switch ItemID (like a Mode) all the time?
      * <p/>
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
-     * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * certain Cases during post-load (When IToolWrench or similar Interfaces are implemented).
      */
     @SuppressWarnings("UnusedReturnValue") // Retains API method signature
     public static boolean registerScrewdriver(ItemStack aTool) {
@@ -399,7 +400,7 @@ public class GregTechAPI {
      * Register a Soft Hammer to interact with Machines
      * <p/>
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
-     * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * certain Cases during post-load (When IToolWrench or similar Interfaces are implemented).
      */
     public static boolean registerSoftMallet(ItemStack aTool) {
         return registerTool(aTool, sSoftMalletList);
@@ -409,7 +410,7 @@ public class GregTechAPI {
      * Register a Hard Hammer to interact with Machines
      * <p/>
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
-     * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * certain Cases during post-load (When IToolWrench or similar Interfaces are implemented).
      */
     public static boolean registerHardHammer(ItemStack aTool) {
         return registerTool(aTool, sHardHammerList);
@@ -419,7 +420,7 @@ public class GregTechAPI {
      * Register a Wire Cutter to interact with Machines
      * <p/>
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
-     * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * certain Cases during post-load (When IToolWrench or similar Interfaces are implemented).
      */
     public static boolean registerWireCutter(ItemStack aTool) {
         return registerTool(aTool, sWireCutterList);
@@ -429,7 +430,7 @@ public class GregTechAPI {
      * Register a Soldering Tool to interact with Machines
      * <p/>
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
-     * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * certain Cases during post-load (When IToolWrench or similar Interfaces are implemented).
      */
     @SuppressWarnings("UnusedReturnValue") // Retains API method signature
     public static boolean registerSolderingTool(ItemStack aTool) {
@@ -440,7 +441,7 @@ public class GregTechAPI {
      * Register a Soldering Tin to interact with Soldering Tools
      * <p/>
      * You need to register Tools in the Load Phase, because otherwise the Auto-detection will assign a Tool Type in
-     * certain Cases during postload (When IToolWrench or similar Interfaces are implemented).
+     * certain Cases during post-load (When IToolWrench or similar Interfaces are implemented).
      */
     @SuppressWarnings("UnusedReturnValue") // Retains API method signature
     public static boolean registerSolderingMetal(ItemStack aTool) {

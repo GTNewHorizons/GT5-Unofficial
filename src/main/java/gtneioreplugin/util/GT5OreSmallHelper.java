@@ -114,7 +114,7 @@ public class GT5OreSmallHelper {
 
         /** {dimension name: enabled} */
         public final Set<String> allowedDimWithOrigNames;
-        /** set of: abbriviated dim name */
+        /** set of: abbreviated dim name */
         public final Set<String> enabledDims;
 
         public OreSmallWrapper(SmallOreBuilder ore) {
@@ -143,7 +143,7 @@ public class GT5OreSmallHelper {
         public final ArrayList<OreSmallWrapper> smallOres = new ArrayList<>();
         public final HashMap<OreSmallWrapper, Double> oreVeinProbabilities = new HashMap<>();
 
-        /** Calculate all weights of ore veins once dimension is initialised. */
+        /** Calculate all weights of ore veins once the dimension is initialized. */
         private void calculateWeights() {
             int totalWeight = 0;
             for (OreSmallWrapper oreVein : smallOres) {

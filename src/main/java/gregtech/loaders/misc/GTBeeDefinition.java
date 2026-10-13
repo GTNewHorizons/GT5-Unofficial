@@ -737,7 +737,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IBeeMutationCustom tMutation = dis.registerMutation(LEAD, OSMIUM, 1);
         tMutation.requireResource("blockIndium");
         tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(39, "Venus")); // Venus Dim
-        // Earlier mutation for geting ichorium
+        // Earlier mutation for getting ichorium
         tMutation = dis.registerMutation(SILVER, OSMIUM, 1);
         tMutation.requireResource("blockArcanite");
         tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(60, "Bedrock")); // Thaumic Tinkerer

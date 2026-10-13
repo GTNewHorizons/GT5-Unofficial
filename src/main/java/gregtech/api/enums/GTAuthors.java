@@ -277,7 +277,7 @@ public class GTAuthors {
                 int randIndex = random.nextInt(GTValues.formattingCodes.length);
                 builder.append(GTValues.formattingCodes[randIndex]);
             }
-            // checks if its the correct positon to insert a special unicode character, injects if so, otherwise adds
+            // checks if it's the correct position to insert a special Unicode character, injects if so, otherwise adds
             // the letter
             if (currentUnicodeIndex < injectedUnicode.length && ((i + 1) % injectedUnicode.length == 0)) {
                 builder.append(injectedUnicode[currentUnicodeIndex]);

@@ -14,7 +14,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 
 public enum FoundryModule {
 
-    // please dont hate me for the arbitrary transparent rectangle image
+    // please don't hate me for the arbitrary transparent rectangle image
     // The colors are in HDR, higher values will result in a higher brightness.
     // spotless:off
     UNSET(

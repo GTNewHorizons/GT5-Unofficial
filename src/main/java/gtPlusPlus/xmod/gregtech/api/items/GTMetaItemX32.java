@@ -98,7 +98,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     /**
      * @param aPrefix   the OreDict Prefix
      * @param aMaterial the Material
-     * @param aMetaData a Index from [0 - 31999]
+     * @param aMetaData an Index from [0 - 31999]
      * @return the Localized Name when default LangFiles are used.
      */
     public String getDefaultLocalization(final OrePrefixes aPrefix, final Materials aMaterial, final int aMetaData) {
@@ -106,7 +106,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     }
 
     /**
-     * @param aMetaData a Index from [0 - 31999]
+     * @param aMetaData an Index from [0 - 31999]
      * @param aMaterial the Material
      * @return an Icon Container for the Item Display.
      */

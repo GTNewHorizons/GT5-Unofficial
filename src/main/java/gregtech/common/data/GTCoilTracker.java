@@ -30,12 +30,13 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 
 /**
  * This class tracks all active heating coils. Each instance is responsible for one world. The main reason this exists
- * is so that wallshare coils deactivate properly. Without the ref counter, wallshared coils would deactivate incorrect
+ * is so that wall-share coils deactivate properly. Without the ref counter, wall-shared coils would deactivate
+ * incorrectly
  * when one multi deactivates but not the other.
  * <p />
  * Additionally, it gives us more control over the activation syncing. Since coil activation meta is only stored on the
  * client, there needs to be a way to sync it from the server. Coil meta is only stored on the client to prevent weird
- * interactions with e.g. the structure checker and so that we have more control over the process. We don't want to
+ * interactions with e.g., the structure checker and so that we have more control over the process. We don't want to
  * check structures every time the coils activate, for instance. The reduction in network bandwidth and CPU usage (since
  * we aren't sending chunk updates) is a nice side effect.
  * <p />
@@ -82,7 +83,7 @@ public class GTCoilTracker {
     private static final Long2ObjectFunction<LongSet> CHUNK_LIST_CTOR = ignored -> new LongOpenHashSet();
 
     /**
-     * An object that represents an activated set of coils. These are always owned by a multi, and must be deactivated
+     * An object that represents an activated set of coils. These are always owned by a multi and must be deactivated
      * at some point or the coils will remain active forever.
      *
      * @see GTCoilTracker#activate(MTEMultiBlockBase, LongList)
@@ -187,7 +188,7 @@ public class GTCoilTracker {
             if (!tracker.pendingActivations.isEmpty()) {
                 GTCoilStatus packet = new GTCoilStatus(world.provider.dimensionId, true, tracker.pendingActivations);
 
-                // I have no idea if packet encoding is immediate
+                // I have no idea if packet encoding is immediate.
                 // Let's just allocate another list instead of finding out
                 tracker.pendingActivations = new LongOpenHashSet();
 

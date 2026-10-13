@@ -66,7 +66,7 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
                 case 8 -> Textures.BlockIcons.MATTER_GENERATION_COIL.getIcon();
                 // Matter Fabricator Casings
                 case 9 -> Textures.BlockIcons.MATTER_FABRICATOR_CASING.getIcon();
-                // Iron Blast Fuance Textures
+                // Iron Blast Furnace Textures
                 case 10 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
                 // Multitank Exterior Casing
                 case 11 -> TexturesGtBlock.Casing_Material_Grisium.getIcon();

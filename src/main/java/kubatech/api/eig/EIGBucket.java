@@ -114,13 +114,14 @@ public abstract class EIGBucket {
     protected void getAdditionalInfoData(StringBuilder sb) {}
 
     /**
-     * Attempts to add seeds to tbe bucket if the input is compatible
+     * Attempts to add seeds to the bucket if the input is compatible
      *
      * @param input      A stack of an item that may be able to be added to our current bucket.
-     * @param maxConsume The maximum amount of seeds to add to this bucket.
+     * @param maxConsume The maximum number of seeds to add to this bucket.
      * @param simulate   True if you want to see if you can add more seeds (useful for support item checks)
-     * @return number of seeds consumed, 0 for wrong item, -1 if it missed the support items, -2 if you tried to consume
-     *         0 or less items;
+     * @return number of seeds consumed, 0 for the wrong item, -1 if it missed the support items, -2 if you tried to
+     *         consume
+     *         0 or fewer items;
      */
     public int tryAddSeed(@NotNull MTEExtremeIndustrialGreenhouse greenhouse, @Nullable ItemStack input, int maxConsume,
         boolean simulate) {

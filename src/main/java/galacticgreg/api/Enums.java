@@ -31,7 +31,7 @@ public class Enums {
 
     public enum DimensionType {
         /**
-         * The Dimension is a void dimension and asteroids shall be generated. They will randomly spawn bewteen 0 and
+         * The Dimension is a void dimension and asteroids shall be generated. They will randomly spawn between 0 and
          * 250 Additional config values will be generated in worldconfig
          */
         Asteroid,

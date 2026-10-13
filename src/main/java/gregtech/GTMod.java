@@ -250,7 +250,7 @@ public class GTMod {
     public static GTProxy proxy;
     /** Field renamed, reference {@link gregtech.GTMod#proxy} instead */
     @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated // should be removed after all mods have updated..
+    @Deprecated // should be removed after all mods have updated...
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
@@ -304,7 +304,7 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onPreInitialization(FMLPreInitializationEvent event) {
-        // Keep string handling on English, mainly to avoid the Turkish dotless I breaking case conversions.
+        // Keep string handling in English, mainly to avoid the Turkish dotless 'I' breaking case conversions.
         // Number and date formatting stays on the player's locale, other mods read it to format their own output.
         final Locale formatLocale = Locale.getDefault(Locale.Category.FORMAT);
         Locale.setDefault(Locale.ENGLISH);

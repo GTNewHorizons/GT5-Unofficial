@@ -5,7 +5,7 @@ import net.minecraft.util.ChunkCoordinates;
 import com.brandon3055.draconicevolution.api.GeneratorOverride;
 
 /**
- * Checks whether a chunk falls within range of a Draconic Evolution chaos island, so that GalaxySpace asteroid aren't
+ * Checks whether a chunk falls within range of a Draconic Evolution chaos island, so that GalaxySpace asteroids aren't
  * generated on top of them.
  */
 public final class ChaosIslandLocator {

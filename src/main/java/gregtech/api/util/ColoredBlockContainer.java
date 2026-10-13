@@ -156,7 +156,7 @@ public abstract class ColoredBlockContainer {
 
     /**
      * Provides functionality for various types of vanilla blocks that use their metadata value for color. Also performs
-     * some transformations of blocks, e.g. glass is transformed to stained glass when sprayed.
+     * some transformations of blocks, e.g., glass is transformed to stained glass when sprayed.
      */
     private static class VanillaBlockContainer extends ColoredBlockContainer {
 

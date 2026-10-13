@@ -21,7 +21,6 @@ public class GregtechPowerSubStation {
     }
 
     private static void run1() {
-        // Steam Condensors
         GregtechItemList.PowerSubStation.set(
             new MTEPowerSubStation(PowerSubStation.ID, "substation.01.input.single", "Power Station Control Node")
                 .getStackForm(1L));

@@ -165,7 +165,7 @@ public final class FindRecipeQuery {
     }
 
     /**
-     * @param notUnified If this is set to true, item inputs will be unificated.
+     * @param notUnified If this is set to true, item inputs will be unified.
      */
     public FindRecipeQuery notUnified(boolean notUnified) {
         this.notUnified = notUnified;

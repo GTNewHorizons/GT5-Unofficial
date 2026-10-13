@@ -176,9 +176,9 @@ public class Cover implements IGuiHolder<CoverGuiData> {
     }
 
     /**
-     * Return whether cover data needs to be synced to client upon tile entity creation or cover placement.
+     * Return whether cover data needs to be synced to the client upon tile entity creation or cover placement.
      * <p>
-     * Note if you want to sync the data afterwards you will have to manually do it by calling
+     * Note if you want to sync the data afterwards, you will have to manually do it by calling
      * {@link ICoverable#issueCoverUpdate(ForgeDirection)} This option only affects the initial sync.
      */
     public boolean isDataNeededOnClient() {
@@ -354,7 +354,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
     }
 
     /**
-     * If it lets you rightclick the Machine normally
+     * If it lets you right-click the Machine normally
      */
     public final boolean isGUIClickable() {
         return CoverRegistry.getCoverPlacer(GTUtility.intToStack(coverID))
@@ -421,16 +421,17 @@ public class Cover implements IGuiHolder<CoverGuiData> {
     }
 
     /**
-     * Called when someone rightclicks this Cover.
+     * Called when someone right-clicks this Cover.
      * <p/>
-     * return true, if something actually happens.
+     * 
+     * @return true, if something actually happens.
      */
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         return false;
     }
 
     /**
-     * Called when someone shift-rightclicks this Cover with no tool. Doesn't call @onCoverRightclick in this Case.
+     * Called when someone shift-right-clicks this Cover with no tool. Doesn't call @onCoverRightclick in this Case.
      */
     public boolean onCoverShiftRightClick(EntityPlayer aPlayer) {
         ICoverable coverable = coveredTile.get();

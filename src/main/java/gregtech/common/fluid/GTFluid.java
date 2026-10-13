@@ -201,12 +201,12 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     }
 
     /**
-     * Check if the localized name matches the material name, or if it matches any of the oreprefix formatted material
+     * Check if the localized name matches the material name, or if it matches any of the ore prefix formatted material
      * names. If neither matches, add a key for localized.
      *
      * @param material material from GT/BW/GT++
      *
-     * @implNote The method checks for the following oreprefix patterns:
+     * @implNote The method checks for the following ore prefix patterns:
      *           <ul>
      *           <li>Molten %s</li>
      *           <li>%s Plasma</li>
@@ -217,7 +217,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
      *           <li>Severely Hydro-Cracked %s</li>
      *           <li>Severely Steam-Cracked %s</li>
      *           </ul>
-     *           If a pattern matches, it uses formatted localization with the appropriate oreprefix key.
+     *           If a pattern matches, it uses formatted localization with the appropriate ore prefix key.
      */
     @Override
     public IGTRegisteredFluid addLocalizedName(IOreMaterial material) {

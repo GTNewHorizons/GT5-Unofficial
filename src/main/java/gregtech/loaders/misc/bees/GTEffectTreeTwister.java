@@ -21,7 +21,7 @@ import gregtech.api.util.GTModHandler;
 public class GTEffectTreeTwister extends GTAlleleEffect {
 
     private static final int[] ALLOWED_DIMS = { 2, // spectre
-        112, // last millenium
+        112, // last millennium
         60, // bedrock
         69, // pocket plane
     };

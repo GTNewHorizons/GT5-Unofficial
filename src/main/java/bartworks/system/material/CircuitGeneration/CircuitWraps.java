@@ -102,7 +102,7 @@ public enum CircuitWraps {
     CircuitWraps(int id, ItemList itemSingle, ItemList itemWrap) {
         if (id < 10000) {
             throw new IllegalArgumentException(
-                "ID for CircuitWraps must be abovce 10000, as IDs below that are reserved for imprints.");
+                "ID for CircuitWraps must be above 10000, as IDs below that are reserved for imprints.");
         }
         this.id = id;
         this.itemSingle = itemSingle;

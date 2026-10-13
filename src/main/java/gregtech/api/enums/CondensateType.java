@@ -22,7 +22,8 @@ import gtPlusPlus.core.material.MaterialsElements;
 import tectech.recipe.TecTechRecipeMaps;
 
 /// Each of these entries maps to a type of condensate used by the BEC multis. Condensate itself is just a fluid, but
-/// this class autogens the recipes, cells, and fluids for each type. This isn't a material because I didn't want to
+/// this class auto-generates the recipes, cells, and fluids for each type. This isn't a material because I didn't want
+/// to
 /// contaminate the material system with a bunch of BEC-specific code, especially since the logic for this class is so
 /// minimal.
 /// Note that 'entangled' condensate should never be something you can manufacture outside the BEC network system. It's
@@ -176,7 +177,7 @@ public enum CondensateType {
         return unit;
     }
 
-    /// Returns the source fluid for this condensate type (e.g. molten Neutronium for Neutronium condensate).
+    /// Returns the source fluid for this condensate type (e.g., molten Neutronium for Neutronium condensate).
     /// The returned FluidStack has the unit amount; callers should adjust the amount as needed.
     public FluidStack getSourceFluid() {
         return source.get();
@@ -245,7 +246,7 @@ public enum CondensateType {
         return map;
     });
 
-    /// Maps a source fluid (e.g. molten neutronium) to its condensate type. Returns null for unmapped fluids.
+    /// Maps a source fluid (e.g., molten neutronium) to its condensate type. Returns null for unmapped fluids.
     public static CondensateType getCondensateTypeBySource(Fluid fluid) {
         return BY_SOURCE_FLUID.get()
             .get(fluid);

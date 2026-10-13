@@ -37,7 +37,7 @@ public class CircuitComponentFakeItem extends GTGenericItem {
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (CircuitComponent c : CircuitComponent.VALUES) {
-            list.add(new ItemStack(item, 1, c.metaId)); // shows all CCs, if the itemstack is shown
+            list.add(new ItemStack(item, 1, c.metaId)); // shows all CCs if the item stack is shown
         }
     }
 
