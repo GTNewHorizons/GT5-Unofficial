@@ -153,8 +153,7 @@ public enum CombType {
     VEGA(116, "vega", true, Materials._NULL, 10, 0x1A2036, 0xB5C0DE, ItemComb.Voltage.ZPM),
 
     // Infinity
-    COSMICNEUTRONIUM(117, "cosmic_neutronium", true, Materials.CosmicNeutronium, 5,
-        ItemComb.Voltage.UV),
+    COSMICNEUTRONIUM(117, "cosmic_neutronium", true, Materials.CosmicNeutronium, 5, ItemComb.Voltage.UV),
     INFINITYCATALYST(118, "infinity_catalyst", true, Materials.InfinityCatalyst, 2, 0xFFFFFF, 0xFFFFFF,
         ItemComb.Voltage.UHV),
     INFINITY(119, "infinity", true, Materials.Infinity, 1, ItemComb.Voltage.UEV),
@@ -264,8 +263,7 @@ public enum CombType {
             .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replace("_", " ")) + " Comb");
     }
 
-    CombType(int id, String pName, boolean show, Materials material, int chance,
-             ItemComb.Voltage voltage) {
+    CombType(int id, String pName, boolean show, Materials material, int chance, ItemComb.Voltage voltage) {
         if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
         this.id = id;
         this.voltage = voltage;

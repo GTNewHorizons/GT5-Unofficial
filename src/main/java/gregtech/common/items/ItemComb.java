@@ -134,7 +134,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
-        if (CombType.valueOf(stack.getItemDamage()).hasCustomIcon()) {
+        if (CombType.valueOf(stack.getItemDamage())
+            .hasCustomIcon()) {
             return customIcons.get(stack.getItemDamage());
         }
 
@@ -176,7 +177,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public IIcon getIcon(int aMetaData, int pass) {
-        if (CombType.valueOf(aMetaData).hasCustomIcon()) {
+        if (CombType.valueOf(aMetaData)
+            .hasCustomIcon()) {
             return customIcons.get(aMetaData);
         }
 
@@ -191,7 +193,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     @Override
     public short[] getRGBa(ItemStack aStack) {
         CombType type = CombType.valueOf(aStack.getItemDamage());
-        if (type.hasCustomIcon()) return new short[]{ 255, 255, 255, 0 };
+        if (type.hasCustomIcon()) return new short[] { 255, 255, 255, 0 };
 
         return CombType.valueOf(aStack.getItemDamage()).material.mRGBa;
     }
