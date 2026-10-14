@@ -120,7 +120,7 @@ public enum ArcFurnaceElectrode {
     private ItemStack electrodeItem;
 
     ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
-                        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty) {
+        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty) {
         this(
             id,
             associatedMaterial,
@@ -135,8 +135,8 @@ public enum ArcFurnaceElectrode {
     }
 
     ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
-                        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty,
-                        Consumer<ArcFurnaceProcessingEvent> specialEffect) {
+        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty,
+        Consumer<ArcFurnaceProcessingEvent> specialEffect) {
         this.id = id;
         this.associatedMaterial = associatedMaterial;
         this.speedModifier = speedModifier;
@@ -177,11 +177,12 @@ public enum ArcFurnaceElectrode {
         double durRatio = this.durability > 0 ? (double) durability / this.durability : 0;
         EnumChatFormatting durColor = durRatio >= 1.0 ? EnumChatFormatting.BLUE
             : durRatio >= 0.5 ? EnumChatFormatting.GREEN
-              : durRatio >= 0.25 ? EnumChatFormatting.RED : EnumChatFormatting.DARK_RED;
+                : durRatio >= 0.25 ? EnumChatFormatting.RED : EnumChatFormatting.DARK_RED;
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.durability",
-                EnumChatFormatting.BLUE + Integer.toString(this.durability) + EnumChatFormatting.RESET
+                EnumChatFormatting.BLUE + Integer.toString(this.durability)
+                    + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY,
                 durColor + Integer.toString(durability)));
         tooltip.add(
