@@ -1998,19 +1998,19 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_LuV.ID,
                 "basicmachine.mobrep.tier.06",
-                "Advanced Monster Repellator V",
+                "Elite Monster Repellator",
                 6).getStackForm(1L));
         ItemList.MobRep_ZPM.set(
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_ZPM.ID,
                 "basicmachine.mobrep.tier.07",
-                "Advanced Monster Repellator VI",
+                "Elite Monster Repellator II",
                 7).getStackForm(1L));
         ItemList.MobRep_UV.set(
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_UV.ID,
                 "basicmachine.mobrep.tier.08",
-                "Advanced Monster Repellator VII",
+                "Ultimate Monster Banisher",
                 8).getStackForm(1L));
     }
 
@@ -6650,7 +6650,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_LuV_Printer.set(
             MTEBasicMachineWithRecipeBuilder.builder(PRINTER_LuV.ID)
-                .setName("basicmachine.printer.tier.06", "Advanced Printer V")
+                .setName("basicmachine.printer.tier.06", "Elite Printer")
                 .setTier(6)
                 .setDescription(MachineType.PRINTER.tooltipDescription())
                 .setRecipes(RecipeMaps.printerRecipes)
@@ -6664,7 +6664,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_ZPM_Printer.set(
             MTEBasicMachineWithRecipeBuilder.builder(PRINTER_ZPM.ID)
-                .setName("basicmachine.printer.tier.07", "Advanced Printer VI")
+                .setName("basicmachine.printer.tier.07", "Elite Printer II")
                 .setTier(7)
                 .setDescription(MachineType.PRINTER.tooltipDescription())
                 .setRecipes(RecipeMaps.printerRecipes)
@@ -6678,7 +6678,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_UV_Printer.set(
             MTEBasicMachineWithRecipeBuilder.builder(PRINTER_UV.ID)
-                .setName("basicmachine.printer.tier.08", "Advanced Printer VII")
+                .setName("basicmachine.printer.tier.08", "Ultimate Printing Press")
                 .setTier(8)
                 .setDescription(MachineType.PRINTER.tooltipDescription())
                 .setRecipes(RecipeMaps.printerRecipes)
