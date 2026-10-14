@@ -45,7 +45,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -59,16 +58,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.widget.ISyncedWidget;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import ggfab.ConfigurationHandler;
-import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -203,7 +196,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     private Map<GTUtility.ItemId, ItemStack> curBatchItemsFromME;
     private Map<Fluid, FluidStack> curBatchFluidsFromME;
     private int currentInputLength;
-    private String lastStopReason = "";
+    private String lastStopReason = ""; // unused?
     private int currentRecipeParallel = 1;
 
     public MTEAdvAssLine(int aID, String aName, String aNameRegional) {
@@ -551,43 +544,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public byte getUpdateData() {
         return (byte) (stuck ? 1 : 0);
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        /*
-         * SliceStatusWidget[] arr =
-         * Arrays.stream(slices).map(SliceStatusWidget::new).toArray(SliceStatusWidget[]::new);
-         * screenElements.widgets(arr); screenElements.widget(new FakeSyncWidget.IntegerSyncer(() -> currentInputLength,
-         * l -> { currentInputLength = l; for (SliceStatusWidget w : arr) { w.updateText(); } }));
-         */
-        screenElements.widget(
-            new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(this::hasAbnormalStopReason));
-        screenElements.widget(
-            new TextWidget().setTextSupplier(() -> Text.localised(lastStopReason))
-                .setTextAlignment(Alignment.CenterLeft)
-                .attachSyncer(
-                    new FakeSyncWidget.StringSyncer(() -> lastStopReason, r -> this.lastStopReason = r),
-                    screenElements)
-                .setEnabled(this::hasAbnormalStopReason));
-        screenElements.widget(
-            new ClickableTextWidget(
-                Text.localised("ggfab.gui.advassline.shutdown_clear")
-                    .alignment(Alignment.CenterLeft)).setMarginInLines(0)
-                        .setOnClick((d, w) -> lastStopReason = "")
-                        .setSize(36, 20)
-                        .setEnabled(this::hasAbnormalStopReason));
-    }
-
-    private Boolean hasAbnormalStopReason(Widget w) {
-        return !StringUtils.isNullOrEmpty(lastStopReason);
     }
 
     @Override
