@@ -1179,7 +1179,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_IV_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_IV.ID)
-                .setName("basicmachine.unboxinator.tier.05", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.05", "Advanced Unpackager IV")
                 .setTier(5)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1191,7 +1191,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_LuV_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_LuV.ID)
-                .setName("basicmachine.unboxinator.tier.06", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.06", "Elite Unpackager")
                 .setTier(6)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1203,7 +1203,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_ZPM_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_ZPM.ID)
-                .setName("basicmachine.unboxinator.tier.07", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.07", "Elite Unpackager II")
                 .setTier(7)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1215,7 +1215,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_UV_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_UV.ID)
-                .setName("basicmachine.unboxinator.tier.08", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.08", "Ultimate Unboxinator")
                 .setTier(8)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1773,14 +1773,17 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_EV_Boxinator.set(
             new MTEBoxinator(PACKAGER_EV.ID, "basicmachine.boxinator.tier.04", "Advanced Packager III", 4)
                 .getStackForm(1L));
-        ItemList.Machine_IV_Boxinator
-            .set(new MTEBoxinator(PACKAGER_IV.ID, "basicmachine.boxinator.tier.05", "Boxinator", 5).getStackForm(1L));
-        ItemList.Machine_LuV_Boxinator
-            .set(new MTEBoxinator(PACKAGER_LuV.ID, "basicmachine.boxinator.tier.06", "Boxinator", 6).getStackForm(1L));
-        ItemList.Machine_ZPM_Boxinator
-            .set(new MTEBoxinator(PACKAGER_ZPM.ID, "basicmachine.boxinator.tier.07", "Boxinator", 7).getStackForm(1L));
-        ItemList.Machine_UV_Boxinator
-            .set(new MTEBoxinator(PACKAGER_UV.ID, "basicmachine.boxinator.tier.08", "Boxinator", 8).getStackForm(1L));
+        ItemList.Machine_IV_Boxinator.set(
+            new MTEBoxinator(PACKAGER_IV.ID, "basicmachine.boxinator.tier.05", "Advanced Packager IV", 5)
+                .getStackForm(1L));
+        ItemList.Machine_LuV_Boxinator.set(
+            new MTEBoxinator(PACKAGER_LuV.ID, "basicmachine.boxinator.tier.06", "Elite Packager", 6).getStackForm(1L));
+        ItemList.Machine_ZPM_Boxinator.set(
+            new MTEBoxinator(PACKAGER_ZPM.ID, "basicmachine.boxinator.tier.07", "Elite Packager II", 7)
+                .getStackForm(1L));
+        ItemList.Machine_UV_Boxinator.set(
+            new MTEBoxinator(PACKAGER_UV.ID, "basicmachine.boxinator.tier.08", "Ultimate Boxinator", 8)
+                .getStackForm(1L));
     }
 
     private static void registerRockBreaker() {
