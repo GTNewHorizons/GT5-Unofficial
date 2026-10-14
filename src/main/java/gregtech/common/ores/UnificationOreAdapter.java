@@ -32,7 +32,6 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.common.GTMockWorld;
 import gregtech.common.blocks.GTBlockOre;
 import gtPlusPlus.core.block.base.BlockBaseOre;
-import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 public class UnificationOreAdapter implements IOreAdapter<Materials> {
@@ -48,7 +47,9 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
     private static final Table<OrePrefixes, Materials, ImmutableBlockMeta> BLOCK_TABLE = HashBasedTable.create();
 
-    private static final Object2ObjectOpenHashMap<ImmutableBlockMeta, Pair<OrePrefixes, Materials>> MAT_BLOCK_TABLE = new Object2ObjectOpenHashMap<>();
+    private record OreEntry(OrePrefixes prefix, Materials material, ImmutableBlockMeta block) {}
+
+    private static final Object2ObjectOpenHashMap<ImmutableBlockMeta, OreEntry> MAT_BLOCK_TABLE = new Object2ObjectOpenHashMap<>();
 
     private static boolean initialized = false;
 
@@ -94,7 +95,7 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
             if (mat == Materials._NULL) continue;
 
             BLOCK_TABLE.put(ore, mat, bm);
-            MAT_BLOCK_TABLE.put(bm, Pair.of(ore, mat));
+            MAT_BLOCK_TABLE.put(bm, new OreEntry(ore, mat, bm));
         }
     }
 
@@ -120,16 +121,16 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
                 if (mat == Materials._NULL) continue;
 
                 for (ItemStack ore : OreDictionary.getOres(name)) {
-                    if (!(ore.getItem() instanceof ItemBlock itemBlock)) return;
+                    if (!(ore.getItem() instanceof ItemBlock itemBlock)) continue;
 
                     Block block = itemBlock.field_150939_a;
 
-                    if (isGTOre(block)) return;
+                    if (isGTOre(block)) continue;
 
                     ImmutableBlockMeta bm = new BlockMeta(block, itemBlock.getMetadata(ore.getItemDamage()));
 
                     BLOCK_TABLE.put(prefix, mat, bm);
-                    MAT_BLOCK_TABLE.put(bm, Pair.of(prefix, mat));
+                    MAT_BLOCK_TABLE.put(bm, new OreEntry(prefix, mat, bm));
                 }
             }
         }
@@ -158,25 +159,31 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
         pooled.setBlock(block);
         pooled.setBlockMeta(meta);
 
-        Pair<OrePrefixes, Materials> pair = MAT_BLOCK_TABLE.get(pooled);
+        OreEntry entry = MAT_BLOCK_TABLE.get(pooled);
 
-        if (pair == null) return null;
+        if (entry == null) return null;
 
         OreInfo<Materials> info = OreInfo.getNewInfo();
 
-        info.stoneType = StoneType.findStoneTypeByPrefix(pair.left());
+        info.stoneType = StoneType.findStoneTypeByPrefix(entry.prefix());
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
-        info.material = pair.right();
+        info.material = entry.material();
         info.isNatural = true;
 
-        info.isSmall = pair.left() == OrePrefixes.oreSmall || pair.left() == OrePrefixes.orePoor;
+        info.isSmall = entry.prefix() == OrePrefixes.oreSmall || entry.prefix() == OrePrefixes.orePoor;
+
+        info.sourceBlock = entry.block();
 
         return info;
     }
 
     @Override
     public ImmutableBlockMeta getBlock(OreInfo<?> info) {
+        if (info.sourceBlock != null) {
+            return info.sourceBlock;
+        }
+
         IStoneType stoneType = info.stoneType == null ? StoneType.Stone : info.stoneType;
 
         // noinspection SuspiciousMethodCalls

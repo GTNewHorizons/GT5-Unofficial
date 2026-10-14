@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.AbstractUIFactory;
 import com.cleanroommc.modularui.factory.GuiManager;
 
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.Cover;
 
@@ -63,6 +64,7 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
                     tile.yCoord,
                     tile.zCoord));
         }
+        CoverRegistry.cover(coverable, data.getSide(), data.getCoverID());
         Cover cover = coverable.getCoverAtSide(data.getSide());
         if (!(cover.getCoverID() == data.getCoverID())) {
             throw new RuntimeException(
