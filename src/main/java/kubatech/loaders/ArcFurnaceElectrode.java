@@ -120,7 +120,7 @@ public enum ArcFurnaceElectrode {
     private ItemStack electrodeItem;
 
     ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
-        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty) {
+                        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty) {
         this(
             id,
             associatedMaterial,
@@ -135,8 +135,8 @@ public enum ArcFurnaceElectrode {
     }
 
     ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
-        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty,
-        Consumer<ArcFurnaceProcessingEvent> specialEffect) {
+                        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty,
+                        Consumer<ArcFurnaceProcessingEvent> specialEffect) {
         this.id = id;
         this.associatedMaterial = associatedMaterial;
         this.speedModifier = speedModifier;
@@ -174,38 +174,45 @@ public enum ArcFurnaceElectrode {
     }
 
     public void addInformation(List<String> tooltip, int durability) {
+        double durRatio = this.durability > 0 ? (double) durability / this.durability : 0;
+        EnumChatFormatting durColor = durRatio >= 1.0 ? EnumChatFormatting.BLUE
+            : durRatio >= 0.5 ? EnumChatFormatting.GREEN
+              : durRatio >= 0.25 ? EnumChatFormatting.RED : EnumChatFormatting.DARK_RED;
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.durability",
-                getModifierFormatted(EnumChatFormatting.BLUE, this.durability, "", "") + EnumChatFormatting.RESET
+                EnumChatFormatting.BLUE + Integer.toString(this.durability) + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY,
-                getDurabilityFormatted(durability, this.durability)));
+                durColor + Integer.toString(durability)));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.parallel_limit",
                 this.parallelLimit == 0
                     ? StatCollector.translateToLocal("item.arc_furnace_electrode.tip.parallel_limit_none")
-                    : getModifierFormatted(EnumChatFormatting.GOLD, this.parallelLimit, "", "")));
+                    : EnumChatFormatting.GOLD + Integer.toString(this.parallelLimit)));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.speed",
-                getModifierFormatted(EnumChatFormatting.GREEN, (int) (this.speedModifier * 100), "", "%")));
+                EnumChatFormatting.GREEN + Integer.toString((int) (this.speedModifier * 100)) + "%"));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.eu_usage",
-                getModifierFormatted(EnumChatFormatting.AQUA, this.euModifier, "", "x")));
+                EnumChatFormatting.AQUA + formatNumber(this.euModifier) + "x"));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.overclock",
-                EnumChatFormatting.LIGHT_PURPLE + getModifierFormatted(this.OCSpeedFactor, "", "")
+                EnumChatFormatting.LIGHT_PURPLE + formatNumber(this.OCSpeedFactor)
                     + "/"
-                    + getModifierFormatted(this.OCPowerFactor, "", ""),
+                    + formatNumber(this.OCPowerFactor),
                 ""));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.startup_penalty",
-                getModifierFormatted(EnumChatFormatting.RED, this.startupPenalty + 1d, "", "x")));
-        long startupAmperage = getStartupAmperage();
+                EnumChatFormatting.RED + formatNumber(this.startupPenalty + 1d) + "x"));
+        long startupAmperage = Math.max(
+            1L,
+            (long) Math
+                .ceil(30d / 32d * Math.max(1, this.parallelLimit) * (this.startupPenalty + 1d) * this.euModifier));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.startup_amperage",
@@ -218,54 +225,9 @@ public enum ArcFurnaceElectrode {
         }
     }
 
-    private long getStartupAmperage() {
-        return Math.max(
-            1L,
-            (long) Math
-                .ceil(30d / 32d * Math.max(1, this.parallelLimit) * (this.startupPenalty + 1d) * this.euModifier));
-    }
-
     private static int getInfinityTargetParallel(NBTTagCompound state) {
         int parallel = Math.max(1, state.getInteger(INFINITY_TARGET_PARALLEL_KEY));
         state.setInteger(INFINITY_TARGET_PARALLEL_KEY, parallel);
         return parallel;
-    }
-
-    // Full = blue, half or more = green, quarter or more = red, below = dark red
-    private static String getDurabilityFormatted(int current, int max) {
-        double ratio = max > 0 ? (double) current / max : 0;
-        EnumChatFormatting color;
-        if (ratio >= 1.0) {
-            color = EnumChatFormatting.BLUE;
-        } else if (ratio >= 0.5) {
-            color = EnumChatFormatting.GREEN;
-        } else if (ratio >= 0.25) {
-            color = EnumChatFormatting.RED;
-        } else {
-            color = EnumChatFormatting.DARK_RED;
-        }
-        return color + Integer.toString(current);
-    }
-
-    private static String getModifierFormatted(EnumChatFormatting color, int value, String prefix, String suffix) {
-        return color + prefix + value + suffix;
-    }
-
-    private static String getModifierFormatted(EnumChatFormatting color, double value, String prefix, String suffix) {
-        String formatted = color.toString();
-        formatted += prefix;
-
-        // trim trailing zeroes if no decimal-precision is needed
-        if (value == (int) value) {
-            return formatted + (int) value + suffix;
-        }
-        return formatted + value + suffix;
-    }
-
-    private static String getModifierFormatted(double value, String prefix, String suffix) {
-        if (value == (int) value) {
-            return prefix + (int) value + suffix;
-        }
-        return prefix + value + suffix;
     }
 }
