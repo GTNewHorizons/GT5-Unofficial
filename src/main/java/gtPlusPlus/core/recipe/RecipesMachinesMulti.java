@@ -869,8 +869,8 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.AdvancedImplosionCompressor.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "GCG", "FHR", "IXI", 'G', MaterialsAlloy.LEAGRISIUM.getGear(1), 'C', "circuitMaster", 'F',
-                ItemList.Field_Generator_IV, 'H', ItemList.Hull_ZPM, 'R', ItemList.Robot_Arm_IV, 'I',
+            new Object[] { "GCG", "FHR", "IXI", 'G', MaterialsAlloy.LEAGRISIUM.getGear(1), 'C', "circuitElite", 'F',
+                ItemList.Field_Generator_IV, 'H', ItemList.Hull_IV, 'R', ItemList.Robot_Arm_IV, 'I',
                 "plateAlloyIridium", 'X', GregtechItemList.Gregtech_Computer_Cube });
     }
 
