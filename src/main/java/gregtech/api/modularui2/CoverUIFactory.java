@@ -2,7 +2,6 @@ package gregtech.api.modularui2;
 
 import static gregtech.api.modularui2.MetaTileEntityGuiHandler.MAX_INTERACTION_DISTANCE;
 
-import gregtech.api.covers.CoverRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
@@ -16,6 +15,7 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.AbstractUIFactory;
 import com.cleanroommc.modularui.factory.GuiManager;
 
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.Cover;
 
