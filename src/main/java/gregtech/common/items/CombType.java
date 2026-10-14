@@ -153,11 +153,11 @@ public enum CombType {
     VEGA(116, "vega", true, Materials._NULL, 10, 0x1A2036, 0xB5C0DE, ItemComb.Voltage.ZPM),
 
     // Infinity
-    COSMICNEUTRONIUM(117, "cosmic_neutronium", true, Materials.CosmicNeutronium, 5, 0x484848, 0x323232,
+    COSMICNEUTRONIUM(117, "cosmic_neutronium", true, Materials.CosmicNeutronium, 5,
         ItemComb.Voltage.UV),
     INFINITYCATALYST(118, "infinity_catalyst", true, Materials.InfinityCatalyst, 2, 0xFFFFFF, 0xFFFFFF,
         ItemComb.Voltage.UHV),
-    INFINITY(119, "infinity", true, Materials.Infinity, 1, 0xFFFFFF, 0xFFFFFF, ItemComb.Voltage.UEV),
+    INFINITY(119, "infinity", true, Materials.Infinity, 1, ItemComb.Voltage.UEV),
 
     // HEE
     ENDDUST(120, "end_dust", true, Materials._NULL, 50, 0x003A7D, 0xCC00FA, ItemComb.Voltage.HV),
@@ -237,6 +237,7 @@ public enum CombType {
 
     public static final CombType[] VALUES = values();
     public boolean showInList;
+    public boolean customIcon;
     public final ItemComb.Voltage voltage;
     public final Materials material;
     public final int chance;
@@ -257,7 +258,23 @@ public enum CombType {
         this.material = material;
         this.chance = chance;
         this.showInList = show;
+        this.customIcon = false;
         this.color = new int[] { color1, color2 };
+        this.name = pName;
+        GTLanguageManager
+            .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replace("_", " ")) + " Comb");
+    }
+
+    CombType(int id, String pName, boolean show, Materials material, int chance,
+             ItemComb.Voltage voltage) {
+        if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
+        this.id = id;
+        this.voltage = voltage;
+        this.material = material;
+        this.chance = chance;
+        this.showInList = show;
+        this.customIcon = true;
+        this.color = new int[] { 0xFFFFFF, 0xFFFFFF };
         this.name = pName;
         GTLanguageManager
             .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replace("_", " ")) + " Comb");
@@ -281,6 +298,10 @@ public enum CombType {
 
     public static CombType valueOf(int id) {
         return id < 0 || id >= Companion.VALUES.length ? _NULL : Companion.VALUES[id];
+    }
+
+    public boolean hasCustomIcon() {
+        return this.customIcon;
     }
 
     private static final class Companion {
