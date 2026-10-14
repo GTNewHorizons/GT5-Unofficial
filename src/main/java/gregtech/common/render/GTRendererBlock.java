@@ -98,7 +98,8 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         final ITexture[] overlays = RenderOverlay.get(ctx.getBlockAccess(), ctx.getX(), ctx.getY(), ctx.getZ());
         final ITexture[] overlayHolder = this.overlayHolder;
-        if (overlays != null) {
+        if (overlays != null && !ctx.getRenderBlocks()
+            .hasOverrideBlockTexture()) {
             ctx.renderNegativeYFacing(aTextures[SIDE_DOWN]);
             if (overlays[SIDE_DOWN] != null) {
                 overlayHolder[0] = overlays[SIDE_DOWN];
