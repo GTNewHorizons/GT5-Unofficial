@@ -1215,7 +1215,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_UV_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_UV.ID)
-                .setName("basicmachine.unboxinator.tier.08", "Ultimate Unpackager")
+                .setName("basicmachine.unboxinator.tier.08", "Ultimate Unboxinator")
                 .setTier(8)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
