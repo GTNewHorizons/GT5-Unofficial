@@ -40,6 +40,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
@@ -93,13 +94,13 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
                 ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasing("0-26", "Coke Oven Bricks", false)
-            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any coke oven brick", 1)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addCasing("0-26", Casings.CokeOvenBricks.getLocalizedName(), false)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_coke_oven_brick"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
-            .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
-            .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.wallshare_1"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.wallshare_2"))
             .toolTipFinisher(AuthorJulia);
         // spotless:on
         return tt;
