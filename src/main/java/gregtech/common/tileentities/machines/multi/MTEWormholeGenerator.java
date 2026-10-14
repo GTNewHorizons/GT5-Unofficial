@@ -51,6 +51,8 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.AEApi;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
@@ -238,28 +240,28 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         .addElement('F', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))) // Molecular Casing
         .addElement('t',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(TOP_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", TOP_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('b',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(BOTTOM_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", BOTTOM_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('l',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(LEFT_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", LEFT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('r',
             buildHatchAdder(MTEWormholeGenerator.class)
-                .anyOf(new TransferHatch(RIGHT_HATCH))
+                .anyOf(new TransferHatch("GT5U.MBTT.TransferHatch", RIGHT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
                 .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
@@ -269,9 +271,12 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     private static class TransferHatch implements IHatchElement<MTEWormholeGenerator> {
 
+        private final String name;
+
         public final int mIndex;
 
-        public TransferHatch(int index) {
+        public TransferHatch(String name, int index) {
+            this.name = name;
             this.mIndex = index;
         }
 
@@ -320,10 +325,21 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         public long count(MTEWormholeGenerator t) {
             return t.mExoticEnergyHatches.size();
         }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
@@ -979,9 +995,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side")
             .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started")
             .addInfo("Right click the controller with a screwdriver to disable overclocking")
-            .addGlassEnergyLimitInfo()
             .addSupportAny()
             .beginStructureBlock(7, 7, 7, true)
+            .addEnergyHatchGlassTier()
             .addController("Front center, 4th layer")
             .addCasing("0-51", "High Power Casing", false)
             .addCasing("36", "Any Tiered Glass", true)

@@ -499,14 +499,16 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
 
     private enum NeutronHatchElement implements IHatchElement<MTENeutronActivator> {
 
-        NeutronSensor(MTENeutronActivator::addAcceleratorAndSensor, MTENeutronSensor.class) {
+        NeutronSensor("GT5U.MBTT.NeutronSensorHatch", MTENeutronActivator::addAcceleratorAndSensor,
+            MTENeutronSensor.class) {
 
             @Override
             public long count(MTENeutronActivator t) {
                 return t.mNeutronSensor.size();
             }
         },
-        NeutronAccelerator(MTENeutronActivator::addAcceleratorAndSensor, MTENeutronAccelerator.class) {
+        NeutronAccelerator("GT5U.MBTT.NeutronAcceleratorHatch", MTENeutronActivator::addAcceleratorAndSensor,
+            MTENeutronAccelerator.class) {
 
             @Override
             public long count(MTENeutronActivator t) {
@@ -514,11 +516,14 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTENeutronActivator> adder;
 
         @SafeVarargs
-        NeutronHatchElement(IGTHatchAdder<MTENeutronActivator> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        NeutronHatchElement(String name, IGTHatchAdder<MTENeutronActivator> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -531,6 +536,16 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         @Override
         public IGTHatchAdder<? super MTENeutronActivator> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

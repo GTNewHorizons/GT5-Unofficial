@@ -171,10 +171,6 @@ public class GlassTier {
                     addCustomGlass(EnderIO.ID, "blockFusedQuartz", i, 3, 2 + i);
                 }
             }
-            if (Thaumcraft.isModLoaded()) {
-                // Warded glass
-                addCustomGlass(Thaumcraft.ID, "blockCosmeticOpaque", 2, 3, 8);
-            }
 
             // --- EV ---
             addCustomGlass(ItemRegistry.bw_realglas, 1, 4, 0); // Titanium Borosilicate
@@ -192,6 +188,10 @@ public class GlassTier {
             }
             for (int i = 0; i < 16; i++) {
                 addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4, i + 7);
+            }
+            if (Thaumcraft.isModLoaded()) {
+                // Warded glass
+                addCustomGlass(Thaumcraft.ID, "blockCosmeticOpaque", 2, 4, 23);
             }
 
             // --- IV ---

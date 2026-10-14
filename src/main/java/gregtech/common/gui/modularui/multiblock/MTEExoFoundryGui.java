@@ -68,20 +68,24 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         syncManager.syncValue(
             "Module1",
-            new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal))
-                .allowC2S());
+            new IntSyncValue(
+                () -> multiblock.getModuleSynced(0),
+                ordinal -> multiblock.foundryData.setModule(0, ordinal, true)).allowC2S());
         syncManager.syncValue(
             "Module2",
-            new IntSyncValue(() -> multiblock.getModuleSynced(1), ordinal -> multiblock.setModule(1, ordinal))
-                .allowC2S());
+            new IntSyncValue(
+                () -> multiblock.getModuleSynced(1),
+                ordinal -> multiblock.foundryData.setModule(1, ordinal, true)).allowC2S());
         syncManager.syncValue(
             "Module3",
-            new IntSyncValue(() -> multiblock.getModuleSynced(2), ordinal -> multiblock.setModule(2, ordinal))
-                .allowC2S());
+            new IntSyncValue(
+                () -> multiblock.getModuleSynced(2),
+                ordinal -> multiblock.foundryData.setModule(2, ordinal, true)).allowC2S());
         syncManager.syncValue(
             "Module4",
-            new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal))
-                .allowC2S());
+            new IntSyncValue(
+                () -> multiblock.getModuleSynced(3),
+                ordinal -> multiblock.foundryData.setModule(3, ordinal, true)).allowC2S());
         syncManager.syncValue(
             "Tier",
             new IntSyncValue(() -> multiblock.foundryData.tier, val -> multiblock.foundryData.tier = val));
@@ -90,20 +94,28 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .allowC2S();
         syncManager.syncValue("UsingPreview", usingPreviewSync);
         syncManager.syncValue("Module1Calc", new IntSyncValue(() -> calculatorData.modules[0].ordinal(), val -> {
-            calculatorData.setModule(0, val);
-            usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
+            calculatorData.setModule(0, val, true);
+            if (usingPreviewSync.isValid()) {
+                usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
+            }
         }).allowC2S());
         syncManager.syncValue("Module2Calc", new IntSyncValue(() -> calculatorData.modules[1].ordinal(), val -> {
-            calculatorData.setModule(1, val);
-            usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
+            calculatorData.setModule(1, val, true);
+            if (usingPreviewSync.isValid()) {
+                usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
+            }
         }).allowC2S());
         syncManager.syncValue("Module3Calc", new IntSyncValue(() -> calculatorData.modules[2].ordinal(), val -> {
-            calculatorData.setModule(2, val);
-            usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
+            calculatorData.setModule(2, val, true);
+            if (usingPreviewSync.isValid()) {
+                usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
+            }
         }).allowC2S());
         syncManager.syncValue("Module4Calc", new IntSyncValue(() -> calculatorData.modules[3].ordinal(), val -> {
-            calculatorData.setModule(3, val);
-            usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
+            calculatorData.setModule(3, val, true);
+            if (usingPreviewSync.isValid()) {
+                usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
+            }
         }).allowC2S());
     }
 
@@ -443,14 +455,22 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .child(
                 new ButtonWidget<>().size(16, 16)
                     .tooltipBuilder(t -> {
-                        t.addLine("Select Module " + (index + 1));
+                        t.addLine(
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.button.foundry.modules.tooltip.select",
+                                (index + 1)));
 
                         int reqTier = Math.max(1, index);
                         if (tierSync.getIntValue() >= reqTier) {
                             createTooltipForModule(t, moduleSync.getIntValue());
-                            t.addLine(EnumChatFormatting.GRAY + "Shift-click to unset");
+                            t.addLine(
+                                EnumChatFormatting.GRAY
+                                    + StatCollector.translateToLocal("GT5U.gui.button.foundry.modules.tooltip.unset"));
                         } else {
-                            t.addLine(EnumChatFormatting.RED + "Requires Tier " + reqTier + " Chassis");
+                            t.addLine(
+                                EnumChatFormatting.RED + StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.button.foundry.modules.tooltip.require_tier",
+                                    reqTier));
                         }
                         t.setAutoUpdate(true);
                     })
@@ -518,7 +538,9 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     .full()
                     .widgetTheme("backgroundPopup")
                     .childPadding(4)
-                    .child(new TextWidget<>("Select Module " + (index + 1)).size(80, 18))
+                    .child(
+                        new TextWidget<>(IKey.lang("GT5U.gui.button.foundry.modules.tooltip.select", index + 1))
+                            .size(80, 18))
                     .child(
                         SlotGroupWidget.builder()
                             .row(" I I ")
@@ -542,11 +564,11 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     private void createTooltipForModule(RichTooltip t, int moduleIndex) {
         FoundryModule module = FoundryModule.values()[moduleIndex];
-        String name = module.color + module.displayName;
+        String name = module.color + module.getDisplayName();
         t.addLine(name);
         t.textColor(Color.GREY.main);
         switch (module) {
-            case UNSET -> t.addLine("Empty");
+            case UNSET -> t.addLine(StatCollector.translateToLocal("GT5U.gui.text.foundry.modules.tooltip.empty"));
             case POWER_EFFICIENT_SUBSYSTEMS -> {
                 t.addLine(
                     StatCollector.translateToLocalFormatted(
@@ -613,7 +635,11 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2",
                         coolingStrOrder("100", "50"),
-                        coolingStrOrder("Super Coolant", "Spacetime"),
+                        coolingStrOrder(
+                            StatCollector.translateToLocal(
+                                "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.super_coolant"),
+                            StatCollector.translateToLocal(
+                                "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.spacetime")),
                         coolingStrOrder("1", "2")));
                 t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip3"));
                 t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip4"));

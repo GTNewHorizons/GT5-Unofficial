@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.metatileentity.implementations.MTEBasicMachineBronze;
 import gregtech.api.recipe.BasicUIProperties;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gregtech.common.gui.modularui.widget.SteamGaugeWidget;
 
@@ -80,5 +81,11 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
         BooleanSyncValue ventingSyncer = new BooleanSyncValue(machine::needsSteamVenting);
         syncManager.syncValue("venting", ventingSyncer);
         errorMap.put(ventingSyncer, machine.mTooltipCache.getData("GT5U.machines.stalled_vent.tooltip"));
+    }
+
+    @Override
+    protected String createTooltipForProgressBar() {
+        String tierName = GTUtility.getColoredTierNameFromTier((byte) 1);
+        return StatCollector.translateToLocalFormatted("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
     }
 }

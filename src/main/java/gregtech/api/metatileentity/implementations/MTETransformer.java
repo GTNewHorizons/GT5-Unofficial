@@ -258,15 +258,13 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public String getAlternativeModeText() {
-        return (getBaseMetaTileEntity().isAllowedToWork() ? GTUtility.trans("145", "Step Down, In: ")
-            : GTUtility.trans("146", "Step Up, In: ")) + maxEUInput()
-            + GTUtility.trans("148", "V ")
-            + maxAmperesIn()
-            + GTUtility.trans("147", "A, Out: ")
-            + maxEUOutput()
-            + GTUtility.trans("148", "V ")
-            + maxAmperesOut()
-            + GTUtility.trans("149", "A");
+        return StatCollector.translateToLocalFormatted(
+            getBaseMetaTileEntity().isAllowedToWork() ? "GT5U.gui.transformer.step_down"
+                : "GT5U.gui.transformer.step_up",
+            maxEUInput(),
+            maxAmperesIn(),
+            maxEUOutput(),
+            maxAmperesOut());
     }
 
     @Override

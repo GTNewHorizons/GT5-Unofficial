@@ -20,11 +20,15 @@ import org.lwjgl.opengl.GL11;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
@@ -51,7 +55,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
-import gregtech.common.gui.modularui.util.MachineModularSlot;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.render.IMTERenderer;
 
@@ -130,10 +133,10 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
     }
 
     /** Chance out of 100 that the machine works on that day */
-    private static final int WORK_CHANCE_PERCENT = 30;
+    private static final int WORK_CHANCE_PERCENT = 35;
     /** Chance out of 100 that it also asks for a repair item */
     private static final int REPAIR_REQUEST_CHANCE_PERCENT = 40;
-    private static final int BROKEN_TOOLTIP_COUNT = 12;
+    private static final int BROKEN_TOOLTIP_COUNT = 24;
     private static final long TICKS_PER_DAY = 24000L;
     /** Minimum/maximum number of successful crafts allowed per day before the machine is set as broken */
     private static final int MIN_DAILY_CRAFTS = 1;
@@ -161,10 +164,6 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
 
     public boolean isBrokenToday() {
         return mBrokenToday;
-    }
-
-    public boolean isRepairRequested() {
-        return mBrokenToday && mRepairItemIndex >= 0;
     }
 
     public int getRepairItemIndex() {
@@ -200,19 +199,32 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         mCraftsToday = 0;
     }
 
-    /** Requested repair item logic - Consumes on SpecialSlot and fixes the machine */
-    private void tryRepair() {
-        if (mRepairItemIndex < 0) return;
-        final ItemStack special = getSpecialSlot();
-        if (special == null) return;
+    /** Whether clicking the repair slot with this item held would actually do anything */
+    public boolean isValidRepairItem(ItemStack stack) {
+        if (!mBrokenToday || GTUtility.isStackInvalid(stack)) return false;
+        // Duct Tape as a universal repair item. Does not bypass a requested item
+        if (mRepairItemIndex < 0) return GTUtility.areStacksEqual(stack, ItemList.Duct_Tape.get(1L), true);
         final ItemStack needed = getRepairItems()[mRepairItemIndex];
-        if (special.getItem() != needed.getItem() || special.getItemDamage() != needed.getItemDamage()
-            || special.stackSize < needed.stackSize) return;
+        return stack.getItem() == needed.getItem() && stack.getItemDamage() == needed.getItemDamage();
+    }
 
-        special.stackSize -= needed.stackSize;
-        if (special.stackSize <= 0) mInventory[getSpecialSlotIndex()] = null;
+    /** Click-to-apply repair (like the Cleanroom's maintenance slot) - consumes directly from the held stack */
+    public void tryRepairWithStack(ItemStack heldStack) {
+        if (!isValidRepairItem(heldStack)) return;
+        if (mRepairItemIndex < 0) {
+            heldStack.stackSize -= 1;
+            mBrokenToday = false;
+            getBaseMetaTileEntity().markDirty();
+            return;
+        }
+
+        final ItemStack needed = getRepairItems()[mRepairItemIndex];
+        if (heldStack.stackSize < needed.stackSize) return;
+
+        heldStack.stackSize -= needed.stackSize;
         mBrokenToday = false;
         mRepairItemIndex = -1;
+        getBaseMetaTileEntity().markDirty();
     }
 
     @Override
@@ -251,10 +263,7 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
     @Override
     public int checkRecipe() {
         rollDailyMalfunctionIfNeeded();
-        if (mBrokenToday) {
-            tryRepair();
-            if (mBrokenToday) return DID_NOT_FIND_RECIPE;
-        }
+        if (mBrokenToday) return DID_NOT_FIND_RECIPE;
         if (getOutputAt(0) != null) {
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -342,12 +351,28 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
 
             @Override
             protected ItemSlot createSpecialSlot() {
-                return new ItemSlot().marginRight(SLOT_SIZE / 2)
-                    .slot(
-                        new MachineModularSlot(
-                            machine.inventoryHandler,
-                            machine.getSpecialSlotIndex(),
-                            baseMetaTileEntity))
+                // Click-to-apply slot (like the Cleanroom's maintenance slot)
+                return new PhantomItemSlot() {
+
+                    @Override
+                    public boolean handleDragAndDrop(ItemStack draggedStack, int button) {
+                        return false;
+                    }
+
+                    @Override
+                    public PhantomItemSlot slot(ModularSlot slot) {
+                        return syncHandler(new PhantomItemSlotSH(slot) {
+
+                            @Override
+                            protected void phantomClick(MouseData mouseData, ItemStack cursorStack) {
+                                if (cursorStack == null) return;
+                                machine.tryRepairWithStack(cursorStack);
+                                syncManager.setCursorItem(cursorStack.stackSize < 1 ? null : cursorStack);
+                            }
+                        });
+                    }
+                }.slot(new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()))
+                    .marginRight(SLOT_SIZE / 2)
                     .backgroundOverlay(GTGuiTextures.SLOT_MAINTENANCE)
                     .tooltip(
                         t -> t.addLine(StatCollector.translateToLocal("gt.icecreammachine.repairslot.tooltip"))

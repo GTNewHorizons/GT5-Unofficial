@@ -555,25 +555,23 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
 
     private enum SpecialHatchElement implements IHatchElement<MTEPurificationUnitPhAdjustment> {
 
-        PhSensor(MTEPurificationUnitPhAdjustment::addSensorHatchToMachineList, MTEHatchPHSensor.class) {
+        PhSensor("GT5U.MBTT.pHSensorHatch", MTEPurificationUnitPhAdjustment::addSensorHatchToMachineList,
+            MTEHatchPHSensor.class) {
 
             @Override
             public long count(MTEPurificationUnitPhAdjustment gtMetaTileEntityPurificationUnitPhAdjustment) {
                 return gtMetaTileEntityPurificationUnitPhAdjustment.sensorHatches.size();
             }
-
-            @Override
-            public String getDisplayName() {
-                return StatCollector.translateToLocal("GT5U.MBTT.pHSensorHatch");
-            }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEPurificationUnitPhAdjustment> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEPurificationUnitPhAdjustment> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTEPurificationUnitPhAdjustment> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -586,6 +584,16 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         @Override
         public IGTHatchAdder<? super MTEPurificationUnitPhAdjustment> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

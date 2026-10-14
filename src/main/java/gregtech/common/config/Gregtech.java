@@ -154,6 +154,11 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         public boolean batchModeInitialValue;
 
+        @Config.Comment("If true, explosive food items (e.g. Explosive Ice Cream) deal damage when eaten. "
+            + "If false, only the explosion effect plays, with no damage.")
+        @Config.DefaultBoolean(true)
+        public boolean explosiveFoodDamage;
+
         @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
         @Config.DefaultInt(100)
         @Config.RequiresMcRestart

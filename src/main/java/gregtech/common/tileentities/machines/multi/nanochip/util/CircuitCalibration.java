@@ -12,50 +12,50 @@ public enum CircuitCalibration {
     NONE(CalibrationThreshold.EMPTY, CalibrationThreshold.EMPTY, CalibrationThreshold.EMPTY),
 
     PRIMITIVE(
-        new CalibrationThreshold("Crude", 0.2, nac -> {}),
-        new CalibrationThreshold("Robust", 0.4, nac -> {}),
-        new CalibrationThreshold("Archaic", 0.6, nac -> {})
+        new CalibrationThreshold("primitive.1", 0.4, nac -> nac.primitiveT1Active = true),
+        new CalibrationThreshold("primitive.2", 0.8, nac -> nac.primitiveT2Active = true),
+        new CalibrationThreshold("primitive.3", 1,   nac -> nac.primitiveT3Active = true)
     ),
     CRYSTAL(
-        new CalibrationThreshold("Shiny", 0.2, nac -> {nac.globalEUMultiplier = 0.8f;}),
-        new CalibrationThreshold("Glimmering", 0.4, nac -> {nac.globalDurationMultiplier = 0.8f;}),
-        new CalibrationThreshold("Prismatic", 0.6, nac -> {nac.crystalT3Active = true;})
+        new CalibrationThreshold("crystal.1", 0.3, nac -> nac.globalEUMultiplier = 0.8f),
+        new CalibrationThreshold("crystal.2", 0.6, nac -> nac.globalDurationMultiplier = 0.8f),
+        new CalibrationThreshold("crystal.3", 0.9, nac -> nac.crystalT3Active = true)
     ),
     WETWARE(
-        new CalibrationThreshold("Wet", 0.2, nac -> {nac.globalEUMultiplier = 0.8f;}),
-        new CalibrationThreshold("Fleshy", 0.4, nac -> {nac.globalDurationMultiplier = 0.8f;}),
-        new CalibrationThreshold("Wriggling", 0.6, nac -> {nac.wetwareT3Active = true;})
+        new CalibrationThreshold("wetware.1", 0.3, nac -> nac.globalEUMultiplier = 0.8f),
+        new CalibrationThreshold("wetware.2", 0.6, nac -> nac.globalDurationMultiplier = 0.8f),
+        new CalibrationThreshold("wetware.3", 0.9, nac -> nac.wetwareT3Active = true)
     ),
     BIO(
-        new CalibrationThreshold("Aware", 0.2, nac -> {nac.globalEUMultiplier = 0.8f;}),
-        new CalibrationThreshold("Sentient", 0.4, nac -> {nac.globalDurationMultiplier = 0.8f;}),
-        new CalibrationThreshold("ALIVE!!!!!!!!!", 0.6, nac -> {nac.wetwareT3Active = true; nac.bioT3Active = true;})
+        new CalibrationThreshold("bioware.1", 0.25, nac -> nac.globalEUMultiplier = 0.8f),
+        new CalibrationThreshold("bioware.2", 0.5,  nac -> nac.globalDurationMultiplier = 0.8f),
+        new CalibrationThreshold("bioware.3", 0.75, nac -> nac.bioT3Active = true)
     ),
     OPTICAL(
-        new CalibrationThreshold("Tuned", 0.2, nac -> {nac.globalEUMultiplier = 0.8f;}),
-        new CalibrationThreshold("Precise", 0.4, nac -> {nac.globalDurationMultiplier = 0.8f;}),
-        new CalibrationThreshold("Perfected", 0.6, nac -> {nac.opticalT3Active = true;})
+        new CalibrationThreshold("optical.1", 0.25, nac -> nac.globalEUMultiplier = 0.8f),
+        new CalibrationThreshold("optical.2", 0.5,  nac -> nac.globalDurationMultiplier = 0.8f),
+        new CalibrationThreshold("optical.3", 0.75, nac -> nac.opticalT3Active = true)
     ),
-    EXOTIC(
-        new CalibrationThreshold("TODO", 0.2, nac -> {}),
-        new CalibrationThreshold("TODO", 0.4, nac -> {}),
-        new CalibrationThreshold("TODO", 0.6, nac -> {})
+    EXOTIC( // Unimplemented
+        new CalibrationThreshold("", 0.2),
+        new CalibrationThreshold("", 0.4),
+        new CalibrationThreshold("", 0.6)
     ),
-    COSMIC(
-        new CalibrationThreshold("TODO", 0.2, nac -> {}),
-        new CalibrationThreshold("TODO", 0.4, nac -> {}),
-        new CalibrationThreshold("TODO", 0.6, nac -> {})
+    COSMIC( // Unimplemented
+        new CalibrationThreshold("", 0.2),
+        new CalibrationThreshold("", 0.4),
+        new CalibrationThreshold("", 0.6)
     ),
-    TEMPORAL(
-        new CalibrationThreshold("TODO", 0.2, nac -> {}),
-        new CalibrationThreshold("TODO", 0.4, nac -> {}),
-        new CalibrationThreshold("TODO", 0.6, nac -> {})
+    TEMPORAL( // Unimplemented
+        new CalibrationThreshold("", 0.2),
+        new CalibrationThreshold("", 0.4),
+        new CalibrationThreshold("", 0.6)
     ),
-    SPECIAL(
-        new CalibrationThreshold("Foreign", 0.01, nac -> {nac.globalDurationMultiplier -= 0.2f;}),
-        new CalibrationThreshold("Alien", 0.05, nac -> { nac.globalDurationMultiplier -= 0.2f;}),
-        new CalibrationThreshold("Xeno", 0.2, nac -> { nac.globalDurationMultiplier -= 0.1f;})
-    ),; // Pico, Quantum
+    SPECIAL( // Pico, Quantum, Planck. Until the above are implemented
+        new CalibrationThreshold("special.1", 0.01, nac -> nac.globalDurationMultiplier -= 0.2f),
+        new CalibrationThreshold("special.2", 0.05, nac -> nac.globalDurationMultiplier -= 0.2f),
+        new CalibrationThreshold("special.3", 0.2,  nac -> nac.globalDurationMultiplier -= 0.1f)
+    );
     // spotless:on
 
     public final CalibrationThreshold tier1;
@@ -81,10 +81,16 @@ public enum CircuitCalibration {
         public final double percentage;
         public Consumer<MTENanochipAssemblyComplex> function;
         public CircuitCalibration calibrationType;
-        public static final CalibrationThreshold EMPTY = new CalibrationThreshold("", 0, nac -> {});
+
+        private static final Consumer<MTENanochipAssemblyComplex> NOOP = _ -> {};
+        public static final CalibrationThreshold EMPTY = new CalibrationThreshold("", 0, NOOP);
+
+        public CalibrationThreshold(String title, double percentage) {
+            this(title, percentage, NOOP);
+        }
 
         public CalibrationThreshold(String title, double percentage, Consumer<MTENanochipAssemblyComplex> function) {
-            this.title = title;
+            this.title = "GT5U.gui.text.nac.title." + title;
             this.percentage = percentage;
             this.function = function;
         }

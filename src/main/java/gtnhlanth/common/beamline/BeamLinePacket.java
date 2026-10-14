@@ -21,7 +21,7 @@ public class BeamLinePacket extends DataPacket<BeamInformation> {
             nbt.getFloat("energy"),
             nbt.getInteger("rate"),
             nbt.getInteger("particleId"),
-            nbt.getInteger("focus"));
+            nbt.getFloat("focus"));
     }
 
     @Override

@@ -34,7 +34,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
 public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBase<MTEBiologicalCoordinationModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int BIO_OFFSET_X = 3;
     protected static final int BIO_OFFSET_Y = 5;
     protected static final int BIO_OFFSET_Z = 0;
@@ -156,7 +155,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
     }
 
     @Override
-    protected GTRecipe findRecipe(ArrayList<ItemStack> inputs) {
+    protected GTRecipe findRecipe(List<ItemStack> inputs) {
         RecipeMap<?> recipeMap = this.getRecipeMap();
         final List<FluidStack> fakeFluids = new ArrayList<>(getStoredFluids());
         if (baseMulti.wetwareT3Active) {
@@ -181,10 +180,8 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         for (int i = 0; i < fluidInputs.length; i++) {
             FluidStack stack = fluidInputs[i];
             if (stack == null) continue;
-            if (baseMulti.wetwareT3Active && stack.getFluid()
-                .equals(Materials.GrowthMediumSterilized.mFluid)) fluidInputs[i] = null;
-            if (baseMulti.bioT3Active && stack.getFluid()
-                .equals(Materials.BioMediumSterilized.mFluid)) fluidInputs[i] = null;
+            if (baseMulti.wetwareT3Active) fluidInputs[i].amount /= 2;
+            if (baseMulti.bioT3Active) fluidInputs[i] = null;
         }
         transformedRecipe.setFluidInputs(ArrayExt.removeNullFluids(fluidInputs));
         return transformedRecipe;

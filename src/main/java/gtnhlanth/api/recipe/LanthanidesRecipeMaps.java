@@ -111,7 +111,7 @@ public class LanthanidesRecipeMaps {
         .neiItemInputsGetter(recipe -> {
             TargetChamberMetadata metadata = recipe.getMetadata(TARGET_CHAMBER_METADATA);
             if (metadata == null) return GTValues.emptyItemStackArray;
-            ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID);
+            ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM, 0, metadata.particleID);
             List<ItemStack> ret = new ArrayList<>();
             ret.add(particleStack);
             ret.addAll(Arrays.asList(recipe.mInputs));
