@@ -1995,19 +1995,19 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_LuV.ID,
                 "basicmachine.mobrep.tier.06",
-                "Advanced Monster Repellator V",
+                "Elite Monster Repellator",
                 6).getStackForm(1L));
         ItemList.MobRep_ZPM.set(
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_ZPM.ID,
                 "basicmachine.mobrep.tier.07",
-                "Advanced Monster Repellator VI",
+                "Elite Monster Repellator II",
                 7).getStackForm(1L));
         ItemList.MobRep_UV.set(
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_UV.ID,
                 "basicmachine.mobrep.tier.08",
-                "Advanced Monster Repellator VII",
+                "Ultimate Monster Banisher",
                 8).getStackForm(1L));
     }
 
