@@ -190,6 +190,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
+        CombType type = CombType.valueOf(aStack.getItemDamage());
+        if (type.hasCustomIcon()) return new short[]{ 255, 255, 255, 0 };
+
         return CombType.valueOf(aStack.getItemDamage()).material.mRGBa;
     }
 

@@ -210,16 +210,15 @@ public enum CombType {
     INDIUM(159, "indium", true, Materials.Indium, 100, 0x8F5D99, 0xFFA9FF, ItemComb.Voltage.ZPM),
     BLIZZ(160, "blizz", true, Materials.Blizz, 50, 0xFF99A5, 0x5af7ff, ItemComb.Voltage.MV),
     KEVLAR(161, "kevlar", true, Materials._NULL, 50, 0xa2baa3, 0x2d542f, ItemComb.Voltage.MV),
-    DRACONIC(162, "draconium", true, Materials.Draconium, 50, 0x161616, 0x6200e7, ItemComb.Voltage.MV),
-    AWAKENEDDRACONIUM(163, "awakened_draconium", true, Materials.DraconiumAwakened, 50, 0xD41238, 0xFFA157,
-        ItemComb.Voltage.MV),
+    DRACONIC(162, "draconium", true, Materials.Draconium, 50, ItemComb.Voltage.MV),
+    AWAKENEDDRACONIUM(163, "awakened_draconium", true, Materials.DraconiumAwakened, 50, ItemComb.Voltage.MV),
     PALLADIUM(164, "palladium", true, Materials.Palladium, 50, 0x8B8B8B, 0xF1D9D9, ItemComb.Voltage.MV),
     INFUSEDGOLD(165, "infused_gold", true, Materials.InfusedGold, 50, 0x80641E, 0xFFC83C, ItemComb.Voltage.IV),
     // Additions to rare metals, moved here so we don't shift all comb IDs
     NEODYMIUM(166, "neodymium", true, Materials.Neodymium, 50, 0x555555, 0x4F4F4F, ItemComb.Voltage.HV),
     EUROPIUM(167, "europium", true, Materials.Europium, 10, 0xDAA0E2, 0xAB7EB1, ItemComb.Voltage.LuV),
     MACHINIST(168, "machinist", true, Materials._NULL, 100, 0x552582, 0xFDB927, ItemComb.Voltage.MV),
-    NETHERITE(169, "netherite", true, Materials._NULL, 10, 0x31292a, 0xada9aa, ItemComb.Voltage.LuV),
+    NETHERITE(169, "netherite", true, Materials._NULL, 10, ItemComb.Voltage.LuV),
     // Gem Addition
     PRISMATIC(170, "prismatic", true, Materials._NULL, 10, 0x117777, 0xcfe4e4, ItemComb.Voltage.UHV),
     REFINEDRAREEARTH(171, "refined_rare_earth", true, Materials._NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
@@ -237,7 +236,7 @@ public enum CombType {
 
     public static final CombType[] VALUES = values();
     public boolean showInList;
-    public boolean customIcon;
+    public final boolean customIcon;
     public final ItemComb.Voltage voltage;
     public final Materials material;
     public final int chance;
