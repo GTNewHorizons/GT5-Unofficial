@@ -2,6 +2,7 @@ package gregtech.api.modularui2;
 
 import static gregtech.api.modularui2.MetaTileEntityGuiHandler.MAX_INTERACTION_DISTANCE;
 
+import gregtech.api.covers.CoverRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
@@ -63,6 +64,7 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
                     tile.yCoord,
                     tile.zCoord));
         }
+        CoverRegistry.cover(coverable, data.getSide(), data.getCoverID());
         Cover cover = coverable.getCoverAtSide(data.getSide());
         if (!(cover.getCoverID() == data.getCoverID())) {
             throw new RuntimeException(
