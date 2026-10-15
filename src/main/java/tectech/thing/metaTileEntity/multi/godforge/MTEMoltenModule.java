@@ -10,7 +10,10 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -21,6 +24,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
@@ -37,6 +41,7 @@ public class MTEMoltenModule extends MTEBaseModule {
 
     private long EUt = 0;
     private int currentParallel = 0;
+    private boolean alloyMode = false;
 
     public MTEMoltenModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -58,7 +63,7 @@ public class MTEMoltenModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mSpecialValue > getHeat()) {
+                if (!alloyMode && recipe.mSpecialValue > getHeat()) {
                     return CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
                 }
 
@@ -78,8 +83,9 @@ public class MTEMoltenModule extends MTEBaseModule {
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getSafeProcessingVoltage())
                     .setRecipeHeat(recipe.mSpecialValue)
-                    .setHeatOC(true)
-                    .setHeatDiscount(true)
+                    // ABS recipes do not specify a heat requirement.
+                    .setHeatOC(!alloyMode)
+                    .setHeatDiscount(!alloyMode)
                     .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
                     .setHeatDiscountMultiplier(getHeatEnergyDiscount())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
@@ -100,7 +106,7 @@ public class MTEMoltenModule extends MTEBaseModule {
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
                 overwriteCalculatedEut(0);
-                setCurrentRecipeHeat(recipe.mSpecialValue);
+                setCurrentRecipeHeat(alloyMode ? 0 : recipe.mSpecialValue);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         };
@@ -124,7 +130,37 @@ public class MTEMoltenModule extends MTEBaseModule {
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return TecTechRecipeMaps.godforgeMoltenRecipes;
+        return alloyMode ? RecipeMaps.alloyBlastSmelterRecipes : TecTechRecipeMaps.godforgeMoltenRecipes;
+    }
+
+    @NotNull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(TecTechRecipeMaps.godforgeMoltenRecipes, RecipeMaps.alloyBlastSmelterRecipes);
+    }
+
+    public boolean isAlloyModeOn() {
+        return alloyMode;
+    }
+
+    public void setAlloyMode(boolean enabled) {
+        if (alloyMode != enabled) {
+            alloyMode = enabled;
+            // The machine is using a different recipe map now.
+            setSingleRecipeCheck(null);
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound NBT) {
+        NBT.setBoolean("alloyMode", alloyMode);
+        super.saveNBTData(NBT);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound NBT) {
+        alloyMode = NBT.getBoolean("alloyMode");
+        super.loadNBTData(NBT);
     }
 
     @Override
