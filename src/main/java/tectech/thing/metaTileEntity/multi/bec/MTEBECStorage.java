@@ -42,7 +42,7 @@ import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.IGTHatchAdder;
@@ -200,7 +200,17 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 .removeIf(e -> e.getLongValue() <= 0);
         }
 
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        return SimpleCheckRecipeResult.ofSuccess("routing");
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRunningText() {
+        return false;
     }
 
     public double getAmountStored() {
