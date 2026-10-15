@@ -423,7 +423,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + EnumChatFormatting.GRAY
                     + " by "
                     + EnumChatFormatting.RED
-                    + BLACK_HOLE_EU_MULTIPLIER)
+                    + 128)
             .addInfo(
                 "Below " + EnumChatFormatting.RED
                     + "20"
