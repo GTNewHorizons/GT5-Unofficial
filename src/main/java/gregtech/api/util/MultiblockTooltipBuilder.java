@@ -1258,21 +1258,6 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * t-tier Glass required for Laser Hatches
-     *
-     * @param t Tier of glass that unlocks all energy hatches
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addMinGlassForLaser(int t) {
-        iLines.add(
-            GTValues.TIER_COLORS[t] + GTValues.VN[t]
-                + EnumChatFormatting.GRAY
-                + StatCollector.translateToLocal("GT5U.MBTT.Structure.MinGlassForLaser"));
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
      * Energy Hatch limited by Glass tier
      *
      * @return Instance this method was called on.
@@ -1342,6 +1327,20 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addEnergyHatchGlassTier() {
         return addTierNote(StatCollector.translateToLocal("GT5U.MBTT.Structure.EnergyHatchGlassTier"));
+    }
+
+    /**
+     * Adds a glass tier requirement note to the structure block.<br>
+     * Renders as: (tier colour) (tier name) (gray) (translated requirement)
+     *
+     * @param t Minimum glass tier required
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMinGlassForLaser(int t) {
+        return addTierNote(
+            GTValues.TIER_COLORS[t] + GTValues.VN[t]
+                + EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("GT5U.MBTT.Structure.MinGlassForLaser"));
     }
 
     /**
