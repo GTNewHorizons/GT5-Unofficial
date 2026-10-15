@@ -41,6 +41,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
@@ -145,50 +146,33 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Assembly Line, Assline, AL")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.assembly_line"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "assembly-line"),
                 ImmutableMap.<String, Object>builder().build())
-            .addMaxTierSkips(1)
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
-            .addController("First slice, 3rd layer")
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                "Any grate machine casing NOT on first slice",
-                3)
-            .addEnergyHatch("1+", "Any layer 4 casing", 4)
-            .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
-            .addInputBus("5-16", "Bottom center of each slice", 2)
-            .addInputHatch("1-4", "Any layer 1 side casing", 1)
-            .addOutputBus("1", "Any layer 1 casing on last slice", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.first_slice_3rd_layer"))
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_grate_casing_not_first_slice"), 3)
+            .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_casing", 4), 4)
+            .addMaintenanceHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_side_casing", 1), 1)
+            .addInputBus("5-16", StatCollector.translateToLocal("gt.mbtt.structure.bottom_center_each_slice"), 2)
+            .addInputHatch("1-4", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_side_casing", 1), 1)
+            .addOutputBus("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_casing_last_slice", 1), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("10", "Any Tiered Glass", false)
-            .addCasing("8", "Grate Machine Casing", false)
-            .addCasing("4-8", "Solid Steel Machine Casing", false)
-            .addCasing("5", "Assembly Line Casing", false)
-            .addCasing("5", "Assembler Machine Casing", false)
+            .addCasing("10", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("8", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("4-8", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.AssemblyLineCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.AssemblerMachineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 4: "
-                    + EnumChatFormatting.GRAY
-                    + "Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 3: "
-                    + EnumChatFormatting.GRAY
-                    + "Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 2: "
-                    + EnumChatFormatting.GRAY
-                    + "Any Tiered Glass, Assembly Line Casing, Any Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 1: "
-                    + EnumChatFormatting.GRAY
-                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 4) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", StatCollector.translateToLocal("gt.mbtt.structure.empty"), Casings.SolidSteelMachineCasing.getLocalizedName(), StatCollector.translateToLocal("gt.mbtt.structure.empty")))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 3) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", Casings.GrateMachineCasing.getLocalizedName(), Casings.AssemblerMachineCasing.getLocalizedName(), Casings.GrateMachineCasing.getLocalizedName()))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 2) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), Casings.AssemblyLineCasing.getLocalizedName(), StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass")))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 1) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", Casings.SolidSteelMachineCasing.getLocalizedName(), StatCollector.translateToLocal("GT5U.MBTT.InputBus"), Casings.SolidSteelMachineCasing.getLocalizedName()))
             .addStructureInfo("")
-            .addStructureFooter("Up to 16 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter(StatCollector.translateToLocalFormatted("gt.mbtt.structure.slices_footer", 16))
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
@@ -521,7 +505,13 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
     private enum DataHatchElement implements IHatchElement<MTEAssemblyLine> {
 
-        DataAccess;
+        DataAccess("GT5U.MBTT.DataAccessHatch");
+
+        private final String name;
+
+        DataHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -536,6 +526,16 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         @Override
         public long count(MTEAssemblyLine t) {
             return t.mDataAccessHatches.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

@@ -141,7 +141,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             .addInfo("Multiple tools can be used at the same time")
             .addSeparator()
             .addInfo("Work time is fixed at 5 seconds")
-            .addInfo("Energy input tier multiplies output further")
+            .addInfo("Energy Input Tier multiplies output further")
             .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, true)
@@ -174,7 +174,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             TexturesGtBlock.oMCATreeFarm,
             TexturesGtBlock.oMCATreeFarmGlow,
             TexturesGtBlock.oMCATreeFarmActive,
-            TexturesGtBlock.oMCATreeFarmActiveGlow);
+            TexturesGtBlock.oMCATreeFarmActive);
     }
 
     @Override
@@ -245,7 +245,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
 
     @Override
     public boolean addInputBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        // Tools from a stocking inout bus can not be damaged, this would cause an infinite durability exploit.
+        // Tools from a stocking inout bus cannot be damaged, this would cause an infinite durability exploit.
         // Therefore disallow ME input bus.
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();

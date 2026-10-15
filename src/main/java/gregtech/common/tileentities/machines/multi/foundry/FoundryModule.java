@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 
@@ -17,13 +18,13 @@ public enum FoundryModule {
     // The colors are in HDR, higher values will result in a higher brightness.
     // spotless:off
     UNSET(
-        "Unset", "UN.", "",
+        "GT5U.gui.text.foundry.modules.unset.name", "UN.", "",
         ItemList.Primary_Casing_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_UNSET,
         new Color(0),
         EnumChatFormatting.GRAY,
         0, foundryData -> {}),
-    EXTRA_CASTING_BASINS("Superdense Casting Basins", "S.C.B", "extra_casting_basins",
+    EXTRA_CASTING_BASINS("GT5U.gui.text.foundry.modules.scb.name", "S.C.B", "extra_casting_basins",
         ItemList.Extra_Casting_Basins_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_ECB,
         new Color(174, 174, 102),
@@ -33,7 +34,7 @@ public enum FoundryModule {
     }
     ),
     UNIVERSAL_COLLAPSER(
-        "Universal Collapser", "U.C", "uc",
+        "GT5U.gui.text.foundry.modules.uc.name", "U.C", "uc",
         ItemList.Universal_Collapser_ExoFoundry.get(0),
         GTGuiTextures.EXOFOUNDRY_TDS,
         new Color(20, 48, 86),
@@ -47,7 +48,7 @@ public enum FoundryModule {
         }
     ),
     POWER_EFFICIENT_SUBSYSTEMS(
-        "Proto-Volt Stabilizer", "P.V.S", "power_efficient_subsystems",
+        "GT5U.gui.text.foundry.modules.pvs.name", "P.V.S", "power_efficient_subsystems",
         ItemList.Power_Efficient_Subsystems_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_PES,
         new Color(10, 143, 38),
@@ -58,7 +59,7 @@ public enum FoundryModule {
         }
     ),
     EFFICIENT_OC(
-        "Sentient Overclocker", "S.O.C", "eff_oc",
+        "GT5U.gui.text.foundry.modules.soc.name", "S.O.C", "eff_oc",
         ItemList.Efficient_Overclocking_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_EFF_OC,
         new Color(107, 33, 196),
@@ -69,7 +70,7 @@ public enum FoundryModule {
     }
     ),
     STREAMLINED_CASTERS(
-        "Streamlined Casting", "S.L.C", "streamlined_casters",
+        "GT5U.gui.text.foundry.modules.slc.name", "S.L.C", "streamlined_casters",
         ItemList.Streamlined_Casters_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_SLC,
         new Color(250, 60, 60),
@@ -79,7 +80,7 @@ public enum FoundryModule {
         }
     ),
     HELIOCAST_REINFORCEMENT(
-        "Heliocast Reinforcement", "H.R", "heliocast_reinforcement",
+        "GT5U.gui.text.foundry.modules.hr.name", "H.R", "heliocast_reinforcement",
         ItemList.Heliocast_Reinforcement_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_HR,
         new Color(225, 45, 225),
@@ -89,7 +90,7 @@ public enum FoundryModule {
         }
     ),
     HYPERCOOLER(
-        "Hypercooler", "H.C", "hypercooler",
+        "GT5U.gui.text.foundry.modules.hc.name", "H.C", "hypercooler",
         ItemList.Hypercooler_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_HC,
         new Color(40, 128, 153),
@@ -103,7 +104,7 @@ public enum FoundryModule {
 
     //spotless:on
 
-    public final String displayName;
+    public final String displayKey;
     public final String shorthand;
     public final String structureID;
     private final ItemStack icon;
@@ -119,9 +120,9 @@ public enum FoundryModule {
     // This value changes the brightness of all rings
     private static final int HDR_MULTIPLIER = 12;
 
-    FoundryModule(String display, String shortname, String structid, ItemStack icon, UITexture texture, Color c,
+    FoundryModule(String displayKey, String shortname, String structid, ItemStack icon, UITexture texture, Color c,
         EnumChatFormatting color, int voltageTier, Consumer<FoundryData> statFunction) {
-        this.displayName = display;
+        this.displayKey = displayKey;
         this.shorthand = shortname;
         this.structureID = structid;
         this.icon = icon;
@@ -143,4 +144,7 @@ public enum FoundryModule {
         return this.icon;
     }
 
+    public String getDisplayName() {
+        return StatCollector.translateToLocal(this.displayKey);
+    }
 }
