@@ -105,8 +105,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
     private static final int JOBS_BASE = 2;
     private static final int DURATION_BASE_SECONDS = 1;
-    private static final double DURATION_OC1_SECONDS = 0.5;
-    private static final double DURATION_OC2_SECONDS = 0.25;
     private static final String DATA_ORB_JOBS_KEY = "MX-CraftingJobs";
     private static final String DATA_ORB_JOBS_JOB_KEY = "Job";
     private static final String MACHINE_TYPE = "Molecular Assembler, LMA";
@@ -316,8 +314,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                     .put("crafting_eut", EU_PER_TICK_CRAFTING)
                     .put("jobs_base", JOBS_BASE)
                     .put("duration_base", DURATION_BASE_SECONDS)
-                    .put("duration_oc1", DURATION_OC1_SECONDS)
-                    .put("duration_oc2", DURATION_OC2_SECONDS)
+                    .put("duration_oc1", DURATION_BASE_SECONDS / 2.0)
+                    .put("duration_oc2", DURATION_BASE_SECONDS / 4.0)
                     .build())
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front bottom center")

@@ -206,8 +206,8 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         return DEFAULT_OUTPUT_EU;
     }
 
-    protected Materials getBooster() {
-        return Materials.LiquidOxygen;
+    protected FluidStack getBooster(long amount) {
+        return Materials.LiquidOxygen.getFluid(amount);
     }
 
     protected int getEfficiencyIncrease() {
@@ -356,7 +356,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
 
                 // Deplete that amount, try next fuel if this one is insufficient
                 if (!depleteInput(tLiquid)) continue;
-                boostEu = depleteInput(getBooster().getGas(2L * getAdditiveFactor()));
+                boostEu = depleteInput(getBooster(2L * getAdditiveFactor()));
 
                 // Check to prevent burning HOG without consuming it, if not boosted
                 if (!boostEu && fuelValue > getNominalOutput()) {
