@@ -99,6 +99,7 @@ import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStr
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static IIconContainer ScreenON;
@@ -538,7 +539,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
     public enum moduleElement implements IHatchElement<MTEForgeOfGods> {
 
-        Module(MTEForgeOfGods::addModuleToMachineList, MTEBaseModule.class) {
+        Module("GT5U.MBTT.AnyModule", MTEForgeOfGods::addModuleToMachineList, MTEBaseModule.class) {
 
             @Override
             public long count(MTEForgeOfGods tileEntity) {
@@ -546,13 +547,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             }
         };
 
+        private final String name;
+
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEForgeOfGods> adder;
 
         @SafeVarargs
-        moduleElement(IGTHatchAdder<MTEForgeOfGods> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        moduleElement(String name, IGTHatchAdder<MTEForgeOfGods> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
+            this.name = name;
         }
 
         @Override
@@ -563,6 +568,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         @Override
         public IGTHatchAdder<? super MTEForgeOfGods> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

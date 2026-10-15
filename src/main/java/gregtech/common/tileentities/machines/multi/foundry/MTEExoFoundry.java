@@ -468,7 +468,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "overclocks"
                     + EnumChatFormatting.GRAY
-                    + " over the hatch tier without modules")
+                    + " over the Hatch Tier without modules")
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD
                     + "not"
@@ -478,7 +478,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.UNDERLINE
                     + "UIV+"
                     + EnumChatFormatting.GRAY
-                    + " voltage tier recipes without modules")
+                    + " Voltage Tier recipes without modules")
             .addInfo(
                 "Has " + EnumChatFormatting.GOLD
                     + "3 Tiers"
@@ -488,7 +488,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 "Has " + EnumChatFormatting.GOLD
                     + "2/3/4"
                     + EnumChatFormatting.GRAY
-                    + " Module Slots, based on machine tier")
+                    + " Module Slots, based on Machine Tier")
             .addInfo(
                 "Each Module Slot has " + EnumChatFormatting.GOLD
                     + "7"

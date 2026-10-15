@@ -1,5 +1,5 @@
 Consumes {aqua:{var:power} EU/t}
-Can be supplied with {blue:{var:gas_rate} L/s} of {gold:Noble Gases} to boost output
+Can be supplied with {blue:{var:gas_rate} {var:unit}/s} of {gold:Noble Gases} to boost output
 {gold:Neon} : {green:{var:neon_boost}x}
 {aqua:Krypton} : {green:{var:krypton_boost}x}
 {dark_aqua:Xenon} : {green:{var:xenon_boost}x}
