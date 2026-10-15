@@ -51,28 +51,20 @@ public enum ArcFurnaceElectrode {
         }
     }),
     TritaniumElectrode(8, Materials.Tritanium, 3d, 48, 2d, 4d, 1200, 1.1d, 2d),
-    InfinityElectrode(9, Materials.Infinity, 4.2d, 0, 1d, 4d, 2000, 1d, 1d, event -> {
+    InfinityElectrode(9, Materials.Infinity, 4.2d, 1, 1d, 4d, 2000, 1d, 1d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventConfigureProcessing configure) {
             configure.processingLogic.setMaxParallel(getInfinityTargetParallel(configure.arcFurnace.getEffectState()));
-            return;
-        }
-        if (event instanceof ArcFurnaceProcessingEvent.EventCreateParallelHelper parallelHelperEvent) {
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventCreateParallelHelper parallelHelperEvent) {
             parallelHelperEvent.parallelHelper.setAvailableEUt(Long.MAX_VALUE);
-            return;
-        }
-        if (event instanceof ArcFurnaceProcessingEvent.EventConfigureOverclock configureOC) {
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventConfigureOverclock configureOC) {
             configureOC.overclockCalculator.setAmperage(1L);
             configureOC.overclockCalculator.setEUt(Long.MAX_VALUE);
-            return;
-        }
-        if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
             NBTTagCompound state = completed.arcFurnace.getEffectState();
             int next = getInfinityTargetParallel(state);
             next = next > Integer.MAX_VALUE / 2 ? Integer.MAX_VALUE : next * 2;
             state.setInteger("infinityTargetParallel", next);
-            return;
-        }
-        if (event instanceof ArcFurnaceProcessingEvent.EventReset reset) {
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventReset reset) {
             reset.arcFurnace.getEffectState()
                 .setInteger("infinityTargetParallel", 1);
         }
@@ -104,7 +96,6 @@ public enum ArcFurnaceElectrode {
     });
 
     private static final Int2ObjectOpenHashMap<ArcFurnaceElectrode> ID_MAP = new Int2ObjectOpenHashMap<>();
-    private static final String INFINITY_TARGET_PARALLEL_KEY = "infinityTargetParallel";
 
     public final int id;
     public final IOreMaterial associatedMaterial;
@@ -181,16 +172,12 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.durability",
-                EnumChatFormatting.BLUE + Integer.toString(this.durability)
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY,
+                EnumChatFormatting.BLUE + Integer.toString(this.durability) + EnumChatFormatting.GRAY,
                 durColor + Integer.toString(durability)));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.parallel_limit",
-                this.parallelLimit == 0
-                    ? StatCollector.translateToLocal("item.arc_furnace_electrode.tip.parallel_limit_none")
-                    : EnumChatFormatting.GOLD + Integer.toString(this.parallelLimit)));
+                EnumChatFormatting.GOLD + Integer.toString(this.parallelLimit)));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.speed",
@@ -202,10 +189,8 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.overclock",
-                EnumChatFormatting.LIGHT_PURPLE + formatNumber(this.OCSpeedFactor)
-                    + "/"
-                    + formatNumber(this.OCPowerFactor),
-                ""));
+                EnumChatFormatting.LIGHT_PURPLE + formatNumber(this.OCSpeedFactor),
+                formatNumber(this.OCPowerFactor)));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.startup_penalty",
@@ -227,8 +212,11 @@ public enum ArcFurnaceElectrode {
     }
 
     private static int getInfinityTargetParallel(NBTTagCompound state) {
-        int parallel = Math.max(1, state.getInteger(INFINITY_TARGET_PARALLEL_KEY));
-        state.setInteger(INFINITY_TARGET_PARALLEL_KEY, parallel);
+        int parallel = state.getInteger("infinityTargetParallel");
+        if (parallel < 1) {
+            parallel = 1;
+            state.setInteger("infinityTargetParallel", parallel);
+        }
         return parallel;
     }
 }
