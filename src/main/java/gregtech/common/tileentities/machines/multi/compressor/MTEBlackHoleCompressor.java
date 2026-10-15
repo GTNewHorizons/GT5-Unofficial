@@ -417,7 +417,13 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " parallels when stability is BELOW "
                     + EnumChatFormatting.RED
                     + "50/20")
-            .addInfo("Recipes that require a black hole multiply "+EnumChatFormatting.RED+"EU Cost"+EnumChatFormatting.GRAY+" by "+EnumChatFormatting.RED +BLACK_HOLE_EU_MULTIPLIER)
+            .addInfo(
+                "Recipes that require a black hole multiply " + EnumChatFormatting.RED
+                    + "EU Cost"
+                    + EnumChatFormatting.GRAY
+                    + " by "
+                    + EnumChatFormatting.RED
+                    + BLACK_HOLE_EU_MULTIPLIER)
             .addInfo(
                 "Below " + EnumChatFormatting.RED
                     + "20"
@@ -590,6 +596,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     private static final double BLACK_HOLE_EU_MULTIPLIER = 128D;
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
