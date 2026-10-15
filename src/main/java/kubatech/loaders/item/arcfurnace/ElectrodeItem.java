@@ -53,6 +53,7 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
         return electrode.durability - usedDurability(stack);
     }
 
+    // returns true if the electrode is fully used up and should be removed
     public boolean damageElectrode(ItemStack stack, int damage) {
         ArcFurnaceElectrode electrode = getElectrodeFromStack(stack);
         if (electrode == null) return false;
@@ -85,7 +86,7 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
 
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List<String> p_77624_3_,
-                               boolean p_77624_4_) {
+        boolean p_77624_4_) {
         int id = p_77624_1_.getItemDamage();
         ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(id);
         if (electrode != null) {
