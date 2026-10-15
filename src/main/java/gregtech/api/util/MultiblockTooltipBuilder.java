@@ -1330,10 +1330,10 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Adds a glass tier requirement note to the structure block.<br>
-     * Renders as: (tier colour) (tier name) (gray) (translated requirement)
+     * Add a line of information about the structure:<br>
+     * t-tier Glass required for Laser Hatches
      *
-     * @param t Minimum glass tier required
+     * @param t Tier of glass that unlocks all energy hatches
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addMinGlassForLaser(int t) {
