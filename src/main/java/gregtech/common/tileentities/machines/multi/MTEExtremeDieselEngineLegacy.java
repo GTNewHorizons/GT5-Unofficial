@@ -26,6 +26,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import net.minecraftforge.fluids.FluidStack;
 
 public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
 
@@ -126,8 +127,8 @@ public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
     }
 
     @Override
-    protected Materials getBooster() {
-        return Materials.LiquidOxygen;
+    protected FluidStack getBooster(long amount) {
+        return Materials.LiquidOxygen.getFluid(amount);
     }
 
     @Override

@@ -199,8 +199,8 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
         return 2048;
     }
 
-    protected Materials getBooster() {
-        return Materials.Oxygen;
+    protected FluidStack getBooster(long amount) {
+        return Materials.Oxygen.getGas(amount);
     }
 
     /**
@@ -265,7 +265,7 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
 
                 // Deplete that amount
                 if (!depleteInput(tLiquid)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
-                boostEu = depleteInput(getBooster().getGas(2L * getAdditiveFactor()));
+                boostEu = depleteInput(getBooster(2L * getAdditiveFactor()));
 
                 // Check to prevent burning HOG without consuming it, if not boosted
                 if (!boostEu && fuelValue > getNominalOutput()) {
