@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -27,7 +28,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
 
-public class MTEHeatSensor extends MTEHatch {
+public class MTEHeatSensor extends MTEHatch implements IDataCopyable {
+
+    public static final String COPIED_DATA_IDENTIFIER = "heatSensor";
 
     protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     protected static final IIconContainer TEXTURE_FRONT_GLOW = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
@@ -155,6 +158,28 @@ public class MTEHeatSensor extends MTEHatch {
 
     public void setInverted(boolean inverted) {
         this.inverted = inverted;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setDouble("threshold", getThreshold());
+        tag.setBoolean("inverted", isInverted());
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        setThreshold(nbt.getDouble("threshold"));
+        setInverted(nbt.getBoolean("inverted"));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
     }
 
     @Override
