@@ -417,6 +417,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " parallels when stability is BELOW "
                     + EnumChatFormatting.RED
                     + "50/20")
+            .addInfo("Recipes that require a black hole multiply "+EnumChatFormatting.RED+"EU Cost"+EnumChatFormatting.GRAY+" by "+EnumChatFormatting.RED +BLACK_HOLE_EU_MULTIPLIER)
             .addInfo(
                 "Below " + EnumChatFormatting.RED
                     + "20"
@@ -588,6 +589,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         searchAndDecrementCatalysts();
     }
 
+    private static final double BLACK_HOLE_EU_MULTIPLIER = 128D;
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -637,13 +639,18 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 if (result != CheckRecipeResultRegistry.SUCCESSFUL) return result;
                 int comp_tier = recipe.getMetadataOrDefault(COMPRESSION_TIER, 0);
                 isNotBlackHoleRecipe = comp_tier < 2;
+
                 // Forces a recalculation of the parallels right after the attribute is set
                 maxParallel = maxParallelSupplier.get();
+
+                // Black hole recipes use extra EU
+                double euMultiplier = isNotBlackHoleRecipe ? 1 : BLACK_HOLE_EU_MULTIPLIER;
+                setEuModifier(0.7D * euMultiplier);
+
                 return result;
             }
         }.noRecipeCaching()
             .setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.7D)
             .setSpeedBonus(0.2D);
     }
 
