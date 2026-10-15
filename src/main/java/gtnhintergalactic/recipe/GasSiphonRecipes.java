@@ -40,7 +40,7 @@ public class GasSiphonRecipes {
             .addFluid(1, MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 18_000))
             .addFluid(2, MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 800))
             .addFluid(3, MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 500))
-            .addFluid(4, MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidGas, 150))
+            .addFluid(4, MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidLiquid, 150))
             .build();
 
         // T5 (-> 0.5 to 2A of LuV)

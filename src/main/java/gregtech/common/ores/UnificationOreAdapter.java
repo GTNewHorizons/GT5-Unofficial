@@ -31,7 +31,6 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.GTMockWorld;
-import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 public class UnificationOreAdapter implements IOreAdapter {
@@ -47,7 +46,9 @@ public class UnificationOreAdapter implements IOreAdapter {
 
     private static final Table<OrePrefixes, Material, ImmutableBlockMeta> BLOCK_TABLE = HashBasedTable.create();
 
-    private static final Object2ObjectOpenHashMap<ImmutableBlockMeta, Pair<OrePrefixes, Material>> MAT_BLOCK_TABLE = new Object2ObjectOpenHashMap<>();
+    private record OreEntry(OrePrefixes prefix, Material material, ImmutableBlockMeta block) {}
+
+    private static final Object2ObjectOpenHashMap<ImmutableBlockMeta, OreEntry> MAT_BLOCK_TABLE = new Object2ObjectOpenHashMap<>();
 
     private static boolean initialized = false;
 
@@ -103,7 +104,7 @@ public class UnificationOreAdapter implements IOreAdapter {
             if (ml == null) continue;
 
             BLOCK_TABLE.put(ore, ml, bm);
-            MAT_BLOCK_TABLE.put(bm, Pair.of(ore, ml));
+            MAT_BLOCK_TABLE.put(bm, new OreEntry(ore, ml, bm));
         }
     }
 
@@ -136,7 +137,7 @@ public class UnificationOreAdapter implements IOreAdapter {
                     ImmutableBlockMeta bm = new BlockMeta(block, itemBlock.getMetadata(ore.getItemDamage()));
 
                     BLOCK_TABLE.put(prefix, ml, bm);
-                    MAT_BLOCK_TABLE.put(bm, Pair.of(prefix, ml));
+                    MAT_BLOCK_TABLE.put(bm, new OreEntry(prefix, ml, bm));
                 }
             }
         }
@@ -165,25 +166,30 @@ public class UnificationOreAdapter implements IOreAdapter {
         pooled.setBlock(block);
         pooled.setBlockMeta(meta);
 
-        Pair<OrePrefixes, Material> pair = MAT_BLOCK_TABLE.get(pooled);
+        OreEntry entry = MAT_BLOCK_TABLE.get(pooled);
 
-        if (pair == null) return null;
+        if (entry == null) return null;
 
         OreInfo info = OreInfo.getNewInfo();
 
-        info.stoneType = StoneType.findStoneTypeByPrefix(pair.left());
+        info.stoneType = StoneType.findStoneTypeByPrefix(entry.prefix());
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
-        info.material = pair.right();
+        info.material = entry.material();
         info.isNatural = true;
 
-        info.isSmall = pair.left() == OrePrefixes.oreSmall || pair.left() == OrePrefixes.orePoor;
+        info.isSmall = entry.prefix() == OrePrefixes.oreSmall || entry.prefix() == OrePrefixes.orePoor;
+
+        info.sourceBlock = entry.block();
 
         return info;
     }
 
     @Override
     public ImmutableBlockMeta getBlock(OreInfo info) {
+        if (info.sourceBlock != null) {
+            return info.sourceBlock;
+        }
         IStoneType stoneType = info.stoneType == null ? StoneType.Stone : info.stoneType;
 
         // noinspection SuspiciousMethodCalls

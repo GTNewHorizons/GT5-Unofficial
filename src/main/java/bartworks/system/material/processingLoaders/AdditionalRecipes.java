@@ -423,7 +423,7 @@ public class AdditionalRecipes {
                 MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 78_084_000),
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 20_946_000),
                 MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 934_000),
-                MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 40_700),
+                MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 43_234),
                 MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 1_818),
                 MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 524),
                 MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 180),

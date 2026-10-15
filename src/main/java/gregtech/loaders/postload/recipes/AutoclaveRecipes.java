@@ -215,7 +215,7 @@ public class AutoclaveRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.NetherStar, Shapes.gem, 64))
             .itemOutputs(ItemList.NuclearStar.get(1L))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidPlasma, 4 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidPlasma, 2 * INGOTS))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(autoclaveRecipes);

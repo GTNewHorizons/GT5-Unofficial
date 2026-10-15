@@ -221,7 +221,7 @@ public class RecipeLoaderRocketFuels {
         GTValues.RA.stdBuilder()
             .circuit(1)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidGas, 2_000),
+                MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidLiquid, 2_000),
                 new FluidStack(GTPPFluids.RP1, 500))
             .fluidOutputs(new FluidStack(GTPPFluids.RP1RocketFuel, 1_500))
             .duration(15 * SECONDS)

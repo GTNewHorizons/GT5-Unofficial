@@ -1963,7 +1963,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
                     Calabi_Yau_Manifold.ID,
                     "gt.item.calabi_yau_manifold.name",
                     "gt.item.calabi_yau_manifold.tooltip"))
-            .setRender(new CosmicNeutroniumMetaItemRenderer());
+            .setRender(new InfinityMetaItemRenderer());
         ItemList.RawManifoldBud
             .set(
                 addItemWithLocalizationKeys(
@@ -1977,7 +1977,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
                     Blossoming_Manifold_Bud.ID,
                     "gt.item.blossoming_manifold_bud.name",
                     "gt.item.blossoming_manifold_bud.tooltip"))
-            .setRender(new CosmicNeutroniumMetaItemRenderer());
+            .setRender(new GlitchEffectMetaItemRenderer());
 
         // Planck Wire Chain
         ItemList.PulsatingWDMStrands.set(

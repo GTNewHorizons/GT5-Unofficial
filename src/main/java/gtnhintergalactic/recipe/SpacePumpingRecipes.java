@@ -67,7 +67,8 @@ public class SpacePumpingRecipes {
         RECIPES
             .put(Pair.of(5, 3), MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, 2_800_000));
         RECIPES.put(Pair.of(5, 4), MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1_400_000));
-        RECIPES.put(Pair.of(5, 5), MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidGas, 896_000));
+        RECIPES
+            .put(Pair.of(5, 5), MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidLiquid, 896_000));
         RECIPES.put(Pair.of(5, 6), MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 32_000));
         RECIPES.put(Pair.of(5, 7), MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 32_000));
         RECIPES.put(Pair.of(5, 8), MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 8_000));

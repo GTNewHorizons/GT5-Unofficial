@@ -707,9 +707,38 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             EECPlayer.currentWeapon = null;
 
             if (batchMode) {
-                for (ItemStack item : mOutputItems) {
-                    item.stackSize *= tBatchMultiplier;
+                List<ItemStack> aggregated = new ArrayList<>();
+
+                for (int i = 0; i < tBatchMultiplier; i++) {
+                    ItemStack[] iteration = recipe.generateOutputs(
+                        rand,
+                        this,
+                        tAttackDamage,
+                        Math.min(tLootingLevel, MAX_LOOTING_LEVEL),
+                        mIsProducingInfernalDrops,
+                        voidAllDamagedAndEnchantedItems);
+
+                    for (ItemStack incoming : iteration) {
+                        if (incoming == null || incoming.stackSize <= 0) continue;
+
+                        boolean merged = false;
+                        for (ItemStack existing : aggregated) {
+                            if (existing.getItem() == incoming.getItem()
+                                && existing.getItemDamage() == incoming.getItemDamage()
+                                && ItemStack.areItemStackTagsEqual(existing, incoming)) {
+                                existing.stackSize += incoming.stackSize;
+                                merged = true;
+                                break;
+                            }
+                        }
+
+                        if (!merged) {
+                            aggregated.add(incoming.copy());
+                        }
+                    }
                 }
+
+                this.mOutputItems = aggregated.toArray(new ItemStack[0]);
             }
 
             this.mOutputFluids = new FluidStack[] {

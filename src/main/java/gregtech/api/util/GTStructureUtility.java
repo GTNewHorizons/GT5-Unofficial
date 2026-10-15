@@ -227,7 +227,7 @@ public class GTStructureUtility {
     /// block art filed under `iconName` and placed from the pair's stack.
     private static <T> IStructureElement<T> ofMaterialBlock(Material material, Shape shape, String iconName) {
         if (material == null)
-            throw new IllegalArgumentException("material for " + shape.getName() + " can not be null!");
+            throw new IllegalArgumentException("material for " + shape.getName() + " cannot be null!");
         return new IStructureElement<>() {
 
             @Override

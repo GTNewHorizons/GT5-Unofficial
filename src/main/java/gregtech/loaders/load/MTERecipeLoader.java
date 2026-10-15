@@ -1607,6 +1607,22 @@ public class MTERecipeLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'F',
                 "frameGtPolytetrafluoroethylene" });
 
+        // Extruder Tension Resistant machine casing, move if there is a better place for it
+        GTModHandler.addCraftingRecipe(
+            ItemList.TensionResistantMachineCasing.get(1),
+            BUFFERED,
+            new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.ingredient(Materials.Inconel690), 'S',
+                OrePrefixes.plate.ingredient(Materials.HSSG), 'F',
+                OrePrefixes.frameGt.ingredient(Materials.Titanium) });
+
+        // Extruder Machine Casing, move if there is a better place for it
+        GTModHandler.addCraftingRecipe(
+            ItemList.ExtruderMachineCasing.get(1),
+            BUFFERED,
+            new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.ingredient(Materials.TPVAlloy), 'S',
+                OrePrefixes.plate.ingredient(Materials.Titanium), 'F',
+                OrePrefixes.frameGt.ingredient(Materials.TungstenSteel) });
+
         // Forming Core
         GTModHandler.addCraftingRecipe(
             ItemList.FormingCore.get(1),

@@ -33,7 +33,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
@@ -208,8 +207,8 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
         return 2048;
     }
 
-    protected Material getBooster() {
-        return Materials.Oxygen;
+    protected FluidStack getBooster(long amount) {
+        return MaterialUtils.gas(Materials.Oxygen, amount);
     }
 
     /**
@@ -274,7 +273,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
 
                 // Deplete that amount, try next fuel if this one is insufficient
                 if (!depleteInput(tLiquid)) continue;
-                boostEu = depleteInput(MaterialUtils.gas(getBooster(), 2L * getAdditiveFactor()));
+                boostEu = depleteInput(getBooster(2L * getAdditiveFactor()));
 
                 // Check to prevent burning HOG without consuming it, if not boosted
                 if (!boostEu && fuelValue > getNominalOutput()) {

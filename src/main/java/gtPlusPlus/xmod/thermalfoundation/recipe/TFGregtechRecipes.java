@@ -45,7 +45,7 @@ public class TFGregtechRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_powder, 4))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 4))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidGas, 100))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidLiquid, 100))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(chemicalBathRecipes);

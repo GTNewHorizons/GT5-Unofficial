@@ -27,7 +27,9 @@ import static gregtech.api.util.GTRecipeConstants.CLEANROOM;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -81,6 +83,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @SideOnly(Side.CLIENT)
     private IIcon secondIcon;
+    private final Map<Integer, IIcon> customIcons = new HashMap<Integer, IIcon>();
 
     public ItemComb() {
         super();
@@ -122,12 +125,23 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
+        for (CombType comb : CombType.VALUES) {
+            if (comb.hasCustomIcon()) {
+                customIcons.put(comb.getId(), iconRegister.registerIcon("gregtech:gt.comb/" + comb.getId()));
+            }
+        }
+
         this.itemIcon = iconRegister.registerIcon("forestry:beeCombs.0");
         this.secondIcon = iconRegister.registerIcon("forestry:beeCombs.1");
     }
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
+        if (CombType.valueOf(stack.getItemDamage())
+            .hasCustomIcon()) {
+            return customIcons.get(stack.getItemDamage());
+        }
+
         return (pass == 0) ? itemIcon : secondIcon;
     }
 
@@ -166,6 +180,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public IIcon getIcon(int aMetaData, int pass) {
+        if (CombType.valueOf(aMetaData)
+            .hasCustomIcon()) {
+            return customIcons.get(aMetaData);
+        }
+
         return (pass == 0) ? itemIcon : secondIcon;
     }
 
@@ -176,6 +195,9 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
+        CombType type = CombType.valueOf(aStack.getItemDamage());
+        if (type.hasCustomIcon()) return new short[] { 255, 255, 255, 0 };
+
         return MaterialUtils.rgba(CombType.valueOf(aStack.getItemDamage()).material);
     }
 

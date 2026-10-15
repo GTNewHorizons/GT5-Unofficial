@@ -3,6 +3,7 @@ package gregtech.common.ores;
 import org.jetbrains.annotations.ApiStatus;
 
 import com.gtnewhorizon.gtnhlib.util.ObjectPooler;
+import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.interfaces.IStoneType;
@@ -46,6 +47,7 @@ public class OreInfo implements AutoCloseable {
     public Material material;
     public IStoneType stoneType;
     public boolean isSmall;
+    public ImmutableBlockMeta sourceBlock;
     /** Natural ores can be mined by machines and can be fortuned. Ores placed by the player aren't natural. */
     public boolean isNatural;
 
@@ -77,6 +79,7 @@ public class OreInfo implements AutoCloseable {
         material = null;
         stoneType = null;
         isSmall = false;
+        sourceBlock = null;
         isNatural = false;
         return this;
     }
@@ -88,6 +91,7 @@ public class OreInfo implements AutoCloseable {
         dup.material = this.material;
         dup.stoneType = this.stoneType;
         dup.isSmall = this.isSmall;
+        dup.sourceBlock = this.sourceBlock;
         dup.isNatural = this.isNatural;
         return dup;
     }

@@ -939,7 +939,7 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, 2))
             .circuit(16)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidGas, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.NitrogenDioxide, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(FluidRegistry.getFluidStack("combustionpromotor", 500))
             .duration(10 * SECONDS)
@@ -950,7 +950,7 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.SodiumNitrate, Shapes.dust, 2))
             .circuit(16)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidGas, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.NitrogenDioxide, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(FluidRegistry.getFluidStack("combustionpromotor", 500))
             .duration(10 * SECONDS)
@@ -1431,7 +1431,7 @@ public class RecipeLoader {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Sapphire, Shapes.dust, 5),
                 MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 3))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidGas, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 3_000))
             .itemOutputs(ItemRefer.Aluminum_Nitride_Dust.get(2))
             .duration(10 * SECONDS)
@@ -1443,7 +1443,7 @@ public class RecipeLoader {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.GreenSapphire, Shapes.dust, 5),
                 MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 3))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidGas, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 3_000))
             .itemOutputs(ItemRefer.Aluminum_Nitride_Dust.get(2))
             .duration(10 * SECONDS)
@@ -1455,7 +1455,7 @@ public class RecipeLoader {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 5),
                 MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 3))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidGas, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 3_000))
             .itemOutputs(ItemRefer.Aluminum_Nitride_Dust.get(2))
             .duration(10 * SECONDS)

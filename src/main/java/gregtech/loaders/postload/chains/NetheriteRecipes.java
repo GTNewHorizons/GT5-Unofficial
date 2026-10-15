@@ -199,7 +199,7 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Reaction
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.PrismaticGas, FluidShapes.fluidLiquid, 4000),
-                    MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidGas, 12000))
+                    MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidLiquid, 12000))
                 .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PrismaticAcid, FluidShapes.fluidLiquid, 16000))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
