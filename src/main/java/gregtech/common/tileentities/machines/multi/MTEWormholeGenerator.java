@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -1074,11 +1075,12 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
                 data.add(
                     IGregTechDeviceInformation
-                        .encode("GT5U.infodata.wormhole_generator.diameter", (long) (radius * 2)));
+                        .encode("GT5U.infodata.wormhole_generator.diameter", formatNumber((long) (radius * 2))));
 
                 data.add(
-                    IGregTechDeviceInformation
-                        .encode("GT5U.infodata.wormhole_generator.optimal_transfer_speed", mLink.mWormholeEnergy / 20));
+                    IGregTechDeviceInformation.encode(
+                        "GT5U.infodata.wormhole_generator.optimal_transfer_speed",
+                        formatNumber(mLink.mWormholeEnergy / 20)));
             }
         }
 
@@ -1113,22 +1115,22 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 data.add(IGregTechDeviceInformation.encode(
                     "GT5U.infodata.wormhole_generator.transferred",
                     getLocalizedHatchName(i),
-                    inputHatch.getAmperes(),
+                    formatNumber(inputHatch.getAmperes()),
                     VN[inputHatch.mTier],
-                    avgSend,
-                    avgSend / 20 / V[inputHatch.mTier],
-                    avgSend > 0 ? (avgReceiveOpposite / (double)avgSend * 100) : 0,
+                    formatNumber(avgSend),
+                    formatNumber(avgSend / 20 / V[inputHatch.mTier]),
+                    formatNumber(avgSend > 0 ? avgReceiveOpposite / (double) avgSend * 100 : 0),
                     SCAN_AVG_WINDOW
                 ));
             } else if(outputHatch != null) {
                 data.add(IGregTechDeviceInformation.encode(
                     "GT5U.infodata.wormhole_generator.received",
                     getLocalizedHatchName(i),
-                    outputHatch.Amperes,
+                    formatNumber(outputHatch.Amperes),
                     VN[outputHatch.mTier],
-                    avgReceive,
-                    avgReceive / 20 / V[outputHatch.mTier],
-                    avgSendOpposite > 0 ? (avgReceive / (double)avgSendOpposite * 100) : 0,
+                    formatNumber(avgReceive),
+                    formatNumber(avgReceive / 20 / V[outputHatch.mTier]),
+                    formatNumber(avgSendOpposite > 0 ? avgReceive / (double) avgSendOpposite * 100 : 0),
                     SCAN_AVG_WINDOW
                 ));
             } else {

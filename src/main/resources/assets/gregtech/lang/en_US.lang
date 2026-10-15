@@ -8636,10 +8636,10 @@ GT5U.infodata.wormhole_generator.status.active=Wormhole status: §bActive§f
 GT5U.infodata.wormhole_generator.status.decaying=Wormhole status: §6Decaying§f
 GT5U.infodata.wormhole_generator.status.inactive=Wormhole status: §7Inactive§f
 GT5U.infodata.wormhole_generator.status.no_energy=Wormhole status: §7No energy in input hatches§f
-GT5U.infodata.wormhole_generator.diameter=Wormhole diameter: §b%,d§r angstrom
-GT5U.infodata.wormhole_generator.optimal_transfer_speed=Optimal transfer speed: §b%,.0f§r EU/t
-GT5U.infodata.wormhole_generator.transferred=%s hatch (%,dA %s) transferred §b%,d§f EU (equivalent to %,dA) with an efficiency of %.3f%% in the last %d seconds
-GT5U.infodata.wormhole_generator.received=%s hatch (%,dA %s) received §b%,d§f EU (equivalent to %,dA) with an efficiency of %.3f%% in the last %d seconds
+GT5U.infodata.wormhole_generator.diameter=Wormhole diameter: §b%s§r angstrom
+GT5U.infodata.wormhole_generator.optimal_transfer_speed=Optimal transfer speed: §b%s§r EU/t
+GT5U.infodata.wormhole_generator.transferred=%s hatch (%sA %s) transferred §b%s§f EU (equivalent to %sA) with an efficiency of %s%% in the last %d seconds
+GT5U.infodata.wormhole_generator.received=%s hatch (%sA %s) received §b%s§f EU (equivalent to %sA) with an efficiency of %s%% in the last %d seconds
 GT5U.infodata.wormhole_generator.not_present=%s hatch is not present
 
 GT5U.infodata.wormhole_generator.hatch.top=Top
