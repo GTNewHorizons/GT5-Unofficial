@@ -3833,8 +3833,8 @@ GT5U.gui.text.wormhole_generator.status.decaying=§7Статус Червото�
 GT5U.gui.text.wormhole_generator.status.active=§7Статус Червоточины: §bАктивен§f
 GT5U.gui.text.wormhole_generator.status.inactive=§7Статус Червоточины: Неактивен§f
 GT5U.gui.text.wormhole_generator.diameter=§7Диаметр червоточины: §b%,d§7 Å§f
-GT5U.gui.text.wormhole_generator.max_io=§7Макс. ввод/вывод на шлюз: §b%,d§7 EU/t§f
-GT5U.gui.text.wormhole_generator.max_io.large=§7Макс. ввод/вывод на шлюз: §b%3.3e§7 EU/t§f
+GT5U.gui.text.wormhole_generator.max_io=§7Макс. ввод/вывод на шлюз:\n§b%,d§7 EU/t§f
+GT5U.gui.text.wormhole_generator.max_io.large=§7Макс. ввод/вывод на шлюз:\n§b%3.3e§7 EU/t§f
 
 GT5U.gui.text.status.active=Активен
 GT5U.gui.text.status.online=В сети

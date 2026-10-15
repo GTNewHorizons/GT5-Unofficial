@@ -4031,8 +4031,8 @@ GT5U.gui.text.wormhole_generator.status.decaying=§7Wormhole status: §6Decaying
 GT5U.gui.text.wormhole_generator.status.active=§7Wormhole status: §bActive§f
 GT5U.gui.text.wormhole_generator.status.inactive=§7Wormhole status: Inactive§f
 GT5U.gui.text.wormhole_generator.diameter=§7Wormhole diameter: §b%,d§7 Å§f
-GT5U.gui.text.wormhole_generator.max_io=§7Max I/O per hatch: §b%,d§7 EU/t§f
-GT5U.gui.text.wormhole_generator.max_io.large=§7Max I/O per hatch: §b%3.3e§7 EU/t§f
+GT5U.gui.text.wormhole_generator.max_io=§7Max I/O per hatch:\n§b%,d§7 EU/t§f
+GT5U.gui.text.wormhole_generator.max_io.large=§7Max I/O per hatch:\n§b%3.3e§7 EU/t§f
 
 GT5U.gui.text.status.active=Active
 GT5U.gui.text.status.online=Online
