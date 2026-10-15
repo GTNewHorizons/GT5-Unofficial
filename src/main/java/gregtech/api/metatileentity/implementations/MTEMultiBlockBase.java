@@ -157,6 +157,7 @@ import gregtech.common.tileentities.machines.multi.drone.production.ProductionRe
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
@@ -661,9 +662,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 deactivateCoilLease();
             }
 
-            if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
-                coilLease = GTCoilTracker.activate(this, mCoils);
+            if (mMachine && isActive) {
+                tryActivateCoilLease();
             }
+        }
+    }
+
+    // method to hook into for non-coil coilLeases.
+    protected void tryActivateCoilLease() {
+        if (!mCoils.isEmpty() && coilLease == null) {
+            coilLease = GTCoilTracker.activate(this, mCoils);
         }
     }
 
@@ -1110,6 +1118,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         result = postCheckRecipe(result, processingLogic);
         // inputs are consumed at this point
         updateSlots();
+        // a fully consumed controller slot stack must not linger as a 0-size stack, it can be duped from the GUI
+        if (mInventory[1] != null && mInventory[1].stackSize <= 0) mInventory[1] = null;
         if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -1937,6 +1947,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             setHatchRecipeMap(tHatch);
             switch (tHatch) {
+                case MTEHatchSolidifier ignored -> {}
                 case MTEHatchMultiInput multiInputHatch -> {
                     for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
                         if (tFluid != null) {
@@ -2748,12 +2759,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
             }
         }
-        currentTip.add(
-            GTWaila.getMachineProgressString(
-                isActive,
-                tag.getBoolean("isAllowedToWork"),
-                tag.getInteger("maxProgress"),
-                tag.getInteger("progress")));
+        // disables progress time display if recipe text is hidden
+        if (this.showRecipeTextInGUI()) {
+            currentTip.add(
+                GTWaila.getMachineProgressString(
+                    isActive,
+                    tag.getBoolean("isAllowedToWork"),
+                    tag.getInteger("maxProgress"),
+                    tag.getInteger("progress")));
+        }
         // Show ns on the tooltip
         if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");

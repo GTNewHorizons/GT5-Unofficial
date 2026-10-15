@@ -1,22 +1,14 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableMap;
-
 import bartworks.common.loaders.ItemRegistry;
-import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputerPP;
+import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import goodgenerator.loader.Loaders;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -25,17 +17,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.AdvancedFusionOverclockDescriber;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
-
-    private static final int MAX_ENERGY_HATCHES = 32;
+public class MTELargeFusionComputer4 extends MTELargeFusionComputer {
 
     public MTELargeFusionComputer4(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
@@ -46,34 +37,8 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fusion_reactor"))
-            .addMarkdown(
-                new ResourceLocation("gregtech", "large-fusion-computer"),
-                ImmutableMap.<String, Object>builder()
-                    .put("power", formatNumber(getSingleHatchPower()))
-                    .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
-                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
-                    .put("base_para", formatNumber(getMaxPara()))
-                    .put("per_tier_para", formatNumber(getMaxPara()))
-                    .build())
-            .addSupportAny()
-            .beginStructureBlock(47, 7, 47, false)
-            .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_center_4th_layer"))
-            .addCasing("1662-1695", new ItemStack(getCasingBlock(), 1, getCasingMeta()).getDisplayName(), false)
-            .addCasing("560", new ItemStack(getCoilBlock(), 1, getCoilMeta()).getDisplayName(), false)
-            .addCasing("128", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameBox()), false)
-            .addCasing("63-93", new ItemStack(getGlassBlock(), 1, getGlassMeta()).getDisplayName(), false)
-            .addEnergyHatch("1-32", StatCollector.translateToLocalFormatted("gt.mbtt.structure.specific_casings_on_each_curve", GTValues.VN[energyHatchTier()]), 2)
-            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.specific_glass_on_each_side"), 1)
-            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.specific_glass_on_each_side"), 1)
-            .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.supports_crafting_input_buffers"))
-            .toolTipFinisher();
-        // spotless:on
-        return tt;
+    protected OverclockDescriber createOverclockDescriber() {
+        return new AdvancedFusionOverclockDescriber((byte) tier(), capableStartupCanonical());
     }
 
     @Override
@@ -127,11 +92,6 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
     }
 
     @Override
-    public int energyHatchTier() {
-        return 9;
-    }
-
-    @Override
     public Materials getFrameBox() {
         return Materials.InfinityCatalyst;
     }
@@ -148,11 +108,6 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
                 .addIcon(TexturesGtBlock.Casing_Machine_Screen_1)
                 .extFacing()
                 .build());
-    }
-
-    @Override
-    public int getMaxPara() {
-        return 64;
     }
 
     @Override
