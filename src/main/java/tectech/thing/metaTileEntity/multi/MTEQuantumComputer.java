@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -555,7 +556,13 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     private enum RackHatchElement implements IHatchElement<MTEQuantumComputer> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.ComputerRackHatch");
+
+        private final String name;
+
+        RackHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -571,11 +578,27 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         public long count(MTEQuantumComputer t) {
             return t.eRacks.size();
         }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
     private enum WirelessComputationHatchElement implements IHatchElement<MTEQuantumComputer> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.WirelessComputationOutput");
+
+        private final String name;
+
+        WirelessComputationHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -590,6 +613,16 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         @Override
         public long count(MTEQuantumComputer gtMetaTileEntityEmComputer) {
             return gtMetaTileEntityEmComputer.eWirelessComputationOutputs.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

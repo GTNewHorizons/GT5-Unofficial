@@ -26,7 +26,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -228,34 +227,34 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
                         }
                     }
                     int tDistance = distanceCalculation();
-                    if (tTile != null) {
-                        if (tTile instanceof IEnergyConnected) {
-                            long packetSize = V[mTier];
-                            if (tTile instanceof IGregTechTileEntity) {
-                                IMetaTileEntity mte = ((IGregTechTileEntity) tTile).getMetaTileEntity();
-                                if (mte instanceof BaseMetaTileEntity) {
-                                    packetSize = ((BaseMetaTileEntity) mte).getMaxSafeInput();
-                                }
-                            }
-                            long energyUse = 10;
-                            if (mMaxLossDistance != 0) {
-                                energyUse = GTUtility
-                                    .safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
-                            }
-                            energyUse = packetSize + ((V[mTier] * energyUse) / 100);
-                            if (getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) {
-                                if (((IEnergyConnected) tTile).injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1)
-                                    > 0) {
-                                    getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
-                                }
-                            }
-                        }
-                    }
+                    tryTransferEnergy(tDistance);
                 }
                 getBaseMetaTileEntity().setActive(true);
             } else {
                 getBaseMetaTileEntity().setActive(false);
             }
+        }
+    }
+
+    private void tryTransferEnergy(int tDistance) {
+        if (tTile == null) return;
+
+        boolean isCrossDimensional = this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId;
+        if (isCrossDimensional && !isDimensionalTeleportAvailable()) return;
+
+        if (!(tTile instanceof BaseMetaTileEntity targetMTE)) return;
+
+        long packetSize = targetMTE.getMaxSafeInput();
+        long energyUse = 10;
+        if (mMaxLossDistance != 0) {
+            energyUse = GTUtility.safeInt(10L + (tDistance * Math.max(mMaxLoss - 10L, 0) / mMaxLossDistance));
+        }
+        energyUse = packetSize + ((V[mTier] * energyUse) / 100);
+
+        if (!getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) return;
+
+        if (targetMTE.injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1) > 0) {
+            getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
         }
     }
 
