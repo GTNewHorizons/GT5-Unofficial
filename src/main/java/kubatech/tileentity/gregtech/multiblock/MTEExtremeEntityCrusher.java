@@ -695,57 +695,79 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             }
 
             if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
-
             EECPlayer.currentWeapon = tWeaponToUse;
-            this.mOutputItems = recipe.generateOutputs(
-                rand,
-                this,
-                tAttackDamage,
-                Math.min(tLootingLevel, MAX_LOOTING_LEVEL),
-                mIsProducingInfernalDrops,
-                voidAllDamagedAndEnchantedItems);
-            EECPlayer.currentWeapon = null;
 
-            if (batchMode) {
-                List<ItemStack> aggregated = new ArrayList<>();
+            List<ItemStack> aggregated = new ArrayList<>();
+            long totalProgressTime = 0;
+            long maxEUt = recipe.mEUt;
+            final long maxInputEU = getMaxInputEu();
+            int minExtraTiers = Integer.MAX_VALUE;
 
-                for (int i = 0; i < tBatchMultiplier; i++) {
-                    ItemStack[] iteration = recipe.generateOutputs(
-                        rand,
-                        this,
-                        tAttackDamage,
-                        Math.min(tLootingLevel, MAX_LOOTING_LEVEL),
-                        mIsProducingInfernalDrops,
-                        voidAllDamagedAndEnchantedItems);
+            for (int i = 0; i < tBatchMultiplier; i++) {
+                ItemStack[] iteration = recipe.generateOutputs(
+                    rand,
+                    this,
+                    tAttackDamage,
+                    Math.min(tLootingLevel, MAX_LOOTING_LEVEL),
+                    mIsProducingInfernalDrops,
+                    voidAllDamagedAndEnchantedItems);
 
-                    for (ItemStack incoming : iteration) {
-                        if (incoming == null || incoming.stackSize <= 0) continue;
-
-                        boolean merged = false;
-                        for (ItemStack existing : aggregated) {
-                            if (existing.getItem() == incoming.getItem()
-                                && existing.getItemDamage() == incoming.getItemDamage()
-                                && ItemStack.areItemStackTagsEqual(existing, incoming)) {
-                                existing.stackSize += incoming.stackSize;
-                                merged = true;
-                                break;
-                            }
-                        }
-
-                        if (!merged) {
-                            aggregated.add(incoming.copy());
-                        }
-                    }
+                int opDuration = this.mMaxProgresstime;
+                long opEUt = this.lEUt;
+                if (opEUt > maxEUt) {
+                    maxEUt = opEUt;
                 }
 
-                this.mOutputItems = aggregated.toArray(new ItemStack[0]);
-            }
+                int tiers = (int) GTUtility.log4(maxInputEU / opEUt);
+                int durationTiers = 0;
+                if (tiers > 0) {
+                    durationTiers = GTUtility.log4ceil(opDuration / MIN_RECIPE_TIME);
+                    if (durationTiers < 0) durationTiers = 0;
+                    if (durationTiers > tiers) durationTiers = tiers;
+                    opDuration >>= (durationTiers << 1);
+                }
+                if (opDuration < MIN_RECIPE_TIME) opDuration = MIN_RECIPE_TIME;
+                totalProgressTime += opDuration;
 
+                int extraTiers = Math.max(0, tiers - durationTiers);
+                if (extraTiers < minExtraTiers) {
+                    minExtraTiers = extraTiers;
+                }
+
+                for (ItemStack incoming : iteration) {
+                    if (incoming == null || incoming.stackSize <= 0) continue;
+
+                    boolean merged = false;
+                    for (ItemStack existing : aggregated) {
+                        if (existing.getItem() == incoming.getItem()
+                            && existing.getItemDamage() == incoming.getItemDamage()
+                            && ItemStack.areItemStackTagsEqual(existing, incoming)) {
+                            existing.stackSize += incoming.stackSize;
+                            merged = true;
+                            break;
+                        }
+                    }
+
+                    if (!merged) {
+                        aggregated.add(incoming.copy());
+                    }
+                }
+            }
+            EECPlayer.currentWeapon = null;
+
+            this.mOutputItems = aggregated.toArray(new ItemStack[0]);
             this.mOutputFluids = new FluidStack[] {
                 FluidRegistry.getFluidStack("xpjuice", LIQUID_XP_PER_OP * tBatchMultiplier) };
-            this.mMaxProgresstime *= tBatchMultiplier;
 
-            this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
+            int finalTiers = (int) GTUtility.log4(maxInputEU / maxEUt);
+            this.lEUt = finalTiers > 0 ? (maxEUt << (finalTiers << 1)) : maxEUt;
+            this.mMaxProgresstime = (int) totalProgressTime;
+
+            if (minExtraTiers > 0 && minExtraTiers < Integer.MAX_VALUE) {
+                int dMulti = 1 << (minExtraTiers << 1);
+                for (ItemStack mOutputItem : this.mOutputItems) mOutputItem.stackSize *= dMulti;
+                for (FluidStack mOutputFluid : this.mOutputFluids) mOutputFluid.amount *= dMulti;
+            }
         }
         if (this.lEUt > 0) this.lEUt = -this.lEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
