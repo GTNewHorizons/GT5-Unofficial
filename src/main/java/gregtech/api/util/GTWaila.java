@@ -1,11 +1,24 @@
 package gregtech.api.util;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import appeng.util.ReadableNumberConverter;
 import gregtech.common.config.Client;
 import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderBar;
 
 public abstract class GTWaila {
+
+    /**
+     * One line for a stack listed in a WAILA tooltip, e.g. {@code Tin Ingot: §61.5k§r}. Tiles that list their stored or
+     * cached contents all render through this, so their tooltips read the same.
+     */
+    public static String getStackListLine(String name, long amount) {
+        return name + ": "
+            + EnumChatFormatting.GOLD
+            + ReadableNumberConverter.INSTANCE.toWideReadableForm(amount)
+            + EnumChatFormatting.RESET;
+    }
 
     public static String getMachineProgressString(int maxProgressTime, int progressTime) {
         return getMachineProgressString(true, true, maxProgressTime, progressTime);

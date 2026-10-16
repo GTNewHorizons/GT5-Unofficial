@@ -163,6 +163,18 @@ BW.infoData.BioVat.expectedProduction=预期产量: §a%s §r%%
 BW.infoData.BioVat.production=产量
 #This zh_CN.lang is translated by huajijam for bartworks (19/7/19)
 
+# bio name
+bw.bioname.barnadafis_arboriatoris=巴纳德乔木生菌
+bw.bioname.tcetieis_fucus_serratus=鲸鱼座T星E藻
+bw.bioname.corynebacterium_sludge_marsensis=火星泥棒状杆菌
+bw.bioname.xenoxene_xenoxsis=异氙菌
+bw.bioname.ova_evolutionis=演化卵细胞
+bw.bioname.derivantur_cellula_evolutionis=演化衍生细胞
+bw.bioname.cellula_biologicum_evolutione=演化生物细胞
+bw.bioname.binni_growth_medium=培养基宾尼菌
+bw.bioname.binni_bacteria=宾尼菌
+bw.bioname.mutagen_bacteria_a_spatio=太空诱变菌
+
 # Multiblocks
 gt.blockmachines.bw.biovat.name=细菌培养缸
 gt.blockmachines.bw.manualtrafo.name=可调变压器

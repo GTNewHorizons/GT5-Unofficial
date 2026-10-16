@@ -263,7 +263,7 @@ import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchNanochipRedstone;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEAssemblyMatrixModule;
@@ -756,7 +756,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEPartProcessorModule(
                 NANOCHIP_MODULE_PART_PROCESSOR.ID,
                 "multimachine.nanochipmodule.smdprocessor",
-                "Part Preparation Apparatus").getStackForm(1));
+                "Part Processing Apparatus").getStackForm(1));
         addItemTooltip(
             ItemList.NanoChipModule_PartProcessor.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
@@ -1179,7 +1179,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_IV_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_IV.ID)
-                .setName("basicmachine.unboxinator.tier.05", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.05", "Advanced Unpackager IV")
                 .setTier(5)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1191,7 +1191,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_LuV_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_LuV.ID)
-                .setName("basicmachine.unboxinator.tier.06", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.06", "Elite Unpackager")
                 .setTier(6)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1203,7 +1203,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_ZPM_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_ZPM.ID)
-                .setName("basicmachine.unboxinator.tier.07", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.07", "Elite Unpackager II")
                 .setTier(7)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1215,7 +1215,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_UV_Unboxinator.set(
             MTEBasicMachineWithRecipeBuilder.builder(UNPACKAGER_UV.ID)
-                .setName("basicmachine.unboxinator.tier.08", "Unboxinator")
+                .setName("basicmachine.unboxinator.tier.08", "Ultimate Unboxinator")
                 .setTier(8)
                 .setDescription(MachineType.UNPACKAGER.tooltipDescription())
                 .setRecipes(RecipeMaps.unpackagerRecipes)
@@ -1713,7 +1713,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTESteamAlloySmelterSteel(
                 HP_STEAM_ALLOY_SMELTER.ID,
                 "hpmachine.alloysmelter",
-                "High Pressure Alloy Smelter").getStackForm(1L));
+                "High Pressure Steam Alloy Smelter").getStackForm(1L));
     }
 
     private static void registerLocker() {
@@ -1773,14 +1773,17 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_EV_Boxinator.set(
             new MTEBoxinator(PACKAGER_EV.ID, "basicmachine.boxinator.tier.04", "Advanced Packager III", 4)
                 .getStackForm(1L));
-        ItemList.Machine_IV_Boxinator
-            .set(new MTEBoxinator(PACKAGER_IV.ID, "basicmachine.boxinator.tier.05", "Boxinator", 5).getStackForm(1L));
-        ItemList.Machine_LuV_Boxinator
-            .set(new MTEBoxinator(PACKAGER_LuV.ID, "basicmachine.boxinator.tier.06", "Boxinator", 6).getStackForm(1L));
-        ItemList.Machine_ZPM_Boxinator
-            .set(new MTEBoxinator(PACKAGER_ZPM.ID, "basicmachine.boxinator.tier.07", "Boxinator", 7).getStackForm(1L));
-        ItemList.Machine_UV_Boxinator
-            .set(new MTEBoxinator(PACKAGER_UV.ID, "basicmachine.boxinator.tier.08", "Boxinator", 8).getStackForm(1L));
+        ItemList.Machine_IV_Boxinator.set(
+            new MTEBoxinator(PACKAGER_IV.ID, "basicmachine.boxinator.tier.05", "Advanced Packager IV", 5)
+                .getStackForm(1L));
+        ItemList.Machine_LuV_Boxinator.set(
+            new MTEBoxinator(PACKAGER_LuV.ID, "basicmachine.boxinator.tier.06", "Elite Packager", 6).getStackForm(1L));
+        ItemList.Machine_ZPM_Boxinator.set(
+            new MTEBoxinator(PACKAGER_ZPM.ID, "basicmachine.boxinator.tier.07", "Elite Packager II", 7)
+                .getStackForm(1L));
+        ItemList.Machine_UV_Boxinator.set(
+            new MTEBoxinator(PACKAGER_UV.ID, "basicmachine.boxinator.tier.08", "Ultimate Boxinator", 8)
+                .getStackForm(1L));
     }
 
     private static void registerRockBreaker() {
@@ -1995,19 +1998,19 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_LuV.ID,
                 "basicmachine.mobrep.tier.06",
-                "Advanced Monster Repellator V",
+                "Elite Monster Repellator",
                 6).getStackForm(1L));
         ItemList.MobRep_ZPM.set(
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_ZPM.ID,
                 "basicmachine.mobrep.tier.07",
-                "Advanced Monster Repellator VI",
+                "Elite Monster Repellator II",
                 7).getStackForm(1L));
         ItemList.MobRep_UV.set(
             new MTEMonsterRepellent(
                 MONSTER_REPELLATOR_UV.ID,
                 "basicmachine.mobrep.tier.08",
-                "Advanced Monster Repellator VII",
+                "Ultimate Monster Banisher",
                 8).getStackForm(1L));
     }
 
@@ -6647,7 +6650,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_LuV_Printer.set(
             MTEBasicMachineWithRecipeBuilder.builder(PRINTER_LuV.ID)
-                .setName("basicmachine.printer.tier.06", "Advanced Printer V")
+                .setName("basicmachine.printer.tier.06", "Elite Printer")
                 .setTier(6)
                 .setDescription(MachineType.PRINTER.tooltipDescription())
                 .setRecipes(RecipeMaps.printerRecipes)
@@ -6661,7 +6664,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_ZPM_Printer.set(
             MTEBasicMachineWithRecipeBuilder.builder(PRINTER_ZPM.ID)
-                .setName("basicmachine.printer.tier.07", "Advanced Printer VI")
+                .setName("basicmachine.printer.tier.07", "Elite Printer II")
                 .setTier(7)
                 .setDescription(MachineType.PRINTER.tooltipDescription())
                 .setRecipes(RecipeMaps.printerRecipes)
@@ -6675,7 +6678,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_UV_Printer.set(
             MTEBasicMachineWithRecipeBuilder.builder(PRINTER_UV.ID)
-                .setName("basicmachine.printer.tier.08", "Advanced Printer VII")
+                .setName("basicmachine.printer.tier.08", "Ultimate Printing Press")
                 .setTier(8)
                 .setDescription(MachineType.PRINTER.tooltipDescription())
                 .setRecipes(RecipeMaps.printerRecipes)
@@ -8813,7 +8816,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_LuV_CircuitAssembler.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_LuV.ID)
-                .setName("basicmachine.circuitassembler.tier.06", "Advanced Circuit Assembler V")
+                .setName("basicmachine.circuitassembler.tier.06", "Elite Circuit Assembler")
                 .setTier(6)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8826,7 +8829,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_ZPM_CircuitAssembler.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_ZPM.ID)
-                .setName("basicmachine.circuitassembler.tier.07", "Advanced Circuit Assembler VI")
+                .setName("basicmachine.circuitassembler.tier.07", "Elite Circuit Assembler II")
                 .setTier(7)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8839,7 +8842,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_UV_CircuitAssembler.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UV.ID)
-                .setName("basicmachine.circuitassembler.tier.08", "Advanced Circuit Assembler VII")
+                .setName("basicmachine.circuitassembler.tier.08", "Ultimate Circuit Architect")
                 .setTier(8)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8852,7 +8855,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUHV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UHV.ID)
-                .setName("basicmachine.circuitassembler.tier.09", "Ultimate Circuit Assembling Machine")
+                .setName("basicmachine.circuitassembler.tier.09", "Epic Circuit Architect")
                 .setTier(9)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8865,7 +8868,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUEV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UEV.ID)
-                .setName("basicmachine.circuitassembler.tier.10", "Ultimate Circuit Assembling Machine II")
+                .setName("basicmachine.circuitassembler.tier.10", "Epic Circuit Architect II")
                 .setTier(10)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8878,7 +8881,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUIV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UIV.ID)
-                .setName("basicmachine.circuitassembler.tier.11", "Ultimate Circuit Assembling Machine III")
+                .setName("basicmachine.circuitassembler.tier.11", "Epic Circuit Architect III")
                 .setTier(11)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8891,7 +8894,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUMV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UMV.ID)
-                .setName("basicmachine.circuitassembler.tier.12", "Ultimate Circuit Assembling Machine IV")
+                .setName("basicmachine.circuitassembler.tier.12", "Epic Circuit Architect IV")
                 .setTier(12)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8904,7 +8907,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerUXV.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_UXV.ID)
-                .setName("basicmachine.circuitassembler.tier.13", "Ultimate Circuit Assembling Machine V")
+                .setName("basicmachine.circuitassembler.tier.13", "Epic Circuit Architect V")
                 .setTier(13)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -8917,7 +8920,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.CircuitAssemblerMAX.set(
             MTEBasicMachineWithRecipeBuilder.builder(CIRCUIT_ASSEMBLER_MAX.ID)
-                .setName("basicmachine.circuitassembler.tier.14", "MAX Circuit Assembling Machine")
+                .setName("basicmachine.circuitassembler.tier.14", "Legendary Circuit Architect")
                 .setTier(14)
                 .setDescription(MachineType.CIRCUIT_ASSEMBLER.tooltipDescription())
                 .setRecipes(circuitAssemblerRecipes)
@@ -9349,10 +9352,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 9).getStackForm(1L));
         API.setAliases(ItemList.Hatch_VacuumConveyor_Output.get(1L), "gt.alias.vco");
         ItemList.Hatch_Splitter_Level.set(
-            new MTEHatchSplitterRedstone(
+            new MTEHatchNanochipRedstone(
                 HATCH_SPLITTER_LEVEL.ID,
-                "hatch.splitter.redstone",
-                "Splitter Redstone Input",
+                "hatch.nanochip.redstone",
+                "Nanochip Redstone Input Hatch",
                 10).getStackForm(1));
 
         ItemList.VacuumConveyorPipe

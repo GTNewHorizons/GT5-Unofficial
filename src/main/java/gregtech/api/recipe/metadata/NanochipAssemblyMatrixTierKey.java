@@ -1,5 +1,7 @@
 package gregtech.api.recipe.metadata;
 
+import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.enums.VoltageIndex;
@@ -20,6 +22,6 @@ public class NanochipAssemblyMatrixTierKey extends RecipeMetadataKey<Integer> {
         int tier = cast(value, 1);
         byte sanitizedTier = (byte) GTUtility.clamp(tier, 1, VoltageIndex.UXV);
         String tierString = GTUtility.getColoredTierNameFromTier(sanitizedTier);
-        recipeInfo.drawText("Casing Tier: " + tierString);
+        recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.nei.display.casing_tier", tierString));
     }
 }

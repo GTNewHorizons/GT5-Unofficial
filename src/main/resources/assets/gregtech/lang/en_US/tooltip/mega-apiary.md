@@ -1,32 +1,23 @@
 The ideal home for your bees
-Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)
-Use screwdriver + shift to change operation mode (NORMAL/SWARMER)
+{gold:Input Mode}:
+- Does not take power, put queens in the {green:Input Bus} to store them in the internal buffer
 {gray:{hr}}
-{gold:Input Mode:}
-- Does not take power
-- Put your queens in the input bus to put them in the internal buffer
+{gold:Output Mode}:
+- Does not take power, returns bees to the {green:Output Bus}
+- {yellow:Careful, you can easily void your bees}
 {gray:{hr}}
-{gold:Output Mode:}
-- Does not take power
-- Will give your bees back to output bus
+{gold:Operating Mode}:
+- {light_purple:Normal}:
+  - {green:{var:normal_seconds}s} per operation, {green:{var:bee_acceleration}x} bee speed
+  - Uses {green:1} {var:voltageTier_LuV} amp per queen
+  - {green:8} production upgrades and {white:Genetic Stabilizer} applied
+  - Simulates a perfect environment
+  - {gold:Royal Jelly} grants {green:{var:jelly_bonus}%} output per jelly, up to {green:{var:max_jelly_bonus}%} (consumed each operation per bee)
+- {light_purple:Swarmer}:
+  - {green:1} queen only, slowly produces {white:Ignoble Princesses}
+  - {green:{var:swarmer_jelly_cost}} {gold:Royal Jelly} per operation
+  - {green:{var:swarmer_seconds}s} base time, 1 {var:voltageTier_IV} amp
+  - {light_purple:Can overclock}
 {gray:{hr}}
-{gold:Operating Mode:}
-- NORMAL:
-  - Processing time: 5 seconds
-  - Uses 1 {var:voltageTier6} amp per queen
-  - All bees are accelerated 64 times
-  - 8 production upgrades are applied
-  - Genetic Stabilizer upgrade applied
-  - Simulates perfect environment for your bees
-  - Additionally you can provide royal jelly to increase the outputs:
-    - 1 royal jelly grants 5% bonus per bee
-    - They will be consumed on each start of operation
-    - and be applied to that operation only
-    - Max bonus: 200%
-- SWARMER:
-  - You can only insert 1 queen
-  - It will slowly produce ignoble princesses
-  - Consumes 100 royal jelly per operation
-  - Base processing time: 1 minute
-  - Uses 1 amp {var:voltageTier5}
-  - Can overclock
+Right-click the controller with a {white:Screwdriver} to change mode (Input/Output/Operating)
+Shift-right-click the controller with a {white:Screwdriver} to change operation mode (Normal/Swarmer)
