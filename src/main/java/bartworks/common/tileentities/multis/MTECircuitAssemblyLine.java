@@ -67,6 +67,7 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -137,6 +138,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         .addShape(
             STRUCTURE_PIECE_LAST,
             transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "o", "b" }, }))
+        .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 2, 7)
         .addElement(
             'G',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(Energy)
@@ -172,41 +174,32 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Circuit Assembler, CAL")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.circuit_assembly_line"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "circuit-assembly-line"),
                 ImmutableMap.<String, Object>builder()
                     .put("min_length", MINIMUM_CIRCUIT_ASSEMBLER_LENGTH)
                     .build())
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
-            .addController("First slice, 3rd layer")
-            .addEnergyHatch("1", "Any layer 3 casing", 3)
-            .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
-            .addInputBus("1-6", "Bottom center of each slice", 2)
-            .addInputHatch("1", "Any layer 1 side casing", 1)
-            .addOutputBus("1", "Bottom center of last slice", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.first_slice_3rd_layer"))
+            .addEnergyHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_casing", 3), 3)
+            .addMaintenanceHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_side_casing", 1), 1)
+            .addInputBus("1-6", StatCollector.translateToLocal("gt.mbtt.structure.bottom_center_each_slice"), 2)
+            .addInputHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_layer_side_casing", 1), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.bottom_center_last_slice"), 2)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("4", "Grate Machine Casing", false)
-            .addCasing("4", "EV+ Tiered Glass", false)
-            .addCasing("2", "Solid Steel Machine Casing", false)
-            .addCasing("2", "Assembly Line Casing", false)
+            .addCasing("4", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("4", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", "EV"), false)
+            .addCasing("2", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("2", Casings.AssemblyLineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 3: "
-                    + EnumChatFormatting.GRAY
-                    + "Grate Machine Casing, Grate Machine Casing, Grate Machine Casing")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 2: "
-                    + EnumChatFormatting.GRAY
-                    + "EV+ Tiered Glass, Assembly Line Casing, EV+ Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 1: "
-                    + EnumChatFormatting.GRAY
-                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 3) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", Casings.GrateMachineCasing.getLocalizedName(), Casings.GrateMachineCasing.getLocalizedName(), Casings.GrateMachineCasing.getLocalizedName()))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 2) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", "EV"), Casings.AssemblyLineCasing.getLocalizedName(), StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", "EV")))
+            .addStructureInfo(EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer", 1) + " " + EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted("gt.mbtt.structure.layer_contents", Casings.SolidSteelMachineCasing.getLocalizedName(), StatCollector.translateToLocal("GT5U.MBTT.InputBus"), Casings.SolidSteelMachineCasing.getLocalizedName()))
             .addStructureInfo("")
-            .addStructureFooter("Up to 7 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter(StatCollector.translateToLocalFormatted("gt.mbtt.structure.slices_footer", 7))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
@@ -563,7 +556,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 0, 0);
-        int tLength = Math.min(stackSize.stackSize + 1, 7);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 2, 7);
 
         for (int i = 1; i < tLength; ++i) {
             this.buildPiece(STRUCTURE_PIECE_NEXT, stackSize, hintsOnly, -i, 0, 0);
@@ -576,7 +569,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         int built;
         built = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tLength = Math.min(stackSize.stackSize + 1, 7);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 2, 7);
 
         for (int i = 1; i < tLength - 1; ++i) {
             built = survivalBuildPiece(STRUCTURE_PIECE_NEXT_HINT, stackSize, -i, 0, 0, elementBudget, env, false, true);
