@@ -339,6 +339,7 @@ public class Textures {
             MACHINE_DIM_TRANS_CASING = create("MACHINE_DIM_TRANS_CASING"),
             MACHINE_DIM_INJECTOR = create("MACHINE_DIM_INJECTOR"),
             MACHINE_DIM_BRIDGE = create("MACHINE_DIM_BRIDGE"),
+            MACHINE_DIM_BRIDGE_CONVERGENCE = create("MACHINE_DIM_BRIDGE_CONVERGENCE"),
             MACHINE_COIL_SUPERCONDUCTOR = create("MACHINE_COIL_SUPERCONDUCTOR"),
 
             MACHINE_BRONZEBLASTFURNACE = createOptional("MACHINE_BRONZEBLASTFURNACE"),
@@ -501,6 +502,9 @@ public class Textures {
             MACHINE_CASING_NAQUADAH_REINFORCED_DISTILLATION = create("MACHINE_CASING_NAQUADAH_REINFORCED_DISTILLATION"),
             ALGAE_CASING = create("ALGAE_CASING"),
             NAQUADAH_REACTOR_CASING = create("NAQUADAH_REACTOR_CASING"),
+
+            TENSION_RESISTANT_MACHINE_CASING = create("TENSION_RESISTANT_MACHINE_CASING"),
+            EXTRUDER_MACHINE_CASING = create("EXTRUDER_MACHINE_CASING"),
 
             MACHINE_CASING_FRIDGE_TOP = create("MACHINE_CASING_FRIDGE_TOP"),
             MACHINE_CASING_FRIDGE_SIDE = create("MACHINE_CASING_FRIDGE_SIDE"),
@@ -2230,10 +2234,10 @@ public class Textures {
             OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE = createOptional("OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE"),
             OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW = createOptional("OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW"),
             OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE_GLOW"),
-            OVERLAY_FRONT_SMD_PROCESSOR = createOptional("OVERLAY_FRONT_SMD_PROCESSOR"),
-            OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE = createOptional("OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE"),
-            OVERLAY_FRONT_SMD_PROCESSOR_GLOW = createOptional("OVERLAY_FRONT_SMD_PROCESSOR_GLOW"),
-            OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE_GLOW"),
+            OVERLAY_FRONT_PART_PROCESSOR = createOptional("OVERLAY_FRONT_PART_PROCESSOR"),
+            OVERLAY_FRONT_PART_PROCESSOR_ACTIVE = createOptional("OVERLAY_FRONT_PART_PROCESSOR_ACTIVE"),
+            OVERLAY_FRONT_PART_PROCESSOR_GLOW = createOptional("OVERLAY_FRONT_PART_PROCESSOR_GLOW"),
+            OVERLAY_FRONT_PART_PROCESSOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_PART_PROCESSOR_ACTIVE_GLOW"),
             OVERLAY_FRONT_SPLITTER = createOptional("OVERLAY_FRONT_SPLITTER"),
             OVERLAY_FRONT_SPLITTER_ACTIVE = createOptional("OVERLAY_FRONT_SPLITTER_ACTIVE"),
             OVERLAY_FRONT_SPLITTER_GLOW = createOptional("OVERLAY_FRONT_SPLITTER_GLOW"),
@@ -2691,7 +2695,7 @@ public class Textures {
 
         /**
          * Registers a Custom Block {@link IIconContainer}
-         * 
+         *
          * @param domain    The resource domain
          * @param aIconName The colon-free resource path of the icon container
          * @return The {@link IIconContainer} instance
@@ -2859,6 +2863,11 @@ public class Textures {
             HALO = create("HALO"),
             HALO_FUZZY = create("HALO_FUZZY"),
             MASK_VOLTAGE_COIL = create("MASK_VOLTAGE_COIL"),
+            MASK_SUPERMASSIVE = create("MASK_SUPERMASSIVE"),
+            MASK_STRANDS = create("MASK_STRANDS"),
+            MASK_SPOOL = create("MASK_SPOOL"),
+            MASK_HARMONY = create("MASK_HARMONY"),
+            MASK_ENCASEMENT = create("MASK_ENCASEMENT"),
             JACKHAMMER_BASE = create("JACKHAMMER_BASE");
         // spotless:on
 

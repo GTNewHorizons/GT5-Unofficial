@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -74,13 +73,6 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
     public static final Casings bronzeCasing = Casings.BronzePlatedBricks;
     public static final Casings steelCasing = Casings.SolidSteelMachineCasing;
-
-    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High-Pressure Doubles " + EnumChatFormatting.GREEN
-        + "Speed"
-        + EnumChatFormatting.GRAY
-        + " and "
-        + EnumChatFormatting.AQUA
-        + "Steam Usage";
 
     public MTESteamMultiBlockBase(String aName) {
         super(aName);

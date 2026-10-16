@@ -353,7 +353,20 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     @Override
     protected void incrementProgressTime() {
+        contributeToProgress();
+        if (mProgresstime >= mMaxProgresstime) {
+            currentRecipeCurrentAmountA = 0;
+            currentRecipeCurrentAmountB = 0;
+        }
+    }
 
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        absorbInputParticles();
+        super.runMachine(aBaseMetaTileEntity, aTick);
+    }
+
+    private void absorbInputParticles() {
         for (int n = 0; n < this.mInputBeamline.size(); n++) {
             BeamInformation inputParticle = this.getNthInputParticle(n);
             int id = inputParticle.getParticleId();
@@ -363,12 +376,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             bufferMap.put(id, Math.min(newAmount, MAX_BUFFER));
             this.mInputBeamline.get(n)
                 .setContents(null);
-        }
-
-        contributeToProgress();
-        if (mProgresstime >= mMaxProgresstime) {
-            currentRecipeCurrentAmountA = 0;
-            currentRecipeCurrentAmountB = 0;
         }
     }
 
@@ -451,7 +458,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 }
                 return result;
             }
-        }.setEuModifier(0) // Set eu/t to 0 for parallel calculation
+        }.setEuModifier(0.0D) // Set eu/t to 0 for parallel calculation
             .setMaxParallel(MAX_PARALLEL)
             .setUnlimitedTierSkips();
     }

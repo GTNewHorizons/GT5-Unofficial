@@ -405,10 +405,14 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
 
             int i = 0;
             for (DroneConnection connection : connections) {
-                if (connection.getCustomName() != null) {
+                // Send the lang key for unnamed machines so the client localizes it
+                if (connection.hasCustomName()) {
                     tag.setString("name" + i, connection.getCustomName());
-                    i++;
+                } else {
+                    tag.setString("name" + i, connection.getUnlocalizedName());
+                    tag.setBoolean("localize" + i, true);
                 }
+                i++;
             }
         }
     }
@@ -428,7 +432,9 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
             if (tag.hasKey("name0")) {
                 int i = 0;
                 while (tag.hasKey("name" + i)) {
-                    currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name" + i));
+                    String name = tag.getString("name" + i);
+                    if (tag.getBoolean("localize" + i)) name = StatCollector.translateToLocal(name);
+                    currenttip.add(EnumChatFormatting.YELLOW + name);
                     i++;
                 }
             }
