@@ -174,7 +174,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             TexturesGtBlock.oMCATreeFarm,
             TexturesGtBlock.oMCATreeFarmGlow,
             TexturesGtBlock.oMCATreeFarmActive,
-            TexturesGtBlock.oMCATreeFarmActiveGlow);
+            TexturesGtBlock.oMCATreeFarmActive);
     }
 
     @Override
@@ -245,7 +245,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
 
     @Override
     public boolean addInputBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        // Tools from a stocking inout bus can not be damaged, this would cause an infinite durability exploit.
+        // Tools from a stocking inout bus cannot be damaged, this would cause an infinite durability exploit.
         // Therefore disallow ME input bus.
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
