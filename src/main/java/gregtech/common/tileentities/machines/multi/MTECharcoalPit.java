@@ -19,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -232,19 +233,19 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Charcoal Pile Igniter, CPI")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.charcoal_pile_igniter"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "charcoal-pit"),
                 ImmutableMap.<String, Object>builder().build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
-            .addController("Top layer, centered and touching a log")
-            .addCasing("1-605", "Any log", false)
-            .addCasing("4-431", "Dirt or grass covering the logs", false)
-            .addCasing("1-121", "Bricks underneath the logs", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.charcoal_pit_controller"))
+            .addCasing("1-605", StatCollector.translateToLocal("gt.mbtt.structure.any_log"), false)
+            .addCasing("4-431", StatCollector.translateToLocal("gt.mbtt.structure.charcoal_pit_dirt"), false)
+            .addCasing("1-121", StatCollector.translateToLocal("gt.mbtt.structure.charcoal_pit_bricks"), false)
             .addStructureInfo("")
-            .addStructureFooter("Can be anywhere up to 13x13x7 in size (including the dirt) but all logs")
-            .addStructureFooter("must be within 6 x/z of the controller and there cannot be any air gaps.")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.charcoal_pit_footer_1"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.charcoal_pit_footer_2"))
             .toolTipFinisher();
         // spotless:on
         return tt;

@@ -4,7 +4,7 @@ Generates energy by reacting {aqua:Semi-Stable Antimatter} with {gold:Matter}
 Annihilation uses an equal amount of {aqua:Antimatter} and {gold:Matter}
 Consumes {gold:all inputs} every processing cycle
 {red:Voids any invalid fluid!}
-A cycle lasts 5 seconds
+A cycle lasts 1 tick; {gold: inputs} are automatically checked every 5 seconds
 An imbalance between {aqua:Antimatter} and {gold:Matter}{red: decreases efficiency!}
 Efficiency formula: Min({aqua:Antimatter}/{gold:Matter}, {gold:Matter}/{aqua:Antimatter})
 Any excess EU generated will be {red:voided!}

@@ -34,6 +34,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -48,6 +49,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
@@ -177,18 +179,18 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
     public String getCasingString() {
         return switch (getCasingMeta()) {
-            case 0 -> "Air Filter Turbine Casing";
-            case 3 -> "Advanced Air Filter Turbine Casing";
-            case 5 -> "Super Air Filter Turbine Casing";
+            case 0 -> Casings.AirFilterTurbineCasing.getLocalizedName();
+            case 3 -> Casings.AdvancedAirFilterTurbineCasing.getLocalizedName();
+            case 5 -> Casings.SuperAirFilterTurbineCasing.getLocalizedName();
             default -> "fill a ticket on github if you read this";
         };
     }
 
     public String getPipeString() {
         return switch (getPipeMeta()) {
-            case 1 -> "Air Filter Vent Casing";
-            case 4 -> "Advanced Air Filter Vent Casing";
-            case 6 -> "Super Air Filter Vent Casing";
+            case 1 -> Casings.AirFilterVentCasing.getLocalizedName();
+            case 4 -> Casings.AdvancedAirFilterVentCasing.getLocalizedName();
+            case 6 -> Casings.SuperAirFilterVentCasing.getLocalizedName();
             default -> "fill a ticket on github if you read this";
         };
     }
@@ -197,7 +199,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Air Filter, EAF")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.air_filter"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "air-filter"),
                 ImmutableMap.<String, Object>builder()
@@ -211,15 +213,15 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                     .put("maint_penalty", formatNumber(MAINTENANCE_PENALTY_PERCENT))
                     .build())
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Front bottom center")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("9-22", getCasingString(), false)
             .addCasing("8", getPipeString(), false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addMufflerHatch("1-8", "Any center side casing", 2)
-            .addInputBus("0+", "Any bottom casing", 1)
-            .addOutputBus("0+", "Any bottom casing", 1)
-            .addAir("Interior of the structure")
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMufflerHatch("1-8", StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 2)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         // spotless:on
         return tt;
