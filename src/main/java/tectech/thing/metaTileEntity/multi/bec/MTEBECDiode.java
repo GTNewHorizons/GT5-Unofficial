@@ -124,6 +124,17 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
     }
 
     @Override
+    public boolean hasRunningText() {
+        return false;
+    }
+
+    // recipe doesn't actually do anything player-facing.
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
     public void clearHatches() {
         super.clearHatches();
 
@@ -196,6 +207,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECDiode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_diode"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-diode"))
             .addSupportAny();
@@ -212,14 +224,10 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
             .addCasing("24", CondensateGuidanceCoil.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
             .addInputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
-            .addMiscHatch(
-                "2",
-                "Bose-Einstein Condensate Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-diode.bec-hatch-pos"),
-                2,
-                3)
+            .addMiscHatch("2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-diode.bec-hatch-pos"), 2, 3)
             .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
+        // spotless:on
     }
 
     @Override
