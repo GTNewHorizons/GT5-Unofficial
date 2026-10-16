@@ -138,7 +138,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         .addShape(
             STRUCTURE_PIECE_LAST,
             transpose(new String[][] { { "G", "G", "G" }, { "g", "l", "g" }, { "b", "o", "b" }, }))
-        .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 1, 6)
+        .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 2, 7)
         .addElement(
             'G',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(Energy)
@@ -556,7 +556,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 0, 0);
-        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 2, 7);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 2, 7);
 
         for (int i = 1; i < tLength; ++i) {
             this.buildPiece(STRUCTURE_PIECE_NEXT, stackSize, hintsOnly, -i, 0, 0);
@@ -569,7 +569,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         int built;
         built = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 2, 7);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 2, 7);
 
         for (int i = 1; i < tLength - 1; ++i) {
             built = survivalBuildPiece(STRUCTURE_PIECE_NEXT_HINT, stackSize, -i, 0, 0, elementBudget, env, false, true);

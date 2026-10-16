@@ -80,7 +80,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
             .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
             .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "LLL", "LcL", "LLL" }, }))
-            .addChannel(GTStructureChannels.STRUCTURE_HEIGHT.get(), 1, 10)
+            .addChannel(GTStructureChannels.STRUCTURE_HEIGHT.get(), 3, 12)
             .addElement(
                 'b',
                 ofChain(
@@ -324,7 +324,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, 1, 0, 0);
         // min 2 output layer, so at least 1 + 2 height
-        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
+        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             buildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, hintsOnly, 1, i, 0);
         }
@@ -338,7 +338,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         // min 2 output layer, so at least 1 + 2 height
-        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 3, 12);
+        int tTotalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 3, 12);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivalBuildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, env, false, true);

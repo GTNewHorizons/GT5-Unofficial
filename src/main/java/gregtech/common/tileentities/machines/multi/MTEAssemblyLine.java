@@ -89,7 +89,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         .addShape(
             STRUCTURE_PIECE_LAST,
             transpose(new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" }, { "o", "i", "b" }, }))
-        .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 1, 12)
+        .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 5, 16)
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 10)) // grate machine casing
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 9)) // assembler machine casing
         .addElement('m', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casing
@@ -465,7 +465,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 1, 0);
-        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 5, 16);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 5, 16);
         for (int i = 1; i < tLength; i++) {
             buildPiece(STRUCTURE_PIECE_LATER, stackSize, hintsOnly, -i, 1, 0);
         }
@@ -476,7 +476,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         if (mMachine) return -1;
         int build = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 5, 16);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 5, 16);
         for (int i = 1; i < tLength; i++) {
             build = survivalBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
             if (build >= 0) return build;

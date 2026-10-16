@@ -80,6 +80,8 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     /** Status of the batch setting */
     public static final IStatusFunction<MTENeutronActivator> BATCH_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
+    protected static final int WORLD_COORDINATE_LIMIT = 30_000_000;
+    protected static final int MINIMUM_STRUCTURE_HEIGHT = 4;
     protected static IStructureDefinition<MTENeutronActivator> multiDefinition = null;
     protected final ArrayList<MTENeutronAccelerator> mNeutronAccelerator = new ArrayList<>();
     protected final ArrayList<MTENeutronSensor> mNeutronSensor = new ArrayList<>();
@@ -106,6 +108,11 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     protected final String NA_BOTTOM = mName + "buttom";
     protected final String NA_MID = mName + "mid";
     protected final String NA_TOP = mName + "top";
+
+    private int getMaximumStructureHeight() {
+        long maximumHeight = (long) WORLD_COORDINATE_LIMIT - getBaseMetaTileEntity().getYCoord() - 1L;
+        return (int) Math.max(MINIMUM_STRUCTURE_HEIGHT, Math.min(Integer.MAX_VALUE, maximumHeight));
+    }
 
     public MTENeutronActivator(String name) {
         super(name);
@@ -411,7 +418,8 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(NA_BOTTOM, stackSize, hintsOnly, 2, 0, 0);
-        int heights = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 4, Integer.MAX_VALUE);
+        int heights = GTStructureChannels.STRUCTURE_HEIGHT
+            .getValueLimited(stackSize, MINIMUM_STRUCTURE_HEIGHT, getMaximumStructureHeight());
         buildPiece(NA_TOP, stackSize, hintsOnly, 2, heights + 1, 0);
         while (heights > 0) {
             buildPiece(NA_MID, stackSize, hintsOnly, 2, heights, 0);
@@ -468,7 +476,8 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
 
         int built = survivalBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int heights = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 4, Integer.MAX_VALUE);
+        int heights = GTStructureChannels.STRUCTURE_HEIGHT
+            .getValueLimited(stackSize, MINIMUM_STRUCTURE_HEIGHT, getMaximumStructureHeight());
         for (int i = 1; i <= heights; i++) {
             built = survivalBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
