@@ -1250,6 +1250,15 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             Comparator.<ItemStack, Boolean>comparing(stack -> !(stack.getItem() instanceof ItemIntegratedCircuit))
                 .thenComparingInt(ItemStack::getItemDamage));
 
+        if (isElectric() && !isSteampowered()) {
+            currenttip.add(
+                TTRenderBar.create(
+                    euText,
+                    ColorUtils.euBarTop.getColor(),
+                    ColorUtils.euBarBottom.getColor(),
+                    (double) eu / maxEu));
+        }
+
         if (tag.getBoolean("stutteringSingleBlock")) {
             currenttip.add(translateToLocal(getWailaStutteringLine(tag)));
         } else {
@@ -1262,17 +1271,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         tag.getInteger("progressSingleBlock")));
             }
 
-            if (!isSteampowered()) {
-                currenttip.add(
-                    TTRenderBar.create(
-                        euText,
-                        ColorUtils.euBarTop.getColor(),
-                        ColorUtils.euBarBottom.getColor(),
-                        (double) eu / maxEu));
-            }
-
             if (isActive) {
-                if (!isSteampowered()) {
+                if (isElectric() && !isSteampowered()) {
                     if (euT > 0) {
                         double exactAmps = GTUtility.getExactAmperageForTier(euT, (byte) getInputTier());
 

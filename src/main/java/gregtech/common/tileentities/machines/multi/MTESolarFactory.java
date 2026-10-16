@@ -401,9 +401,9 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("The structure has 3 tiers, each allowing greater production than the last")
             .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2" + WHITE + BOLD + " and above:")
             .addInfo(GREEN + "  Supports Multi-Amp energy hatches")
-            .addInfo("  25% more outputs for every Wafer tier used above the minimum required")
+            .addInfo("  25% more outputs for every Wafer Tier used above the minimum required")
             .addInfo("  The bonus to output occurs after parallels, and cannot be greater than 100%")
-            .addInfo("  The recipes shown in NEI display the minimum wafer tier required")
+            .addInfo("  The recipes shown in NEI display the minimum Wafer Tier required")
             .addInfo("  LV-LuV Solar Panels can be made without the previous panel, but at a higher cost")
             .addInfo(
                 "  " + EnumChatFormatting.WHITE
@@ -412,14 +412,14 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     + " Tier determines "
                     + TooltipHelper.parallelText("Parallels"))
             .addInfo(
-                "  " + tieredTextLine("Mk-I", "MK-II", "MK-III", "MK-IV")
+                "  " + tieredTextLine("Mk-I", "Mk-II", "Mk-III", "Mk-IV")
                     + "->"
                     + tieredTextLine("8", "16", "32", "64")
                     + " Parallels")
             .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3" + WHITE + BOLD + ":")
             .addInfo(GREEN + "  Supports Laser energy hatches")
             .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
-            .addInfo("  Bonus per increased wafer tier is raised to 50%")
+            .addInfo("  Bonus per increased Wafer Tier is raised to 50%")
             .beginStructureBlock(9, 10, 8, false)
             .addController("Front bottom center")
             .addEnergyHatch("1+", "Any machine casing", 1)
