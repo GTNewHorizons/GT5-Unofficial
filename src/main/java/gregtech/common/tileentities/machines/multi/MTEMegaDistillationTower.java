@@ -61,6 +61,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -587,11 +588,10 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                     .build())
             .addSeparator()
             .addInfo(EnumChatFormatting.GOLD + "Distillery Mode")
-            .addMarkdown(
-                new ResourceLocation("gregtech", "mega-distillation-tower-mode-distillery"),
-                ImmutableMap.<String, Object>builder()
-                    .put("mega_max", Configuration.Multiblocks.megaMachinesMax)
-                    .build())
+            .addMarkdown(new ResourceLocation("gregtech", "mega-distillation-tower-mode-distillery"))
+            .addInfo(
+                TooltipHelper.parallelText(Configuration.Multiblocks.megaMachinesMax + " * (1 + Tower Height / 2)")
+                    + " Parallels")
             .addStaticSpeedInfo((float) DISTILLERY_SPEED)
             .addStaticEuEffInfo((float) DISTILLERY_EU_EFFICIENCY)
             .addSeparator()
