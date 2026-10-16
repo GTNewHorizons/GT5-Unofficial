@@ -84,7 +84,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     private int glassTier = -1;
     protected int width;
     private int casingAmount;
-    private float speedup = 1;
+    private double speedup = 1;
     private int runningTickCounter = 0;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -181,9 +181,9 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
-            .addGlassEnergyLimitInfo()
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginVariableStructureBlock(5, 5, 5, 5, 9, 33, true)
+            .addEnergyHatchGlassTier()
             .addController("Front bottom center")
             .addCasingInfoRange("Solidifier Casing", 91, 211, false)
             .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
@@ -300,12 +300,12 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
                 return false;
             }
         }.setMaxParallelSupplier(this::getTrueParallel)
-            .setEuModifier(0.8F)
+            .setEuModifier(0.8D)
             .setSpeedBonusSupplier(this::getSpeedBonus);
     }
 
     public double getSpeedBonus() {
-        return (1F / speedup);
+        return (1.0D / speedup);
     }
 
     @Override
@@ -313,7 +313,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
         runningTickCounter++;
         if (runningTickCounter % 10 == 0 && speedup < 3) {
             runningTickCounter = 0;
-            speedup += 0.025F;
+            speedup += 0.025D;
         }
         return super.onRunningTick(aStack);
     }
@@ -324,7 +324,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (mMaxProgresstime == 0 && speedup > 1) {
             if (aTick % 5 == 0) {
-                speedup = (float) Math.max(1, speedup - DECAY_RATE);
+                speedup = Math.max(1, speedup - DECAY_RATE);
             }
         }
     }
@@ -347,19 +347,19 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("speedup")) speedup = aNBT.getFloat("speedup");
+        if (aNBT.hasKey("speedup")) speedup = aNBT.getDouble("speedup");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setFloat("speedup", speedup);
+        aNBT.setDouble("speedup", speedup);
     }
 
     @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        tag.setFloat("speedup", speedup);
+        tag.setFloat("speedup", (float) speedup);
     }
 
     @Override

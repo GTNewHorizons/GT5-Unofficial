@@ -7,11 +7,12 @@ import net.minecraft.block.Block;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEFusionComputer3 extends MTEFusionComputer {
 
     private static final ITexture textureOverlay = TextureFactory.of(
@@ -36,11 +37,6 @@ public class MTEFusionComputer3 extends MTEFusionComputer {
     @Override
     public int tier() {
         return 8;
-    }
-
-    @Override
-    public long maxEUStore() {
-        return 640010000L * (Math.min(16, this.mEnergyHatches.size())) / 16L;
     }
 
     @Override
@@ -71,25 +67,6 @@ public class MTEFusionComputer3 extends MTEFusionComputer {
     @Override
     public int getFusionCoilMeta() {
         return 7;
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("A SUN DOWN ON EARTH")
-            .addInfo("§b32,768§7 EU/t and §b40M§7 EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .beginStructureBlock(15, 3, 15, false)
-            .addController("Middle center, 2nd layer")
-            .addCasing("79-123", "Fusion Machine Casing Mk-II", false)
-            .addCasing("32", "Fusion Coil Block", false)
-            .addEnergyHatch("1-16", "Specific middle casings on each curve (UV+)", 2)
-            .addInputHatch("1+", "Specific top or bottom casings on each side", 1)
-            .addOutputHatch("1+", "Specific middle casings on each side", 3)
-            .toolTipFinisher();
-        return tt;
     }
 
     @Override

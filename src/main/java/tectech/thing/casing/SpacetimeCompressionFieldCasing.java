@@ -1,8 +1,5 @@
 package tectech.thing.casing;
 
-import static net.minecraft.util.EnumChatFormatting.RESET;
-import static net.minecraft.util.EnumChatFormatting.WHITE;
-
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,18 +7,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.CustomItemList;
-import tectech.util.CommonValues;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class SpacetimeCompressionFieldCasing extends BlockCasingsAbstract {
@@ -46,9 +38,6 @@ public class SpacetimeCompressionFieldCasing extends BlockCasingsAbstract {
         }
 
         for (int i = 0; i < MAX_BLOCK_TIER; i++) {
-            GTLanguageManager.addStringLocalization(
-                getUnlocalizedName() + "." + i + ".name",
-                WHITE + CommonValues.EOH_TIER_FANCY_NAMES[i] + RESET + " Spacetime Compression Field Generator");
             GTStructureChannels.EOH_COMPRESSION.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
         }
 
@@ -100,13 +89,6 @@ public class SpacetimeCompressionFieldCasing extends BlockCasingsAbstract {
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int ordinalSide) {
-        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        return getIcon(ordinalSide, tMeta);
     }
 
     @Override

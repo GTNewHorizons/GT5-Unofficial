@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -14,15 +15,18 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.IFluidBlock;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -38,6 +42,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     private int mLastXOff = 0, mLastZOff = 0;
     private int clientYHead;
     private boolean mLiquidEnabled = true;
+    private static final int CONCRETE_PER_BLOCK = 144;
 
     public boolean isLiquidEnabled() {
         return mLiquidEnabled;
@@ -95,25 +100,30 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        tt.addMachineType("Concrete Backfiller")
-            .addInfo("Will fill in areas below it with light concrete. This goes through walls")
-            .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
-            .addInfo("Will pull back the pipes after it finishes that layer")
-            .addInfo("Range is " + getRadius() + "x" + getRadius() + " blocks horizontally")
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-            .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.concrete_backfiller"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "concrete-backfiller"),
+                ImmutableMap.<String, Object>builder()
+                    .put("radius", getRadius())
+                    .put("min_tier", GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+                    .put("concrete_per_block", formatNumber(CONCRETE_PER_BLOCK))
+                    .put(
+                        "cycle_time",
+                        baseCycleTime < 20 ? formatNumber(baseCycleTime) + " " + StatCollector.translateToLocal("gt.time.tick.plural")
+                            : StatCollector.translateToLocalFormatted("GT5U.gui.text.second.plural", formatNumber(baseCycleTime / 20.0)))
+                    .build())
             .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom center")
-            .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
             .addCasing("3-8", casings, false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0+", "Any bottom casing", 1)
-            .addInputHatch("1+", "Any bottom casing", 1)
-            .addOutputBus("0+", "Any bottom casing", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_bottom_casing_min_tier", VN[getMinTier()]), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -175,7 +185,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
         } else {
             workState = WorkState.DOWNWARD;
             stopMachine(ShutDownReasonRegistry.NONE);
-            setShutdownReason(StatCollector.translateToLocal("GT5U.gui.text.backfiller_finished"));
+            setShutdownReason("GT5U.gui.text.backfiller_finished");
             return false;
         }
     }

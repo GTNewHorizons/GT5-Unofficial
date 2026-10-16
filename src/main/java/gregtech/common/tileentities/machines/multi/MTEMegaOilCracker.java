@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
+import static gregtech.api.util.GTUtility.powInt;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.text.DecimalFormat;
@@ -213,10 +214,10 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
             .addSeparator()
             .addSupportAny()
-            .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(13, 8, 9, true)
+            .addEnergyHatchGlassTier()
+            .addMinGlassForLaser(VoltageIndex.UV)
             .addController("Front bottom center")
             .addCasing("162", "Any Tiered Glass", true)
             .addCasing("145-151", "Naquadah Reinforced Distillation Casing", false)
@@ -465,8 +466,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     }
 
     public double getEuModifier() {
-
-        return GTUtility.powInt(0.9, this.heatLevel.getTier() + 1);
+        return powInt(0.9D, this.heatLevel.getTier() + 1);
     }
 
     @Override
