@@ -11,10 +11,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import gregtech.api.enums.OrePrefixes;
 
-import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
