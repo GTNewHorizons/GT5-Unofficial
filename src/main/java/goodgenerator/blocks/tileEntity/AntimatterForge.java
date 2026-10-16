@@ -428,7 +428,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (antimatterAmount == 0) {
             rollingCost *= decay;
             if (rollingCost < 100) rollingCost = 0;
-        } else if (rollingCost < antimatterAmount * growth) {
+        } else if (rollingCost <= antimatterAmount * growth) {
             rollingCost = antimatterAmount * growth;
         } else {
             rollingCost *= decay;
