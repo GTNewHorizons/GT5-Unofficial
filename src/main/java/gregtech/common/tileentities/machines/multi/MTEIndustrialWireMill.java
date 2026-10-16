@@ -54,6 +54,7 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
     private static final int PARALLEL_PER_TIER = 4;
     private static final double SPEED_INCREASE_TIER = 0.5D;
     private static final double EU_EFFICIENCY = 0.75D;
+    private static final double BASE_SPEED = 1.0D;
 
     public MTEIndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -166,7 +167,7 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     public double getSpeedBonus() {
-        return 1.0D / (SPEED_INCREASE_TIER * itemPipeTier);
+        return 1.0D / (BASE_SPEED + SPEED_INCREASE_TIER * itemPipeTier);
     }
 
     private int mCasingAmount;
