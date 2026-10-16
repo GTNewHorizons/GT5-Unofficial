@@ -185,7 +185,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
         EnumChatFormatting colour = EnumChatFormatting.RED;
 
-        if (dCachedOutputBeamEnergy > dPlayerTargetBeamEnergy) {
+        if (dCachedOutputBeamEnergy >= dPlayerTargetBeamEnergy) {
             colour = EnumChatFormatting.GREEN;
         }
 

@@ -47,7 +47,6 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
 
     private MTEHatchInput coolantInputHatch;
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int SUPERCOND_SPLITTER_OFFSET_X = 3;
     protected static final int SUPERCOND_SPLITTER_OFFSET_Y = 7;
     protected static final int SUPERCOND_SPLITTER_OFFSET_Z = 0;

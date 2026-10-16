@@ -398,7 +398,8 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
 
     private enum EHEHatches implements IHatchElement<MTEExtremeHeatExchanger> {
 
-        HotInputHatch(MTEExtremeHeatExchanger::addHotFluidInputToMachineList, MTEHatchInput.class) {
+        HotInputHatch("GT5U.MBTT.InputHatch", MTEExtremeHeatExchanger::addHotFluidInputToMachineList,
+            MTEHatchInput.class) {
 
             @Override
             public long count(MTEExtremeHeatExchanger t) {
@@ -406,7 +407,8 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 return 1;
             }
         },
-        ColdOutputHatch(MTEExtremeHeatExchanger::addColdFluidOutputToMachineList, MTEHatchOutput.class) {
+        ColdOutputHatch("GT5U.MBTT.OutputHatch", MTEExtremeHeatExchanger::addColdFluidOutputToMachineList,
+            MTEHatchOutput.class) {
 
             @Override
             public long count(MTEExtremeHeatExchanger t) {
@@ -415,10 +417,13 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEExtremeHeatExchanger> adder;
 
-        EHEHatches(IGTHatchAdder<MTEExtremeHeatExchanger> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        EHEHatches(String name, IGTHatchAdder<MTEExtremeHeatExchanger> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -431,6 +436,16 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         @Override
         public IGTHatchAdder<? super MTEExtremeHeatExchanger> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

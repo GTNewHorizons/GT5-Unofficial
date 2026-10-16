@@ -34,7 +34,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
 public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBase<MTEBiologicalCoordinationModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int BIO_OFFSET_X = 3;
     protected static final int BIO_OFFSET_Y = 5;
     protected static final int BIO_OFFSET_Z = 0;

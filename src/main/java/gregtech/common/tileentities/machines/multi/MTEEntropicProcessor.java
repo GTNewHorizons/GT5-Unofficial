@@ -202,7 +202,7 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             .addInfo("Mixes fluids or solids with a magical catalyst")
             .addInfo("Catalyst is consumed by the recipe, then returned upon completion")
             .addSeparator()
-            .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC)")
+            .addInfo("Performs one perfect overclock per Casing Tier (Thaumium = 1 perfect OC)")
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front center")
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CASING)
@@ -276,7 +276,8 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMachineHeat((getCasingTier() + 1) * 1800)
+                return super.createOverclockCalculator(recipe)
+                    .setMachineHeat((getCasingTier() + 1) * OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
                     .setRecipeHeat(0)
                     .setHeatOC(true)
                     .setHeatDiscount(false);

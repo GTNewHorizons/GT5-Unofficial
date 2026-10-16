@@ -6,6 +6,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEConcreteBackfiller1 extends MTEConcreteBackfillerBase {
 
     public MTEConcreteBackfiller1(int aID, String aName, String aNameRegional) {

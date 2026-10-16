@@ -147,6 +147,7 @@ tile.blockCompressedObsidian.13.name=Трижды сжатый адский ка
 tile.blockNet.name=Сеть
 gtplusplus.blockcasings.2.name=Обшивка механизма
 gtplusplus.blockcasings.3.name=Обшивка механизма
+gtplusplus.blockcasings.3.10.name=Улучшенный криогенный корпус
 gtplusplus.blockcasings.4.name=Обшивка механизма
 gtplusplus.blockcasings.5.name=Обшивка механизма
 gtplusplus.blockcasings.6.name=Обшивка механизма
@@ -156,6 +157,7 @@ gtplusplus.blockspecialcasings.2.name=Обшивка механизма
 gtplusplus.blockspecialcasings.3.name=Обшивка механизма
 gtplusplus.blocktieredcasings.1.name=Обшивка механизма
 miscutils.blockcasings.name=Обшивка механизма
+miscutils.blockcasings.7.name=Корпус промышленного дробителя
 MU-metatool.01.name=Ручной насос
 
 # Fuel Blocks

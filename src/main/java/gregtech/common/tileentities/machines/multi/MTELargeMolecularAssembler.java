@@ -29,7 +29,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -38,6 +38,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -98,9 +99,12 @@ import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gregtech.crossmod.ae2.InputBusInventoryProxy;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler> implements
     ICraftingProvider, IActionHost, IGridProxyable, IInterfaceViewable, ISurvivalConstructable, ICasingTextureProvider {
 
+    private static final int JOBS_BASE = 2;
+    private static final int DURATION_BASE_SECONDS = 1;
     private static final String DATA_ORB_JOBS_KEY = "MX-CraftingJobs";
     private static final String DATA_ORB_JOBS_JOB_KEY = "Job";
     private static final String MACHINE_TYPE = "Molecular Assembler, LMA";
@@ -300,43 +304,19 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(MACHINE_TYPE)
-            .addInfo("Needs a Data Orb to be placed in the controller")
-            .addInfo(
-                "Uses " + EnumChatFormatting.YELLOW
-                    + "Crafting Pattern Providers"
-                    + EnumChatFormatting.RESET
-                    + " to store patterns")
-            .addInfo(
-                "Basic: " + EnumChatFormatting.GREEN
-                    + EU_PER_TICK_BASIC
-                    + EnumChatFormatting.GRAY
-                    + " EU/t, unaffected by overclocking")
-            .addInfo(
-                "Crafting: " + EnumChatFormatting.GREEN
-                    + EU_PER_TICK_CRAFTING
-                    + EnumChatFormatting.GRAY
-                    + " EU/t, Finish "
-                    + EnumChatFormatting.WHITE
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " Jobs in "
-                    + EnumChatFormatting.WHITE
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "s")
-            .addInfo("The first two Overclocks:")
-            .addInfo(
-                "-Reduce the Finish time to " + EnumChatFormatting.WHITE
-                    + "0.5"
-                    + EnumChatFormatting.GRAY
-                    + "s and "
-                    + EnumChatFormatting.WHITE
-                    + "0.25"
-                    + EnumChatFormatting.GRAY
-                    + "s")
-            .addInfo("Subsequent Overclocks:")
-            .addInfo("-Double the number of Jobs finished at once")
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(MACHINE_TYPE)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "large-molecular-assembler"),
+                ImmutableMap.<String, Object>builder()
+                    .put("basic_eut", EU_PER_TICK_BASIC)
+                    .put("crafting_eut", EU_PER_TICK_CRAFTING)
+                    .put("jobs_base", JOBS_BASE)
+                    .put("duration_base", DURATION_BASE_SECONDS)
+                    .put("duration_oc1", DURATION_BASE_SECONDS / 2.0)
+                    .put("duration_oc2", DURATION_BASE_SECONDS / 4.0)
+                    .build())
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front bottom center")
             .addCasing("54", "Vibrant Quartz Glass", false)
@@ -348,6 +328,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("")
             .addStructureFooter("Place a data orb inside the controller and connect it to an AE2 network")
             .toolTipFinisher();
+        // spotless:on
+        return tt;
     }
 
     @Override
