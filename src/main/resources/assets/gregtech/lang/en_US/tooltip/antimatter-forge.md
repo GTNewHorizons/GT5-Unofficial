@@ -2,7 +2,7 @@
 Converts protomatter into antimatter
 Use screwdriver to disable rendering
 Passively consumes {var:base_consumption} + ({dark_aqua:Antimatter} * 1000)^(1.5 - {green:{bold:{underline:M}}}) EU/t
-The consumption decays by 0.5% every tick when empty
+The consumption decays by 1% every tick when empty
 Actively uses ({dark_aqua:Antimatter} * {var:active_base_mult})^(1.5 - {dark_purple:{bold:{underline:G}}}) EU per cycle to produce antimatter
 {gray:{hr}}
 Cycles every second
