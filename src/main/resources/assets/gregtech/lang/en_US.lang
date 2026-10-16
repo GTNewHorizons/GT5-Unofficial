@@ -2356,22 +2356,6 @@ gt.multiblock.AdvHeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SH Threshold 
 gt.multiblock.AdvHeatExchanger.throttle1=A circuit in the controller lowers the SH threshold at the cost of steam
 gt.multiblock.AdvHeatExchanger.throttle2=§d-3.75%§7 SH Threshold and §r-1.5%§7 steam output per circuit over 1
 
-
-gt.multiblock.NeutralizationEngine.efficiency=Can §fuse §7a §bbase §7to boost §defficiency §7(consumes one by one):
-gt.multiblock.NeutralizationEngine.alkali_text=§b%s§7 : §d%d%%§7 : §f%d§7/§fminute
-gt.multiblock.NeutralizationEngine.toxic_residue.1=Produces §cToxic Residue §7from burning acids
-gt.multiblock.NeutralizationEngine.toxic_residue.2=If the §cToxic Residue §7exceeds the §3Capacity§7, the multiblock will §4EXPLODE!
-gt.multiblock.NeutralizationEngine.toxic_residue.3=Every §ftick§7, §cToxic Residue §7will §fincrease §7by §6Residue Rate§7*§eFuel Consumption(L)§7*rand(§f%.1f§7,§f%.1f§7)
-gt.multiblock.NeutralizationEngine.toxic_residue.4=§6Residue Rate §7is calculated as §f0.05§7*§dBase Fuel Value (EU/L)§7^§f0.8
-gt.multiblock.NeutralizationEngine.toxic_residue.5=Every §ftick§7, §cToxic Residue §7will §fdecrease §7by §9Base Decay§7*§eDecay Boost§7*(§cToxic Residue§7^§f0.08§7)
-gt.multiblock.NeutralizationEngine.toxic_residue.6=Residue will decay §f10 §7times slower when multiblock is disabled
-gt.multiblock.NeutralizationEngine.decay_boost.1=Insert §dRobot Arms §7to increase §eDecay Boost§7:
-gt.multiblock.NeutralizationEngine.decay_boost.2=§eDecay Boost §7is calculated as §f1.2§7^§dRobot Arm Tier §7if §aIV §7or below, §f1.4§7^§dRobot Arm Tier §7if §dLuV §7or above
-gt.multiblock.NeutralizationEngine.decay_boost.3=Insert §dmultiple §7(§f16 §7max) robot arms to multiply §eDecay Boost §7by sqrt(§dRobot Arm Amount§7)
-gt.multiblock.NeutralizationEngine.decay_boost.4=Every §fminute§7, §dRobot Arm Amount§7/(§f45§7*(§f1§7+§dRobot Arm Tier§7)) chance for §fone §7used robot arm to §cvoid
-gt.multiblock.NeutralizationEngine.structure_tiers=Structure has §f3 Tiers§7, §fTier §7determines §9Base Decay §7and §3Capacity§7:
-gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : §3%s
-
 gt.multiblock.VacuumFreezer.machine_type=Vacuum Freezer, VF
 gt.multiblock.VacuumFreezer.desc1=Cools hot ingots and cells
 
@@ -3005,6 +2989,12 @@ GT5U.machines.output_bus.invalid=Invalid Data Stick config
 GT5U.machines.output_hatch.saved=Saved Config to Data Stick
 GT5U.machines.output_hatch.loaded=Loaded Config From Data Stick
 GT5U.machines.output_hatch.invalid=Invalid Data Stick config
+GT5U.machines.black_hole_utility.saved=Saved Config to Data Stick
+GT5U.machines.black_hole_utility.loaded=Loaded Config From Data Stick
+GT5U.machines.black_hole_utility.invalid=Invalid Data Stick config
+GT5U.machines.heat_sensor.saved=Saved Config to Data Stick
+GT5U.machines.heat_sensor.loaded=Loaded Config From Data Stick
+GT5U.machines.heat_sensor.invalid=Invalid Data Stick config
 GT5U.machines.dronecentre.shutdown=You cannot control machines when the Drone Centre is shut down!
 GT5U.machines.dronecentre.turnon=Successfully turned on all machines in group: %s
 GT5U.machines.dronecentre.turnoff=Successfully turned off all machines in group: %s
@@ -6768,18 +6758,18 @@ gt.item.activated_carbon_filter_mesh.tooltip=The most granular filter you could 
 ## Quark catalysts
 gt.item.quark_catalyst_housing.empty.name=Empty Quark Release Catalyst Housing
 gt.item.quark_catalyst_housing.empty.tooltip=Capable of holding Quark Release Catalysts
-gt.item.quark_catalyst.up.name=Up-Quark Releasing Catalyst
-gt.item.quark_catalyst.up.tooltip=Can release up-quarks into environment to reshape matter
-gt.item.quark_catalyst.down.name=Down-Quark Releasing Catalyst
-gt.item.quark_catalyst.down.tooltip=Can release down-quarks into environment to reshape matter
-gt.item.quark_catalyst.strange.name=Strange-Quark Releasing Catalyst
-gt.item.quark_catalyst.strange.tooltip=Can release strange-quarks into environment to reshape matter
-gt.item.quark_catalyst.charm.name=Charm-Quark Releasing Catalyst
-gt.item.quark_catalyst.charm.tooltip=Can release charm-quarks into environment to reshape matter
-gt.item.quark_catalyst.bottom.name=Bottom-Quark Releasing Catalyst
-gt.item.quark_catalyst.bottom.tooltip=Can release bottom-quarks into environment to reshape matter
-gt.item.quark_catalyst.top.name=Top-Quark Releasing Catalyst
-gt.item.quark_catalyst.top.tooltip=Can release top-quarks into environment to reshape matter
+gt.item.quark_catalyst.up.name=Up Quark Releasing Catalyst
+gt.item.quark_catalyst.up.tooltip=Can release up quarks into the environment to reshape matter
+gt.item.quark_catalyst.down.name=Down Quark Releasing Catalyst
+gt.item.quark_catalyst.down.tooltip=Can release down quarks into the environment to reshape matter
+gt.item.quark_catalyst.strange.name=Strange Quark Releasing Catalyst
+gt.item.quark_catalyst.strange.tooltip=Can release strange quarks into the environment to reshape matter
+gt.item.quark_catalyst.charm.name=Charm Quark Releasing Catalyst
+gt.item.quark_catalyst.charm.tooltip=Can release charm quarks into the environment to reshape matter
+gt.item.quark_catalyst.bottom.name=Bottom Quark Releasing Catalyst
+gt.item.quark_catalyst.bottom.tooltip=Can release bottom quarks into the environment to reshape matter
+gt.item.quark_catalyst.top.name=Top Quark Releasing Catalyst
+gt.item.quark_catalyst.top.tooltip=Can release top quarks into the environment to reshape matter
 gt.item.quark_catalyst.unaligned.name=Unaligned Quark Releasing Catalyst
 gt.item.quark_catalyst.unaligned.tooltip=Needs to be realigned before use
 
