@@ -141,6 +141,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 }))
             // spotless:on
             // base structure blocks / elements
+            .addChannel(GTStructureChannels.STRUCTURE_HEIGHT.get(), 1, 5)
             .addElement(
                 'A',
                 onElementPass(
@@ -287,7 +288,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_BASE, stackSize, hintsOnly, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
-        int totalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 1, 5);
+        int totalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 1, 5);
         for (int currentLayer = 1; currentLayer <= totalHeight; currentLayer++) {
             buildPiece(
                 STRUCTURE_PIECE_LAYER,
@@ -324,7 +325,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             true);
         if (built >= 0) return built;
 
-        int totalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, 1, 5);
+        int totalHeight = GTStructureChannels.STRUCTURE_HEIGHT.getValueLimited(stackSize, 1, 5);
 
         for (int currentLayer = 1; currentLayer <= totalHeight; currentLayer++) {
             built = this.survivalBuildPiece(
