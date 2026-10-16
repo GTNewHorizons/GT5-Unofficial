@@ -165,6 +165,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                     { "AA  ", " A  ", "  F ", "  E ", "  E ", "  E ", "  FF" },
                     { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", "  FF" },
                     { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", "  FF" } })
+            .addChannel(GTStructureChannels.STRUCTURE_LENGTH.get(), 1, 16)
             .addElement(
                 'D',
                 buildHatchAdder(MTEIndustrialCokeOven.class)
@@ -202,9 +203,9 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         int extraSlices;
         if (getCoilTier() >= HeatingCoilLevel.MAX.getTier() + 1) {
-            extraSlices = stackSize.stackSize;
+            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValue(stackSize);
         } else {
-            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, MAX_LENGTH);
+            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 1, MAX_LENGTH);
         }
         buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, OFFSET_X_MAIN, OFFSET_Y_MAIN, OFFSET_Z_MAIN);
         for (int i = 1; i < extraSlices; i++) {
@@ -223,9 +224,9 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
         int extraSlices;
 
         if (getCoilTier() >= HeatingCoilLevel.MAX.getTier() + 1) {
-            extraSlices = stackSize.stackSize;
+            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValue(stackSize);
         } else {
-            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 1, MAX_LENGTH);
+            extraSlices = GTStructureChannels.STRUCTURE_LENGTH.getValueLimited(stackSize, 1, MAX_LENGTH);
         }
         int built = 0, temp;
 
