@@ -5332,7 +5332,10 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Phenol.getFluid(2_000),
                 Materials.HydrochloricAcid.getFluid(1_000),
                 Materials.Epichlorohydrin.getFluid(2_000))
-            .fluidOutputs(Materials.Epoxid.getMolten(1_000), Materials.SaltWater.getFluid(2_000))
+            .fluidOutputs(
+                Materials.Epoxid.getMolten(1_000),
+                Materials.SaltWater.getFluid(2_000),
+                Materials.DilutedHydrochloricAcid.getFluid(2_000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
