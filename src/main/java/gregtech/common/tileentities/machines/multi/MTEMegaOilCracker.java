@@ -17,16 +17,23 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
+import static gregtech.api.util.GTUtility.powInt;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -61,12 +68,15 @@ import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOilCracker>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -204,10 +214,10 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
             .addSeparator()
             .addSupportAny()
-            .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(13, 8, 9, true)
+            .addEnergyHatchGlassTier()
+            .addMinGlassForLaser(VoltageIndex.UV)
             .addController("Front bottom center")
             .addCasing("162", "Any Tiered Glass", true)
             .addCasing("145-151", "Naquadah Reinforced Distillation Casing", false)
@@ -456,7 +466,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     }
 
     public double getEuModifier() {
-        return Math.pow(0.9, this.heatLevel.getTier() + 1);
+        return powInt(0.9D, this.heatLevel.getTier() + 1);
     }
 
     @Override
@@ -482,6 +492,24 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                 setResultIfFailure(aware.endRecipeProcessing(this));
             }
         }
+    }
+
+    private static final DecimalFormat dfTwo = new DecimalFormat("0.00");
+
+    @Override
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
+            StatCollector.translateToLocal("GT5U.multiblock.euModifier") + ": "
+                + EnumChatFormatting.WHITE
+                + dfTwo.format(GTUtility.powInt(0.9, tag.getInteger("coilTier") + 1) * 100)
+                + "%");
+    }
+
+    @Override
+    public void getExtraWailaNBT(EntityPlayerMP playerMP, TileEntity tileEntity, NBTTagCompound tag, World world, int x,
+        int y, int z) {
+        tag.setInteger("coilTier", this.heatLevel.getTier());
     }
 
     @Override

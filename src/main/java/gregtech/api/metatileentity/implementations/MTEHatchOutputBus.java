@@ -32,6 +32,7 @@ import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -115,7 +116,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
             openGui(aPlayer);
             return true;
         }
@@ -138,7 +139,7 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
+        if (!acceptsConfigCopy() || !(aPlayer instanceof EntityPlayerMP)) {
             return;
         }
         final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
@@ -309,8 +310,18 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
     }
 
     @Override
-    public boolean acceptsItemLock() {
+    public boolean acceptsConfigCopy() {
         return true;
+    }
+
+    @OCMethod
+    public ItemStack getFilter() {
+        return lockedItem == null ? null : lockedItem.copy();
+    }
+
+    @OCMethod
+    public void setFilter(@Nullable ItemStack aStack) {
+        setLockedItem(aStack);
     }
 
     @Override

@@ -41,10 +41,8 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
-// todo look over and cleanup. the functionality is present
 public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTEOpticalOrganizerModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int OPTICAL_OFFSET_X = 3;
     protected static final int OPTICAL_OFFSET_Y = 7;
     protected static final int OPTICAL_OFFSET_Z = 0;
@@ -192,7 +190,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     }
 
     @Override
-    protected float getEUDiscountModifier() {
+    protected float getEUDiscountModifier(GTRecipe recipe) {
         return euMultiplier;
     }
 

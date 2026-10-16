@@ -156,6 +156,7 @@ import gregtech.common.tileentities.machines.multi.drone.production.ProductionRe
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
@@ -437,7 +438,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 else getBaseMetaTileEntity().disableWorking();
             }
         }
-        batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
+        // Item NBT (e.g. from setItemNBT) may lack this key, keep the configured default then
+        if (aNBT.hasKey(BATCH_MODE_NBT_KEY)) batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
         if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {
             voidingMode = VoidingMode.fromName(aNBT.getString(VOIDING_MODE_NBT_KEY));
@@ -537,6 +539,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mOutputHatches.clear();
         mOutputBusses.clear();
         mDynamoHatches.clear();
+        mExoticDynamoHatches.clear();
         mEnergyHatches.clear();
         setMufflers(false);
         mMufflerHatches.clear();
@@ -546,6 +549,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // watcher from every mSmartInputHatches entry covers all of them.
         for (var hatch : mSmartInputHatches) {
             hatch.removeWatcher(this);
+            // Drop our crafting icon as well, otherwise an interface facing a hatch that left the structure keeps
+            // showing this multiblock's name. A hatch still part of the structure gets it back from addToMachineList.
+            if (hatch instanceof MTEHatch mteHatch) mteHatch.updateCraftingIcon(null, getBaseMetaTileEntity());
         }
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
@@ -655,9 +661,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 deactivateCoilLease();
             }
 
-            if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
-                coilLease = GTCoilTracker.activate(this, mCoils);
+            if (mMachine && isActive) {
+                tryActivateCoilLease();
             }
+        }
+    }
+
+    // method to hook into for non-coil coilLeases.
+    protected void tryActivateCoilLease() {
+        if (!mCoils.isEmpty() && coilLease == null) {
+            coilLease = GTCoilTracker.activate(this, mCoils);
         }
     }
 
@@ -1104,6 +1117,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         result = postCheckRecipe(result, processingLogic);
         // inputs are consumed at this point
         updateSlots();
+        // a fully consumed controller slot stack must not linger as a 0-size stack, it can be duped from the GUI
+        if (mInventory[1] != null && mInventory[1].stackSize <= 0) mInventory[1] = null;
         if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -1915,6 +1930,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             setHatchRecipeMap(tHatch);
             switch (tHatch) {
+                case MTEHatchSolidifier ignored -> {}
                 case MTEHatchMultiInput multiInputHatch -> {
                     for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
                         if (tFluid != null) {
@@ -2168,13 +2184,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
         addIfSmartInput(aMetaTileEntity);
         switch (aMetaTileEntity) {
             case IDualInputHatch hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return mDualInputHatches.add(hatch);
             }
             case MTEHatchInput hatch -> {
@@ -2220,7 +2236,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
 
             if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
                 droneDownLink.registerMachineController(this);
@@ -2242,7 +2258,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 debugEnergyPresent = true;
             }
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mEnergyHatches.add(hatch);
         }
         return false;
@@ -2254,7 +2270,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch && hatch.getHatchType() == 1) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mExoticEnergyHatches.add(hatch);
         }
         return false;
@@ -2266,7 +2282,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch && ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mExoticEnergyHatches.add(hatch);
         }
         return false;
@@ -2278,7 +2294,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchDynamo hatch && hatch.maxAmperesOut() <= 4) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mDynamoHatches.add(hatch);
         }
         return false;
@@ -2290,7 +2306,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti mteHatchDynamoMulti) {
             mteHatchDynamoMulti.updateTexture(aBaseCasingIndex);
-            mteHatchDynamoMulti.updateCraftingIcon(this.getMachineCraftingIcon());
+            mteHatchDynamoMulti.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mExoticDynamoHatches.add(mteHatchDynamoMulti);
         }
         return false;
@@ -2302,7 +2318,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchDynamoTunnel mteHatchDynamoTunnel) {
             mteHatchDynamoTunnel.updateTexture(aBaseCasingIndex);
-            mteHatchDynamoTunnel.updateCraftingIcon(this.getMachineCraftingIcon());
+            mteHatchDynamoTunnel.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mExoticDynamoHatches.add(mteHatchDynamoTunnel);
         }
         return false;
@@ -2315,7 +2331,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof MTEHatchCustomFluidBase mteHatchCryotheum
             && mteHatchCryotheum.mLockedFluid == TFFluids.fluidCryotheum) {
             mteHatchCryotheum.updateTexture(aBaseCasingIndex);
-            mteHatchCryotheum.updateCraftingIcon(this.getMachineCraftingIcon());
+            mteHatchCryotheum.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             addIfSmartInput(mteHatchCryotheum);
             return mCryotheumHatches.add(mteHatchCryotheum);
         }
@@ -2329,7 +2345,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof MTEHatchCustomFluidBase mteHatchPyrotheum
             && mteHatchPyrotheum.mLockedFluid == TFFluids.fluidPyrotheum) {
             mteHatchPyrotheum.updateTexture(aBaseCasingIndex);
-            mteHatchPyrotheum.updateCraftingIcon(this.getMachineCraftingIcon());
+            mteHatchPyrotheum.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             addIfSmartInput(mteHatchPyrotheum);
             return mPyrotheumHatches.add(mteHatchPyrotheum);
         }
@@ -2342,7 +2358,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchMuffler hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mMufflerHatches.add(hatch);
         }
         return false;
@@ -2367,12 +2383,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             if (!supportsCraftingMEBuffer()) return false;
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchInputBus hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             hatch.mRecipeMap = getRecipeMap();
             return mInputBusses.add(hatch);
         }
@@ -2391,7 +2407,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
             case MTEHatchOutputBus hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 addIfSmartInput(aMetaTileEntity);
                 return mOutputBusses.add(hatch);
             }
@@ -2409,7 +2425,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof IDualInputHatch hatch
             && (hatch.supportsFluids() || aMetaTileEntity instanceof MTEHatchCraftingInputSlave)) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             if (!mDualInputHatches.contains(hatch)) {
                 mDualInputHatches.add(hatch);
             }
@@ -2417,7 +2433,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             setHatchRecipeMap(hatch);
             return mInputHatches.add(hatch);
         }
@@ -2430,7 +2446,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             addIfSmartInput(aMetaTileEntity);
             return mOutputHatches.add(hatch);
         }
@@ -2726,12 +2742,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
             }
         }
-        currentTip.add(
-            GTWaila.getMachineProgressString(
-                isActive,
-                tag.getBoolean("isAllowedToWork"),
-                tag.getInteger("maxProgress"),
-                tag.getInteger("progress")));
+        // disables progress time display if recipe text is hidden
+        if (this.showRecipeTextInGUI()) {
+            currentTip.add(
+                GTWaila.getMachineProgressString(
+                    isActive,
+                    tag.getBoolean("isAllowedToWork"),
+                    tag.getInteger("maxProgress"),
+                    tag.getInteger("progress")));
+        }
         // Show ns on the tooltip
         if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
@@ -3794,41 +3813,42 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.wrench"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mWrench && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.screwdriver"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mScrewdriver && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.soft_mallet"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSoftMallet && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftMallet, val -> mSoftMallet = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.hammer"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mHardHammer && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)"))
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.soldering"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSolderingTool && mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)"))
+                new TextWidget(translateToLocal("GT5U.gui.multimachine.maintenance.crowbar"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mCrowbar && mMachine))
@@ -3963,7 +3983,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         screenElements.widget(
-            new TextWidget(GTUtility.trans("144", "Missing Turbine Rotor")).setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(translateToLocal("GT5U.gui.multimachine.missing_turbine_rotor"))
+                .setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> {
                     if (getBaseMetaTileEntity().isAllowedToWork()) return false;
@@ -4052,10 +4073,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean shouldCheckMaintenance() {
         return !disableMaintenance && hasMaintenanceChecks;
-    }
-
-    public void setMaxParallelForPanel(int parallel) {
-        this.maxParallel = parallel;
     }
 
     @Nonnull
