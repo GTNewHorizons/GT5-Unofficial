@@ -23,6 +23,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,6 +32,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,6 +41,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
@@ -60,6 +64,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -156,52 +161,32 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Engine, UCFE")
-            .addInfo("BURNING BURNING BURNING")
-            .addInfo(
-                "Reacts combustion promoter with gas, diesel, or rocket fuel to generate power with up to 150% efficiency")
-            .addInfo("No soft caps or upper limits on power output, other than the dynamo hatch size")
-            .addInfo(
-                "No power is produced without " + EnumChatFormatting.GOLD
-                    + "Combustion Promoter"
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Excess power is voided if the dynamo hatch is full or the output exceeds the dynamo throughput")
-            .addSeparator()
-            .addInfo("Efficiency is determined by the ratio (R) of combustion promoter to fuel")
-            .addInfo("The more combustion promoter, the higher the efficiency")
-            .addInfo(
-                "Follows an exponential curve " + EnumChatFormatting.AQUA
-                    + "exp(-C/R) * "
-                    + formatNumber(EFFICIENCY_CEILING, new FormatOptions().setDecimalPlaces(1))
-                    + EnumChatFormatting.GRAY
-                    + ", where C is a constant based on the fuel type")
-            .addInfo(
-                "Gas/Diesel Fuel: C="
-                    + formatNumber(GAS_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3))
-                    + " | Rocket Fuel: C="
-                    + formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
-            .addSeparator()
-            .addInfo(
-                "Produces " + EnumChatFormatting.DARK_PURPLE
-                    + "sqrt(EU/t)"
-                    + EnumChatFormatting.GRAY
-                    + " pollution per second")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_engine"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "universal-chemical-fuel-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("efficiency_ceiling", formatNumber(EFFICIENCY_CEILING, new FormatOptions().setDecimalPlaces(1)))
+                    .put("gas_coefficient", formatNumber(GAS_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+                    .put("rocket_coefficient", formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
+                    .build())
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 13, true)
-            .addController("Front center, 3rd layer")
-            .addCasing("100-115", "Stable Titanium Machine Casing", false)
-            .addCasing("72", "PTFE Frame Box", false)
-            .addCasing("39", "Chemically Inert Machine Casing", false)
-            .addCasing("20", "Engine Intake Casing", false)
-            .addCasing("12", "Titanium Pipe Casing", false)
-            .addCasing("10", "Titanium Firebox Casing", false)
-            .addDynamoHatch("1", "Back center machine casing", 2)
-            .addMaintenanceHatch("1", "Any machine casing", 1)
-            .addMufflerHatch("1", "Any machine casing", 1)
-            .addInputHatch("1+", "Any machine casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("100-115", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
+            .addCasing("72", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
+            .addCasing("39", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.EngineIntakeCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.TitaniumPipeCasing.getLocalizedName(), false)
+            .addCasing("10", Casings.TitaniumFireboxCasing.getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "TimTems")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

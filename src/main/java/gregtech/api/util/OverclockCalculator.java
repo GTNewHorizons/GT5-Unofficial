@@ -53,13 +53,13 @@ public class OverclockCalculator {
     protected int recipeHeat = 0;
     /** The heat the machine has when starting the recipe */
     protected int machineHeat = 0;
-    /** How much the duration should be divided by for each 1800K above recipe heat */
+    /** How much the duration should be divided by for each HEAT_OVERCLOCK_THRESHOLD above recipe heat */
     protected final double durationDecreasePerHeatOC = 4;
-    /** Whether to enable overclocking with heat like the EBF every 1800 heat difference */
+    /** Whether to enable overclocking with heat like the EBF every HEAT_OVERCLOCK_THRESHOLD heat difference */
     protected boolean heatOC;
-    /** Whether to enable heat discounts every 900 heat difference */
+    /** Whether to enable heat discounts every HEAT_DISCOUNT_THRESHOLD heat difference */
     protected boolean heatDiscount;
-    /** The value used for discount final eut per 900 heat */
+    /** The value used for discount final eut per HEAT_DISCOUNT_THRESHOLD heat */
     protected double heatDiscountExponent = 0.95;
 
     // Results
@@ -75,8 +75,10 @@ public class OverclockCalculator {
     private record ResultLaserOCs(int regularOverclocks, int laserOverclocks, double eutOverclock) {}
 
     // Constants
-    protected static final int HEAT_DISCOUNT_THRESHOLD = 900;
-    protected static final int HEAT_OVERCLOCK_THRESHOLD = 1800;
+    /** Heat above the recipe heat needed for each heat discount, e.g. in the EBF */
+    public static final int HEAT_DISCOUNT_THRESHOLD = 900;
+    /** Heat above the recipe heat needed for each heat (perfect) overclock, e.g. in the EBF */
+    public static final int HEAT_OVERCLOCK_THRESHOLD = 1800;
 
     /** Creates calculator that doesn't do OC at all. Will use recipe duration. */
     public static OverclockCalculator ofNoOverclock(@Nonnull GTRecipe recipe) {
@@ -158,14 +160,20 @@ public class OverclockCalculator {
         return this;
     }
 
-    /** Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy */
+    /**
+     * Sets an EUtDiscount. 0.9 is 10% less energy. 1.1 is 10% more energy
+     * Only accept real double type for the parameter, else its behavior is undefined.
+     */
     @Nonnull
     public OverclockCalculator setEUtDiscount(double aEUtDiscount) {
         this.eutModifier = aEUtDiscount;
         return this;
     }
 
-    /** Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower */
+    /**
+     * Sets a Speed Boost for the multiblock. 0.9 is 10% faster. 1.1 is 10% slower
+     * Only accept real double type for the parameter, else its behavior is undefined.
+     */
     @Nonnull
     public OverclockCalculator setDurationModifier(double aSpeedBoost) {
         this.durationModifier = aSpeedBoost;
@@ -337,8 +345,13 @@ public class OverclockCalculator {
         return this;
     }
 
+    /** Heat above the recipe requirement. Never negative, so a colder machine gets no heat bonus or penalty. */
+    private int getHeatSurplus() {
+        return Math.max(0, machineHeat - recipeHeat);
+    }
+
     public double calculateHeatDiscountMultiplier() {
-        int heatDiscounts = heatDiscount ? (machineHeat - recipeHeat) / HEAT_DISCOUNT_THRESHOLD : 0;
+        int heatDiscounts = heatDiscount ? getHeatSurplus() / HEAT_DISCOUNT_THRESHOLD : 0;
         return GTUtility.powInt(heatDiscountExponent, heatDiscounts);
     }
 
@@ -375,7 +388,7 @@ public class OverclockCalculator {
         // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        int tiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) Math.ceil(recipePower), 32));
+        int tiersAbove = getTiersAbove(machinePower, recipePower);
 
         // If overclocking is disabled, use the base values and return.
         if (noOverclock) {
@@ -408,7 +421,7 @@ public class OverclockCalculator {
         overclocks = Math.max(overclocks, 0);
 
         // Split overclocks into heat-based and regular overclocks.
-        int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
+        int heatOverclocks = Math.min(heatOC ? getHeatSurplus() / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         int regularOverclocks = overclocks - heatOverclocks;
 
         // Adjust power consumption and processing time based on overclocks.
@@ -437,7 +450,7 @@ public class OverclockCalculator {
         final int voltageTierRecipe = (int) Math.max(GTUtility.log4ceil(recipeEUt / 8), 1);
         final int voltageTierMachine = (int) Math.max(GTUtility.log4ceil(machineVoltage / 8), 1);
 
-        final int powerTiersAbove = (int) GTUtility.log4((long) machinePower / Math.max((long) recipePower, 32));
+        final int powerTiersAbove = getTiersAbove(machinePower, recipePower);
         final int voltageTiersAbove = voltageTierMachine - voltageTierRecipe;
 
         // Special handling for laser overclocking.
@@ -461,8 +474,7 @@ public class OverclockCalculator {
         final int overclocks = GTUtility.clamp(maxOverclocks, 0, amperageOC ? powerTiersAbove : voltageTiersAbove);
 
         // Split overclocks into heat-based and regular overclocks.
-        final int heatOverclocks = Math
-            .min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
+        final int heatOverclocks = Math.min(heatOC ? getHeatSurplus() / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         final int regularOverclocks = overclocks - heatOverclocks;
 
         // Compute the duration after heat overclocks have been applied.
@@ -494,5 +506,27 @@ public class OverclockCalculator {
         }
 
         return Math.ceil(heatMultiplier * regularMultiplier * correctionMultiplier);
+    }
+
+    /**
+     * Returns the number of tiers above compareBase that power is.
+     * If power is less than compareBase, returns -1.
+     *
+     * @param power
+     * @param compareBase
+     * @return tiers above the compareBase.
+     */
+    public static int getTiersAbove(double power, double compareBase) {
+        if (power < compareBase) {
+            return -1;
+        }
+        final long scale = 100L; // Scale to avoid floating point precision issues
+        if (power < Long.MAX_VALUE / scale) {
+            long scaledPower = Math.round(power * scale);
+            long scaledCompareBase = Math.round(compareBase * scale);
+            return (int) GTUtility.log4(scaledPower / Math.max(scaledCompareBase, 32L * scale));
+        } else {
+            return (int) GTUtility.log4((long) (power / Math.max(compareBase, 32.0)));
+        }
     }
 }
