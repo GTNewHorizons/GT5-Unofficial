@@ -46,7 +46,6 @@ public class RecipesMachinesMulti {
         volcanus();
         steamMultis();
 
-        multiArcFurnace();
         multiDehydrator();
         multiAlloySmelter();
         multiRockBreaker();
@@ -871,7 +870,7 @@ public class RecipesMachinesMulti {
             ItemList.AdvancedImplosionCompressor.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "GCG", "FHR", "IXI", 'G', MaterialsAlloy.LEAGRISIUM.getGear(1), 'C', "circuitMaster", 'F',
-                ItemList.Field_Generator_IV, 'H', ItemList.Hull_ZPM, 'R', ItemList.Robot_Arm_IV, 'I',
+                ItemList.Field_Generator_IV, 'H', ItemList.Casing_RobustTungstenSteel, 'R', ItemList.Robot_Arm_IV, 'I',
                 "plateAlloyIridium", 'X', GregtechItemList.Gregtech_Computer_Cube });
     }
 
@@ -916,24 +915,6 @@ public class RecipesMachinesMulti {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
-    }
-
-    private static void multiArcFurnace() {
-        // Tempered Arc Furnace Casing
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Multi_Use.get(1),
-                ItemList.Emitter_MV.get(4),
-                ItemList.Sensor_MV.get(4),
-                ItemList.Electric_Piston_EV.get(2),
-                MaterialsAlloy.INCONEL_625.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.TungstenSteel, 1))
-            .itemOutputs(GregtechItemList.Casing_Industrial_Arc_Furnace.get(1))
-            .fluidInputs(MaterialsAlloy.ARCANITE.getFluidStack(8 * INGOTS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-
     }
 
     private static void multiDehydrator() {

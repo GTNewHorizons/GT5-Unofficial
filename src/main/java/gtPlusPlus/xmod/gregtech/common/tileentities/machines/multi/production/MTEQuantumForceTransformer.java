@@ -187,7 +187,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         tt.addMachineType("Quantum Force Transformer, QFT")
             .addInfo("Allows Complex processing lines to be performed instantly in one step")
             .addSeparator()
-            .addInfo(catalystText("Pulse Manipulator") + " Tier determines maximum recipe tier")
+            .addInfo(catalystText("Pulse Manipulator") + " Tier determines maximum Recipe Tier")
             .addInfo("Every recipe requires a specific " + catalystText("catalyst"))
             .addInfo(catalystText("Catalysts") + " have to be placed in a Bulk Catalyst Housing")
             .addInfo("Gains " + TooltipHelper.parallelText("1") + " Parallel per " + catalystText("Catalyst"))

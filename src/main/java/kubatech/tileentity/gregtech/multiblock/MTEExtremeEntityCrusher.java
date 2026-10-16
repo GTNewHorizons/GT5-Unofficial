@@ -363,8 +363,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     .put("infernal_mult", INFERNAL_POWER_MULTIPLIER)
                     .put("batch_mult", BATCH_MODE_MULTIPLIER)
                     .build())
-            .addGlassEnergyLimitInfo()
             .beginStructureBlock(5, 7, 5, true)
+            .addEnergyHatchGlassTier()
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("60", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing("35-46", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
@@ -707,9 +707,38 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             EECPlayer.currentWeapon = null;
 
             if (batchMode) {
-                for (ItemStack item : mOutputItems) {
-                    item.stackSize *= tBatchMultiplier;
+                List<ItemStack> aggregated = new ArrayList<>();
+
+                for (int i = 0; i < tBatchMultiplier; i++) {
+                    ItemStack[] iteration = recipe.generateOutputs(
+                        rand,
+                        this,
+                        tAttackDamage,
+                        Math.min(tLootingLevel, MAX_LOOTING_LEVEL),
+                        mIsProducingInfernalDrops,
+                        voidAllDamagedAndEnchantedItems);
+
+                    for (ItemStack incoming : iteration) {
+                        if (incoming == null || incoming.stackSize <= 0) continue;
+
+                        boolean merged = false;
+                        for (ItemStack existing : aggregated) {
+                            if (existing.getItem() == incoming.getItem()
+                                && existing.getItemDamage() == incoming.getItemDamage()
+                                && ItemStack.areItemStackTagsEqual(existing, incoming)) {
+                                existing.stackSize += incoming.stackSize;
+                                merged = true;
+                                break;
+                            }
+                        }
+
+                        if (!merged) {
+                            aggregated.add(incoming.copy());
+                        }
+                    }
                 }
+
+                this.mOutputItems = aggregated.toArray(new ItemStack[0]);
             }
 
             this.mOutputFluids = new FluidStack[] {

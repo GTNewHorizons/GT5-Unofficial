@@ -506,7 +506,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .addInfo("Requires Drilling Fluid to operate")
             .addInfo("Gives ~3x as much crushed ore vs normal processing")
             .addInfo("Fortune bonus of " + formatNumber(mTier + 3) + ". Only works on small ores")
-            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+            .addInfo("Minimum Energy Hatch Tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
                 "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
                     : formatNumber(baseCycleTime / 20.0) + " seconds"))

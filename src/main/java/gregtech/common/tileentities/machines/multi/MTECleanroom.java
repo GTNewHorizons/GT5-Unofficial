@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -38,6 +37,8 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ICleanroom;
@@ -144,7 +145,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Cleanroom")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cleanroom"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "cleanroom"),
                 ImmutableMap.<String, Object>builder()
@@ -156,46 +157,20 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     .put("voltageTier_HV", voltageTooltipFormatted(3))
                     .build())
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
-            .addController("Top center")
-            .addCasing(MachineStats.cleanroom.minCasingCount + "-1007", "Plascrete Block", false)
-            .addCasing("0-168", "Filter Machine Casing", false)
-            .addEnergyHatch("1", "Any plascrete block", 1)
-            .addMaintenanceHatch("1", "Any plascrete block", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.top_center"))
+            .addCasing(MachineStats.cleanroom.minCasingCount + "-1007", ItemList.Block_Plascrete.get(1).getDisplayName(), false)
+            .addCasing("0-168", Casings.FilterMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_plascrete_block"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_plascrete_block"), 1)
             .addStructureInfo("")
-            .addStructureFooter(
-                "If the width or length is even, the controller can be in either of the two middle positions")
-            .addStructureFooter(
-                "Up to " + EnumChatFormatting.GOLD
-                    + MachineStats.cleanroom.maxReplacementPercentage
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " of the plascrete blocks can be replaced by other valid blocks:")
-            .addStructureFooter(
-                "- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " Tiered Glass")
-            .addStructureFooter("- Machine Hulls or Diodes for item or power transfer, respectively")
-            .addStructureFooter(
-                "- Reinforced Doors (" + EnumChatFormatting.ITALIC
-                    + "IC2"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + "). Keep closed, no gaps allowed or efficiency will drop!")
-            .addStructureFooter(
-                "- Elevators (" + EnumChatFormatting.ITALIC
-                    + "OpenBlocks"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ") or Travel Anchors ("
-                    + EnumChatFormatting.ITALIC
-                    + "EnderIO"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addStructureFooter(
-                "See " + EnumChatFormatting.DARK_GRAY
-                    + "config/GregTech/MachineStats.cfg"
-                    + EnumChatFormatting.GRAY
-                    + " for more valid blocks")
-            .addStructureFooter("Use Wireless Connectors for transferring AE2 channels")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_even_size_controller"))
+            .addStructureFooter(StatCollector.translateToLocalFormatted("gt.mbtt.structure.cleanroom_replacement", MachineStats.cleanroom.maxReplacementPercentage))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_glass"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_hulls"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_doors"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_elevators"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_config"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_wireless"))
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.size"))
             .toolTipFinisher();
@@ -205,7 +180,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return new String[] { "The base can be rectangular." };
+        return new String[] { StatCollector.translateToLocal("gt.mbtt.structure.cleanroom_rectangular_base") };
     }
 
     @Nonnull
