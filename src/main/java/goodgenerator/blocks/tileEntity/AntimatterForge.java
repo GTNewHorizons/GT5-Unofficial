@@ -417,7 +417,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     /*
-     * How much passive energy is drained every tick Base containment cost: 10M EU/t
+     * How much passive energy is drained every tick. Base containment cost: 10M EU/t
      * The containment cost is set to 1000 x antimatter amount every tick.
      * If the cost is at this value, or if no antimatter is in the hatches, the value will decay by 1% every tick
      */
