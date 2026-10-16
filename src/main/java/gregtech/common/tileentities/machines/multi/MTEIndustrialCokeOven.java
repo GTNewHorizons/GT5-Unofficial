@@ -186,17 +186,15 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                 GTStructureChannels.HEATING_COIL
                     .use(activeCoils(ofCoil(MTEIndustrialCokeOven::setCoilLevel, MTEIndustrialCokeOven::getCoilLevel))))
             .addElement('C', ofFrame(Materials.Steel))
-            .addElement(
-                'E',
-                GTStructureChannels.COKE_OVEN_CASING.use(
-                    ofBlocksTiered(
-                        (block, meta) -> block == ModBlocks.blockCasingsMisc ? (meta == 2 ? 0 : meta == 3 ? 1 : null)
-                            : null,
-                        ImmutableList
-                            .of(Pair.of(ModBlocks.blockCasingsMisc, 2), Pair.of(ModBlocks.blockCasingsMisc, 3)),
-                        -1,
-                        (t, tier1) -> t.tier = tier1,
-                        t -> t.tier)))
+            .addElement('E', GTStructureChannels.COKE_OVEN_CASING.use(ofBlocksTiered((block, meta) -> {
+                if (block == ModBlocks.blockCasingsMisc && meta == 2) return 0;
+                if (block == ModBlocks.blockCasingsMisc && meta == 3) return 1;
+                return null;
+            },
+                ImmutableList.of(Pair.of(ModBlocks.blockCasingsMisc, 2), Pair.of(ModBlocks.blockCasingsMisc, 3)),
+                -1,
+                (t, tier1) -> t.tier = tier1,
+                t -> t.tier)))
             .addElement('F', onElementPass(x -> ++x.casingAmount, Casings.StructuralCokeOvenCasing.asElement()))
             .build();
     }
