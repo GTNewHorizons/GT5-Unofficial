@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import gregtech.api.enums.OrePrefixes;
 
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
@@ -128,7 +129,7 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
         if (electrode == null) return null;
         TextureSet set = electrode.associatedMaterial.getTextureSet();
         if (set == null) return null;
-        return set.mTextures[MaterialIconRegistry.IconType.ELECTRODE.ordinal()].getIcon();
+        return set.mTextures[OrePrefixes.electrode.getTextureIndex()].getIcon();
     }
 
     @Override
