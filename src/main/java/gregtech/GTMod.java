@@ -104,6 +104,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
+import gregtech.common.oredict.OreDictRegistrationHandler;
 import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
@@ -407,7 +408,6 @@ public class GTMod {
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
-        proxy.registerUnificationEntries();
         new FuelLoader().run();
         new FissionFuelLoader().run();
 
@@ -458,8 +458,6 @@ public class GTMod {
                 }
             }
         }
-
-        proxy.registerUnificationEntries();
 
         new BookAndLootLoader().run();
         new ItemMaxStacksizeLoader().run();
@@ -518,7 +516,7 @@ public class GTMod {
         GT_FML_LOGGER.info(
             "If your Log stops here, you were too impatient. Wait a bit more next time, before killing Minecraft with the Task Manager.");
 
-        GTPostLoad.activateOreDictHandler();
+        GTPostLoad.processOreDictRegistrations();
         GTPostLoad.replaceVanillaMaterials();
         GTPostLoad.removeIc2Recipes(
             aMaceratorRecipeList,
@@ -774,7 +772,7 @@ public class GTMod {
             }
         }
         for (ItemStack tOutput : tStacks) {
-            if (!proxy.mRegisteredOres.contains(tOutput)) {
+            if (!OreDictRegistrationHandler.isRegisteredOre(tOutput)) {
                 GTOreDictUnificator.setStack(tOutput);
             } else {
                 logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));

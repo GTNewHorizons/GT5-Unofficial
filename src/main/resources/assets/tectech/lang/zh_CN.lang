@@ -1018,6 +1018,8 @@ tt.keyword.Weird=*
 
 tt.chat.debug.generator=激光模式：%s
 
+tt.gui.tooltip.uncertainty.value_assist=色觉异常辅助：在 16 个单元格上叠加显示对应的数值
+
 # Multiblocks
 gt.blockmachines.multimachine.em.exotic_module.name=太阳聚变异化器
 gt.blockmachines.multimachine.em.eye_of_harmony.name=鸿蒙之眼

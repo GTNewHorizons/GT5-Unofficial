@@ -163,6 +163,15 @@ public final class GTGuiTextures {
         .adaptable(1)
         .build();
 
+    public static final UITexture BACKGROUND_DRONE_CAMERA = UITexture.builder()
+        .location(GregTech.ID, "gui/background/drone_camera")
+        .imageSize(256, 256)
+        .adaptable(100, 16, 100, 26)
+        .nonOpaque()
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_DRONE_CAMERA)
+        .build();
+
     public static final UITexture BACKGROUND_TESLA_TOWER_CHART = UITexture.builder()
         .location(MODID, "gui/tesla_tower_chart_background")
         .nonOpaque()
@@ -1810,6 +1819,16 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture OVERLAY_BUTTON_SHUFFLE = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/shuffle")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture TT_PICTURE_UNCERTAINTY_ASSIST_OFF = UITexture.builder()
+        .location(MODID, "gui/overlay_button/uncertainty_assist_off")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture TT_PICTURE_UNCERTAINTY_ASSIST_ON = UITexture.builder()
+        .location(MODID, "gui/overlay_button/uncertainty_assist_on")
         .fullImage()
         .canApplyTheme()
         .build();

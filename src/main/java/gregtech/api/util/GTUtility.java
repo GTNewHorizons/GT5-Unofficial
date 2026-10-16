@@ -1264,15 +1264,13 @@ public class GTUtility {
     }
 
     public static FluidStack getFluidFromDisplayStack(ItemStack aDisplayStack) {
-        if (!isStackValid(aDisplayStack) || aDisplayStack.getItem() != ItemList.Display_Fluid.getItem()
-            || !aDisplayStack.hasTagCompound()) return null;
-        Fluid tFluid = FluidRegistry.getFluid(
+        if (!isStackValid(aDisplayStack) || aDisplayStack.getItem() != ItemList.Display_Fluid.getItem()) return null;
+        final NBTTagCompound tNBT = aDisplayStack.getTagCompound();
+        final Fluid tFluid = FluidRegistry.getFluid(
             ItemList.Display_Fluid.getItem()
                 .getDamage(aDisplayStack));
-        return new FluidStack(
-            tFluid,
-            (int) aDisplayStack.getTagCompound()
-                .getLong("mFluidDisplayAmount"));
+
+        return new FluidStack(tFluid, tNBT != null ? (int) tNBT.getLong("mFluidDisplayAmount") : 0);
     }
 
     public static FluidStack getFluidForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {

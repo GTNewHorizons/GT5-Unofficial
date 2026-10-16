@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public interface IDualInputHatch extends IMetaTileEntity, ISmartInputHatch {
 
@@ -16,6 +17,13 @@ public interface IDualInputHatch extends IMetaTileEntity, ISmartInputHatch {
     void updateTexture(int id);
 
     void updateCraftingIcon(ItemStack icon);
+
+    /**
+     * Sets the icon of the multiblock at {@code owner}, or clears it when {@code icon} is null.
+     */
+    default void updateCraftingIcon(ItemStack icon, IGregTechTileEntity owner) {
+        updateCraftingIcon(icon);
+    }
 
     Optional<IDualInputInventory> getFirstNonEmptyInventory();
 

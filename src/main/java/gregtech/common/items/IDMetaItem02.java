@@ -252,7 +252,7 @@ public enum IDMetaItem02 {
     Food_IceCream_Foolish(671),
     Food_IceCream_LawnbaseSpecial(672),
     Food_IceCream_LunarLander(673),
-    Food_IceCream_NaquadaNutSwirl(674),
+    Food_IceCream_NaquadahNutSwirl(674),
     Food_IceCream_NaquadriaPlasmaParfait(675),
     Food_IceCream_NetherStarNutCrunch(676),
     Food_IceCream_NutsAndBolts(677),
