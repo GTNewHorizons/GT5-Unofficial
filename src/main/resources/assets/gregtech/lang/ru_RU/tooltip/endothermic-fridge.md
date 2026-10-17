@@ -7,6 +7,6 @@
 Улучшите механизм до 2-го тира, чтобы открыть {gold:подпространственное охлаждение}
 Можно подавать {blue:экзотический хладагент} для {light_purple:идеальных разгонов}
 {blue:{var:booster_drain} {var:fluid_unit}/с} {blue:расплавленной бесконечности}: {light_purple:1}
-{blue:{var:booster_drain} {var:fluid_unit}/с} {blue:расплавленного пространства-времени}: {light_purple:2}
+{blue:{var:booster_drain} {var:fluid_unit}/с} {blue:хладагента с нулевой энтропией}: {light_purple:2}
 {blue:{var:booster_drain} {var:fluid_unit}/с} {blue:расплавленной вечности}: {light_purple:3}
 {gray:{hr}}

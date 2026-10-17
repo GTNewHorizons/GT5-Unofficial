@@ -19,6 +19,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -669,6 +670,67 @@ public class PCBFactoryRecipes {
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
                     Materials.IronIIIChloride.getFluid((long) (12_500 * (Math.sqrt(tier - 6)))),
                     Materials.MysteriousCrystal.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 6)))))
+                .itemOutputs(aBoards.toArray(new ItemStack[0]))
+                .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
+                .eut((int) GTValues.VP[tier + 1] * 3 / 4)
+                .metadata(TIER, 3)
+                .metadata(PCB_NANITE_MATERIAL, Materials.Gold)
+                .addTo(RecipeMaps.pcbFactoryRecipes);
+        }
+
+        // Exotic Circuit Board
+
+        // No T1 Recipe
+
+        for (int tier = 8; tier <= PCBFactoryManager.mTiersOfPlastics; tier++) {
+            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 7.5))));
+            List<ItemStack> aBoards = new ArrayList<>();
+            for (int i = amountOfBoards; i > 64; i -= 64) {
+                aBoards.add(ItemList.Circuit_Board_Exotic_Membrane.get(i));
+                amountOfBoards -= 64;
+            }
+            aBoards.add(ItemList.Circuit_Board_Exotic_Membrane.get(amountOfBoards));
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    PCBFactoryManager.getPlasticMaterialFromTier(tier)
+                        .getPlates(1),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Ichorium, (long) (16 * (Math.sqrt(tier - 7)))),
+                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFoil((int) (16 * (Math.sqrt(tier - 7)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SixPhasedCopper, (long) (16 * (Math.sqrt(tier - 7)))))
+                .circuit(2)
+                .fluidInputs(
+                    Materials.PrismaticAcid.getFluid((long) (500 * (Math.sqrt(tier - 7)))),
+                    GGMaterial.naquadahGas.getFluidOrGas((int) (1500 * (Math.sqrt(tier - 7)))),
+                    Materials.Bedrockium.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 7)))))
+                .itemOutputs(aBoards.toArray(new ItemStack[0]))
+                .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
+                .eut((int) GTValues.VP[tier + 1] * 3 / 4)
+                .metadata(TIER, 2)
+                .metadata(PCB_NANITE_MATERIAL, Materials.Silver)
+                .addTo(RecipeMaps.pcbFactoryRecipes);
+        }
+        for (int tier = 8; tier <= PCBFactoryManager.mTiersOfPlastics; tier++) {
+            int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 7))));
+            List<ItemStack> aBoards = new ArrayList<>();
+            for (int i = amountOfBoards; i > 64; i -= 64) {
+                aBoards.add(ItemList.Circuit_Board_Exotic_Membrane.get(i));
+                amountOfBoards -= 64;
+            }
+            aBoards.add(ItemList.Circuit_Board_Exotic_Membrane.get(amountOfBoards));
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    PCBFactoryManager.getPlasticMaterialFromTier(tier)
+                        .getPlates(1),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Ichorium, (long) (16 * (Math.sqrt(tier - 7)))),
+                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFoil((int) (16 * (Math.sqrt(tier - 7)))),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.SixPhasedCopper, (long) (16 * (Math.sqrt(tier - 7)))))
+                .circuit(3)
+                .fluidInputs(
+                    Materials.PrismaticAcid.getFluid((long) (500 * (Math.sqrt(tier - 7)))),
+                    GGMaterial.naquadahGas.getFluidOrGas((int) (1500 * (Math.sqrt(tier - 7)))),
+                    Materials.Bedrockium.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 7)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)

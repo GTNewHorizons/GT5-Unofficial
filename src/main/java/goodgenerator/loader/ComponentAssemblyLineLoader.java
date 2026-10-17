@@ -1503,7 +1503,8 @@ public class ComponentAssemblyLineLoader {
     /**
      * UIV Special Rule:
      * Proto-Halkonite parts are reduced to their composite parts:
-     * - Create two recipes, one for Infinity, one for Creon + Mellion (50% each)
+     * - Create recipes for Infinity, for Creon + Mellion (50% each), and for Exo-Halkonite (quarter base, half the
+     * Creon/Mellion)
      * - Include the Superfluid cost from the Vacuum Freezer step
      * - Drop the Super Coolant cost from the Vacuum Freezer step
      */
@@ -1538,6 +1539,25 @@ public class ComponentAssemblyLineLoader {
                 MoltenProtoHalkoniteBase.getFluid(24 * STACKS),
                 Creon.getMolten(24 * STACKS),
                 Mellion.getMolten(24 * STACKS),
+                TranscendentMetal.getMolten(16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
+                TengamPurified.getMolten(12 * STACKS),
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+            .duration(40 * MINUTES)
+            .eut(RECIPE_UEV)
+            .metadata(COAL_CASING_TIER, COAL_UIV)
+            .addTo(componentAssemblyLineRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemOutputs(Electric_Motor_UIV.get(64))
+            .itemInputsUnsafe(
+                get(cableGt16, NetherStar, 24))
+            .circuit(MOTOR_CIRCUIT)
+            .fluidInputs(
+                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                DimensionallyShiftedSuperfluid.getFluid(32 * STACKS + 53 * INGOTS + 3 * NUGGETS),
+                MoltenExoHalkoniteBase.getFluid(6 * STACKS),
+                Creon.getMolten(12 * STACKS),
+                Mellion.getMolten(12 * STACKS),
                 TranscendentMetal.getMolten(16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 TengamPurified.getMolten(12 * STACKS),
                 CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
@@ -1710,6 +1730,28 @@ public class ComponentAssemblyLineLoader {
                 MoltenProtoHalkoniteBase.getFluid(24 * STACKS),
                 Creon.getMolten(24 * STACKS),
                 Mellion.getMolten(24 * STACKS),
+                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+            .duration(40 * MINUTES)
+            .eut(RECIPE_UEV)
+            .metadata(COAL_CASING_TIER, COAL_UIV)
+            .addTo(componentAssemblyLineRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemOutputs(Field_Generator_UIV.get(64))
+            .itemInputsUnsafe(
+                get(frameGt, TranscendentMetal, 48),
+                get(plateDense, TranscendentMetal, 32),
+                get(NuclearStar, 48),
+                get(Emitter_UIV, 192),
+                get(wrapCircuit, UMV, 12),
+                get(cableGt16, NetherStar, 96))
+            .circuit(FIELD_GENERATOR_CIRCUIT)
+            .fluidInputs(
+                MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
+                DimensionallyShiftedSuperfluid.getFluid(12 * STACKS),
+                MoltenExoHalkoniteBase.getFluid(6 * STACKS),
+                Creon.getMolten(12 * STACKS),
+                Mellion.getMolten(12 * STACKS),
                 CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)

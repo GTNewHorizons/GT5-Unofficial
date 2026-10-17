@@ -264,7 +264,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             Materials.GrowthMediumSterilized.mFluid,
             Materials.BioMediumSterilized.mFluid,
             Materials.PrismaticAcid.mFluid,
-            Materials.UUMatter.mFluid));
+            Materials.UUMatter.mFluid,
+            Materials.ExcitedDTEC.mFluid));
 
     @NotNull
     @Override
@@ -304,6 +305,11 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 5
             && !storedFluidStack.isFluidEqual(Materials.UUMatter.getFluid(0))) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 6
+            && !storedFluidStack.isFluidEqual(Materials.ExcitedDTEC.getFluid(0))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -382,6 +388,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                         impurityFluidStack = Materials.PrismaticGas.getFluid(0);
                     } else if (storedFluidStack.isFluidEqual(Materials.UUMatter.getFluid(0))) {
                         impurityFluidStack = Materials.UUAmplifier.getFluid(0);
+                    } else if (storedFluidStack.isFluidEqual(Materials.ExcitedDTEC.getFluid(0))) {
+                        impurityFluidStack = Materials.DTEC.getFluid(0);
                     }
                 }
             }

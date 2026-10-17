@@ -55,6 +55,10 @@ public enum CircuitComponent {
         6,
         "gt.circuitcomponent.wireinfinity",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 1)),
+    WireExoHalkonite(
+        19,
+        "gt.circuitcomponent.wireexohalkonite",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.ExoHalkonite, 1)),
     WireHypogen(
         7,
         "gt.circuitcomponent.wirehypogen",
@@ -111,6 +115,7 @@ public enum CircuitComponent {
     ProcessedWireSpacetime(104, "gt.circuitcomponent.processed.wirespacetime", () -> WireSpacetime, true),
     ProcessedCableOpticalFiber(105, "gt.circuitcomponent.cable.processed.opticalfiber", () -> CableOpticalFiber, true),
     ProcessedWireInfinity(106, "gt.circuitcomponent.processed.wireinfinity", () -> WireInfinity, true),
+    ProcessedWireExoHalkonite(119, "gt.circuitcomponent.processed.wireexohalkonite", () -> WireExoHalkonite, true),
     ProcessedWireHypogen(107, "gt.circuitcomponent.processed.wirehypogen", () -> WireHypogen, true),
     ProcessedWireMagMatter(108, "gt.circuitcomponent.processed.wiremagmatter", () -> WireMagMatter, true),
     ProcessedWireCopper(109, "gt.circuitcomponent.processed.wirecopper", () -> WireCopper, true),
@@ -200,7 +205,10 @@ public enum CircuitComponent {
         403,
         "gt.circuitcomponent.board.optical",
         () -> ItemList.Circuit_Board_Optical.get(1)),
-    // id 404 unused
+    BoardExotic(
+        404,
+        "gt.circuitcomponent.board.exotic",
+        () -> ItemList.Circuit_Board_Exotic.get(1)),
     BioProcessingUnit(
         405,
         "gt.circuitcomponent.bioprocessingunit",
@@ -217,7 +225,7 @@ public enum CircuitComponent {
     ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", () -> BoardWetwareLifesupport, true),
     ProcessedBoardBioMutated(502, "gt.circuitcomponent.processed.board.biomutated", () -> BoardBioMutated, true),
     ProcessedBoardOptical(503, "gt.circuitcomponent.processed.board.optical", () -> BoardOptical, true),
-    // id 504 unused
+    ProcessedBoardExotic(504, "gt.circuitcomponent.processed.board.exotic",()-> BoardExotic,true),
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
     ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
     UnattunedCircuitry(507,"gt.circuitcomponent.unattunedcircuitry", null, true),
@@ -247,7 +255,14 @@ public enum CircuitComponent {
         604,
         "gt.circuitcomponent.chipasoc",
         () -> ItemList.Circuit_Chip_SoC2.get(1)),
-    // id 605, 606 unused
+    ChipFPIC(
+        605,
+        "gt.circuitcomponent.chipfpic",
+        () -> ItemList.Circuit_Chip_FPIC.get(1)),
+    ChipBiocell(
+        606,
+        "gt.circuitcomponent.chipbiocell",
+        () -> ItemList.Circuit_Chip_Biocell.get(1)),
     ChipAttoPIC(
         607,
         "gt.circuitcomponent.chipattopic",
@@ -270,7 +285,8 @@ public enum CircuitComponent {
     ProcessedChipNOR(702, "gt.circuitcomponent.processed.chipnor", () -> ChipNOR, true),
     ProcessedChipNAND(703, "gt.circuitcomponent.processed.chipnand", () -> ChipNAND, true),
     ProcessedChipASOC(704, "gt.circuitcomponent.processed.chipasoc", () -> ChipASOC, true),
-    // id 705, 706 unused
+    ProcessedChipFPIC(705, "gt.circuitcomponent.processed.chipfpic", () -> ChipFPIC, true),
+    // id 706 unused
     ProcessedChipAttoPIC(707, "gt.circuitcomponent.processed.chipattopic", () -> ChipAttoPIC, true),
     ProcessedChipZeptoPIC(708, "gt.circuitcomponent.processed.chipzeptopic", () -> ChipZeptoPIC, true),
     ProcessedChipYoctoPIC(709, "gt.circuitcomponent.processed.chipyoctopic", () -> ChipYoctoPIC, true),
@@ -291,6 +307,10 @@ public enum CircuitComponent {
         803,
         "gt.circuitcomponent.chiprawadvancedcrystal",
         () -> ItemList.Circuit_Chip_CrystalSoC2.get(1)),
+    CrystalPerfected(
+        804,
+        "gt.circuitcomponent.crystalperfected",
+        () -> ItemList.Circuit_CrystalPerfected.get(1)),
 
     // id 900 unused
     ProcessedChipCrystalSoC(901, "gt.circuitcomponent.processed.chipcrystalsoc", () -> ChipCrystalSoC, true),
@@ -372,12 +392,17 @@ public enum CircuitComponent {
         1404,
         "gt.circuitcomponent.frame.magmatter",
         () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 1)),
+    FrameboxAstralTitanium(
+        1405,
+        "gt.circuitcomponent.frame.astraltitanium",
+        () -> MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFrameBox(1)),
 
     ProcessedFrameboxAluminium(1500, "gt.circuitcomponent.processed.frame.aluminium", () -> FrameboxAluminium, true),
     ProcessedFrameboxTritanium(1501, "gt.circuitcomponent.processed.frame.tritanium", () -> FrameboxTritanium, true),
     ProcessedFrameboxCelestialTungsten(1502, "gt.circuitcomponent.processed.frame.celestialtungsten", () -> FrameboxCelestialTungsten, true),
     ProcessedFrameboxHypogen(1503, "gt.circuitcomponent.processed.frame.hypogen", () -> FrameboxHypogen, true),
     ProcessedFrameboxMagMatter(1504, "gt.circuitcomponent.processed.frame.magmatter", () -> FrameboxMagMatter, true),
+    ProcessedFrameboxAstralTitanium(1505, "gt.circuitcomponent.processed.frame.astraltitanium", () -> FrameboxAstralTitanium, true),
 
     // Foils
     // IDs: 1600-1699 CC, 1700-1799 PC
@@ -405,6 +430,10 @@ public enum CircuitComponent {
         1605,
         "gt.circuitcomponent.sheet.eternity",
         () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials.Eternity, 1)),
+    FoilKevlar(
+        1606,
+        "gt.circuitcomponent.sheet.kevlar",
+        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials.Kevlar, 1)),
 
     ProcessedFoilSiliconeRubber(1700, "gt.circuitcomponent.sheet.processed.siliconerubber", () -> FoilSiliconeRubber, true),
     ProcessedFoilPolybenzimidazole(1701, "gt.circuitcomponent.sheet.processed.polybenzimidazole", () -> FoilPolybenzimidazole, true),
@@ -412,6 +441,7 @@ public enum CircuitComponent {
     ProcessedFoilShirabon(1703, "gt.circuitcomponent.sheet.processed.shirabon", () -> FoilShirabon, true),
     ProcessedFoilStyreneRubber(1704, "gt.circuitcomponent.sheet.processed.styrenerubber", () -> FoilStyreneRubber, true),
     ProcessedFoilEternity(1705, "gt.circuitcomponent.sheet.processed.eternity", () -> FoilEternity, true),
+    ProcessedFoilKevlar(1706, "gt.circuitcomponent.sheet.processed.kevlar", () -> FoilKevlar, true),
 
     // Circuit encasement, item combinations, and specialty items
     // IDs: 1800-1899
@@ -468,6 +498,10 @@ public enum CircuitComponent {
     BundledStellarHarmonyWire(1836, "gt.circuitcomponent.planck.processed.bundledharmony", null, true),
 
     CalabiYauManifold(1837, "gt.circuitcomponent.planck.processed.calabiyaumanifold", () -> ItemList.CalabiYauManifold.get(1)),
+
+    // Exotic Chain
+    OrganizedExoticMainframe(1838, "gt.circuitcomponent.quantum.processed.organizedexoticmainframe", null, true),
+    ExoticMainframeRack(1839, "gt.circuitcomponent.quantum.processed.exoticmainframerack", null, true),
 
     // Bolts and other small components
     // IDs: 1900-1999 CC, 2000-2099 PC
@@ -587,6 +621,13 @@ public enum CircuitComponent {
         1928,
         "gt.circuitcomponent.bolt.hexanite",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Hexanite, 1)),
+    BoltMysteriousCrystal(1929, "gt.circuitcomponent.bolt.mysteriouscrystal", ()-> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.MysteriousCrystal, 1)),
+    ScrewSuperconductorUEVBase(1930, "gt.circuitcomponent.screw.superconductoruevbase", ()-> GTOreDictUnificator.get(OrePrefixes.screw, Materials.SuperconductorUEVBase, 1)),
+    StickTengamAttuned(1931, "gt.circuitcomponent.stick.tengamattuned", ()-> GTOreDictUnificator.get(OrePrefixes.stick, Materials.TengamAttuned, 1)),
+    EnergisedTesseract(1932, "gt.circuitcomponent.energisedtesseract", ()-> ItemList.EnergisedTesseract.get(1)),
+    BoltQuantum(1933, "gt.circuitcomponent.bolt.quantum", ()-> MaterialsAlloy.QUANTUM.getBolt(1)),
+
+
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
@@ -602,6 +643,9 @@ public enum CircuitComponent {
     ProcessedBoltRedAlloy(2011, "gt.circuitcomponent.bolt.processed.redalloy", () -> BoltRedAlloy, true),
     ProcessedBoltPlatinum(2012, "gt.circuitcomponent.bolt.processed.platinum", () -> BoltPlatinum, true),
     ProcessedBoltNiobiumTitanium(2013, "gt.circuitcomponent.bolt.processed.niobiumtitanium", () -> BoltNiobiumTitanium, true),
+    ProcessedBoltMysteriousCrystal(2029,"gt.circuitcomponent.bolt.processed.mysteriouscrystal",()->BoltMysteriousCrystal,true),
+    ProcessedBoltQuantum(2033,"gt.circuitcomponent.bolt.processed.quantum",()->BoltQuantum,true),
+
 
     // Circuits
     // IDs: 2100-2199
@@ -695,6 +739,43 @@ public enum CircuitComponent {
     IntegratedProcessor(2123, "gt.circuitcomponent.integratedprocessor", () -> ItemList.Circuit_Processor.get(1), CircuitCalibration.PRIMITIVE, 0),
     NanoProcessor(2124, "gt.circuitcomponent.nanoprocessor", () -> ItemList.Circuit_Nanoprocessor.get(1), CircuitCalibration.PRIMITIVE, 0),
     QuantumProcessor(2125, "gt.circuitcomponent.quantumprocessor", () -> ItemList.Circuit_Quantumprocessor.get(1), CircuitCalibration.PRIMITIVE, 0),
+
+    // Exotic chain
+    ExoticProcessor(
+        2126,
+        "gt.circuitcomponent.exoticprocessor",
+        () -> ItemList.Circuit_ExoticProcessor.get(1), CircuitCalibration.EXOTIC,0.125f),
+    ExoticAssembly(
+        2127,
+        "gt.circuitcomponent.exoticassembly",
+        () -> ItemList.Circuit_ExoticAssembly.get(1), CircuitCalibration.EXOTIC,0.25f),
+    ExoticComputer(
+        2128,
+        "gt.circuitcomponent.exoticcomputer",
+        () -> ItemList.Circuit_ExoticComputer.get(1), CircuitCalibration.EXOTIC,0.5f),
+    ExoticMainframe(
+        2129,
+        "gt.circuitcomponent.exoticmainframe",
+        () -> ItemList.Circuit_ExoticMainframe.get(1), CircuitCalibration.EXOTIC,1),
+    SingularCasing(2134,"gt.circuitcomponent.casing.singular", CircuitCalibration.EXOTIC, 0),
+    MajoranaZeroMode(2135,"gt.circuitcomponent.majoranazeromode", CircuitCalibration.EXOTIC, 0),
+    DecoherentOpticalCPU(2136,"gt.circuitcomponent.decoherentopticalcpu", CircuitCalibration.EXOTIC, 0),
+    QuantumEntangledComputationUnit(
+        2137,
+        "gt.circuitcomponent.quantumentangledcomputationunit",
+        () -> ItemList.QuantumEntangledComputationUnit.get(1), CircuitCalibration.EXOTIC,0),
+    SingularityTolerantCacheMatrix(
+        2138,
+        "gt.circuitcomponent.singularitytolerantcachematrix",
+        () -> ItemList.SingularityTolerantCacheMatrix.get(1), CircuitCalibration.EXOTIC,0),
+    CasimirContainer(
+        2140,
+        "gt.circuitcomponent.casimircontainer",
+        () -> ItemList.CasimirContainer.get(1), CircuitCalibration.EXOTIC,0),
+    DecoherenceLattice(
+        2141,
+        "gt.circuitcomponent.decoherencelattice",
+        () -> ItemList.DecoherenceLattice.get(1), CircuitCalibration.EXOTIC,0)
 
     ;
 

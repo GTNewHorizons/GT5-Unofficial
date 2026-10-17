@@ -11,5 +11,12 @@ such as {gold}unlocking new module types{gray}, {gold}increasing heat levels {gr
 {gold}various processing speed bonuses{gray}. These upgrades can be unlocked by reaching
 certain milestones and/or spending materials
 {aqua:{hr:73}}
+The beam shaft is lined with {gold}Proto-Halkonite siphon reinforcement rings{gray} which hold
+the structure together under extreme heat. Driving the Forge hotter than {red}25,000K {gray}without
+first researching {gold}Exo-Halkonite Siphon Reinforcement {gray}will fracture every ring and shut
+the Forge down. Fractured rings drop nothing - the scrap must be melted into {gold}Sintered Halkonite
+Clumps {gray}in an arc furnace, reforged from {gold}Exo-Halkonite{gray}, and the structure rebuilt
+and refreshed by hand
+{aqua:{hr:73}}
 {green}Clicking on the logo in the controller gui opens an extensive information window{gray},
 explaining everything there is to know about this multiblock

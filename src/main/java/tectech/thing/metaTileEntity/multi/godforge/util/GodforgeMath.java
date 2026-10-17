@@ -301,6 +301,8 @@ public class GodforgeMath {
 
     public static boolean allowModuleConnection(MTEBaseModule module, ForgeOfGodsData data) {
 
+        if (data.isOverheatLockout()) return false;
+
         if (module instanceof MTEMoltenModule && data.isUpgradeActive(FDIM)) {
             return true;
         }

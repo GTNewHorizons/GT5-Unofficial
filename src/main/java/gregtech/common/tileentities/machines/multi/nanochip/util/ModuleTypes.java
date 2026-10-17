@@ -36,6 +36,8 @@ public enum ModuleTypes {
 
     WireTracer("GT5U.tooltip.nac.module.wire_tracer.name", () -> ItemList.NanoChipModule_WireTracer.get(1)),
 
+    ExoticEntangleEngine("GT5U.tooltip.nac.module.exotic_entangle_engine.name", () -> ItemList.NanoChipModule_ExoticEntangleEngine.get(1)),
+
     ;
     // spotless:on
 

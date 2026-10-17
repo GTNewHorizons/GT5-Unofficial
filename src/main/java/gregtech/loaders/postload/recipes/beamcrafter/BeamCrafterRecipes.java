@@ -357,6 +357,7 @@ public class BeamCrafterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
+            .circuit(1)
             .itemOutputs(ItemList.EnergisedTesseract.get(1))
             .metadata(
                 BEAMCRAFTER_METADATA,
@@ -403,6 +404,25 @@ public class BeamCrafterRecipes implements Runnable {
             .duration(2 * SECONDS)
             .addTo(beamcrafterRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Circuit_Board_Exotic_Membrane.get(16),
+                ItemList.Circuit_Chip_Optical.get(8),
+                ItemList.Tesseract.get(1),
+                ItemList.StableAdhesive.get(16))
+            .fluidInputs(Materials.TengamPurified.getMolten(16 * INGOTS))
+            .itemOutputs(ItemList.Circuit_Board_Exotic.get(8))
+            .metadata(
+                BEAMCRAFTER_METADATA,
+                BeamCrafterMetadata.builder()
+                    .particleID_A(GRAVITON.getId())
+                    .particleID_B(ELECTRON.getId())
+                    .amount_A(10)
+                    .amount_B(100)
+                    .build())
+            .eut(TierEU.RECIPE_UIV)
+            .duration(5 * SECONDS)
+            .addTo(beamcrafterRecipes);
     }
 
 }

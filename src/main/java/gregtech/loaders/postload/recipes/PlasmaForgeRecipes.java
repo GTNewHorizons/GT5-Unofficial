@@ -176,5 +176,30 @@ public class PlasmaForgeRecipes implements Runnable {
             .metadata(COIL_HEAT, 13500)
             .addTo(plasmaForgeRecipes);
 
+        // Molten Exo-Halkonite Base
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Sintered_Halkonite_Clump.get(1))
+            .fluidInputs(
+                MaterialsElements.STANDALONE.DRAGON_METAL.getFluidStack(144),
+                new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 2_304),
+                Materials.ExcitedDTEC.getFluid(257))
+            .fluidOutputs(Materials.MoltenExoHalkoniteBase.getFluid(4_608))
+            .duration(60 * SECONDS)
+            .eut((int) TierEU.RECIPE_UMV)
+            .metadata(COIL_HEAT, 13500)
+            .addTo(plasmaForgeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Sintered_Halkonite_Clump.get(1))
+            .fluidInputs(
+                MaterialsElements.STANDALONE.DRAGON_METAL.getFluidStack(144),
+                new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 2_304),
+                Materials.ExcitedDTRC.getFluid(514))
+            .fluidOutputs(Materials.MoltenExoHalkoniteBase.getFluid(4_608))
+            .duration(60 * SECONDS)
+            .eut((int) TierEU.RECIPE_UMV)
+            .metadata(COIL_HEAT, 12600)
+            .addTo(plasmaForgeRecipes);
+
     }
 }

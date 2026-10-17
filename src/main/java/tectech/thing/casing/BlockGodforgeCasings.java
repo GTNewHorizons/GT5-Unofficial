@@ -1,5 +1,6 @@
 package tectech.thing.casing;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -7,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
@@ -25,8 +27,14 @@ public class BlockGodforgeCasings extends BlockCasingsAbstract {
     private static IIcon GravitonModulatorT2;
     private static IIcon GravitonModulatorT3;
     private static IIcon PhononConduit;
+    private static IIcon ProtoHalkoniteSiphon;
+    private static IIcon ProtoHalkoniteSiphonCracked;
 
     private static final byte START_INDEX = 64;
+
+    public static final int PROTO_HALKONITE_SIPHON_META = 9;
+    /** Not part of any structure. */
+    public static final int PROTO_HALKONITE_SIPHON_CRACKED_META = 10;
 
     public BlockGodforgeCasings() {
         super(ItemCasingsGodforge.class, "gt.godforgecasing", MaterialCasings.INSTANCE);
@@ -43,6 +51,9 @@ public class BlockGodforgeCasings extends BlockCasingsAbstract {
         CustomItemList.Godforge_GravitonFlowModulatorTier2.set(new ItemStack(this, 1, 6));
         CustomItemList.Godforge_GravitonFlowModulatorTier3.set(new ItemStack(this, 1, 7));
         CustomItemList.Godforge_HarmonicPhononTransmissionConduit.set(new ItemStack(this, 1, 8));
+        CustomItemList.Godforge_ProtoHalkoniteSiphonCasing.set(new ItemStack(this, 1, PROTO_HALKONITE_SIPHON_META));
+        CustomItemList.Godforge_ProtoHalkoniteSiphonCasingCracked
+            .set(new ItemStack(this, 1, PROTO_HALKONITE_SIPHON_CRACKED_META));
     }
 
     @Override
@@ -56,6 +67,9 @@ public class BlockGodforgeCasings extends BlockCasingsAbstract {
         GravitonModulatorT2 = aIconRegister.registerIcon("gregtech:iconsets/GRAVITON_CASING_1");
         GravitonModulatorT3 = aIconRegister.registerIcon("gregtech:iconsets/GRAVITON_CASING_0");
         PhononConduit = aIconRegister.registerIcon("gregtech:iconsets/PHONON_CONDUIT");
+        ProtoHalkoniteSiphon = aIconRegister.registerIcon("gregtech:iconsets/GODFORGE_PROTOHALKONITE_SIPHON");
+        ProtoHalkoniteSiphonCracked = aIconRegister
+            .registerIcon("gregtech:iconsets/GODFORGE_PROTOHALKONITE_SIPHON_CRACKED");
     }
 
     @Override
@@ -88,14 +102,26 @@ public class BlockGodforgeCasings extends BlockCasingsAbstract {
                 return GravitonModulatorT3;
             case 8:
                 return PhononConduit;
+            case PROTO_HALKONITE_SIPHON_META:
+                return ProtoHalkoniteSiphon;
+            case PROTO_HALKONITE_SIPHON_CRACKED_META:
+                return ProtoHalkoniteSiphonCracked;
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         }
     }
 
     @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        if (metadata == PROTO_HALKONITE_SIPHON_CRACKED_META) {
+            return new ArrayList<>();
+        }
+        return super.getDrops(world, x, y, z, metadata, fortune);
+    }
+
+    @Override
     public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> aList) {
-        for (int i = 0; i <= 8; i++) {
+        for (int i = 0; i <= PROTO_HALKONITE_SIPHON_CRACKED_META; i++) {
             aList.add(new ItemStack(item, 1, i));
         }
     }

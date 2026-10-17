@@ -1083,6 +1083,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials QuarkGluonPlasma;
     public static Materials PhononMedium;
     public static Materials PhononCrystalSolution;
+    public static Materials ZeroEntropyCoolantSolvent;
+    public static Materials ZeroEntropyCoolant;
     public static Materials SixPhasedCopper;
     public static Materials Mellion;
     public static Materials Creon;

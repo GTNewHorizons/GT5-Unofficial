@@ -321,6 +321,48 @@ public class FluidSolidifierRecipes implements Runnable {
             .addTo(fluidSolidifierRecipes);
 
         this.HexaniteRecipes();
+        this.exoHalkoniteRecipes();
+    }
+
+    /** Like Proto-Halkonite's chemical bath, but in a solidifier at a 1:1 ratio. Castings come out hot. */
+    private void exoHalkoniteRecipes() {
+        this.addExoHalkonitePartRecipe(OrePrefixes.frameGt, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.ingot, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.plate, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.plateDouble, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.plateDense, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.stick, 2);
+        this.addExoHalkonitePartRecipe(OrePrefixes.round, 8);
+        this.addExoHalkonitePartRecipe(OrePrefixes.bolt, 8);
+        this.addExoHalkonitePartRecipe(OrePrefixes.screw, 8);
+        this.addExoHalkonitePartRecipe(OrePrefixes.ring, 4);
+        this.addExoHalkonitePartRecipe(OrePrefixes.foil, 8);
+        this.addExoHalkonitePartRecipe(OrePrefixes.gearGtSmall, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.rotor, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.stickLong, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.gearGt, 1);
+        this.addExoHalkonitePartRecipe(OrePrefixes.wireFine, 8);
+    }
+
+    private void addExoHalkonitePartRecipe(OrePrefixes prefix, final int multiplier) {
+
+        final int partFraction = (int) (prefix.getMaterialAmount() * INGOTS / M);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials.Creon, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.HotExoHalkonite, multiplier))
+            .fluidInputs(Materials.MoltenExoHalkoniteBase.getFluid((long) partFraction * multiplier))
+            .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(fluidSolidifierRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials.Mellion, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.HotExoHalkonite, multiplier))
+            .fluidInputs(Materials.MoltenExoHalkoniteBase.getFluid((long) partFraction * multiplier))
+            .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(fluidSolidifierRecipes);
     }
 
     private void HexaniteRecipes() {

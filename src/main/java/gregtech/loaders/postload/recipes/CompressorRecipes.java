@@ -312,6 +312,24 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Creon, 1))
+            .fluidInputs(Materials.MoltenExoHalkoniteBase.getFluid(64 * INGOTS))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.HotExoHalkonite, 1))
+            .metadata(COMPRESSION_TIER, 2)
+            .duration(45 * SECONDS / 4)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Mellion, 1))
+            .fluidInputs(Materials.MoltenExoHalkoniteBase.getFluid(64 * INGOTS))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.HotExoHalkonite, 1))
+            .metadata(COMPRESSION_TIER, 2)
+            .duration(45 * SECONDS / 4)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.NuclearStar.get(64L))
             .fluidInputs(Materials.CosmicNeutronium.getPlasma(64 * INGOTS))
             .itemOutputs(ItemList.PseudoStar.get(4L))

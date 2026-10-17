@@ -6,6 +6,7 @@ import static gregtech.api.casing.Casings.BoundlessGravitationallySeveredStructu
 import static gregtech.api.casing.Casings.CelestialMatterGuidanceCasing;
 import static gregtech.api.casing.Casings.CentralGravitonFlowModulator;
 import static gregtech.api.casing.Casings.MedialGravitonFlowModulator;
+import static gregtech.api.casing.Casings.ProtoHalkoniteStellarSiphonCasing;
 import static gregtech.api.casing.Casings.RemoteGravitonFlowModulator;
 import static gregtech.api.casing.Casings.SingularityReinforcedStellarShieldingCasing;
 import static gregtech.api.casing.Casings.SpatiallyTranscendentGravitationalLens;
@@ -88,12 +89,14 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
 import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.TileEntityForgeOfGods;
+import tectech.thing.casing.BlockGodforgeCasings;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
@@ -118,6 +121,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     protected static final String STRUCTURE_PIECE_SECOND_RING_AIR = "second_ring_air";
     protected static final String STRUCTURE_PIECE_THIRD_RING = "third_ring";
     protected static final String STRUCTURE_PIECE_THIRD_RING_AIR = "third_ring_air";
+    protected static final String STRUCTURE_PIECE_SIPHON_RINGS = "siphon_rings";
+
+    private static final int SIPHON_FRACTURE_HEAT = 25000;
     private static final String SCANNER_INFO_BAR = EnumChatFormatting.BLUE.toString() + EnumChatFormatting.STRIKETHROUGH
         + "--------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
@@ -187,6 +193,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         .addShape(STRUCTURE_PIECE_SECOND_RING_AIR, ForgeOfGodsRingsStructureString.SECOND_RING_AIR)
         .addShape(STRUCTURE_PIECE_THIRD_RING, ForgeOfGodsRingsStructureString.THIRD_RING)
         .addShape(STRUCTURE_PIECE_THIRD_RING_AIR, ForgeOfGodsRingsStructureString.THIRD_RING_AIR)
+        .addShape(STRUCTURE_PIECE_SIPHON_RINGS, ForgeOfGodsStructureString.SIPHON_RINGS_FRACTURE)
         .addElement(
             'A',
             HatchElementBuilder.<MTEForgeOfGods>builder()
@@ -211,6 +218,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 .buildAndChain(GodforgeCasings, 0))
         .addElement('K', ofBlock(GodforgeCasings, 6))
         .addElement('L', isAir())
+        .addElement('M', ofBlock(GodforgeCasings, BlockGodforgeCasings.PROTO_HALKONITE_SIPHON_META))
+        .addElement('N', ofBlock(GodforgeCasings, BlockGodforgeCasings.PROTO_HALKONITE_SIPHON_CRACKED_META))
         .build();
 
     public MTEForgeOfGods(int aID, String aName, String aNameRegional) {
@@ -437,9 +446,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 if (!moduleHatches.isEmpty() && data.getInternalBattery() > 0
                     && moduleHatches.size() <= maxModuleCount) {
                     for (MTEBaseModule module : moduleHatches) {
+                        // Heat is tracked even while a fracture keeps the module offline, so cooling the
+                        // forge can lift the overheat lockout
+                        calculateMaxHeatForModules(module, data);
                         if (allowModuleConnection(module, data)) {
                             module.connect();
-                            calculateMaxHeatForModules(module, data);
                             // parallel depend on heat
                             calculateMaxParallelForModules(module, data);
                             // speed bonus depend on max parallel and heat
@@ -462,6 +473,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                         module.disconnect();
                     }
                 }
+                checkSiphonOverheat();
                 if (mEfficiency < 0) mEfficiency = 0;
                 endRecipeProcessing();
             }
@@ -470,6 +482,39 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 sendLoopStart((byte) 1);
             }
         }
+    }
+
+    private void checkSiphonOverheat() {
+        if (data.isUpgradeActive(EHSR)) return;
+        if (isSiphonOverheated()) {
+            // The lockout latches the fracture, so a running forge only shatters once per overheat
+            if (!data.isOverheatLockout()) fractureSiphonRings();
+        } else if (data.isOverheatLockout() && mMachine && isAllowedToWork()) {
+            // A cooled forge that the player has switched back on lets its modules come online again
+            data.setOverheatLockout(false);
+        }
+    }
+
+    private boolean isSiphonOverheated() {
+        for (MTEBaseModule module : moduleHatches) {
+            if (module.getHeat() > SIPHON_FRACTURE_HEAT) return true;
+        }
+        return false;
+    }
+
+    private void fractureSiphonRings() {
+        buildPiece(STRUCTURE_PIECE_SIPHON_RINGS, null, false, 63, 14, 1);
+        data.setOverheatLockout(true);
+        for (MTEBaseModule module : moduleHatches) {
+            module.disconnect();
+        }
+        stopMachine(ShutDownReasonRegistry.FOG_SIPHON_OVERHEAT);
+    }
+
+    public void restartForge() {
+        if (!data.isOverheatLockout() || !mMachine) return;
+        data.setOverheatLockout(false);
+        enableWorking();
     }
 
     private void drainFuel() {
@@ -823,6 +868,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addCasing("272", CelestialMatterGuidanceCasing.getLocalizedName(), false)
             .addCasing("130", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
             .addCasing("36", StellarEnergySiphonCasing.getLocalizedName(), false)
+            .addCasing("288", ProtoHalkoniteStellarSiphonCasing.getLocalizedName(), false)
             .addCasing("9", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
             .addMiscHatch("0-8", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"), StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"), 2)
             .addStructureInfo("")

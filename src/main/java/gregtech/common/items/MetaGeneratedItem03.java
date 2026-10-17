@@ -33,6 +33,7 @@ import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Blossoming_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Calabi_Yau_Manifold;
+import static gregtech.common.items.IDMetaItem03.CasimirContainer;
 import static gregtech.common.items.IDMetaItem03.Circuit_AdvancedIntegrated;
 import static gregtech.common.items.IDMetaItem03.Circuit_BasicElectronic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
@@ -45,6 +46,7 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Board_Coated_Basic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Cosmic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Epoxy_Advanced;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Exotic;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Exotic_Membrane;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Fiberglass_Advanced;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Multifiberglass_Elite;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Optical;
@@ -89,9 +91,13 @@ import static gregtech.common.items.IDMetaItem03.Circuit_CosmicAssembly;
 import static gregtech.common.items.IDMetaItem03.Circuit_CosmicComputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_CosmicMainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_CosmicProcessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_CrystalPerfected;
+import static gregtech.common.items.IDMetaItem03.Circuit_CrystalPerfected_Raw;
+import static gregtech.common.items.IDMetaItem03.Circuit_CrystalPerfected_Seed;
 import static gregtech.common.items.IDMetaItem03.Circuit_Crystalcomputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_Crystalmainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Crystalprocessor;
+import static gregtech.common.items.IDMetaItem03.Circuit_DarkMatter_Unit;
 import static gregtech.common.items.IDMetaItem03.Circuit_Elitenanocomputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_ExoticAssembly;
 import static gregtech.common.items.IDMetaItem03.Circuit_ExoticComputer;
@@ -180,10 +186,12 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_ZPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wetwarecomputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wetwaremainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wetwaresupercomputer;
+import static gregtech.common.items.IDMetaItem03.Coolant_Containment_Field;
 import static gregtech.common.items.IDMetaItem03.Cover_Metrics_Transmitter;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
+import static gregtech.common.items.IDMetaItem03.DecoherenceLattice;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
@@ -276,6 +284,7 @@ import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
 import static gregtech.common.items.IDMetaItem03.Prismatic_Crystal;
 import static gregtech.common.items.IDMetaItem03.PseudoStar;
 import static gregtech.common.items.IDMetaItem03.Pulsating_WDM_Strands;
+import static gregtech.common.items.IDMetaItem03.QuantumEntangledComputationUnit;
 import static gregtech.common.items.IDMetaItem03.Quark_Catalyst_Housing;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Charm;
@@ -288,6 +297,8 @@ import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naqua
 import static gregtech.common.items.IDMetaItem03.Raw_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Realized_Quantum_Circuit_Rack;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.SingularityTolerantCacheMatrix;
+import static gregtech.common.items.IDMetaItem03.Sintered_Halkonite_Clump;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
 import static gregtech.common.items.IDMetaItem03.StableBosonContainmentUnit;
@@ -307,6 +318,7 @@ import static gregtech.common.items.IDMetaItem03.UV_Coil;
 import static gregtech.common.items.IDMetaItem03.UXV_Coil;
 import static gregtech.common.items.IDMetaItem03.Unbound_WDM_Strands;
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
+import static gregtech.common.items.IDMetaItem03.YangMillsMask;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
 import java.util.List;
@@ -1220,6 +1232,84 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.circuit_board.transcendent.tooltip",
                     o))
             .setRender(new InfinityMetaItemRenderer());
+
+        // Exotic circuit parts
+        ItemList.Circuit_Board_Exotic_Membrane.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Exotic_Membrane.ID,
+                "gt.item.circuit_board.exotic_membrane.name",
+                "gt.item.circuit_board.exotic_membrane.tooltip",
+                o));
+        ItemList.Circuit_CrystalPerfected_Seed.set(
+            addItemWithLocalizationKeys(
+                Circuit_CrystalPerfected_Seed.ID, // No texture
+                "gt.item.circuit_crystalperfected_seed.name",
+                "gt.item.circuit_crystalperfected_seed.tooltip",
+                o));
+        ItemList.Circuit_CrystalPerfected_Raw.set(
+            addItemWithLocalizationKeys(
+                Circuit_CrystalPerfected_Raw.ID, // No texture
+                "gt.item.circuit_crystalperfected_raw.name",
+                "gt.item.circuit_crystalperfected_raw.tooltip",
+                o));
+        ItemList.Circuit_CrystalPerfected.set(
+            addItemWithLocalizationKeys(
+                Circuit_CrystalPerfected.ID, // No texture
+                "gt.item.circuit_crystalperfected.name",
+                "gt.item.circuit_crystalperfected.tooltip",
+                o));
+        ItemList.Circuit_DarkMatter_Unit.set(
+            addItemWithLocalizationKeys(
+                Circuit_DarkMatter_Unit.ID, // No texture
+                "gt.item.circuit_darkmatter_unit.name",
+                "gt.item.circuit_darkmatter_unit.tooltip",
+                o));
+        ItemList.Coolant_Containment_Field.set(
+            addItemWithLocalizationKeys(
+                Coolant_Containment_Field.ID,
+                "gt.item.coolant_containment_field.name",
+                "gt.item.coolant_containment_field.tooltip",
+                o));
+
+        // Exo-Halkonite line
+        ItemList.Sintered_Halkonite_Clump.set(
+            addItemWithLocalizationKeys(
+                Sintered_Halkonite_Clump.ID,
+                "gt.item.sintered_halkonite_clump.name",
+                "gt.item.sintered_halkonite_clump.tooltip",
+                o));
+
+        // Exotic circuit intermediates
+        ItemList.YangMillsMask.set(
+            addItemWithLocalizationKeys(
+                YangMillsMask.ID,
+                "gt.item.yangmills_mask.name",
+                "gt.item.yangmills_mask.tooltip",
+                o));
+        ItemList.QuantumEntangledComputationUnit.set(
+            addItemWithLocalizationKeys(
+                QuantumEntangledComputationUnit.ID,
+                "gt.item.quantum_entangled_computation_unit.name",
+                "gt.item.quantum_entangled_computation_unit.tooltip",
+                o));
+        ItemList.SingularityTolerantCacheMatrix.set(
+            addItemWithLocalizationKeys(
+                SingularityTolerantCacheMatrix.ID,
+                "gt.item.singularity_tolerant_cache_matrix.name",
+                "gt.item.singularity_tolerant_cache_matrix.tooltip",
+                o));
+        ItemList.CasimirContainer.set(
+            addItemWithLocalizationKeys(
+                CasimirContainer.ID,
+                "gt.item.casimir_container.name",
+                "gt.item.casimir_container.tooltip",
+                o));
+        ItemList.DecoherenceLattice.set(
+            addItemWithLocalizationKeys(
+                DecoherenceLattice.ID,
+                "gt.item.decoherence_lattice.name",
+                "gt.item.decoherence_lattice.tooltip",
+                o));
 
         // Optical circuits
         ItemList.Circuit_OpticalProcessor.set(

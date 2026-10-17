@@ -665,6 +665,7 @@ fog.upgrade.tt.27=Transfinite Stellar Existence
 fog.upgrade.tt.28=Безграничный поток
 fog.upgrade.tt.29=Effortless Existence
 fog.upgrade.tt.30=Orion’s Arm Genesis Schema
+fog.upgrade.tt.31=Усиление сифонов из экзо-халконита
 fog.upgrade.tt.secret=Secret Upgrade
 
 fog.upgrade.tt.short.0=START
@@ -698,6 +699,7 @@ fog.upgrade.tt.short.27=TSE
 fog.upgrade.tt.short.28=БП
 fog.upgrade.tt.short.29=EE
 fog.upgrade.tt.short.30=END
+fog.upgrade.tt.short.31=EHSR
 fog.upgrade.tt.short.secret=SECRET
 
 fog.upgrade.lore.0=Кузница богов - это чрезвычайно мощная структура, построенная вокруг стабилизированной нейтронной звезды. Она настолько совершенна, что ее полные возможности еще не изучены. Однако при постоянном использовании можно постепенно улучшать и расширять спектр возможностей Кузницы, а также познать силу, скрытую в самых экстремальных уголках Вселенной: гравитонные осколки. Этот эзотерический материал можно найти только там, где встречаются обычная материя и вырожденная материя нейтронной коры на поверхности нейтронной звезды. В этой точке пространства гравитоны встречаются гораздо чаще и облучают эту материальную смесь, создавая крайне нестабильные гравитонные осколки, которые можно использовать для внутренней модернизации Кузницы. Пока эти осколки не могут существовать вне экстремальных условий Кузницы, но при постоянных исследованиях и использовании их можно будет в конце концов выделить и извлечь за пределы Кузницы - но для чего?
@@ -731,6 +733,7 @@ fog.upgrade.lore.27=Огромное развитие возможностей �
 fog.upgrade.lore.28=Использование гравитонных осколков в электрических системах для создания локализованных миниатюрных энергетических червоточин позволило обеспечить настолько эффективную передачу энергии, что Кузница может использовать фактически неограниченное количество энергии. Больше энергии означает более быструю обработку, более быстрое перемещение материалов и более эффективное использование улучшений, связанных с гравитонными осколками.
 fog.upgrade.lore.29=Последняя внешняя структурная модернизация Кузницы требует наиболее глубокого понимания гравитонных осколков и их применения в экстремальных условиях. После этого станут доступны последние 4 модульных слота Кузницы Богов, которые поднимут вашу операцию до невиданных высот технологического мастерства.
 fog.upgrade.lore.30=После полного овладения Кузницей Богов можно приступить к новой инициативе по расширению вселенной. Теперь можно квантовать и извлекать гравитонные осколки для использования за пределами Кузницы в новых мощных технологических начинаниях; производить самую экзотическую плазму, выходящую за рамки простых периодических элементов; и, что самое важное, начать понимать огромную силу магматерии - формы материи, состоящей исключительно из магнитных монополей, плотность и стабильность которой в миллиарды раз превышает плотность и стабильность обычной бозонной материи. Именно с этим развитием событий вы осознаете, что завершение Кузницы было не конечной целью, а лишь ступенькой на пути к всеобщей трансцендентности.
+fog.upgrade.lore.31=Перекованные вокруг решётки из экзо-халконита, кольца сифонов наконец проводят тепло, а не борются с ним.
 
 fog.upgrade.text.0=Unlocks the base functionality of the Forge of the Gods, meaning 8 module slots, 1 ring, the Helioflare Power Forge module, 2 billion EU/t processing voltage and 15,000K heat bonus cap.
 fog.upgrade.text.1=Unlocks a recipe time reduction multiplier based on the current heat the multi is running at. This bonus is calculated via following formula: Multiplier = 1 / (Heat^0.01)
@@ -763,6 +766,7 @@ fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used i
 fog.upgrade.text.28=Uncaps maximum processing voltage. Voltage can be set in each module's GUI.
 fog.upgrade.text.29=Allows construction of the third ring and adds 4 module slots.
 fog.upgrade.text.30=Unlocks Magmatter production in the Heliofusion Exoticizer, creation of exotic plasmas in the Heliothermal Plasma Fabricator and Graviton Shard ejection & injection.
+fog.upgrade.text.31=Позволяет Кузнице работать выше 25 000K, не разрушая кольца сифонов.
 
 fog.debug.resetbutton.text=Сброс
 fog.debug.resetbutton.tooltip=Сбрасывает все улучшения до нуля
@@ -1710,6 +1714,10 @@ tt.godforge.casings.7.Tooltip.1=Гравитационный центр
 tt.godforge.casings.8.Tooltip.0=Переносит и сохраняет огромное количество тепла без потерь
 tt.godforge.casings.8.Tooltip.1=<<<Thermal<<<
 tt.godforge.casings.8.Tooltip.2=>>>Wave>>>
+tt.godforge.casings.9.Tooltip.0=Усиленное кольцо сифонов звездной энергии
+tt.godforge.casings.9.Tooltip.1=Не выдерживает нагрев выше 25 000K
+tt.godforge.casings.10.Tooltip.0=Расколото чрезмерным нагревом
+tt.godforge.casings.10.Tooltip.1=Замените и перезапустите Кузницу
 
 tt.eoh.stability.tooltip=§b§lУвеличивает устойчивость поля пространства-времени.
 tt.eoh.time_dilation.standard.tooltip=§b§lЗамедление времени в коробке.

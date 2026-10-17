@@ -68,6 +68,12 @@ public final class SyncActions<T, U> {
         },
         Side.SERVER);
 
+    public static SyncActions<Void, MTEForgeOfGods> RESTART_FORGE = new SyncActions<>(
+        "fog.sync_action.restart_forge",
+        (buf, $) -> {},
+        (buf, multiblock) -> multiblock.restartForge(),
+        Side.SERVER);
+
     public static SyncActions<Panels, SyncHypervisor> REFRESH_DYNAMIC = new SyncActions<>(
         "fog.sync_action.refresh_dynamic",
         (buf, panel) -> buf.writeByte(panel.ordinal()),

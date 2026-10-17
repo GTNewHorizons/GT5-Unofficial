@@ -666,6 +666,7 @@ fog.upgrade.tt.27=Transfinite Stellar Existence
 fog.upgrade.tt.28=The Boundless Flow
 fog.upgrade.tt.29=Effortless Existence
 fog.upgrade.tt.30=Orion’s Arm Genesis Schema
+fog.upgrade.tt.31=Exo-Halkonite Siphon Reinforcement
 fog.upgrade.tt.secret=Secret Upgrade
 
 fog.upgrade.tt.short.0=START
@@ -699,6 +700,7 @@ fog.upgrade.tt.short.27=TSE
 fog.upgrade.tt.short.28=TBF
 fog.upgrade.tt.short.29=EE
 fog.upgrade.tt.short.30=END
+fog.upgrade.tt.short.31=EHSR
 fog.upgrade.tt.short.secret=SECRET
 
 fog.upgrade.lore.0=The Forge of the Gods is an immensely powerful structure constructed around a stabilized neutron star – it is so advanced that its full capabilities are not yet understood. However, through continued use, one can slowly upgrade and expand the range of abilities of the Forge, and learn the power hidden in the most extreme parts of the universe: graviton shards. This esoteric material can only be found where conventional matter and degenerate neutronium crust matter on the surface of a neutron star meet. At this point in space, gravitons are far more common and irradiate this material mixture to create highly unstable graviton shards, which can be used to internally upgrade the Forge. While these shards cannot yet exist outside the extreme conditions of the Forge, with continued research and utilization it may be possible to eventually isolate and extract them outside the Forge – but for what purpose?
@@ -732,6 +734,7 @@ fog.upgrade.lore.27=A huge development in the capabilities of the Forge has been
 fog.upgrade.lore.28=The usage of graviton shards in electrical systems to create localised miniature energy wormholes has allowed for such efficient power transfer that effectively unlimited electricity may be utilized by the Forge. More power means faster processing, quicker material movement, and better utilization of graviton shard related upgrades.
 fog.upgrade.lore.29=Further enrichment of the extreme spaces within the Plasma Fabricator & Exoticizer allows for the production of the most exotic plasmas beyond merely periodic elements and facilitates the creation of completely new kinds of subatomic particles, resulting in the creation of magmatter, a form of matter made entirely of magnetic monopoles with density and stability billions of times that of conventional bosonic matter.
 fog.upgrade.lore.30=With the construction of the third and final ring, total mastery of the Forge of the Gods has been achieved and it is now possible to quantize and extract graviton shards for use outside the Forge in powerful new technological endeavours. It is with this development you realise that the completion of the Forge was not the end goal, but merely a stepping stone to universal transcendence.
+fog.upgrade.lore.31=Reforged around a lattice of Exo-Halkonite, the siphon rings finally conduct the heat instead of fighting it.
 
 fog.upgrade.text.0=Unlocks the base functionality of the Forge of the Gods, meaning 8 module slots, 1 ring, the Helioflare Power Forge module, 2 billion EU/t processing voltage and 15,000K heat bonus cap.
 fog.upgrade.text.1=Unlocks a recipe time reduction multiplier based on the current heat the multi is running at. This bonus is calculated via following formula: Multiplier = 1 / (Heat^0.01)
@@ -764,6 +767,7 @@ fog.upgrade.text.27=Uncaps maximum fuel consumption, but fuel consumption used i
 fog.upgrade.text.28=Uncaps maximum processing voltage. Voltage can be set in each module's GUI.
 fog.upgrade.text.29=Unlocks Magmatter production in the Heliofusion Exoticizer and creation of exotic plasmas in the Heliothermal Plasma Fabricator.
 fog.upgrade.text.30=Allows construction of the third ring, adds 4 module slots and unlocks Graviton Shard ejection & injection.
+fog.upgrade.text.31=Allows the Forge to run above 25,000K without fracturing the siphon rings.
 
 fog.debug.resetbutton.text=Reset
 fog.debug.resetbutton.tooltip=Resets all upgrades to zero
@@ -1743,6 +1747,10 @@ tt.godforge.casings.7.Tooltip.1=Gravity Central
 tt.godforge.casings.8.Tooltip.0=Transfers and stores extreme amounts of heat without any loss
 tt.godforge.casings.8.Tooltip.1=<<<Thermal<<<
 tt.godforge.casings.8.Tooltip.2=>>>Wave>>>
+tt.godforge.casings.9.Tooltip.0=Reinforced ring of stellar energy siphons
+tt.godforge.casings.9.Tooltip.1=Cannot withstand heat above 25,000K
+tt.godforge.casings.10.Tooltip.0=Fractured by excessive heat
+tt.godforge.casings.10.Tooltip.1=Replace and restart the Forge
 tt.godforge.star_color.preset.default=Default
 tt.godforge.star_color.preset.rainbow=Rainbow
 tt.godforge.star_color.preset.clouds_pick=Cloud's Pick
@@ -1933,6 +1941,8 @@ gt.godforgecasing.5.name=Remote Graviton Flow Modulator
 gt.godforgecasing.6.name=Medial Graviton Flow Modulator
 gt.godforgecasing.7.name=Central Graviton Flow Modulator
 gt.godforgecasing.8.name=Harmonic Phonon Transmission Conduit
+gt.godforgecasing.9.name=Proto-Halkonite Stellar Siphon Casing
+gt.godforgecasing.10.name=Cracked Proto-Halkonite Stellar Siphon Casing
 
 # Multiblocks
 gt.blockmachines.multimachine.em.exotic_module.name=Heliofusion Exoticizer

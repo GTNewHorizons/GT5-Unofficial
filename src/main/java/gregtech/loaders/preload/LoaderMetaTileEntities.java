@@ -272,6 +272,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBoardProc
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingChamberModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEncasementWrapperModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEExoticEntangleEngineModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEOpticalOrganizerModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEPartProcessorModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
@@ -831,6 +832,14 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Accelerated Biological Coordinator").getStackForm(1));
         addItemTooltip(
             ItemList.NanoChipModule_BiologicalCoordinator.get(1),
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
+        ItemList.NanoChipModule_ExoticEntangleEngine.set(
+            new MTEExoticEntangleEngineModule(
+                NANOCHIP_MODULE_EXOTIC_ENTANGLE_ENGINE.ID,
+                "multimachine.nanochipmodule.exoticentangleengine",
+                "Exotic Entangle Engine").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_ExoticEntangleEngine.get(1),
             GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorNotAPenguinAnimated));
 
         if (Thaumcraft.isModLoaded()) {

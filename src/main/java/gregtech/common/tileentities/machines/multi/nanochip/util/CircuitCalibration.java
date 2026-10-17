@@ -36,10 +36,10 @@ public enum CircuitCalibration {
         new CalibrationThreshold("optical.2", 0.5,  nac -> nac.globalDurationMultiplier = 0.8f),
         new CalibrationThreshold("optical.3", 0.75, nac -> nac.opticalT3Active = true)
     ),
-    EXOTIC( // Unimplemented
-        new CalibrationThreshold("", 0.2),
-        new CalibrationThreshold("", 0.4),
-        new CalibrationThreshold("", 0.6)
+    EXOTIC(
+        new CalibrationThreshold("Intertwined", 0.2, nac -> {nac.globalEUMultiplier = 0.8f;}),
+        new CalibrationThreshold("Superposed", 0.4, nac -> {nac.globalDurationMultiplier = 0.8f;}),
+        new CalibrationThreshold("Eternal", 0.6, nac -> {nac.exoticT3Active = true;})
     ),
     COSMIC( // Unimplemented
         new CalibrationThreshold("", 0.2),

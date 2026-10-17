@@ -65,7 +65,10 @@ public class TextureSet {
         SET_HYPOGEN = new TextureSet("hypogen", false), SET_FLUXED = new TextureSet("fluxed", true),
         SET_CHROMATIC_GLASS = new TextureSet("chromaticglass", true),
         SET_ASTRAL_TITANIUM = new TextureSet("astraltitanium", true),
-        SET_CELESTIAL_TUNGSTEN = new TextureSet("celestialtungsten", true);
+        SET_CELESTIAL_TUNGSTEN = new TextureSet("celestialtungsten", true),
+        // Only the fluid textures are custom: the items (cells) delegate to the standard FLUID set.
+        SET_ZERO_ENTROPY_COOLANT_SOLVENT = SET_FLUID.withCustomTextures("zeroentropycoolantsolvent"),
+        SET_ZERO_ENTROPY_COOLANT = SET_FLUID.withCustomTextures("zeroentropycoolant");
 
     public final IIconContainer[] mTextures = new IIconContainer[MaterialIconRegistry.IconType.VALUES.length];
     public final String mSetName;

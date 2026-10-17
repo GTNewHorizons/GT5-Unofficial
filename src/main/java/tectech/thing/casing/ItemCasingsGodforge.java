@@ -61,6 +61,14 @@ public class ItemCasingsGodforge extends ItemCasings {
                 tooltip.add(AQUA + "" + BOLD + StatCollector.translateToLocal("tt.godforge.casings.8.Tooltip.1"));
                 tooltip.add(AQUA + "" + BOLD + StatCollector.translateToLocal("tt.godforge.casings.8.Tooltip.2"));
                 break;
+            case 9:
+                tooltip.add(StatCollector.translateToLocal("tt.godforge.casings.9.Tooltip.0"));
+                tooltip.add(AQUA + "" + BOLD + StatCollector.translateToLocal("tt.godforge.casings.9.Tooltip.1"));
+                break;
+            case 10:
+                tooltip.add(RED + "" + StatCollector.translateToLocal("tt.godforge.casings.10.Tooltip.0"));
+                tooltip.add(AQUA + "" + BOLD + StatCollector.translateToLocal("tt.godforge.casings.10.Tooltip.1"));
+                break;
             default:
                 tooltip.add(RED + "" + BOLD + StatCollector.translateToLocal("tt.godforge.casings.Error.Tooltip"));
         }

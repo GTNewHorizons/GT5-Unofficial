@@ -346,7 +346,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     private static final int BOOSTER_DRAIN = 20;
     private static final List<BoosterFluid> BOOSTER_FLUIDS = ImmutableList.of(
         new BoosterFluid(Materials.Infinity, 1, BOOSTER_DRAIN),
-        new BoosterFluid(Materials.SpaceTime, 2, BOOSTER_DRAIN),
+        new BoosterFluid(Materials.ZeroEntropyCoolant, 2, BOOSTER_DRAIN),
         new BoosterFluid(Materials.Eternity, 3, BOOSTER_DRAIN));
 
     // without cryotheum, max speed up takes 5 minutes of running to reach max speed (50%)

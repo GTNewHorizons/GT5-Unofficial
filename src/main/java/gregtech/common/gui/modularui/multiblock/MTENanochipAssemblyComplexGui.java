@@ -313,6 +313,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect2");
         TextWidget<?> opticalBody3 = createTextEntry(
             "GT5U.gui.text.nac.info.line_specifics.optical.calibration.effect3");
+        TextWidget<?> exoticHeader = createCalibrationSubHeader("GT5U.gui.text.nac.info.line_specifics.exotic.header");
+        TextWidget<?> exoticPowerDistribution = createTextEntry(
+            "GT5U.gui.text.nac.info.line_specifics.exotic.power_distribution");
+        TextWidget<?> exoticModuleCount = createTextEntry("GT5U.gui.text.nac.info.line_specifics.exotic.module_count");
+        TextWidget<?> exoticBody1 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.exotic.calibration.effect1");
+        TextWidget<?> exoticBody2 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.exotic.calibration.effect2");
+        TextWidget<?> exoticBody3 = createTextEntry("GT5U.gui.text.nac.info.line_specifics.exotic.calibration.effect3");
         TextWidget<?> specialHeader = createCalibrationSubHeader(
             "GT5U.gui.text.nac.info.line_specifics.special.header");
         TextWidget<?> specialPowerDistribution = createTextEntry(
@@ -390,6 +397,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         infoTextList.child(opticalBody1);
         infoTextList.child(opticalBody2);
         infoTextList.child(opticalBody3);
+
+        infoTextList.child(exoticHeader);
+        infoTextList.child(exoticPowerDistribution);
+        infoTextList.child(exoticModuleCount);
+        infoTextList.child(exoticBody1);
+        infoTextList.child(exoticBody2);
+        infoTextList.child(exoticBody3);
 
         infoTextList.child(specialHeader);
         infoTextList.child(specialPowerDistribution);
@@ -498,7 +512,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 createContributorEntry("Nockyx", Color.YELLOW.brighterSafe(1)),
                 createContributorEntry("Serenibyss", 0xFFFFA3FB),
                 createContributorEntry("Chrom", 0xFF9DC183),
-                createContributorEntry("SpicierSpace153", 0xFF0096FF)));
+                createContributorEntry("SpicierSpace153", 0xFF0096FF),
+                createContributorEntry("Tungstate", Color.YELLOW.brighterSafe(1))));
 
         contributorColumn.child(
             createContributorSection(

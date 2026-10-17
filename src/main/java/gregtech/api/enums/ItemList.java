@@ -1551,6 +1551,7 @@ public enum ItemList implements IItemContainer {
     NanoChipModule_OpticalOrganizer,
     NanoChipModule_EncasementWrapper,
     NanoChipModule_BiologicalCoordinator,
+    NanoChipModule_ExoticEntangleEngine,
     Hatch_Splitter_Level,
 
     Machine_LV_Miner,
@@ -1950,6 +1951,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Board_Exotic,
     Circuit_Board_Cosmic,
     Circuit_Board_Transcendent,
+    Circuit_Board_Exotic_Membrane,
 
     Circuit_Parts_Resistor,
     Circuit_Parts_ResistorSMD,
@@ -2046,6 +2048,12 @@ public enum ItemList implements IItemContainer {
     Circuit_Chip_Biocell,
     Circuit_Chip_Optical,
     Circuit_Parts_Chip_Bioware,
+    Circuit_CrystalPerfected_Seed,
+    Circuit_CrystalPerfected_Raw,
+    Circuit_CrystalPerfected,
+    Circuit_DarkMatter_Unit,
+    Coolant_Containment_Field,
+    Sintered_Halkonite_Clump,
 
     Tube_Wires,
     KevlarFiber,
@@ -2092,6 +2100,12 @@ public enum ItemList implements IItemContainer {
     Circuit_ExoticAssembly,
     Circuit_ExoticComputer,
     Circuit_ExoticMainframe,
+
+    YangMillsMask,
+    QuantumEntangledComputationUnit,
+    SingularityTolerantCacheMatrix,
+    CasimirContainer,
+    DecoherenceLattice,
 
     Circuit_CosmicProcessor,
     Circuit_CosmicAssembly,
