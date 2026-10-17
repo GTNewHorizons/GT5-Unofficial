@@ -699,10 +699,13 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             List<ItemStack> aggregated = new ArrayList<>();
             long totalProgressTime = 0;
-            long maxEUt = recipe.mEUt;
+            long totalLiquidXP = 0;
+            long totalEU = 0;
             final long maxInputEU = getMaxInputEu();
-            int minExtraTiers = Integer.MAX_VALUE;
 
+            // Simulate each kill individually so batch mode matches single runs.
+            // Factors in infernal mob time and EU, floors each kill at MIN_RECIPE_TIME,
+            // and overclocks drops, XP, and EU/t proportionally across the batch.
             for (int i = 0; i < tBatchMultiplier; i++) {
                 ItemStack[] iteration = recipe.generateOutputs(
                     rand,
@@ -712,30 +715,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     mIsProducingInfernalDrops,
                     voidAllDamagedAndEnchantedItems);
 
-                int opDuration = this.mMaxProgresstime;
-                long opEUt = this.lEUt;
-                if (opEUt > maxEUt) {
-                    maxEUt = opEUt;
-                }
-
-                int tiers = (int) GTUtility.log4(maxInputEU / opEUt);
-                int durationTiers = 0;
-                if (tiers > 0) {
-                    durationTiers = GTUtility.log4ceil(opDuration / MIN_RECIPE_TIME);
-                    if (durationTiers < 0) durationTiers = 0;
-                    if (durationTiers > tiers) durationTiers = tiers;
-                    opDuration >>= (durationTiers << 1);
-                }
-                if (opDuration < MIN_RECIPE_TIME) opDuration = MIN_RECIPE_TIME;
-                totalProgressTime += opDuration;
-
-                int extraTiers = Math.max(0, tiers - durationTiers);
-                if (extraTiers < minExtraTiers) {
-                    minExtraTiers = extraTiers;
-                }
+                MobOverclockResult oc = calculateMobOverclock(this.mMaxProgresstime, this.lEUt, maxInputEU);
+                totalProgressTime += oc.duration;
+                totalLiquidXP += (long) LIQUID_XP_PER_OP * oc.multiplier;
+                totalEU += oc.eut * (long) oc.duration;
 
                 for (ItemStack incoming : iteration) {
                     if (incoming == null || incoming.stackSize <= 0) continue;
+                    incoming.stackSize *= oc.multiplier;
 
                     boolean merged = false;
                     for (ItemStack existing : aggregated) {
@@ -757,17 +744,10 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             this.mOutputItems = aggregated.toArray(new ItemStack[0]);
             this.mOutputFluids = new FluidStack[] {
-                FluidRegistry.getFluidStack("xpjuice", LIQUID_XP_PER_OP * tBatchMultiplier) };
+                FluidRegistry.getFluidStack("xpjuice", (int) Math.min(Integer.MAX_VALUE, totalLiquidXP)) };
 
-            int finalTiers = (int) GTUtility.log4(maxInputEU / maxEUt);
-            this.lEUt = finalTiers > 0 ? (maxEUt << (finalTiers << 1)) : maxEUt;
             this.mMaxProgresstime = (int) totalProgressTime;
-
-            if (minExtraTiers > 0 && minExtraTiers < Integer.MAX_VALUE) {
-                int dMulti = 1 << (minExtraTiers << 1);
-                for (ItemStack mOutputItem : this.mOutputItems) mOutputItem.stackSize *= dMulti;
-                for (FluidStack mOutputFluid : this.mOutputFluids) mOutputFluid.amount *= dMulti;
-            }
+            this.lEUt = totalProgressTime > 0 ? ((totalEU + totalProgressTime - 1) / totalProgressTime) : recipe.mEUt;
         }
         if (this.lEUt > 0) this.lEUt = -this.lEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -781,6 +761,37 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         this.updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private static class MobOverclockResult {
+
+        final int duration;
+        final int multiplier;
+        final long eut;
+
+        MobOverclockResult(int duration, int multiplier, long eut) {
+            this.duration = duration;
+            this.multiplier = multiplier;
+            this.eut = eut;
+        }
+    }
+
+    private static MobOverclockResult calculateMobOverclock(int duration, long recipeEUt, long maxInputEU) {
+        int tiers = (int) GTUtility.log4(maxInputEU / recipeEUt);
+        int durationTiers = 0;
+        if (tiers > 0) {
+            durationTiers = GTUtility.log4ceil(duration / MIN_RECIPE_TIME);
+            if (durationTiers < 0) durationTiers = 0;
+            if (durationTiers > tiers) durationTiers = tiers;
+            duration >>= (durationTiers << 1);
+        }
+        if (duration < MIN_RECIPE_TIME) duration = MIN_RECIPE_TIME;
+
+        int extraTiers = Math.max(0, tiers - durationTiers);
+        int multiplier = extraTiers > 0 ? (1 << (extraTiers << 1)) : 1;
+        long ocEUt = tiers > 0 ? (recipeEUt << (tiers << 1)) : recipeEUt;
+
+        return new MobOverclockResult(duration, multiplier, ocEUt);
     }
 
     private ItemStack cycleWeaponsUntilNoBreakage(final MobHandlerLoader.MobEECRecipe aRecipe,
