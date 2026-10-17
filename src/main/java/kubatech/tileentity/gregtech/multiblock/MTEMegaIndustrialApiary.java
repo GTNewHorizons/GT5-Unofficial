@@ -46,8 +46,11 @@ import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,10 +60,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -80,7 +85,6 @@ import forestry.api.apiculture.FlowerManager;
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
-import forestry.api.apiculture.IBeeModifier;
 import forestry.api.apiculture.IBeekeepingMode;
 import forestry.apiculture.blocks.BlockAlveary;
 import forestry.apiculture.blocks.BlockApicultureType;
@@ -99,6 +103,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.ResultMissingApiaryFlowers;
@@ -113,6 +118,7 @@ import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
 import kubatech.gui.modularui2.MTEMegaIndustrialApiaryGui;
@@ -129,7 +135,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public int mPrimaryMode = MODE_PRIMARY_INPUT;
     public int mSecondaryMode = MODE_SECONDARY_NORMAL;
 
-    public final ArrayList<BeeSimulator> mStorage = new ArrayList<>();
+    private final LinkedHashMap<ItemId, BeeGroup> beeGroups = new LinkedHashMap<>();
+    private int beeCount = 0;
+    private int storageVersion = 0;
 
     public static final int MODE_PRIMARY_INPUT = 0;
     public static final int MODE_PRIMARY_OUTPUT = 1;
@@ -247,17 +255,70 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public void onRemoval() {
         super.onRemoval();
         IGregTechTileEntity bmte = getBaseMetaTileEntity();
-        for (BeeSimulator s : mStorage) {
-            EntityItem item = new EntityItem(
-                bmte.getWorld(),
-                bmte.getXCoord(),
-                bmte.getYCoord(),
-                bmte.getZCoord(),
-                s.queenStack);
-            item.delayBeforeCanPickup = 10;
-            bmte.getWorld()
-                .spawnEntityInWorld(item);
+        for (BeeGroup group : beeGroups.values()) {
+            for (int i = 0; i < group.count; i++) {
+                EntityItem item = new EntityItem(
+                    bmte.getWorld(),
+                    bmte.getXCoord(),
+                    bmte.getYCoord(),
+                    bmte.getZCoord(),
+                    group.copyQueen());
+                item.delayBeforeCanPickup = 10;
+                bmte.getWorld()
+                    .spawnEntityInWorld(item);
+            }
         }
+    }
+
+    public int getBeeCount() {
+        return beeCount;
+    }
+
+    public Collection<BeeGroup> getBeeGroups() {
+        return Collections.unmodifiableCollection(beeGroups.values());
+    }
+
+    public int getStorageVersion() {
+        return storageVersion;
+    }
+
+    /**
+     * Stores one bee of the given queen. The stack itself is not modified.
+     *
+     * @return {@code false} if the stack is not a valid queen
+     */
+    public boolean addQueen(ItemStack queen) {
+        if (beeRoot.getType(queen) != EnumBeeType.QUEEN) return false;
+        BeeGroup group = beeGroups.get(ItemId.createNoCopy(queen));
+        if (group == null) {
+            group = new BeeGroup(queen);
+            if (!group.generate(getBaseMetaTileEntity().getWorld(), (float) getVoltageTierExact())) return false;
+            beeGroups.put(ItemId.createNoCopy(group.queen), group);
+        }
+        group.count++;
+        beeCount++;
+        storageVersion++;
+        return true;
+    }
+
+    /**
+     * Removes one bee from the group.
+     *
+     * @return a copy of the removed queen, or {@code null} if the group is no longer stored
+     */
+    public ItemStack removeQueen(BeeGroup group) {
+        if (group.count <= 0) return null;
+        if (--group.count == 0) beeGroups.remove(ItemId.createNoCopy(group.queen));
+        beeCount--;
+        storageVersion++;
+        return group.copyQueen();
+    }
+
+    private void loadGroup(BeeGroup loaded) {
+        BeeGroup existing = beeGroups.get(ItemId.createNoCopy(loaded.queen));
+        if (existing == null) beeGroups.put(ItemId.createNoCopy(loaded.queen), loaded);
+        else existing.count += loaded.count;
+        beeCount += loaded.count;
     }
 
     /**
@@ -308,7 +369,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     /**
-     * This should be called when {@link #mStorage} is changed. And this will trigger the flower check update.
+     * This should be called when the stored bees are changed. And this will trigger the flower check update.
      * <p>
      * The flower check should be ignored when the storage is updated when loading world (or loadNBTData specifically),
      * which the world itself is not ready yet.
@@ -319,11 +380,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
      */
     public void onStorageContentChanged(boolean ignoreFlowerCheck) {
         flowerRequiredMap = new HashMap<>();
-        for (int i = 0, size = mStorage.size(); i < size; i++) {
-            BeeSimulator bee = mStorage.get(i);
-            String type = bee.getFlowerType();
+        for (BeeGroup group : beeGroups.values()) {
+            String type = group.getFlowerType();
             if (!type.isEmpty()) {
-                flowerRequiredMap.putIfAbsent(type, bee.getFlowerTypeDescription());
+                flowerRequiredMap.putIfAbsent(type, group.getFlowerTypeDescription());
             }
         }
 
@@ -426,11 +486,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         super.saveNBTData(aNBT);
         aNBT.setInteger("mPrimaryMode", mPrimaryMode);
         aNBT.setInteger("mSecondaryMode", mSecondaryMode);
-        aNBT.setInteger("mStorageSize", mStorage.size());
-        for (int i = 0; i < mStorage.size(); i++) aNBT.setTag(
-            "mStorage." + i,
-            mStorage.get(i)
-                .toNBTTagCompound());
+        NBTTagList groups = new NBTTagList();
+        for (BeeGroup group : beeGroups.values()) groups.appendTag(group.toNBTTagCompound());
+        aNBT.setTag("beeGroups", groups);
         aNBT.setInteger("MEGA_APIARY_STORAGE_VERSION", MEGA_APIARY_STORAGE_VERSION);
     }
 
@@ -439,8 +497,23 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         super.loadNBTData(aNBT);
         mPrimaryMode = aNBT.getInteger("mPrimaryMode");
         mSecondaryMode = aNBT.getInteger("mSecondaryMode");
-        for (int i = 0, isize = aNBT.getInteger("mStorageSize"); i < isize; i++)
-            mStorage.add(new BeeSimulator(aNBT.getCompoundTag("mStorage." + i)));
+        if (aNBT.hasKey("beeGroups")) {
+            NBTTagList groups = aNBT.getTagList("beeGroups", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < groups.tagCount(); i++) loadGroup(BeeGroup.fromNBT(groups.getCompoundTagAt(i)));
+        } else {
+            // Storage written before bee grouping holds one entry per bee.
+            for (int i = 0, isize = aNBT.getInteger("mStorageSize"); i < isize; i++) {
+                NBTTagCompound tag = aNBT.getCompoundTag("mStorage." + i);
+                BeeGroup existing = beeGroups
+                    .get(ItemId.createNoCopy(readItemStackFromNBT(tag.getCompoundTag("queenStack"))));
+                if (existing != null) {
+                    existing.count++;
+                    beeCount++;
+                } else {
+                    loadGroup(BeeGroup.fromLegacyNBT(tag));
+                }
+            }
+        }
         megaApiaryStorageVersion = aNBT.getInteger("MEGA_APIARY_STORAGE_VERSION");
         onStorageContentChanged(true);
     }
@@ -467,7 +540,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     break;
             }
         } else {
-            if (!mStorage.isEmpty()) {
+            if (beeCount != 0) {
                 GTUtility.sendChatToPlayer(aPlayer, "Can't change operating mode when the multi is not empty !");
                 return;
             }
@@ -537,27 +610,22 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public CheckRecipeResult checkProcessing() {
         updateMaxSlots();
         if (mPrimaryMode < 2) { // input and output mode
-            if (mPrimaryMode == MODE_PRIMARY_INPUT && mStorage.size() < mMaxSlots) {
-                World w = getBaseMetaTileEntity().getWorld();
-                float t = (float) getVoltageTierExact();
+            if (mPrimaryMode == MODE_PRIMARY_INPUT && beeCount < mMaxSlots) {
                 ArrayList<ItemStack> inputs = getStoredInputs();
                 boolean storageChanged = false;
                 for (ItemStack input : inputs) {
-                    if (beeRoot.getType(input) == EnumBeeType.QUEEN) {
-                        BeeSimulator bs = new BeeSimulator(input, w, t);
-                        if (bs.isValid) {
-                            mStorage.add(bs);
-                            storageChanged = true;
-                        }
+                    if (addQueen(input)) {
+                        input.stackSize--;
+                        storageChanged = true;
                     }
-                    if (mStorage.size() >= mMaxSlots) break;
+                    if (beeCount >= mMaxSlots) break;
                 }
                 if (storageChanged) {
                     onStorageContentChanged(false);
                 }
                 updateSlots();
-            } else if (mPrimaryMode == MODE_PRIMARY_OUTPUT && !mStorage.isEmpty()) { // output mode
-                if (tryOutputAll(mStorage, s -> Collections.singletonList(s.queenStack))) {
+            } else if (mPrimaryMode == MODE_PRIMARY_OUTPUT && beeCount > 0) { // output mode
+                if (outputQueens()) {
                     onStorageContentChanged(false);
                 }
             } else return CheckRecipeResultRegistry.NO_RECIPE;
@@ -567,17 +635,17 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             lEUt = 0;
             return CheckRecipeResultRegistry.SUCCESSFUL;
         } else if (mPrimaryMode == MODE_PRIMARY_OPERATING) {
-            if (mMaxSlots > 0 && !mStorage.isEmpty()) {
+            if (mMaxSlots > 0 && beeCount > 0) {
                 if (mSecondaryMode == MODE_SECONDARY_NORMAL) {
                     if (megaApiaryStorageVersion != MEGA_APIARY_STORAGE_VERSION) {
                         megaApiaryStorageVersion = MEGA_APIARY_STORAGE_VERSION;
                         World w = getBaseMetaTileEntity().getWorld();
                         float t = (float) getVoltageTierExact();
-                        mStorage.forEach(s -> s.generate(w, t));
+                        beeGroups.values()
+                            .forEach(g -> g.generate(w, t));
                     }
 
-                    if (mStorage.size() > mMaxSlots)
-                        return SimpleCheckRecipeResult.ofFailure("MegaApiary_slotoverflow");
+                    if (beeCount > mMaxSlots) return SimpleCheckRecipeResult.ofFailure("MegaApiary_slotoverflow");
 
                     if (missingFlowers) {
                         return ResultMissingApiaryFlowers.newFailure(flowerCheckingMap);
@@ -587,10 +655,11 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                         float t = (float) getVoltageTierExact();
                         needsTVarUpdate = false;
                         World w = getBaseMetaTileEntity().getWorld();
-                        mStorage.forEach(s -> s.updateTVar(w, t));
+                        beeGroups.values()
+                            .forEach(g -> g.updateTVar(w, t));
                     }
 
-                    int maxConsume = Math.min(mStorage.size(), mMaxSlots) * 40;
+                    int maxConsume = beeCount * 40;
                     int toConsume = maxConsume;
                     ArrayList<ItemStack> inputs = getStoredInputs();
 
@@ -608,9 +677,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     }
 
                     List<ItemStack> stacks = new ArrayList<>();
-                    for (int i = 0, mStorageSize = Math.min(mStorage.size(), mMaxSlots); i < mStorageSize; i++) {
-                        BeeSimulator beeSimulator = mStorage.get(i);
-                        stacks.addAll(beeSimulator.getDrops(this, 64_00d * boosted));
+                    for (BeeGroup group : beeGroups.values()) {
+                        stacks.addAll(group.getDrops(this, 64_00d * boosted * group.count));
                     }
 
                     this.lEUt = -(int) ((double) GTValues.V[6] * (double) mMaxSlots * 0.99d);
@@ -629,7 +697,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     if (this.lEUt > 0) this.lEUt = -this.lEUt;
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
-                    this.mOutputItems = new ItemStack[] { this.mStorage.get(0)
+                    this.mOutputItems = new ItemStack[] { beeGroups.values()
+                        .iterator()
+                        .next()
                         .createIgnobleCopy() };
                     this.updateSlots();
                 }
@@ -638,6 +708,38 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
 
         return CheckRecipeResultRegistry.NO_RECIPE;
+    }
+
+    /**
+     * Ejects stored queens, one per empty output bus slot, or all if ME Output.
+     *
+     * @return {@code true} if any queen was ejected
+     */
+    private boolean outputQueens() {
+        int capacity = 0;
+        for (MTEHatchOutputBus bus : mOutputBusses) {
+            if (bus instanceof MTEHatchOutputBusME) {
+                capacity = Integer.MAX_VALUE;
+                break;
+            }
+            for (int j = 0; j < bus.getSizeInventory(); j++)
+                if (bus.isValidSlot(j) && bus.getStackInSlot(j) == null) capacity++;
+        }
+        boolean ejected = false;
+        Iterator<BeeGroup> it = beeGroups.values()
+            .iterator();
+        while (capacity > 0 && it.hasNext()) {
+            BeeGroup group = it.next();
+            int n = Math.min(capacity, group.count);
+            for (int i = 0; i < n; i++) addOutputPartial(group.copyQueen());
+            capacity -= n;
+            group.count -= n;
+            beeCount -= n;
+            ejected = true;
+            if (group.count == 0) it.remove();
+        }
+        if (ejected) storageVersion++;
+        return ejected;
     }
 
     private static ItemStack[] mergeOutputStacks(List<ItemStack> stacks) {
@@ -670,29 +772,28 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         info.add(
             IGregTechDeviceInformation.encode(
                 "kubatech.infodata.mia.running_mode.bee_storage",
-                "" + EnumChatFormatting.GOLD + mStorage.size() + EnumChatFormatting.RESET,
-                (mStorage.size() > mMaxSlots ? EnumChatFormatting.DARK_RED.toString()
-                    : EnumChatFormatting.GOLD.toString()) + mMaxSlots + EnumChatFormatting.RESET));
+                "" + EnumChatFormatting.GOLD + beeCount + EnumChatFormatting.RESET,
+                (beeCount > mMaxSlots ? EnumChatFormatting.DARK_RED.toString() : EnumChatFormatting.GOLD.toString())
+                    + mMaxSlots
+                    + EnumChatFormatting.RESET));
         HashMap<String, Integer> infos = new HashMap<>();
-        for (int i = 0; i < mStorage.size(); i++) {
+        for (BeeGroup group : beeGroups.values()) {
             StringBuilder builder = new StringBuilder();
-            if (i > mMaxSlots) builder.append(EnumChatFormatting.DARK_RED);
             builder.append(EnumChatFormatting.GOLD);
-            BeeSimulator beeSimulator = mStorage.get(i);
-            builder.append(beeSimulator.queenStack.getDisplayName());
+            builder.append(group.queen.getDisplayName());
             // bee flower info
-            String flowerType = beeSimulator.getFlowerType();
+            String flowerType = group.getFlowerType();
             boolean flowerExists = !missingFlowers || flowerCheckingMap.get(flowerType) == null;
             builder.append(" ")
                 .append(flowerExists ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
                 .append("(")
                 .append(flowerType)
                 .append(")");
-            infos.merge(builder.toString(), 1, Integer::sum);
+            infos.merge(builder.toString(), group.count, Integer::sum);
         }
         infos.forEach((key, value) -> info.add("x" + value + ": " + key));
 
-        if (mMaxSlots > 0 && mStorage.size() >= mMaxSlots) {
+        if (mMaxSlots > 0 && beeCount >= mMaxSlots) {
             info.add(
                 EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kubatech.infodata.mia.inventory_full"));
         }
@@ -784,52 +885,49 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     public final HashMap<ItemId, Double> dropProgress = new HashMap<>();
 
-    public static class BeeSimulator {
+    /**
+     * Identical stored bees, which share one queen stack and one set of drops.
+     */
+    public static class BeeGroup {
 
-        public final ItemStack queenStack;
-        public boolean isValid;
-        List<BeeDrop> drops = new ArrayList<>();
-        List<BeeDrop> specialDrops = new ArrayList<>();
+        /** Size 1, never modified or handed out, see {@link #copyQueen()}. */
+        public final ItemStack queen;
+        private int count;
+        final List<BeeDrop> drops = new ArrayList<>();
+        final List<BeeDrop> specialDrops = new ArrayList<>();
         float beeSpeed;
-
-        float maxBeeCycles;
         String flowerType;
         String flowerTypeDescription;
         public String speciesKey;
         private static IBeekeepingMode mode;
 
-        public BeeSimulator(ItemStack queenStack, World world, float t) {
-            isValid = false;
-            this.queenStack = queenStack.copy();
-            this.queenStack.stackSize = 1;
-            if (generate(world, t)) {
-                isValid = true;
-                queenStack.stackSize--;
-            }
+        private BeeGroup(ItemStack queen) {
+            this.queen = queen.copy();
+            this.queen.stackSize = 1;
         }
 
-        public boolean generate(World world, float t) {
+        public int getCount() {
+            return count;
+        }
+
+        public ItemStack copyQueen() {
+            return queen.copy();
+        }
+
+        boolean generate(World world, float t) {
             if (mode == null) mode = beeRoot.getBeekeepingMode(world);
             drops.clear();
             specialDrops.clear();
-            if (beeRoot.getType(this.queenStack) != EnumBeeType.QUEEN) return false;
-            IBee queen = beeRoot.getMember(this.queenStack);
-            IBeeModifier beeModifier = mode.getBeeModifier();
-            float mod = beeModifier.getLifespanModifier(null, null, 1.f);
-            int h = queen.getMaxHealth();
-            maxBeeCycles = (float) h / (1.f / mod);
-            IBeeGenome genome = queen.getGenome();
+            if (beeRoot.getType(this.queen) != EnumBeeType.QUEEN) return false;
+            IBeeGenome genome = beeRoot.getMember(this.queen)
+                .getGenome();
             this.flowerType = genome.getFlowerProvider()
                 .getFlowerType();
             this.flowerTypeDescription = genome.getFlowerProvider()
                 .getDescription();
             IAlleleBeeSpecies primary = genome.getPrimary();
             beeSpeed = genome.getSpeed();
-            speciesKey = primary.getUID() + "\0"
-                + genome.getSecondary()
-                    .getUID()
-                + "\0"
-                + beeSpeed;
+            initSpeciesKey(genome);
             genome.getPrimary()
                 .getProductChances()
                 .forEach((key, value) -> drops.add(new BeeDrop(key, value, beeSpeed, t)));
@@ -841,54 +939,71 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             return true;
         }
 
-        public BeeSimulator(NBTTagCompound tag) {
-            queenStack = readItemStackFromNBT(tag.getCompoundTag("queenStack"));
-            isValid = tag.getBoolean("isValid");
-            drops = new ArrayList<>();
-            specialDrops = new ArrayList<>();
-            for (int i = 0, isize = tag.getInteger("dropssize"); i < isize; i++)
-                drops.add(new BeeDrop(tag.getCompoundTag("drops" + i)));
-            for (int i = 0, isize = tag.getInteger("specialDropssize"); i < isize; i++)
-                specialDrops.add(new BeeDrop(tag.getCompoundTag("specialDrops" + i)));
-            beeSpeed = tag.getFloat("beeSpeed");
-            maxBeeCycles = tag.getFloat("maxBeeCycles");
-            IBee queen = beeRoot.getMember(this.queenStack);
-            IBeeGenome genome = queen.getGenome();
+        private void initSpeciesKey(IBeeGenome genome) {
             speciesKey = genome.getPrimary()
                 .getUID() + "\0"
                 + genome.getSecondary()
                     .getUID()
                 + "\0"
                 + beeSpeed;
-            if (tag.hasKey("flowerType") && tag.hasKey("flowerTypeDescription")) {
-                flowerType = tag.getString("flowerType");
-                flowerTypeDescription = tag.getString("flowerTypeDescription");
-            } else {
-                this.flowerType = genome.getFlowerProvider()
-                    .getFlowerType();
-                this.flowerTypeDescription = genome.getFlowerProvider()
-                    .getDescription();
-            }
         }
 
-        public NBTTagCompound toNBTTagCompound() {
+        static BeeGroup fromNBT(NBTTagCompound tag) {
+            BeeGroup group = new BeeGroup(readItemStackFromNBT(tag.getCompoundTag("queen")));
+            group.count = tag.getInteger("count");
+            group.beeSpeed = tag.getFloat("beeSpeed");
+            group.flowerType = tag.getString("flowerType");
+            group.flowerTypeDescription = tag.getString("flowerTypeDescription");
+            NBTTagList drops = tag.getTagList("drops", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < drops.tagCount(); i++) group.drops.add(new BeeDrop(drops.getCompoundTagAt(i)));
+            NBTTagList specialDrops = tag.getTagList("specialDrops", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < specialDrops.tagCount(); i++)
+                group.specialDrops.add(new BeeDrop(specialDrops.getCompoundTagAt(i)));
+            group.initSpeciesKey(
+                beeRoot.getMember(group.queen)
+                    .getGenome());
+            return group;
+        }
+
+        /**
+         * Reads one bee stored in the format used before bee grouping.
+         */
+        static BeeGroup fromLegacyNBT(NBTTagCompound tag) {
+            BeeGroup group = new BeeGroup(readItemStackFromNBT(tag.getCompoundTag("queenStack")));
+            group.count = 1;
+            for (int i = 0, isize = tag.getInteger("dropssize"); i < isize; i++)
+                group.drops.add(new BeeDrop(tag.getCompoundTag("drops" + i)));
+            for (int i = 0, isize = tag.getInteger("specialDropssize"); i < isize; i++)
+                group.specialDrops.add(new BeeDrop(tag.getCompoundTag("specialDrops" + i)));
+            group.beeSpeed = tag.getFloat("beeSpeed");
+            IBeeGenome genome = beeRoot.getMember(group.queen)
+                .getGenome();
+            group.initSpeciesKey(genome);
+            if (tag.hasKey("flowerType") && tag.hasKey("flowerTypeDescription")) {
+                group.flowerType = tag.getString("flowerType");
+                group.flowerTypeDescription = tag.getString("flowerTypeDescription");
+            } else {
+                group.flowerType = genome.getFlowerProvider()
+                    .getFlowerType();
+                group.flowerTypeDescription = genome.getFlowerProvider()
+                    .getDescription();
+            }
+            return group;
+        }
+
+        NBTTagCompound toNBTTagCompound() {
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setTag("queenStack", writeItemStackToNBT(queenStack));
-            tag.setBoolean("isValid", isValid);
-            tag.setInteger("dropssize", drops.size());
-            for (int i = 0; i < drops.size(); i++) tag.setTag(
-                "drops" + i,
-                drops.get(i)
-                    .toNBTTagCompound());
-            tag.setInteger("specialDropssize", specialDrops.size());
-            for (int i = 0; i < specialDrops.size(); i++) tag.setTag(
-                "specialDrops" + i,
-                specialDrops.get(i)
-                    .toNBTTagCompound());
+            tag.setTag("queen", writeItemStackToNBT(queen));
+            tag.setInteger("count", count);
             tag.setFloat("beeSpeed", beeSpeed);
-            tag.setFloat("maxBeeCycles", maxBeeCycles);
             tag.setString("flowerType", flowerType);
             tag.setString("flowerTypeDescription", flowerTypeDescription);
+            NBTTagList dropList = new NBTTagList();
+            for (BeeDrop drop : drops) dropList.appendTag(drop.toNBTTagCompound());
+            tag.setTag("drops", dropList);
+            NBTTagList specialDropList = new NBTTagList();
+            for (BeeDrop drop : specialDrops) specialDropList.appendTag(drop.toNBTTagCompound());
+            tag.setTag("specialDrops", specialDropList);
             return tag;
         }
 
@@ -921,12 +1036,12 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
 
         public ItemStack createIgnobleCopy() {
-            IBee princess = beeRoot.getMember(queenStack);
+            IBee princess = beeRoot.getMember(queen);
             princess.setIsNatural(false);
             return beeRoot.getMemberStack(princess, EnumBeeType.PRINCESS.ordinal());
         }
 
-        public void updateTVar(World world, float t) {
+        void updateTVar(World world, float t) {
             if (mode == null) mode = beeRoot.getBeekeepingMode(world);
             drops.forEach(d -> d.updateTVar(t));
             specialDrops.forEach(d -> d.updateTVar(t));
