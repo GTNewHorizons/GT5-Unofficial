@@ -51,6 +51,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -96,9 +97,9 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     private static final int TURBINE_SLOTS_PER_TIER = 2;
     private static final int PARALLELS_PER_ROTOR_LEVEL = 4;
-    private static final float BASE_SPEED = 3F;
-    private static final float LIGHT_MODE_SPEED = 4.0F;
-    private static final double BASE_EU_MODIFIER = 0.7;
+    private static final double BASE_SPEED = 3.0D;
+    private static final double LIGHT_MODE_SPEED = 4.0D;
+    private static final double BASE_EU_MODIFIER = 0.7D;
     private static final int FLUID_PER_RECIPE_TIER = 10;
     private static final double TIER2_FLUID_PARALLEL_MULTIPLIER = 1.25;
     private static final int LIGHT_MODE_TIER_OFFSET = 3;
@@ -108,8 +109,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     public boolean tier2Fluid = false;
     public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
-    public float speed = BASE_SPEED;
-    public float euMultiplier = 1;
+    public double speed = BASE_SPEED;
+    public double euMultiplier = 1.0D;
     private final int horizontalOffset = 8; // base offset for tier 1
     private final int verticalOffset = 8; // base offset for tier 2
     private final int depthOffset = 2;
@@ -386,7 +387,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Centrifuge")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.centrifuge"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "spinmatron"),
                 ImmutableMap.<String, Object>builder()
@@ -408,39 +409,39 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.ITALIC + "" + EnumChatFormatting.BOLD
-                    + "Maahes guides the way...")
+                    + StatCollector.translateToLocal("gt.mbtt.flavor.spinmatron"))
             .beginStructureBlock(17, 17, 17, false)
-            .addController("Front center, 9th layer")
-            .addCasing("550-712", "Vibration Safe Casing", false)
-            .addCasing("264", "SC Turbine Casing", false)
-            .addCasing("160", "PBI Pipe Casing", false)
-            .addCasing("144", "Chamber Grate", false)
-            .addCasing("81", "Any Tiered Glass", false)
-            .addCasing("54", "IsaMill Gearbox", false)
-            .addCasing("24", "Turbine Shaft", false)
-            .addCasing("8", "Rotor Assembly", false)
-            .addEnergyHatch("1+", "Any vibration safe casing", 1)
-            .addMaintenanceHatch("1", "Any vibration safe casing", 1)
-            .addInputAny("1+", "Any vibration safe casing", 1)
-            .addOutputAny("1+", "Any vibration safe casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
+            .addCasing("550-712", Casings.VibrationSafeCasing.getLocalizedName(), false)
+            .addCasing("264", Casings.SCTurbineCasing.getLocalizedName(), false)
+            .addCasing("160", Casings.PBIPipeCasing.getLocalizedName(), false)
+            .addCasing("144", Casings.ChamberGrate.getLocalizedName(), false)
+            .addCasing("81", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("54", Casings.IsaMillGearboxCasing.getLocalizedName(), false)
+            .addCasing("24", Casings.TurbineShaft.getLocalizedName(), false)
+            .addCasing("8", StatCollector.translateToLocal("GTPP.tooltip.structure.rotor_assembly"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_vibration_safe_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_vibration_safe_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_vibration_safe_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_vibration_safe_casing"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addCasing("56", "Block of Naquadah Alloy", false)
-            .addCasing("9", "Pikyonium 64B Frame Box", false)
+            .addCasing("56", OrePrefixes.block.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.PIKYONIUM), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
-            .addCasing("56", "Cosmic Neutronium Block", false)
-            .addCasing("9", "Neutronium Frame Box", false)
+            .addCasing("56", Mods.Avaritia.isModLoaded() ? new ItemStack(LudicrousBlocks.resource_block, 1, 0).getDisplayName() : OrePrefixes.block.getLocalizedNameForItem(Materials.CosmicNeutronium), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Neutronium), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three"))
-            .addCasing("56", "Infinity Block", false)
-            .addCasing("9", "Infinity Frame Box", false)
+            .addCasing("56", Mods.Avaritia.isModLoaded() ? new ItemStack(LudicrousBlocks.resource_block, 1, 1).getDisplayName() : OrePrefixes.block.getLocalizedNameForItem(Materials.Infinity), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Infinity), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Four"))
-            .addCasing("56", "Block of White Dwarf Matter", false)
-            .addCasing("9", "SpaceTime Frame Box", false)
+            .addCasing("56", OrePrefixes.block.getLocalizedNameForItem(Materials.WhiteDwarfMatter), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.SpaceTime), false)
             .addStructureInfo("")
-            .addStructureFooter("Rotors go in the controller, not the rotor assemblies")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.rotors_go_in_controller"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
@@ -590,7 +591,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                     return CheckRecipeResultRegistry.NO_RECIPE;
 
                 getSpeed();
-                setSpeedBonus(1F / speed);
+                setSpeedBonus(1.0D / speed);
                 setEuModifier(BASE_EU_MODIFIER * euMultiplier);
                 return super.validateRecipe(recipe);
             }
@@ -743,7 +744,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         return RP;
     }
 
-    public float getSpeed() {
+    public double getSpeed() {
         speed = BASE_SPEED;
         if (mode == 0.0) {
             speed = LIGHT_MODE_SPEED;
@@ -786,6 +787,11 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 
     @Override
+    protected float getSoundRadiusMultiplier() {
+        return 5f;
+    }
+
+    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.centrifugeNonCellRecipes;
     }
@@ -817,7 +823,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     private enum CentrifugeHatchElement implements IHatchElement<MTESpinmatron> {
 
-        ROTOR_ASSEMBLY(MTESpinmatron::addTurbineHatch, MTEHatchTurbine.class) {
+        ROTOR_ASSEMBLY("GT5U.MBTT.RotorAssembly", MTESpinmatron::addTurbineHatch, MTEHatchTurbine.class) {
 
             @Override
             public long count(MTESpinmatron mteSpinmatron) {
@@ -825,11 +831,14 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTESpinmatron> adder;
 
         @SafeVarargs
-        CentrifugeHatchElement(IGTHatchAdder<MTESpinmatron> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        CentrifugeHatchElement(String name, IGTHatchAdder<MTESpinmatron> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -842,6 +851,16 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         @Override
         public IGTHatchAdder<? super MTESpinmatron> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

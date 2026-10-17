@@ -40,6 +40,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -1017,7 +1018,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     enum ArcFurnaceHatches implements IHatchElement<MTEIndustrialArcFurnace> {
 
-        ElectrodeHatch(MTEIndustrialArcFurnace::addElectrodeHatchToMachineList, MTEHatchElectrode.class) {
+        ElectrodeHatch("GT5U.MBTT.ElectrodeHatch", MTEIndustrialArcFurnace::addElectrodeHatchToMachineList,
+            MTEHatchElectrode.class) {
 
             @Override
             public long count(MTEIndustrialArcFurnace t) {
@@ -1025,8 +1027,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 return 1;
             }
         },
-        ElectrodeDetectorHatch(MTEIndustrialArcFurnace::addElectrodeDetectorHatchToMachineList,
-            MTEHatchElectrodeDetector.class) {
+        ElectrodeDetectorHatch("GT5U.MBTT.ElectrodeDetectorHatch",
+            MTEIndustrialArcFurnace::addElectrodeDetectorHatchToMachineList, MTEHatchElectrodeDetector.class) {
 
             @Override
             public long count(MTEIndustrialArcFurnace t) {
@@ -1034,12 +1036,14 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             }
         },;
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEIndustrialArcFurnace> adder;
 
         @SafeVarargs
-        ArcFurnaceHatches(IGTHatchAdder<MTEIndustrialArcFurnace> adder,
+        ArcFurnaceHatches(String name, IGTHatchAdder<MTEIndustrialArcFurnace> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -1052,6 +1056,16 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         @Override
         public IGTHatchAdder<? super MTEIndustrialArcFurnace> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
