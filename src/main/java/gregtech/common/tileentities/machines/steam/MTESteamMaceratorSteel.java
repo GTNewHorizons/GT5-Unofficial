@@ -18,7 +18,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_GLOW;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -46,6 +49,13 @@ public class MTESteamMaceratorSteel extends MTEBasicMachineSteel {
 
     public MTESteamMaceratorSteel(String aName, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aDescription, aTextures, 1, 1, true);
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(stack, tooltip);
+        tooltip.add(StatCollector.translateToLocalFormatted("gt.blockmachines.output_slots.desc", mOutputItems.length));
+        tooltip.add(StatCollector.translateToLocal("gt.blockmachines.no_byproducts.desc"));
     }
 
     @Override

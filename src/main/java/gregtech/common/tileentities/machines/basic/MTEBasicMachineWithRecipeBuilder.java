@@ -33,6 +33,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
         private String overlays;
         private boolean hasInputFluidSlot = false;
         private boolean hasOutputFluidSlot = false;
+        private boolean showOutputSlotTooltip = false;
         private int fluidTankCapacityOverride = 0;
         private int machineAmperageOverride = 0;
         private int machineEUtMultiplier = 1;
@@ -78,6 +79,12 @@ public final class MTEBasicMachineWithRecipeBuilder {
         public SoundStep setSlotsCount(int inputSlotCount, int outputSlotCount) {
             this.inputSlotCount = inputSlotCount;
             this.outputSlotCount = outputSlotCount;
+            return this;
+        }
+
+        @Override
+        public SoundStep setOutputSlotTooltip() {
+            this.showOutputSlotTooltip = true;
             return this;
         }
 
@@ -132,7 +139,9 @@ public final class MTEBasicMachineWithRecipeBuilder {
         @Override
         public MTEBasicMachineWithRecipe build() {
             String[] finalDescription = description;
-            int extraDescriptionLines = (machineAmperageOverride != 0 ? 1 : 0) + (machineEUtMultiplier != 1 ? 1 : 0);
+            int extraDescriptionLines = (machineAmperageOverride != 0 ? 1 : 0) + (machineEUtMultiplier != 1 ? 1 : 0)
+                + (showOutputSlotTooltip ? 1 : 0)
+                + (showOutputSlotTooltip && outputSlotCount == 1 ? 1 : 0);
             if (extraDescriptionLines > 0) {
                 finalDescription = Arrays.copyOf(description, description.length + extraDescriptionLines);
                 int descriptionIndex = description.length;
@@ -153,6 +162,16 @@ public final class MTEBasicMachineWithRecipeBuilder {
                         + machineAmperageOverride
                         + "A"
                         + EnumChatFormatting.RESET;
+                    descriptionIndex++;
+                }
+                if (showOutputSlotTooltip) {
+                    finalDescription[descriptionIndex] = StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.output_slots.desc", outputSlotCount);
+                    descriptionIndex++;
+                    if (outputSlotCount == 1) {
+                        finalDescription[descriptionIndex] = StatCollector
+                            .translateToLocal("gt.blockmachines.no_byproducts.desc");
+                    }
                 }
             }
             MTEBasicMachineWithRecipe machine;
@@ -223,6 +242,8 @@ public final class MTEBasicMachineWithRecipeBuilder {
     }
 
     public interface SoundStep {
+
+        SoundStep setOutputSlotTooltip();
 
         OverlaysStep setSound(SoundResource sound);
     }

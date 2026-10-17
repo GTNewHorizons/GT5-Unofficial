@@ -341,6 +341,9 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.output_slots.desc", getItemOutputLimit()))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.no_byproducts.desc"))
             .addInfo(StatCollector.translateToLocal("GT5U.MBTT.Steam.HighPressure"))
             .beginStructureBlock(3, 4, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
