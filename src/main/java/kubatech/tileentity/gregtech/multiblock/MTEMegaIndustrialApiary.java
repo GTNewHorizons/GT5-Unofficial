@@ -401,9 +401,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivalBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 7, 8, 0, elementBudget, env, true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done! Now go place the flowers yourself !");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done.flowers");
             return 0;
         }
         return built;
@@ -522,7 +520,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.forbidden_while_running");
             return;
         }
         if (!aPlayer.isSneaking()) {
@@ -530,28 +528,28 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             if (mPrimaryMode == 3) mPrimaryMode = 0;
             switch (mPrimaryMode) {
                 case 0:
-                    GTUtility.sendChatToPlayer(aPlayer, "Changed primary mode to: Input mode");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.primary_mode.input");
                     break;
                 case 1:
-                    GTUtility.sendChatToPlayer(aPlayer, "Changed primary mode to: Output mode");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.primary_mode.output");
                     break;
                 case 2:
-                    GTUtility.sendChatToPlayer(aPlayer, "Changed primary mode to: Operating mode");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.primary_mode.operating");
                     break;
             }
         } else {
             if (beeCount != 0) {
-                GTUtility.sendChatToPlayer(aPlayer, "Can't change operating mode when the multi is not empty !");
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.not_empty");
                 return;
             }
             mSecondaryMode++;
             if (mSecondaryMode == 2) mSecondaryMode = 0;
             switch (mSecondaryMode) {
                 case 0:
-                    GTUtility.sendChatToPlayer(aPlayer, "Changed secondary mode to: Normal mode");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.secondary_mode.normal");
                     break;
                 case 1:
-                    GTUtility.sendChatToPlayer(aPlayer, "Changed secondary mode to: Swarmer mode");
+                    GTUtility.sendChatTrans(aPlayer, "kubatech.chat.mia.secondary_mode.swarmer");
                     break;
             }
         }
