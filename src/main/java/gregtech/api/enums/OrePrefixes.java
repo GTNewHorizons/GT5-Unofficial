@@ -1326,6 +1326,14 @@ public class OrePrefixes {
         .textureIndex(OrePrefixTextureID.TURBINE_BLADE)
         .build();
 
+    /** consumed by the industrial arc furnace to run */
+    public static final OrePrefixes electrode = new OrePrefixBuilder("electrode").withDefaultLocalName("Electrodes")
+        .withSuffix(" Electrode")
+        .materialBased()
+        .materialGenerationBits(TOOL)
+        .textureIndex(OrePrefixTextureID.ELECTRODE)
+        .build();
+
     /** vanilly Sword */
     public static final OrePrefixes toolSword = new OrePrefixBuilder("toolSword").withDefaultLocalName("Swords")
         .materialBased()
