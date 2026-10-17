@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 
 public abstract class MTEMachineWithItemScreenBaseGui<T extends MTETieredMachineBlock>
@@ -30,21 +31,21 @@ public abstract class MTEMachineWithItemScreenBaseGui<T extends MTETieredMachine
 
     @Override
     protected ItemSlot createSlot(ModularPanel panel, PanelSyncManager syncManager) {
-        return new ItemSlot().disableThemeBackground(true)
-            .disableHoverThemeBackground(true)
-            .slot(new ModularSlot(machine.inventoryHandler, getSlotIndex()) {
+        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, getSlotIndex()) {
 
-                @Override
-                public ItemStack getStack() {
-                    // only display one of the item
-                    ItemStack itemStack = super.getStack();
-                    if (itemStack != null) {
-                        itemStack = itemStack.copy();
-                        itemStack.stackSize = 1;
-                    }
-                    return itemStack;
+            @Override
+            public ItemStack getStack() {
+                // only display one of the item
+                ItemStack itemStack = super.getStack();
+                if (itemStack != null) {
+                    itemStack = itemStack.copy();
+                    itemStack.stackSize = 1;
                 }
-            }.accessibility(false, false))
+                return itemStack;
+            }
+        }.accessibility(false, false))
+            .background(GTGuiTextures.SLOT_ITEM_TANK)
+            .hoverBackground(GTGuiTextures.SLOT_ITEM_TANK)
             .bottomRel(0)
             .rightRel(0);
     }
