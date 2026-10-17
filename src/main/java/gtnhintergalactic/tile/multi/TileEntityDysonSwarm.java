@@ -495,6 +495,10 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         return tt;
     }
 
+    private long getCurrentOutput() {
+        return mMaxProgresstime > 0 ? euPerTick : 0;
+    }
+
     @Override
     public String[] getInfoData() {
         return new String[] { "ig.infodata.hdr.operational_data",
@@ -508,7 +512,8 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                     (long) (moduleCount + (mMaxProgresstime > 0 ? modulesConsumedThisCycle : 0))
                         * IGConfig.dysonSwarm.euPerModule
                         * powerFactor)),
-            IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.current_output.fmt", formatNumber(euPerTick)),
+            IGregTechDeviceInformation
+                .encode("ig.infodata.dyson_swarm.current_output.fmt", formatNumber(getCurrentOutput())),
             IGregTechDeviceInformation
                 .encode("ig.infodata.dyson_swarm.modules_lost.fmt", formatNumber(modulesConsumedThisCycle)),
             IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.computation.fmt", formatNumber(eRequiredData)),
@@ -520,7 +525,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setLong("euPerTick", euPerTick);
+        tag.setLong("euPerTick", getCurrentOutput());
         tag.setInteger("modulesLost", modulesConsumedThisCycle);
     }
 
