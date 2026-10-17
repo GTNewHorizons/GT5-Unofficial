@@ -1176,17 +1176,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected CheckRecipeResult doCheckRecipe() {
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
-        // Use hatch colors if any; fallback to color 1 otherwise.
-        short hatchColors = getHatchColors();
-        boolean doColorChecking = hatchColors != 0;
-        if (!doColorChecking) hatchColors = 0b1;
+        short craftingHatchColors = 0;
+        for (var hatch : mDualInputHatches) {
+            craftingHatchColors |= (short) (1 << ((MetaTileEntity) hatch).getColor());
+        }
+        boolean doCraftingColorChecking = craftingHatchColors != 0;
 
-        // check crafting input hatches first, in the same color order as the ordinary input buses and hatches
-        for (byte color = 0; color < (doColorChecking ? 16 : 1); color++) {
-            if (isColorAbsent(hatchColors, color)) continue;
+        // Crafting inputs are always separated: check unpainted hatches once, then colors 0-15.
+        for (byte color = -1; color < (doCraftingColorChecking ? 16 : 0); color++) {
+            if (color != -1 && isColorAbsent(craftingHatchColors, color)) continue;
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
                 byte hatchColor = ((MetaTileEntity) dualInputHatch).getColor();
-                if (hatchColor != -1 && hatchColor != color) continue;
+                if (hatchColor != color) continue;
 
                 ItemStack[] sharedItems = dualInputHatch.getSharedItems();
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
@@ -1222,6 +1223,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (result.wasSuccessful()) {
             return result;
         }
+
+        // Use ordinary hatch colors if any; otherwise check unpainted inputs in a single pass.
+        short hatchColors = getHatchColors();
+        boolean doColorChecking = hatchColors != 0;
+        if (!doColorChecking) hatchColors = 0b1;
 
         for (byte color = 0; color < (doColorChecking ? 16 : 1); color++) {
             if (isColorAbsent(hatchColors, color)) continue;
@@ -1284,7 +1290,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Builds a bitmask of all input bus and hatch colors. Each set bit in the result marks a present color index.
+     * Builds a bitmask of ordinary input bus and hatch colors, including steam inputs.
      *
      * @return bitmask of used color indices.
      */
@@ -1293,7 +1299,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         for (var bus : mInputBusses) hatchColors |= (short) (1 << bus.getColor());
         for (var hatch : mInputHatches) hatchColors |= (short) (1 << hatch.getColor());
-        for (var hatch : mDualInputHatches) hatchColors |= (short) (1 << ((MetaTileEntity) hatch).getColor());
 
         if (this instanceof MTESteamMultiBlockBase<?>steamMultiBase) {
             for (var bus : steamMultiBase.mSteamInputs) hatchColors |= (short) (1 << bus.getColor());
