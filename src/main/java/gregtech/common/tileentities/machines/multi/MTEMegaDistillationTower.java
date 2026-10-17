@@ -61,7 +61,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 
@@ -71,6 +70,10 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     private static final int MACHINEMODE_TOWER = 0;
     private static final int MACHINEMODE_DISTILLERY = 1;
+    private static final int DISTILLERY_SPEED_DISPLAY = 200;
+    private static final int DISTILLERY_EU_EFF_DISPLAY = 50;
+    private static final int TOWER_SPEED_DISPLAY = 150;
+    private static final int TOWER_EU_EFF_DISPLAY = 90;
 
     protected final List<List<MTEHatchOutput>> outputHatchesPerLayer = new ArrayList<>();
 
@@ -583,28 +586,14 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         // spotless:off
         tt.addMachineType("Distillery, DT, MDT")
             .addMarkdown(
-                new ResourceLocation("gregtech", "mega-distillation-tower-common"),
+                new ResourceLocation("gregtech", "mega-distillation-tower"),
                 ImmutableMap.<String, Object>builder()
                     .put("mega_max", Configuration.Multiblocks.megaMachinesMax)
+                    .put("distillery_speed", DISTILLERY_SPEED_DISPLAY)
+                    .put("distillery_eu_eff", DISTILLERY_EU_EFF_DISPLAY)
+                    .put("tower_speed", TOWER_SPEED_DISPLAY)
+                    .put("tower_eu_eff", TOWER_EU_EFF_DISPLAY)
                     .build())
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Distillery Mode")
-            .addMarkdown(new ResourceLocation("gregtech", "mega-distillation-tower-mode-distillery"))
-            .addInfo(
-                TooltipHelper.parallelText(Configuration.Multiblocks.megaMachinesMax + " * (1 + Tower Height / 2)")
-                    + " Parallels")
-            .addStaticSpeedInfo((float) DISTILLERY_SPEED)
-            .addStaticEuEffInfo((float) DISTILLERY_EU_EFFICIENCY)
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Distillation Tower Mode")
-            .addMarkdown(
-                new ResourceLocation("gregtech", "mega-distillation-tower-mode-tower"),
-                ImmutableMap.<String, Object>builder()
-                    .put("mega_max", Configuration.Multiblocks.megaMachinesMax)
-                    .build())
-            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addStaticSpeedInfo((float) TOWER_SPEED)
-            .addStaticEuEffInfo((float) TOWER_EU_EFFICIENCY)
             .addSeparator()
             .addSupportAny()
             .addUnlimitedTierSkips()
