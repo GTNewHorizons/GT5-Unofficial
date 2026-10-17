@@ -77,6 +77,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     // The actual redstone signal per side, direct modifiers of this are required to issue block update for change.
     // Use `setOutputRedstoneSignal` to modify the redstone output and issue block update on the server if changed.
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
+    // oldRedstoneData: bitmask of redstone output for all 6 sides, apparently used for client rendering
+    protected byte oldRedstoneData = 63;
     // Use `setStrongRedstone` to automatically send block update on change
     private byte mStrongRedstone = 0;
     // To only issue update to sides that has strong redstone set either previously or currently
@@ -397,6 +399,18 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         mNeedsBlockUpdate = false;
     }
 
+    /**
+     * Handles sided Redstone changing
+     */
+    protected final void handleSidedRedstoneChangeServer() {
+        byte redstone = getSidedRedstoneMask();
+        if (redstone == oldRedstoneData) {
+            return;
+        }
+        oldRedstoneData = redstone;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
+    }
+
     @Override
     public void setOutputRedstoneSignal(ForgeDirection side, byte strength) {
         final byte cappedStrength = (byte) Math.min(Math.max(0, strength), 15);
@@ -405,6 +419,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final int ordinalSide = side.ordinal();
         if (mSidedRedstone[ordinalSide] != cappedStrength) {
             mSidedRedstone[ordinalSide] = cappedStrength;
+            handleSidedRedstoneChangeServer();
             issueBlockUpdate();
             scheduleTexturePacket();
         }

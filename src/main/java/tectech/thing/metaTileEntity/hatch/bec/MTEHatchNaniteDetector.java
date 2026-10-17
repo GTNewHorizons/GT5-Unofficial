@@ -14,6 +14,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -73,6 +74,7 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
     protected void loadConfig(@Nullable NBTTagCompound tag) {
         configuredTier = tag == null ? 0 : tag.getInteger("configuredTier");
         comparison = ComparisonWithAnalog.values()[tag == null ? 0 : tag.getInteger("op")];
+        refreshOutput();
     }
 
     @Override
@@ -107,18 +109,25 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
             .build() };
     }
 
+    private void refreshOutput() {
+        if (comparison == ComparisonWithAnalog.ANALOG) {
+            setOutput(requiredTier == null ? 0 : requiredTier.tier);
+        } else {
+            setOutput(requiredTier != null && comparison.test(requiredTier.tier, configuredTier));
+        }
+    }
+
     public void setRequiredTier(@Nullable NaniteTier requiredTier) {
         this.requiredTier = requiredTier;
+        refreshOutput();
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         super.onPostTick(baseMetaTileEntity, tick);
 
-        if (comparison == ComparisonWithAnalog.ANALOG) {
-            setOutput(requiredTier == null ? 0 : requiredTier.tier);
-        } else {
-            setOutput(requiredTier != null && comparison.test(requiredTier.tier, configuredTier));
+        if (baseMetaTileEntity.isServerSide() && tick > 1) {
+            baseMetaTileEntity.tryDisableTicking();
         }
     }
 
@@ -152,13 +161,21 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                         IKey.lang("GT5U.gui.text.bec-operation"),
                         ComparisonWithAnalog.class,
                         () -> comparison,
-                        v -> comparison = v)
+                        v -> {
+                            comparison = v;
+                            if (!NetworkUtils.isClient()) {
+                                refreshOutput();
+                            }
+                        })
                     .addIntEditor(
                         IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> configuredTier,
                         i -> {
                             if (comparison != ComparisonWithAnalog.ANALOG) {
                                 configuredTier = i;
+                                if (!NetworkUtils.isClient()) {
+                                    refreshOutput();
+                                }
                             }
                         },
                         i -> Math.clamp(i, 1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt()),
