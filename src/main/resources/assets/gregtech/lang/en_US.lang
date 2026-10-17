@@ -2002,6 +2002,7 @@ GT5U.MBTT.Tiers.Solenoid=Solenoid
 GT5U.MBTT.Tiers.Turbine=Sum of Turbine
 GT5U.MBTT.Tiers.Glass=Glass
 GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Component Assembly Line Casing
+GT5U.MBTT.Tiers.FieldRestrictionCoil=Field Restriction Coil
 GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
 GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
 GT5U.MBTT.Steam.HighPressure=High-Pressure Doubles §aSpeed§7 and §bSteam Usage
