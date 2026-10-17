@@ -56,6 +56,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -978,13 +979,13 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             .addCasing("31", Casings.InfiniteSpacetimeEnergyBoundaryCasing.getLocalizedName(), false)
             .addInputBus("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.boundary-no-stocking-bus"), 1)
             .addInputHatch("2", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.boundary-no-stocking-hatch"), 1)
-            .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.any-boundary-casing"), 1)
-            .addOutputHatch("1", StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.any-boundary-casing"), 1)
+            .addOutputBus("1", ItemList.Hatch_Output_Bus_ME.get(1).getDisplayName(), 1)
+            .addOutputHatch("1", ItemList.Hatch_Output_ME.get(1).getDisplayName(), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.EOH_STABILISATION)
             .addSubChannel(GTStructureChannels.EOH_DILATION)
             .addSubChannel(GTStructureChannels.EOH_COMPRESSION)
-            .toolTipFinisher(EnumChatFormatting.GOLD, 87);
+            .toolTipFinisher(EnumChatFormatting.GRAY, 41);
         // spotless:on
         return tt;
     }

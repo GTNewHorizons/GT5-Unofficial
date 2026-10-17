@@ -283,7 +283,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
         // Hatches are allowed in the module base slots, but the elevator ignores these for its base operation,
         // so we need a custom adder to not add them to our hatch lists
-        IgnoredHatch(TileEntitySpaceElevator::ignoreAndAcceptHatch, MTEHatch.class) {
+        IgnoredHatch("GT5U.MBTT.IgnoredHatch", TileEntitySpaceElevator::ignoreAndAcceptHatch, MTEHatch.class) {
 
             @Override
             public long count(TileEntitySpaceElevator tileEntity) {
@@ -291,14 +291,17 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             }
         };
 
+        private final String name;
+
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<TileEntitySpaceElevator> adder;
 
         @SafeVarargs
-        ElevatorHatchElement(IGTHatchAdder<TileEntitySpaceElevator> adder,
+        ElevatorHatchElement(String name, IGTHatchAdder<TileEntitySpaceElevator> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
+            this.name = name;
         }
 
         @Override
@@ -309,6 +312,16 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         @Override
         public IGTHatchAdder<? super TileEntitySpaceElevator> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

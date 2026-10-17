@@ -5,7 +5,7 @@ kubatech.defusioncrafter=Draconic Evolution термоядерный крафт�
 
 #NEI
 kubatech.defusioncrafter.tier=Тир корпуса: %s
-kubatech.mobhandler.eec_chance=§5Шанс добычи в EEC: %.2f%%
+kubatech.mobhandler.eec_chance=§5Шанс добычи в EEC: %s%%
 kubatech.mobhandler.eec_disabled=§5Не падает в EEC
 
 #Commands

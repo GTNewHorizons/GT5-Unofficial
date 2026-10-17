@@ -1,5 +1,9 @@
 package tectech.thing.casing;
 
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.WHITE;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -8,11 +12,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import gregtech.common.blocks.ItemCasings;
+import tectech.util.CommonValues;
 
 public class ItemCasingsTimeAcceleration extends ItemCasings {
 
     public ItemCasingsTimeAcceleration(Block par1) {
         super(par1);
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack aStack) {
+        if (aStack.getItemDamage() == WILDCARD) return super.getItemStackDisplayName(aStack);
+        return StatCollector.translateToLocalFormatted(
+            "tt.eoh.time_dilation.name",
+            WHITE + CommonValues.getLocalizedEohTierFancyNames(aStack.getItemDamage()) + RESET);
     }
 
     @Override

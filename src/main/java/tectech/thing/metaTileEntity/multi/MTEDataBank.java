@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -296,28 +297,28 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     private enum DataBankHatches implements IHatchElement<MTEDataBank> {
 
-        DataStick(MTEHatchDataAccess.class) {
+        DataStick("GT5U.MBTT.DataAccessHatch", MTEHatchDataAccess.class) {
 
             @Override
             public long count(MTEDataBank t) {
                 return t.eDataAccessHatches.size();
             }
         },
-        OutboundConnector(MTEHatchDataItemsOutput.class) {
+        OutboundConnector("GT5U.MBTT.DataBankTransmission", MTEHatchDataItemsOutput.class) {
 
             @Override
             public long count(MTEDataBank t) {
                 return t.eStacksDataOutputs.size();
             }
         },
-        InboundConnector(MTEHatchDataItemsInput.class) {
+        InboundConnector("GT5U.MBTT.AssemblyLineReception", MTEHatchDataItemsInput.class) {
 
             @Override
             public long count(MTEDataBank t) {
                 return t.eDataAccessHatches.size();
             }
         },
-        WirelessOutboundConnector(MTEHatchWirelessDataItemsOutput.class) {
+        WirelessOutboundConnector("GT5U.MBTT.WirelessDataBankOutput", MTEHatchWirelessDataItemsOutput.class) {
 
             @Override
             public long count(MTEDataBank t) {
@@ -325,10 +326,12 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             }
         };
 
+        private final String name;
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         @SafeVarargs
-        DataBankHatches(Class<? extends IMetaTileEntity>... mteClasses) {
+        DataBankHatches(String name, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
         }
 
@@ -340,6 +343,16 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         @Override
         public IGTHatchAdder<? super MTEDataBank> adder() {
             return MTEDataBank::addDataBankHatchToMachineList;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

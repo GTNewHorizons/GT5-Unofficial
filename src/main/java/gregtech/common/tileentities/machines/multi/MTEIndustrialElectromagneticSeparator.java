@@ -23,20 +23,24 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -62,26 +66,27 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialElectromagneticSeparator
     extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectromagneticSeparator>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     public enum MagnetTiers {
 
-        Iron(8, 0.8F, 1.1F, false),
-        Steel(24, 0.75F, 1.25F, false),
-        Neodymium(48, 0.7F, 1.5F, false),
-        Samarium(96, 0.6F, 2F, false),
-        Tengam(256, 0.5F, 2.5F, true);
+        Iron(8, 0.8D, 1.1D, false),
+        Steel(24, 0.75D, 1.25D, false),
+        Neodymium(48, 0.7D, 1.5D, false),
+        Samarium(96, 0.6D, 2.0D, false),
+        Tengam(256, 0.5D, 2.5D, true);
 
         final int maxParallel;
-        final float euModifier, speedBoost;
+        final double euModifier, speedBoost;
         final boolean supportsExotic;
 
-        MagnetTiers(int maxParallel, float euModifier, float speedBoost, boolean supportsExotic) {
+        MagnetTiers(int maxParallel, double euModifier, double speedBoost, boolean supportsExotic) {
             this.maxParallel = maxParallel;
             this.euModifier = euModifier;
-            this.speedBoost = 1F / speedBoost;
+            this.speedBoost = 1.0D / speedBoost;
             this.supportsExotic = supportsExotic;
         }
 
@@ -192,40 +197,29 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Electromagnetic Separator/Polarizer, MFE")
-            .addInfo("Use screwdriver to switch mode")
-            .addInfo(
-                "Insert an " + EnumChatFormatting.AQUA
-                    + "Electromagnet"
-                    + EnumChatFormatting.GRAY
-                    + " into the electromagnet housing to use")
-            .addInfo(
-                "Better " + EnumChatFormatting.AQUA
-                    + "Electromagnets"
-                    + EnumChatFormatting.GRAY
-                    + " give increased bonuses")
-            .addInfo(
-                "With a " + EnumChatFormatting.DARK_GREEN
-                    + "Tengam Electromagnet"
-                    + EnumChatFormatting.GRAY
-                    + ", one multi-amp hatch is allowed")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.electromagnetic_separator"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-electromagnetic-separator"),
+                ImmutableMap.<String, Object>builder().build())
             .beginStructureBlock(7, 6, 7, true)
-            .addController("Front bottom center")
-            .addCasing(MIN_CASING + "-73", "MagTech Casing", false)
-            .addCasing("37", "Magnetic Neodymium Frame Box", false)
-            .addCasing("12", "Any Tiered Glass", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing(MIN_CASING + "-73", Casings.MagTechCasing.getLocalizedName(), false)
+            .addCasing("37", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NeodymiumMagnetic), false)
+            .addCasing("12", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
-                "One block above/behind controller",
+                StatCollector.translateToLocal("gt.mbtt.structure.one_block_above_behind_controller"),
                 2)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

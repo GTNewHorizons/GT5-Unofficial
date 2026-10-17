@@ -979,7 +979,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     private enum SpecialHatchElement implements IHatchElement<MTEPCBFactory> {
 
-        NaniteBus(MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
+        NaniteBus("GT5U.MBTT.NaniteContainmentBus", MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
 
             @Override
             public long count(MTEPCBFactory gtMetaTileEntityPCBFactory) {
@@ -987,11 +987,14 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEPCBFactory> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEPCBFactory> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        SpecialHatchElement(String name, IGTHatchAdder<MTEPCBFactory> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -1004,6 +1007,16 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         @Override
         public IGTHatchAdder<? super MTEPCBFactory> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 
