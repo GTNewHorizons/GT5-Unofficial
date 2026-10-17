@@ -111,7 +111,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addInputAny("1+", anyCasingText(), 1)
             .addOutputAny("1+", anyCasingText(), 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "REDR")
-            .toolTipFinisher();
+                        .toolTipFinisher();
         // spotless:on
         return tt;
     }

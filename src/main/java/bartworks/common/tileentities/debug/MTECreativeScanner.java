@@ -46,7 +46,7 @@ public class MTECreativeScanner extends MTEScanner {
         return ArrayUtils.addAll(
             MachineType.SCANNER.tooltipDescription(),
             StatCollector.translateToLocal("gt.blockmachines.creativeScanner.desc.1"),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+            BWTooltipReference.BARTWORKS_TOOLTIP.get());
     }
 
     @Override

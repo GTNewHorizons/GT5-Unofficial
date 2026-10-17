@@ -24,7 +24,6 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.math.LongMath;
 
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -215,7 +214,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
     @Override
     public String[] getDescription() {
         return MTEHatch.formatEnergyInfoDesc(
-            new String[] { GTAuthors.AuthorColen, GTAuthors.AuthorCloud.get() },
+            null,
             translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
             false,
             mTier,

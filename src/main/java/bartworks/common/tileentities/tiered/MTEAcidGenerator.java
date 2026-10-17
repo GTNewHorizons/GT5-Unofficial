@@ -167,6 +167,6 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
             StatCollector.translateToLocal("tooltip.tile.tiereddsc.2.name") + " "
                 + EnumChatFormatting.YELLOW
                 + this.maxAmperesOut(),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+            BWTooltipReference.BARTWORKS_TOOLTIP.get() };
     }
 }
