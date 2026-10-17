@@ -12,7 +12,6 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.MetaTileEntityIDs.HATCH_NANITE_SINGULARITY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -51,6 +50,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
@@ -913,8 +914,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_ASSEMBLER;
     }
 
@@ -922,10 +924,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchNanite naniteBus) {
-            if (naniteBus.getBaseMetaTileEntity()
-                .getMetaTileID() == HATCH_NANITE_SINGULARITY.ID) {
-                return false;
-            }
             addIfSmartInput(naniteBus);
             naniteBus.updateTexture(baseCasingIndex);
             this.naniteBuses.add(naniteBus);
@@ -982,7 +980,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     private enum SpecialHatchElement implements IHatchElement<MTEPCBFactory> {
 
-        NaniteBus(MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
+        NaniteBus("GT5U.MBTT.NaniteContainmentBus", MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
 
             @Override
             public long count(MTEPCBFactory gtMetaTileEntityPCBFactory) {
@@ -990,11 +988,14 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEPCBFactory> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEPCBFactory> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        SpecialHatchElement(String name, IGTHatchAdder<MTEPCBFactory> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -1007,6 +1008,16 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         @Override
         public IGTHatchAdder<? super MTEPCBFactory> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 

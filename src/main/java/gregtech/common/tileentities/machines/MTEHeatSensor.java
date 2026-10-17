@@ -5,8 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -14,7 +17,9 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -26,7 +31,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
 
-public class MTEHeatSensor extends MTEHatch {
+public class MTEHeatSensor extends MTEHatch implements IDataCopyable {
+
+    public static final String COPIED_DATA_IDENTIFIER = "heatSensor";
 
     protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     protected static final IIconContainer TEXTURE_FRONT_GLOW = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
@@ -78,8 +85,39 @@ public class MTEHeatSensor extends MTEHatch {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        openGui(aPlayer);
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            openGui(aPlayer);
+            return true;
+        }
+
+        if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) {
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.heat_sensor.invalid"));
+            return false;
+        }
+
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.heat_sensor.loaded"));
         return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) {
+            return;
+        }
+        final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return;
+        }
+
+        dataStick.stackTagCompound = getCopiedData(aPlayer);
+        dataStick.setStackDisplayName("Heat Sensor Hatch Configuration");
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.heat_sensor.saved"));
     }
 
     @Override
@@ -117,7 +155,7 @@ public class MTEHeatSensor extends MTEHatch {
         if (aBaseMetaTileEntity.isServerSide()) {
             for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
                 aBaseMetaTileEntity
-                    .setStrongOutputRedstoneSignal(direction, isOn && direction == facing ? (byte) 15 : 0);
+                    .setOutputRedstoneSignal(direction, isOn && direction == facing ? (byte) 15 : (byte) 0);
             }
         }
     }
@@ -157,6 +195,28 @@ public class MTEHeatSensor extends MTEHatch {
     }
 
     @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setDouble("threshold", getThreshold());
+        tag.setBoolean("inverted", isInverted());
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        setThreshold(nbt.getDouble("threshold"));
+        setInverted(nbt.getBoolean("inverted"));
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
     protected boolean useMui2() {
         return true;
     }
@@ -168,12 +228,15 @@ public class MTEHeatSensor extends MTEHatch {
 
     public enum HeatSensorHatchElement implements IHatchElement<IHeatProducer> {
 
-        HeatSensor(IHeatProducer::addHeatSensorHatchToMachineList, MTEHeatSensor.class);
+        HeatSensor("GT5U.MBTT.HeatSensorHatch", IHeatProducer::addHeatSensorHatchToMachineList, MTEHeatSensor.class);
 
+        private final String name;
         private final IGTHatchAdder<IHeatProducer> adder;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
 
-        HeatSensorHatchElement(IGTHatchAdder<IHeatProducer> adder, Class<? extends IMetaTileEntity> mteClasse) {
+        HeatSensorHatchElement(String name, IGTHatchAdder<IHeatProducer> adder,
+            Class<? extends IMetaTileEntity> mteClasse) {
+            this.name = name;
             this.adder = adder;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasse));
         }
@@ -193,6 +256,15 @@ public class MTEHeatSensor extends MTEHatch {
             return adder;
         }
 
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
     }
 
 }

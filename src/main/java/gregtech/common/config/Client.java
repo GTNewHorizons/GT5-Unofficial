@@ -156,7 +156,7 @@ public class Client {
         @Config.DefaultBoolean(false)
         public boolean singleBlockInitialFilter;
 
-        @Config.Comment("If true, scrolling up while hovering a ghost circuit in a machine UI will increment the circuit number.")
+        @Config.Comment("If true, scrolling up while hovering over a ghost circuit in a machine UI will decrement the circuit number.")
         @Config.DefaultBoolean(false)
         public boolean invertCircuitScrollDirection;
 
@@ -207,38 +207,47 @@ public class Client {
 
         @Config.Comment("if true, enables ambient-occlusion smooth lighting on tiles.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Ambient Occlusion on Tiles")
         public boolean renderTileAmbientOcclusion;
 
         @Config.Comment("if true, enables glowing of the machine controllers.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Controller Glow")
         public boolean renderGlowTextures;
 
         @Config.Comment("if true, render flipped machine with flipped textures.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Flipped Machine Textures")
         public boolean renderFlippedMachinesFlipped;
 
         @Config.Comment("if true, render indicators on hatches.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Hatch Indicators")
         public boolean renderIndicatorsOnHatch;
 
         @Config.Comment("if true, enables dirt particles when pollution reaches the threshold.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Pollution Dirt")
         public boolean renderDirtParticles;
 
         @Config.Comment("if true, enables pollution fog when pollution reaches the threshold.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Pollution Fog")
         public boolean renderPollutionFog;
 
         @Config.Comment("if true, enables the green -> red durability for an item's damage value.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Item Durability")
         public boolean renderItemDurabilityBar;
 
         @Config.Comment("if true, enables the blue charge bar for an electric item's charge.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Item Charge Bar")
         public boolean renderItemChargeBar;
 
         @Config.Comment("enables BaseMetaTileEntity block updates handled by BlockUpdateHandler.")
         @Config.DefaultBoolean(false)
+        @Config.Name("Use BlockUpdateHandler")
         public boolean useBlockUpdateHandler;
 
         @Config.Comment("Disables coil lighting. Requires world reload (f3 + a or relog).")
@@ -273,22 +282,27 @@ public class Client {
 
         @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Transcendent Metal Rendering")
         public boolean renderTransMetalFancy;
 
         @Config.Comment("Enables or disables Infinity rendering, also impacts all items using the same effect. Accessibility option.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Infinity Rendering")
         public boolean renderInfinityFancy;
 
         @Config.Comment("Enables or disables Cosmic Neutronium fuzz rendering, also impacts all items using the same effect. Accessibility option.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Cosmic Neutronium Rendering")
         public boolean renderCosmicNeutroniumFancy;
 
         @Config.Comment("Enables or disables Six-Phased Copper glitch rendering, also impacts all items using the same effect. Accessibility option.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Six-Phased Copper Rendering")
         public boolean renderGlitchFancy;
 
         @Config.Comment("Enables or disables Universium rendering, also impacts all items using the same effect. Accessibility option.")
         @Config.DefaultBoolean(true)
+        @Config.Name("Universium Rendering")
         public boolean renderUniversiumFancy;
     }
 
@@ -341,6 +355,11 @@ public class Client {
         @Config.DefaultBoolean(true)
         @Config.Name("Show Working Disable")
         public boolean showWorkingDisable;
+
+        @Config.Comment("if true, shows the live EU/t throughput of a cable in its Waila tooltip.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Cable Throughput")
+        public boolean showCableThroughput;
     }
 
     @Config.LangKey("GT5U.gui.config.client.nei")

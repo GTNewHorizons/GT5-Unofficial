@@ -25,7 +25,20 @@ public interface IStructureChannels {
      * @return fitted channel data
      */
     default int getValueClamped(ItemStack trigger, int min, int max) {
-        return Math.min(max, ChannelDataAccessor.getChannelData(trigger, get()) + min - 1);
+        return (int) Math.min(max, (long) ChannelDataAccessor.getChannelData(trigger, get()) + min - 1);
+    }
+
+    /**
+     * Get the channel value as the actual structure value, limited to the supplied inclusive range.
+     *
+     * @param trigger channel data holder
+     * @param min     minimum actual structure value
+     * @param max     maximum actual structure value
+     * @return the direct channel value limited to the requested range
+     */
+    default int getValueLimited(ItemStack trigger, int min, int max) {
+        if (min > max) throw new IllegalArgumentException("Minimum value cannot exceed maximum value");
+        return Math.max(min, Math.min(max, getValue(trigger)));
     }
 
     default int getValue(ItemStack trigger) {

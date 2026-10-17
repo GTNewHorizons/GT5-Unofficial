@@ -2,7 +2,7 @@
 Converts protomatter into antimatter
 Use screwdriver to disable rendering
 Passively consumes {var:base_consumption} + ({dark_aqua:Antimatter} * 1000)^(1.5 - {green:{bold:{underline:M}}}) EU/t
-The consumption decays by 0.5% every tick when empty
+The consumption decays by 10% every second when empty
 Actively uses ({dark_aqua:Antimatter} * {var:active_base_mult})^(1.5 - {dark_purple:{bold:{underline:G}}}) EU per cycle to produce antimatter
 {gray:{hr}}
 Cycles every second
@@ -28,5 +28,5 @@ Each stabilization can only use one of the fluids at a time
 1. {fluid:molten.shirabon} = {gold:0.05}
 2. {fluid:molten.magnetohydrodynamicallyconstrainedstarmatter} = {gold:0.10}
 {aqua:{bold:{underline:A}}}{aqua:ctivation Stabilization} (Consumes {dark_aqua:Antimatter}^(1/3) L of fluid per cycle)
-1. {fluid:naquadah based liquid fuel mk-v (depleted)} = {aqua:0.05}
-2. {fluid:naquadah based liquid fuel mk-vi (depleted)} = {aqua:0.10}
+1. {fluid:naquadah based liquid fuel mkv (depleted)} = {aqua:0.05}
+2. {fluid:naquadah based liquid fuel mkvi (depleted)} = {aqua:0.10}

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -17,7 +18,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static net.minecraft.util.EnumChatFormatting.BOLD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,6 +39,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -49,6 +51,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -76,7 +79,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.gui.modularui.multiblock.MTESpinmatronGui;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -89,14 +91,26 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int TURBINE_SLOTS_PER_TIER = 2;
+    private static final int PARALLELS_PER_ROTOR_LEVEL = 4;
+    private static final double BASE_SPEED = 3.0D;
+    private static final double LIGHT_MODE_SPEED = 4.0D;
+    private static final double BASE_EU_MODIFIER = 0.7D;
+    private static final int FLUID_PER_RECIPE_TIER = 10;
+    private static final double TIER2_FLUID_PARALLEL_MULTIPLIER = 1.25;
+    private static final int LIGHT_MODE_TIER_OFFSET = 3;
+    private static final int HEAVY_MODE_PARALLEL_DIVISOR = 32;
+    private static final int HEAVY_MODE_EU_MULTIPLIER = 16;
 
     public boolean tier2Fluid = false;
     public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
-    public float speed = 3F;
-    public float euMultiplier = 1;
+    public double speed = BASE_SPEED;
+    public double euMultiplier = 1.0D;
     private final int horizontalOffset = 8; // base offset for tier 1
     private final int verticalOffset = 8; // base offset for tier 2
     private final int depthOffset = 2;
@@ -269,7 +283,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         final IGregTechTileEntity meta = getBaseMetaTileEntity();
         World w = getBaseMetaTileEntity().getWorld();
         final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
-        for (int i = 0; i < turbineHolder.getSlots(); i++) {
+        for (int i = 0; i < tier * 2; i++) {
             if (turbineHolder.getStackInSlot(i) != null) {
                 ItemStack currentItem = turbineHolder.extractItem(i, 1, false);
                 EntityItem entityItem = new EntityItem(w, aX, aY, aZ, currentItem);
@@ -372,110 +386,66 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Centrifuge")
-            .addInfo(
-                "3 Modes: " + EnumChatFormatting.LIGHT_PURPLE
-                    + "Light"
-                    + EnumChatFormatting.GRAY
-                    + " | "
-                    + EnumChatFormatting.GOLD
-                    + "Standard"
-                    + EnumChatFormatting.GRAY
-                    + " | "
-                    + EnumChatFormatting.GREEN
-                    + "Heavy")
-
-            .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + "Hatch Tier + 1")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.centrifuge"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "spinmatron"),
+                ImmutableMap.<String, Object>builder()
+                    .put("slots_per_tier", TURBINE_SLOTS_PER_TIER)
+                    .put("parallels", PARALLELS_PER_ROTOR_LEVEL)
+                    .put("speed", Math.round(BASE_SPEED * 100))
+                    .put("eu_eff", Math.round(BASE_EU_MODIFIER * 100))
+                    .put("fluid_per_tier", FLUID_PER_RECIPE_TIER)
+                    .put("tier2_mult", TIER2_FLUID_PARALLEL_MULTIPLIER)
+                    .put("light_speed", 100)
+                    .put("light_offset", LIGHT_MODE_TIER_OFFSET)
+                    .put("heavy_div", HEAVY_MODE_PARALLEL_DIVISOR)
+                    .put("heavy_eu", HEAVY_MODE_EU_MULTIPLIER)
+                    .put("fluid_unit", getFluidUnit())
+                    .build())
+            .addSeparator()
             .addSupportAny()
             .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo(
-                "Gains " + EnumChatFormatting.WHITE
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " Turbine Slots per Structure Tier")
-            .addDynamicParallelInfo(4, TooltipTier.TURBINE)
-            .addInfo("Non-Huge Turbines have reduced effectiveness...")
-            .addStaticSpeedInfo(3f)
-            .addStaticEuEffInfo(0.7f)
-            .addInfo(
-                "Requires Recipe Tier * " + EnumChatFormatting.BLUE
-                    + "10L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Kerosene"
-                    + EnumChatFormatting.GRAY
-                    + " to operate by default")
-            .addInfo(
-                "Supply " + EnumChatFormatting.DARK_PURPLE
-                    + "Biocatalyzed Propulsion Fluid"
-                    + EnumChatFormatting.GRAY
-                    + " instead for a "
-                    + EnumChatFormatting.WHITE
-                    + "1.25x "
-                    + EnumChatFormatting.GRAY
-                    + "Parallel multiplier")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + "Light Mode"
-                    + EnumChatFormatting.GRAY
-                    + ": +"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "100%"
-                    + EnumChatFormatting.GRAY
-                    + " Speed Bonus, "
-                    + "Maximum Recipe Tier is "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Voltage Tier - 3")
-            .addInfo(EnumChatFormatting.GOLD + "Standard Mode" + EnumChatFormatting.GRAY + ": No Changes")
-            .addInfo(
-                EnumChatFormatting.GREEN + "Heavy Mode"
-                    + EnumChatFormatting.GRAY
-                    + ": Divides Parallels by "
-                    + EnumChatFormatting.GREEN
-                    + "32"
-                    + EnumChatFormatting.GRAY
-                    + ", Requires T3+ Structure and "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + "Biocatalyzed Propulsion Fluid")
-            .addInfo("Multiplies EU Cost by " + EnumChatFormatting.RED + "16")
-            .addInfo(
-                "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GREEN + " Heavy Mode")
-
-            .addSeparator()
-            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
+                EnumChatFormatting.DARK_RED + "" + EnumChatFormatting.ITALIC + "" + EnumChatFormatting.BOLD
+                    + StatCollector.translateToLocal("gt.mbtt.flavor.spinmatron"))
             .beginStructureBlock(17, 17, 17, false)
-            .addController("Front center, 9th layer")
-            .addCasing("550-712", "Vibration Safe Casing", false)
-            .addCasing("264", "SC Turbine Casing", false)
-            .addCasing("160", "PBI Pipe Casing", false)
-            .addCasing("144", "Chamber Grate", false)
-            .addCasing("81", "Any Tiered Glass", false)
-            .addCasing("54", "IsaMill Gearbox", false)
-            .addCasing("24", "Turbine Shaft", false)
-            .addCasing("8", "Rotor Assembly", false)
-            .addEnergyHatch("1+", "Any vibration safe casing", 1)
-            .addMaintenanceHatch("1", "Any vibration safe casing", 1)
-            .addInputAny("1+", "Any vibration safe casing", 1)
-            .addOutputAny("1+", "Any vibration safe casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
+            .addCasing("550-712", Casings.VibrationSafeCasing.getLocalizedName(), false)
+            .addCasing("264", Casings.SCTurbineCasing.getLocalizedName(), false)
+            .addCasing("160", Casings.PBIPipeCasing.getLocalizedName(), false)
+            .addCasing("144", Casings.ChamberGrate.getLocalizedName(), false)
+            .addCasing("81", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("54", Casings.IsaMillGearboxCasing.getLocalizedName(), false)
+            .addCasing("24", Casings.TurbineShaft.getLocalizedName(), false)
+            .addCasing("8", StatCollector.translateToLocal("GTPP.tooltip.structure.rotor_assembly"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_vibration_safe_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_vibration_safe_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_vibration_safe_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_vibration_safe_casing"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addCasing("56", "Block of Naquadah Alloy", false)
-            .addCasing("9", "Pikyonium 64B Frame Box", false)
+            .addCasing("56", OrePrefixes.block.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.PIKYONIUM), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
-            .addCasing("56", "Cosmic Neutronium Block", false)
-            .addCasing("9", "Neutronium Frame Box", false)
+            .addCasing("56", Mods.Avaritia.isModLoaded() ? new ItemStack(LudicrousBlocks.resource_block, 1, 0).getDisplayName() : OrePrefixes.block.getLocalizedNameForItem(Materials.CosmicNeutronium), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Neutronium), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three"))
-            .addCasing("56", "Infinity Block", false)
-            .addCasing("9", "Infinity Frame Box", false)
+            .addCasing("56", Mods.Avaritia.isModLoaded() ? new ItemStack(LudicrousBlocks.resource_block, 1, 1).getDisplayName() : OrePrefixes.block.getLocalizedNameForItem(Materials.Infinity), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Infinity), false)
             .addStructureInfo("")
-            .addStructureFooter("Rotors go in the controller, not the rotor assemblies")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Four"))
+            .addCasing("56", OrePrefixes.block.getLocalizedNameForItem(Materials.WhiteDwarfMatter), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.SpaceTime), false)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.rotors_go_in_controller"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -606,22 +576,23 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                amountToDrain = GTUtility.getTier(recipe.mEUt) * 10;
+                final int recipeTier = GTUtility.getTier(recipe.mEUt);
+                amountToDrain = Math.max(1, recipeTier) * FLUID_PER_RECIPE_TIER;
                 euMultiplier = 1;
                 if (!checkFluid(5 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
-                if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
+                if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - recipeTier < LIGHT_MODE_TIER_OFFSET)
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 if (mode == 2.0) {
                     if (!tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
-                    euMultiplier = 16;
+                    euMultiplier = HEAVY_MODE_EU_MULTIPLIER;
                 }
 
                 if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE) && mode != 2.0)
                     return CheckRecipeResultRegistry.NO_RECIPE;
 
                 getSpeed();
-                setSpeedBonus(1F / speed);
-                setEuModifier(0.7 * euMultiplier);
+                setSpeedBonus(1.0D / speed);
+                setEuModifier(BASE_EU_MODIFIER * euMultiplier);
                 return super.validateRecipe(recipe);
             }
 
@@ -634,8 +605,9 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) { // implements Hatch+1 OC
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(
-                    (GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)) + 1);
+                int overclocks = (mode == 2.0) ? Integer.MAX_VALUE
+                    : GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) + 1;
+                return super.createOverclockCalculator(recipe).setMaxOverclocks(overclocks);
             }
         };
     }
@@ -730,10 +702,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         getRP(); // updates RP
         int parallels = RP;
         if (tier2Fluid) {
-            parallels = (int) Math.floor(parallels * 1.25);
+            parallels = (int) Math.floor(parallels * TIER2_FLUID_PARALLEL_MULTIPLIER);
         }
         if (mode == 2.0) {
-            parallels /= 32;
+            parallels /= HEAVY_MODE_PARALLEL_DIVISOR;
         }
         return parallels > 0 ? parallels : 1; // if its 1, something messed up lol, just a failsafe in case i mess up
     }
@@ -768,14 +740,14 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 
     public int getRP() {
-        RP = 4 * getSumRotorLevels();
+        RP = PARALLELS_PER_ROTOR_LEVEL * getSumRotorLevels();
         return RP;
     }
 
-    public float getSpeed() {
-        speed = 3F;
+    public double getSpeed() {
+        speed = BASE_SPEED;
         if (mode == 0.0) {
-            speed = 4.0F;
+            speed = LIGHT_MODE_SPEED;
         }
         return speed;
     }
@@ -846,7 +818,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     private enum CentrifugeHatchElement implements IHatchElement<MTESpinmatron> {
 
-        ROTOR_ASSEMBLY(MTESpinmatron::addTurbineHatch, MTEHatchTurbine.class) {
+        ROTOR_ASSEMBLY("GT5U.MBTT.RotorAssembly", MTESpinmatron::addTurbineHatch, MTEHatchTurbine.class) {
 
             @Override
             public long count(MTESpinmatron mteSpinmatron) {
@@ -854,11 +826,14 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTESpinmatron> adder;
 
         @SafeVarargs
-        CentrifugeHatchElement(IGTHatchAdder<MTESpinmatron> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        CentrifugeHatchElement(String name, IGTHatchAdder<MTESpinmatron> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -871,6 +846,16 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         @Override
         public IGTHatchAdder<? super MTESpinmatron> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

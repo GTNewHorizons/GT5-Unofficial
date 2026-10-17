@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.List;
 import java.util.Random;
@@ -25,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -34,13 +36,17 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -56,7 +62,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -66,6 +71,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMacerator>
     implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
@@ -106,29 +112,35 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Macerator, IMS")
-            .addInfo(TooltipHelper.parallelText("Voltage Tier * n") + " Parallels")
-            .addInfo("n=" + PARALLEL_T1 + " initially. n=" + PARALLEL_T2 + " after inserting Maceration Upgrade Chip")
-            .addInfo("Tier 1: " + EnumChatFormatting.GREEN + "160% speed")
-            .addInfo("Tier 2: " + EnumChatFormatting.GREEN + "640% speed")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.macerator_ims"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-maceration-stack"),
+                ImmutableMap.of(
+                    "parallel_base",
+                    PARALLEL_T1,
+                    "speed_base",
+                    160,
+                    "chip",
+                    GregtechItemList.Maceration_Upgrade_Chip.get(1)
+                        .getDisplayName()))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
-            .addController("Front bottom center")
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addEnergyHatch("1+", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addMufflerHatch("1", anyCasingText(), 1)
+            .addInputBus("1+", anyCasingText(), 1)
+            .addOutputBus("1+", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addCasing("26-44", "Stable Titanium Machine Casing", false)
+            .addCasing("26-44", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
-            .addCasing("69-87", "Maceration Stack Casing", false)
-            .addCasing("20", "HSS-G Frame Box", false)
-            .addCasing("18", "Steel Gear Box Casing", false)
-            .addCasing("8", "Any Tiered Glass", false)
-            .addCasing("6", "Grate Machine Casing", false)
+            .addCasing("69-87", Casings.MacerationStackCasing.getLocalizedName(), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.HSSG), false)
+            .addCasing("18", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addCasing("8", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("6", Casings.GrateMachineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
@@ -258,8 +270,9 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             : Casings.StableTitaniumMachineCasing.getCasingTexture();
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_MACERATOR;
     }
 
@@ -425,6 +438,20 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
         }
     }
 
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        int tier = stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey(TIER) ? stack.getTagCompound()
+                .getByte(TIER) : 1;
+        // Right under the item name, so T1 and T2 controllers are easy to tell apart
+        tooltip.add(
+            1,
+            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(tier)
+                + EnumChatFormatting.RESET);
+    }
+
     private String getActiveStructurePiece() {
         return controllerTier == 2 ? STRUCTURE_PIECE_MAIN_T2 : STRUCTURE_PIECE_MAIN_T1;
     }
@@ -463,6 +490,6 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     }
 
     public double getSpeedBonus() {
-        return 1F / (structureTier == 2 ? 6.4f : 1.6f);
+        return 1.0D / (structureTier == 2 ? 6.4D : 1.6D);
     }
 }

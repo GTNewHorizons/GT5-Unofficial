@@ -98,7 +98,8 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         final ITexture[] overlays = RenderOverlay.get(ctx.getBlockAccess(), ctx.getX(), ctx.getY(), ctx.getZ());
         final ITexture[] overlayHolder = this.overlayHolder;
-        if (overlays != null) {
+        if (overlays != null && !ctx.getRenderBlocks()
+            .hasOverrideBlockTexture()) {
             ctx.renderNegativeYFacing(aTextures[SIDE_DOWN]);
             if (overlays[SIDE_DOWN] != null) {
                 overlayHolder[0] = overlays[SIDE_DOWN];
@@ -266,11 +267,10 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
     private void renderInventoryBlockImmediate(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer,
         IMetaTileEntity imte) {
-        final ISBRInventoryContext ctx = sbrContextHolder.getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
+        final SBRInventoryContext ctx = (SBRInventoryContext) sbrContextHolder
+            .getSBRInventoryContext(aBlock, aMeta, aModelID, aRenderer);
         final boolean enableAO = aRenderer.enableAO;
         final boolean useInventoryTint = aRenderer.useInventoryTint;
-        final Tessellator tessellator = Tessellator.instance;
-        final boolean startedDrawing = !((TesselatorAccessor) tessellator).gt5u$isDrawing();
         aRenderer.enableAO = false;
         aRenderer.useInventoryTint = true;
 
@@ -278,7 +278,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         try {
-            if (startedDrawing) tessellator.startDrawingQuads();
+            final boolean startedDrawing = ctx.beginInventoryBatch();
             try {
                 if (imte != null && !imte.renderInInventory(ctx)) {
                     renderNormalInventoryMetaTileEntity(ctx, imte);
@@ -290,7 +290,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
                     }
                 }
             } finally {
-                if (startedDrawing && ((TesselatorAccessor) tessellator).gt5u$isDrawing()) tessellator.draw();
+                if (startedDrawing) ctx.endInventoryBatch();
             }
         } finally {
             aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);

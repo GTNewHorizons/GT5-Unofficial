@@ -100,6 +100,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     private final int speed = 20;
     private long rollingCost = 0L;
+    private long passiveCost = 0L;
     private boolean isLoadedChunk;
     public GTRecipe mLastRecipe;
     public int para;
@@ -271,14 +272,15 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            long totalAntimatterAmount = calculateContainedAntimatter();
 
+            // this is drained regardless of if the machine is On/Off.
+            // However, it only gets updated when the machine is On.
             if (!amOutputHatches.isEmpty()) {
-                drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
+                drainEnergyInput(passiveCost);
             }
 
             if (!aBaseMetaTileEntity.isActive()) {
-                this.guiAntimatterAmount = totalAntimatterAmount;
+                this.guiAntimatterAmount = calculateContainedAntimatter();
             }
 
             if ((this.mProgresstime >= this.mMaxProgresstime) && (!isAllowedToWork())) {
@@ -309,7 +311,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    public CheckRecipeResult checkProcessing() {
+    public @NotNull CheckRecipeResult checkProcessing() {
         FluidStack[] antimatterStored = new FluidStack[16];
         long totalAntimatterAmount = 0;
         long minAntimatterAmount = Long.MAX_VALUE;
@@ -364,7 +366,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         long energyCost = calculateEnergyCost(totalAntimatterAmount);
-
+        calculateEnergyContainmentCost(totalAntimatterAmount);
         // If we run out of energy, reduce contained antimatter by 10%
         if (!drainEnergyInput(energyCost)) {
             decimateAntimatter();
@@ -417,22 +419,24 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     /*
-     * How much passive energy is drained every tick Base containment cost: 10M EU/t The containment cost ramps up by
-     * the amount of antimatter each tick, up to 1000 times If the current cost is more than 1000 times the amount of
-     * antimatter, or if no antimatter is in the hatches, the value will decay by 1% every tick
+     * How much passive energy is drained every tick. calculated at recipe start. Base containment cost: 10M EU/t
+     * The containment cost ramps up by the amount of antimatter * 20 each second, up to 1000 times.
+     * If the current cost is more than 1000 times the amount of antimatter, or if no antimatter is in the hatches:
+     * the value will decay by 10% every second.
      */
-    private long calculateEnergyContainmentCost(long antimatterAmount) {
+    private static final double decay = 0.9;
+
+    private void calculateEnergyContainmentCost(long antimatterAmount) {
         if (antimatterAmount == 0) {
-            rollingCost *= 0.995;
+            rollingCost *= decay;
             if (rollingCost < 100) rollingCost = 0;
         } else if (rollingCost < antimatterAmount * 1000) {
-            rollingCost += antimatterAmount;
+            rollingCost += 20 * antimatterAmount;
         } else {
-            rollingCost *= 0.995;
+            rollingCost *= decay;
         }
-        long value = BASE_CONSUMPTION + (long) Math.pow(rollingCost, 1.5 + modifiers[MAGNETIC_ID]);
-        this.guiPassiveEnergy = value;
-        return value;
+        passiveCost = BASE_CONSUMPTION + (long) Math.pow(rollingCost, 1.5 + modifiers[MAGNETIC_ID]);
+        this.guiPassiveEnergy = passiveCost;
     }
 
     // How much energy is consumed when machine does one cycle
@@ -633,6 +637,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         aNBT.setLong("rollingCost", this.rollingCost);
         aNBT.setFloat("currentMagneticModifier", this.modifiers[MAGNETIC_ID]);
         aNBT.setLong("guiAntimatterAmount", this.guiAntimatterAmount);
+        aNBT.setLong("passiveCost", this.passiveCost);
     }
 
     @Override
@@ -649,6 +654,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
         if (aNBT.hasKey("guiAntimatterAmount")) {
             this.guiAntimatterAmount = aNBT.getLong("guiAntimatterAmount");
+        }
+        if (aNBT.hasKey("passiveCost")) {
+            this.passiveCost = aNBT.getLong("passiveCost");
         }
     }
 
