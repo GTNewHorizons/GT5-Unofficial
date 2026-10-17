@@ -16,7 +16,7 @@ public class WirelessDataStore {
     public static final long IO_TICK_RATE = 200;
     public static final long DOWNLOAD_TICK_OFFSET = 1;
 
-    private long lastUpdatedTick = -1;
+    private long lastTickWithNewData = -1;
     private long lastUploadTick = -1;
     private long lastDownloadTick = -1;
     private final Set<RecipeAssemblyLine> prevUploadedSticks = new HashSet<>();
@@ -33,7 +33,7 @@ public class WirelessDataStore {
         uploadedSticks.addAll(recipes);
         for (RecipeAssemblyLine recipe : recipes) {
             if (!prevUploadedSticks.contains(recipe)) {
-                lastUpdatedTick = tick + IO_TICK_RATE;
+                lastTickWithNewData = tick + IO_TICK_RATE;
                 break;
             }
         }
@@ -49,7 +49,7 @@ public class WirelessDataStore {
     }
 
     public boolean hasNewData(long tick) {
-        return tick <= lastUpdatedTick;
+        return tick <= lastTickWithNewData;
     }
 
     public static WirelessDataStore getWirelessDataSticks(UUID uuid) {
