@@ -26,11 +26,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
@@ -62,17 +57,24 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.gui.modularui.multiblock.MTENeutronActivatorGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
+public class MTENeutronActivator extends TTMultiblockBase
+    implements ISurvivalConstructable, ICasingTextureProvider, IParametrized {
 
     public Parameters.Group.ParameterIn batchSetting;
+    private IntegerParameter batchParameter;
 
     /** Name of the batch setting */
     public static final INameFunction<MTENeutronActivator> BATCH_SETTING_NAME = (base,
@@ -120,6 +122,10 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
 
     public MTENeutronActivator(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+    }
+
+    public int geteV() {
+        return eV;
     }
 
     @Override
@@ -489,24 +495,6 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         casingAmount++;
     }
 
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(
-                new TextWidget().setStringSupplier(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> eV, val -> eV = val));
-    }
-
     private enum NeutronHatchElement implements IHatchElement<MTENeutronActivator> {
 
         NeutronSensor("GT5U.MBTT.NeutronSensorHatch", MTENeutronActivator::addAcceleratorAndSensor,
@@ -557,5 +545,32 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         public String getDescriptionLangKey() {
             return name;
         }
+    }
+
+    @Override
+    public void initParameters() {
+        batchParameter = new IntegerParameter(1, "batch_mode.cfgi.0", "batch", () -> 1, () -> 128);
+    }
+
+    @Override
+    public void loadLegacyParameters(NBTTagCompound nbt) {
+        batchParameter.setValue(
+            nbt.getCompoundTag("eParamsInD")
+                .getInteger("19"));
+    }
+
+    @Override
+    public List<Parameter<?, ?>> getParameters() {
+        return List.of(batchParameter);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTENeutronActivatorGui(this);
     }
 }

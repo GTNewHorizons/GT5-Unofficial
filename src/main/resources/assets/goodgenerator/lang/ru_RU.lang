@@ -385,7 +385,7 @@ gui.NeutronSensor.1=пример >5000KeV, <=30MeV . . .
 gui.NeutronSensor.2=Валидное
 gui.NeutronSensor.3=Не валидное
 gui.NeutronSensor.4=eV порог
-gui.NeutronActivator.0=Текущая кинетическая энергия нейтронов:
+gui.NeutronActivator.0=Текущая кинетическая энергия нейтронов:\n%s MeV
 gui.NeutronActivator.1=Вход:
 gui.YOTTank.0=Ёмкость:
 gui.YOTTank.1=Жидкость:
