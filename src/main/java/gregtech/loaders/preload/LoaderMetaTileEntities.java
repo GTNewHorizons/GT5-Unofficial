@@ -1383,6 +1383,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setFluidSlots(true, false)
                 .build()
                 .getStackForm(1L));
+
+        ItemList.AssemblingMachineUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ASSEMBLING_MACHINE_UXV.ID)
+                .setName("basicmachine.assembler.tier.13", "Epic Assembly Constructor V")
+                .setTier(13)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.AssemblingMachineMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ASSEMBLING_MACHINE_MAX.ID)
+                .setName("basicmachine.assembler.tier.14", "Legendary Assembly Constructor")
+                .setTier(14)
+                .setDescription(MachineType.ASSEMBLER.tooltipDescription())
+                .setRecipes(assemblerRecipes)
+                .setSlotsCount(9, 1)
+                .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
+                .setOverlays("ASSEMBLER")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
     }
 
     private static void registerMatterAmplifier() {
@@ -1541,6 +1567,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setFluidSlots(false, true, 1000)
                 .build()
                 .getStackForm(1L));
+
+        ItemList.AmplifabricatorUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(MATTER_AMPLIFIER_UXV.ID)
+                .setName("basicmachine.amplifab.tier.13", "Epic Amplicreator V")
+                .setTier(13)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .setFluidSlots(false, true, 1000)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.AmplifabricatorMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(MATTER_AMPLIFIER_MAX.ID)
+                .setName("basicmachine.amplifab.tier.14", "Legendary Amplicreator")
+                .setTier(14)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setOverlays("AMPLIFAB")
+                .setFluidSlots(false, true, 1000)
+                .build()
+                .getStackForm(1L));
     }
 
     private static void registerAlloySmelter() {
@@ -1680,6 +1732,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(ALLOY_SMELTER_UMV.ID)
                 .setName("basicmachine.alloysmelter.tier.12", "Epic Alloy Integrator IV")
                 .setTier(12)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.AlloySmelterUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ALLOY_SMELTER_UXV.ID)
+                .setName("basicmachine.alloysmelter.tier.13", "Epic Alloy Integrator V")
+                .setTier(13)
+                .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
+                .setRecipes(alloySmelterRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("ALLOY_SMELTER")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.AlloySmelterMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ALLOY_SMELTER_MAX.ID)
+                .setName("basicmachine.alloysmelter.tier.14", "Legendary Alloy Integrator")
+                .setTier(14)
                 .setDescription(MachineType.ALLOY_SMELTER.tooltipDescription())
                 .setRecipes(alloySmelterRecipes)
                 .setSlotsCount(2, 1)
@@ -2583,6 +2659,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
+
+        ItemList.ChemicalBathUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(CHEMICAL_BATH_UXV.ID)
+                .setName("basicmachine.chemicalbath.tier.13", "Epic Chemical Dunktron V")
+                .setTier(13)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 6)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ChemicalBathMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(CHEMICAL_BATH_MAX.ID)
+                .setName("basicmachine.chemicalbath.tier.14", "Legendary Chemical Dunktron")
+                .setTier(14)
+                .setDescription(MachineType.CHEMICAL_BATH.tooltipDescription())
+                .setRecipes(chemicalBathRecipes)
+                .setSlotsCount(1, 6)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CHEMICAL_BATH")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerChemicalReactor() {
@@ -2742,6 +2844,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.ChemicalReactorUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(CHEMICAL_REACTOR_UXV.ID)
+                .setName("basicmachine.chemicalreactor.tier.13", "Epic Chemical Performer V")
+                .setTier(13)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ChemicalReactorMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(CHEMICAL_REACTOR_MAX.ID)
+                .setName("basicmachine.chemicalreactor.tier.14", "Legendary Chemical Performer")
+                .setTier(14)
+                .setDescription(MachineType.CHEMICAL_REACTOR.tooltipDescription())
+                .setRecipes(chemicalReactorRecipes)
+                .setSlotsCount(2, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("CHEMICAL_REACTOR")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerFermenter() {
@@ -2892,6 +3020,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(FERMENTER_UMV.ID)
                 .setName("basicmachine.fermenter.tier.12", "Epic Fermentation Hastener IV")
                 .setTier(12)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.FermenterUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FERMENTER_UXV.ID)
+                .setName("basicmachine.fermenter.tier.13", "Epic Fermentation Hastener V")
+                .setTier(13)
+                .setDescription(MachineType.FERMENTER.tooltipDescription())
+                .setRecipes(fermentingRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("FERMENTER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.FermenterMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FERMENTER_MAX.ID)
+                .setName("basicmachine.fermenter.tier.14", "Legendary Fermentation Hastener")
+                .setTier(14)
                 .setDescription(MachineType.FERMENTER.tooltipDescription())
                 .setRecipes(fermentingRecipes)
                 .setSlotsCount(1, 1)
@@ -3216,6 +3370,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setFluidSlots(false, true)
                 .build()
                 .getStackForm(1L));
+
+        ItemList.FluidExtractorUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FLUID_EXTRACTOR_UXV.ID)
+                .setName("basicmachine.fluidextractor.tier.13", "Epic Liquefying Sucker V")
+                .setTier(13)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .setFluidSlots(false, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.FluidExtractorMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FLUID_EXTRACTOR_MAX.ID)
+                .setName("basicmachine.fluidextractor.tier.14", "Legendary Liquefying Sucker")
+                .setTier(14)
+                .setDescription(MachineType.FLUID_EXTRACTOR.tooltipDescription())
+                .setRecipes(fluidExtractionRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("FLUID_EXTRACTOR")
+                .setFluidSlots(false, true)
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerFluidHeater() {
@@ -3374,6 +3554,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setFluidSlots(true, true)
                 .build()
                 .getStackForm(1L));
+
+        ItemList.FluidHeaterUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FLUID_HEATER_UXV.ID)
+                .setName("basicmachine.fluidheater.tier.13", "Epic Heat Infuser V")
+                .setTier(13)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.FluidHeaterMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FLUID_HEATER_MAX.ID)
+                .setName("basicmachine.fluidheater.tier.14", "Legendary Heat Infuser")
+                .setTier(14)
+                .setDescription(MachineType.FLUID_HEATER.tooltipDescription())
+                .setRecipes(fluidHeaterRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_BOILER)
+                .setOverlays("FLUID_HEATER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerMixer() {
@@ -3524,6 +3730,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(MIXER_UMV.ID)
                 .setName("basicmachine.mixer.tier.12", "Epic Matter Organizer IV")
                 .setTier(12)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.MixerUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(MIXER_UXV.ID)
+                .setName("basicmachine.mixer.tier.13", "Epic Matter Organizer V")
+                .setTier(13)
+                .setDescription(MachineType.MIXER.tooltipDescription())
+                .setRecipes(mixerRecipes)
+                .setSlotsCount(9, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MIXER)
+                .setOverlays("MIXER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.MixerMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(MIXER_MAX.ID)
+                .setName("basicmachine.mixer.tier.14", "Legendary Matter Organizer")
+                .setTier(14)
                 .setDescription(MachineType.MIXER.tooltipDescription())
                 .setRecipes(mixerRecipes)
                 .setSlotsCount(9, 4)
@@ -3691,6 +3923,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.AutoclaveUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(AUTOCLAVE_UXV.ID)
+                .setName("basicmachine.autoclave.tier.13", "Epic Pressure Cooker V")
+                .setTier(13)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.AutoclaveMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(AUTOCLAVE_MAX.ID)
+                .setName("basicmachine.autoclave.tier.14", "Legendary Pressure Cooker")
+                .setTier(14)
+                .setDescription(MachineType.AUTOCLAVE.tooltipDescription())
+                .setRecipes(autoclaveRecipes)
+                .setSlotsCount(2, 4)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("AUTOCLAVE")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerBendingMachine() {
@@ -3830,6 +4088,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(BENDING_MACHINE_UMV.ID)
                 .setName("basicmachine.bender.tier.12", "Epic Bending Unit IV")
                 .setTier(12)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.BendingMachineUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(BENDING_MACHINE_UXV.ID)
+                .setName("basicmachine.bender.tier.13", "Epic Bending Unit V")
+                .setTier(13)
+                .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
+                .setRecipes(benderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("BENDER")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.BendingMachineMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(BENDING_MACHINE_MAX.ID)
+                .setName("basicmachine.bender.tier.14", "Legendary Bending Unit")
+                .setTier(14)
                 .setDescription(MachineType.BENDING_MACHINE.tooltipDescription())
                 .setRecipes(benderRecipes)
                 .setSlotsCount(2, 1)
@@ -3987,6 +4269,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(COMPRESSOR_UMV.ID)
                 .setName("basicmachine.compressor.tier.12", "Epic Matter Constrictor IV")
                 .setTier(12)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.CompressorUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(COMPRESSOR_UXV.ID)
+                .setName("basicmachine.compressor.tier.13", "Epic Matter Constrictor V")
+                .setTier(13)
+                .setDescription(MachineType.COMPRESSOR.tooltipDescription())
+                .setRecipes(compressorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COMPRESSOR)
+                .setOverlays("COMPRESSOR")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.CompressorMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(COMPRESSOR_MAX.ID)
+                .setName("basicmachine.compressor.tier.14", "Legendary Matter Constrictor")
+                .setTier(14)
                 .setDescription(MachineType.COMPRESSOR.tooltipDescription())
                 .setRecipes(compressorRecipes)
                 .setSlotsCount(1, 1)
@@ -4155,6 +4463,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.CuttingMachineUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(CUTTING_MACHINE_UXV.ID)
+                .setName("basicmachine.cutter.tier.13", "Epic Object Divider V")
+                .setTier(13)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.CuttingMachineMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(CUTTING_MACHINE_MAX.ID)
+                .setName("basicmachine.cutter.tier.14", "Legendary Object Divider")
+                .setTier(14)
+                .setDescription(MachineType.CUTTING_MACHINE.tooltipDescription())
+                .setRecipes(cutterRecipes)
+                .setSlotsCount(2, 4)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("CUTTER")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerDistillery() {
@@ -4314,6 +4648,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.DistilleryUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(DISTILLERY_UXV.ID)
+                .setName("basicmachine.distillery.tier.13", "Epic Fraction Splitter V")
+                .setTier(13)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.DistilleryMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(DISTILLERY_MAX.ID)
+                .setName("basicmachine.distillery.tier.14", "Legendary Fraction Splitter")
+                .setTier(14)
+                .setDescription(MachineType.DISTILLERY.tooltipDescription())
+                .setRecipes(distilleryRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
+                .setOverlays("DISTILLERY")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerElectricFurnace() {
@@ -4458,6 +4818,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(ELECTRIC_FURNACE_UMV.ID)
                 .setName("basicmachine.e_furnace.tier.12", "Epic Atom Stimulator IV")
                 .setTier(12)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ElectricFurnaceUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ELECTRIC_FURNACE_UXV.ID)
+                .setName("basicmachine.e_furnace.tier.13", "Epic Atom Stimulator V")
+                .setTier(13)
+                .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
+                .setRecipes(furnaceRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FURNACE)
+                .setOverlays("ELECTRIC_FURNACE")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ElectricFurnaceMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ELECTRIC_FURNACE_MAX.ID)
+                .setName("basicmachine.e_furnace.tier.14", "Legendary Atom Stimulator")
+                .setTier(14)
                 .setDescription(MachineType.ELECTRIC_FURNACE.tooltipDescription())
                 .setRecipes(furnaceRecipes)
                 .setSlotsCount(1, 1)
@@ -4624,6 +5008,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.ElectrolyzerUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ELECTROLYZER_UXV.ID)
+                .setName("basicmachine.electrolyzer.tier.13", "Epic Ionizer V")
+                .setTier(13)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ElectrolyzerMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ELECTROLYZER_MAX.ID)
+                .setName("basicmachine.electrolyzer.tier.14", "Legendary Ionizer")
+                .setTier(14)
+                .setDescription(MachineType.ELECTROLYZER.tooltipDescription())
+                .setRecipes(electrolyzerRecipes)
+                .setSlotsCount(2, 6)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("ELECTROLYZER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerElectromagneticSeparator() {
@@ -4763,6 +5173,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(ELECTROMAGNETIC_SEPARATOR_UMV.ID)
                 .setName("basicmachine.electromagneticseparator.tier.12", "Epic Magnetar Separator IV")
                 .setTier(12)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ElectromagneticSeparatorUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ELECTROMAGNETIC_SEPARATOR_UXV.ID)
+                .setName("basicmachine.electromagneticseparator.tier.13", "Epic Magnetar Separator V")
+                .setTier(13)
+                .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
+                .setRecipes(electroMagneticSeparatorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("ELECTROMAGNETIC_SEPARATOR")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ElectromagneticSeparatorMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ELECTROMAGNETIC_SEPARATOR_MAX.ID)
+                .setName("basicmachine.electromagneticseparator.tier.14", "Legendary Magnetar Separator")
+                .setTier(14)
                 .setDescription(MachineType.ELECTROMAGNETIC_SEPARATOR.tooltipDescription())
                 .setRecipes(electroMagneticSeparatorRecipes)
                 .setSlotsCount(1, 3)
@@ -4918,6 +5352,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.ExtractorUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(EXTRACTOR_UXV.ID)
+                .setName("basicmachine.extractor.tier.13", "Epic Extractinator V")
+                .setTier(13)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ExtractorMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(EXTRACTOR_MAX.ID)
+                .setName("basicmachine.extractor.tier.14", "Legendary Extractinator")
+                .setTier(14)
+                .setDescription(MachineType.EXTRACTOR.tooltipDescription())
+                .setRecipes(extractorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
+                .setOverlays("EXTRACTOR")
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerExtruder() {
@@ -5057,6 +5515,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(EXTRUDER_UMV.ID)
                 .setName("basicmachine.extruder.tier.12", "Epic Shape Driver IV")
                 .setTier(12)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ExtruderUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(EXTRUDER_UXV.ID)
+                .setName("basicmachine.extruder.tier.13", "Epic Shape Driver V")
+                .setTier(13)
+                .setDescription(MachineType.EXTRUDER.tooltipDescription())
+                .setRecipes(extruderRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.IC2_MACHINES_INDUCTION_LOOP)
+                .setOverlays("EXTRUDER")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ExtruderMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(EXTRUDER_MAX.ID)
+                .setName("basicmachine.extruder.tier.14", "Legendary Shape Driver")
+                .setTier(14)
                 .setDescription(MachineType.EXTRUDER.tooltipDescription())
                 .setRecipes(extruderRecipes)
                 .setSlotsCount(2, 1)
@@ -5224,6 +5706,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.FluidSolidifierUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FLUID_SOLIDIFIER_UXV.ID)
+                .setName("basicmachine.fluidsolidifier.tier.13", "Epic Fluid Petrificator V")
+                .setTier(13)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.FluidSolidifierMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FLUID_SOLIDIFIER_MAX.ID)
+                .setName("basicmachine.fluidsolidifier.tier.14", "Legendary Fluid Petrificator")
+                .setTier(14)
+                .setDescription(MachineType.FLUID_SOLIDIFIER.tooltipDescription())
+                .setRecipes(fluidSolidifierRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_COOLING)
+                .setOverlays("FLUID_SOLIDIFIER")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerFormingPress() {
@@ -5374,6 +5882,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(FORMING_PRESS_UMV.ID)
                 .setName("basicmachine.press.tier.12", "Epic Surface Shifter IV")
                 .setTier(12)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(6, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.FormingPressUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FORMING_PRESS_UXV.ID)
+                .setName("basicmachine.press.tier.13", "Epic Surface Shifter V")
+                .setTier(13)
+                .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
+                .setRecipes(formingPressRecipes)
+                .setSlotsCount(6, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("PRESS")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.FormingPressMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FORMING_PRESS_MAX.ID)
+                .setName("basicmachine.press.tier.14", "Legendary Surface Shifter")
+                .setTier(14)
                 .setDescription(MachineType.FORMING_PRESS.tooltipDescription())
                 .setRecipes(formingPressRecipes)
                 .setSlotsCount(6, 1)
@@ -5547,6 +6081,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.ForgeHammerUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FORGE_HAMMER_UXV.ID)
+                .setName("basicmachine.hammer.tier.13", "Epic Impact Modulator V")
+                .setTier(13)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("HAMMER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ForgeHammerMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(FORGE_HAMMER_MAX.ID)
+                .setName("basicmachine.hammer.tier.14", "Legendary Impact Modulator")
+                .setTier(14)
+                .setDescription(MachineType.FORGE_HAMMER.tooltipDescription())
+                .setRecipes(hammerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
+                .setOverlays("HAMMER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerLathe() {
@@ -5686,6 +6246,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(LATHE_UMV.ID)
                 .setName("basicmachine.lathe.tier.12", "Epic Turn-O-Matic IV")
                 .setTier(12)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.LatheUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(LATHE_UXV.ID)
+                .setName("basicmachine.lathe.tier.13", "Epic Turn-O-Matic V")
+                .setTier(13)
+                .setDescription(MachineType.LATHE.tooltipDescription())
+                .setRecipes(latheRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_CUT)
+                .setOverlays("LATHE")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.LatheMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(LATHE_MAX.ID)
+                .setName("basicmachine.lathe.tier.14", "Legendary Turn-O-Matic")
+                .setTier(14)
                 .setDescription(MachineType.LATHE.tooltipDescription())
                 .setRecipes(latheRecipes)
                 .setSlotsCount(1, 2)
@@ -5853,6 +6437,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.PrecisionLaserEngraverUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(PRECISION_LASER_ENGRAVER_UXV.ID)
+                .setName("basicmachine.laserengraver.tier.13", "Epic Exact Photon Cannon V")
+                .setTier(13)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.PrecisionLaserEngraverMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(PRECISION_LASER_ENGRAVER_MAX.ID)
+                .setName("basicmachine.laserengraver.tier.14", "Legendary Exact Photon Cannon")
+                .setTier(14)
+                .setDescription(MachineType.LASER_ENGRAVER.tooltipDescription())
+                .setRecipes(laserEngraverRecipes)
+                .setSlotsCount(4, 1)
+                .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
+                .setOverlays("LASER_ENGRAVER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerMacerator() {
@@ -6003,6 +6613,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(MACERATOR_UMV.ID)
                 .setName("basicmachine.macerator.tier.12", "Epic Shape Eliminator IV")
                 .setTier(12)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setOverlays("PULVERIZER")
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.MaceratorUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(MACERATOR_UXV.ID)
+                .setName("basicmachine.macerator.tier.13", "Epic Shape Eliminator V")
+                .setTier(13)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setOverlays("PULVERIZER")
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.MaceratorMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(MACERATOR_MAX.ID)
+                .setName("basicmachine.macerator.tier.14", "Legendary Shape Eliminator")
+                .setTier(14)
                 .setDescription(MachineType.MACERATOR.tooltipDescription())
                 .setRecipes(maceratorRecipes)
                 .setSlotsCount(1, 4)
@@ -6194,6 +6830,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(MICROWAVE_UMV.ID)
                 .setName("basicmachine.microwave.tier.12", "Epic UFO Engine IV")
                 .setTier(12)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.MicrowaveUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(MICROWAVE_UXV.ID)
+                .setName("basicmachine.microwave.tier.13", "Epic UFO Engine V")
+                .setTier(13)
+                .setDescription(MachineType.MICROWAVE.tooltipDescription())
+                .setRecipes(microwaveRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_HUM)
+                .setOverlays("MICROWAVE")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.MicrowaveMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(MICROWAVE_MAX.ID)
+                .setName("basicmachine.microwave.tier.14", "Legendary UFO Engine")
+                .setTier(14)
                 .setDescription(MachineType.MICROWAVE.tooltipDescription())
                 .setRecipes(microwaveRecipes)
                 .setSlotsCount(1, 1)
@@ -6428,6 +7088,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.OreWashingPlantUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ORE_WASHING_PLANT_UXV.ID)
+                .setName("basicmachine.orewasher.tier.13", "Epic Ore Washing Machine V")
+                .setTier(13)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.OreWashingPlantMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ORE_WASHING_PLANT_MAX.ID)
+                .setName("basicmachine.orewasher.tier.14", "Legendary Ore Washing Machine")
+                .setTier(14)
+                .setDescription(MachineType.ORE_WASHER.tooltipDescription())
+                .setRecipes(oreWasherRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("ORE_WASHER")
+                .setFluidSlots(true, false)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerPolarizer() {
@@ -6567,6 +7253,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(POLARIZER_UMV.ID)
                 .setName("basicmachine.polarizer.tier.12", "Epic Magnetism Inducer IV")
                 .setTier(12)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.PolarizerUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(POLARIZER_UXV.ID)
+                .setName("basicmachine.polarizer.tier.13", "Epic Magnetism Inducer V")
+                .setTier(13)
+                .setDescription(MachineType.POLARIZER.tooltipDescription())
+                .setRecipes(polarizerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_MAGNETIZER_LOOP)
+                .setOverlays("POLARIZER")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.PolarizerMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(POLARIZER_MAX.ID)
+                .setName("basicmachine.polarizer.tier.14", "Legendary Magnetism Inducer")
+                .setTier(14)
                 .setDescription(MachineType.POLARIZER.tooltipDescription())
                 .setRecipes(polarizerRecipes)
                 .setSlotsCount(1, 1)
@@ -6836,6 +7546,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.RecyclerUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(RECYCLER_UXV.ID)
+                .setName("basicmachine.recycler.tier.13", "Epic Scrap-O-Matic V")
+                .setTier(13)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.RecyclerMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(RECYCLER_MAX.ID)
+                .setName("basicmachine.recycler.tier.14", "Legendary Scrap-O-Matic")
+                .setTier(14)
+                .setDescription(MachineType.RECYCLER.tooltipDescription())
+                .setRecipes(recyclerRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.IC2_MACHINES_RECYCLER_OP)
+                .setOverlays("RECYCLER")
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerSiftingMachine() {
@@ -6995,6 +7729,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.SiftingMachineUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(SIFTING_MACHINE_UXV.ID)
+                .setName("basicmachine.sifter.tier.13", "Epic Pulsation Filter V")
+                .setTier(13)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.SiftingMachineMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(SIFTING_MACHINE_MAX.ID)
+                .setName("basicmachine.sifter.tier.14", "Legendary Pulsation Filter")
+                .setTier(14)
+                .setDescription(MachineType.SIFTER.tooltipDescription())
+                .setRecipes(sifterRecipes)
+                .setSlotsCount(1, 9)
+                .setSound(SoundResource.NONE)
+                .setOverlays("SIFTER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerThermalCentrifuge() {
@@ -7141,6 +7901,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setOverlays("THERMAL_CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
+
+        ItemList.ThermalCentrifugeUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(THERMAL_CENTRIFUGE_UXV.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.13", "Epic Fire Cyclone V")
+                .setTier(13)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ThermalCentrifugeMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(THERMAL_CENTRIFUGE_MAX.ID)
+                .setName("basicmachine.thermalcentrifuge.tier.14", "Legendary Fire Cyclone")
+                .setTier(14)
+                .setDescription(MachineType.THERMAL_CENTRIFUGE.tooltipDescription())
+                .setRecipes(thermalCentrifugeRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("THERMAL_CENTRIFUGE")
+                .build()
+                .getStackForm(1L));
     }
 
     private void registerWiremill() {
@@ -7280,6 +8064,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(WIREMILL_UMV.ID)
                 .setName("basicmachine.wiremill.tier.12", "Epic Wire Transfigurator IV")
                 .setTier(12)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.WiremillUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(WIREMILL_UXV.ID)
+                .setName("basicmachine.wiremill.tier.13", "Epic Wire Transfigurator V")
+                .setTier(13)
+                .setDescription(MachineType.WIREMILL.tooltipDescription())
+                .setRecipes(wiremillRecipes)
+                .setSlotsCount(2, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MOTOR)
+                .setOverlays("WIREMILL")
+                .build()
+                .getStackForm(1L));
+
+        ItemList.WiremillMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(WIREMILL_MAX.ID)
+                .setName("basicmachine.wiremill.tier.14", "Legendary Wire Transfigurator")
+                .setTier(14)
                 .setDescription(MachineType.WIREMILL.tooltipDescription())
                 .setRecipes(wiremillRecipes)
                 .setSlotsCount(2, 1)
@@ -7471,6 +8279,36 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .build()
                 .getStackForm(1L));
 
+        ItemList.ArcFurnaceUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ARC_FURNACE_UXV.ID)
+                .setName("basicmachine.arcfurnace.tier.13", "Epic Short Circuit Heater V")
+                .setTier(13)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.ArcFurnaceMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(ARC_FURNACE_MAX.ID)
+                .setName("basicmachine.arcfurnace.tier.14", "Legendary Short Circuit Heater")
+                .setTier(14)
+                .setDescription(MachineType.ARC_FURNACE.tooltipDescription())
+                .setRecipes(arcFurnaceRecipes)
+                .setSlotsCount(2, 9)
+                .setSound(SoundResource.GTCEU_LOOP_ARC)
+                .setOverlays("ARC_FURNACE")
+                .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
+                .build()
+                .getStackForm(1L));
+
     }
 
     private void registerCentrifuge() {
@@ -7621,6 +8459,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(CENTRIFUGE_UMV.ID)
                 .setName("basicmachine.centrifuge.tier.12", "Epic Molecular Tornado IV")
                 .setTier(12)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.CentrifugeUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(CENTRIFUGE_UXV.ID)
+                .setName("basicmachine.centrifuge.tier.13", "Epic Molecular Tornado V")
+                .setTier(13)
+                .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
+                .setRecipes(centrifugeRecipes)
+                .setSlotsCount(2, 6)
+                .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
+                .setOverlays("CENTRIFUGE")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.CentrifugeMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(CENTRIFUGE_MAX.ID)
+                .setName("basicmachine.centrifuge.tier.14", "Legendary Molecular Tornado")
+                .setTier(14)
                 .setDescription(MachineType.CENTRIFUGE.tooltipDescription())
                 .setRecipes(centrifugeRecipes)
                 .setSlotsCount(2, 6)
@@ -7939,6 +8803,32 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             MTEBasicMachineWithRecipeBuilder.builder(CANNING_MACHINE_UMV.ID)
                 .setName("basicmachine.canner.tier.12", "Epic Can Operator IV")
                 .setTier(12)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.CanningMachineUXV.set(
+            MTEBasicMachineWithRecipeBuilder.builder(CANNING_MACHINE_UXV.ID)
+                .setName("basicmachine.canner.tier.13", "Epic Can Operator V")
+                .setTier(13)
+                .setDescription(MachineType.CANNER.tooltipDescription())
+                .setRecipes(cannerRecipes)
+                .setSlotsCount(2, 2)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("CANNER")
+                .setFluidSlots(true, true)
+                .build()
+                .getStackForm(1L));
+
+        ItemList.CanningMachineMAX.set(
+            MTEBasicMachineWithRecipeBuilder.builder(CANNING_MACHINE_MAX.ID)
+                .setName("basicmachine.canner.tier.14", "Legendary Can Operator")
+                .setTier(14)
                 .setDescription(MachineType.CANNER.tooltipDescription())
                 .setRecipes(cannerRecipes)
                 .setSlotsCount(2, 2)
