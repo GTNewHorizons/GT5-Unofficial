@@ -70,10 +70,6 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     private static final int MACHINEMODE_TOWER = 0;
     private static final int MACHINEMODE_DISTILLERY = 1;
-    private static final int DISTILLERY_SPEED_DISPLAY = 200;
-    private static final int DISTILLERY_EU_EFF_DISPLAY = 50;
-    private static final int TOWER_SPEED_DISPLAY = 150;
-    private static final int TOWER_EU_EFF_DISPLAY = 90;
 
     protected final List<List<MTEHatchOutput>> outputHatchesPerLayer = new ArrayList<>();
 
@@ -589,10 +585,10 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 new ResourceLocation("gregtech", "mega-distillation-tower"),
                 ImmutableMap.<String, Object>builder()
                     .put("mega_max", Configuration.Multiblocks.megaMachinesMax)
-                    .put("distillery_speed", DISTILLERY_SPEED_DISPLAY)
-                    .put("distillery_eu_eff", DISTILLERY_EU_EFF_DISPLAY)
-                    .put("tower_speed", TOWER_SPEED_DISPLAY)
-                    .put("tower_eu_eff", TOWER_EU_EFF_DISPLAY)
+                    .put("distillery_speed", (int) (DISTILLERY_SPEED * 100))
+                    .put("distillery_eu_eff", (int) (DISTILLERY_EU_EFFICIENCY * 100))
+                    .put("tower_speed", (int) (TOWER_SPEED * 100))
+                    .put("tower_eu_eff", (int) (TOWER_EU_EFFICIENCY * 100))
                     .build())
             .addSupportAny()
             .addUnlimitedTierSkips()
