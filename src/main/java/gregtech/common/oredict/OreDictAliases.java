@@ -95,9 +95,7 @@ final class OreDictAliases {
     private OreDictAliases() {}
 
     static void registerAliases(String oreName, ItemStack stack, OrePrefixes prefix, String materialName) {
-        if (prefix != OrePrefixes.ore
-            && (StoneType.STONE_TYPES_BY_PREFIX.containsKey(prefix) || prefix == OrePrefixes.oreNether
-                || prefix == OrePrefixes.oreEnd)) {
+        if (prefix != OrePrefixes.ore && StoneType.STONE_TYPES_BY_PREFIX.containsKey(prefix)) {
             GTOreDictUnificator.registerOre("variantOre" + materialName, stack);
         }
 
