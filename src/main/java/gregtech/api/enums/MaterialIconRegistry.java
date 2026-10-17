@@ -137,7 +137,9 @@ public class MaterialIconRegistry {
         TURBINE_BLADE("/turbineBlade", TextureType.ITEM),
 
         VOID_25("/void", TextureType.ITEM),
-        VOID_26("/void", TextureType.ITEM),
+
+        ELECTRODE("/electrode", TextureType.ITEM),
+
         VOID_27("/void", TextureType.ITEM),
         VOID_28("/void", TextureType.ITEM),
         VOID_29("/void", TextureType.ITEM),
