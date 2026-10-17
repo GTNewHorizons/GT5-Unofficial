@@ -209,7 +209,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Naquadah Fuel Refinery, NFR")
-            .addDynamicParallelInfo(4, TooltipTier.COIL)
+            .addDynamicParallelInfo(4, TooltipTier.FIELD_RESTRICTION_COIL)
             .addMarkdown(new ResourceLocation("gregtech", "naquadah-fuel-refinery"))
             .addSupportAny()
             .addUnlimitedTierSkips()
