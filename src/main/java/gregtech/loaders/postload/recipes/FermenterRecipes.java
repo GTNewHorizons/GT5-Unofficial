@@ -6,9 +6,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 
@@ -20,13 +17,6 @@ public class FermenterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Biomass.getFluid(100))
-            .fluidOutputs(Materials.FermentedBiomass.getFluid(100))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(2)
-            .addTo(fermentingRecipes);
-
-        GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 100))
             .fluidOutputs(Materials.FermentedBiomass.getFluid(100))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(2)
