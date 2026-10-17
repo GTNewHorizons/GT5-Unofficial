@@ -594,7 +594,6 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                     .put("tower_speed", TOWER_SPEED_DISPLAY)
                     .put("tower_eu_eff", TOWER_EU_EFF_DISPLAY)
                     .build())
-            .addSeparator()
             .addSupportAny()
             .addUnlimitedTierSkips()
             .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
