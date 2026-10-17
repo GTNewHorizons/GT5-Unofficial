@@ -804,7 +804,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "gt.item.bottle.salt_water.name",
                 "gt.item.bottle.salt_water.tooltip",
                 OrePrefixes.bottle.get(Materials.SaltWater),
-                SubTag.INVISIBLE,
                 new GTFoodStat(
                     1,
                     0.0F,
