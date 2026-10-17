@@ -3,6 +3,7 @@ package gregtech.common;
 import static gregtech.common.misc.GlobalVariableStorage.GlobalWirelessDataSticks;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ public class WirelessDataStore {
     private long lastUploadTick = -1;
     private long lastDownloadTick = -1;
     private final ArrayList<RecipeAssemblyLine> uploadedSticks = new ArrayList<>();
-    private final ArrayList<RecipeAssemblyLine> dataSticks = new ArrayList<>();
+    private List<RecipeAssemblyLine> dataSticks = Collections.emptyList();
 
     public void uploadData(List<RecipeAssemblyLine> recipes, long tick) {
         if (lastUploadTick < tick) {
@@ -29,8 +30,13 @@ public class WirelessDataStore {
 
     public List<RecipeAssemblyLine> downloadData(long tick) {
         if (lastDownloadTick < tick) {
-            dataSticks.clear();
-            dataSticks.addAll(uploadedSticks);
+            // Receivers retain the previous download to detect changes. Publish a new snapshot so the first
+            // receiver's download cannot overwrite the previous recipes of every other receiver.
+            // Empty databanks skip uploads. Expire the previous cycle if no bank refreshes it, including when
+            // every transmitter is unloaded, so removed sticks cannot remain available indefinitely.
+            dataSticks = tick - lastUploadTick < IO_TICK_RATE
+                ? Collections.unmodifiableList(new ArrayList<>(uploadedSticks))
+                : Collections.emptyList();
             lastDownloadTick = tick;
         }
         return dataSticks;
