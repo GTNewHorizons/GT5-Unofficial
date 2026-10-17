@@ -24,7 +24,7 @@ public class WirelessDataStore {
     private final ArrayList<RecipeAssemblyLine> dataSticks = new ArrayList<>();
 
     public void uploadData(List<RecipeAssemblyLine> recipes, long tick) {
-        if (lastUploadTick != tick) {
+        if (lastUploadTick < tick) {
             prevUploadedSticks.clear();
             prevUploadedSticks.addAll(uploadedSticks);
             uploadedSticks.clear();
@@ -40,7 +40,7 @@ public class WirelessDataStore {
     }
 
     public List<RecipeAssemblyLine> downloadData(long tick) {
-        if (lastDownloadTick != tick) {
+        if (lastDownloadTick < tick) {
             dataSticks.clear();
             dataSticks.addAll(uploadedSticks);
             lastDownloadTick = tick;
@@ -58,5 +58,9 @@ public class WirelessDataStore {
             GlobalWirelessDataSticks.put(team, new WirelessDataStore());
         }
         return GlobalWirelessDataSticks.get(team);
+    }
+
+    public static void onServerClosed() {
+        GlobalWirelessDataSticks.clear();
     }
 }
