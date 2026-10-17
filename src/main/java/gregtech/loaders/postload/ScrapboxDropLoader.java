@@ -39,8 +39,8 @@ public class ScrapboxDropLoader implements Runnable {
         GTModHandler.addScrapboxDrop(0.5F, new ItemStack(Items.apple));
         GTModHandler.addScrapboxDrop(0.5F, new ItemStack(Items.bread));
         GTModHandler.addScrapboxDrop(0.1F, new ItemStack(Items.cake));
-        GTModHandler.addScrapboxDrop(1.0F, ItemList.IC2_Food_Can_Filled.get(1L));
-        GTModHandler.addScrapboxDrop(2.0F, ItemList.IC2_Food_Can_Spoiled.get(1L));
+        GTModHandler.addScrapboxDrop(1.0F, ItemList.FoodCanFilled.get(1L));
+        GTModHandler.addScrapboxDrop(2.0F, ItemList.FoodCanSpoiled.get(1L));
         GTModHandler.addScrapboxDrop(0.2F, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L));
         GTModHandler.addScrapboxDrop(1.0F, GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L));
         GTModHandler.addScrapboxDrop(2.0F, ItemList.Cell_Empty.get(1L));
