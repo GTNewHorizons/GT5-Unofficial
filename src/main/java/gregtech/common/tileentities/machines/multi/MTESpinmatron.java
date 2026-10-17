@@ -787,6 +787,11 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 
     @Override
+    protected float getSoundRadiusMultiplier() {
+        return 5f;
+    }
+
+    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.centrifugeNonCellRecipes;
     }
