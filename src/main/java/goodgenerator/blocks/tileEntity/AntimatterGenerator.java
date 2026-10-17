@@ -63,16 +63,17 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<AntimatterGenerator>
     implements ISurvivalConstructable {
 
+    public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
     public static final String MAIN_NAME = "antimatterGenerator";
-    protected IStructureDefinition<AntimatterGenerator> multiDefinition = null;
-    protected int times = 1;
+
     private UUID owner_uuid;
     private boolean wirelessEnabled = false;
     private long lastCycleTick = 0;
-
     private long euLastCycle = 0;
+    private int avgEffCounter = 0;
+
     private float annihilationEfficiency = 0f;
-    public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
+    private float avgEffCache;
     private final List<Float> avgEff = new ArrayList<>(10);
 
     private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -153,7 +154,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         }
         // Set stats if one fluid supplied.
         if ((containedAntimatter == 0 && catalystFluid != null) || (containedAntimatter > 0 && catalystFluid == null)) {
-            this.annihilationEfficiency = 0;
             this.euLastCycle = 0;
             setAvgEff(0f);
         }
@@ -179,11 +179,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         if (modifier != null) {
             float efficiency = Math
                 .min(((float) antimatter / (float) catalystCount), ((float) catalystCount / (float) antimatter));
-            this.annihilationEfficiency = efficiency;
             setAvgEff(efficiency);
             generatedEU = (long) ((Math.pow(antimatter, modifier) * ANTIMATTER_FUEL_VALUE) * efficiency);
         } else { // Set stats and return if supplied antimatter with incorrect fluid.
-            this.annihilationEfficiency = 0;
             this.euLastCycle = 0;
             setAvgEff(0f);
             return;
@@ -205,9 +203,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             addEUToGlobalEnergyMap(owner_uuid, generatedEU);
         } else {
             this.euLastCycle = generatedEU;
-            float invHatchCount = 1.0F / (float) mExoticDynamoHatches.size();
+            float euPerHatch = generatedEU / (float) mExoticDynamoHatches.size();
             for (MTEHatch tHatch : getExoticDynamoHatches()) {
-                tHatch.setEUVar(tHatch.getEUVar() + (long) (generatedEU * invHatchCount));
+                tHatch.setEUVar(tHatch.getEUVar() + (long) (euPerHatch));
             }
         }
     }
@@ -334,15 +332,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         return this.annihilationEfficiency;
     }
 
-    private int n = 0;
-
     private void setAvgEff(float a) {
-        if (n == 10) n = 0;
+        this.annihilationEfficiency = a;
+        if (avgEffCounter == 10) avgEffCounter = 0;
         if (this.avgEff.size() < 10) {
             this.avgEff.add(a);
         } else {
-            this.avgEff.set(n, a);
-            n++;
+            this.avgEff.set(avgEffCounter, a);
+            avgEffCounter++;
         }
 
         float b = 0;
@@ -355,8 +352,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     public float getAvgEfficiency() {
         return this.avgEffCache;
     }
-
-    protected float avgEffCache;
 
     @Override
     public IStructureDefinition<AntimatterGenerator> getStructureDefinition() {
