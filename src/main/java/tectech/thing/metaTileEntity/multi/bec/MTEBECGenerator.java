@@ -11,6 +11,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -39,6 +41,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -249,30 +252,12 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             int perParallel = candidate.recipe.mFluidInputs[0].amount;
             long plannedDrain = (long) plannedParallels * perParallel;
 
-            long drained = 0;
-            long remainingDrain = plannedDrain;
-            while (remainingDrain > 0) {
-                int chunk = (int) Math.min(remainingDrain, Integer.MAX_VALUE);
-                long chunkDrained = depleteInputQuantity(new FluidStack(candidate.fluid, chunk), true);
-                if (chunkDrained <= 0) break;
-                drained += chunkDrained;
-                remainingDrain -= chunkDrained;
-                if (chunkDrained < chunk) break;
-            }
-
+            long drained = drainInputHatches(mInputHatches, plannedDrain, candidate.fluid, true);
             int actualParallels = (int) Math.min(drained / perParallel, Integer.MAX_VALUE);
             candidate.parallels = actualParallels;
 
             if (actualParallels <= 0) continue;
-            long actualDrain = (long) actualParallels * perParallel;
-
-            long remainingActual = actualDrain;
-            while (remainingActual > 0) {
-                int chunk = (int) Math.min(remainingActual, Integer.MAX_VALUE);
-                long chunkDrained = depleteInputQuantity(new FluidStack(candidate.fluid, chunk), false);
-                if (chunkDrained <= 0) break;
-                remainingActual -= chunkDrained;
-            }
+            drainInputHatches(mInputHatches, (long) actualParallels * perParallel, candidate.fluid, false);
 
             outputs.addTo(
                 candidate.recipe.mFluidOutputs[0].getFluid(),
@@ -311,6 +296,17 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
+    private static long drainInputHatches(List<MTEHatchInput> hatches, long amount, Fluid fluid, boolean simulate) {
+        long drained = 0;
+        for (MTEHatchInput hatch : validMTEList(hatches)) {
+            if (drained >= amount) break;
+            int chunk = (int) Math.min(amount - drained, Integer.MAX_VALUE);
+            FluidStack result = hatch.drain(ForgeDirection.UNKNOWN, new FluidStack(fluid, chunk), !simulate);
+            if (result == null || result.getFluid() != fluid) continue;
+            drained += result.amount;
+        }
+        return drained;
+    }
     private static class FluidCandidate {
 
         final GTRecipe recipe;
