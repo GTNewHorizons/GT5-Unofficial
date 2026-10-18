@@ -76,8 +76,6 @@ tooltip.rotor.1.name=耐久:
 tooltip.rotor.2.name=效率:
 tooltip.cp.0.name=内部是否有编程电路?
 
-tooltip.bw.0.name=Added by
-tooltip.bw.1.name=由bartimaeusnek添加
 tooltip.bw.yes.name=是
 tooltip.bw.no.name=否
 tooltip.bw.tier.name=等级:

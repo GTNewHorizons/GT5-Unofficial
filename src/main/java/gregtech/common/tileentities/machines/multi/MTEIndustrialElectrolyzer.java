@@ -14,7 +14,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -159,7 +158,6 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
             .addMufflerHatch("1", "Any electrolyzer casing", 1)
             .addInputAny("1+", "Any electrolyzer casing", 1)
             .addOutputAny("1+", "Any electrolyzer casing", 1)
-            .addStructureAuthors(EnumChatFormatting.BLUE + "Vortex")
             .toolTipFinisher();
         return tt;
     }

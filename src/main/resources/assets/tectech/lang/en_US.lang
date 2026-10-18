@@ -20,6 +20,7 @@ tile.reactorSim.desc.1=Explodes, but not as much...
 
 gt.spacetime_compression_field_generator.name=Spacetime Compression Field Generator
 gt.time_acceleration_field_generator.name=Time Dilation Field Generator
+gt.stabilisation_field_generator.name=Stabilisation Field Generator
 
 tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
 
@@ -1697,12 +1698,6 @@ tt.IUPAC.E=Enn
 tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Anti
 tt.keyword.Weird=*
-
-tt.tooltip.mark_general=: Interdimensional
-tt.tooltip.mark_em=: Elemental Matter
-tt.tooltip.theta_movement=: Theta Movement
-tt.tooltip.cosmic_mark=: Cosmic
-tt.tooltip.godforge_mark=: Project Godforge
 
 tt.chat.debug.generator=Laser mode: %s
 

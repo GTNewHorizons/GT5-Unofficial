@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static goodgenerator.main.GGConfigLoader.*;
@@ -20,6 +21,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,6 +29,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -59,6 +62,7 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeNaquadahReactor extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -357,48 +361,27 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Naquadah Reactor, LNR")
-            .addInfo("Environmentally Friendly!")
-            .addInfo("Generate power from high-energy liquids")
-            .addInfo(
-                String.format(
-                    "Consumes %s%d L/s Liquid Air%s to keep running, otherwise" + EnumChatFormatting.YELLOW
-                        + " it will void your fuel"
-                        + EnumChatFormatting.GRAY
-                        + ".",
-                    EnumChatFormatting.AQUA,
-                    LiquidAirConsumptionPerSecond,
-                    EnumChatFormatting.GRAY))
-            .addInfo("Input liquid nuclear fuel or liquid naquadah fuel")
-            .addSeparator()
-            .addInfo(
-                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
-                    + "efficiency "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.WHITE
-                    + "consuming "
-                    + EnumChatFormatting.BLUE
-                    + "coolants:")
-            .addInfo(getCoolantTextFormatted("IC2 Coolant", "1000", CoolantEfficiency[3]))
-            .addInfo(getCoolantTextFormatted("Super Coolant", "1000", CoolantEfficiency[2]))
-            .addInfo(getCoolantTextFormatted("Cryotheum", "1000", CoolantEfficiency[1]))
-            .addInfo(getCoolantTextFormatted("Tachyon Rich Temporal Fluid", "20", CoolantEfficiency[0]))
-            .addSeparator()
-            .addInfo(
-                "Can increase " + EnumChatFormatting.LIGHT_PURPLE
-                    + "output power and fuel usage "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.WHITE
-                    + "consuming "
-                    + EnumChatFormatting.RED
-                    + "excited liquid:")
-            .addInfo(getExcitedTextFormatted("Molten Caesium", "180", ExcitedLiquidCoe[4]))
-            .addInfo(getExcitedTextFormatted("Molten Uranium-235", "180", ExcitedLiquidCoe[3]))
-            .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
-            .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
-            .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "large-naquadah-reactor"),
+                ImmutableMap.<String, Object>builder()
+                    .put("fluid_unit", getFluidUnit())
+                    .put("liquid_air", formatNumber(LiquidAirConsumptionPerSecond))
+                    .put("coolant_ic2", formatNumber(CoolantEfficiency[3]))
+                    .put("coolant_super", formatNumber(CoolantEfficiency[2]))
+                    .put("coolant_cryo", formatNumber(CoolantEfficiency[1]))
+                    .put("coolant_tachyon", formatNumber(CoolantEfficiency[0]))
+                    .put("excited_caesium", formatNumber(ExcitedLiquidCoe[4]))
+                    .put("excited_uranium", formatNumber(ExcitedLiquidCoe[3]))
+                    .put("excited_naquadah", formatNumber(ExcitedLiquidCoe[2]))
+                    .put("excited_asc", formatNumber(ExcitedLiquidCoe[1]))
+                    .put("excited_space", formatNumber(ExcitedLiquidCoe[0]))
+                    .put("coolant_amt_high", formatNumber(1000))
+                    .put("coolant_amt_low", formatNumber(20))
+                    .put("excited_amt_high", formatNumber(180))
+                    .put("excited_amt_low", formatNumber(20))
+                    .build())
             .addSupportAny()
             .beginStructureBlock(7, 11, 7, false)
             .addController("Front bottom center")
@@ -409,8 +392,8 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
             .addMaintenanceHatch("1", "Any reactor casing", 1)
             .addInputHatch("1+", "Any reactor casing", 1)
             .addOutputHatch("1+", "Any reactor casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
