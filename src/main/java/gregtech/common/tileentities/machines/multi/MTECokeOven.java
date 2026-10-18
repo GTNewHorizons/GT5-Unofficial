@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorJulia;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
@@ -101,7 +100,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.wallshare_1"))
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.wallshare_2"))
-            .toolTipFinisher(AuthorJulia);
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }
