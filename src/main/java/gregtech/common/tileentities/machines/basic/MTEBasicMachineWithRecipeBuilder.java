@@ -9,6 +9,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.tooltip.TooltipHelper;
 
 public final class MTEBasicMachineWithRecipeBuilder {
 
@@ -164,8 +165,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
                     descriptionIndex++;
                 }
                 if (showRecipeOutputLimitTooltip) {
-                    finalDescription[descriptionIndex] = StatCollector
-                        .translateToLocalFormatted("gt.blockmachines.recipe_output_limit.desc", outputSlotCount);
+                    finalDescription[descriptionIndex] = TooltipHelper.recipeSlotLimit(outputSlotCount);
                 }
             }
             MTEBasicMachineWithRecipe machine;

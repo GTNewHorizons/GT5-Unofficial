@@ -80,6 +80,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.MTEWindmillGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.nei.RecipeDisplayInfo;
@@ -293,7 +294,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         final int separatorIndex = windmillInfo.indexOf(separator);
         windmillInfo.add(
             separatorIndex >= 0 ? separatorIndex : windmillInfo.size(),
-            StatCollector.translateToLocalFormatted("gt.blockmachines.recipe_output_limit.desc", getItemOutputLimit()));
+            TooltipHelper.recipeSlotLimit(getItemOutputLimit()));
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.windmill"))
             .addInfoAll(windmillInfo.toArray(new String[0]))
