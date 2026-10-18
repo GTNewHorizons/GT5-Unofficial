@@ -209,8 +209,7 @@ gt.voltage.tier=-tier
 
 # Tooltip for Block Machines
 gt.blockmachines.slot_count.desc=%s Slots
-gt.blockmachines.output_slots.desc=Output Slots: §e%s§r
-gt.blockmachines.no_byproducts.desc=Cannot produce byproducts
+gt.blockmachines.recipe_output_limit.desc=Only the first §e%s§7 item output(s) of each recipe can be produced
 gt.blockmachines.cable.desc=Max Voltage: %s\nMax Amperage: %s\nLoss/Meter/Ampere: %s
 gt.blockmachines.gt_frame.desc.format=Just something you can put covers on.
 gt.blockmachines.transformer.desc=%s -> %s (Use Soft Mallet to invert)

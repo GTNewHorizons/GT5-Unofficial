@@ -54,8 +54,8 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         super.addAdditionalTooltipInformation(stack, tooltip);
-        tooltip.add(StatCollector.translateToLocalFormatted("gt.blockmachines.output_slots.desc", mOutputItems.length));
-        tooltip.add(StatCollector.translateToLocal("gt.blockmachines.no_byproducts.desc"));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted("gt.blockmachines.recipe_output_limit.desc", mOutputItems.length));
     }
 
     @Override
