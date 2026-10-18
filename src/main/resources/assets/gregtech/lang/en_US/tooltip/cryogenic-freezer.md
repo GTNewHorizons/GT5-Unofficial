@@ -1,5 +1,5 @@
 Factory Grade Advanced Vacuum Freezer
-{gold:{var:parallels} Parallels}
-{green:{var:speed}% Speed}
-{aqua:{var:eu_eff}% EU Usage}
-Consumes {aqua:{var:cryotheum}{var:unit}/s} of {gold:{fluid:cryotheum}} whilst running
+{color_parallel:{var:parallels} Parallels}
+{color_speed:{var:speed}% Speed}
+{color_eu_usage:{var:eu_eff}% EU Usage}
+Consumes {aqua:{var:cryotheum}{var:unit}/s} of {color_key:{fluid:cryotheum}} whilst running

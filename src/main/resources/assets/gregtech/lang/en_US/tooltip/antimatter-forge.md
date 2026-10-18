@@ -4,7 +4,7 @@ Use screwdriver to disable rendering
 Passively consumes {var:base_consumption} + ({dark_aqua:Antimatter} * 1000)^(1.5 - {green:{bold:{underline:M}}}) EU/t
 The consumption decays by 1% every tick when empty
 Actively uses ({dark_aqua:Antimatter} * {var:active_base_mult})^(1.5 - {dark_purple:{bold:{underline:G}}}) EU per cycle to produce antimatter
-{gray:{hr}}
+{hr}
 Cycles every second
 Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded
 All hatches with more than the lowest amount {red:lose half the difference!}
@@ -13,7 +13,7 @@ Base production per hatch is (1/16) * ({dark_aqua:Antimatter}^(0.5 + {gold:{bold
 Each hatch multiplies the base production per hatch with a random number pulled from
 a normal distribution with a mean of 0.2 + {aqua:{bold:{underline:A}}} and a variance of 1
 The total gain of antimatter can be negative!
-{gray:{hr}}
+{hr}
 Can be supplied with stabilization fluids to improve antimatter generation
 Each stabilization can only use one of the fluids at a time
 {green:{bold:{underline:M}}}{green:agnetic Stabilization} (Consumes {dark_aqua:Antimatter}^0.5 L of fluid per cycle)

@@ -1,8 +1,8 @@
-Recipe Tier is limited by the lowest {white:Energy Hatch} Tier
-{gray:{hr}}
-Runs imperfect overclocks until {white:Energy Hatch} Tier
-Multiplier = {aqua:4^(Regular Overclocks) × 4.3 * 4.6 * ... * (4 + 0.3 * Extra Overclocks)}
-Power usage = {aqua:Multiplier * (Active Slices) * (Recipe EU/t)}
-{yellow:Additional overclocks are increasingly more expensive}
-{yellow:Overclocking assumes all recipe slices are active}
-{gray:{hr}}
+Recipe Tier is limited by the lowest {color_name:Energy Hatch} Tier
+{hr}
+Runs imperfect overclocks until {color_name:Energy Hatch} Tier
+Multiplier = {color_efficiency:4^(Regular Overclocks) × 4.3 * 4.6 * ... * (4 + 0.3 * Extra Overclocks)}
+Power usage = {color_efficiency:Multiplier * (Active Slices) * (Recipe EU/t)}
+{color_note:Additional overclocks are increasingly more expensive}
+{color_note:Overclocking assumes all recipe slices are active}
+{hr}
