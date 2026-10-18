@@ -101,7 +101,6 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.ResultMissingApiaryFlowers;
@@ -113,10 +112,10 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
 import kubatech.gui.modularui2.MTEMegaIndustrialApiaryGui;
@@ -688,33 +687,25 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     /**
-     * Ejects stored queens, one per empty output bus slot, or all if ME Output.
+     * Ejects as many stored queens as the output busses accept. Queens that do not fit stay stored.
      *
      * @return {@code true} if any queen was ejected
      */
     private boolean outputQueens() {
-        int capacity = 0;
-        for (MTEHatchOutputBus bus : mOutputBusses) {
-            if (bus instanceof MTEHatchOutputBusME) {
-                capacity = Integer.MAX_VALUE;
-                break;
-            }
-            for (int j = 0; j < bus.getSizeInventory(); j++)
-                if (bus.isValidSlot(j) && bus.getStackInSlot(j) == null) capacity++;
-        }
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(getOutputBusses(), true);
         boolean ejected = false;
         Iterator<BeeGroup> it = beeGroups.values()
             .iterator();
-        while (capacity > 0 && it.hasNext()) {
+        while (it.hasNext()) {
             BeeGroup group = it.next();
-            int n = Math.min(capacity, group.count);
-            for (int i = 0; i < n; i++) addOutputPartial(group.copyQueen());
-            capacity -= n;
-            group.count -= n;
-            beeCount -= n;
+            int placed = ejectionHelper.ejectStack(GTUtility.copyAmountUnsafe(group.count, group.queen));
+            if (placed == 0) continue;
+            group.count -= placed;
+            beeCount -= placed;
             ejected = true;
             if (group.count == 0) it.remove();
         }
+        ejectionHelper.commit();
         if (ejected) storageVersion++;
         return ejected;
     }
