@@ -30,10 +30,10 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
     private boolean delDelay = true;
 
-    private long history;
+    private long computation;
 
     protected void updateComputationHistory(long value) {
-        this.history = value;
+        this.computation = value;
     }
 
     public MTEHatchDataInput(int aID, String aName, String aNameRegional, int aTier) {
@@ -72,6 +72,11 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     @Override
+    public boolean canClear() {
+        return true;
+    }
+
+    @Override
     public boolean canConnectData(ForgeDirection side) {
         return isInputFacing(side);
     }
@@ -94,7 +99,7 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
                 this.q = null;
             }
 
-            history = q == null ? 0 : q.getContent();
+            computation = q == null ? 0 : q.getContent();
         }
 
         Long now = this.q == null ? null : this.q.getContent();
@@ -103,23 +108,24 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
     @Override
     protected void resetHistory() {
-        history = 0;
+        computation = 0;
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
+    public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState checkState) {
         if (delDelay) {
             delDelay = false;
         } else {
             setContents(null);
         }
+        return CheckState.UNKNOWN;
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setLong("computation", history);
+        tag.setLong("computation", computation);
     }
 
     @Override
