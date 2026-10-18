@@ -27,6 +27,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting NAME_COLOR = EnumChatFormatting.WHITE;
     /** For warns and other important notes. */
     public static final EnumChatFormatting NOTE_COLOR = EnumChatFormatting.YELLOW;
+    /** For machine type names. */
+    public static final EnumChatFormatting MACHINE_TYPE_COLOR = EnumChatFormatting.YELLOW;
     /** For miscellaneous component names or anything else that needs highlighting. */
     public static final EnumChatFormatting MISC_COLOR = EnumChatFormatting.BLUE;
     /** For speed modifiers. */
