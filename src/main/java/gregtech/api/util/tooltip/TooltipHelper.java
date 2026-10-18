@@ -80,6 +80,16 @@ public class TooltipHelper {
     }
 
     /**
+     * Describes the recipe item output limit using the appropriate singular or plural form.
+     */
+    public static String recipeSlotLimit(int outputSlots) {
+        return StatCollector.translateToLocalFormatted(
+            outputSlots == 1 ? "gt.blockmachines.recipe_output_limit.desc"
+                : "gt.blockmachines.recipe_output_limit_plural.desc",
+            outputSlots);
+    }
+
+    /**
      * Wraps input string in parallel colors
      *
      * @param parallels Amount of parallels turned into {@link TooltipHelper#PARALLEL_COLOR}
