@@ -96,6 +96,18 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
+
+        String cycleTimeDisplay;
+        if (baseCycleTime < 20) {
+            cycleTimeDisplay = StatCollector.translateToLocalFormatted(
+                baseCycleTime == 1 ? "GT5U.gui.text.tick" : "GT5U.gui.text.tick.plural",
+                formatNumber(baseCycleTime));
+        } else {
+            double seconds = baseCycleTime / 20.0;
+            cycleTimeDisplay = StatCollector.translateToLocalFormatted(
+                seconds == 1 ? "GT5U.gui.text.second" : "GT5U.gui.text.second.plural",
+                formatNumber(seconds));
+        }
         // spotless:off
         tt.addMachineType("Pump, FDR")
             .addInfo(
@@ -111,7 +123,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                 new ResourceLocation("gregtech", "fluid-drilling-rig"),
                 ImmutableMap.<String, Object>builder()
                     .put("range", getRangeInChunks())
-                    .put("cycle_time", baseCycleTime < 20 ? formatNumber(baseCycleTime) + (baseCycleTime == 1 ? " tick" : " ticks") : formatNumber(baseCycleTime / 20.0) + " seconds")
+                    .put("cycle_time", cycleTimeDisplay)
                     .build())
             .beginStructureBlock(9, 14, 9, false)
             .addController("Front bottom center")
