@@ -1550,7 +1550,7 @@ public final class RecipeMaps {
     public static final RecipeMap<FuelBackend> hotFuels = RecipeMapBuilder
         .of("gt.recipe.thermalgeneratorfuel", FuelBackend::new)
         .maxIO(1, 4, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.fuel_per_item", 1000))
         .build();
     public static final RecipeMap<FuelBackend> denseLiquidFuels = RecipeMapBuilder
         .of("gt.recipe.semifluidboilerfuels", FuelBackend::new)
@@ -1574,32 +1574,32 @@ public final class RecipeMaps {
     public static final RecipeMap<FuelBackend> magicFuels = RecipeMapBuilder
         .of("gt.recipe.magicfuels", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.fuel_per_item", 1000))
         .build();
     public static final RecipeMap<FuelBackend> smallNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.smallnaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.fuel_per_item", 1000))
         .build();
     public static final RecipeMap<FuelBackend> largeNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.largenaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.fuel_per_item", 1000))
         .build();
     public static final RecipeMap<FuelBackend> hugeNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.fluidnaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.fuel_per_item", 1000))
         .build();
     public static final RecipeMap<FuelBackend> extremeNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.hugenaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.fuel_per_item", 1000))
         .build();
     public static final RecipeMap<FuelBackend> ultraHugeNaquadahReactorFuels = RecipeMapBuilder
         .of("gt.recipe.extrahugenaquadahreactor", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
+        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.fuel_per_item", 1000))
         .build();
     public static final RecipeMap<LargeBoilerFuelBackend> largeBoilerFakeFuels = RecipeMapBuilder
         .of("gt.recipe.largeboilerfakefuels", LargeBoilerFuelBackend::new)
