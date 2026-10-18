@@ -26,6 +26,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnegative;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -305,6 +306,21 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .toolTipFinisher();
         // spotless:on
         return tt;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+
+        if (base == null || base.isActive()) {
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workarea_fail");
+        } else {
+            adjustChunkRange(!aPlayer.isSneaking());
+
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.chunks", chunkRangeConfig, chunkRangeConfig);
+        }
     }
 
     @Override
