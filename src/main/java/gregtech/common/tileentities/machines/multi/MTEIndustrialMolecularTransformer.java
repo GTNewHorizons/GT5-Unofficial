@@ -13,6 +13,8 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -37,6 +39,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMolecularTransformer>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -65,23 +68,25 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
     protected MultiblockTooltipBuilder createTooltip() {
 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Molecular Transformer")
-            .addInfo("Changes the structure of items to produce new ones")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.molecular_transformer"))
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-molecular-transformer"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("95-104", "Molecular Containment Casing", false)
-            .addCasing("35", "Speeding Pipe Casing", false)
-            .addCasing("30", "Any Tiered Glass", false)
-            .addCasing("14", "Advanced Iridium Plated Machine Casing", false)
-            .addEnergyHatch("1+", "Any containment casing", 1)
-            .addMaintenanceHatch("1", "Any containment casing", 1)
-            .addMufflerHatch("1", "Any containment casing", 1)
-            .addInputBus("1+", "Any containment casing", 1)
-            .addOutputBus("1+", "Any containment casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("95-104", Casings.MolecularContainmentCasing.getLocalizedName(), false)
+            .addCasing("35", new ItemStack(Loaders.speedingPipe, 1, 0).getDisplayName(), false)
+            .addCasing("30", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("14", Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_containment_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_containment_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_containment_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_containment_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_containment_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
