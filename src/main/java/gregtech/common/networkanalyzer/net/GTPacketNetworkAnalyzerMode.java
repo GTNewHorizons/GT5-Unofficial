@@ -6,8 +6,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -72,12 +71,11 @@ public class GTPacketNetworkAnalyzerMode extends GTPacket {
         if (currentItem != null && currentItem.getItem() instanceof ItemNetworkAnalyzer) {
             final String modeKey = "gt.NetworkAnalyzer.mode." + mode.name()
                 .toLowerCase();
-            final String modeName = StatCollector.translateToLocal(modeKey);
 
             ItemNetworkAnalyzer.setMode(currentItem, mode);
             NetworkAnalyzerPlayerTracker.reset(player);
             this.player.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocalFormatted("gt.NetworkAnalyzer.set", modeName)));
+                new ChatComponentTranslation("gt.NetworkAnalyzer.set", new ChatComponentTranslation(modeKey)));
         }
     }
 }

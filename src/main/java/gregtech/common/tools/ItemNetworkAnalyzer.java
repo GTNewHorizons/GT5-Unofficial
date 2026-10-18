@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -94,12 +94,11 @@ public class ItemNetworkAnalyzer extends ItemTool {
                 setLocation(stack, coord);
 
                 player.addChatMessage(
-                    new ChatComponentText(
-                        StatCollector.translateToLocalFormatted(
-                            "gt.NetworkAnalyzer.bound",
-                            String.valueOf(coord.x),
-                            String.valueOf(coord.y),
-                            String.valueOf(coord.z))));
+                    new ChatComponentTranslation(
+                        "gt.NetworkAnalyzer.bound",
+                        String.valueOf(coord.x),
+                        String.valueOf(coord.y),
+                        String.valueOf(coord.z)));
 
                 return true;
             }
@@ -166,8 +165,7 @@ public class ItemNetworkAnalyzer extends ItemTool {
                     ItemStackNBT.removeTag(stack, "dim");
                     NetworkAnalyzerPlayerTracker.reset(player);
                     GTValues.NW.sendToPlayer(new GTPacketNetworkAnalyzer(new NetworkAnalyzerData()), player);
-                    player.addChatMessage(
-                        new ChatComponentText(StatCollector.translateToLocal("gt.NetworkAnalyzer.target_lost")));
+                    player.addChatMessage(new ChatComponentTranslation("gt.NetworkAnalyzer.target_lost"));
                 }
 
         }
