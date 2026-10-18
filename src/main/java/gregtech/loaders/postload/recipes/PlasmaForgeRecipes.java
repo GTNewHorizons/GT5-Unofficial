@@ -140,24 +140,6 @@ public class PlasmaForgeRecipes implements Runnable {
             .metadata(COIL_HEAT, 10800)
             .addTo(plasmaForgeRecipes);
 
-        // Quantum anomaly final recipe for UXV+.
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Laser_Lens_Special.get(4),
-                ItemList.Timepiece.get(1),
-                ItemList.Gravitational_Lens.get(0),
-                ItemRefer.HiC_T5.get(0))
-            .inputChances(10000, 1000, 10000, 10000)
-            .fluidInputs(
-                Materials.ExcitedDTSC.getFluid(92),
-                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 144))
-            .itemOutputs(GregtechItemList.Laser_Lens_Special.get(64))
-            .fluidOutputs(Materials.DTR.getFluid(184))
-            .duration(1 * SECONDS)
-            .eut((int) TierEU.RECIPE_UMV)
-            .metadata(COIL_HEAT, 13500)
-            .addTo(plasmaForgeRecipes);
-
         if (Avaritia.isModLoaded()) {
             // Six-Phased Copper
             GTValues.RA.stdBuilder()
