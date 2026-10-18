@@ -77,6 +77,7 @@ public class MarkdownTooltipLoader {
         addCommand("color_deprecated", new ColorMarkdownCommand(TooltipHelper.DEPRECATED_COLOR));
         addCommand("color_danger", new ColorMarkdownCommand(TooltipHelper.DANGER_COLOR));
         addCommand("color_mechanic", new ColorMarkdownCommand(TooltipHelper.MECHANIC_COLOR));
+        addCommand("color_time", new ColorMarkdownCommand(TooltipHelper.TIME_COLOR));
         addCommand("color_pollution", new ColorMarkdownCommand(TooltipHelper.POLLUTION_COLOR));
         addCommand("color_amperage", new ColorMarkdownCommand(TooltipHelper.AMP_COLOR));
 

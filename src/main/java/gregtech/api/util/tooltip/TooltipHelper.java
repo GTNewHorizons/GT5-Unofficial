@@ -55,6 +55,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting DANGER_COLOR = EnumChatFormatting.DARK_RED;
     /** For mechanic descriptions. */
     public static final EnumChatFormatting MECHANIC_COLOR = EnumChatFormatting.LIGHT_PURPLE;
+    /** For time values. */
+    public static final EnumChatFormatting TIME_COLOR = EnumChatFormatting.LIGHT_PURPLE;
     /** For pollution values. */
     public static final EnumChatFormatting POLLUTION_COLOR = EnumChatFormatting.DARK_PURPLE;
     public static final EnumChatFormatting ITALIC = EnumChatFormatting.ITALIC;
