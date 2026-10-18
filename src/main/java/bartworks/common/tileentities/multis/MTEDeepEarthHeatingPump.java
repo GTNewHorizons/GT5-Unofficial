@@ -23,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -114,12 +113,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInputHatch("1+", anyBottomCasing, 1)
             .addOutputBus("0+", anyBottomCasing, 1)
             .addOutputHatch("1+", anyBottomCasing, 1)
-            .toolTipFinisher(
-                EnumChatFormatting.GREEN + "bartimaeusnek"
-                    + EnumChatFormatting.GRAY
-                    + " via "
-                    + EnumChatFormatting.DARK_GREEN
-                    + "BartWorks");
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }

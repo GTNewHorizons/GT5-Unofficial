@@ -141,7 +141,6 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
         // spotless:on
         return tt;

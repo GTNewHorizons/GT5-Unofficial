@@ -20,7 +20,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -152,7 +151,6 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
             .addAir("4x2 area in front of the engine intake casings")
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
-            .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         // spotless:on
         return tt;

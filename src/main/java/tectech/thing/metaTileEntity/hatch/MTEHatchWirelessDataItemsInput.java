@@ -24,7 +24,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.WirelessDataStore;
-import tectech.util.CommonValues;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
@@ -98,8 +97,7 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM,
-            translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
+        return new String[] { translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.0"),
             translateToLocal("gt.blockmachines.hatch.datainasswireless.desc.1"), };
     }
 
