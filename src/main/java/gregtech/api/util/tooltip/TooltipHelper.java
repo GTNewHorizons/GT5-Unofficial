@@ -21,10 +21,34 @@ import gregtech.api.util.GTUtility;
 public class TooltipHelper {
 
     public static final EnumChatFormatting DEFAULT = EnumChatFormatting.DARK_GRAY;
-    public static final EnumChatFormatting PARALLEL_COLOR = EnumChatFormatting.GOLD;
-    public static final EnumChatFormatting SPEED_COLOR = EnumChatFormatting.GREEN;
-    public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.AQUA;
+    /** For tier and tiered parts names. */
     public static final EnumChatFormatting TIER_COLOR = EnumChatFormatting.WHITE;
+    /** Major components that require highlighting. */
+    public static final EnumChatFormatting NAME_COLOR = EnumChatFormatting.WHITE;
+    /** For warns and other important notes. */
+    public static final EnumChatFormatting NOTE_COLOR = EnumChatFormatting.YELLOW;
+    /** For miscellaneous component names or anything else that needs highlighting. */
+    public static final EnumChatFormatting MISC_COLOR = EnumChatFormatting.BLUE;
+    /** For speed modifiers. */
+    public static final EnumChatFormatting SPEED_COLOR = EnumChatFormatting.GREEN;
+    /** For hatch usage notes. */
+    public static final EnumChatFormatting HATCH_COLOR = EnumChatFormatting.GREEN;
+    /** For parallels counts and modifiers. */
+    public static final EnumChatFormatting PARALLEL_COLOR = EnumChatFormatting.GOLD;
+    /** For machine mode names. */
+    public static final EnumChatFormatting MODE_COLOR = EnumChatFormatting.GOLD;
+    /** For power usage modifiers. */
+    public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.AQUA;
+    /** For heat values. */
+    public static final EnumChatFormatting HEAT_COLOR = EnumChatFormatting.RED;
+    /** For depreciation notices. */
+    public static final EnumChatFormatting DEPRECATED_COLOR = EnumChatFormatting.RED;
+    /** For dangerous component descriptions. */
+    public static final EnumChatFormatting DANGER_COLOR = EnumChatFormatting.DARK_RED;
+    /** For mechanic descriptions. */
+    public static final EnumChatFormatting MECHANIC_COLOR = EnumChatFormatting.LIGHT_PURPLE;
+    /** For pollution values. */
+    public static final EnumChatFormatting POLLUTION_COLOR = EnumChatFormatting.DARK_PURPLE;
     public static final EnumChatFormatting ITALIC = EnumChatFormatting.ITALIC;
     public static final EnumChatFormatting EU_VOLT_COLOR = EnumChatFormatting.YELLOW;
     public static final EnumChatFormatting AMP_COLOR = EnumChatFormatting.AQUA;

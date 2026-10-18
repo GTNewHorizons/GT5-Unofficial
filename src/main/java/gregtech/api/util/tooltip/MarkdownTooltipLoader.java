@@ -59,6 +59,21 @@ public class MarkdownTooltipLoader {
             addCommand(format.getFriendlyName(), new ColorMarkdownCommand(format));
         }
 
+        addCommand("color_tier", new ColorMarkdownCommand(TooltipHelper.TIER_COLOR));
+        addCommand("color_name", new ColorMarkdownCommand(TooltipHelper.NAME_COLOR));
+        addCommand("color_note", new ColorMarkdownCommand(TooltipHelper.NOTE_COLOR));
+        addCommand("color_misc", new ColorMarkdownCommand(TooltipHelper.MISC_COLOR));
+        addCommand("color_speed", new ColorMarkdownCommand(TooltipHelper.SPEED_COLOR));
+        addCommand("color_hatch", new ColorMarkdownCommand(TooltipHelper.HATCH_COLOR));
+        addCommand("color_parallel", new ColorMarkdownCommand(TooltipHelper.PARALLEL_COLOR));
+        addCommand("color_mode", new ColorMarkdownCommand(TooltipHelper.MODE_COLOR));
+        addCommand("color_efficiency", new ColorMarkdownCommand(TooltipHelper.EFF_COLOR));
+        addCommand("color_heat", new ColorMarkdownCommand(TooltipHelper.HEAT_COLOR));
+        addCommand("color_deprecated", new ColorMarkdownCommand(TooltipHelper.DEPRECATED_COLOR));
+        addCommand("color_danger", new ColorMarkdownCommand(TooltipHelper.DANGER_COLOR));
+        addCommand("color_mechanic", new ColorMarkdownCommand(TooltipHelper.MECHANIC_COLOR));
+        addCommand("color_pollution", new ColorMarkdownCommand(TooltipHelper.POLLUTION_COLOR));
+
         addCommand("hr", new HRMarkdownCommand());
         addCommand("var", new VarMarkdownCommand(false));
         addCommand("var-eval", new VarMarkdownCommand(true));
