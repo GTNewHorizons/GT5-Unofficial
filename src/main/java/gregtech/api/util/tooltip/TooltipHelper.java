@@ -21,9 +21,9 @@ import gregtech.api.util.GTUtility;
 public class TooltipHelper {
 
     public static final EnumChatFormatting DEFAULT = EnumChatFormatting.DARK_GRAY;
-    /** For tier and tiered parts names. */
+    /** For tier-related highlighting. */
     public static final EnumChatFormatting TIER_COLOR = EnumChatFormatting.WHITE;
-    /** Major components that require highlighting. */
+    /** Major components that require highlighting like hatch types, tool names, and tired part names. */
     public static final EnumChatFormatting NAME_COLOR = EnumChatFormatting.WHITE;
     /** For warns and other important notes. */
     public static final EnumChatFormatting NOTE_COLOR = EnumChatFormatting.YELLOW;

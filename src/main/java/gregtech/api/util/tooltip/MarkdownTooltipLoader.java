@@ -59,7 +59,7 @@ public class MarkdownTooltipLoader {
             addCommand(format.getFriendlyName(), new ColorMarkdownCommand(format));
         }
 
-        // for meaningful coloring of certain concepts
+        // standard coloring for certain concepts
         addCommand("color_tier", new ColorMarkdownCommand(TooltipHelper.TIER_COLOR));
         addCommand("color_name", new ColorMarkdownCommand(TooltipHelper.NAME_COLOR));
         addCommand("color_note", new ColorMarkdownCommand(TooltipHelper.NOTE_COLOR));
