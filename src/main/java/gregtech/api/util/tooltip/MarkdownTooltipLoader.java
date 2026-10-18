@@ -68,11 +68,13 @@ public class MarkdownTooltipLoader {
         addCommand("color_parallel", new ColorMarkdownCommand(TooltipHelper.PARALLEL_COLOR));
         addCommand("color_mode", new ColorMarkdownCommand(TooltipHelper.MODE_COLOR));
         addCommand("color_efficiency", new ColorMarkdownCommand(TooltipHelper.EFF_COLOR));
+        addCommand("color_eu_usage", new ColorMarkdownCommand(TooltipHelper.EU_USAGE_COLOR));
         addCommand("color_heat", new ColorMarkdownCommand(TooltipHelper.HEAT_COLOR));
         addCommand("color_deprecated", new ColorMarkdownCommand(TooltipHelper.DEPRECATED_COLOR));
         addCommand("color_danger", new ColorMarkdownCommand(TooltipHelper.DANGER_COLOR));
         addCommand("color_mechanic", new ColorMarkdownCommand(TooltipHelper.MECHANIC_COLOR));
         addCommand("color_pollution", new ColorMarkdownCommand(TooltipHelper.POLLUTION_COLOR));
+        addCommand("color_amperage", new ColorMarkdownCommand(TooltipHelper.AMP_COLOR));
 
         addCommand("hr", new HRMarkdownCommand());
         addCommand("var", new VarMarkdownCommand(false));
