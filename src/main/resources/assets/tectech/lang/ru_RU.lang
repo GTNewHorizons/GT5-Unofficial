@@ -1624,12 +1624,6 @@ tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Анти
 tt.keyword.Weird=*
 
-tt.tooltip.mark_general=: Interdimensional
-tt.tooltip.mark_em=: Elemental Matter
-tt.tooltip.theta_movement=: Theta Movement
-tt.tooltip.cosmic_mark=: Cosmic
-tt.tooltip.godforge_mark=: Проект Godforge
-
 tt.chat.debug.generator=Режим лазера: %s
 
 GT5U.gui.config.general.debug=Отладка

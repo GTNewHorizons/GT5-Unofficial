@@ -26,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -265,7 +264,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             .addStructureInfo("")
             .addStructureFooter("Use solid fuel, liquid fuel, or both")
             .addStructureFooter("Use regular or distilled water")
-            .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
         // spotless:on
         return tt;
