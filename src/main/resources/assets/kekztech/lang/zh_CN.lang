@@ -16,7 +16,6 @@ mbdesc.addOutputBus.OutputBus=输出总线
 mbdesc.addOutputHatch.OutputHatch=输出仓
 mbdesc.signAndFinalize.Hold=按住
 mbdesc.signAndFinalize.todisplay=以显示结构指导
-mbdesc.signAndFinalize.createdby=添加者:
 
 # -------- Fuel Cell: Structure Blocks
 tile.kekztech_gdcceramicelectrolyteunit_block.name=钆铈陶瓷电解质单元
