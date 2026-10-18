@@ -1648,6 +1648,16 @@ public class MultiblockTooltipBuilder {
         return toolTipFinisher(EnumChatFormatting.GRAY, 41);
     }
 
+    /**
+     * Preserves binary compatibility with callers compiled before author credits were removed.
+     *
+     * @param ignoredAuthors Author names are no longer displayed.
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder toolTipFinisher(String... ignoredAuthors) {
+        return toolTipFinisher();
+    }
+
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength) {
 
         switch (GTMod.proxy.tooltipFinisherStyle) {
