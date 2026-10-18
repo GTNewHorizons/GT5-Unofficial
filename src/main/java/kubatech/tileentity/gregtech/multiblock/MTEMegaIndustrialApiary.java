@@ -669,7 +669,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                             productionModifier);
                     }
 
-                    this.lEUt = -(int) ((double) GTValues.V[6] * (double) mMaxSlots * 0.99d);
+                    this.lEUt = -(long) ((double) GTValues.V[6] * (double) mMaxSlots * 0.99d);
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     this.mMaxProgresstime = NORMAL_PROCESSING_TICKS;
