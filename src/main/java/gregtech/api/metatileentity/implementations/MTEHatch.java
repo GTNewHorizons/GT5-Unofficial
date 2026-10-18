@@ -296,16 +296,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, String key, Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, key, formatted);
+        return MTEHatch.formatEnergyInfoDesc(null, isDynamo, tier, amp, key, formatted);
     }
 
     public static String[] formatEnergyInfoDesc(String suffixTooltip, boolean isDynamo, int tier, int amp, String key,
         Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, suffixTooltip, isDynamo, tier, amp, key, formatted);
-    }
-
-    public static String[] formatEnergyInfoDesc(String[] author, String suffixTooltip, boolean isDynamo, int tier,
-        int amp, String key, Object... formatted) {
         final List<String> additionalTooltips = new LinkedList<>();
         if (suffixTooltip != null) {
             Collections.addAll(additionalTooltips, suffixTooltip);

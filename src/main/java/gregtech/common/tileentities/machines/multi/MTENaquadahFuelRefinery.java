@@ -227,7 +227,6 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.coiltier"))
             .addSubChannel(GTStructureChannels.FIELD_RESTRICTION_COIL)
-            .addStructureAuthors("GregTech Odyssey")
             .toolTipFinisher();
         // spotless:on
         return tt;

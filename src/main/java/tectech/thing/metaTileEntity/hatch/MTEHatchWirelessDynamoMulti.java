@@ -117,7 +117,6 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 
     @Override
     public String[] getDescription() {
-        return MTEHatch
-            .formatEnergyInfoDesc(null, null, true, mTier, maxAmperes, "gt.blockmachines.dynamo_hatch.wireless");
+        return MTEHatch.formatEnergyInfoDesc(true, mTier, maxAmperes, "gt.blockmachines.dynamo_hatch.wireless");
     }
 }

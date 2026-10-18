@@ -19,7 +19,6 @@ import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -110,7 +109,6 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addMufflerHatch("1", anyCasingText(), 1)
             .addInputAny("1+", anyCasingText(), 1)
             .addOutputAny("1+", anyCasingText(), 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "REDR")
                         .toolTipFinisher();
         // spotless:on
         return tt;

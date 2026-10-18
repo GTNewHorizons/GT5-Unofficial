@@ -2023,7 +2023,6 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         registerMetaMaterials();
 
         registerAllTieredTooltips();
-        registerAllAnimatedTooltips();
         initOrePrefixes();
         initOreDictUnificatorEntries();
         registerCovers();
@@ -2169,8 +2168,6 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         registerTieredTooltip(ItemList.Circuit_TranscendentComputer.get(1), UXV);
         registerTieredTooltip(ItemList.Circuit_TranscendentMainframe.get(1), MAX);
     }
-
-    private void registerAllAnimatedTooltips() {}
 
     private void initOreDictUnificatorEntries() {
         GTOreDictUnificator

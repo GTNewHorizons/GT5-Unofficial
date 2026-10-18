@@ -370,7 +370,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.footer"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors("HydroCN")
             .toolTipFinisher();
         // spotless:on
         return tt;

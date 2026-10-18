@@ -214,7 +214,6 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
     @Override
     public String[] getDescription() {
         return MTEHatch.formatEnergyInfoDesc(
-            null,
             translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
             false,
             mTier,
