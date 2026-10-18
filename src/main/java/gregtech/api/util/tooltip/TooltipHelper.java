@@ -33,6 +33,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting SPEED_COLOR = EnumChatFormatting.GREEN;
     /** For range modifiers. */
     public static final EnumChatFormatting RANGE_COLOR = EnumChatFormatting.GREEN;
+    /** For amount values. */
+    public static final EnumChatFormatting AMOUNT_COLOR = EnumChatFormatting.GREEN;
     /** For hatch usage notes. */
     public static final EnumChatFormatting HATCH_COLOR = EnumChatFormatting.GREEN;
     /** For parallels counts and modifiers. */

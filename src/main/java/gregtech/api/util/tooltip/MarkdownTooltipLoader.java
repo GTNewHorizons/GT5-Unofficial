@@ -59,12 +59,14 @@ public class MarkdownTooltipLoader {
             addCommand(format.getFriendlyName(), new ColorMarkdownCommand(format));
         }
 
+        // for meaningful coloring of certain concepts
         addCommand("color_tier", new ColorMarkdownCommand(TooltipHelper.TIER_COLOR));
         addCommand("color_name", new ColorMarkdownCommand(TooltipHelper.NAME_COLOR));
         addCommand("color_note", new ColorMarkdownCommand(TooltipHelper.NOTE_COLOR));
         addCommand("color_misc", new ColorMarkdownCommand(TooltipHelper.MISC_COLOR));
         addCommand("color_speed", new ColorMarkdownCommand(TooltipHelper.SPEED_COLOR));
         addCommand("color_range", new ColorMarkdownCommand(TooltipHelper.RANGE_COLOR));
+        addCommand("color_amount", new ColorMarkdownCommand(TooltipHelper.AMOUNT_COLOR));
         addCommand("color_hatch", new ColorMarkdownCommand(TooltipHelper.HATCH_COLOR));
         addCommand("color_parallel", new ColorMarkdownCommand(TooltipHelper.PARALLEL_COLOR));
         addCommand("color_mode", new ColorMarkdownCommand(TooltipHelper.MODE_COLOR));
