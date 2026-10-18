@@ -798,11 +798,13 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         needsWaterFill = false;
         glassTier = -1;
         mCasing = 0;
+        flowerCheckingMap = new HashMap<>(flowerRequiredMap);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0, errors)) {
             needsWaterFill = GTStructureUtility
                 .hasWaterAtStructurePosition(aBaseMetaTileEntity, getExtendedFacing(), struct, 7, 8, 0, 'W');
             return;
         }
+        missingFlowers = !flowerCheckingMap.isEmpty();
         for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
             if (this.glassTier < hatchEnergy.getTierForStructure()) {
                 errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
@@ -828,7 +830,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     .getProductionModifier(null, MAX_PRODUCTION_MODIFIER_FROM_UPGRADES);
             needsWaterFill = true;
         }
-        checkRequiredFlowers();
     }
 
     /**
