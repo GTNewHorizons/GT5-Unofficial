@@ -38,7 +38,6 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererBlock;
 
 public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
@@ -59,8 +58,6 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         super(new MaterialMachines());
         this.mUnlocalizedName = "gt.blockframes";
         setBlockName(this.mUnlocalizedName);
-        GTLanguageManager.addAnySubBlockLocalization(getUnlocalizedName());
-
         GameRegistry.registerBlock(this, ItemFrames.class, getUnlocalizedName());
 
         for (int meta = 1; meta < GregTechAPI.sGeneratedMaterials.length; meta++) {

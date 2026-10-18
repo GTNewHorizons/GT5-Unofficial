@@ -68,6 +68,9 @@ public class BehaviourSprayColor extends BehaviourNone implements EnderStorageDy
 
         if (ColoredBlockContainer.getInstance(aPlayer, aX, aY, aZ, side)
             .isValid()) {
+            // Spraying only happens server-side, so report success on the client. Otherwise Backhand
+            // treats the click as unused and falls back to the offhand item, which opens the block's GUI.
+            if (aWorld.isRemote) return aStack.stackSize == 1;
             return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
         }
 

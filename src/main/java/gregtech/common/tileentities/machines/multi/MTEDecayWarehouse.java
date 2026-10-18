@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTUtility.areStacksEqual;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -207,7 +208,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Decay Warehouse")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.decay_warehouse"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "decay-warehouse"),
                 ImmutableMap.<String, Object>builder()
@@ -215,17 +216,17 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                     .put("eu_per_io", formatNumber(EU_PER_IO))
                     .build())
             .beginStructureBlock(5, 3, 5, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("48-52", "Radiation Proof Machine Casing", false)
-            .addCasing("17", "Water", false)
-            .addCasing("1", "Super/Quantum Chest", true)
-            .addEnergyHatch("1", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("1", "Any casing", 1)
-            .addOutputBus("1", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("48-52", Casings.RadiationProofMachineCasing.getLocalizedName(), false)
+            .addCasing("17", StatCollector.translateToLocal("tile.water.name"), false)
+            .addCasing("1", StatCollector.translateToLocal("GT5U.MBTT.SuperChest"), true)
+            .addEnergyHatch("1", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addInputBus("1", anyCasingText(), 1)
+            .addOutputBus("1", anyCasingText(), 1)
             .addStructureInfo("")
-            .addStructureFooter("The water is a one-time-cost to prime the machine, place manually")
-            .addStructureFooter("Do not insert isotopes into the super/quantum chest")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.decay_water_place_manually"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.decay_no_isotopes_in_chest"))
             .addSubChannel(GTStructureChannels.SUPER_CHEST)
             .toolTipFinisher();
         // spotless:on
