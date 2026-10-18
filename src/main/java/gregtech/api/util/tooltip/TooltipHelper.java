@@ -39,6 +39,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting PARALLEL_COLOR = EnumChatFormatting.GOLD;
     /** For machine mode names. */
     public static final EnumChatFormatting MODE_COLOR = EnumChatFormatting.GOLD;
+    /** For things that are the key components of something. */
+    public static final EnumChatFormatting KEY_COLOR = EnumChatFormatting.GOLD;
     /** For efficiency modifiers. */
     public static final EnumChatFormatting EFF_COLOR = EnumChatFormatting.AQUA;
     /** For power usage (eg: x EU/t). */
