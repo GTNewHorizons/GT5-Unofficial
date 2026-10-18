@@ -85,7 +85,6 @@ import forestry.api.apiculture.FlowerManager;
 import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
-import forestry.api.apiculture.IBeekeepingMode;
 import forestry.apiculture.blocks.BlockAlveary;
 import forestry.apiculture.blocks.BlockApicultureType;
 import forestry.apiculture.genetics.Bee;
@@ -152,6 +151,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private static final int SWARMER_PROCESSING_TICKS = 1200;
     private static final int MAX_JELLY_BONUS_PERCENT = 200;
     private static final int JELLY_BONUS_PER_BEE_PERCENT = 5;
+    private static final float MAX_PRODUCTION_MODIFIER_FROM_UPGRADES = 17.19926784f; // 4*1.2^8
 
     protected static final ItemStack royalJelly = PluginApiculture.items.royalJelly.getItemStack(1);
 
@@ -292,7 +292,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         BeeGroup group = beeGroups.get(ItemId.createNoCopy(queen));
         if (group == null) {
             group = new BeeGroup(queen);
-            if (!group.generate(getBaseMetaTileEntity().getWorld(), (float) getVoltageTierExact())) return false;
+            if (!group.generate()) return false;
             beeGroups.put(ItemId.createNoCopy(group.queen), group);
         }
         group.count++;
@@ -352,7 +352,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
      */
     private boolean missingFlowers = false;
 
-    private boolean needsTVarUpdate = false;
+    private float voltageTier = 0;
+    private float productionModifier = 0;
     private int megaApiaryStorageVersion = 0;
 
     /**
@@ -556,14 +557,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     private void updateMaxSlots() {
-        int mOld = mMaxSlots;
         long v = this.getMaxInputEu();
         if (v < GTValues.V[6]) mMaxSlots = 0;
         else if (mSecondaryMode == 0) mMaxSlots = (int) (v / GTValues.V[6]);
         else mMaxSlots = 1;
-        if (mOld != 0 && mOld != mMaxSlots) {
-            needsTVarUpdate = true;
-        }
     }
 
     @Override
@@ -637,24 +634,14 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 if (mSecondaryMode == MODE_SECONDARY_NORMAL) {
                     if (megaApiaryStorageVersion != MEGA_APIARY_STORAGE_VERSION) {
                         megaApiaryStorageVersion = MEGA_APIARY_STORAGE_VERSION;
-                        World w = getBaseMetaTileEntity().getWorld();
-                        float t = (float) getVoltageTierExact();
                         beeGroups.values()
-                            .forEach(g -> g.generate(w, t));
+                            .forEach(BeeGroup::generate);
                     }
 
                     if (beeCount > mMaxSlots) return SimpleCheckRecipeResult.ofFailure("MegaApiary_slotoverflow");
 
                     if (missingFlowers) {
                         return ResultMissingApiaryFlowers.newFailure(flowerCheckingMap);
-                    }
-
-                    if (needsTVarUpdate) {
-                        float t = (float) getVoltageTierExact();
-                        needsTVarUpdate = false;
-                        World w = getBaseMetaTileEntity().getWorld();
-                        beeGroups.values()
-                            .forEach(g -> g.updateTVar(w, t));
                     }
 
                     int maxConsume = beeCount * 40;
@@ -674,16 +661,19 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                         this.updateSlots();
                     }
 
-                    List<ItemStack> stacks = new ArrayList<>();
                     for (BeeGroup group : beeGroups.values()) {
-                        stacks.addAll(group.getDrops(this, 64_00d * boosted * group.count));
+                        group.addProduction(
+                            dropProgress,
+                            64_00d * boosted * group.count,
+                            voltageTier,
+                            productionModifier);
                     }
 
                     this.lEUt = -(int) ((double) GTValues.V[6] * (double) mMaxSlots * 0.99d);
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     this.mMaxProgresstime = NORMAL_PROCESSING_TICKS;
-                    this.mOutputItems = mergeOutputStacks(stacks);
+                    this.mOutputItems = drainDropProgress();
                 } else { // SWARMER mode
                     boolean check_swarmer_jelly = SWARMER_JELLY_RECIPE
                         .isRecipeInputEqual(true, null, getStoredInputs().toArray(new ItemStack[0]));
@@ -740,23 +730,22 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         return ejected;
     }
 
-    private static ItemStack[] mergeOutputStacks(List<ItemStack> stacks) {
-        HashMap<ItemId, Integer> countMap = new HashMap<>();
-        HashMap<ItemId, ItemStack> stackMap = new HashMap<>();
-        for (ItemStack stack : stacks) {
-            ItemId id = ItemId.createNoCopyWithStackSize(stack);
-            countMap.merge(id, stack.stackSize, Integer::sum);
-            stackMap.putIfAbsent(id, stack);
+    /**
+     * Removes the whole items from {@link #dropProgress} and returns them as one stack per item. Fractions stay for the
+     * next cycle.
+     */
+    private ItemStack[] drainDropProgress() {
+        List<ItemStack> outputs = new ArrayList<>();
+        for (Map.Entry<ItemId, Double> entry : dropProgress.entrySet()) {
+            double progress = entry.getValue();
+            if (progress <= 1) continue;
+            int amount = (int) progress;
+            outputs.add(
+                entry.getKey()
+                    .getItemStack(amount));
+            entry.setValue(progress - amount);
         }
-        ItemStack[] result = new ItemStack[countMap.size()];
-        int i = 0;
-        for (Map.Entry<ItemId, Integer> entry : countMap.entrySet()) {
-            ItemStack merged = stackMap.get(entry.getKey())
-                .copy();
-            merged.stackSize = entry.getValue();
-            result[i++] = merged;
-        }
-        return result;
+        return outputs.toArray(new ItemStack[0]);
     }
 
     @Override
@@ -832,6 +821,11 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         checkHasOutputBus(errors);
         if (errors.isEmpty()) {
             updateMaxSlots();
+            voltageTier = (float) getVoltageTierExact();
+            productionModifier = MAX_PRODUCTION_MODIFIER_FROM_UPGRADES
+                + beeRoot.getBeekeepingMode(aBaseMetaTileEntity.getWorld())
+                    .getBeeModifier()
+                    .getProductionModifier(null, MAX_PRODUCTION_MODIFIER_FROM_UPGRADES);
             needsWaterFill = true;
         }
         checkRequiredFlowers();
@@ -881,7 +875,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         return new MTEMegaIndustrialApiaryGui(this);
     }
 
-    public final HashMap<ItemId, Double> dropProgress = new HashMap<>();
+    private final HashMap<ItemId, Double> dropProgress = new HashMap<>();
 
     /**
      * Identical stored bees, which share one queen stack and one set of drops.
@@ -897,7 +891,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         String flowerType;
         String flowerTypeDescription;
         public String speciesKey;
-        private static IBeekeepingMode mode;
 
         private BeeGroup(ItemStack queen) {
             this.queen = queen.copy();
@@ -912,8 +905,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             return queen.copy();
         }
 
-        boolean generate(World world, float t) {
-            if (mode == null) mode = beeRoot.getBeekeepingMode(world);
+        boolean generate() {
             drops.clear();
             specialDrops.clear();
             if (beeRoot.getType(this.queen) != EnumBeeType.QUEEN) return false;
@@ -928,12 +920,12 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             initSpeciesKey(genome);
             genome.getPrimary()
                 .getProductChances()
-                .forEach((key, value) -> drops.add(new BeeDrop(key, value, beeSpeed, t)));
+                .forEach((key, value) -> drops.add(new BeeDrop(key, value, beeSpeed)));
             genome.getSecondary()
                 .getProductChances()
-                .forEach((key, value) -> drops.add(new BeeDrop(key, value / 2.f, beeSpeed, t)));
+                .forEach((key, value) -> drops.add(new BeeDrop(key, value / 2.f, beeSpeed)));
             primary.getSpecialtyChances()
-                .forEach((key, value) -> specialDrops.add(new BeeDrop(key, value, beeSpeed, t)));
+                .forEach((key, value) -> specialDrops.add(new BeeDrop(key, value, beeSpeed)));
             return true;
         }
 
@@ -1005,44 +997,18 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             return tag;
         }
 
-        static final Map<ItemId, ItemStack> dropstacks = new HashMap<>();
-
-        public List<ItemStack> getDrops(final MTEMegaIndustrialApiary MTE, final double timePassed) {
-            drops.forEach(d -> {
-                MTE.dropProgress.merge(d.id, d.getAmount(timePassed / 550d), Double::sum);
-                if (!dropstacks.containsKey(d.id)) dropstacks.put(d.id, d.stack);
-            });
-            specialDrops.forEach(d -> {
-                MTE.dropProgress.merge(d.id, d.getAmount(timePassed / 550d), Double::sum);
-                if (!dropstacks.containsKey(d.id)) dropstacks.put(d.id, d.stack);
-            });
-            List<ItemStack> currentDrops = new ArrayList<>();
-            MTE.dropProgress.entrySet()
-                .forEach(e -> {
-                    double v = e.getValue();
-                    while (v > 1.f) {
-                        int size = Math.min((int) v, 64);
-                        ItemStack stack = dropstacks.get(e.getKey())
-                            .copy();
-                        stack.stackSize = size;
-                        currentDrops.add(stack);
-                        v -= size;
-                        e.setValue(v);
-                    }
-                });
-            return currentDrops;
+        void addProduction(Map<ItemId, Double> progress, double timePassed, float voltageTier,
+            float productionModifier) {
+            for (BeeDrop drop : drops) progress
+                .merge(drop.id, drop.getAmount(timePassed / 550d, voltageTier, productionModifier), Double::sum);
+            for (BeeDrop drop : specialDrops) progress
+                .merge(drop.id, drop.getAmount(timePassed / 550d, voltageTier, productionModifier), Double::sum);
         }
 
         public ItemStack createIgnobleCopy() {
             IBee princess = beeRoot.getMember(queen);
             princess.setIsNatural(false);
             return beeRoot.getMemberStack(princess, EnumBeeType.PRINCESS.ordinal());
-        }
-
-        void updateTVar(World world, float t) {
-            if (mode == null) mode = beeRoot.getBeekeepingMode(world);
-            drops.forEach(d -> d.updateTVar(t));
-            specialDrops.forEach(d -> d.updateTVar(t));
         }
 
         public String getFlowerType() {
@@ -1055,56 +1021,27 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
         private static class BeeDrop {
 
-            private static final float MAX_PRODUCTION_MODIFIER_FROM_UPGRADES = 17.19926784f; // 4*1.2^8
             final ItemStack stack;
-            double amount;
             final ItemId id;
 
             final float chance;
             final float beeSpeed;
-            float t;
 
-            public BeeDrop(ItemStack stack, float chance, float beeSpeed, float t) {
+            public BeeDrop(ItemStack stack, float chance, float beeSpeed) {
                 this.stack = stack;
                 this.chance = chance;
                 this.beeSpeed = beeSpeed;
-                this.t = t;
                 id = ItemId.createNoCopy(this.stack);
-                evaluate();
             }
 
-            public void updateTVar(float t) {
-                if (this.t != t) {
-                    this.t = t;
-                    evaluate();
-                }
-            }
-
-            public void evaluate() {
-                this.amount = Bee.getFinalChance(
-                    chance,
-                    beeSpeed,
-                    MAX_PRODUCTION_MODIFIER_FROM_UPGRADES + mode.getBeeModifier()
-                        .getProductionModifier(null, MAX_PRODUCTION_MODIFIER_FROM_UPGRADES),
-                    t);
-            }
-
-            public double getAmount(double speedModifier) {
-                return amount * speedModifier;
-            }
-
-            public ItemStack get(int amount) {
-                ItemStack r = stack.copy();
-                r.stackSize = amount;
-                return r;
+            public double getAmount(double speedModifier, float voltageTier, float productionModifier) {
+                return Bee.getFinalChance(chance, beeSpeed, productionModifier, voltageTier) * speedModifier;
             }
 
             public BeeDrop(NBTTagCompound tag) {
                 stack = readItemStackFromNBT(tag.getCompoundTag("stack"));
                 chance = tag.getFloat("chance");
                 beeSpeed = tag.getFloat("beeSpeed");
-                t = tag.getFloat("t");
-                amount = tag.getDouble("amount");
                 id = ItemId.createNoCopy(stack);
             }
 
@@ -1113,8 +1050,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 tag.setTag("stack", writeItemStackToNBT(stack));
                 tag.setFloat("chance", chance);
                 tag.setFloat("beeSpeed", beeSpeed);
-                tag.setFloat("t", t);
-                tag.setDouble("amount", amount);
                 return tag;
             }
 
