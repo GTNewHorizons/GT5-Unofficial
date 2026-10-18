@@ -43,7 +43,6 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.parameter.CompositeParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
-import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -175,7 +174,6 @@ public final class ItemParametrizerMemoryCard extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         NBTTagCompound tNBT = aStack.getTagCompound();
-        aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(translateToLocal("item.em.parametrizerMemoryCard.desc.0")); // Stores Parameters
 
         if (aStack.getItemDamage() == 1) {
