@@ -91,11 +91,11 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addMarkdown(
                 new ResourceLocation("gregtech", "cryogenic-freezer"),
                 ImmutableMap.<String, Object>builder()
-                    .put("parallels", PARALLELS)
-                    .put("speed", Math.round(SPEED_BONUS * 100))
-                    .put("eu_eff", Math.round(EU_MODIFIER * 100))
                     .put("cryotheum", CRYOTHEUM_PER_SECOND)
                     .build())
+            .addStaticParallelInfo(PARALLELS)
+            .addStaticSpeedInfo((float)SPEED_BONUS)
+            .addStaticEuEffInfo((float)EU_MODIFIER)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 7, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
