@@ -504,7 +504,7 @@ public class GTUtility {
         return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.RESET;
     }
 
-    public static String getColoredTierNameForTooltips(int voltageIndex) {
+    public static String getColoredTierNameForTooltip(int voltageIndex) {
         return GTUtility.FORMAT_PUSH_STACK + GTValues.TIER_COLORS[voltageIndex]
             + GTValues.VN[voltageIndex]
             + GTUtility.FORMAT_POP_STACK;
