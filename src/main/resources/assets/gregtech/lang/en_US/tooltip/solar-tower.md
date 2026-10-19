@@ -8,7 +8,7 @@ Every 1{L} converted reduces the heat by 1 until it reaches zero
 Excess Cold Solar Salt is not consumed
 {hr}
 Conversion only happens if {color_hot:heat}{color_formula: >= {var:threshold}} and {color_efficiency:efficiency}{color_formula: = 100%}
-Efficiency starts at {color_efficiency:{var:minEfficiency}%} and increases by {color_efficiency:+{var:efficiencyIncrease}%} every 10s
+Efficiency starts at {color_efficiency:0%} and increases by {color_efficiency:+1%} every 10s
 {hr}
 {color_hot:Heat Efficiency}{color_formula: = 1 - (Heat - {yellow:{var:center}})^{var:exp} / {var:coefficient}}, peaks at {yellow:{var:center}}
 {color_hot:Heat/Cycle}{color_formula: = Solar Reflectors * {color_hot:Heat Efficiency} * ({var:loss} + 2^(Rings - 1)) - {var:loss}}

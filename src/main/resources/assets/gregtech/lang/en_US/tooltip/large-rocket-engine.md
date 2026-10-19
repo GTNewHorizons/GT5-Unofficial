@@ -4,7 +4,7 @@ But there are soft caps at {color_eu_usage:{var:cap1} {EU/t}} and {color_eu_usag
 {color_danger:Do not insert Rocket Fuel while disabled - it will be voided on start!}
 {hr}
 The combustion process requires some additional inputs:
-{color_amount:{var:lubricant_amount}{var:unit}} of {white:{var:lubricant}} per hour (x{var:boost} if boosted)
+{color_amount:{var:lubricant_amount}L} of {white:{var:lubricant}} per hour (x{var:boost} if boosted)
 {color_amount:{var:air_percent}%} of current {EU/t} in {white:Air} per tick (only through air intake hatches)
 {color_amount:{var:coolant_percent}%} of current {EU/t} in {white:{var:coolant}} per tick to boost (optional)
 {hr}
