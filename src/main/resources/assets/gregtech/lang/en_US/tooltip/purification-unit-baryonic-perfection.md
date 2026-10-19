@@ -1,18 +1,18 @@
-{aqua:{bold:Water Tier: }}{white:{var:tier}}
-Must be linked to a Purification Plant using a {white:{item:gregtech:gt.metaitem.01:32708}} to work
+{aqua:{bold:Water Tier: }}{color_tier:{var:tier}}
+Must be linked to a Purification Plant using a {color_name:{item:gregtech:gt.metaitem.01:32708}} to work
 {gray:{hr}}
-Insert {white:Quark Releasing Catalysts} into the input bus while running
-Every recipe cycle, a different combination of {red:2} different {white:Quark Releasing Catalysts}
+Insert {color_key:Quark Releasing Catalysts} into the input bus while running
+Every recipe cycle, a different combination of {color_amount:2} different {color_key:Quark Releasing Catalysts}
 will correctly identify the lone quark and succeed the recipe
 The order of catalysts in the combination does not matter, so {blue:Up}/{light_purple:Down} can be identified by inserting {light_purple:Down}/{blue:Up}
 {gray:{hr}}
-Every {red:20} ticks, consumes ALL catalysts in the input bus
-The base cost of inserting a catalyst is {red:{var:catalyst_cost} {var:unit}} of {white:{var:infinity}}
+Every {color_time:20} ticks, consumes ALL catalysts in the input bus
+The base cost of inserting a catalyst is {color_amount:{var:catalyst_cost} {var:unit}} of {color_name:{var:infinity}}
 For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled
 {gray:{hr}}
 Keeps track of the entire sequence of catalysts inserted this recipe
-If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs {red:{var:output} {var:unit}} of {white:{var:baryonic}}
-At the end of a successful recipe, outputs additional {red:{var:extra_output} {var:unit}} of {white:{var:baryonic}} per parallel
+If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs {color_amount:{var:output} {var:unit}} of {color_name:{var:baryonic}}
+At the end of a successful recipe, outputs additional {color_amount:{var:extra_output} {var:unit}} of {color_name:{var:baryonic}} per parallel
 At the end of the recipe, returns all incorrectly inserted catalysts in the output bus
 {gray:{hr}}
 {aqua:{italic:The final stage of water purification goes beyond subatomic particles and identifies the smallest}}

@@ -1,8 +1,8 @@
-{aqua:{bold:Тир воды: }}{white:{var:tier}}
-Для работы привяжите установку к очистной станции предметом {white:{item:gregtech:gt.metaitem.01:32708}}
+{aqua:{bold:Тир воды: }}{color_tier:{var:tier}}
+Для работы привяжите установку к очистной станции предметом {color_name:{item:gregtech:gt.metaitem.01:32708}}
 {gray:{hr}}
-{dark_red:Взорвётся}, если во входном шлюзе больше {red:{var:max_ozone} {var:unit}} вещества {white:{var:ozone}}
-Получает {red:20%} к шансу успеха за каждое удвоение количества вещества {white:{var:ozone}}
+{color_danger:Взорвётся}, если во входном шлюзе больше {color_amount:{var:max_ozone} {var:unit}} вещества {color_name:{var:ozone}}
+Получает {color_misc:20%} к шансу успеха за каждое удвоение количества вещества {color_name:{var:ozone}}
 {gray:{hr}}
 {aqua:{italic:Второй этап очистки воды: озонирование, при котором в воду впрыскивают множество мелких}}
 {aqua:{italic:пузырьков высокоактивного озона. Так удаляются микропримеси, такие как}}
