@@ -62,9 +62,11 @@ public class MarkdownTooltipLoader {
         // standard coloring for certain concepts
         addCommand("color_tier", new ColorMarkdownCommand(TooltipHelper.TIER_COLOR));
         addCommand("color_name", new ColorMarkdownCommand(TooltipHelper.NAME_COLOR));
+        addCommand("color_steam", new ColorMarkdownCommand(TooltipHelper.STEAM_COLOR));
         addCommand("color_note", new ColorMarkdownCommand(TooltipHelper.NOTE_COLOR));
         addCommand("color_machine_type", new ColorMarkdownCommand(TooltipHelper.MACHINE_TYPE_COLOR));
         addCommand("color_misc", new ColorMarkdownCommand(TooltipHelper.MISC_COLOR));
+        addCommand("color_cold", new ColorMarkdownCommand(TooltipHelper.COLD_COLOR));
         addCommand("color_speed", new ColorMarkdownCommand(TooltipHelper.SPEED_COLOR));
         addCommand("color_range", new ColorMarkdownCommand(TooltipHelper.RANGE_COLOR));
         addCommand("color_amount", new ColorMarkdownCommand(TooltipHelper.AMOUNT_COLOR));
@@ -75,6 +77,7 @@ public class MarkdownTooltipLoader {
         addCommand("color_efficiency", new ColorMarkdownCommand(TooltipHelper.EFF_COLOR));
         addCommand("color_eu_usage", new ColorMarkdownCommand(TooltipHelper.EU_USAGE_COLOR));
         addCommand("color_heat", new ColorMarkdownCommand(TooltipHelper.HEAT_COLOR));
+        addCommand("color_hot", new ColorMarkdownCommand(TooltipHelper.HOT_COLOR));
         addCommand("color_deprecated", new ColorMarkdownCommand(TooltipHelper.DEPRECATED_COLOR));
         addCommand("color_danger", new ColorMarkdownCommand(TooltipHelper.DANGER_COLOR));
         addCommand("color_mechanic", new ColorMarkdownCommand(TooltipHelper.MECHANIC_COLOR));

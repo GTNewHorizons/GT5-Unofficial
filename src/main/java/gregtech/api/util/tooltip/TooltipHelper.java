@@ -25,12 +25,16 @@ public class TooltipHelper {
     public static final EnumChatFormatting TIER_COLOR = EnumChatFormatting.WHITE;
     /** Major components that require highlighting like hatch types, tool names, and tired part names. */
     public static final EnumChatFormatting NAME_COLOR = EnumChatFormatting.WHITE;
+    /** For steam related names and values. */
+    public static final EnumChatFormatting STEAM_COLOR = EnumChatFormatting.WHITE;
     /** For warns and other important notes. */
     public static final EnumChatFormatting NOTE_COLOR = EnumChatFormatting.YELLOW;
     /** For machine type names. */
     public static final EnumChatFormatting MACHINE_TYPE_COLOR = EnumChatFormatting.YELLOW;
     /** For miscellaneous component names or anything else that needs highlighting. */
     public static final EnumChatFormatting MISC_COLOR = EnumChatFormatting.BLUE;
+    /** For cold things. */
+    public static final EnumChatFormatting COLD_COLOR = EnumChatFormatting.BLUE;
     /** For speed modifiers. */
     public static final EnumChatFormatting SPEED_COLOR = EnumChatFormatting.GREEN;
     /** For range modifiers. */
@@ -51,6 +55,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting EU_USAGE_COLOR = EnumChatFormatting.AQUA;
     /** For heat values. */
     public static final EnumChatFormatting HEAT_COLOR = EnumChatFormatting.RED;
+    /** For hot things. */
+    public static final EnumChatFormatting HOT_COLOR = EnumChatFormatting.RED;
     /** For depreciation notices. */
     public static final EnumChatFormatting DEPRECATED_COLOR = EnumChatFormatting.RED;
     /** For dangerous component descriptions. */
