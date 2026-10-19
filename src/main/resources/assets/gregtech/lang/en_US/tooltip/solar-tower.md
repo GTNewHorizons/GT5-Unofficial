@@ -10,6 +10,6 @@ Excess Cold Solar Salt is not consumed
 Conversion only happens if {white:heat >=} {red:{var:threshold}} and {white:efficiency =} {aqua:100%}
 Efficiency starts at {aqua:0%} and increases by {aqua:+1%} every 10s
 {hr}
-{color_hot:Heat Efficiency}{color_white: = 1 - (Heat - {yellow:{var:center}})^{var:exp} / {var:coefficient}}, peaks at {yellow:{var:center}}
-{color_hot:Heat/Cycle}{color_white: = Solar Reflectors * {color_hot:Heat Efficiency} * ({var:loss} + 2^(Rings - 1)) - {var:loss}}
+{color_hot:Heat Efficiency}{color_formula: = 1 - (Heat - {yellow:{var:center}})^{var:exp} / {var:coefficient}}, peaks at {yellow:{var:center}}
+{color_hot:Heat/Cycle}{color_formula: = Solar Reflectors * {color_hot:Heat Efficiency} * ({var:loss} + 2^(Rings - 1)) - {var:loss}}
 {yellow:Heat gain is halved in rain and disabled at night}
