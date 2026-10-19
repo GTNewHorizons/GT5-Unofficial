@@ -167,6 +167,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private SoundLoopAnyBlock blackholeSoundLoop;
 
     private final FluidStack blackholeCatalyzingCost = (Materials.SpaceTime).getMolten(1);
+    private final FluidStack blackholeEternityCost = (Materials.Eternity).getMolten(1);
+    private boolean usingEternity;
     private int catalyzingCostModifier = 1;
 
     public MTEBlackHoleCompressor(final int aID, final String aName, final String aNameRegional) {
@@ -392,12 +394,18 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + "halted"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + " by inserting 1 L/s of spacetime into specific hatches")
+                    + " by inserting 1 L/s of spacetime or eternity into specific hatches")
+            .addInfo(
+                EnumChatFormatting.WHITE + "Eternity"
+                    + EnumChatFormatting.GRAY
+                    + " is consumed before spacetime and grants "
+                    + EnumChatFormatting.RED
+                    + "perfect overclocks")
             .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "30"
                     + EnumChatFormatting.GRAY
-                    + " total seconds saved by spacetime insertion will "
+                    + " total seconds saved by stabilizer insertion will "
                     + EnumChatFormatting.RED
                     + "double"
                     + EnumChatFormatting.GRAY
@@ -412,11 +420,20 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addInfo(EnumChatFormatting.WHITE + "Use circuit 20 for Compressor and 21 for Neutronium Compressor")
             .addBulkMachineInfo(8, 5f, 0.7f)
             .addInfo(
-                EnumChatFormatting.RED + "2x/4x"
+                "Parallels are raised to the power of " + EnumChatFormatting.RED
+                    + "1.3"
                     + EnumChatFormatting.GRAY
-                    + " parallels when stability is BELOW "
+                    + " when stability is BELOW "
                     + EnumChatFormatting.RED
-                    + "50/20")
+                    + "50"
+                    + EnumChatFormatting.GRAY
+                    + ", and to the power of "
+                    + EnumChatFormatting.RED
+                    + "1.5"
+                    + EnumChatFormatting.GRAY
+                    + " when BELOW "
+                    + EnumChatFormatting.RED
+                    + "20")
             .addInfo(
                 "Below " + EnumChatFormatting.RED
                     + "20"
@@ -439,7 +456,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addCasing("64", "Hawking Radiation Realignment Focus", false)
             .addMiscHatch("0+", "Black Hole Utility Hatch", "Any absorbent casing", 1)
             .addEnergyHatch("1+", "Any absorbent casing", 1)
-            .addInputAny("1+", "Any absorbent casing (inputs), the casing behind each laser (spacetime)", 1, 2)
+            .addInputAny("1+", "Any absorbent casing (inputs), the casing behind each laser (spacetime/eternity)", 1, 2)
             .addOutputBus("1+", "Any absorbent casing", 1)
             .toolTipFinisher(Ollie, "BucketBrigade");
         return tt;
@@ -624,8 +641,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe)
+                OverclockCalculator calculator = super.createOverclockCalculator(recipe)
                     .setMaxOverclocks(GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt));
+                if (usingEternity) calculator.enablePerfectOC();
+                return calculator;
             }
 
             @NotNull
@@ -710,6 +729,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         // Black hole is superstable, just do rendering, no need for decay or drain logic
         if (blackHoleStatus == 4) {
+            usingEternity = false;
             if (rendererTileEntity != null) {
                 rendererTileEntity.toggleLaser(true);
                 rendererTileEntity.setLaserColor(0, 100, 120);
@@ -721,27 +741,42 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         float stabilityDecrease = 1F;
 
         boolean didDrain = false;
+        usingEternity = false;
 
         // Only do loss reductions if the black hole is stable - unstable black hole can't be frozen
         if (blackHoleStability > 0) {
 
-            // Search all hatches for catalyst fluid
+            // Search all hatches for catalyst fluid, preferring eternity over spacetime
             // If found enough, drain it and reduce stability loss to 0
             // Every 30 drains, double the cost
-            FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+            FluidStack eternityCost = new FluidStack(blackholeEternityCost, catalyzingCostModifier);
+            FluidStack spacetimeCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
 
             for (MTEHatchInput hatch : spacetimeHatches) {
-                if (drain(hatch, totalCost, false)) {
-                    drain(hatch, totalCost, true);
-                    catalyzingCounter += 1;
-                    stabilityDecrease = 0;
-                    if (catalyzingCounter >= 30) {
-                        // Hidden cap at 1B per tick so we don't integer overflow
-                        if (catalyzingCostModifier <= 1000000000) catalyzingCostModifier *= 2;
-                        catalyzingCounter = 0;
-                    }
+                if (drain(hatch, eternityCost, false)) {
+                    drain(hatch, eternityCost, true);
+                    usingEternity = true;
                     didDrain = true;
                     break;
+                }
+            }
+            if (!didDrain) {
+                for (MTEHatchInput hatch : spacetimeHatches) {
+                    if (drain(hatch, spacetimeCost, false)) {
+                        drain(hatch, spacetimeCost, true);
+                        didDrain = true;
+                        break;
+                    }
+                }
+            }
+
+            if (didDrain) {
+                catalyzingCounter += 1;
+                stabilityDecrease = 0;
+                if (catalyzingCounter >= 30) {
+                    // Hidden cap at 1B per tick so we don't integer overflow
+                    if (catalyzingCostModifier <= 1000000000) catalyzingCostModifier *= 2;
+                    catalyzingCounter = 0;
                 }
             }
         }
@@ -766,6 +801,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         blackHoleStability = 100;
         catalyzingCostModifier = 1;
         catalyzingCounter = 0;
+        usingEternity = false;
         if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
         collapseTimer = 40;
         for (MTEBlackHoleUtility hatch : utilityHatches) {
@@ -780,10 +816,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
             parallels *= 4;
         } else if (blackHoleStability < 50) {
-            parallels *= 2;
             if (blackHoleStability < 20) {
                 if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
-                parallels *= 2;
+                parallels = (int) Math.pow(parallels, 1.5);
+            } else {
+                parallels = (int) Math.pow(parallels, 1.3);
             }
         }
         return parallels;
