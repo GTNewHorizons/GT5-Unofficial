@@ -341,7 +341,6 @@ ig.structure.contributors=Contributors
 ig.structure.programming=Programming
 ig.structure.design=Design
 ig.structure.specialThanks=Special Thanks to
-ig.structure.author=Added by
 ig.structure.and= and
 
 ig.dyson.structure.controller=Front bottom center of receiver, 2nd layer
