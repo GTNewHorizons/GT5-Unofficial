@@ -5749,6 +5749,8 @@ gt.item.electromagnet.tengam.name=§aTengam Electromagnet
 ## Black Hole items
 gt.item.black_hole.seed.name=Black Hole Seed
 gt.item.black_hole.seed.tooltip=Opens a pseudostable black hole
+gt.item.black_hole.supermassive_seed.name=Supermassive Black Hole Seed
+gt.item.black_hole.supermassive_seed.tooltip=Opens a more powerful pseudostable black hole\nMachine gains 4x parallels\nDecay halt cost starts at 64 L/s instead of 1 
 gt.item.black_hole.collapser.name=Black Hole Collapser
 gt.item.black_hole.collapser.tooltip=Safely closes a pseudostable black hole
 gt.item.black_hole.stabilizer.name=Superstable Black Hole Seed
