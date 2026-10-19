@@ -1,7 +1,7 @@
 Module that adds Space Pumping Operations to the Space Elevator
-§d§lSucking up entire gas planets was never easier
+{light_purple:{bold:Sucking up entire gas planets was never easier}}
 {lang:gt.blockmachines.multimachine.project.ig.desc2}
 Set Planet and Gas Type determine pumped fluid
 Can be void protected by locking output hatches
-Runs at UHV with up to §a4 §7parallels
+Runs at UHV with up to {color_parallel:4} parallels
 {lang:gt.blockmachines.multimachine.project.ig.motorT2}
