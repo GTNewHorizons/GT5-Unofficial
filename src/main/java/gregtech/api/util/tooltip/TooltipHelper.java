@@ -49,6 +49,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting AMOUNT_COLOR = EnumChatFormatting.GREEN;
     /** For hatch usage notes. */
     public static final EnumChatFormatting HATCH_COLOR = EnumChatFormatting.GREEN;
+    /** For loss related values. */
+    public static final EnumChatFormatting LOSS_COLOR = EnumChatFormatting.GREEN;
     /** For parallels counts and modifiers. */
     public static final EnumChatFormatting PARALLEL_COLOR = EnumChatFormatting.GOLD;
     /** For machine mode names. */

@@ -74,6 +74,7 @@ public class MarkdownTooltipLoader {
         addCommand("color_range", new ColorMarkdownCommand(TooltipHelper.RANGE_COLOR));
         addCommand("color_amount", new ColorMarkdownCommand(TooltipHelper.AMOUNT_COLOR));
         addCommand("color_hatch", new ColorMarkdownCommand(TooltipHelper.HATCH_COLOR));
+        addCommand("color_loss", new ColorMarkdownCommand(TooltipHelper.LOSS_COLOR));
         addCommand("color_parallel", new ColorMarkdownCommand(TooltipHelper.PARALLEL_COLOR));
         addCommand("color_mode", new ColorMarkdownCommand(TooltipHelper.MODE_COLOR));
         addCommand("color_key", new ColorMarkdownCommand(TooltipHelper.KEY_COLOR));
