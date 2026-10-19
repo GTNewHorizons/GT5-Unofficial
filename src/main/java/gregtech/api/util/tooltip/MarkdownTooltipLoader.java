@@ -81,7 +81,7 @@ public class MarkdownTooltipLoader {
         addCommand("color_eu_usage", new ColorMarkdownCommand(TooltipHelper.EU_USAGE_COLOR));
         addCommand("color_heat", new ColorMarkdownCommand(TooltipHelper.HEAT_COLOR));
         addCommand("color_hot", new ColorMarkdownCommand(TooltipHelper.HOT_COLOR));
-        addCommand("color_mev", new ColorMarkdownCommand(TooltipHelper.MEV_COLOR));
+        addCommand("color_electron_volt", new ColorMarkdownCommand(TooltipHelper.ELECTRON_VOLT_COLOR));
         addCommand("color_deprecated", new ColorMarkdownCommand(TooltipHelper.DEPRECATED_COLOR));
         addCommand("color_danger", new ColorMarkdownCommand(TooltipHelper.DANGER_COLOR));
         addCommand("color_mechanic", new ColorMarkdownCommand(TooltipHelper.MECHANIC_COLOR));
@@ -107,7 +107,9 @@ public class MarkdownTooltipLoader {
             "EU/t",
             "eu/T",
             "EU/T");
+        addAliases(new SimpleUnitCommand("GeV"), "giga-electron-volt-unit", "gev", "GeV", "GEV");
         addAliases(new SimpleUnitCommand("MeV"), "mega-electron-volt-unit", "mev", "MeV", "MEV");
+        addAliases(new SimpleUnitCommand("KeV"), "kilo-electron-volt-unit", "kev", "KeV", "KEV");
         addAliases(new SimpleUnitCommand("K"), "heat-unit", "K", "k", "Kelvin", "kelvin");
 
     }
