@@ -16,8 +16,8 @@ Pity guarantees a success after several consecutive failures but resets on succe
 {gold:{hr}}
 Constantly inputs {blue:Hydrogen} and {blue:Helium} into its own internal buffer while idle, and consumes everything on recipe start
 Exceeding the minimum required amount for a recipe heavily reduces the recipe success chance and yield
-{color_name:Overflow Ratio}{color_formula: = (Stored Fluid / Min Fluid) - 1}
-{color_name:Penalty%}{color_formula: = 1 - exp(-(30 * Overflow Ratio)^2)}
+{green:Overflow Ratio}{color_formula: = (Stored Fluid / Min Fluid) - 1}
+{green:Penalty%}{color_formula: = 1 - exp(-(30 * Overflow Ratio)^2)}
 {gold:{hr}}
 {yellow:Consumes {EU} directly from the owner's wireless network}
 Set the desired number of overclocks with a {color_name:Programmed Circuit} in the input bus
