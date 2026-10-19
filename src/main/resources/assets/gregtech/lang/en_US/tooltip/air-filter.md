@@ -8,5 +8,5 @@ Each {color_name:Muffler Hatch} removes the following amount of pollution from o
 - turbineEff = {color_name:Turbine} efficiency
 - Effective {color_name:Muffler Hatch} Tier is limited by {color_name:Energy Hatch} Tier
 {hr}
-Supply {color_key:Absorption Filters} through an {color_name:Input Bus} to double pollution removed ({color_time:{var:filter_lifespan}}s per)
+Supply {color_key:Absorption Filters} through an {color_name:Input Bus} to double pollution removed ({color_time:{var:filter_lifespan}s} per)
 Each maintenance issue reduces the amount of pollution removed by {color_amount:{var:maint_penalty}%}
