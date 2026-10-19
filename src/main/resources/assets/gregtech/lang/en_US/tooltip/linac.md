@@ -2,14 +2,14 @@ Accelerates particle beams to higher energies by passing them through an electri
 Electrically neutral {color_mechanic:particles} are therefore unaffected
 {lang:gtnhlanth.tt.beaminfo}
 {hr}
-Requires {white:Length * 1,000 {var:fluidUnit}/s} of {aqua:coolant} to run, returns as {red:hot coolant}
+Requires {aqua:Length * 1,000 {var:fluidUnit}/s} of {aqua:Coolant} to run, returns as {red:Hot Coolant}
 {lang:gtnhlanth.tt.coolant.oxygen}
 {lang:gtnhlanth.tt.coolant.nitrogen}
 {lang:gtnhlanth.tt.coolant.coolant}
 {lang:gtnhlanth.tt.coolant.Scoolant}
 {hr}
 Increasing the length/power increases the {blue:Output Beam Energy} but decreases the {dark_green:Output Beam Focus}
-Preserve {dark_green:Beam Focus} more effectively with lower temperature {aqua:coolant}
+Preserve {dark_green:Beam Focus} more effectively with lower temperature {aqua:Coolant}
 {hr}
 {blue:Output Beam Energy}{color_formula: = max(}{color_note:V}{white:, 50) * 10^}{color_note:IE}
 where {color_note:V}{color_formula: = 0.25 * (Length - 1) * cbrt({color_eu_usage:{EU/t} Provided})}
