@@ -186,10 +186,8 @@ public class MTEMicrowave extends TTMultiblockBase
         xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -4, 0));
         Vec3Impl xyzExpansion = getExtendedFacing().getWorldOffset(new Vec3Impl(1, 0, 1))
             .abs();
-        int power = powerParameter.getValue();
-        int damagingFactor = Math.min(power >> 6, 8) + Math.min(power >> 8, 24)
-            + Math.min(power >> 12, 48)
-            + (power >> 18);
+
+        int damagingFactor = getDamageForPower(powerParameter.getValue());
 
         ArrayList<ItemStack> itemsToOutput = new ArrayList<>();
         HashSet<Entity> tickedStuff = new HashSet<>();
@@ -340,6 +338,10 @@ public class MTEMicrowave extends TTMultiblockBase
         return timerProgress >= timerParameter.getValue();
     }
 
+    public int getDamageForPower(int power) {
+        return Math.min(power >> 6, 8) + Math.min(power >> 8, 24) + Math.min(power >> 12, 48) + (power >> 18);
+    }
+
     @Override
     public void initParameters() {
         powerParameter = new IntegerParameter(
@@ -369,6 +371,11 @@ public class MTEMicrowave extends TTMultiblockBase
     @Override
     public List<Parameter<?, ?>> getParameters() {
         return List.of(powerParameter, timerParameter);
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 
     @Override

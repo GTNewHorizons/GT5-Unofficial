@@ -24,17 +24,26 @@ public class MTEMicrowaveGui extends TTMultiblockBaseGui<MTEMicrowave> {
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IntSyncValue timerSyncer = syncManager.findSyncHandler(MTEMicrowave.TIMER_PARAMETER, IntSyncValue.class);
+        IntSyncValue powerSyncer = syncManager.findSyncHandler(MTEMicrowave.POWER_PARAMETER, IntSyncValue.class);
         IntSyncValue remainingSyncer = syncManager.findSyncHandler("timerProgress", IntSyncValue.class);
 
-        return super.createTerminalTextWidget(syncManager, parent).child(
-            IKey.dynamic(
-                () -> StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.tm.microwave.timer",
-                    formatNumber(remainingSyncer.getIntValue()),
-                    formatNumber(timerSyncer.getIntValue())))
-                .color(Color.WHITE.main)
-                .asWidget()
-                .marginTop(2));
+        return super.createTerminalTextWidget(syncManager, parent)
+            .child(
+                IKey.dynamic(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.tm.microwave.damage",
+                        formatNumber(multiblock.getDamageForPower(powerSyncer.getIntValue()))))
+                    .color(Color.WHITE.main)
+                    .asWidget()
+                    .marginTop(2))
+            .child(
+                IKey.dynamic(
+                    () -> StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.tm.microwave.timer",
+                        formatNumber(remainingSyncer.getIntValue()),
+                        formatNumber(timerSyncer.getIntValue())))
+                    .color(Color.WHITE.main)
+                    .asWidget());
     }
 
     @Override
