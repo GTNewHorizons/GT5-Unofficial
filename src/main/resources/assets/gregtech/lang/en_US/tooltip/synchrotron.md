@@ -15,7 +15,7 @@ The {blue:energies} in the following formulae must all be in keV
 {hr}
 {blue:Output Beam Energy}{color_formula: = {color_note:IR} * {color_note:Power Scale Factor}}
 where {color_note:IR}{color_formula: = ({blue:Input Beam Energy})^(1.13 * ({light_purple:Antenna Tier})^(4/9)) / 40,000,000}
-and {color_note:Power Scale Factor}{color_formula: = 1 - 0.15^({dark_aqua:Total {EU/t} Provided} / (30,384 * ({light_purple:Antenna Tier})^2.5))}
+and {color_note:Power Scale Factor}{color_formula: = 1 - 0.15^({color_eu_usage:Total {EU/t} Provided} / (30,384 * ({light_purple:Antenna Tier})^2.5))}
 {hr}
 {dark_green:Output Beam Focus}{color_formula: = ({dark_green:Input Beam Focus} + {color_note:Machine Focus})/2.5} if {dark_green:Input Beam Focus} > {color_note:Machine Focus}
 {dark_green:Output Beam Focus}{color_formula: = {dark_green:Input Beam Focus} * {color_note:Machine Focus}/100} if {dark_green:Input Beam Focus} <= {color_note:Machine Focus}
