@@ -3,11 +3,11 @@ Surround with 1-5 rings of {color_name:Solar Reflectors} to generate heat
 More Solar Reflectors means more heat gain and more overall coolant throughput
 Maximum {color_hot:100,000 heat} but there is no risk or danger in reaching that
 {hr}
-Converts {color_cold:Cold Solar Salt} into {color_red:Hot Solar Salt} at a 1:1 ratio every {var:cycle}s
+Converts {color_cold:Cold Solar Salt} into {color_hot:Hot Solar Salt} at a 1:1 ratio every {var:cycle}s
 Every 1{L} converted reduces the heat by 1 until it reaches zero
 Excess Cold Solar Salt is not consumed
 {hr}
-Conversion only happens if {red:heat}{color_formula: >= {var:threshold}} and {color_efficiency:efficiency}{color_formula: = 100%}
+Conversion only happens if {color_hot:heat}{color_formula: >= {var:threshold}} and {color_efficiency:efficiency}{color_formula: = 100%}
 Efficiency starts at {color_efficiency:{var:minEfficiency}%} and increases by {color_efficiency:+{var:efficiencyIncrease}%} every 10s
 {hr}
 {color_hot:Heat Efficiency}{color_formula: = 1 - (Heat - {yellow:{var:center}})^{var:exp} / {var:coefficient}}, peaks at {yellow:{var:center}}

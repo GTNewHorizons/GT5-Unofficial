@@ -21,4 +21,4 @@ and {color_note:Power Scale Factor}{color_formula: = 1 - 0.15^({dark_aqua:Total 
 {dark_green:Output Beam Focus}{color_formula: = {dark_green:Input Beam Focus} * {color_note:Machine Focus}/100} if {dark_green:Input Beam Focus} <= {color_note:Machine Focus}
 where {color_note:Machine Focus}{color_formula: = max(10, min(90, 1.5^(12 - {color_cold:Coolant Temperature}/40)))}
 {hr}
-{gold:Output Beam Rate}{color_formula: = floor(2.5^({light_purple:Antenna Tier}) * sqrt({color_eu_usage:Total {EU/t} Provided}) * {color_gold:Input Beam Rate}/15,000)}
+{gold:Output Beam Rate}{color_formula: = floor(2.5^({light_purple:Antenna Tier}) * sqrt({color_eu_usage:Total {EU/t} Provided}) * {gold:Input Beam Rate}/15,000)}
