@@ -108,7 +108,7 @@ public class MarkdownTooltipLoader {
             "eu/T",
             "EU/T");
         addAliases(new SimpleUnitCommand("MeV"), "mega-electron-volt-unit", "mev", "MeV", "MEV");
-        addAliases(new SimpleUnitCommand("K"), "heat-unit", "K", "k", "Kelvin");
+        addAliases(new SimpleUnitCommand("K"), "heat-unit", "K", "k", "Kelvin", "kelvin");
 
     }
 
