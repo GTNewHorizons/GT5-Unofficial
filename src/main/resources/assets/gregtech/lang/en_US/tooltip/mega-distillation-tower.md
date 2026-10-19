@@ -3,7 +3,7 @@ Has up to {color_amount:5} middle slices and {color_amount:1} top slice, the amo
 {hr}
 {color_mode:Distillery Mode}
 Outputs only one fluid in the first hatch
-{color_parallel:256 * (1 + Tower Height / 2) Parallels}
+{color_parallel:256 * (1 + Tower Height / 2)} Parallels
 {color_speed:{var:distillery_speed}%} Speed
 {color_efficiency:{var:distillery_eu_eff}%} {EU} Usage
 {hr}
