@@ -11,5 +11,5 @@ Particle beams have a {dark_purple:particle type}, {blue:energy}, {dark_green:fo
 {dark_green:Focus} is the width of the particle beam
 {gold:Rate} is the amount of particles per packet
 {hr}
-{blue:Output Beam Energy}{white: = min({blue:Max Particle Energy}, {yellow:aeV})}
-where {yellow:aeV}{white: = {light_purple:Max Material Energy} * (1 - 1.001^({blue:-Energy Ratio} * ({color_eu_usage:EU/t Provided} - {color_eu_usage:EU/t Required})))}
+{blue:Output Beam Energy}{color_formula: = min({blue:Max Particle Energy}, {color_note:aeV})}
+where {color_note:aeV}{color_formula: = {light_purple:Max Material Energy} * (1 - 1.001^({blue:-Energy Ratio} * ({color_eu_usage:EU/t Provided} - {color_eu_usage:EU/t Required})))}
