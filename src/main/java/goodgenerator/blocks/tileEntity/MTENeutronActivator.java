@@ -25,7 +25,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
@@ -65,16 +64,12 @@ import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
-import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
-import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTENeutronActivator extends TTMultiblockBase
-    implements ISurvivalConstructable, ICasingTextureProvider, IParametrized {
+public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
+    // TODO remove after 2.9
     public Parameters.Group.ParameterIn batchSetting;
-    private IntegerParameter batchParameter;
 
     /** Name of the batch setting */
     public static final INameFunction<MTENeutronActivator> BATCH_SETTING_NAME = (base,
@@ -90,12 +85,6 @@ public class MTENeutronActivator extends TTMultiblockBase
     protected int casingAmount = 0;
     protected int height = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
-    protected static final NumberFormatMUI numberFormat;
-    static {
-        numberFormat = new NumberFormatMUI();
-        numberFormat.setMinimumFractionDigits(2);
-        numberFormat.setMaximumFractionDigits(2);
-    }
     final XSTR R = new XSTR();
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons
@@ -349,12 +338,6 @@ public class MTENeutronActivator extends TTMultiblockBase
     }
 
     @Override
-    protected int getMaxBatchSize() {
-        // Batch size 1~128
-        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
-    }
-
-    @Override
     public boolean supportsBatchMode() {
         return true;
     }
@@ -545,23 +528,6 @@ public class MTENeutronActivator extends TTMultiblockBase
         public String getDescriptionLangKey() {
             return name;
         }
-    }
-
-    @Override
-    public void initParameters() {
-        batchParameter = new IntegerParameter(1, "batch_mode.cfgi.0", "batch", () -> 1, () -> 128);
-    }
-
-    @Override
-    public void loadLegacyParameters(NBTTagCompound nbt) {
-        batchParameter.setValue(
-            nbt.getCompoundTag("eParamsInD")
-                .getInteger("19"));
-    }
-
-    @Override
-    public List<Parameter<?, ?>> getParameters() {
-        return List.of(batchParameter);
     }
 
     @Override
