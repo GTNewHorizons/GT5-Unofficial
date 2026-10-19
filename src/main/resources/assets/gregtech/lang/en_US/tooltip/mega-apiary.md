@@ -9,7 +9,7 @@ The ideal home for your bees
 {color_mode:Operating Mode}:
 - {color_mechanic:Normal}:
   - {color_time:{var:normal_seconds}s} per operation, {color_amount:{var:bee_acceleration}x} bee speed
-  - Uses {color_amperage:1} {var:voltageTier_LuV} amp per queen
+  - Uses {color_amperage:1} {var:normalTier} amp per queen
   - {color_amount:8} production upgrades and {color_name:Genetic Stabilizer} applied
   - Simulates a perfect environment
   - {color_key:Royal Jelly} grants {color_amount:{var:jelly_bonus}%} output per jelly, up to {color_amount:{var:max_jelly_bonus}%} (consumed each operation per bee)
