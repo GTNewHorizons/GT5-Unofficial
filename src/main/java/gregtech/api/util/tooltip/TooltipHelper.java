@@ -27,6 +27,12 @@ public class TooltipHelper {
     public static final EnumChatFormatting NAME_COLOR = EnumChatFormatting.WHITE;
     /** For steam related names and values. */
     public static final EnumChatFormatting STEAM_COLOR = EnumChatFormatting.WHITE;
+    /**
+     * The text color for formula text.
+     * <br>
+     * example usage: {color:name}{color_formula: = ax+b}
+     */
+    public static final EnumChatFormatting FORMULA_COLOR = EnumChatFormatting.WHITE;
     /** For warns and other important notes. */
     public static final EnumChatFormatting NOTE_COLOR = EnumChatFormatting.YELLOW;
     /** For machine type names. */

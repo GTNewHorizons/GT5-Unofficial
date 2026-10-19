@@ -62,6 +62,7 @@ public class MarkdownTooltipLoader {
         // standard coloring for certain concepts
         addCommand("color_tier", new ColorMarkdownCommand(TooltipHelper.TIER_COLOR));
         addCommand("color_name", new ColorMarkdownCommand(TooltipHelper.NAME_COLOR));
+        addCommand("color_formula", new ColorMarkdownCommand(TooltipHelper.FORMULA_COLOR));
         addCommand("color_steam", new ColorMarkdownCommand(TooltipHelper.STEAM_COLOR));
         addCommand("color_note", new ColorMarkdownCommand(TooltipHelper.NOTE_COLOR));
         addCommand("color_machine_type", new ColorMarkdownCommand(TooltipHelper.MACHINE_TYPE_COLOR));
