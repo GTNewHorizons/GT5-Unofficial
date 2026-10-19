@@ -28,12 +28,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -59,10 +61,10 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -576,27 +578,18 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Distillery, DT, MDT")
-            .addInfo("Stats dictated by tower mode, change mode in GUI or with a screwdriver")
-            .addInfo("Has up to 5 middle slices and 1 top slice, the amount of middle slices is the 'Tower Height'")
-            .addInfo("Each middle slice adds 2 output hatches, the top slice adds one output hatch")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "Distillery Mode")
-            .addInfo("Outputs only one fluid in the first hatch")
-            .addInfo(
-                TooltipHelper.parallelText(Configuration.Multiblocks.megaMachinesMax + " * (1 + Tower Height/2)")
-                    + " Parallels")
-            .addStaticSpeedInfo((float) DISTILLERY_SPEED)
-            .addStaticEuEffInfo((float) DISTILLERY_EU_EFFICIENCY)
-            .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "Distillation Tower Mode")
-            .addInfo("Fluids are output one per layer based on the slot number in NEI")
-            .addInfo("Increase the height to output more fluid types")
-            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addStaticSpeedInfo((float) TOWER_SPEED)
-            .addStaticEuEffInfo((float) TOWER_EU_EFFICIENCY)
-            .addSeparator()
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mega-distillation-tower"),
+                ImmutableMap.<String, Object>builder()
+                    .put("mega_max", Configuration.Multiblocks.megaMachinesMax)
+                    .put("distillery_speed", (int) (DISTILLERY_SPEED * 100))
+                    .put("distillery_eu_eff", (int) (DISTILLERY_EU_EFFICIENCY * 100))
+                    .put("tower_speed", (int) (TOWER_SPEED * 100))
+                    .put("tower_eu_eff", (int) (TOWER_EU_EFFICIENCY * 100))
+                    .build())
             .addSupportAny()
             .addUnlimitedTierSkips()
             .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
@@ -629,8 +622,8 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasing("6", "Steel Pipe Casing", false)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Mallady")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

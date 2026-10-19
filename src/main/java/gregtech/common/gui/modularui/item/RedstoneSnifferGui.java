@@ -22,11 +22,11 @@ import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.CategoryList;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -251,21 +251,25 @@ public class RedstoneSnifferGui {
                         .heightRel(0.1f)
                         .marginBottom(10)
                         .child(
-                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).widthRel(0.25f)
-                                .color(textColor)
-                                .textAlign(Alignment.Center))
+                            // labels are as wide as their text (a fixed share wrapped "Frequency:" at small sizes),
+                            // the fields share the rest
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).color(textColor)
+                                .marginLeft(4)
+                                .marginRight(4))
                         .child(
-                            new TextFieldWidget().sizeRel(0.25f, 0.5f)
+                            new TextFieldWidget().expanded()
+                                .heightRelOffset(0.5f, 4)
                                 .setTextColor(textColor)
-                                .value(SyncHandlers.string(() -> freqFilter, filter -> freqFilter = filter)))
+                                .value(new StringValue.Dynamic(() -> freqFilter, filter -> freqFilter = filter)))
                         .child(
-                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.owner_filter")).widthRel(0.25f)
-                                .color(textColor)
-                                .textAlign(Alignment.Center))
+                            new TextWidget<>(IKey.lang("gt.item.redstone_sniffer.owner_filter")).color(textColor)
+                                .marginLeft(8)
+                                .marginRight(4))
                         .child(
-                            new TextFieldWidget().sizeRel(0.25f, 0.5f)
+                            new TextFieldWidget().expanded()
+                                .heightRelOffset(0.5f, 4)
                                 .setTextColor(textColor)
-                                .value(SyncHandlers.string(() -> ownerFilter, filter -> ownerFilter = filter))))
+                                .value(new StringValue.Dynamic(() -> ownerFilter, filter -> ownerFilter = filter))))
                 .child(data));
 
         return panel.widgetTheme(GTWidgetThemes.BACKGROUND_REDSTONE_SNIFFER);
