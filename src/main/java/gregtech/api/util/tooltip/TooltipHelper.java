@@ -63,7 +63,7 @@ public class TooltipHelper {
     public static final EnumChatFormatting HEAT_COLOR = EnumChatFormatting.RED;
     /** For hot things. */
     public static final EnumChatFormatting HOT_COLOR = EnumChatFormatting.RED;
-    /** For hot things. */
+    /** For values relating to electron volts like eV, KeV, MeV and GeV. */
     public static final EnumChatFormatting ELECTRON_VOLT_COLOR = EnumChatFormatting.RED;
     /** For depreciation notices. */
     public static final EnumChatFormatting DEPRECATED_COLOR = EnumChatFormatting.RED;
