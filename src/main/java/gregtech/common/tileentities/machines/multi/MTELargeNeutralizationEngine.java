@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -305,7 +304,6 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-neutralization-engine"),
                 ImmutableMap.<String, Object>builder()
-                    .put("fluid_unit", getFluidUnit())
                     .put("sodium_hydroxide_eff", 150)
                     .put("sodium_hydroxide_rate", 60)
                     .put("potassium_hydroxide_eff", 190)

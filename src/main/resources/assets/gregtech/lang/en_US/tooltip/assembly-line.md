@@ -1,3 +1,3 @@
-Crafts complex machine parts {light_purple:(LuV+)} from ordered inputs, consumed slice by slice
+Crafts complex machine parts ({var:complex_parts_tier}+) from ordered inputs, consumed slice by slice
 Items & Fluids are inserted in NEI order, one per slice
-{yellow:Does not run Assembler recipes}
+{color_note:Does not run Assembler recipes}
