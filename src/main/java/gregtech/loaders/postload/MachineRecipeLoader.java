@@ -22,6 +22,7 @@ import gregtech.loaders.postload.recipes.CircuitAssemblerRecipes;
 import gregtech.loaders.postload.recipes.CokeOvenRecipes;
 import gregtech.loaders.postload.recipes.CompressorRecipes;
 import gregtech.loaders.postload.recipes.CuttingRecipes;
+import gregtech.loaders.postload.recipes.DevEnvNanochipRecipes;
 import gregtech.loaders.postload.recipes.DistilleryRecipes;
 import gregtech.loaders.postload.recipes.ElectrolyzerRecipes;
 import gregtech.loaders.postload.recipes.ElectromagneticSeparatorRecipes;
@@ -59,6 +60,8 @@ import gregtech.loaders.postload.recipes.VacuumFreezerRecipes;
 import gregtech.loaders.postload.recipes.WiremillRecipes;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterRecipes;
 import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderRecipes;
+
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 public class MachineRecipeLoader implements Runnable {
 
@@ -126,5 +129,8 @@ public class MachineRecipeLoader implements Runnable {
         NaniteChain.run();
         PCBFactoryRecipes.load();
         PurifiedWaterRecipes.run();
+        if(!NewHorizonsCoreMod.isModLoaded()) {
+            new DevEnvNanochipRecipes().run();
+        }
     }
 }
