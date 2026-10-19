@@ -9,4 +9,4 @@ The more Combustion Promoter, the higher the efficiency
 Follows an exponential curve {aqua:exp(-C/R) * {var:efficiency_ceiling}}, where {white:C} is a constant based on the fuel type
 {gold:Gas/Diesel Fuel}: {white:C={var:gas_coefficient}} | {gold:Rocket Fuel}: {white:C={var:rocket_coefficient}}
 {gray:{hr}}
-Produces {dark_purple:sqrt(EU/t)} pollution per second
+Produces {dark_purple:sqrt({EU/t})} pollution per second

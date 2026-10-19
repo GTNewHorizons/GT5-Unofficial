@@ -8,7 +8,7 @@ Optionally supply a {aqua:Base} to boost {color_mechanic:Efficiency}:
 {hr}
 Produces {dark_green:Toxic Residue} from burning acids
 If the {dark_green:Toxic Residue} exceeds {dark_aqua:Capacity}, then the machine {color_danger:Explodes}
-Every tick, {dark_green:Toxic Residue} increases by {green:0.05 * Fuel Density (EU/L)^0.8 * Fuel Consumption ({var:fluid_unit}) * rand({var:residue_rand_min}, {var:residue_rand_max})}
+Every tick, {dark_green:Toxic Residue} increases by {green:0.05 * Fuel Density ({EU}/{L})^0.8 * Fuel Consumption ({L}) * rand({var:residue_rand_min}, {var:residue_rand_max})}
 Every tick, {dark_green:Toxic Residue} decays by {green:Base Decay * Decay Boost * Toxic Residue^0.08}
 {yellow:Residue decays 10x slower when the multiblock is disabled}
 {hr}

@@ -2,10 +2,10 @@
 {hr}
 {color_parallel:{var:parallels} Parallels} per {color_name:Total Turbine} Tier
 {color_speed:{var:speed}% Speed}
-{color_efficiency:{var:eu_eff}% EU Usage}
+{color_efficiency:{var:eu_eff}% {EU} Usage}
 {color_name:Non-Huge Turbines} have reduced effectiveness...
 Gains {color_amount:{var:slots_per_tier}} {color_name:Turbine Slots} per {color_name:Structure} Tier
-Requires {color_amount:(Recipe Tier * {var:fluid_per_tier} {var:fluid_unit}/s)} of {color_key:Kerosene} to run
+Requires {color_amount:(Recipe Tier * {var:fluid_per_tier} {L}/s)} of {color_key:Kerosene} to run
 Supply {color_key:Biocatalyzed Propulsion Fluid} instead for a {color_parallel:{var:tier2_mult}x} Parallel increase
 {color_note:Overclocks are limited to Hatch Tier + 1}
 {hr}
@@ -17,6 +17,6 @@ Supply {color_key:Biocatalyzed Propulsion Fluid} instead for a {color_parallel:{
 {hr}
 {color_mode:Heavy Mode}: Requires {color_key:Biocatalyzed Propulsion Fluid}
 - Divides {color_parallel:Parallels} by {color_parallel:{var:heavy_div}}
-- Multiplies {color_eu_usage:EU Cost} by {color_eu_usage:{var:heavy_eu}}
+- Multiplies {color_eu_usage:{EU} Cost} by {color_eu_usage:{var:heavy_eu}}
 - {color_mechanic:Uncapped Overclocks}
 - Some recipes {color_danger:require} {color_mode:Heavy Mode}

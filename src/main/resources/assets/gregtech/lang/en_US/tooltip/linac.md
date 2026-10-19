@@ -12,7 +12,7 @@ Increasing the length/power increases the {blue:Output Beam Energy} but decrease
 Preserve {dark_green:Beam Focus} more effectively with lower temperature {aqua:coolant}
 {hr}
 {blue:Output Beam Energy}{color_formula: = max(}{color_note:V}{white:, 50) * 10^}{color_note:IE}
-where {color_note:V}{color_formula: = 0.25 * (Length - 1) * cbrt({color_eu_usage:EU/t Provided})}
+where {color_note:V}{color_formula: = 0.25 * (Length - 1) * cbrt({color_eu_usage:{EU/t} Provided})}
 and {color_note:IE}{color_formula: = 1 + min({blue:Input Beam Energy}, 7500) / }{blue:Max Particle Energy}
 {hr}
 {dark_green:Output Beam Focus}{color_formula: = (dark_green:Input Beam Focus} + {color_note:Machine Focus})/2} if {dark_green:Input Beam Focus}{white: > {yellow:Machine Focus}

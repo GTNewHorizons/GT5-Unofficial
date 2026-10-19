@@ -45,6 +45,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -150,7 +151,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.assembly_line"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "assembly-line"),
-                ImmutableMap.<String, Object>builder().build())
+                ImmutableMap.of("complex_parts_tier", GTUtility.getColoredTierNameFromTier((byte) VoltageIndex.LuV)))
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.first_slice_3rd_layer"))
             .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_grate_casing_not_first_slice"), 3)

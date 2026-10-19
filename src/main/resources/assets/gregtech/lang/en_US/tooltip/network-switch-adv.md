@@ -1,6 +1,6 @@
 Variable-length version of the Weighted Network Switch.
 {hr}
-Consumes {color_eu_usage:524,288 EU/t} per middle slice while active.
+Consumes {color_eu_usage:524,288 {EU/t}} per middle slice while active.
 {hr}
 Computation output is configured by right-clicking transmission connectors with a screwdriver.
 Transmission connectors must be part of the structure for them to be configurable.
