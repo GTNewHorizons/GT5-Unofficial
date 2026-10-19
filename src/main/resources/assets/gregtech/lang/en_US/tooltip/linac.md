@@ -1,5 +1,5 @@
 Accelerates particle beams to higher energies by passing them through an electric field
-Electrically neutral {color_mechanic:particles} are therefore unaffected
+Electrically neutral {color_mechanic:Particles} are therefore unaffected
 {lang:gtnhlanth.tt.beaminfo}
 {hr}
 Requires {aqua:Length * 1,000 {var:fluidUnit}/s} of {aqua:Coolant} to run, returns as {red:Hot Coolant}
