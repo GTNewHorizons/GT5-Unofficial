@@ -2168,6 +2168,12 @@ gt.mbtt.structure.containment_block=Containment Block
 gt.mbtt.structure.heat_resistant_proof_coke_oven_casing=Heat Resistant/Proof Coke Oven Casing
 gt.mbtt.structure.input_or_solidifier_hatch=Input/Solidifier Hatch
 gt.mbtt.structure.input_or_chisel_bus=Input/Chisel Bus
+gt.mbtt.structure.middle_3rd_layer=Middle of the structure, 3rd layer
+gt.mbtt.structure.any_injection_casing=Any injection casing
+gt.mbtt.structure.any_high_power_casing=Any high power casing
+gt.mbtt.structure.any_primary_casing=Any primary casing
+gt.mbtt.structure.magnetic_chassis=Magnetic Chassis
+gt.mbtt.structure.exo_foundry_module_costs=Check NEI for module costs
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -2243,6 +2249,10 @@ gt.mbtt.machine_type.industrial_coke_oven=Coke Oven, ICO
 gt.mbtt.machine_type.cutting_machine=Cutting Machine, ICF
 gt.mbtt.machine_type.electromagnetic_separator=Electromagnetic Separator/Polarizer, MFE
 gt.mbtt.machine_type.fish_trap=Fish Trap, ZFP
+gt.mbtt.machine_type.plasma_forge=Plasma Forge, DTPF
+gt.mbtt.machine_type.transcendent_mixer=Transcendent Mixer, TPM
+gt.mbtt.machine_type.wormhole_generator=Wormhole Generator, MWG
+gt.mbtt.machine_type.entropic_processor=Entropic Processor
 
 # BartWorks multiblock structure text
 GT5U.tooltip.manual_trafo.winding_layers=1 Layer for each tier transformed
@@ -2258,6 +2268,7 @@ GT5U.tooltip.windmill.any_block=Any %s
 gt.mbtt.flavor.exothermic_hearth=Never one...
 gt.mbtt.flavor.spinmatron=Maahes guides the way...
 gt.mbtt.flavor.endothermic_fridge=... without the other!
+gt.mbtt.flavor.exo_foundry=Glorious Evolution!
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
