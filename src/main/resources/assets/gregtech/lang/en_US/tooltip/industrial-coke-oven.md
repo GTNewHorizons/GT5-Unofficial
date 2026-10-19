@@ -3,4 +3,4 @@
 {color_efficiency:-{var:eu_reduction}%} {EU} Usage per {color_name:Heating Coil} Tier (multiplicative)
 {hr}
 Max 15 additional slices, unless using {color_name:Eternal Coils} which have no limit
-One {color_hatch:Multi-amp Energy Hatch} is allowed with {color_name:Infinity Coils} or better
+One {color_hatch:Multi-Amp Energy Hatch} is allowed with {color_name:Infinity Coils} or better
