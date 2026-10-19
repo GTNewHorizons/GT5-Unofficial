@@ -1,0 +1,3 @@
+Capable of compressing matter into {color_key:singularities}
+More advanced singularities will require even stronger compression...
+{color_note:Cannot run recipes that require HIP or a black hole}

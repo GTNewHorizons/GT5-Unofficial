@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -37,6 +38,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,6 +47,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -54,8 +57,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -86,6 +91,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -361,86 +367,22 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Compressor, Advanced Neutronium Compressor, BHC")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Uses the immense power of the event horizon to compress things")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE
-                    + "No longer requires heat management to perform superdense compression")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!")
-            .addSeparator()
-            .addInfo(
-                "Insert a " + EnumChatFormatting.WHITE
-                    + "Black Hole Seed"
-                    + EnumChatFormatting.GRAY
-                    + " to open a black hole")
-            .addInfo(
-                "The black hole will begin its life at " + EnumChatFormatting.RED
-                    + "100"
-                    + EnumChatFormatting.GRAY
-                    + " stability and slowly decay")
-            .addInfo(
-                "Stability decays by " + EnumChatFormatting.RED
-                    + "1/s"
-                    + EnumChatFormatting.GRAY
-                    + " until it reaches 0")
-            .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE")
-            .addInfo("Once the black hole becomes unstable, it will void recipes and eventually close itself!")
-            .addSeparator()
-            .addInfo(
-                "The decay can be " + EnumChatFormatting.BOLD
-                    + "halted"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " by inserting 1 L/s of spacetime into specific hatches")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "30"
-                    + EnumChatFormatting.GRAY
-                    + " total seconds saved by spacetime insertion will "
-                    + EnumChatFormatting.RED
-                    + "double"
-                    + EnumChatFormatting.GRAY
-                    + " the cost per second!")
-            .addInfo(
-                "Insert a " + EnumChatFormatting.WHITE
-                    + "Black Hole Collapser"
-                    + EnumChatFormatting.GRAY
-                    + " to close the black hole")
-            .addInfo("To restore stability and reset spacetime costs, close the black hole and open a new one")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "Use circuit 20 for Compressor and 21 for Neutronium Compressor")
-            .addBulkMachineInfo(8, 5f, 0.7f)
-            .addInfo(
-                EnumChatFormatting.RED + "2x/4x"
-                    + EnumChatFormatting.GRAY
-                    + " parallels when stability is BELOW "
-                    + EnumChatFormatting.RED
-                    + "50/20")
-            .addInfo(
-                "Below " + EnumChatFormatting.RED
-                    + "20"
-                    + EnumChatFormatting.GRAY
-                    + " stability, parallels are "
-                    + EnumChatFormatting.RED
-                    + "uncapped"
-                    + EnumChatFormatting.GRAY
-                    + " for recipes that do not require a black hole.")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.black_hole_compressor"))
+            .addMarkdown(new ResourceLocation("gregtech", "black-hole-compressor"), ImmutableMap.of("unit", getFluidUnit()))
             .addSupportAny()
-            .addInfo(
-                EnumChatFormatting.RED
-                    + "Recipe Tier is limited to Hatch Tier + 1. Will not perform overclocks above the Hatch Tier")
-            .addInfo(EnumChatFormatting.RED + "Limited to one energy hatch if using a Multi-Amp or Laser hatch")
             .beginStructureBlock(33, 35, 35, true)
-            .addController("Middle of structure, 6th layer")
-            .addCasing("3667-3671", "Extreme Density Space-Bending Casing", false)
-            .addCasing("950-985", "Background Radiation Absorbent Casing", false)
-            .addCasing("144", "Naquadah Alloy Frame Box", false)
-            .addCasing("64", "Hawking Radiation Realignment Focus", false)
-            .addMiscHatch("0+", "Black Hole Utility Hatch", "Any absorbent casing", 1)
-            .addEnergyHatch("1+", "Any absorbent casing", 1)
-            .addInputAny("1+", "Any absorbent casing (inputs), the casing behind each laser (spacetime)", 1, 2)
-            .addOutputBus("1+", "Any absorbent casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_of_structure_6th_layer"))
+            .addCasing("3667-3671", Casings.ExtremeDensitySpaceBendingCasing.getLocalizedName(), false)
+            .addCasing("950-985", Casings.BackgroundRadiationAbsorbentCasing.getLocalizedName(), false)
+            .addCasing("144", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
+            .addCasing("64", Casings.HawkingRadiationRealignmentFocus.getLocalizedName(), false)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.UtilityHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_absorbent_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_absorbent_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_absorbent_casing_or_behind_laser"), 1, 2)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_absorbent_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

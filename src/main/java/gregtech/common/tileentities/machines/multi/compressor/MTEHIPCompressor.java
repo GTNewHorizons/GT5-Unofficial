@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -36,6 +37,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.util.MathUtils;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -60,6 +62,7 @@ import gregtech.common.tileentities.machines.MTEHeatSensor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompressor>
     implements ISurvivalConstructable, IHeatProducer, ICasingTextureProvider {
 
@@ -166,98 +169,28 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Compressor, HIP")
-            .addInfo("HIP Unit heats up while running")
-            .addInfo(
-                "When it reaches maximum heat, it becomes " + EnumChatFormatting.DARK_RED
-                    + EnumChatFormatting.BOLD
-                    + "overheated!")
-            .addInfo("This is only resolved by letting the machine fully cool down")
-            .addInfo(
-                "When " + EnumChatFormatting.DARK_RED
-                    + "overheated"
-                    + EnumChatFormatting.GRAY
-                    + ", recipes are slowed down drastically")
-            .addSeparator()
-            .addInfo(
-                "Some recipes " + EnumChatFormatting.BOLD
-                    + "require"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " HIP")
-            .addInfo(
-                "If the machine is " + EnumChatFormatting.DARK_RED
-                    + "overheated"
-                    + EnumChatFormatting.GRAY
-                    + " when one of these recipes starts, it will be voided!")
-            .addInfo("Read the current heat using Heat Sensor Hatches")
-            .addSeparator()
-            .addInfo("More advanced coils allow better heat control - the unit will take longer to overheat")
-            .addInfo(
-                "Unit heats by " + EnumChatFormatting.GREEN
-                    + "(5% x 0.90 ^ (Coil Tier - 1))"
-                    + EnumChatFormatting.GRAY
-                    + " every second while running")
-            .addInfo(
-                "Unit cools by " + EnumChatFormatting.GREEN
-                    + "2%"
-                    + EnumChatFormatting.GRAY
-                    + " base every second while not running")
-            .addInfo(
-                "Cooling rate increases by an additional " + EnumChatFormatting.GREEN
-                    + "2%"
-                    + EnumChatFormatting.GRAY
-                    + " for each second since running")
-            .addSeparator()
-            .addInfo(
-                "250% " + EnumChatFormatting.RED
-                    + "faster"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.BLUE
-                    + "slower"
-                    + EnumChatFormatting.GRAY
-                    + " than singleblock machines of the same voltage")
-            .addInfo(
-                "Uses " + EnumChatFormatting.RED
-                    + "75%"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.BLUE
-                    + "110%"
-                    + EnumChatFormatting.GRAY
-                    + " the EU/t normally required")
-            .addInfo(
-                "Gains " + EnumChatFormatting.RED
-                    + "4"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.BLUE
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " parallels per Voltage Tier")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.isostatic_press_compressor"))
+            .addMarkdown(new ResourceLocation("gregtech", "hip-compressor"))
             .beginStructureBlock(15, 10, 7, true)
-            .addController("Front bottom center")
-            .addCasing("95-124", "Electric Compressor Casing", false)
-            .addCasing("60-61", "Compression Pipe Casing", false)
-            .addCasing("30", "Heating Coil", true)
-            .addCasing("22", "Any Tiered Glass", false)
-            .addCasing("12", "Coolant Duct", false)
-            .addCasing("12", "Heating Duct", false)
-            .addMiscHatch(
-                "0+",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.heat_sensor_hatch"),
-                "Any electric compressor casing",
-                1)
-            .addEnergyHatch("1+", "Any electric compressor casing", 1)
-            .addMaintenanceHatch("1", "Any electric compressor casing", 1)
-            .addInputBus("1+", "Any side pipe casing", 2)
-            .addInputHatch("0+", "Any side pipe casing", 2)
-            .addOutputBus("1+", "Any side pipe casing", 2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("95-124", Casings.ElectricCompressorCasing.getLocalizedName(), false)
+            .addCasing("60-61", Casings.CompressionPipeCasing.getLocalizedName(), false)
+            .addCasing("30", StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"), true)
+            .addCasing("22", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("12", Casings.CoolantDuct.getLocalizedName(), false)
+            .addCasing("12", Casings.HeatingDuct.getLocalizedName(), false)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.structure.heat_sensor_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_electric_compressor_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_electric_compressor_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_electric_compressor_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_pipe_casing"), 2)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_pipe_casing"), 2)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_pipe_casing"), 2)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
