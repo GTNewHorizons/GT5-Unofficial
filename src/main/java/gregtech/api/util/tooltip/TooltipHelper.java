@@ -63,6 +63,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting HEAT_COLOR = EnumChatFormatting.RED;
     /** For hot things. */
     public static final EnumChatFormatting HOT_COLOR = EnumChatFormatting.RED;
+    /** For hot things. */
+    public static final EnumChatFormatting MEV_COLOR = EnumChatFormatting.RED;
     /** For depreciation notices. */
     public static final EnumChatFormatting DEPRECATED_COLOR = EnumChatFormatting.RED;
     /** For dangerous component descriptions. */

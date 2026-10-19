@@ -81,6 +81,7 @@ public class MarkdownTooltipLoader {
         addCommand("color_eu_usage", new ColorMarkdownCommand(TooltipHelper.EU_USAGE_COLOR));
         addCommand("color_heat", new ColorMarkdownCommand(TooltipHelper.HEAT_COLOR));
         addCommand("color_hot", new ColorMarkdownCommand(TooltipHelper.HOT_COLOR));
+        addCommand("color_mev", new ColorMarkdownCommand(TooltipHelper.MEV_COLOR));
         addCommand("color_deprecated", new ColorMarkdownCommand(TooltipHelper.DEPRECATED_COLOR));
         addCommand("color_danger", new ColorMarkdownCommand(TooltipHelper.DANGER_COLOR));
         addCommand("color_mechanic", new ColorMarkdownCommand(TooltipHelper.MECHANIC_COLOR));
@@ -94,12 +95,26 @@ public class MarkdownTooltipLoader {
         addCommand("lang", new LangMarkdownCommand(false));
         addCommand("lang-eval", new LangMarkdownCommand(true));
 
-        FluidUnitCommand fluidUnitCommand = new FluidUnitCommand();
-        addCommand("fluid-unit", fluidUnitCommand);
-        addCommand("l", fluidUnitCommand);
-        addCommand("L", fluidUnitCommand);
-        addCommand("mb", fluidUnitCommand);
-        addCommand("mB", fluidUnitCommand);
+        addAliases(new FluidUnitCommand(), "fluid-unit", "l", "L", "mb", "mB");
+        addAliases(new SimpleUnitCommand("EU"), "energy-unit", "eu", "EU");
+        addAliases(
+            new SimpleUnitCommand("EU/T"),
+            "energy-usage-unit",
+            "eut",
+            "EUt",
+            "EUT",
+            "eu/t",
+            "EU/t",
+            "eu/T",
+            "EU/T");
+        addAliases(new SimpleUnitCommand("MeV"), "mega-electron-volt-unit", "mev", "MeV", "MEV");
+
+    }
+
+    public void addAliases(MarkdownCommand command, String... aliases) {
+        for (String alias : aliases) {
+            addCommand(alias, command);
+        }
     }
 
     public void addCommand(String name, MarkdownCommand command) {
@@ -530,6 +545,21 @@ public class MarkdownTooltipLoader {
         public void process(MarkdownTooltipLoader loader, String arg, StringBuilder lineOutput,
             Map<String, Object> vars) {
             lineOutput.append(getFluidUnit());
+        }
+    }
+
+    public static class SimpleUnitCommand implements MarkdownCommand {
+
+        final String unit;
+
+        public SimpleUnitCommand(String unit) {
+            this.unit = unit;
+        }
+
+        @Override
+        public void process(MarkdownTooltipLoader loader, String arg, StringBuilder lineOutput,
+            Map<String, Object> vars) {
+            lineOutput.append(unit);
         }
     }
 }
