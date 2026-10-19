@@ -1,15 +1,15 @@
-Inputs are {red:Lava}, {red:Hot Coolant}, {red:Hot Solar Salt}, or {red:Plasma}
-Outputs are {blue:Pahoehoe Lava}, {blue:IC2 Coolant}, {blue:Cold Solar Salt}, or {blue:Molten Metal}
-Converts distilled water into {white:SH Steam} or {white:SC Steam} in the process
-Outputs {white:SC Steam} if the input rate of hot fluid is above a certain {color_mechanic:threshold}
+Inputs are {color_hot:Lava}, {color_hot:Hot Coolant}, {color_hot:Hot Solar Salt}, or {color_hot:Plasma}
+Outputs are {color_cold:Pahoehoe Lava}, {color_cold:IC2 Coolant}, {color_cold:Cold Solar Salt}, or {color_cold:Molten Metal}
+Converts distilled water into {color_steam:SH Steam} or {color_steam:SC Steam} in the process
+Outputs {color_steam:SC Steam} if the input rate of hot fluid is above a certain {color_mechanic:threshold}
 Explodes immediately if it runs out of distilled water
 {hr}
-{red:Lava} | SC Threshold {color_mechanic:80,000 {var:unit}/s} | Max Input {red:160,000 {var:unit}/s} | Max Output {white:640,000 {var:unit}/t SC Steam}
-{red:Hot Coolant} | SC Threshold {color_mechanic:8,000 {var:unit}/s} | Max Input {red:128,000 {var:unit}/s} | Max Output {white:1,280,000 {var:unit}/t SC Steam}
-{red:Hot Solar Salt} | SC Threshold {color_mechanic:1,600 {var:unit}/s} | Max Input {red:3,200 {var:unit}/s} | Max Output {white:160,000 {var:unit}/t SC Steam}
+{color_hot:Lava} | SC Threshold {color_mechanic:80,000 {var:unit}/s} | Max Input {color_hot:160,000 {var:unit}/s} | Max Output {color_steam:640,000 {var:unit}/t SC Steam}
+{color_hot:Hot Coolant} | SC Threshold {color_mechanic:8,000 {var:unit}/s} | Max Input {color_hot:128,000 {var:unit}/s} | Max Output {color_steam:1,280,000 {var:unit}/t SC Steam}
+{color_hot:Hot Solar Salt} | SC Threshold {color_mechanic:1,600 {var:unit}/s} | Max Input {color_hot:3,200 {var:unit}/s} | Max Output {color_steam:160,000 {var:unit}/t SC Steam}
 {hr}
-{red:Plasma} always outputs {white:Dense SC Steam} regardless of input rate
+{color_hot:Plasma} always outputs {color_steam:Dense SC Steam} regardless of input rate
 The max input and output rates depend on the plasma's density (EU/L)
 {hr}
 A circuit in the controller lowers the SC threshold at the cost of steam
-{color_mechanic:-150 {var:unit}/s} SC Threshold and {white:-1.5%} steam output per circuit over 1
+{color_mechanic:-150 {var:unit}/s} SC Threshold and {color_steam:-1.5%} steam output per circuit over 1

@@ -7,7 +7,7 @@ Powers down the arc after work ends
 {hr}
 {color_mode:Blast Mode}:
 Processes {color_name:EBF} recipes at {color_amount:{var:blast_power_multiplier}x} power cost
-{gray:{hr}}
+{hr}
 {color_mode:Ore Mode}:
 Processes metallic ores into molten metal
 Startup time: {color_amount:{var:ore_startup_seconds}} seconds
