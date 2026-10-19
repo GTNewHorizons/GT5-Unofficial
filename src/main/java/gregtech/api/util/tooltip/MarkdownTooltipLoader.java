@@ -1,5 +1,7 @@
 package gregtech.api.util.tooltip;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,6 +93,8 @@ public class MarkdownTooltipLoader {
         addCommand("var-eval", new VarMarkdownCommand(true));
         addCommand("lang", new LangMarkdownCommand(false));
         addCommand("lang-eval", new LangMarkdownCommand(true));
+
+        addCommand("fluid-unit", new FluidUnitCommand());
     }
 
     public void addCommand(String name, MarkdownCommand command) {
@@ -512,6 +516,15 @@ public class MarkdownTooltipLoader {
             } else {
                 lineOutput.append(loc);
             }
+        }
+    }
+
+    public static class FluidUnitCommand implements MarkdownCommand {
+
+        @Override
+        public void process(MarkdownTooltipLoader loader, String arg, StringBuilder lineOutput,
+            Map<String, Object> vars) {
+            lineOutput.append(getFluidUnit());
         }
     }
 }
