@@ -1,2 +1,2 @@
 {gray:{hr}}
-{blue:It's uncanny!}
+{color_misc:It's uncanny!}
