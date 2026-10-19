@@ -23,6 +23,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -49,6 +50,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEMicrowaveGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.Reference;
 import tectech.loader.MainLoader;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
@@ -56,13 +59,17 @@ import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
+public class MTEMicrowave extends TTMultiblockBase
+    implements ISurvivalConstructable, ICasingTextureProvider, IParametrized {
 
     private static final int CASING_INDEX = 49;
     // region variables
@@ -91,6 +98,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     // endregion
 
     // region parameters
+    // TODO remove after 2.9
     protected Parameters.Group.ParameterIn powerSetting, timerSetting;
     protected Parameters.Group.ParameterOut timerValue, remainingTime;
     private static final INameFunction<MTEMicrowave> POWER_SETTING_NAME = (base,
@@ -112,7 +120,14 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         if (value > 3000) return LedStatus.STATUS_TOO_HIGH;
         return LedStatus.STATUS_OK;
     };
+
+    private IntegerParameter powerParameter, timerParameter;
+    public static final String POWER_PARAMETER = "power";
+    public static final String TIMER_PARAMETER = "timer";
+
     // endregion
+
+    private int timerProgress;
 
     public MTEMicrowave(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -120,6 +135,14 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
 
     public MTEMicrowave(String aName) {
         super(aName);
+    }
+
+    public int getTimerProgress() {
+        return timerProgress;
+    }
+
+    public void setTimerProgress(int timerProgress) {
+        this.timerProgress = timerProgress;
     }
 
     @Override
@@ -140,14 +163,8 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     @NotNull
     public CheckRecipeResult checkProcessing_EM() {
         hasBeenPausedThisCycle = false;
-        if ((int) powerSetting.get() < 300 || timerSetting.get() <= 0 || timerSetting.get() > 3000) {
-            return SimpleCheckRecipeResult.ofFailure("invalid_timer");
-        }
-        if (remainingTime.get() <= 0) {
-            remainingTime.set(timerSetting.get());
-            timerValue.set(0);
-        }
-        mEUt = -((int) powerSetting.get() >> 1);
+        if (isTimerDone()) resetTimer();
+        mEUt = -(powerParameter.getValue() >> 1);
         eAmpereFlow = 1;
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
@@ -159,8 +176,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         if (hasBeenPausedThisCycle) {
             return; // skip timer and actions if paused
         }
-        timerValue.set(timerValue.get() + 1);
-        remainingTime.set(timerSetting.get() - timerValue.get());
+        timerProgress++;
         IGregTechTileEntity mte = getBaseMetaTileEntity();
         Vec3Impl xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -1, 2));
         double xPos = mte.getXCoord() + 0.5f + xyzOffsets.get0();
@@ -170,7 +186,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         xyzOffsets = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -4, 0));
         Vec3Impl xyzExpansion = getExtendedFacing().getWorldOffset(new Vec3Impl(1, 0, 1))
             .abs();
-        int power = (int) powerSetting.get();
+        int power = powerParameter.getValue();
         int damagingFactor = Math.min(power >> 6, 8) + Math.min(power >> 8, 24)
             + Math.min(power >> 12, 48)
             + (power >> 18);
@@ -216,7 +232,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
 
         mOutputItems = itemsToOutput.toArray(new ItemStack[0]);
 
-        if (remainingTime.get() <= 0) {
+        if (isTimerDone()) {
             mte.getWorld()
                 .playSoundEffect(xPos, yPos, zPos, Reference.MODID + ":microwave_ding", 1, 1);
             stopMachine(ShutDownReasonRegistry.NONE);
@@ -274,8 +290,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
-        remainingTime.set(timerSetting.get());
-        timerValue.set(0);
+        resetTimer();
     }
 
     @Override
@@ -315,5 +330,54 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    private void resetTimer() {
+        timerProgress = 0;
+    }
+
+    private boolean isTimerDone() {
+        return timerProgress >= timerParameter.getValue();
+    }
+
+    @Override
+    public void initParameters() {
+        powerParameter = new IntegerParameter(
+            1000,
+            "gt.blockmachines.multimachine.tm.microwave.cfgi.0",
+            POWER_PARAMETER,
+            () -> 300,
+            () -> 1000);
+
+        timerParameter = new IntegerParameter(
+            360,
+            "gt.blockmachines.multimachine.tm.microwave.cfgi.1",
+            TIMER_PARAMETER,
+            () -> 1,
+            () -> 3000);
+
+        resetTimer();
+    }
+
+    @Override
+    public void loadLegacyParameters(NBTTagCompound nbt) {
+        NBTTagCompound oldParams = nbt.getCompoundTag("eParamsInD");
+        powerParameter.setValue(oldParams.getInteger(String.valueOf(0)));
+        timerParameter.setValue(oldParams.getInteger(String.valueOf(10)));
+    }
+
+    @Override
+    public List<Parameter<?, ?>> getParameters() {
+        return List.of(powerParameter, timerParameter);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMicrowaveGui(this);
     }
 }
