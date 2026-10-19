@@ -94,7 +94,12 @@ public class MarkdownTooltipLoader {
         addCommand("lang", new LangMarkdownCommand(false));
         addCommand("lang-eval", new LangMarkdownCommand(true));
 
-        addCommand("fluid-unit", new FluidUnitCommand());
+        FluidUnitCommand fluidUnitCommand = new FluidUnitCommand();
+        addCommand("fluid-unit", fluidUnitCommand);
+        addCommand("l", fluidUnitCommand);
+        addCommand("L", fluidUnitCommand);
+        addCommand("mb", fluidUnitCommand);
+        addCommand("mB", fluidUnitCommand);
     }
 
     public void addCommand(String name, MarkdownCommand command) {
