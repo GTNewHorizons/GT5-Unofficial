@@ -98,7 +98,7 @@ public class MarkdownTooltipLoader {
         addAliases(new FluidUnitCommand(), "fluid-unit", "l", "L", "mb", "mB");
         addAliases(new SimpleUnitCommand("EU"), "energy-unit", "eu", "EU");
         addAliases(
-            new SimpleUnitCommand("EU/T"),
+            new SimpleUnitCommand("EU/t"),
             "energy-usage-unit",
             "eut",
             "EUt",
