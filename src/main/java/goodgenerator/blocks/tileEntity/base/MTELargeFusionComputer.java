@@ -76,15 +76,12 @@ import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
-import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
-import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 
 public abstract class MTELargeFusionComputer extends TTMultiblockBase
-    implements ISurvivalConstructable, IOverclockDescriptionProvider, IParametrized {
+    implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
+    // TODO remove after 2.9
     public Parameters.Group.ParameterIn batchSetting;
-    private IntegerParameter batchParameter;
 
     /** Name of the batch setting */
     public static final INameFunction<MTELargeFusionComputer> BATCH_SETTING_NAME = (base,
@@ -608,17 +605,10 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
-    // TODO remove after 2.9
     @Override
     protected void parametersInstantiation_EM() {
         batchSetting = parametrization.getGroup(9, false)
             .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
-    }
-
-    @Override
-    protected int getMaxBatchSize() {
-        // Batch size 1~128
-        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
     }
 
     @Override
@@ -735,23 +725,6 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         "           CHHHHHHHCC     CCHHHHHHHC           ", "            CCHHHHHHHHHHHHHHHHHHHCC            ",
         "              CCHHHHHHHHHHHHHHHCC              ", "                CCCHHHHHHHHHCCC                ",
         "                   CC     CC                   ", "                    FCIBICF                    ", };
-
-    @Override
-    public void initParameters() {
-        batchParameter = new IntegerParameter(1, "batch_mode.cfgi.0", "batch", () -> 1, () -> 128);
-    }
-
-    @Override
-    public void loadLegacyParameters(NBTTagCompound nbt) {
-        batchParameter.setValue(
-            nbt.getCompoundTag("eParamsInD")
-                .getInteger("19"));
-    }
-
-    @Override
-    public List<Parameter<?, ?>> getParameters() {
-        return List.of(batchParameter);
-    }
 
     @Override
     protected boolean useMui2() {
