@@ -1,5 +1,7 @@
 package gregtech.loaders.postload;
 
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+
 import gregtech.loaders.postload.chains.BauxiteRefineChain;
 import gregtech.loaders.postload.chains.NaniteChain;
 import gregtech.loaders.postload.chains.PCBFactoryRecipes;
@@ -60,8 +62,6 @@ import gregtech.loaders.postload.recipes.VacuumFreezerRecipes;
 import gregtech.loaders.postload.recipes.WiremillRecipes;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterRecipes;
 import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderRecipes;
-
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 public class MachineRecipeLoader implements Runnable {
 
@@ -129,7 +129,7 @@ public class MachineRecipeLoader implements Runnable {
         NaniteChain.run();
         PCBFactoryRecipes.load();
         PurifiedWaterRecipes.run();
-        if(!NewHorizonsCoreMod.isModLoaded()) {
+        if (!NewHorizonsCoreMod.isModLoaded()) {
             new DevEnvNanochipRecipes().run();
         }
     }

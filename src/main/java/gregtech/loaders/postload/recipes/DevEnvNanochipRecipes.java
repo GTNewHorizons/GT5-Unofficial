@@ -1,5 +1,14 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.recipe.RecipeMaps.nanochipPartProcessorRecipes;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+
+import java.util.Arrays;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -12,27 +21,11 @@ import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static gregtech.api.recipe.RecipeMaps.nanochipBoardProcessorRecipes;
-import static gregtech.api.recipe.RecipeMaps.nanochipEncasementWrapper;
-import static gregtech.api.recipe.RecipeMaps.nanochipEtchingArray;
-import static gregtech.api.recipe.RecipeMaps.nanochipOpticalOrganizer;
-import static gregtech.api.recipe.RecipeMaps.nanochipPartProcessorRecipes;
-import static gregtech.api.recipe.RecipeMaps.nanochipWireTracer;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 /**
  * Class to allow for NAC testing in dev-env without hassle
  */
-public class DevEnvNanochipRecipes implements Runnable{
-
+public class DevEnvNanochipRecipes implements Runnable {
 
     // Overload that allows for the output to be more than one item
     private static void addAssemblyMatrixRecipe(List<Object> input, List<FluidStack> fluidInputs,
@@ -45,23 +38,33 @@ public class DevEnvNanochipRecipes implements Runnable{
         for (int i = 0; i < input.size(); i++) {
             Object inputThing = input.get(i);
             if (inputThing instanceof CircuitComponent.CircuitComponentStack ccStack) {
-                inputs[i] = ccStack.getCircuitComponent().getFakeStack(ccStack.getSize());
+                inputs[i] = ccStack.getCircuitComponent()
+                    .getFakeStack(ccStack.getSize());
             } else if (inputThing instanceof Object[]alts) {
-                inputs[i] = Arrays.stream(alts).map(c -> {
-                    if (c instanceof CircuitComponent.CircuitComponentStack ccStack) {
-                        return ccStack.getCircuitComponent().getFakeStack(ccStack.getSize());
-                    } else if (c instanceof ItemStack stack) {
-                        return stack;
-                    }
-                    throw new IllegalArgumentException("Must pass a CircuitComponentStack or ItemStack array!");
-                }).toArray(ItemStack[]::new);
+                inputs[i] = Arrays.stream(alts)
+                    .map(c -> {
+                        if (c instanceof CircuitComponent.CircuitComponentStack ccStack) {
+                            return ccStack.getCircuitComponent()
+                                .getFakeStack(ccStack.getSize());
+                        } else if (c instanceof ItemStack stack) {
+                            return stack;
+                        }
+                        throw new IllegalArgumentException("Must pass a CircuitComponentStack or ItemStack array!");
+                    })
+                    .toArray(ItemStack[]::new);
             }
         }
 
-        GTValues.RA.stdBuilder().metadata(NanochipAssemblyMatrixTierKey.INSTANCE, recipeTier)
+        GTValues.RA.stdBuilder()
+            .metadata(NanochipAssemblyMatrixTierKey.INSTANCE, recipeTier)
             .metadata(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, output.getCircuitComponent().circuitType)
-            .itemInputs(inputs).fluidInputs(fluidInputs.toArray(new FluidStack[0]))
-            .itemOutputs(output.getCircuitComponent().getFakeStack(output.getSize())).duration(duration).eut(eut)
+            .itemInputs(inputs)
+            .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
+            .itemOutputs(
+                output.getCircuitComponent()
+                    .getFakeStack(output.getSize()))
+            .duration(duration)
+            .eut(eut)
             .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
     }
 
@@ -78,38 +81,57 @@ public class DevEnvNanochipRecipes implements Runnable{
         for (int i = 0; i < input.size(); i++) {
             Object inputThing = input.get(i);
             if (inputThing instanceof CircuitComponent.CircuitComponentStack ccStack) {
-                inputs[i] = ccStack.getCircuitComponent().getFakeStack(ccStack.getSize());
+                inputs[i] = ccStack.getCircuitComponent()
+                    .getFakeStack(ccStack.getSize());
             } else if (inputThing instanceof Object[]alts) {
-                inputs[i] = Arrays.stream(alts).map(c -> {
-                    if (c instanceof CircuitComponent.CircuitComponentStack ccStack) {
-                        return ccStack.getCircuitComponent().getFakeStack(ccStack.getSize());
-                    } else if (c instanceof ItemStack stack) {
-                        return stack;
-                    }
-                    throw new IllegalArgumentException("Must pass a CircuitComponentStack or ItemStack array!");
-                }).toArray(ItemStack[]::new);
+                inputs[i] = Arrays.stream(alts)
+                    .map(c -> {
+                        if (c instanceof CircuitComponent.CircuitComponentStack ccStack) {
+                            return ccStack.getCircuitComponent()
+                                .getFakeStack(ccStack.getSize());
+                        } else if (c instanceof ItemStack stack) {
+                            return stack;
+                        }
+                        throw new IllegalArgumentException("Must pass a CircuitComponentStack or ItemStack array!");
+                    })
+                    .toArray(ItemStack[]::new);
             }
         }
 
-        GTValues.RA.stdBuilder().metadata(NanochipAssemblyMatrixTierKey.INSTANCE, recipeTier)
-            .metadata(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, output.circuitType).itemInputs(inputs)
-            .fluidInputs(fluidInputs.toArray(new FluidStack[0])).itemOutputs(output.getFakeStack(1))
-            .duration(duration).eut(eut).addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
+        GTValues.RA.stdBuilder()
+            .metadata(NanochipAssemblyMatrixTierKey.INSTANCE, recipeTier)
+            .metadata(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, output.circuitType)
+            .itemInputs(inputs)
+            .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
+            .itemOutputs(output.getFakeStack(1))
+            .duration(duration)
+            .eut(eut)
+            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
     }
 
     // Adds a simple processing recipe for circuit components in a module
     private static void addSimpleProcessingRecipe(CircuitComponent input, CircuitComponent output, long eut,
         int duration, RecipeMap<?> recipeMap) {
-        GTValues.RA.stdBuilder().itemInputs(input.getFakeStack(1)).itemOutputs(output.getFakeStack(1))
-            .duration(duration).eut(eut).addTo(recipeMap);
+        GTValues.RA.stdBuilder()
+            .itemInputs(input.getFakeStack(1))
+            .itemOutputs(output.getFakeStack(1))
+            .duration(duration)
+            .eut(eut)
+            .addTo(recipeMap);
     }
 
     // Adds a simple processing recipe with a fluid for circuit components in a module
     private static void addSimpleProcessingRecipe(CircuitComponent input, FluidStack inputStack,
         CircuitComponent output, long eut, long duration, RecipeMap<?> recipeMap) {
-        GTValues.RA.stdBuilder().itemInputs(input.getFakeStack(1)).fluidInputs(inputStack)
-            .itemOutputs(output.getFakeStack(1)).duration(duration).eut(eut).addTo(recipeMap);
+        GTValues.RA.stdBuilder()
+            .itemInputs(input.getFakeStack(1))
+            .fluidInputs(inputStack)
+            .itemOutputs(output.getFakeStack(1))
+            .duration(duration)
+            .eut(eut)
+            .addTo(recipeMap);
     }
+
     @Override
     public void run() {
 
@@ -117,16 +139,23 @@ public class DevEnvNanochipRecipes implements Runnable{
             if (cc.isProcessed) continue;
             if (cc.realComponent == null) throw new IllegalStateException("CC must define its representative item!");
 
-            GTValues.RA.stdBuilder().itemInputs(cc.realComponent.get()).itemOutputs(cc.getFakeStack(1))
-                .duration(5 * SECONDS).eut(0).addTo(RecipeMaps.nanochipConversionRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(cc.realComponent.get())
+                .itemOutputs(cc.getFakeStack(1))
+                .duration(5 * SECONDS)
+                .eut(0)
+                .addTo(RecipeMaps.nanochipConversionRecipes);
 
-            GTValues.RA.stdBuilder().itemInputs(cc.getFakeStack(1)).itemOutputs(cc.realComponent.get())
-                .duration(5 * SECONDS).eut(0).addTo(RecipeMaps.nanochipConversionRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(cc.getFakeStack(1))
+                .itemOutputs(cc.realComponent.get())
+                .duration(5 * SECONDS)
+                .eut(0)
+                .addTo(RecipeMaps.nanochipConversionRecipes);
         }
 
         addAssemblyMatrixRecipe(
-            Arrays.asList(
-                new CircuitComponent.CircuitComponentStack(CircuitComponent.WireNiobiumTitanium, 1)),
+            Arrays.asList(new CircuitComponent.CircuitComponentStack(CircuitComponent.WireNiobiumTitanium, 1)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
             CircuitComponent.BiowareMainframe,
             20 * SECONDS,
@@ -159,17 +188,25 @@ public class DevEnvNanochipRecipes implements Runnable{
 
     private static void registerBoardProcessorRecipes() {
         // Elite Board
-        GTValues.RA.stdBuilder().hidden().metadata(BoardProcessingModuleFluidKey.INSTANCE, 1)
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 1)
             .itemInputs(CircuitComponent.BoardMultifiberglassElite.getFakeStack(1))
-            .itemOutputs(CircuitComponent.ProcessedBoardMultifiberglassElite.getFakeStack(1)).duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_UV).addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+            .itemOutputs(CircuitComponent.ProcessedBoardMultifiberglassElite.getFakeStack(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
 
         // Elite Board fake recipe
-        GTValues.RA.stdBuilder().fake().itemInputs(CircuitComponent.BoardMultifiberglassElite.getFakeStack(1))
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardMultifiberglassElite.getFakeStack(1))
             .fluidInputs(Materials.IronIIIChloride.getFluid(0))
             .fluidOutputs(GGMaterial.ferrousChloride.getFluidOrGas(0))
-            .itemOutputs(CircuitComponent.ProcessedBoardMultifiberglassElite.getFakeStack(1)).duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_UV).addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+            .itemOutputs(CircuitComponent.ProcessedBoardMultifiberglassElite.getFakeStack(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
 
     }
 
@@ -226,9 +263,12 @@ public class DevEnvNanochipRecipes implements Runnable{
         }
 
         // Crystal
-        GTValues.RA.stdBuilder().itemInputs(CircuitComponent.ProcessedFrameboxAluminium.getFakeStack(2))
-            .itemOutputs(CircuitComponent.ProcessedBasicMainframeCasing.getFakeStack(1)).duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_UEV).addTo(RecipeMaps.nanochipEncasementWrapper);
+        GTValues.RA.stdBuilder()
+            .itemInputs(CircuitComponent.ProcessedFrameboxAluminium.getFakeStack(2))
+            .itemOutputs(CircuitComponent.ProcessedBasicMainframeCasing.getFakeStack(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(RecipeMaps.nanochipEncasementWrapper);
 
     }
 
@@ -281,11 +321,11 @@ public class DevEnvNanochipRecipes implements Runnable{
         {
             // Rhugnor Plate
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    CircuitComponent.PlateRhugnor.getFakeStack(1),
-                    CircuitComponent.BoltRhugnor.getFakeStack(4))
-                .itemOutputs(CircuitComponent.ProcessedPlateRhugnor.getFakeStack(1)).eut(TierEU.RECIPE_ZPM)
-                .duration(1 * SECONDS).addTo(nanochipPartProcessorRecipes);
+                .itemInputs(CircuitComponent.PlateRhugnor.getFakeStack(1), CircuitComponent.BoltRhugnor.getFakeStack(4))
+                .itemOutputs(CircuitComponent.ProcessedPlateRhugnor.getFakeStack(1))
+                .eut(TierEU.RECIPE_ZPM)
+                .duration(1 * SECONDS)
+                .addTo(nanochipPartProcessorRecipes);
 
         }
 
