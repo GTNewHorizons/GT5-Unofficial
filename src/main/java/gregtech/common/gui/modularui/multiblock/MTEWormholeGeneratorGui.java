@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -73,8 +75,9 @@ public class MTEWormholeGeneratorGui extends MTEMultiBlockBaseGui<MTEWormholeGen
             // LV power = 1 angstrom in diameter
             double radius = Math.sqrt(link.mWormholeEnergy / 20.0 / 32.0);
 
-            return StatCollector
-                .translateToLocalFormatted("GT5U.gui.text.wormhole_generator.diameter", (long) (radius * 2));
+            return StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.wormhole_generator.diameter",
+                formatNumber((long) (radius * 2)));
         })
             .asWidget()
             .setEnabledIf(_ -> {
@@ -88,14 +91,11 @@ public class MTEWormholeGeneratorGui extends MTEMultiBlockBaseGui<MTEWormholeGen
             if (link == null) {
                 return "";
             }
-            if (link.mWormholeEnergy >= 1e10) return StatCollector
-                .translateToLocalFormatted("GT5U.gui.text.wormhole_generator.max_io.large", link.mWormholeEnergy / 20)
-                .replace("\\n", "\n");
 
             return StatCollector
                 .translateToLocalFormatted(
                     "GT5U.gui.text.wormhole_generator.max_io",
-                    (long) (link.mWormholeEnergy / 20))
+                    formatNumber((long) (link.mWormholeEnergy / 20)))
                 .replace("\\n", "\n");
         })
             .asWidget());

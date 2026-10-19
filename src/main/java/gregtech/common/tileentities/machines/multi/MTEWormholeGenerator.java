@@ -1128,7 +1128,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     formatNumber(avgSend),
                     formatNumber(avgSend / 20 / V[inputHatch.mTier]),
                     formatNumber(avgSend > 0 ? avgReceiveOpposite / (double) avgSend * 100 : 0),
-                    SCAN_AVG_WINDOW
+                    formatNumber(SCAN_AVG_WINDOW)
                 ));
             } else if(outputHatch != null) {
                 data.add(IGregTechDeviceInformation.encode(
@@ -1139,7 +1139,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     formatNumber(avgReceive),
                     formatNumber(avgReceive / 20 / V[outputHatch.mTier]),
                     formatNumber(avgSendOpposite > 0 ? avgReceive / (double) avgSendOpposite * 100 : 0),
-                    SCAN_AVG_WINDOW
+                    formatNumber(SCAN_AVG_WINDOW)
                 ));
             } else {
                 data.add(IGregTechDeviceInformation.encode("GT5U.infodata.wormhole_generator.not_present", getLocalizedHatchName(i)));
