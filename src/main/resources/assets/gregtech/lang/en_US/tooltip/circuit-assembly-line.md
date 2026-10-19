@@ -5,7 +5,7 @@
 {hr}
 {color_mode:Circuit Assembler}:
 - Minimum Length: {color_amount:{var:min_length}}
-- Recipe Tier in {color_name:Circuit Assembler} mode is at most {aqua:Energy Hatch Tier - 1}
+- Recipe Tier in {color_name:Circuit Assembler} mode is at most {aqua:(Energy Hatch Tier - 1)}
 - Supports {color_name:Crafting Input Buffer/Bus} and allows input separation
 {hr}
 Right-click the controller with a {color_name:Screwdriver} to change mode
