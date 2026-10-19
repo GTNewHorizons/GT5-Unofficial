@@ -3,6 +3,6 @@ Can accept {color_amperage:{var:lv_amperage}A} from an {var:voltageTier_LV} ener
 Will overclock and gain efficiency faster starting from {var:voltageTier_HV}
 {hr}
 {color_danger:Warning:}
-Below {color_amount:100%} efficiency, machines inside have a chance to void outputs!
-Each maintenance issue reduces maximum efficiency by {color_amount:{var:maint_penalty}%}
+Below {color_loss:100%} efficiency, machines inside have a chance to void outputs!
+Each maintenance issue reduces maximum efficiency by {color_loss:{var:maint_penalty}%}
 {color_note:Generating any pollution inside causes the cleanroom to shut down}
