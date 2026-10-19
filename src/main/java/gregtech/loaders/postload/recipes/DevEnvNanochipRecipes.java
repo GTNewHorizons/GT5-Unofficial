@@ -4,12 +4,14 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
 import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -24,6 +26,7 @@ import static gregtech.api.recipe.RecipeMaps.nanochipPartProcessorRecipes;
 import static gregtech.api.recipe.RecipeMaps.nanochipWireTracer;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 /**
  * Class to allow for NAC testing in dev-env without hassle
@@ -121,6 +124,14 @@ public class DevEnvNanochipRecipes implements Runnable{
                 .duration(5 * SECONDS).eut(0).addTo(RecipeMaps.nanochipConversionRecipes);
         }
 
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponent.CircuitComponentStack(CircuitComponent.WireNiobiumTitanium, 1)),
+            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
+            CircuitComponent.BiowareMainframe,
+            20 * SECONDS,
+            TierEU.RECIPE_UXV,
+            VoltageIndex.UV);
 
         registerBiologicalCoordinatorRecipes();
         registerBoardProcessorRecipes();
