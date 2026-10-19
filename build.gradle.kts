@@ -3,7 +3,6 @@ import java.util.regex.Pattern
 
 plugins {
     id("com.gtnewhorizons.gtnhconvention")
-    kotlin("jvm")
 }
 
 // workaround an OOM on GH actions during the checkStyleMain task
@@ -100,13 +99,4 @@ tasks.named<RunMinecraftTask>("runServer25").configure {
     }) {
         jvmArgs("-D$recipeLookupValidationProperty=true")
     }
-}
-dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-}
-repositories {
-    mavenCentral()
-}
-kotlin {
-    jvmToolchain(25)
 }
