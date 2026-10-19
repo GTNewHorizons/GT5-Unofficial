@@ -2,9 +2,9 @@
 {color_speed:{var:speed}%} Speed
 {color_efficiency:{var:eu_eff}%} {EU} Usage
 {hr}
-Recipes and overclocks limited to {color_amount:Laser Source Tier + 1}
+Recipes and overclocks limited to {color_amount:(Laser Source Tier + 1)}
 A {var:tier}+ Laser Source allows for a single {color_hatch:Multi-Amp Energy Hatch}
 {hr}
-{color_name:Glass} tier determines maximum Laser Source tier
+{color_name:Glass} tier determines maximum Laser Source Tier
 Use {color_name:Wire Cutters} on the controller to straighten the laser
 Use a {color_name:Screwdriver} on the controller disable animations
