@@ -14,5 +14,5 @@ Unit cools by {color_heat:2%} base every second while not running
 Cooling rate increases by an additional {color_heat:2%} for each second since running
 {hr}
 {color_speed:350%} speed of singleblock machines of the same voltage ({color_danger:40%} when overheated)
-Uses {color_eu_usage:75%} of the EU/t normally required ({color_danger:110%} when overheated)
+Uses {color_eu_usage:75%} of the {EU/t} normally required ({color_danger:110%} when overheated)
 {color_parallel:4} parallels per Voltage Tier ({color_danger:1} when overheated)

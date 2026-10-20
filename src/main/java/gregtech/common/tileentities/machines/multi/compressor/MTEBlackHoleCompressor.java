@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -47,7 +46,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -369,7 +367,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.black_hole_compressor"))
-            .addMarkdown(new ResourceLocation("gregtech", "black-hole-compressor"), ImmutableMap.of("unit", getFluidUnit()))
+            .addMarkdown(new ResourceLocation("gregtech", "black-hole-compressor"))
             .addSupportAny()
             .beginStructureBlock(33, 35, 35, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_of_structure_6th_layer"))
