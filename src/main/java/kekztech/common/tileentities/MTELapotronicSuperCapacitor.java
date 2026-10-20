@@ -407,7 +407,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             "maxPassiveDrain",
             formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
             "tierColorName",
-            GTValues.TIER_COLORS[9] + GTValues.VN[9],
+            GTUtility.getColoredTierNameForTooltip(VoltageIndex.UHV),
             "rebalanceTicks",
             formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks),
             "wirelessEuCap",
