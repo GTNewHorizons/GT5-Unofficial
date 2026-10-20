@@ -1,23 +1,23 @@
 The ideal home for your bees
-{gold:Input Mode}:
-- Does not take power, put queens in the {green:Input Bus} to store them in the internal buffer
-{gray:{hr}}
-{gold:Output Mode}:
-- Does not take power, returns bees to the {green:Output Bus}
-- {yellow:Careful, you can easily void your bees}
-{gray:{hr}}
-{gold:Operating Mode}:
-- {light_purple:Normal}:
-  - {green:{var:normal_seconds}s} per operation, {green:{var:bee_acceleration}x} bee speed
-  - Uses {green:1} {var:voltageTier_LuV} amp per queen
-  - {green:8} production upgrades and {white:Genetic Stabilizer} applied
+{color_mode:Input Mode}:
+- Does not take power, put queens in the {color_name:Input Bus} to store them in the internal buffer
+{hr}
+{color_mode:Output Mode}:
+- Does not take power, returns bees to the {color_name:Output Bus}
+- {color_note:Careful, you can easily void your bees}
+{hr}
+{color_mode:Operating Mode}:
+- {color_mechanic:Normal}:
+  - {color_time:{var:normal_seconds}s} per operation, {color_amount:{var:bee_acceleration}x} bee speed
+  - Uses {color_amperage:1} {var:normalTier} amp per queen
+  - {color_amount:8} production upgrades and {color_name:Genetic Stabilizer} applied
   - Simulates a perfect environment
-  - {gold:Royal Jelly} grants {green:{var:jelly_bonus}%} output per jelly, up to {green:{var:max_jelly_bonus}%} (consumed each operation per bee)
-- {light_purple:Swarmer}:
-  - {green:1} queen only, slowly produces {white:Ignoble Princesses}
-  - {green:{var:swarmer_jelly_cost}} {gold:Royal Jelly} per operation
-  - {green:{var:swarmer_seconds}s} base time, 1 {var:voltageTier_IV} amp
-  - {light_purple:Can overclock}
-{gray:{hr}}
-Right-click the controller with a {white:Screwdriver} to change mode (Input/Output/Operating)
-Shift-right-click the controller with a {white:Screwdriver} to change operation mode (Normal/Swarmer)
+  - {color_key:Royal Jelly} grants {color_amount:{var:jelly_bonus}%} output per jelly, up to {color_amount:{var:max_jelly_bonus}%} (consumed each operation per bee)
+- {color_mechanic:Swarmer}:
+  - {color_amount:1} queen only, slowly produces {color_name:Ignoble Princesses}
+  - {color_amount:{var:swarmer_jelly_cost}} {color_key:Royal Jelly} per operation
+  - {color_time:{var:swarmer_seconds}s} base time, {color_amperage:1} {var:voltageTier_IV} amp
+  - {color_mechanic:Can overclock}
+{hr}
+Right-click the controller with a {color_name:Screwdriver} to change {color_mode:mode} (Input/Output/Operating)
+Shift-right-click the controller with a {color_name:Screwdriver} to change {color_mechanic:operation mode} (Normal/Swarmer)
