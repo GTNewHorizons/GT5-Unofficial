@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -272,7 +271,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_flocculation"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-flocculation"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("input", INPUT_CHEMICAL.getLocalizedName()).put("waste", OUTPUT_WASTE.getLocalizedName()).put("per_level", formatNumber(INPUT_CHEMICAL_PER_LEVEL)).put("unit", getFluidUnit()).put("success", formatNumber(SUCCESS_PER_LEVEL)).build())
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-flocculation"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("input", INPUT_CHEMICAL.getLocalizedName()).put("waste", OUTPUT_WASTE.getLocalizedName()).put("per_level", formatNumber(INPUT_CHEMICAL_PER_LEVEL)).put("success", formatNumber(SUCCESS_PER_LEVEL)).build())
             .beginStructureBlock(9, 5, 8, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing(MIN_CASING + "-63", Casings.SlickSterileFlocculationCasing.getLocalizedName(), false)

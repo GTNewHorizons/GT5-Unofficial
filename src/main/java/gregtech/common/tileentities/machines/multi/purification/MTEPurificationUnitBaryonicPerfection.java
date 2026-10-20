@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -261,7 +260,7 @@ public class MTEPurificationUnitBaryonicPerfection
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_baryonic_perfection"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-baryonic-perfection"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("unit", getFluidUnit()).put("catalyst_cost", formatNumber(CATALYST_BASE_COST)).put("infinity", Materials.Infinity.getMolten(1).getLocalizedName()).put("output", formatNumber(BARYONIC_MATTER_OUTPUT)).put("extra_output", formatNumber(PurifiedWaterRecipes.extraBaryonicOutput)).put("baryonic", Materials.StableBaryonicMatter.getFluid(1).getLocalizedName()).build())
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-baryonic-perfection"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("catalyst_cost", formatNumber(CATALYST_BASE_COST)).put("infinity", Materials.Infinity.getMolten(1).getLocalizedName()).put("output", formatNumber(BARYONIC_MATTER_OUTPUT)).put("extra_output", formatNumber(PurifiedWaterRecipes.extraBaryonicOutput)).put("baryonic", Materials.StableBaryonicMatter.getFluid(1).getLocalizedName()).build())
             .beginStructureBlock(17, 17, 17, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
             .addCasing(MIN_CASINGS + "-339", Casings.QuarkExclusionCasing.getLocalizedName(), false)

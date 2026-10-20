@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -318,7 +317,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_ph_adjustment"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-ph-adjustment"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("ph_min", formatNumber(PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION)).put("ph_max", formatNumber(PH_NEUTRAL_VALUE + INITIAL_PH_DEVIATION)).put("ph_deviation", formatNumber(PH_MAX_DEVIATION)).put("ph_neutral", formatNumber(PH_NEUTRAL_VALUE)).put("sensor", StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch")).put("interval", CONSUME_INTERVAL).put("alkaline", ALKALINE_MATERIAL.getLocalizedName()).put("acid", ACIDIC_MATERIAL.getLocalizedName()).put("dust", ALKALINE_MATERIAL.getDust(1).getDisplayName()).put("ph_per_dust", formatNumber(PH_PER_ALKALINE_DUST)).put("ph_per_acid", formatNumber(-PH_PER_10_ACID_LITER)).put("unit", getFluidUnit()).build())
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-ph-adjustment"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("ph_min", formatNumber(PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION)).put("ph_max", formatNumber(PH_NEUTRAL_VALUE + INITIAL_PH_DEVIATION)).put("ph_deviation", formatNumber(PH_MAX_DEVIATION)).put("ph_neutral", formatNumber(PH_NEUTRAL_VALUE)).put("sensor", StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch")).put("interval", CONSUME_INTERVAL).put("alkaline", ALKALINE_MATERIAL.getLocalizedName()).put("acid", ACIDIC_MATERIAL.getLocalizedName()).put("dust", ALKALINE_MATERIAL.getDust(1).getDisplayName()).put("ph_per_dust", formatNumber(PH_PER_ALKALINE_DUST)).put("ph_per_acid", formatNumber(-PH_PER_10_ACID_LITER)).build())
             .beginStructureBlock(15, 6, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("134", Casings.InertNeutralizationWaterPlantCasing.getLocalizedName(), false)

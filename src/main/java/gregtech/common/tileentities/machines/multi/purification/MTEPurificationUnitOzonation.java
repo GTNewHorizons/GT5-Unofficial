@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -174,7 +173,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_ozonation"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-ozonation"), ImmutableMap.of("tier", formatNumber(getWaterTier()), "max_ozone", formatNumber(MAX_OZONE_GAS_FOR_EXPLOSION), "unit", getFluidUnit(), "ozone", Materials.Ozone.getGas(1).getLocalizedName()))
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-ozonation"), ImmutableMap.of("tier", formatNumber(getWaterTier()), "max_ozone", formatNumber(MAX_OZONE_GAS_FOR_EXPLOSION), "ozone", Materials.Ozone.getGas(1).getLocalizedName()))
             .beginStructureBlock(9, 10, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing(MIN_CASING + "-99", Casings.InertFiltrationCasing.getLocalizedName(), false)

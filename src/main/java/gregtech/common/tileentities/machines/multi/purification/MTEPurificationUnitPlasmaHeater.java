@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -261,7 +260,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_plasma_heater"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-plasma-heater"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("heating_point", formatNumber(HEATING_POINT)).put("success", formatNumber(SUCCESS_PER_CYCLE)).put("max_temp", formatNumber(MAX_TEMP)).put("max_plasma", formatNumber(MAX_PLASMA_PER_SEC)).put("max_coolant", formatNumber(MAX_COOLANT_PER_SEC)).put("unit", getFluidUnit()).put("plasma", plasmaMaterial.getPlasma(1).getLocalizedName()).put("coolant", coolantMaterial.getFluid(1).getLocalizedName()).put("plasma_temp", formatNumber(PLASMA_TEMP_PER_LITER)).put("coolant_temp", formatNumber(-COOLANT_TEMP_PER_LITER)).build())
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-plasma-heater"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("heating_point", formatNumber(HEATING_POINT)).put("success", formatNumber(SUCCESS_PER_CYCLE)).put("max_temp", formatNumber(MAX_TEMP)).put("max_plasma", formatNumber(MAX_PLASMA_PER_SEC)).put("max_coolant", formatNumber(MAX_COOLANT_PER_SEC)).put("plasma", plasmaMaterial.getPlasma(1).getLocalizedName()).put("coolant", coolantMaterial.getFluid(1).getLocalizedName()).put("plasma_temp", formatNumber(PLASMA_TEMP_PER_LITER)).put("coolant_temp", formatNumber(-COOLANT_TEMP_PER_LITER)).build())
             .beginStructureBlock(23, 15, 15, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("672", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)

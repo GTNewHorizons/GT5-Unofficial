@@ -1,34 +1,34 @@
 {aqua:{bold:Тир воды: }}{color_tier:{var:tier}}
 Для работы привяжите установку к очистной станции предметом {color_name:{item:gregtech:gt.metaitem.01:32708}}
-{gray:{hr}}
+{hr}
 В начале операции {color_name:{var:control_hatch}} выдаст сигнал красного камня
 Для успешного рецепта нужно ПРАВИЛЬНО расшифровать инструкции в сигнале
 Чтобы расшифровать сигнал, считайте его силу 4-битным числом от 0 до 15
 Младший бит обозначим как бит 1, старший как бит 4
-{gray:{hr}}
+{hr}
 {white:{bold:Бит 1: }}{color_misc:{bold:Барботаж инертным газом}}
 Если этот бит включён, в механизм нужно подать {color_name:инертный газ}
 Чтобы узнать, какой газ подать, считайте биты {color_misc:2-3} 2-битным числом
-0: {color_amount:{var:gas0_amount} {var:unit}} {color_name:{var:gas0}} / 1: {color_amount:{var:gas1_amount} {var:unit}} {color_name:{var:gas1}} / 2: {color_amount:{var:gas2_amount} {var:unit}} {color_name:{var:gas2}} / 3: {color_amount:{var:gas3_amount} {var:unit}} {color_name:{var:gas3}}
-{gray:{hr}}
+0: {color_amount:{var:gas0_amount} {L}} {color_name:{var:gas0}} / 1: {color_amount:{var:gas1_amount} {L}} {color_name:{var:gas1}} / 2: {color_amount:{var:gas2_amount} {L}} {color_name:{var:gas2}} / 3: {color_amount:{var:gas3_amount} {L}} {color_name:{var:gas3}}
+{hr}
 {white:{bold:Бит 2: }}{color_misc:{bold:Деионизация сверхпроводником}}
-Если этот бит включён, нужно подать {color_amount:{var:supercon_amount} {var:unit}} {color_name:расплавленной основы сверхпроводника}
+Если этот бит включён, нужно подать {color_amount:{var:supercon_amount} {L}} {color_name:расплавленной основы сверхпроводника}
 Сверхпроводник более высокого тира даёт бонус к выходу
 Множитель выхода: {dark_green:UV}: {white:1x} / {dark_red:UHV}: {white:1.25x} / {dark_purple:UEV}: {white:1.5x} / {dark_blue:{bold:UIV}}: {white:1.75x} / {red:{bold:UMV}}: {white:2x}
-{gray:{hr}}
+{hr}
 {white:{bold:Бит 3: }}{color_misc:{bold:Гравитационная дифференциальная вакуумная экстракция}}
-Если этот бит включён, нужно подать {color_amount:{var:catalyst_amount} {var:unit}} вещества {color_name:{var:catalyst}}
-{gray:{hr}}
+Если этот бит включён, нужно подать {color_amount:{var:catalyst_amount} {L}} вещества {color_name:{var:catalyst}}
+{hr}
 {white:{bold:Бит 4: }}{color_misc:{bold:Селдоновский процесс урегулирования}}
 Если этот бит включён, {color_note:ИГНОРИРУЙТЕ} все остальные биты и ничего не подавайте
-{gray:{hr}}
+{hr}
 {white:{bold:Нет битов: }}{color_misc:{bold:Перегрузка механизма}}
 В редких случаях механизм может перегрузиться и вообще не выдать управляющий сигнал
-Чтобы не повредить механизм, подайте {color_amount:{var:coolant_amount} {var:unit}} вещества {color_name:{var:coolant}}
-{gray:{hr}}
+Чтобы не повредить механизм, подайте {color_amount:{var:coolant_amount} {L}} вещества {color_name:{var:coolant}}
+{hr}
 Рецепт успешен, только если весь сигнал расшифрован правильно
 Подача любой жидкости, которую сигнал не запрашивал, всегда аннулирует рецепт
-{gray:{hr}}
+{hr}
 {aqua:{italic:Предпоследний, седьмой этап очистки воды: нерегулярная серия сложных}}
 {aqua:{italic:процессов, удаляющих остатки веществ, которые оставили обеззараживающие агенты предыдущих}}
 {aqua:{italic:этапов: заряженные ионы, кислоты, осветлители или газы. В зависимости от того, что дегазатор}}

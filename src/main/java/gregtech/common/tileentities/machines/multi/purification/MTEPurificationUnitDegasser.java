@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -286,7 +285,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         FluidStack[] gases = INERT_GASES.get();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_degasser"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-degasser"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("control_hatch", StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch")).put("unit", getFluidUnit()).put("gas0", gases[0].getLocalizedName()).put("gas0_amount", formatNumber(gases[0].amount)).put("gas1", gases[1].getLocalizedName()).put("gas1_amount", formatNumber(gases[1].amount)).put("gas2", gases[2].getLocalizedName()).put("gas2_amount", formatNumber(gases[2].amount)).put("gas3", gases[3].getLocalizedName()).put("gas3_amount", formatNumber(gases[3].amount)).put("supercon_amount", formatNumber(SUPERCON_FLUID_AMOUNT)).put("catalyst", CATALYST_FLUID.getLocalizedName()).put("catalyst_amount", formatNumber(CATALYST_FLUID.amount)).put("coolant", COOLANT_FLUID.getLocalizedName()).put("coolant_amount", formatNumber(COOLANT_FLUID.amount)).build())
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-degasser"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("control_hatch", StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch")).put("gas0", gases[0].getLocalizedName()).put("gas0_amount", formatNumber(gases[0].amount)).put("gas1", gases[1].getLocalizedName()).put("gas1_amount", formatNumber(gases[1].amount)).put("gas2", gases[2].getLocalizedName()).put("gas2_amount", formatNumber(gases[2].amount)).put("gas3", gases[3].getLocalizedName()).put("gas3_amount", formatNumber(gases[3].amount)).put("supercon_amount", formatNumber(SUPERCON_FLUID_AMOUNT)).put("catalyst", CATALYST_FLUID.getLocalizedName()).put("catalyst_amount", formatNumber(CATALYST_FLUID.amount)).put("coolant", COOLANT_FLUID.getLocalizedName()).put("coolant_amount", formatNumber(COOLANT_FLUID.amount)).build())
             .beginStructureBlock(17, 25, 17, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing(MIN_CASING + "-800", Casings.HeatResistantTriniumPlatedCasing.getLocalizedName(), false)
