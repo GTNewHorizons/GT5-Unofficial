@@ -1,5 +1,5 @@
 Requires insane amounts of power to create nanites
-The {white:Nanite} in the controller slot determines Machine Tier
-{yellow:Tier 4 has additional mechanics, check the controller}
-{gray:{hr}}
-{light_purple:Performs 4/4 Perfect Overclocks} on lower-tier recipes
+The {color_name:Nanite} in the controller slot determines Machine Tier
+{color_note:Tier 4 has additional mechanics, check the controller}
+{hr}
+{color_mechanic:Performs 4/4 Perfect Overclocks} on lower-tier recipes

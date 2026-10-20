@@ -27,7 +27,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import tectech.thing.gui.MTEBuckConverterGui;
-import tectech.util.CommonValues;
 
 public class MTEBuckConverter extends MTETieredMachineBlock {
 
@@ -44,7 +43,7 @@ public class MTEBuckConverter extends MTETieredMachineBlock {
             aNameRegional,
             aTier,
             0,
-            new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"),
+            new String[] { translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"), });
     }
 

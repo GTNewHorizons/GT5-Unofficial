@@ -35,7 +35,6 @@ import gregtech.common.gui.modularui.hatch.MTEHatchUncertaintyGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 15.12.2016.
@@ -232,7 +231,6 @@ public class MTEHatchUncertainty extends MTEHatch implements ISmartInputHatch {
     @Override
     public String[] getDescription() {
         List<String> description = new ArrayList<>();
-        description.add(CommonValues.TEC_MARK_EM);
         description.add(translateToLocal("gt.blockmachines.hatch.certain.desc.0"));
         description.add(
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
