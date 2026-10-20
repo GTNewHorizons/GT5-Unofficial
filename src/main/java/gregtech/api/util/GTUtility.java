@@ -4200,25 +4200,6 @@ public class GTUtility {
         }
     }
 
-    /**
-     * Formats a tick value into a localized string with using seconds or ticks, works with plurals too
-     *
-     * @param ticks The number of ticks
-     * @return A localized string
-     */
-    public static String formatTime(int ticks) {
-        if (ticks < 20) {
-            return translateToLocalFormatted(
-                ticks == 1 ? "GT5U.gui.text.tick" : "GT5U.gui.text.tick.plural",
-                formatNumber(ticks));
-        } else {
-            double seconds = ticks / 20.0;
-            return translateToLocalFormatted(
-                seconds == 1 ? "GT5U.gui.text.second" : "GT5U.gui.text.second.plural",
-                formatNumber(seconds));
-        }
-    }
-
     public static String truncateText(String text, int limit) {
         if (limit < 0) limit = 1;
         if (text == null) {

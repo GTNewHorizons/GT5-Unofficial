@@ -64,8 +64,6 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
     private static final int HYDRO_H2_SAVING_PERCENT = 20;
     private static final int HYDRO_OUTPUT_BONUS_PERCENT = 25;
     private static final int STEAM_OUTPUT_BONUS_PERCENT = 50;
-    private static final double EU_USAGE_BASE = 0.9;
-    private static final int MAX_DISCOUNT_PERCENT = 50;
 
     private static final byte CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -136,8 +134,6 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
             .addMarkdown(
                 new ResourceLocation("gregtech", "oil-cracker"),
                 ImmutableMap.<String, Object>builder()
-                    .put("eu_usage_base", EU_USAGE_BASE)
-                    .put("max_discount_pct", MAX_DISCOUNT_PERCENT)
                     .put("hydro_h2_saving", HYDRO_H2_SAVING_PERCENT)
                     .put("hydro_output_bonus", HYDRO_OUTPUT_BONUS_PERCENT)
                     .put("steam_output_bonus", STEAM_OUTPUT_BONUS_PERCENT)

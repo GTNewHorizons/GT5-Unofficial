@@ -271,8 +271,19 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        String cycleTimeDisplay = GTUtility.formatTime(baseCycleTime);
 
+        // work
+        String cycleTimeDisplay;
+        if (baseCycleTime < 20) {
+            cycleTimeDisplay = StatCollector.translateToLocalFormatted(
+                baseCycleTime == 1 ? "GT5U.gui.text.tick" : "GT5U.gui.text.tick.plural",
+                formatNumber(baseCycleTime));
+        } else {
+            double seconds = baseCycleTime / 20.0;
+            cycleTimeDisplay = StatCollector.translateToLocalFormatted(
+                seconds == 1 ? "GT5U.gui.text.second" : "GT5U.gui.text.second.plural",
+                formatNumber(seconds));
+        }
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Pump, FDR")
