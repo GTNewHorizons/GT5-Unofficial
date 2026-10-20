@@ -1644,4 +1644,27 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             "outputRecipeItems",
             tag);
     }
+
+    @Override
+    public void onBlockDestroyed() {
+        IGregTechTileEntity te = getBaseMetaTileEntity();
+        if (te != null && te.isServerSide()) {
+            if (!te.isActive()) {
+                GTUtility.dropItemsOrClusters(
+                    te.getWorld(),
+                    te.getXCoord(),
+                    te.getYCoord(),
+                    te.getZCoord(),
+                    this.mOutputQueue.stream()
+                        .toList());
+            } else {
+                if (usedQueen != null) {
+                    GTUtility.dropItem(te.getWorld(), te.getXCoord(), te.getYCoord(), te.getZCoord(), usedQueen);
+                }
+            }
+        }
+
+        this.mOutputQueue.clear();
+        super.onBlockDestroyed();
+    }
 }
