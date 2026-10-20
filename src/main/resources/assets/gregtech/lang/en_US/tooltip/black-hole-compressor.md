@@ -8,7 +8,7 @@ Stability decays by {color_amount:{var:decay}/s} until it reaches {var:unstable}
 At {color_amount:{var:unstable}} stability, the black hole is {color_danger:UNSTABLE}
 An unstable black hole voids recipes and closes itself after {color_time:{var:closing_minutes}} minutes!
 {hr}
-The decay can be {bold:halted} by inserting {color_amount:{var:spacetime_cost} {L}/s} of spacetime into the hatches behind the lasers
+The decay can be {bold:halted} by inserting {color_amount:{var:spacetime_cost} {L}/s} of {color_amount:spacetime} into the hatches behind the lasers
 Every {color_time:{var:doubling_seconds}} total seconds saved by spacetime insertion will {color_danger:double} the cost per second!
 Insert a {color_key:{lang:gt.item.black_hole.collapser.name}} to close the black hole
 To restore stability and reset spacetime costs, close the black hole and open a new one
