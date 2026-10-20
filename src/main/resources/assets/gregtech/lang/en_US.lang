@@ -4109,6 +4109,8 @@ GT5U.gui.circuit.timer.description=Pulses Redstone
 GT5U.gui.circuit.timer.data_description.pulses=Pulses
 GT5U.gui.circuit.timer.data_description.time=Time
 
+GT5U.gui.text.tick=%s tick
+GT5U.gui.text.tick.plural=%s ticks
 GT5U.gui.text.second=%s second
 GT5U.gui.text.second.plural=%s seconds
 GT5U.gui.text.minute=%s minute
@@ -4347,11 +4349,6 @@ GT5U.gui.text.toolbox.radial.title=Select Active Tool
 GT5U.gui.text.toolbox.radial.unselect=Deselect Tool
 
 GT5U.gui.text.toolbox.error.no_tools=§eToolbox has no tools! Right click to open and add tools.
-
-GT5U.gui.text.tick=%s tick
-GT5U.gui.text.tick.plural=%s ticks
-GT5U.gui.text.second=%s second
-GT5U.gui.text.second.plural=%s seconds
 
 GT5U.item.toolbox.tooltip.select_tool=%s: Select active tool
 GT5U.item.toolbox.tooltip.deselect_tool=%s (while sneaking): Deselect active tool
