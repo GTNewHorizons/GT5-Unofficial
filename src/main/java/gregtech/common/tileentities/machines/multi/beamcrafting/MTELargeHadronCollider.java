@@ -47,6 +47,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -92,6 +93,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static final float RATE_NERF_POWER = 0.5F;
     public static final float RATE_NERF_POWER_QGP = 0.7F;
     public static final float RATE_NERF_POWER_MAGMATTER = 0.9F;
+    public static final int POWER_TIER = VoltageIndex.UV;
     public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
     public static final float OVERALL_POWER_MULT_FACTOR = 1F; // reminder: update tooltip text if this is not set to 1
 
@@ -356,6 +358,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                     .put("nerf_power", formatNumber(RATE_NERF_POWER))
                     .put("nerf_power_qgp", formatNumber(RATE_NERF_POWER_QGP))
                     .put("nerf_power_magmatter", formatNumber(RATE_NERF_POWER_MAGMATTER))
+                    .put("tier", GTUtility.getColoredTierNameForTooltip(POWER_TIER))
                     .build())
             .addSeparator()
             .addSupportAny()
@@ -517,7 +520,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static long perCyclePowerCost(int rate, int cycleIndex) {
         // counter starts at 0, so +1
         // start at 1A UV power cost
-        return (long) (OVERALL_POWER_MULT_FACTOR * GTValues.V[8] * Math.pow(cycleIndex + 1, 2) * rate);
+        return (long) (OVERALL_POWER_MULT_FACTOR * GTValues.V[POWER_TIER] * Math.pow(cycleIndex + 1, 2) * rate);
     }
 
     public static double perCycleEnergyGainKeV(int cycleIndex, int progressTime) {
