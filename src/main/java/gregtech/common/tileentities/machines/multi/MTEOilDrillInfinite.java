@@ -96,18 +96,8 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
+        String cycleTimeDisplay = GTUtility.formatTime(baseCycleTime);
 
-        String cycleTimeDisplay;
-        if (baseCycleTime < 20) {
-            cycleTimeDisplay = StatCollector.translateToLocalFormatted(
-                baseCycleTime == 1 ? "GT5U.gui.text.tick" : "GT5U.gui.text.tick.plural",
-                formatNumber(baseCycleTime));
-        } else {
-            double seconds = baseCycleTime / 20.0;
-            cycleTimeDisplay = StatCollector.translateToLocalFormatted(
-                seconds == 1 ? "GT5U.gui.text.second" : "GT5U.gui.text.second.plural",
-                formatNumber(seconds));
-        }
         // spotless:off
         tt.addMachineType("Pump, FDR")
             .addInfo(
