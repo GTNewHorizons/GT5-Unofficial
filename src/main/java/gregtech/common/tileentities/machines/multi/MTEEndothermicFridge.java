@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -187,7 +186,6 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                     .put("booster_drain", formatNumber(BOOSTER_DRAIN))
                     .put("min_cryo", formatNumber(CRYOTHEUM_DRAIN_BASE))
                     .put("max_cryo", formatNumber(CRYOTHEUM_DRAIN_BASE * MAX_SPEED_BONUS))
-                    .put("fluid_unit", getFluidUnit())
                     .build())
             .addSupportAny()
             .addUnlimitedTierSkips()
@@ -217,7 +215,6 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors("Pix3lated")
             .toolTipFinisher();
         // spotless:on
         return tt;

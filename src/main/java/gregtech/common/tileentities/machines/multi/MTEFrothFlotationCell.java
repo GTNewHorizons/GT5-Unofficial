@@ -39,7 +39,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -139,7 +138,7 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
-            .toolTipFinisher(GTAuthors.AuthorNoc.get());
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }

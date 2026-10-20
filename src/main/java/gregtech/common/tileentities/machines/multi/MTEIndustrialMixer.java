@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -20,7 +19,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -33,7 +31,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -68,6 +65,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     private static final int PARALLEL_PER_TIER = 8;
     private static final double SPEED_INCREASE_TIER = 1.0D;
     private static final double SPEED_BASIC = 1.0D;
+    private static final int GLASS_TIER_FOR_MULTI_AMP = VoltageIndex.UIV;
 
     private int glassTier = -1;
 
@@ -190,7 +188,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                 ImmutableMap.<String, Object>builder()
                     .put("speed_increase", formatNumber(SPEED_INCREASE_TIER * 100))
                     .put("eu_eff", 100)
-                    .put("tier", TIER_COLORS[VoltageIndex.UIV] + GTValues.VN[VoltageIndex.UIV])
+                    .put("tier", GTUtility.getColoredTierNameForTooltip(GLASS_TIER_FOR_MULTI_AMP))
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
@@ -208,7 +206,6 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Shiray")
             .toolTipFinisher();
         // spotless:on
         return tt;
@@ -275,8 +272,8 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
-            if (glassTier < VoltageIndex.UIV) {
-                errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UIV));
+            if (glassTier < GLASS_TIER_FOR_MULTI_AMP) {
+                errors.add(StructureErrors.glassTierNotEnough(GLASS_TIER_FOR_MULTI_AMP));
             }
         } else {
             checkHasEnergyHatch(errors);

@@ -85,8 +85,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
             "gt.blockmachines.hatch.extrusion.desc",
             EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.blockmachines.hatch.extrusion.machine")
                 + EnumChatFormatting.RESET,
-            formatNumber(getSlots(mTier)),
-            EnumChatFormatting.BLUE + "VorTex");
+            formatNumber(getSlots(mTier)));
     }
 
     public static ItemStack findMatchingShape(ItemStack stack) {

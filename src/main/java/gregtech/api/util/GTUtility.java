@@ -117,6 +117,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -501,6 +502,12 @@ public class GTUtility {
 
     public static String getColoredTierNameFromTier(byte tier) {
         return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.RESET;
+    }
+
+    public static String getColoredTierNameForTooltip(int voltageIndex) {
+        return GTUtility.FORMAT_PUSH_STACK + GTValues.TIER_COLORS[voltageIndex]
+            + GTValues.VN[voltageIndex]
+            + GTUtility.FORMAT_POP_STACK;
     }
 
     /**
@@ -1043,6 +1050,11 @@ public class GTUtility {
     /**
      * Move up to maxAmount amount of fluid from source to dest, with optional filtering via allowMove. note that this
      * filter cannot bypass filtering done by IFluidHandlers themselves.
+     * <p>
+     * Only one fluid type is moved per call. If the fluid the source offers first cannot be moved (dest refuses it or
+     * the filter rejects it), the other fluids reported by the source's tank info are tried in order. Multi-tank
+     * handlers are free to keep offering the same tank from an unspecified drain, so without this fallback a full or
+     * unwilling dest would stall the transfer even though the source holds fluids dest would accept.
      *
      * @param source    tank to drain from. method become noop if this is null
      * @param dest      tank to fill to. method become noop if this is null
@@ -1060,7 +1072,36 @@ public class GTUtility {
         liquid.amount = dest.fill(fillSide, liquid, false);
         if (liquid.amount > 0 && (allowMove == null || allowMove.test(liquid))) {
             dest.fill(fillSide, source.drain(drainSide, liquid.amount, true), true);
+            return;
         }
+
+        FluidTankInfo[] tanks = source.getTankInfo(drainSide);
+        if (tanks == null || tanks.length < 2) return;
+        for (int i = 0; i < tanks.length; i++) {
+            if (!isFluidCandidate(tanks[i]) || tanks[i].fluid.isFluidEqual(liquid) || isFluidInEarlierTank(tanks, i))
+                continue;
+            FluidStack request = tanks[i].fluid.copy();
+            request.amount = maxAmount;
+            FluidStack candidate = source.drain(drainSide, request, false);
+            if (candidate == null || candidate.amount <= 0) continue;
+            candidate = candidate.copy();
+            candidate.amount = dest.fill(fillSide, candidate, false);
+            if (candidate.amount > 0 && (allowMove == null || allowMove.test(candidate))) {
+                dest.fill(fillSide, source.drain(drainSide, candidate, true), true);
+                return;
+            }
+        }
+    }
+
+    private static boolean isFluidCandidate(FluidTankInfo tank) {
+        return tank != null && tank.fluid != null && tank.fluid.amount > 0;
+    }
+
+    private static boolean isFluidInEarlierTank(FluidTankInfo[] tanks, int index) {
+        for (int j = 0; j < index; j++) {
+            if (isFluidCandidate(tanks[j]) && tanks[j].fluid.isFluidEqual(tanks[index].fluid)) return true;
+        }
+        return false;
     }
 
     public static boolean listContainsItem(Collection<ItemStack> aList, ItemStack aStack, boolean aTIfListEmpty,
