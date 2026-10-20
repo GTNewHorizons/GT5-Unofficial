@@ -35,7 +35,6 @@ import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.items.ItemLabModule;
-import bartworks.util.BWTooltipReference;
 import bartworks.util.BioCulture;
 import bartworks.util.BioData;
 import gregtech.api.enums.GTValues;
@@ -294,8 +293,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocal("tooltip.tile.biolab.0.name"),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+        return new String[] { StatCollector.translateToLocal("tooltip.tile.biolab.0.name") };
     }
 
     @Override

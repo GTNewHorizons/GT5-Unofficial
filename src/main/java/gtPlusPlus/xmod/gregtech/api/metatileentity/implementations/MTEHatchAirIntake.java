@@ -12,8 +12,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTSplit;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.Utils;
 import toxiceverglades.dimension.DimensionEverglades;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -35,8 +35,9 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
 
     @Override
     public String[] getCustomTooltip() {
-        return Utils.splitLocalizedFormattedWithAlkalus(
+        return GTSplit.splitLocalizedFormattedWithSuffix(
             "gt.blockmachines.input_hatch_generator.airintake.desc",
+            GTPPCore.GT_Tooltip.get(),
             getAmountOfFluidToGenerate(),
             getMaxTickTime());
     }

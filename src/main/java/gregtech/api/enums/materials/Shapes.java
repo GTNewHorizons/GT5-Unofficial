@@ -7,6 +7,7 @@ import com.ruling_0.materiallib.api.Shape;
 import com.ruling_0.materiallib.api.StandardProperties;
 
 import gregtech.common.items.GTNaniteShapeItem;
+import kubatech.loaders.item.arcfurnace.ElectrodeItem;
 
 /// Item [Shape] declarations for GregTech's material parts, from dusts and ingots to tool heads.
 public class Shapes {
@@ -21,6 +22,7 @@ public class Shapes {
     public static Shape dustPure;
     public static Shape dustSmall;
     public static Shape dustTiny;
+    public static Shape electrode;
     public static Shape foil;
     public static Shape gearGt;
     public static Shape gearGtSmall;
@@ -100,6 +102,9 @@ public class Shapes {
             MaterialLibAPI.newItemShape("gregtech", "dustTiny")
                 .displayNameKey("gt.oreprefix.tiny_pile_of_material_dust")
                 .build());
+        electrode = reg(
+            MaterialLibAPI.registerItemShape(new ElectrodeItem("gregtech", "electrode", "electrode"))
+                .setProperty(StandardProperties.DISPLAY_NAME_FORMAT_KEY, "gt.oreprefix.material_electrode"));
         foil = reg(
             MaterialLibAPI.newItemShape("gregtech", "foil")
                 .displayNameKey("gt.oreprefix.material_foil")

@@ -820,6 +820,12 @@ public class OrePrefixes {
         .withDefaultLocalName("Turbine Blades")
         .build();
 
+    /** consumed by the industrial arc furnace to run */
+    public static final OrePrefixes electrode = new OrePrefixBuilder("electrode").withDefaultLocalName("Electrodes")
+        .withSuffix(" Electrode")
+        .materialBased()
+        .build();
+
     /** vanilly Sword */
     public static final OrePrefixes toolSword = new OrePrefixBuilder("toolSword").withDefaultLocalName("Swords")
         .materialBased()
@@ -1889,6 +1895,7 @@ public class OrePrefixes {
             if (prefix == orePluto && oreDictName.equals("orePlutonium")) return ore;
             if (prefix == orePluto && oreDictName.equals("orePlutonium241")) return ore;
             if (prefix == oreTitan && oreDictName.equals("oreTitanium")) return ore;
+            if (prefix == oreTitan && oreDictName.equals("oreTitanite")) return ore;
             if (prefix == oreCallisto && oreDictName.equals("oreCallistoIce")) return ore;
             if (prefix == oreNether && oreDictName.equals("oreNetherQuartz")) return ore;
             if (prefix == oreNether && oreDictName.equals("oreNetherStar")) return ore;

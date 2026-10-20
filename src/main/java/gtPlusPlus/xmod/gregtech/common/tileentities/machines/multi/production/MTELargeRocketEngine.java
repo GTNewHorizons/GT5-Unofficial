@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -138,7 +137,6 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     .put("warmup_max", formatNumber(WARMUP_MAX_SECONDS))
                     .put("pollution", formatNumber(POLLUTION_PER_EUT))
                     .put("pollution_unit", formatNumber(POLLUTION_EUT_UNIT))
-                    .put("unit", getFluidUnit())
                     .build())
             .addSupportAny()
             .beginStructureBlock(3, 3, 10, false)

@@ -25,6 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -1012,7 +1013,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk1"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk1"),
+                    ImmutableMap.of("voltageTier", GTUtility.getColoredTierNameForTooltip(MODULE_VOLTAGE_TIER)))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
@@ -1096,7 +1098,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk2"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk2"),
+                    ImmutableMap.of("voltageTier", GTUtility.getColoredTierNameForTooltip(MODULE_VOLTAGE_TIER)))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
@@ -1184,7 +1187,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk3"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk3"),
+                    ImmutableMap.of("voltageTier", GTUtility.getColoredTierNameForTooltip(MODULE_VOLTAGE_TIER)))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)

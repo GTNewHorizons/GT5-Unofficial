@@ -71,6 +71,8 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<MTEIndustrialLaserEngraver>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
+    private static final int GLASS_TIER_FOR_LAZER = VoltageIndex.UEV;
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialLaserEngraver> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEIndustrialLaserEngraver>builder()
@@ -231,7 +233,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 ImmutableMap.<String, Object>builder()
                     .put("speed", 350)
                     .put("eu_eff", 80)
-                    .put("tier", GTValues.TIER_COLORS[VoltageIndex.UEV] + GTValues.VN[VoltageIndex.UEV])
+                    .put("tier", GTUtility.getColoredTierNameForTooltip(GLASS_TIER_FOR_LAZER))
                     .build())
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front bottom center")
@@ -290,7 +292,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
         checkCasingMin(errors, mCasingAmount, 35);
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (laserSource.mTier < VoltageIndex.UEV) {
+            if (laserSource.mTier < GLASS_TIER_FOR_LAZER) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.laser_need_uev"));
             } else {
                 int count = mEnergyHatches.size() + mExoticEnergyHatches.size();

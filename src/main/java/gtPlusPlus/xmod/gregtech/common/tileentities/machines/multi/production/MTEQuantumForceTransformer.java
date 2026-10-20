@@ -49,7 +49,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -223,7 +222,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.QFT_MANIPULATOR)
             .addSubChannel(GTStructureChannels.QFT_SHIELDING)
-            .toolTipFinisher(GTAuthors.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
+            .toolTipFinisher();
         return tt;
         //spotless:on
     }

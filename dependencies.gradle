@@ -34,7 +34,7 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-    api("com.github.GTNewHorizons:StructureLib:1.4.45:dev")
+    api("com.github.GTNewHorizons:StructureLib:1.4.46:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.8.160-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.11.52:dev")
@@ -105,7 +105,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:SC2:2.3.15:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.6.48:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
-    devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.4.24:dev'){transitive=false}
+    devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.4.25:dev'){transitive=false}
     // for waila integration testing
     // devOnlyNonPublishable('com.github.GTNewHorizons:WAILAPlugins:0.7.2:dev')
 

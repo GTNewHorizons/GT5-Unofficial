@@ -2532,6 +2532,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Mo")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.Palladium = MaterialLibAPI.newMaterial("gregtech", "Palladium", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFB1B1B1)
@@ -3244,6 +3245,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Ta")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.Tungsten = MaterialLibAPI.newMaterial("gregtech", "Tungsten", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF323232)
@@ -3280,6 +3282,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "W")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.Osmium = MaterialLibAPI.newMaterial("gregtech", "Osmium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF3232FF)
@@ -4079,6 +4082,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .generateShape(Shapes.nanite)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.DimensionallyTranscendentStellarCatalyst = MaterialLibAPI.newMaterial("gregtech", "DimensionallyTranscendentStellarCatalyst", TextureSet.of("gregtech", "FLUID"))
             .setTint(17437716)
@@ -4147,6 +4151,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES, false)
             .setProperty(GTMaterialProperties.FORMULA, "NrAuMa*")
             .generateShape(TEBlockShapes.frameGt)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.ActivatedNetherite = MaterialLibAPI.newMaterial("gregtech", "activatednetherite", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF9C575A)
@@ -4245,6 +4250,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "\u03A3" + EnumChatFormatting.OBFUSCATED + "X")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(Shapes.nanite)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.SuperCoolant = MaterialLibAPI.newMaterial("gregtech", "SuperCoolant", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF025B6F)
@@ -5917,6 +5923,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "(Fe₅" + CustomGlyphs.SUBSCRIPT0 + "C)W")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.Osmiridium = MaterialLibAPI.newMaterial("gregtech", "Osmiridium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF6464FF)
@@ -6297,6 +6304,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "Tn")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.Thaumium = MaterialLibAPI.newMaterial("gregtech", "Thaumium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF9664C8)
@@ -7121,6 +7129,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "YBa₂Cu₃O₇")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.NiobiumNitride = MaterialLibAPI.newMaterial("gregtech", "NiobiumNitride", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFF1D291D)
@@ -8216,6 +8225,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "If*")
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.MysteriousCrystal = MaterialLibAPI.newMaterial("gregtech", "MysteriousCrystal", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFF16856C)
@@ -10421,6 +10431,7 @@ public class Materials {
             .generateShape(TEBlockShapes.frameGt)
             .generateShape(BlockShapes.sheetmetal)
             .generateShape(Shapes.nanite)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.EnrichedHolmium = MaterialLibAPI.newMaterial("gregtech", "EnrichedHolmium", TextureSet.of("gregtech", "METALLIC"))
             .setTint(0xFF1264FF)
@@ -14373,6 +14384,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("VITREUS", 2), new AspectRefStack("ELECTRUM", 1)))
             .setProperty(GTMaterialProperties.FORMULA, "C")
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.TOOL_MATERIAL))
+            .generateShape(Shapes.electrode)
             .build();
         Materials.Almandine = MaterialLibAPI.newMaterial("gregtech", "Almandine", TextureSet.of("gregtech", "ROUGH"))
             .setTint(0xFFFF0000)
@@ -15075,6 +15087,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("VITREUS", 2), new AspectRefStack("IGNIS", 1)))
             .setProperty(GTMaterialProperties.FORMULA, "C")
             .generateShape(CellShapes.cellSolid)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.Greenstone = MaterialLibAPI.newMaterial("gregtech", "Greenstone", TextureSet.of("gregtech", "DULL"))
             .setTint(0xFFFFFFFF)
@@ -27207,6 +27220,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.BLAST_DURATION, 12500)
             .setProperty(GTMaterialProperties.BLAST_VOLTAGE, 7864320)
             .setProperty(GTMaterialProperties.VACUUM_FREEZER_VOLTAGE, 7864320)
+            .generateShape(Shapes.electrode)
             .build();
         Materials.Incoloy020 = MaterialLibAPI.newMaterial("gregtech", "Incoloy020", TextureSet.of("gregtech", "SHINY"))
             .setTint(0xFFE3B6AA)

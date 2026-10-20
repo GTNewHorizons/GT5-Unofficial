@@ -871,6 +871,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 MaterialLibAPI.getStack(Materials.Ice, CellShapes.cellSolid, 1),
                 ItemList.Cell_Empty.get(1L));
 
+        FluidContainerRegistry.registerFluidContainer(
+            new FluidContainerRegistry.FluidContainerData(
+                MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, 250),
+                ItemList.Bottle_Salt_Water.get(1L),
+                ItemList.Bottle_Empty.get(1L)));
+
         GTFluidFactory.builder("potion.awkward")
             .withDefaultLocalName("Awkward Brew")
             .withStateAndTemperature(LIQUID, 295)
@@ -1272,12 +1278,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .buildAndRegister()
             .addLocalizedName()
             .registerPContainers(ItemList.Bottle_Mineral_Water.get(1L), ItemList.Bottle_Empty.get(1L));
-        GTFluidFactory.builder("potion.saltywater")
-            .withDefaultLocalName("Salty Water")
-            .withStateAndTemperature(LIQUID, 275)
-            .buildAndRegister()
-            .addLocalizedName()
-            .registerPContainers(ItemList.Bottle_Salty_Water.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.reedwater")
             .withDefaultLocalName("Reed Water")
             .withStateAndTemperature(LIQUID, 295)

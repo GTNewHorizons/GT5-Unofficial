@@ -297,7 +297,7 @@ public final class OreDictRegistrationHandler {
             material = MaterialUtils.byLegacyName(materialName);
         }
 
-        OreDictAliases.registerAliases(oreName, stack);
+        OreDictAliases.registerAliases(oreName, stack, prefix, materialName);
         handleSpecialRegistration(stack, prefix, material, materialName);
         String aliasKey = material == null ? null : material.getProperty(GTMaterialProperties.ALIAS_KEY);
         if (aliasKey != null) {

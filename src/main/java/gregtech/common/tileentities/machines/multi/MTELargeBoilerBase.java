@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.STEAM_PER_WATER;
@@ -26,7 +25,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -238,7 +236,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         .put("heat_seconds", String.format("%.2f", (double) SECONDS_PER_HEAT_UNIT / getEfficiencyIncrease()))
                         .put("throttle_amount", formatNumber(THROTTLE_DISPLAY_AMOUNT))
                         .put("multi_fuel_boost", formatNumber((double) 100 / MULTI_FUEL_BOOST_DIVISOR) + "%")
-                        .put("fluid_unit", getFluidUnit())
                         .build());
         } else {
             tt.addMachineType("Boiler")
@@ -250,7 +247,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         .put("heat_seconds", String.format("%.2f", (double) SECONDS_PER_HEAT_UNIT / getEfficiencyIncrease()))
                         .put("throttle_amount", formatNumber(THROTTLE_DISPLAY_AMOUNT))
                         .put("multi_fuel_boost", formatNumber((double) 100 / MULTI_FUEL_BOOST_DIVISOR) + "%")
-                        .put("fluid_unit", getFluidUnit())
                         .build());
         }
         tt.addPollutionAmount(getPollutionPerSecond(null))
@@ -267,7 +263,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             .addStructureInfo("")
             .addStructureFooter("Use solid fuel, liquid fuel, or both")
             .addStructureFooter("Use regular or distilled water")
-            .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
         // spotless:on
         return tt;

@@ -122,13 +122,10 @@ tooltip.rotor.3.name=Скорость:
 tooltip.rotor.4.name=Выход:
 tooltip.cp.0.name=Имеет Схему внутри?
 
-tooltip.bw.0.name=Добавлено
-tooltip.bw.1.name=Добавлено §abartimaeusnek -
 tooltip.bw.yes.name=Да
 tooltip.bw.no.name=Нет
 tooltip.bw.tier.name=Тир:
 tooltip.bw.empty.name=Пусто
-tooltip.bw.mb_via.name=%s§7 через §2BartWorks
 
 tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s

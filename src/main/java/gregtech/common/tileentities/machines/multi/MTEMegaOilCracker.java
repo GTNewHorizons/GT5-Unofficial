@@ -32,12 +32,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -71,15 +73,19 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOilCracker>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int HYDRO_H2_SAVING_PERCENT = 20;
+    private static final int HYDRO_OUTPUT_BONUS_PERCENT = 25;
+    private static final int STEAM_OUTPUT_BONUS_PERCENT = 50;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VERTICAL_OFFSET = 7;
@@ -193,31 +199,31 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Cracker, MOC")
             .addInfo(
                 TooltipHelper.coloredText(
                     TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
                     EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addInfo("EU Usage = " + TooltipHelper.effText("0.9^") + TooltipHelper.tierText(TooltipTier.COIL) + " Tier")
+            .addInfo(
+                EnumChatFormatting.AQUA + "0.9^(Heating Coil Tier)"
+                    + EnumChatFormatting.GRAY + " EU Usage")
             .addSeparator()
-            .addInfo("Gives different benefits whether it hydro or steam-cracks:")
-            .addInfo(
-                "Hydro - Consumes " + TooltipHelper.coloredText("20%", EnumChatFormatting.DARK_AQUA)
-                    + " less Hydrogen and outputs "
-                    + TooltipHelper.coloredText("25%", EnumChatFormatting.DARK_AQUA)
-                    + " more cracked fluid")
-            .addInfo(
-                "Steam - Outputs " + TooltipHelper.coloredText("50%", EnumChatFormatting.DARK_AQUA)
-                    + " more cracked fluid")
-            .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mega-oil-cracker"),
+                ImmutableMap.<String, Object>builder()
+                    .put("hydro_h2_saving", HYDRO_H2_SAVING_PERCENT)
+                    .put("hydro_output_bonus", HYDRO_OUTPUT_BONUS_PERCENT)
+                    .put("steam_output_bonus", STEAM_OUTPUT_BONUS_PERCENT)
+                    .build())
             .addSeparator()
             .addSupportAny()
-            .addMinGlassForLaser(VoltageIndex.UV)
             .addUnlimitedTierSkips()
             .beginStructureBlock(13, 8, 9, true)
             .addEnergyHatchGlassTier()
+            .addMinGlassForLaser(VoltageIndex.UV)
             .addController("Front bottom center")
             .addCasing("162", "Any Tiered Glass", true)
             .addCasing("145-151", "Naquadah Reinforced Distillation Casing", false)
@@ -234,6 +240,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

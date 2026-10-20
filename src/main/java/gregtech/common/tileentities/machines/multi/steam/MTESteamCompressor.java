@@ -390,7 +390,6 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
                 false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
-            .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
         return tt;
     }

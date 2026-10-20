@@ -1,142 +1,59 @@
 package kubatech.loaders.item.arcfurnace;
 
-import static kubatech.kubatech.KT;
-
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 
-import gregtech.api.enums.materials.Materials;
-import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-import gregtech.api.material.MaterialRenderers;
-import gregtech.api.material.MaterialUtils;
-import gregtech.common.render.items.GeneratedMaterialRenderer;
+import com.ruling_0.materiallib.api.ShapeItem;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import kubatech.loaders.ArcFurnaceElectrode;
 
-public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer {
+/// The `electrode` MaterialLib shape, consumed by the Industrial Arc Furnace. A stack's material selects its
+/// [ArcFurnaceElectrode], and the durability it has used up is kept in its NBT.
+public class ElectrodeItem extends ShapeItem {
 
     private static final String DURABILITY_TAG = "durability";
-    private IIcon electrodeIcon;
 
-    public ElectrodeItem() {
-        super();
-        setHasSubtypes(true);
-        setMaxDamage(0);
-        setUnlocalizedName("arc_furnace_electrode");
-        setCreativeTab(KT);
+    public ElectrodeItem(String modid, String name, String... oreDicts) {
+        super(modid, name, oreDicts);
         setMaxStackSize(1);
     }
 
-    public ItemStack getElectrodeStack(ArcFurnaceElectrode electrode) {
-        return new ItemStack(this, 1, electrode.id);
-    }
-
-    public ArcFurnaceElectrode getElectrodeFromStack(ItemStack stack) {
-        if (stack == null || stack.getItem() != this) return null;
-        int meta = stack.getItemDamage();
-        return ArcFurnaceElectrode.getById(meta);
-    }
-
-    public int usedDurability(ItemStack stack) {
+    public static int usedDurability(ItemStack stack) {
         if (stack.stackTagCompound == null) return 0;
         return stack.stackTagCompound.getInteger(DURABILITY_TAG);
     }
 
-    public int remainingDurability(ItemStack stack) {
-        ArcFurnaceElectrode electrode = getElectrodeFromStack(stack);
+    public static int remainingDurability(ItemStack stack) {
+        ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getByStack(stack);
         if (electrode == null) return 0;
         return electrode.durability - usedDurability(stack);
     }
 
-    // returns true if the electrode is fully used up and should be removed
-    public boolean damageElectrode(ItemStack stack, int damage) {
-        ArcFurnaceElectrode electrode = getElectrodeFromStack(stack);
+    /// Uses up `damage` durability of `stack`. Returns true when the electrode is spent and should be removed.
+    public static boolean damageElectrode(ItemStack stack, int damage) {
+        ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getByStack(stack);
         if (electrode == null) return false;
         int used = Math.max(0, usedDurability(stack) + damage);
-        if (used >= electrode.durability) {
-            return true;
-        } else {
-            if (stack.stackTagCompound == null) {
-                stack.stackTagCompound = new NBTTagCompound();
-            }
-            stack.stackTagCompound.setInteger(DURABILITY_TAG, used);
-            return false;
+        if (used >= electrode.durability) return true;
+        if (stack.stackTagCompound == null) {
+            stack.stackTagCompound = new NBTTagCompound();
         }
+        stack.stackTagCompound.setInteger(DURABILITY_TAG, used);
+        return false;
     }
 
     @Override
-    public void registerIcons(IIconRegister register) {
-        electrodeIcon = register.registerIcon("kubatech:arcfurnace/electrode");
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int meta) {
-        return electrodeIcon;
-    }
-
-    @Override
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List<ItemStack> p_150895_3_) {
-        for (ArcFurnaceElectrode value : ArcFurnaceElectrode.values()) {
-            p_150895_3_.add(new ItemStack(this, 1, value.id));
-        }
-    }
-
-    @Override
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List<String> p_77624_3_,
-        boolean p_77624_4_) {
-        int id = p_77624_1_.getItemDamage();
-        ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(id);
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> lines, boolean advanced) {
+        super.addInformation(stack, player, lines, advanced);
+        ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getByStack(stack);
         if (electrode != null) {
-            electrode.addInformation(p_77624_3_, remainingDurability(p_77624_1_));
+            electrode.addInformation(lines, remainingDurability(stack));
         }
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        int id = stack.getItemDamage();
-        ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(id);
-        if (electrode != null) {
-            return electrode.getUnlocalizedName();
-        }
-        return super.getUnlocalizedName(stack);
-    }
-
-    @Override
-    public boolean shouldUseCustomRenderer(int aMetaData) {
-        return true;
-    }
-
-    @Override
-    public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
-        ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(aMetaData);
-        return electrode == null ? null : MaterialRenderers.rendererOf(electrode.associatedMaterial);
-    }
-
-    @Override
-    public boolean allowMaterialRenderer(int aMetaData) {
-        return true;
-    }
-
-    @Override
-    public IIcon getIcon(int aMetaData, int pass) {
-        return electrodeIcon;
-    }
-
-    @Override
-    public IIcon getOverlayIcon(int aMetaData, int pass) {
-        return null;
-    }
-
-    @Override
-    public short[] getRGBa(ItemStack aStack) {
-        ArcFurnaceElectrode electrode = getElectrodeFromStack(aStack);
-        if (electrode != null) return MaterialUtils.rgba(electrode.associatedMaterial);
-        return MaterialUtils.rgba(Materials.NULL);
     }
 }

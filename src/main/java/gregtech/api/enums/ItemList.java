@@ -224,7 +224,7 @@ public enum ItemList implements IItemContainer {
     Bottle_Vodka,
     Bottle_Leninade,
     Bottle_Mineral_Water,
-    Bottle_Salty_Water,
+    Bottle_Salt_Water,
     Bottle_Reed_Water,
     Bottle_Rum,
     Bottle_Pirate_Brew,

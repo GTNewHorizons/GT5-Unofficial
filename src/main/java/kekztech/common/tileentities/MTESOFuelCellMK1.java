@@ -116,11 +116,11 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             "euPerTickX20",
             formatNumber(EU_PER_TICK * 20),
             "euPerTick",
-            EU_PER_TICK,
+            formatNumber(EU_PER_TICK),
             "steamPerSec",
-            STEAM_PER_SEC,
+            formatNumber(STEAM_PER_SEC),
             "oxygenPerSec",
-            OXYGEN_PER_SEC);
+            formatNumber(OXYGEN_PER_SEC));
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
             .addMarkdown(new ResourceLocation("gregtech", "so-fuel-cell-mk1"), vars)
             .beginStructureBlock(3, 3, 5, false)

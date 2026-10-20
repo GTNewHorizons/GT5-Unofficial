@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.xlturbines;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -80,7 +79,6 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
             .addOutputHatch("1+", "Any turbine casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
     }

@@ -429,6 +429,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
+    protected float getSoundRadiusMultiplier() {
+        return 2.5f;
+    }
+
+    @Override
     public IStructureDefinition<MTEExoFoundry> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }

@@ -49,6 +49,7 @@ import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.crossmod.forgemultipart.MicroblockMaterials;
 import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
+import kubatech.loaders.ArcFurnaceElectrode;
 
 public class PosteaTransformers implements Runnable {
 
@@ -196,7 +197,22 @@ public class PosteaTransformers implements Runnable {
         registerRailcraftCreosoteCellCutoverTransformer();
         registerIC2ItemCasingCutoverTransformers();
         registerGtppThermalDustCutoverTransformers();
+        registerArcFurnaceElectrodeCutoverTransformer();
         LegacyOreTransformers.register();
+    }
+
+    /// Migrates saved kubatech arc furnace electrodes (`kubatech:arc_furnace_electrode`, `Damage` = the
+    /// [ArcFurnaceElectrode] id) onto the [Shapes#electrode] stack of the electrode's material. The used-durability
+    /// NBT carries over unchanged.
+    private static void registerArcFurnaceElectrodeCutoverTransformer() {
+        addItemTransformer("kubatech:arc_furnace_electrode", (originalId, tag) -> {
+            ArcFurnaceElectrode electrode = ArcFurnaceElectrode.getById(tag.getInteger("Damage"));
+            if (electrode == null) return false;
+            ItemStack cutover = electrode.getElectrodeItem(1);
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+            tag.setShort("Damage", (short) cutover.getItemDamage());
+            return true;
+        });
     }
 
     /// Migrates saved IC2 item casings (`IC2:itemCasing`, metas 0-6) onto the MaterialLib casing of the same
@@ -652,6 +668,16 @@ public class PosteaTransformers implements Runnable {
         addBlockReplacement("IC2:blockRubber", ItemList.PadBouncy.getBlock(), 0);
         addBlockReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
         addBlockReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
+        Material[] materials = { Materials.Copper, Materials.Tin, Materials.Bronze, Materials.Uranium, Materials.Lead,
+            Materials.Steel };
+        for (int meta = 0; meta < materials.length; meta++) {
+            ItemStack cutover = MaterialLibAPI.getStack(materials[meta], BlockShapes.block, 1);
+            addBlockReplacement(
+                "IC2:blockMetal",
+                meta,
+                Block.getBlockFromItem(cutover.getItem()),
+                cutover.getItemDamage());
+        }
     }
 
     private void registerFrameboxTransformers() {

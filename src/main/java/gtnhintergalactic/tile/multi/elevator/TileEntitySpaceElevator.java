@@ -45,7 +45,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -773,7 +772,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SwitchToExtended"))
             .addSubChannel(GTStructureChannels.SE_MOTOR)
-            .toolTipFinisher(GTAuthors.Authorminecraft7771);
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }

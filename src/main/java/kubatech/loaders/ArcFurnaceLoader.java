@@ -12,8 +12,6 @@ import java.util.HashSet;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.GTMod;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -21,17 +19,11 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import kubatech.api.utils.ModUtils;
-import kubatech.loaders.item.arcfurnace.ElectrodeItem;
 
 public class ArcFurnaceLoader {
 
-    public static final ElectrodeItem ARC_FURNACE_ELECTRODE = new ElectrodeItem();
-
     public static void load() {
-        GameRegistry.registerItem(ARC_FURNACE_ELECTRODE, "arc_furnace_electrode");
         ArcFurnaceElectrode.registerElectrodes();
-        if (ModUtils.isClientSided) GTMod.clientProxy().metaItemRenderer.registerItem(ARC_FURNACE_ELECTRODE);
 
         GTValues.RA.stdBuilder()
             .itemInputs(

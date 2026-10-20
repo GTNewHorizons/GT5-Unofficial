@@ -22,7 +22,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofBlockCasing;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeDetectorHatch;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeHatch;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -62,7 +61,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.OrePrefixes;
@@ -107,6 +105,7 @@ import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 import kubatech.api.enums.ItemList;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.ArcFurnaceElectrode;
+import kubatech.loaders.item.arcfurnace.ElectrodeItem;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrode;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
 
@@ -277,7 +276,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
             if (electrodeDetectorHatch != null) {
                 if (electrode != null) updateDetectorHatches(
-                    ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)),
+                    ElectrodeItem.remainingDurability(electrodeHatch.getStackInSlot(0)),
                     electrode.durability);
                 else updateDetectorHatches(0, 0);
             }
@@ -652,9 +651,9 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         ItemStack electrodeStack = electrodeHatch.getStackInSlot(0);
         electrode = ArcFurnaceElectrode.getByStack(electrodeStack);
         if (electrode != null) {
-            electrodeDamagePercentage = (double) ARC_FURNACE_ELECTRODE.usedDurability(electrodeStack)
+            electrodeDamagePercentage = (double) ElectrodeItem.usedDurability(electrodeStack)
                 / (double) electrode.durability;
-            updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeStack), electrode.durability);
+            updateDetectorHatches(ElectrodeItem.remainingDurability(electrodeStack), electrode.durability);
             return;
         }
         updateDetectorHatches(0, 0);
@@ -795,7 +794,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             if (electrode != null) {
                 ItemStack electrodeStack = electrodeHatch.getStackInSlot(0);
                 if (electrodeStack != null) {
-                    boolean shouldRemove = ARC_FURNACE_ELECTRODE.damageElectrode(electrodeStack, durabilityCostThisRun);
+                    boolean shouldRemove = ElectrodeItem.damageElectrode(electrodeStack, durabilityCostThisRun);
                     durabilityCostThisRun = 1;
                     if (shouldRemove) {
                         startShutDown();
@@ -803,10 +802,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                         electrodeChanged();
                     } else {
                         electrodeHatch.markDirty();
-                        electrodeDamagePercentage = (double) ARC_FURNACE_ELECTRODE.usedDurability(electrodeStack)
+                        electrodeDamagePercentage = (double) ElectrodeItem.usedDurability(electrodeStack)
                             / (double) electrode.durability;
                         updateDetectorHatches(
-                            ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)),
+                            ElectrodeItem.remainingDurability(electrodeHatch.getStackInSlot(0)),
                             electrode.durability);
                     }
                 }
@@ -1075,10 +1074,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     @Override
     protected @NotNull String[] getCreditsText() {
-        return new String[] {
-            translateToLocalFormatted("kubatech.gui.tooltip.contributors.added", GTAuthors.AuthorKuba),
-            translateToLocalFormatted("kubatech.gui.tooltip.contributors.design", GTAuthors.AuthorPxx500),
-            translateToLocalFormatted("kubatech.gui.tooltip.contributors.structure", "Sol_IX") };
+        return new String[] { translateToLocalFormatted("kubatech.gui.tooltip.contributors.structure", "Sol_IX") };
     }
 
 }

@@ -13,6 +13,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.enums.materials.XModMaterials;
@@ -101,7 +102,11 @@ final class OreDictAliases {
 
     private OreDictAliases() {}
 
-    static void registerAliases(String oreName, ItemStack stack) {
+    static void registerAliases(String oreName, ItemStack stack, OrePrefixes prefix, String materialName) {
+        if (prefix != OrePrefixes.ore && StoneType.STONE_TYPES_BY_PREFIX.containsKey(prefix)) {
+            OreDictUtils.registerOre("variantOre" + materialName, stack);
+        }
+
         List<Consumer<ItemStack>> actions = ALIASES.get(oreName);
         if (actions != null) {
             for (Consumer<ItemStack> action : actions) {
