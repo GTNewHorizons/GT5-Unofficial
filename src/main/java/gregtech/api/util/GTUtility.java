@@ -2306,7 +2306,7 @@ public class GTUtility {
             for (ItemStack stack : stacks) {
                 if (isStackInvalid(stack)) continue;
 
-                list.appendTag(stack.writeToNBT(new NBTTagCompound()));
+                list.appendTag(GTUtility.saveItem(stack));
             }
         }
 
@@ -2318,7 +2318,7 @@ public class GTUtility {
         ArrayList<ItemStack> stacks = new ArrayList<>();
 
         for (NBTTagCompound tag : (List<NBTTagCompound>) list.tagList) {
-            ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+            ItemStack stack = GTUtility.loadItem(tag);
 
             if (isStackInvalid(stack)) continue;
 

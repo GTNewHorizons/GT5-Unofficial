@@ -569,19 +569,24 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
             mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
 
-            // try moving items every second, some items might remain from previous queue flush
-            // and in cases where upstream inventory has freed up space
-            if (aTick % 20 == 0) {
+            boolean isActive = aBaseMetaTileEntity.isActive();
+            boolean drainableBacklog = !isOutputEmpty() || (!isActive && !this.mOutputQueue.isEmpty());
+            if (!drainableBacklog) {
+                mOutputBlocked = 0;
+            } else {
+                mOutputBlocked++;
+            }
+
+            if (drainableBacklog
+                && (aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0 || mOutputBlocked % 300 == 1)) {
+                if (!isActive) {
+                    tryFlushQueue(aBaseMetaTileEntity);
+                }
                 doTransfer(aBaseMetaTileEntity);
             }
 
-            if (!aBaseMetaTileEntity.isActive()) {
-                if (!this.mOutputQueue.isEmpty()) {
-                    tryFlushQueue(aBaseMetaTileEntity);
-                    doTransfer(aBaseMetaTileEntity);
-
-                    if (!this.mOutputQueue.isEmpty()) return;
-                }
+            if (!isActive) {
+                if (!this.mOutputQueue.isEmpty()) return;
 
                 if (aBaseMetaTileEntity.isAllowedToWork()
                     && (aBaseMetaTileEntity.hasInventoryBeenModified() || aTick % 600 == 0
@@ -639,7 +644,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                         boolean isQueen = stack != null && beeRoot.isMember(stack, EnumBeeType.QUEEN.ordinal());
                         boolean isPrincess = stack != null && beeRoot.isMember(stack, EnumBeeType.PRINCESS.ordinal());
                         boolean isDrone = stack != null && beeRoot.isMember(stack, EnumBeeType.DRONE.ordinal());
-                    if ((mAutoQueen && isQueen) || (isAutomated && (isQueen || isPrincess))) {
+                        if ((mAutoQueen && isQueen) || (isAutomated && (isQueen || isPrincess))) {
                             if (aBaseMetaTileEntity.addStackToSlot(queen, stack)) {
                                 this.mOutputQueue.remove(stack);
                             }
@@ -652,6 +657,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
 
                     boolean flushed = tryFlushQueue(aBaseMetaTileEntity);
                     doTransfer(aBaseMetaTileEntity);
+                    mOutputBlocked = 0;
                     mEUt = 0;
                     mProgresstime = 0;
                     mMaxProgresstime = 0;
