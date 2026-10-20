@@ -50,10 +50,7 @@ item.itemSandstoneHammer.name=圆石粉碎者
 item.MiscUtils.bucket.bucketPyrotheum.name=烈焰之炽焱桶
 item.MiscUtils.bucket.bucketCryotheum.name=极寒之凛冰桶
 item.MiscUtils.bucket.bucketEnder.name=谐振熔融末影珍珠桶
-item.MiscUtils.material.dustPyrotheum.name=炽焱之尘
-item.MiscUtils.material.dustCryotheum.name=凛冰之尘
 item.MiscUtils.material.rodBlizz.name=暴雪棒
-item.MiscUtils.material.dustBlizz.name=暴雪粉
 
 //------------- 'miscutils' is Case Sensitive Here, unsure why
 tile.miscutils.fluid.pyrotheum.name=烈焰之炽焱
@@ -3040,11 +3037,6 @@ item.BasicAlgaeItem.5.name=可培植藻类(VI)
 item.BasicAlgaeItem.6.name=可培植藻类(VII)
 
 //Added 30/03/20
-item.milledChalcopyrite.name=研磨黄铜矿
-item.milledSphalerite.name=研磨闪锌矿
-item.milledNickel.name=研磨镍矿
-item.milledPlatinum.name=研磨铂矿
-item.milledPentlandite.name=研磨镍黄铁矿
 item.FrothZincflotation.name=闪锌矿浮选泡沫单元
 item.FrothCopperflotation.name=黄铜矿浮选泡沫单元
 item.FrothNickelflotation.name=镍矿浮选泡沫单元
@@ -3065,11 +3057,6 @@ item.BasicAgrichemItem.25.name=松树碎料
 item.pineoil.name=松油单元
 
 //Added 11/4/20
-item.milledRedstone.name=研磨红石矿
-item.milledSpessartine.name=研磨锰铝榴石
-item.milledGrossular.name=研磨钙铝榴石
-item.milledAlmandine.name=研磨铁铝榴石
-item.milledPyrope.name=研磨镁铝榴石
 item.FrothRedstoneflotation.name=红石矿浮选泡沫单元
 item.FrothSpessartineflotation.name=锰铝榴石浮选泡沫单元
 item.FrothGrossularflotation.name=钙铝榴石浮选泡沫单元
@@ -3261,7 +3248,6 @@ item.itemScrewPraseodymium.name=镨螺丝
 item.itemRotorPraseodymium.name=镨转子
 item.itemGearPraseodymium.name=镨齿轮
 item.itemCellPraseodymium.name=镨单元
-item.milledMonazite.name=研磨独居石
 item.FrothMonaziteflotation.name=独居石浮选泡沫单元
 
 //Added 18/12/21

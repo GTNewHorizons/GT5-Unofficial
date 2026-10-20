@@ -71,7 +71,6 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -868,9 +867,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         mInventoryChanged = true;
         if (canAccessData()) {
             markDirty();
-            mMetaTileEntity.setInventorySlotContents(
-                aIndex,
-                worldObj.isRemote ? aStack : GTOreDictUnificator.setStack(true, aStack));
+            mMetaTileEntity.setInventorySlotContents(aIndex, aStack);
         }
     }
 
@@ -2076,7 +2073,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             setInventorySlotContents(slotIndex, stack);
             return true;
         }
-        final ItemStack fromStack = GTOreDictUnificator.get(stack);
+        final ItemStack fromStack = GTUtility.copyOrNull(stack);
         if (GTUtility.areStacksEqual(toStack, fromStack) && toStack.stackSize + fromStack.stackSize
             <= Math.min(fromStack.getMaxStackSize(), getInventoryStackLimit())) {
             toStack.stackSize += fromStack.stackSize;

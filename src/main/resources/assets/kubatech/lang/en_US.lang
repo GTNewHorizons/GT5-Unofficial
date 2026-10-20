@@ -225,20 +225,10 @@ item.htgr_item.incomplete_triso_fuel.name=Incomplete TRISO Fuel (%s)
 item.htgr_item.triso_fuel.name=TRISO Fuel (%s)
 item.htgr_item.burned.name=Burned Out TRISO Fuel (%s)
 
-item.arc_furnace_electrode.GraphiteElectrode.name=Graphite Electrode
-item.arc_furnace_electrode.TantalumElectrode.name=Tantalum Electrode
-item.arc_furnace_electrode.MolybdenumElectrode.name=Molybdenum Electrode
-item.arc_furnace_electrode.TungstenElectrode.name=Tungsten Electrode
-item.arc_furnace_electrode.TungstenSteelElectrode.name=Tungstensteel Electrode
-item.arc_furnace_electrode.GrapheneElectrode.name=Graphene Electrode
-item.arc_furnace_electrode.YBCOElectrode.name=YBCO Electrode
-item.arc_furnace_electrode.NetheriteElectrode.name=Netherite Electrode
-item.arc_furnace_electrode.TritaniumElectrode.name=Tritanium Electrode
-item.arc_furnace_electrode.InfinityElectrode.name=Infinity Electrode
-item.arc_furnace_electrode.HypogenElectrode.name=Hypogen Electrode
-item.arc_furnace_electrode.NeutroniumNaniteElectrode.name=Neutronium Nanite Electrode
-item.arc_furnace_electrode.TranscendentNaniteElectrode.name=Transcendent Nanite Electrode
-item.arc_furnace_electrode.UniversiumNaniteElectrode.name=Universium Nanite Electrode
+shape.gregtech.electrode.gregtech.YttriumBariumCuprate=YBCO Electrode
+shape.gregtech.electrode.gregtech.Neutronium=Neutronium Nanite Electrode
+shape.gregtech.electrode.gregtech.TranscendentMetal=Transcendent Nanite Electrode
+shape.gregtech.electrode.gregtech.Universium=Universium Nanite Electrode
 
 item.arc_furnace_electrode.tip.durability=Durability: %s/%s
 item.arc_furnace_electrode.tip.speed=Speed: %s

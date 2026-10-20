@@ -16,11 +16,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -128,7 +129,7 @@ public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
 
     @Override
     protected FluidStack getBooster(long amount) {
-        return Materials.LiquidOxygen.getFluid(amount);
+        return MaterialUtils.fluid(Materials.LiquidOxygen, amount);
     }
 
     @Override

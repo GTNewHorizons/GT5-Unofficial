@@ -36,20 +36,22 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
@@ -87,16 +89,17 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     public static ImmutableList<Pair<Block, Integer>> getTierBlockList() {
         ImmutableList.Builder<Pair<Block, Integer>> builder = ImmutableList.builder();
+        Block storageBlock = MaterialLibAPI.getBlock(BlockShapes.block);
 
-        builder.add(Pair.of(GregTechAPI.sBlockMetal5, 2));
+        builder.add(Pair.of(storageBlock, Materials.Neutronium.getIndex()));
 
         if (Mods.Avaritia.isModLoaded()) {
             builder.add(Pair.of(LudicrousBlocks.resource_block, 1));
         }
 
-        builder.add(Pair.of(GregTechAPI.sBlockMetal9, 4));
-        builder.add(Pair.of(GregTechAPI.sBlockMetal9, 3));
-        builder.add(Pair.of(GregTechAPI.sBlockMetal9, 8));
+        builder.add(Pair.of(storageBlock, Materials.TranscendentMetal.getIndex()));
+        builder.add(Pair.of(storageBlock, Materials.SpaceTime.getIndex()));
+        builder.add(Pair.of(storageBlock, Materials.Universium.getIndex()));
 
         return builder.build();
     }
@@ -104,17 +107,18 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Nullable
     public static Integer getTierBlock(Block block, int meta) {
         if (block == null) return null;
-        if (block == GregTechAPI.sBlockMetal5 && meta == 2) return 1;
+        Block storageBlock = MaterialLibAPI.getBlock(BlockShapes.block);
+        if (block == storageBlock && meta == Materials.Neutronium.getIndex()) return 1;
 
         if (Mods.Avaritia.isModLoaded()) {
             if (block == LudicrousBlocks.resource_block && meta == 1) return 2;
-            if (block == GregTechAPI.sBlockMetal9 && meta == 4) return 3;
-            if (block == GregTechAPI.sBlockMetal9 && meta == 3) return 4;
-            if (block == GregTechAPI.sBlockMetal9 && meta == 8) return 5;
+            if (block == storageBlock && meta == Materials.TranscendentMetal.getIndex()) return 3;
+            if (block == storageBlock && meta == Materials.SpaceTime.getIndex()) return 4;
+            if (block == storageBlock && meta == Materials.Universium.getIndex()) return 5;
         } else {
-            if (block == GregTechAPI.sBlockMetal9 && meta == 4) return 2;
-            if (block == GregTechAPI.sBlockMetal9 && meta == 3) return 3;
-            if (block == GregTechAPI.sBlockMetal9 && meta == 8) return 4;
+            if (block == storageBlock && meta == Materials.TranscendentMetal.getIndex()) return 2;
+            if (block == storageBlock && meta == Materials.SpaceTime.getIndex()) return 3;
+            if (block == storageBlock && meta == Materials.Universium.getIndex()) return 4;
         }
         return null;
     }
@@ -139,7 +143,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addCasing("24", StatCollector.translateToLocal("gt.mbtt.structure.containment_block"), true)
             .addCasing("22", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("10", Casings.PTFEPipeCasing.getLocalizedName(), false)
-            .addCasing("2", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Naquadah), false)
+            .addCasing("2", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Naquadah)), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_block"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_block"), 1)
             .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_block"), 1)

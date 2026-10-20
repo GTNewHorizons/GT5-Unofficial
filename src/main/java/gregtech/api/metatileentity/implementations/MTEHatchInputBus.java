@@ -43,7 +43,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTClientPreference;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
@@ -259,7 +258,7 @@ public class MTEHatchInputBus extends MTEHatch
 
     protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
         for (int i = 0; i < getSizeInventory(); i++)
-            if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(aStack), mInventory[i])) return i == aIndex;
+            if (GTUtility.areStacksEqual(aStack, mInventory[i])) return i == aIndex;
         return mInventory[aIndex] == null;
     }
 

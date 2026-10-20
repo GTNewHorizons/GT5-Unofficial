@@ -7,16 +7,17 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class AlloySmelterRecipes implements Runnable {
 
@@ -65,64 +66,59 @@ public class AlloySmelterRecipes implements Runnable {
     @Override
     public void run() {
         for (MaterialStack[] materials : mAlloySmelterList) {
-            ItemStack dust1 = GTOreDictUnificator.get(OrePrefixes.dust, materials[0].mMaterial, materials[0].mAmount);
-            ItemStack dust2 = GTOreDictUnificator.get(OrePrefixes.dust, materials[1].mMaterial, materials[1].mAmount);
-            ItemStack ingot1 = GTOreDictUnificator.get(OrePrefixes.ingot, materials[0].mMaterial, materials[0].mAmount);
-            ItemStack ingot2 = GTOreDictUnificator.get(OrePrefixes.ingot, materials[1].mMaterial, materials[1].mAmount);
-            ItemStack outputIngot = GTOreDictUnificator
-                .get(OrePrefixes.ingot, materials[2].mMaterial, materials[2].mAmount);
-            if (outputIngot != GTValues.NI) {
-                if (ingot1 != null) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(ingot1, dust2)
-                        .itemOutputs(outputIngot)
-                        .duration((int) materials[2].mAmount * 50)
-                        .eut(TierEU.RECIPE_LV / 2)
-                        .addTo(alloySmelterRecipes);
-                    if (ingot2 != null) {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(ingot1, ingot2)
-                            .itemOutputs(outputIngot)
-                            .duration((int) materials[2].mAmount * 50)
-                            .eut(TierEU.RECIPE_LV / 2)
-                            .addTo(alloySmelterRecipes);
-                    }
-                }
-
-                if (ingot2 != null) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(dust1, ingot2)
-                        .itemOutputs(outputIngot)
-                        .duration((int) materials[2].mAmount * 50)
-                        .eut(TierEU.RECIPE_LV / 2)
-                        .addTo(alloySmelterRecipes);
-                }
-
+            ItemStack dust1 = MaterialLibAPI.getStack(materials[0].material, Shapes.dust, (int) materials[0].amount);
+            ItemStack dust2 = MaterialLibAPI.getStack(materials[1].material, Shapes.dust, (int) materials[1].amount);
+            ItemStack ingot1 = MaterialLibAPI.findStack(materials[0].material, Shapes.ingot, (int) materials[0].amount);
+            ItemStack ingot2 = MaterialLibAPI.findStack(materials[1].material, Shapes.ingot, (int) materials[1].amount);
+            ItemStack outputIngot = MaterialLibAPI
+                .getStack(materials[2].material, Shapes.ingot, (int) materials[2].amount);
+            if (ingot1 != null) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(dust1, dust2)
+                    .itemInputs(ingot1, dust2)
                     .itemOutputs(outputIngot)
-                    .duration((int) materials[2].mAmount * 50)
+                    .duration((int) materials[2].amount * 50)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(alloySmelterRecipes);
-
+                if (ingot2 != null) {
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(ingot1, ingot2)
+                        .itemOutputs(outputIngot)
+                        .duration((int) materials[2].amount * 50)
+                        .eut(TierEU.RECIPE_LV / 2)
+                        .addTo(alloySmelterRecipes);
+                }
             }
+
+            if (ingot2 != null) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(dust1, ingot2)
+                    .itemOutputs(outputIngot)
+                    .duration((int) materials[2].amount * 50)
+                    .eut(TierEU.RECIPE_LV / 2)
+                    .addTo(alloySmelterRecipes);
+            }
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(dust1, dust2)
+                .itemOutputs(outputIngot)
+                .duration((int) materials[2].amount * 50)
+                .eut(TierEU.RECIPE_LV / 2)
+                .addTo(alloySmelterRecipes);
         }
 
         // We use rubber
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
+                MaterialLibAPI.getStack(Materials.RubberRaw, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(alloySmelterRecipes);
 
         // Bartworks Glass Tube
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 2L),
-                ItemList.Shape_Mold_Rod_Long.get(0L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, 2), ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
@@ -132,7 +128,7 @@ public class AlloySmelterRecipes implements Runnable {
         for (Dyes dye : Dyes.VALUES) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 8L),
+                    MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, 8),
                     new OreDictItemStack(dye.name(), 1))
                 .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
                 .duration(10 * SECONDS)

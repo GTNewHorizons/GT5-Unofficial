@@ -9,7 +9,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.util.GTOreDictUnificator.getAssociation;
+import static gregtech.api.material.MaterialData.getAssociation;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.ParallelHelper.addFluidsLong;
@@ -44,19 +44,23 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.objects.ItemData;
@@ -76,7 +80,6 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import io.netty.buffer.ByteBuf;
 
@@ -90,8 +93,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     protected int mMaxParallel = 0;
     private boolean mFluidMode = false, doFermium = false, doNeptunium = false;
     private boolean renderDisabled = false;
-    private static final Fluid mNeptunium = MaterialsElements.getInstance().NEPTUNIUM.getPlasma();
-    private static final Fluid mFermium = MaterialsElements.getInstance().FERMIUM.getPlasma();
+    private static final Fluid mNeptunium = MaterialLibAPI.getFluid(Materials.Neptunium, FluidShapes.fluidPlasma);
+    private static final Fluid mFermium = MaterialLibAPI.getFluid(Materials.Fermium, FluidShapes.fluidPlasma);
     private static final String MAIN_PIECE = "main";
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHousings = new ArrayList<>();
     // spotless:off
@@ -418,12 +421,12 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         ItemStack item = recipe.getOutput(i);
                         if (item == null) continue;
                         ItemData data = getAssociation(item);
-                        Materials mat = data == null ? null : data.mMaterial.mMaterial;
+                        Material mat = data != null ? data.material.material : null;
                         if (mat != null) {
-                            if (mat.mStandardMoltenFluid != null) {
-                                fluidModeItems[i] = mat.getMolten(1 * INGOTS);
-                            } else if (mat.mFluid != null) {
-                                fluidModeItems[i] = mat.getFluid(1_000);
+                            if (MaterialUtils.moltenOf(mat) != null) {
+                                fluidModeItems[i] = MaterialUtils.molten(mat, 1 * INGOTS);
+                            } else if (MaterialUtils.fluidOf(mat) != null) {
+                                fluidModeItems[i] = MaterialUtils.fluid(mat, 1_000);
                             }
                         }
                     }

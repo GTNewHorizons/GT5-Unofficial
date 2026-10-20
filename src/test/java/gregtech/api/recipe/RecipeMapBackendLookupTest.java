@@ -1,6 +1,5 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.enums.OrePrefixes.circuit;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -37,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import cpw.mods.fml.common.registry.RegistryDelegate;
-import gregtech.api.enums.Materials;
 import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
 import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
@@ -46,7 +44,6 @@ import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.RecipeMetadataStorage;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -82,7 +79,6 @@ class RecipeMapBackendLookupTest {
                     null,
                     null,
                     false,
-                    false,
                     false)
                 .findFirst()
                 .orElse(null));
@@ -93,7 +89,6 @@ class RecipeMapBackendLookupTest {
                 new FluidStack[0],
                 null,
                 null,
-                false,
                 false,
                 false)
             .collect(Collectors.toList());
@@ -118,7 +113,6 @@ class RecipeMapBackendLookupTest {
                     new FluidStack[0],
                     null,
                     null,
-                    false,
                     false,
                     false)
                 .findFirst()
@@ -149,7 +143,6 @@ class RecipeMapBackendLookupTest {
                 null,
                 null,
                 false,
-                false,
                 false)
             .collect(Collectors.toList());
         assertEquals(Arrays.asList(commonOnlyRecipe, twoInputRecipe), matches);
@@ -171,7 +164,6 @@ class RecipeMapBackendLookupTest {
                 new FluidStack[0],
                 null,
                 null,
-                false,
                 true,
                 true)
             .collect(Collectors.toList());
@@ -197,7 +189,6 @@ class RecipeMapBackendLookupTest {
                     null,
                     recipe,
                     false,
-                    false,
                     false)
                 .findFirst()
                 .orElse(null));
@@ -218,7 +209,7 @@ class RecipeMapBackendLookupTest {
 
         assertSame(
             recipe,
-            backend.matchRecipeStream(items, fluids, null, null, false, false, false)
+            backend.matchRecipeStream(items, fluids, null, null, false, false)
                 .findFirst()
                 .orElse(null));
         assertEquals(0, backend.lookupCandidateStreamCalls);
@@ -240,7 +231,6 @@ class RecipeMapBackendLookupTest {
                     null,
                     null,
                     false,
-                    false,
                     false)
                 .findAny()
                 .isPresent());
@@ -261,7 +251,6 @@ class RecipeMapBackendLookupTest {
                     new FluidStack[0],
                     null,
                     null,
-                    false,
                     true,
                     true)
                 .findAny()
@@ -564,115 +553,6 @@ class RecipeMapBackendLookupTest {
     }
 
     @Test
-    void lookupVerifierReportsConflictForCrossUnificationMatches() {
-        ensureMinecraftStackComparisonItem();
-        String mapName = "gt.recipe.lookup.test.cross_unification";
-        NoOreDictLookupBackend backend = new NoOreDictLookupBackend();
-        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
-        Item representativeItem = item("lookup.validation.cross_unification.representative");
-        Item equivalentItem = item("lookup.validation.cross_unification.equivalent");
-        Item circuitItem = item("lookup.validation.cross_unification.circuit");
-        ItemStack representative = new ItemStack(representativeItem, 1, 0);
-        ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.get(Materials.HV)
-            .toString();
-        boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
-            .containsKey(unificationName);
-        ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
-            .put(unificationName, representative);
-
-        try {
-            GTOreDictUnificator.addAssociation(circuit, Materials.HV, representative);
-            GTOreDictUnificator.addAssociation(circuit, Materials.HV, equivalent);
-            GTOreDictUnificator.resetUnificationEntries();
-
-            backend.compileRecipe(
-                recipe(
-                    new ItemStack[] { representative, new ItemStack(circuitItem, 0, 11) },
-                    new FluidStack[0],
-                    item("lookup.validation.cross_unification.representative.output"),
-                    category));
-            backend.compileRecipe(
-                recipe(
-                    new ItemStack[] { equivalent, new ItemStack(circuitItem, 0, 11) },
-                    new FluidStack[0],
-                    item("lookup.validation.cross_unification.equivalent.output"),
-                    category));
-
-            IllegalStateException error = assertThrows(
-                IllegalStateException.class,
-                () -> RecipeLookupValidator.validateLookup(mapName, backend));
-
-            assertRecipeConflict(error, mapName, 1);
-        } finally {
-            if (hadPreviousTarget) {
-                GTOreDictUnificator.getName2StackMap()
-                    .put(unificationName, previousTarget);
-            } else {
-                GTOreDictUnificator.getName2StackMap()
-                    .remove(unificationName);
-            }
-            GTOreDictUnificator.removeItemData(representative);
-            GTOreDictUnificator.removeItemData(equivalent);
-            GTOreDictUnificator.resetUnificationEntries();
-        }
-    }
-
-    @Test
-    void lookupVerifierReportsConflictWhenItemDataMakesRawInputEquivalent() {
-        ensureMinecraftStackComparisonItem();
-        String mapName = "gt.recipe.lookup.test.item_data";
-        NoOreDictLookupBackend backend = new NoOreDictLookupBackend();
-        RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
-        Item representativeItem = item("lookup.validation.item_data.representative");
-        Item equivalentItem = item("lookup.validation.item_data.equivalent");
-        ItemStack representative = new ItemStack(representativeItem, 1, 0);
-        ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.get(Materials.MV)
-            .toString();
-        boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
-            .containsKey(unificationName);
-        ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
-            .put(unificationName, representative);
-
-        try {
-            GTOreDictUnificator.addAssociation(circuit, Materials.MV, representative);
-            GTOreDictUnificator.addAssociation(circuit, Materials.MV, equivalent);
-            GTOreDictUnificator.resetUnificationEntries();
-
-            backend.compileRecipe(
-                recipe(
-                    new ItemStack[] { representative },
-                    new FluidStack[0],
-                    item("lookup.validation.item_data.representative.output"),
-                    category));
-            backend.compileRecipe(
-                recipe(
-                    new ItemStack[] { equivalent },
-                    new FluidStack[0],
-                    item("lookup.validation.item_data.equivalent.output"),
-                    category));
-
-            IllegalStateException error = assertThrows(
-                IllegalStateException.class,
-                () -> RecipeLookupValidator.validateLookup(mapName, backend));
-
-            assertRecipeConflict(error, mapName, 1);
-        } finally {
-            if (hadPreviousTarget) {
-                GTOreDictUnificator.getName2StackMap()
-                    .put(unificationName, previousTarget);
-            } else {
-                GTOreDictUnificator.getName2StackMap()
-                    .remove(unificationName);
-            }
-            GTOreDictUnificator.removeItemData(representative);
-            GTOreDictUnificator.removeItemData(equivalent);
-            GTOreDictUnificator.resetUnificationEntries();
-        }
-    }
-
-    @Test
     void lookupVerifierIgnoresRecipesWithNoLookupIngredients() {
         EmptyLookupBackend backend = new EmptyLookupBackend();
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
@@ -761,46 +641,6 @@ class RecipeMapBackendLookupTest {
         assertTrue(
             error.getMessage()
                 .contains("oreDictId=12345"));
-    }
-
-    @Test
-    void runtimeItemStackKeysDoNotIncludeGtUnificationTarget() {
-        ensureMinecraftStackComparisonItem();
-        Item representativeItem = item("lookup.unified.representative");
-        Item equivalentItem = item("lookup.unified.equivalent");
-        ItemStack representative = new ItemStack(representativeItem, 1, 0);
-        ItemStack equivalent = new ItemStack(equivalentItem, 1, 0);
-        String unificationName = circuit.get(Materials.LV)
-            .toString();
-        boolean hadPreviousTarget = GTOreDictUnificator.getName2StackMap()
-            .containsKey(unificationName);
-        ItemStack previousTarget = GTOreDictUnificator.getName2StackMap()
-            .put(unificationName, representative);
-
-        try {
-            GTOreDictUnificator.addAssociation(circuit, Materials.LV, representative);
-            GTOreDictUnificator.addAssociation(circuit, Materials.LV, equivalent);
-            GTOreDictUnificator.resetUnificationEntries();
-
-            List<GTRecipeLookupIngredient> group = new ArrayList<>();
-            GTItemStackLookupIngredient.fromRuntime(group::add, equivalent);
-
-            assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntime(equivalent)));
-            assertTrue(group.contains(GTItemStackLookupIngredient.fromRuntimeWildcard(equivalent)));
-            assertFalse(group.contains(GTItemStackLookupIngredient.fromRuntime(representative)));
-            assertFalse(group.contains(GTItemStackLookupIngredient.fromRuntimeWildcard(representative)));
-        } finally {
-            if (hadPreviousTarget) {
-                GTOreDictUnificator.getName2StackMap()
-                    .put(unificationName, previousTarget);
-            } else {
-                GTOreDictUnificator.getName2StackMap()
-                    .remove(unificationName);
-            }
-            GTOreDictUnificator.removeItemData(representative);
-            GTOreDictUnificator.removeItemData(equivalent);
-            GTOreDictUnificator.resetUnificationEntries();
-        }
     }
 
     @Test

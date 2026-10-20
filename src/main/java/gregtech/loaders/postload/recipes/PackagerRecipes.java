@@ -4,21 +4,20 @@ import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 
 public class PackagerRecipes implements Runnable {
 
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Tool_Matches.get(16L),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
+            .itemInputs(ItemList.Tool_Matches.get(16L), MaterialLibAPI.getStack(Materials.Paper, Shapes.plateDouble, 1))
             .itemOutputs(ItemList.Tool_MatchBox_Full.get(1L))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -32,27 +31,21 @@ public class PackagerRecipes implements Runnable {
             .addTo(packagerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Food_Fries.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1))
+            .itemInputs(ItemList.Food_Fries.get(1), MaterialLibAPI.getStack(Materials.Paper, Shapes.plateDouble, 1))
             .itemOutputs(ItemList.Food_Packaged_Fries.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(packagerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Food_PotatoChips.get(1),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1))
+            .itemInputs(ItemList.Food_PotatoChips.get(1), MaterialLibAPI.getStack(Materials.Aluminium, Shapes.foil, 1))
             .itemOutputs(ItemList.Food_Packaged_PotatoChips.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(packagerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Food_ChiliChips.get(1),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1))
+            .itemInputs(ItemList.Food_ChiliChips.get(1), MaterialLibAPI.getStack(Materials.Aluminium, Shapes.foil, 1))
             .itemOutputs(ItemList.Food_Packaged_ChiliChips.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

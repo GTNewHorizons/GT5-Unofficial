@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
 
 import net.minecraft.client.Minecraft;
@@ -12,8 +13,8 @@ import org.lwjgl.opengl.GL11;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
@@ -46,7 +47,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
             renderToolPart(type, stack, toolStats, true);
 
             if ((type == ItemRenderType.INVENTORY)
-                && (MetaGeneratedTool.getPrimaryMaterial(stack) != Materials._NULL)) {
+                && (MetaGeneratedTool.getPrimaryMaterialML(stack) != Materials._NULL)) {
                 if (GTMod.proxy.mRenderItemDurabilityBar) {
                     IIconContainer iconContainer;
                     long damage = MetaGeneratedTool.getToolDamage(stack);
@@ -86,40 +87,31 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
     }
 
     private void renderIcon(IIconContainer iconContainer) {
-        if (iconContainer != null) {
-            IIcon icon = iconContainer.getIcon();
-            IIcon overlay = iconContainer.getOverlayIcon();
-            if (icon != null) {
-                Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                ItemRenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-            }
-            if (overlay != null && overlay != INVISIBLE_ICON) {
-                Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                ItemRenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-            }
+        if (iconContainer == null) return;
+        int passes = iconContainer.getIconPasses();
+        for (int layer = 0; layer < passes; layer++) {
+            IIcon icon = iconContainer.getLayerIcon(layer);
+            if (icon == null || icon == INVISIBLE_ICON) continue;
+            Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            ItemRenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         }
     }
 
     private static void renderToolPart(ItemRenderType type, ItemStack stack, IToolStats toolStats, boolean isToolHead) {
         IIconContainer iconContainer = toolStats.getIcon(isToolHead, stack);
-        if (iconContainer != null) {
-            IIcon icon = iconContainer.getIcon();
-            IIcon overlay = iconContainer.getOverlayIcon();
-            if (icon != null) {
-                Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                short[] modulation = toolStats.getRGBa(isToolHead, stack);
-                GL11.glColor3f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F);
-                ItemRenderUtil.renderItem(type, icon);
-                GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            }
-            if (overlay != null && overlay != INVISIBLE_ICON) {
-                Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                ItemRenderUtil.renderItem(type, overlay);
-            }
+        if (iconContainer == null) return;
+        int passes = iconContainer.getIconPasses();
+        for (int layer = 0; layer < passes; layer++) {
+            IIcon icon = iconContainer.getLayerIcon(layer);
+            if (icon == null || icon == INVISIBLE_ICON) continue;
+            short[] color = iconContainer.hasOverrideIcon() ? UNCOLORED_RGBA
+                : layer == 0 ? toolStats.getRGBa(isToolHead, stack) : iconContainer.getIconColor(layer);
+            Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glColor3f(color[0] / 255.0F, color[1] / 255.0F, color[2] / 255.0F);
+            ItemRenderUtil.renderItem(type, icon);
+            GL11.glColor3f(1.0F, 1.0F, 1.0F);
         }
     }
 }

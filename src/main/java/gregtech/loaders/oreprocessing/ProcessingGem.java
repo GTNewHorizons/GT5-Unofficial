@@ -17,61 +17,61 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialParts;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH GEM???
-                                                                                      // generators
+public class ProcessingGem implements PartRecipeGenerator {
 
-    public ProcessingGem() {
-        OrePrefixes.gem.add(this);
-        OrePrefixes.gemChipped.add(this);
-        OrePrefixes.gemExquisite.add(this);
-        OrePrefixes.gemFlawed.add(this);
-        OrePrefixes.gemFlawless.add(this);
-    }
+    public static final ProcessingGem INSTANCE = new ProcessingGem();
+
+    private ProcessingGem() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        long aMaterialMass = aMaterial.getMass();
-        boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
-        boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
-        boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);
-        boolean aSpecialRecipeReq = aMaterial.contains(SubTag.MORTAR_GRINDABLE);
-        boolean aFuelPower = aMaterial.mFuelPower > 0;
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
+        long materialMass = MaterialUtils.mass(material);
+        boolean noSmashing = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
+        boolean noWorking = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);
+        boolean noSmelting = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING);
+        boolean specialRecipeReq = MaterialUtils.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE);
+        boolean fuelPower = MaterialUtils.fuelPower(material) > 0;
+        boolean unifiable = MaterialUtils.unifiable(material);
+        boolean implodable = !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_BLAST);
 
-        // Blacklist materials which are handled by Werkstoff loader and nether quartz due to its 4:1 ratio
-        if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt
-            || aMaterial == Materials.Spodumene
-            || aMaterial == Materials.NetherQuartz) return;
+        // Nether quartz is skipped due to its 4:1 ratio.
+        if (material == Materials.NetherQuartz) return;
 
-        switch (aPrefix.getName()) {
+        switch (prefix.getName()) {
             case "gem" -> {
                 // fuel recipes
-                if (aFuelPower) {
+                if (fuelPower) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 2)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .itemInputs(GTUtility.copyAmount(1, stack))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material) * 2)
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
-                if (!OrePrefixes.block.isIgnored(aMaterial)
-                    && GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null) {
+                if (!OrePrefixes.block.isIgnored(material) && material.hasShape(BlockShapes.block)) {
                     // Compressor recipes
                     // need to avoid iridium exploit
-                    if (aMaterial != Materials.Iridium) {
+                    if (material != Materials.Iridium) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(9, aStack))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
+                            .itemInputs(GTUtility.copyAmount(9, stack))
+                            .itemOutputs(MaterialLibAPI.getStack(material, BlockShapes.block, 1))
                             .duration(15 * SECONDS)
                             .eut(2)
                             .addTo(compressorRecipes);
@@ -79,19 +79,20 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 }
 
                 // Smelting recipe
-                if (!aNoSmelting) {
+                Material target = MaterialUtils.smeltInto(material);
+                if (!noSmelting && target.hasShape(Shapes.ingot)) {
                     GTModHandler.addSmeltingRecipe(
-                        GTUtility.copyAmount(1, aStack),
-                        GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L));
+                        GTUtility.copyAmount(1, stack),
+                        MaterialLibAPI.getStack(target, Shapes.ingot, 1));
                 }
 
-                if (aNoSmashing) {
+                if (noSmashing) {
                     // Forge hammer recipes
                     {
-                        if (GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1L) != null) {
+                        if (material.hasShape(Shapes.gemFlawed)) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(aStack)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L))
+                                .itemInputs(stack)
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemFlawed, 2))
                                 .duration(3 * SECONDS + 4 * TICKS)
                                 .eut(TierEU.RECIPE_LV / 2)
                                 .addTo(hammerRecipes);
@@ -101,149 +102,137 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     // Forge hammer recipes
                     {
                         // need to avoid iridium exploit
-                        if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null
-                            && aMaterial != Materials.Iridium) {
+                        if (material.hasShape(Shapes.plate) && material != Materials.Iridium) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack))
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 16))
+                                .itemInputs(GTUtility.copyAmount(1, stack))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 1))
+                                .duration(Math.max(materialMass, 1L))
+                                .eut(calculateRecipeEU(material, 16))
                                 .addTo(hammerRecipes);
                         }
                     }
 
                     // Bender recipes
-                    if (aMaterial != Materials.Iridium) {
-                        if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+                    if (material != Materials.Iridium) {
+                        if (material.hasShape(Shapes.plate)) {
                             // Plate
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack))
+                                .itemInputs(GTUtility.copyAmount(1, stack))
                                 .circuit(1)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
-                                .duration((int) Math.max(aMaterialMass * 2L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 24))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 1))
+                                .duration((int) Math.max(materialMass * 2L, 1L))
+                                .eut(calculateRecipeEU(material, 24))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L) != null) {
+                        if (material.hasShape(Shapes.plateDouble)) {
                             // Double plates
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack))
+                                .itemInputs(GTUtility.copyAmount(2, stack))
                                 .circuit(2)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass * 2L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateDouble, 1))
+                                .duration(Math.max(materialMass * 2L, 1L))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L) != null) {
+                        if (material.hasShape(Shapes.plateTriple)) {
                             // Triple plate
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(3, aStack))
+                                .itemInputs(GTUtility.copyAmount(3, stack))
                                 .circuit(3)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass * 3L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateTriple, 1))
+                                .duration(Math.max(materialMass * 3L, 1L))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
+                        if (material.hasShape(Shapes.plateQuadruple)) {
                             // Quadruple plate
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(4, aStack))
+                                .itemInputs(GTUtility.copyAmount(4, stack))
                                 .circuit(4)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass * 4L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateQuadruple, 1))
+                                .duration(Math.max(materialMass * 4L, 1L))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L) != null) {
+                        if (material.hasShape(Shapes.plateQuintuple)) {
                             // Quintuple plate
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(5, aStack))
+                                .itemInputs(GTUtility.copyAmount(5, stack))
                                 .circuit(5)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass * 5L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateQuintuple, 1))
+                                .duration(Math.max(materialMass * 5L, 1L))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
 
-                        if (GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L) != null) {
+                        if (material.hasShape(Shapes.plateDense)) {
                             // dense plate
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(9, aStack))
+                                .itemInputs(GTUtility.copyAmount(9, stack))
                                 .circuit(9)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
-                                .duration(Math.max(aMaterialMass * 9L, 1L))
-                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plateDense, 1))
+                                .duration(Math.max(materialMass * 9L, 1L))
+                                .eut(calculateRecipeEU(material, 96))
                                 .addTo(benderRecipes);
                         }
                     }
                 }
-                if (aNoWorking) {
-                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                if (noWorking) {
+                    if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                         // Lathe recipes
-                        if (GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null
-                            && GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L) != null) {
+                        if (material.hasShape(Shapes.stick) && material.hasShape(Shapes.dustSmall)) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack))
+                                .itemInputs(GTUtility.copyAmount(1, stack))
                                 .itemOutputs(
-                                    GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L),
-                                    GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L))
-                                .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
-                                .eut(calculateRecipeEU(aMaterial, 16))
+                                    MaterialLibAPI.getStack(material, Shapes.stick, 1),
+                                    MaterialLibAPI.getStack(material, Shapes.dustSmall, 2))
+                                .duration(((int) Math.max(materialMass, 1L)) * TICKS)
+                                .eut(calculateRecipeEU(material, 16))
                                 .addTo(latheRecipes);
                         }
                     }
                 } else {
-                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
-                        // Implosion compressor recipes
-                        if (GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1) != null) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(3, aStack))
-                                .itemOutputs(
-                                    GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
-                                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
-                                .duration(1 * SECONDS)
-                                .eut(TierEU.RECIPE_LV)
-                                .metadata(ADDITIVE_AMOUNT, 8)
-                                .addTo(implosionRecipes);
-                        }
+                    if (unifiable) {
+                        if (implodable) addTierImplosion(material, stack, Shapes.gemFlawless);
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L),
+                                MaterialLibAPI.getStack(material, Shapes.gem, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawless.get(aMaterial) });
+                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawless.ingredient(material) });
 
-                            if (aMaterial.contains(SubTag.SMELTING_TO_GEM)) {
+                            if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
                                 GTModHandler.addCraftingRecipe(
-                                    GTUtility.copyAmount(1, aStack),
+                                    GTUtility.copyAmount(1, stack),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.nugget.get(aMaterial) });
+                                    new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.nugget.ingredient(material) });
                             }
 
-                            if (aSpecialRecipeReq) {
+                            if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
+                                    MaterialLibAPI.getStack(material, Shapes.dust, 1),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gem.get(aMaterial) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gem.ingredient(material) });
                             }
                         }
                     }
                 }
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
                     // Laser engraver recipes
                     {
 
-                        if (GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1L) != null) {
+                        if (material.hasShape(Shapes.gemFlawless)) {
                             is.stackSize = 0;
 
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(3, aStack), is)
-                                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1L))
+                                .itemInputs(GTUtility.copyAmount(3, stack), is)
+                                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemFlawless, 1))
                                 .duration(60 * SECONDS)
                                 .eut(TierEU.RECIPE_HV)
                                 .addTo(laserEngraverRecipes);
@@ -254,65 +243,52 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             }
             case "gemChipped" -> {
                 // Fuel recipes
-                if (aFuelPower) {
+                if (fuelPower) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower / 2)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .itemInputs(GTUtility.copyAmount(1, stack))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material) / 2)
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
-                if (!aNoWorking) {
+                if (!noWorking) {
                     // Lathe recipes
-                    if (GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null
-                        && GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1L) != null) {
+                    if (material.hasShape(Shapes.bolt) && material.hasShape(Shapes.dustTiny)) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1, aStack))
+                            .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
-                                GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L),
-                                GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 1L))
-                            .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
+                                MaterialLibAPI.getStack(material, Shapes.bolt, 1),
+                                MaterialLibAPI.getStack(material, Shapes.dustTiny, 1))
+                            .duration(((int) Math.max(materialMass, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(latheRecipes);
                     }
 
-                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
-                        // Implosion compressor recipes
-                        {
-                            if (GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1) != null) {
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .metadata(ADDITIVE_AMOUNT, 8)
-                                    .addTo(implosionRecipes);
-                            }
-                        }
+                    if (unifiable) {
+                        if (implodable) addTierImplosion(material, stack, Shapes.gemFlawed);
 
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                GTOreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, 2L),
+                                MaterialLibAPI.getStack(material, Shapes.gemChipped, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawed.get(aMaterial) });
-                            if (aSpecialRecipeReq) {
+                                new Object[] { "h", "X", 'X', OrePrefixes.gemFlawed.ingredient(material) });
+                            if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L),
+                                    MaterialLibAPI.getStack(material, Shapes.dustSmall, 1),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemChipped.get(aMaterial) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemChipped.ingredient(material) });
                             }
                         }
                     }
                 }
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
                     is.stackSize = 0;
 
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(3, aStack), is)
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1L))
+                        .itemInputs(GTUtility.copyAmount(3, stack), is)
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemFlawed, 1))
                         .duration(30 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
                         .addTo(laserEngraverRecipes);
@@ -321,23 +297,23 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             }
             case "gemExquisite" -> {
                 // Fuel recipes
-                if (aFuelPower) {
+                if (fuelPower) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 8)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .itemInputs(GTUtility.copyAmount(1, stack))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material) * 8)
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
-                if (!aNoWorking) {
-                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
+                if (!noWorking) {
+                    if (unifiable) {
                         // Crafting recipes
                         {
-                            if (aSpecialRecipeReq) {
+                            if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 4L),
+                                    MaterialLibAPI.getStack(material, Shapes.dust, 4),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemExquisite.get(aMaterial) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemExquisite.ingredient(material) });
                             }
                         }
                     }
@@ -346,8 +322,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 // Forge hammer recipes
                 {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(aStack)
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L))
+                        .itemInputs(stack)
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemFlawless, 2))
                         .duration(3 * SECONDS + 4 * TICKS)
                         .eut(TierEU.RECIPE_LV / 2)
                         .addTo(hammerRecipes);
@@ -355,73 +331,60 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             }
             case "gemFlawed" -> {
                 // fuel recipes
-                if (aFuelPower) {
+                if (fuelPower) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .itemInputs(GTUtility.copyAmount(1, stack))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material))
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
-                if (!aNoWorking) {
+                if (!noWorking) {
                     // Lathe recipes
-                    if (GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null
-                        && GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L) != null) {
+                    if (material.hasShape(Shapes.bolt) && material.hasShape(Shapes.dustSmall)) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1, aStack))
+                            .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
-                                GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 2L),
-                                GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 1L))
-                            .duration(((int) Math.max(aMaterialMass, 1L)) * TICKS)
+                                MaterialLibAPI.getStack(material, Shapes.bolt, 2),
+                                MaterialLibAPI.getStack(material, Shapes.dustSmall, 1))
+                            .duration(((int) Math.max(materialMass, 1L)) * TICKS)
                             .eut(12)
                             .addTo(latheRecipes);
                     }
 
-                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
-                        // Implosion compressor recipes
-                        {
-                            if (GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1) != null) {
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .metadata(ADDITIVE_AMOUNT, 8)
-                                    .addTo(implosionRecipes);
-                            }
-                        }
+                    if (unifiable) {
+                        if (implodable) addTierImplosion(material, stack, Shapes.gem);
 
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L),
+                                MaterialLibAPI.getStack(material, Shapes.gemFlawed, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gem.get(aMaterial) });
-                            if (aSpecialRecipeReq) {
+                                new Object[] { "h", "X", 'X', OrePrefixes.gem.ingredient(material) });
+                            if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 2L),
+                                    MaterialLibAPI.getStack(material, Shapes.dustSmall, 2),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawed.get(aMaterial) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawed.ingredient(material) });
                             }
                         }
                     }
                 }
                 GTValues.RA.stdBuilder()
-                    .itemInputs(aStack)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, 2L))
+                    .itemInputs(stack)
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemChipped, 2))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
 
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(3, aStack), is)
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
+                        .itemInputs(GTUtility.copyAmount(3, stack), is)
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gem, 1))
                         .duration(30 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(laserEngraverRecipes);
@@ -431,74 +394,62 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             case "gemFlawless" -> {
 
                 // Fuel recipes
-                if (aFuelPower) {
+                if (fuelPower) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 4)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .itemInputs(GTUtility.copyAmount(1, stack))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material) * 4)
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
-                if (!aNoWorking) {
-                    // Lathe recipes
-                    if (GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L) != null
-                        && GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null) {
+                if (!noWorking) {
+                    // Lathe recipes. LatheRecipes adds a separate, slower one for Lanthanum Hexaboride.
+                    if (material != Materials.LanthanumHexaboride && material.hasShape(Shapes.stickLong)
+                        && material.hasShape(Shapes.dust)) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1, aStack))
+                            .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
-                                GTOreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),
-                                GTOreDictUnificator.getDust(
-                                    aMaterial,
-                                    aPrefix.getMaterialAmount() - OrePrefixes.stickLong.getMaterialAmount()))
-                            .duration(((int) Math.max(aMaterialMass * 5L, 1L)) * TICKS)
+                                MaterialLibAPI.getStack(material, Shapes.stickLong, 1),
+                                MaterialParts.dustOf(
+                                    material,
+                                    prefix.getMaterialAmount() - OrePrefixes.stickLong.getMaterialAmount()))
+                            .duration(((int) Math.max(materialMass * 5L, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_LV / 2)
                             .addTo(latheRecipes);
                     }
 
-                    if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)) {
-                        // Implosion compressor recipes
-                        {
-                            if (GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1) != null) {
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .metadata(ADDITIVE_AMOUNT, 8)
-                                    .addTo(implosionRecipes);
-                            }
-                        }
+                    if (unifiable) {
+                        if (implodable) addTierImplosion(material, stack, Shapes.gemExquisite);
 
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
-                                GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L),
+                                MaterialLibAPI.getStack(material, Shapes.gemFlawless, 2),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', OrePrefixes.gemExquisite.get(aMaterial) });
-                            if (aSpecialRecipeReq) {
+                                new Object[] { "h", "X", 'X', OrePrefixes.gemExquisite.ingredient(material) });
+                            if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
-                                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L),
+                                    MaterialLibAPI.getStack(material, Shapes.dust, 2),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawless.get(aMaterial) });
+                                    new Object[] { "X", "m", 'X', OrePrefixes.gemFlawless.ingredient(material) });
                             }
                         }
                     }
                 }
                 GTValues.RA.stdBuilder()
-                    .itemInputs(aStack)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L))
+                    .itemInputs(stack)
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gem, 2))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(3, aStack), is)
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1L))
+                        .itemInputs(GTUtility.copyAmount(3, stack), is)
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.gemExquisite, 1))
                         .duration(2 * MINUTES)
                         .eut(TierEU.RECIPE_EV)
                         .addTo(laserEngraverRecipes);
@@ -506,5 +457,18 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
             }
             default -> {}
         }
+    }
+
+    /// Implodes three gems of `stack`'s tier into one of the `next` tier, when the material has it.
+    private static void addTierImplosion(Material material, ItemStack stack, Shape next) {
+        ItemStack output = MaterialLibAPI.findStack(material, next, 1);
+        if (output == null) return;
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(3, stack))
+            .itemOutputs(output, MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, 2))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .metadata(ADDITIVE_AMOUNT, 8)
+            .addTo(implosionRecipes);
     }
 }

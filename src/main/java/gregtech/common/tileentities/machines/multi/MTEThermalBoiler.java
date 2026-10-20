@@ -30,12 +30,14 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -49,9 +51,9 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalBoiler>
@@ -75,7 +77,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     private static final Fluid fluidWater = FluidRegistry.WATER;
     private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1)
         .getFluid();
-    private static final Fluid fluidSteam = Materials.Steam.getGas(1)
+    private static final Fluid fluidSteam = MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1)
         .getFluid();
     private static final Fluid fluidSHSteam = GTModHandler.getSuperHeatedSteam(1)
         .getFluid();
@@ -228,7 +230,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
 
     private boolean useWater(int steamAmount) {
         int waterAmount = Math.floorDiv(steamAmount + GTValues.STEAM_PER_WATER - 1, GTValues.STEAM_PER_WATER);
-        if (depleteInput(Materials.Water.getFluid(waterAmount))
+        if (depleteInput(GTUtility.getWater(waterAmount))
             || depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
             dryHeatCounter = 0;
             return true;
@@ -302,7 +304,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                         { "CCFBB", "DFFFE", "DF FE", "DFFFE", "CCFBB" },
                         { "D A E", "DFFFE", "DFFFE", "DFFFE", "DAAAE" },
                         { "     ", "D   E", "C   B", "D   E", "AA AA" } })
-                .addElement('A', ofFrame(MaterialsAlloy.MARAGING350))
+                .addElement('A', ofFrame(Materials.MaragingSteel350))
                 .addElement('B', Casings.BronzePipeCasing.asElement())
                 .addElement('C', Casings.TungstensteelPipeCasing.asElement())
                 .addElement(

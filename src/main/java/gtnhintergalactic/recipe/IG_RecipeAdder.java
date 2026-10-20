@@ -7,10 +7,10 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.StoneType;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.RecipeAdder;
 
@@ -122,6 +122,7 @@ public class IG_RecipeAdder extends RecipeAdder {
      * @param aFluidInputs              Additional input fluids
      * @param aChances                  Chances to get each ore type
      * @param ores                      Ores that should spawn in this asteroid
+     * @param stoneType                 Stone type of the mined ore blocks, or null to mine the ores' dusts
      * @param minSize                   Minimum size of the asteroid in stacks
      * @param maxSize                   Maximum size of the asteroid in stacks
      * @param minDistance               Minimal distance in which you will find the asteroid
@@ -134,14 +135,13 @@ public class IG_RecipeAdder extends RecipeAdder {
      * @return True if recipes could be added, else false
      */
     public static boolean addSpaceMiningRecipe(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
-        int[] aChances, Materials[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance,
+        int[] aChances, Material[] ores, StoneType stoneType, int minSize, int maxSize, int minDistance,
         int maxDistance, int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int recipeWeight) {
         if (ores == null) return false;
 
-        // Map ores to actual items with stack minSize 64
         ItemStack[] outputs = new ItemStack[ores.length];
         for (int i = 0; i < ores.length; i++) {
-            outputs[i] = GTOreDictUnificator.get(orePrefixes, ores[i], 64);
+            outputs[i] = AsteroidData.oreStack(ores[i], stoneType, 64);
         }
 
         return addSpaceMiningRecipe(

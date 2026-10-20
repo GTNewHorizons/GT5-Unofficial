@@ -4,9 +4,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import cofh.core.item.ItemBase;
 import cofh.core.item.ItemBucket;
-import cofh.core.util.energy.FurnaceFuelHandler;
 import cofh.core.util.fluid.BucketHandler;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.thermalfoundation.block.TFBlocks;
@@ -26,13 +25,8 @@ public class TFItems {
             .setCreativeTab(AddToCreativeTab.tabMisc);
 
         GregtechItemList.BlizzRod.set(material.addOreDictItem(1, "rodBlizz"));
-        GregtechItemList.BlizzPowder.set(material.addOreDictItem(2, "dustBlizz"));
-        GregtechItemList.PyrotheumDust.set(material.addOreDictItem(3, "dustPyrotheum"));
-        GregtechItemList.CryotheumDust.set(material.addOreDictItem(4, "dustCryotheum"));
 
-        FurnaceFuelHandler.registerFuel(GregtechItemList.PyrotheumDust.get(1), 2400);
-
-        GTOreDictUnificator.registerOre("stickBlizz", GregtechItemList.BlizzRod.get(1));
+        OreDictUtils.registerOre("stickBlizz", GregtechItemList.BlizzRod.get(1));
     }
 
     public static void init() {

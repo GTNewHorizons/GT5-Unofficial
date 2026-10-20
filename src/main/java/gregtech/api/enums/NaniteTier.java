@@ -4,8 +4,14 @@ import java.text.MessageFormat;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 
 public enum NaniteTier {
 
@@ -38,7 +44,7 @@ public enum NaniteTier {
         return tier;
     }
 
-    public Materials getMaterial() {
+    public Material getMaterial() {
         return switch (this) {
             case Carbon -> Materials.Carbon;
             case Glowstone -> Materials.Glowstone;
@@ -57,17 +63,17 @@ public enum NaniteTier {
 
     public ItemStack getStack() {
         if (this.stack == null) {
-            stack = GTOreDictUnificator.get(OrePrefixes.nanite, getMaterial(), 1);
+            stack = MaterialLibAPI.getStack(getMaterial(), Shapes.nanite, 1);
         }
 
         return stack.copy();
     }
 
     public String describe() {
-        return MessageFormat.format("{0} (Tier {1})", getMaterial().getLocalizedName(), tier);
+        return MessageFormat.format("{0} (Tier {1})", MaterialUtils.localizedName(getMaterial()), tier);
     }
 
-    public static NaniteTier fromMaterial(Materials mat) {
+    public static NaniteTier fromMaterial(Material mat) {
         if (mat == Materials.Carbon) return Carbon;
         if (mat == Materials.Glowstone) return Glowstone;
         if (mat == Materials.Silver) return Silver;
@@ -87,11 +93,11 @@ public enum NaniteTier {
     public static NaniteTier fromStack(ItemStack stack) {
         if (stack == null) return null;
 
-        ItemData data = GTOreDictUnificator.getAssociation(stack);
+        ItemData data = MaterialData.getAssociation(stack);
 
         if (data == null) return null;
-        if (data.mPrefix != OrePrefixes.nanite) return null;
+        if (data.prefix != OrePrefixes.nanite) return null;
 
-        return fromMaterial(data.mMaterial.mMaterial);
+        return fromMaterial(data.material.material);
     }
 }

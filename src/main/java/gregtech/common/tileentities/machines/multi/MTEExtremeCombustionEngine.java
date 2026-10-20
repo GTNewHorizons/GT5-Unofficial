@@ -31,17 +31,20 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
@@ -140,7 +143,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
             .beginStructureBlock(10, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
             .addCasing("30-33", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("32", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
+            .addCasing("32", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Polytetrafluoroethylene)), false)
             .addCasing("30", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
             .addCasing("20", Casings.PTFEPipeCasing.getLocalizedName(), false)
             .addCasing("12", Casings.TungstensteelFireboxCasing.getLocalizedName(), false)
@@ -203,7 +206,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
     }
 
     protected FluidStack getBooster(long amount) {
-        return Materials.LiquidOxygen.getFluid(amount);
+        return MaterialUtils.fluid(Materials.LiquidOxygen, amount);
     }
 
     protected int getEfficiencyIncrease() {
@@ -360,8 +363,11 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                 }
 
                 // Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
-                if ((mRuntime % 72 == 0 || mRuntime == 0)
-                    && !depleteInput(Materials.Lubricant.getFluid((boostEu ? 2L : 1L) * getAdditiveFactor())))
+                if ((mRuntime % 72 == 0 || mRuntime == 0) && !depleteInput(
+                    MaterialLibAPI.getFluidStack(
+                        Materials.Lubricant,
+                        FluidShapes.fluidLiquid,
+                        (int) ((boostEu ? 2 : 1) * getAdditiveFactor()))))
                     return SimpleCheckRecipeResult.ofFailure("no_lubricant");
 
                 fuelRemaining = tFluid.amount; // Record available fuel

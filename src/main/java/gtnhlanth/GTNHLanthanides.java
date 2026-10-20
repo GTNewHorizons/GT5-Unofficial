@@ -1,6 +1,5 @@
 package gtnhlanth;
 
-import bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -9,9 +8,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.enums.Mods;
 import gtnhlanth.common.CommonProxy;
-import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.loader.BotRecipes;
 import gtnhlanth.loader.RecipeLoader;
@@ -35,9 +32,6 @@ public class GTNHLanthanides {
     @EventHandler
     public static void preInit(FMLPreInitializationEvent e) {
 
-        WerkstoffAdderRegistry.addWerkstoffAdder(new WerkstoffMaterialPool());
-        WerkstoffAdderRegistry.addWerkstoffAdder(new BotWerkstoffMaterialPool());
-
         LanthItemList.registerTypical();
         LanthItemList.registerGTMTE();
 
@@ -47,7 +41,6 @@ public class GTNHLanthanides {
     @EventHandler
     public static void init(FMLInitializationEvent e) {
         proxy.init(e);
-        WerkstoffMaterialPool.runInit();
     }
 
     @EventHandler

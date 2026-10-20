@@ -1,12 +1,5 @@
 package gregtech.loaders.postload;
 
-import static gtPlusPlus.core.material.MaterialMisc.AMMONIUM;
-import static gtPlusPlus.core.material.MaterialsOres.CRYOLITE;
-import static gtPlusPlus.core.material.nuclear.MaterialsFluorides.BERYLLIUM_HYDROXIDE;
-import static gtPlusPlus.core.material.nuclear.MaterialsFluorides.FLUORITE;
-import static gtPlusPlus.core.material.nuclear.MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE;
-import static gtPlusPlus.core.material.nuclear.MaterialsNuclides.Li2BeF4;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +13,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.CircuitComponentFakeItem;
-import gtPlusPlus.core.material.MaterialsElements;
 import kubatech.loaders.BlockLoader;
 
 public class MissingMappingsHandler {
@@ -30,8 +22,6 @@ public class MissingMappingsHandler {
     private static final Remapper REMAPPER = new Remapper()
         // Block remappings
         .remapBlock("dreamcraft:gt.blockcasingsNH", GregTechAPI.sBlockCasingsNH)
-        .remapBlock("miscutils:oreCryolite", CRYOLITE.getOreBlock(1))
-        .remapBlock("miscutils:oreFluorite", FLUORITE.getOreBlock(1))
         .remapBlock("EMT:EMT_GTBLOCK_CASEING", BlockLoader.defcCasingBlock)
         .remapBlock("GalaxySpace:spaceelevatorparts", GregTechAPI.sBlockCasingsSE)
         .remapBlock("GalaxySpace:spaceelevatormotors", GregTechAPI.sBlockCasingsSEMotor)
@@ -40,32 +30,7 @@ public class MissingMappingsHandler {
         .remapBlock("GalaxySpace:machineframes", GregTechAPI.sBlockCasingsSiphon)
 
         // Item remappings
-        .remapItem("miscutils:Ammonium", AMMONIUM.getCell(1).getItem())
-        .remapItem("miscutils:BerylliumHydroxide",BERYLLIUM_HYDROXIDE.getCell(1).getItem())
-        .remapItem("miscutils:Bromine", MaterialsElements.getInstance().BROMINE.getCell(1).getItem())
-        .remapItem("miscutils:Krypton", MaterialsElements.getInstance().KRYPTON.getCell(1).getItem())
-
-        .remapItem("miscutils:itemCellZirconiumTetrafluoride", ZIRCONIUM_TETRAFLUORIDE.getCell(1).getItem())
-        .remapItem("miscutils:Li2BeF4", Li2BeF4.getCell(1).getItem())
         .remapItem("gregtech:gt.gt.fakecircuitcomponent", CircuitComponentFakeItem.INSTANCE)
-
-        .remapItem("miscutils:itemDustTinyCryolite", CRYOLITE.getTinyDust(1).getItem())
-        .remapItem("miscutils:itemDustSmallCryolite", CRYOLITE.getSmallDust(1).getItem())
-        .remapItem("miscutils:itemDustCryolite", CRYOLITE.getDust(1).getItem())
-        .remapItem("miscutils:dustPureCryolite", CRYOLITE.getDustPurified(1).getItem())
-        .remapItem("miscutils:dustImpureCryolite", CRYOLITE.getDustImpure(1).getItem())
-        .remapItem("miscutils:crushedCryolite", CRYOLITE.getCrushed(1).getItem())
-        .remapItem("miscutils:crushedPurifiedCryolite", CRYOLITE.getCrushedPurified(1).getItem())
-        .remapItem("miscutils:crushedCentrifugedCryolite", CRYOLITE.getCrushedCentrifuged(1).getItem())
-
-        .remapItem("miscutils:itemDustTinyFluorite", FLUORITE.getTinyDust(1).getItem())
-        .remapItem("miscutils:itemDustSmallFluorite", FLUORITE.getSmallDust(1).getItem())
-        .remapItem("miscutils:itemDustFluorite", FLUORITE.getDust(1).getItem())
-        .remapItem("miscutils:dustPureFluorite", FLUORITE.getDustPurified(1).getItem())
-        .remapItem("miscutils:dustImpureFluorite", FLUORITE.getDustImpure(1).getItem())
-        .remapItem("miscutils:crushedFluorite", FLUORITE.getCrushed(1).getItem())
-        .remapItem("miscutils:crushedPurifiedFluorite", FLUORITE.getCrushedPurified(1).getItem())
-        .remapItem("miscutils:crushedCentrifugedFluorite", FLUORITE.getCrushedCentrifuged(1).getItem())
 
         .remapItem("GalaxySpace:item.SpaceElevatorParts", ItemList.NanotubeSpool.getItem())
         .remapItem("GalaxySpace:item.MiningDrone", ItemList.MiningDroneLV.getItem())

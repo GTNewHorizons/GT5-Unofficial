@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.chains;
 
-import static bartworks.system.material.WerkstoffLoader.FluorBuergerit;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
@@ -24,22 +23,25 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
-import goodgenerator.items.GGMaterial;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
-import gtPlusPlus.core.material.Particle;
+import gtPlusPlus.core.item.chemistry.Particle;
 
 public class PurifiedWaterRecipes {
 
@@ -52,9 +54,12 @@ public class PurifiedWaterRecipes {
         // Grade 1 - Clarifier
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.ActivatedCarbonFilterMesh.get(1))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .fluidOutputs(Materials.Grade1PurifiedWater.getFluid(900))
-            .itemOutputs(new ItemStack(Items.stick, 1), Materials.Stone.getDust(1), Materials.Gold.getNuggets(1))
+            .fluidInputs(GTUtility.getWater(1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 900))
+            .itemOutputs(
+                new ItemStack(Items.stick, 1),
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.nugget, 1))
             .outputChances(1000, 500, 100)
             .duration(duration)
             .eut(TierEU.RECIPE_LuV)
@@ -63,42 +68,42 @@ public class PurifiedWaterRecipes {
 
         // Activated Carbon Line
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Carbon.getDust(1))
-            .fluidInputs(Materials.PhosphoricAcid.getFluid(1_000))
-            .itemOutputs(Materials.PreActivatedCarbon.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcid, FluidShapes.fluidLiquid, 1_000))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.PreActivatedCarbon, Shapes.dust, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(multiblockChemicalReactorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.PreActivatedCarbon.getDust(1))
-            .itemOutputs(Materials.DirtyActivatedCarbon.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.PreActivatedCarbon, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.DirtyActivatedCarbon, Shapes.dust, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .specialValue((int) HeatingCoilLevel.EV.getHeat())
             .addTo(blastFurnaceRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.DirtyActivatedCarbon.getDust(1))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .itemOutputs(Materials.ActivatedCarbon.getDust(1))
-            .fluidOutputs(Materials.PhosphoricAcid.getFluid(1_000))
+            .itemInputs(MaterialLibAPI.getStack(Materials.DirtyActivatedCarbon, Shapes.dust, 1))
+            .fluidInputs(GTUtility.getWater(1_000))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.ActivatedCarbon, Shapes.dust, 1))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                Materials.ActivatedCarbon.getDust(64),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16))
+                MaterialLibAPI.getStack(Materials.ActivatedCarbon, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Zinc, Shapes.foil, 16))
             .itemOutputs(ItemList.ActivatedCarbonFilterMesh.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
         // Grade 2 - Ozonation
-        for (ItemStack lens : GTOreDictUnificator.getOres("craftingLensBlue")) {
+        for (ItemStack lens : OreDictionary.getOres("craftingLensBlue")) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(0, lens))
-                .fluidInputs(Materials.Air.getGas(10_000))
-                .fluidOutputs(Materials.Ozone.getGas(2_000))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Air, FluidShapes.fluidGas, 10_000))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ozone, FluidShapes.fluidGas, 2_000))
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(laserEngraverRecipes);
@@ -110,10 +115,16 @@ public class PurifiedWaterRecipes {
         for (int tier = 1; tier <= 4; ++tier) {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
-                    Materials.Grade1PurifiedWater.getFluid(1_000),
-                    Materials.Ozone.getGas(1000 * (long) GTUtility.powInt(2, (tier + 6))))
-                .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(900))
-                .itemOutputs(Materials.Manganese.getDust(1), Materials.Iron.getDust(1), Materials.Sulfur.getDust(1))
+                    MaterialLibAPI.getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 1_000),
+                    MaterialLibAPI.getFluidStack(
+                        Materials.Ozone,
+                        FluidShapes.fluidGas,
+                        (int) (1000 * (long) GTUtility.powInt(2, (tier + 6)))))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade2PurifiedWater, FluidShapes.fluidLiquid, 900))
+                .itemOutputs(
+                    MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1))
                 .outputChances(500, 500, 500)
                 .duration(duration)
                 .ignoreCollision()
@@ -125,15 +136,15 @@ public class PurifiedWaterRecipes {
         // Grade 3 - Flocculation.
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.Grade2PurifiedWater.getFluid(1_000),
-                Materials.PolyAluminiumChloride.getFluid(100_000))
+                MaterialLibAPI.getFluidStack(Materials.Grade2PurifiedWater, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.PolyAluminiumChloride, FluidShapes.fluidLiquid, 100_000))
             .fluidOutputs(
-                Materials.Grade3PurifiedWater.getFluid(900),
-                Materials.FlocculationWasteLiquid.getFluid(100_000))
+                MaterialLibAPI.getFluidStack(Materials.Grade3PurifiedWater, FluidShapes.fluidLiquid, 900),
+                MaterialLibAPI.getFluidStack(Materials.FlocculationWasteLiquid, FluidShapes.fluidLiquid, 100_000))
             .itemOutputs(
                 new ItemStack(Items.clay_ball, 1),
-                Materials.QuartzSand.getDust(1),
-                Materials.PolyvinylChloride.getNuggets(1))
+                MaterialLibAPI.getStack(Materials.QuartzSand, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.nugget, 1))
             .outputChances(1000, 500, 100)
             .duration(duration)
             .eut(TierEU.RECIPE_ZPM)
@@ -142,12 +153,12 @@ public class PurifiedWaterRecipes {
             .addTo(purificationFlocculationRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Grade2PurifiedWater.getFluid(1_000))
-            .fluidOutputs(Materials.Grade3PurifiedWater.getFluid(900))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade2PurifiedWater, FluidShapes.fluidLiquid, 1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade3PurifiedWater, FluidShapes.fluidLiquid, 900))
             .itemOutputs(
                 new ItemStack(Items.clay_ball, 1),
-                Materials.QuartzSand.getDust(1),
-                Materials.PolyvinylChloride.getNuggets(1))
+                MaterialLibAPI.getStack(Materials.QuartzSand, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.nugget, 1))
             .outputChances(1000, 500, 100)
             .duration(duration)
             .eut(TierEU.RECIPE_ZPM)
@@ -157,26 +168,33 @@ public class PurifiedWaterRecipes {
 
         // 2 Al(OH)3 + 3 HCl -> Al2(OH)3 Cl3 + 3 H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Aluminiumhydroxide.getDust(8))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(3_000))
-            .fluidOutputs(Materials.PolyAluminiumChloride.getFluid(1_000), Materials.Water.getFluid(3_000))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminiumhydroxide, Shapes.dust, 8))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 3_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials.PolyAluminiumChloride, FluidShapes.fluidLiquid, 1_000),
+                GTUtility.getWater(3_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(10_000))
-            .itemOutputs(Materials.Aluminium.getDust(20))
-            .fluidOutputs(Materials.Oxygen.getGas(30_000), Materials.HydrochloricAcid.getFluid(30_000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.FlocculationWasteLiquid, FluidShapes.fluidLiquid, 10_000))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, 20))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 30_000),
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 30_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
 
         // Grade 4 - pH adjustment
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SodiumHydroxide.getDust(64))
-            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1_000), Materials.HydrochloricAcid.getFluid(1_000))
-            .fluidOutputs(Materials.Grade4PurifiedWater.getFluid(900))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 64))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Grade3PurifiedWater, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade4PurifiedWater, FluidShapes.fluidLiquid, 900))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_ZPM)
@@ -185,8 +203,8 @@ public class PurifiedWaterRecipes {
             .addTo(purificationPhAdjustmentRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1_000))
-            .fluidOutputs(Materials.Grade4PurifiedWater.getFluid(900))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade3PurifiedWater, FluidShapes.fluidLiquid, 1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade4PurifiedWater, FluidShapes.fluidLiquid, 900))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_ZPM)
@@ -197,10 +215,10 @@ public class PurifiedWaterRecipes {
         // Grade 5 - Plasma Heating
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                Materials.Grade4PurifiedWater.getFluid(1_000),
-                Materials.Helium.getPlasma(10L),
-                Materials.SuperCoolant.getFluid(100L))
-            .fluidOutputs(Materials.Grade5PurifiedWater.getFluid(900))
+                MaterialLibAPI.getFluidStack(Materials.Grade4PurifiedWater, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, 10),
+                MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 100))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade5PurifiedWater, FluidShapes.fluidLiquid, 900))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UV)
@@ -209,8 +227,8 @@ public class PurifiedWaterRecipes {
             .addTo(purificationPlasmaHeatingRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Grade4PurifiedWater.getFluid(1_000))
-            .fluidOutputs(Materials.Grade5PurifiedWater.getFluid(900))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade4PurifiedWater, FluidShapes.fluidLiquid, 1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade5PurifiedWater, FluidShapes.fluidLiquid, 900))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UV)
@@ -218,25 +236,22 @@ public class PurifiedWaterRecipes {
             .hidden()
             .addTo(purificationPlasmaHeatingRecipes);
 
-        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(GGMaterial.orundum.get(OrePrefixes.lens, 1));
-        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Amber, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(MaterialLibAPI.getStack(Materials.Orundum, Shapes.lens, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(MaterialLibAPI.getStack(Materials.Amber, Shapes.lens, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(MaterialLibAPI.getStack(Materials.InfusedAir, Shapes.lens, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(MaterialLibAPI.getStack(Materials.Emerald, Shapes.lens, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(MaterialLibAPI.getStack(Materials.ManaDiamond, Shapes.lens, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(MaterialLibAPI.getStack(Materials.BlueTopaz, Shapes.lens, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(MaterialLibAPI.getStack(Materials.Amethyst, Shapes.lens, 1));
         MTEPurificationUnitUVTreatment.LENS_ITEMS
-            .add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.InfusedAir, 1));
-        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Emerald, 1));
-        MTEPurificationUnitUVTreatment.LENS_ITEMS
-            .add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.ManaDiamond, 1));
-        MTEPurificationUnitUVTreatment.LENS_ITEMS
-            .add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.BlueTopaz, 1));
-        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Amethyst, 1));
-        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(FluorBuergerit.get(OrePrefixes.lens, 1));
-        MTEPurificationUnitUVTreatment.LENS_ITEMS
-            .add(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 1));
+            .add(MaterialLibAPI.getStack(Materials.FluorBuergerite, Shapes.lens, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(MaterialLibAPI.getStack(Materials.Dilithium, Shapes.lens, 1));
 
         // Grade 6 - UV treatment
         GTValues.RA.stdBuilder()
             .itemInputs(MTEPurificationUnitUVTreatment.LENS_ITEMS.toArray(new ItemStack[9]))
-            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(1_000))
-            .fluidOutputs(Materials.Grade6PurifiedWater.getFluid(900))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade5PurifiedWater, FluidShapes.fluidLiquid, 1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade6PurifiedWater, FluidShapes.fluidLiquid, 900))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UV)
@@ -245,8 +260,8 @@ public class PurifiedWaterRecipes {
             .addTo(purificationUVTreatmentRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(1_000))
-            .fluidOutputs(Materials.Grade6PurifiedWater.getFluid(900))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade5PurifiedWater, FluidShapes.fluidLiquid, 1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade6PurifiedWater, FluidShapes.fluidLiquid, 900))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UV)
@@ -256,8 +271,8 @@ public class PurifiedWaterRecipes {
 
         // Grade 7 - Degasification
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1_000))
-            .fluidOutputs(Materials.Grade7PurifiedWater.getFluid(900))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade6PurifiedWater, FluidShapes.fluidLiquid, 1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade7PurifiedWater, FluidShapes.fluidLiquid, 900))
             .ignoreCollision()
             .duration(duration)
             .eut(TierEU.RECIPE_UHV)
@@ -285,7 +300,8 @@ public class PurifiedWaterRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(1))
                 .circuit(i + 1)
-                .fluidInputs(Materials.StableBaryonicMatter.getFluid(1_000))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(Materials.StableBaryonicMatter, FluidShapes.fluidLiquid, 1_000))
                 .itemOutputs(catalystInputs[i])
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
@@ -301,22 +317,22 @@ public class PurifiedWaterRecipes {
             .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Tengam.get(1))
             .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_UHV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CosmicNeutronium, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Neutronium, 64),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 },
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 },
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 16),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 16),
+                MaterialLibAPI.getStack(Materials.Tritanium, Shapes.plate, 16),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plate, 16),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.Tritanium, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.wireFine, 64),
+                new Object[] { Circuits.UHV.getIngredient(), 16 },
+                new Object[] { Circuits.UEV.getIngredient(), 8 },
                 ItemList.Field_Generator_UEV.get(1))
             .fluidInputs(
-                Materials.Neutronium.getMolten(16 * INGOTS),
-                Materials.Infinity.getMolten(16 * INGOTS),
-                Materials.Tritanium.getMolten(16 * INGOTS),
-                Materials.CosmicNeutronium.getMolten(16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Tritanium, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.CosmicNeutronium, FluidShapes.fluidMolten, 16 * INGOTS))
             .itemOutputs(ItemList.Quark_Catalyst_Housing.get(1))
             .eut(TierEU.RECIPE_UIV)
             .duration(60 * SECONDS)
@@ -325,10 +341,11 @@ public class PurifiedWaterRecipes {
         GTValues.RA.stdBuilder()
             // Fake item inputs
             .itemInputs(catalystInputs)
-            .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade7PurifiedWater, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(
-                Materials.Grade8PurifiedWater.getFluid(900),
-                Materials.StableBaryonicMatter.getFluid(extraBaryonicOutput))
+                MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 900),
+                MaterialLibAPI
+                    .getFluidStack(Materials.StableBaryonicMatter, FluidShapes.fluidLiquid, extraBaryonicOutput))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(10000, 100)
             .ignoreCollision()
@@ -340,10 +357,11 @@ public class PurifiedWaterRecipes {
 
         // real recipe
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade7PurifiedWater, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(
-                Materials.Grade8PurifiedWater.getFluid(900),
-                Materials.StableBaryonicMatter.getFluid(extraBaryonicOutput))
+                MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 900),
+                MaterialLibAPI
+                    .getFluidStack(Materials.StableBaryonicMatter, FluidShapes.fluidLiquid, extraBaryonicOutput))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(10000, 100)
             .ignoreCollision()

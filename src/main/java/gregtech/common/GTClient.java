@@ -44,6 +44,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizons.navigator.api.NavigatorApi;
+import com.ruling_0.materiallib.api.MaterialLibClient;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -66,11 +67,11 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolboxSlot;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;
@@ -81,6 +82,8 @@ import gregtech.api.interfaces.IUpdatePlayerMovement;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIconSets;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
@@ -102,7 +105,9 @@ import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
+import gregtech.client.MaterialFormulaTooltip;
 import gregtech.client.SeekingOggCodec;
+import gregtech.client.handler.AnimatedBlockTextureHandler;
 import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.client.renderer.entity.RenderDrone;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
@@ -126,6 +131,7 @@ import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.GTRendererCasing;
+import gregtech.common.render.GTStitchedMaterialTexture;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.NEIFluidRenderer;
@@ -133,11 +139,18 @@ import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.RenderInit;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.CircuitComponentItemRenderer;
+import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.DataStickRenderer;
+import gregtech.common.render.items.GaiaSpiritRenderer;
+import gregtech.common.render.items.GlitchEffectRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
+import gregtech.common.render.items.InfinityRenderer;
 import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
+import gregtech.common.render.items.RainbowOverlayRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
+import gregtech.common.render.items.TranscendentMetalRenderer;
+import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
 import gregtech.common.tileentities.machines.multi.nanochip.VacuumConveyorPipeClientStateManager;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
@@ -193,13 +206,14 @@ public class GTClient extends GTProxy {
         super.onPreInitialization(event);
         SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+        GTMaterialIconSets.register();
         RenderInit.registerEarly();
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
         mPreference = new GTClientPreference();
         cameraViewportManager = new CameraViewportClientManager();
-        Materials.initClient();
+        registerMaterialItemRenderers();
 
         ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
         ClientCommandHandler.instance.registerCommand(new PowerGogglesCommand());
@@ -213,6 +227,25 @@ public class GTClient extends GTProxy {
     @Optional.Method(modid = Mods.ModIDs.NAVIGATOR)
     private void registerMapLayers() {
         NavigatorApi.registerLayerManager(PowerfailLayerManager.INSTANCE);
+    }
+
+    /// Registers the special item renderers a handful of materials carry.
+    private static void registerMaterialItemRenderers() {
+        MaterialLibClient.setItemRenderer(Materials.TranscendentMetal, new TranscendentMetalRenderer());
+        MaterialLibClient.setItemRenderer(Materials.GaiaSpirit, new GaiaSpiritRenderer());
+        MaterialLibClient.setItemRenderer(Materials.Infinity, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.CosmicNeutronium, new CosmicNeutroniumRenderer());
+        MaterialLibClient.setItemRenderer(Materials.Universium, new UniversiumRenderer());
+        MaterialLibClient.setItemRenderer(Materials.Eternity, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.MagMatter, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.SixPhasedCopper, new GlitchEffectRenderer());
+        MaterialLibClient.setItemRenderer(Materials.GravitonShard, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.ExoHalkonite, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.HotExoHalkonite, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(
+            Materials.PrismaticNaquadah,
+            new RainbowOverlayRenderer(MaterialUtils.rgba(Materials.PrismaticNaquadah)));
+        MaterialLibClient.setItemRenderer(Materials.Amalgatite, new InfinityRenderer());
     }
 
     @Override
@@ -270,6 +303,7 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(mPollutionRenderer);
         FMLCommonHandler.instance().bus().register(mPollutionRenderer);
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
+        MinecraftForge.EVENT_BUS.register(new MaterialFormulaTooltip());
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEDebugStructureWriter.EventHandler());
         MinecraftForge.EVENT_BUS.register(new GTWorkAreaRenderer());
@@ -281,6 +315,14 @@ public class GTClient extends GTProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(new CondensateAnimationTickHandler());
+        if (Mods.Angelica.isModLoaded()) {
+            AnimatedBlockTextureHandler animatedBlockTextureHandler = new AnimatedBlockTextureHandler();
+            FMLCommonHandler.instance()
+                .bus()
+                .register(animatedBlockTextureHandler);
+            ((IReloadableResourceManager) Minecraft.getMinecraft()
+                .getResourceManager()).registerReloadListener(animatedBlockTextureHandler);
+        }
 
         RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
         RenderManager.instance.entityRenderMap.put(EntityDrone.class, new RenderDrone());
@@ -493,6 +535,7 @@ public class GTClient extends GTProxy {
     @SubscribeEvent
     public void onFinishTextureStitch(TextureStitchEvent.Post event) {
         ResourceUtils.clearCache();
+        GTStitchedMaterialTexture.onAtlasStitched();
     }
 
     private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {

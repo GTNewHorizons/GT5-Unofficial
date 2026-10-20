@@ -33,17 +33,19 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -286,7 +288,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         return Casings.ReinforcedSteamTurbineCasing;
     }
 
-    protected Materials getFrameMaterial() {
+    protected Material getFrameMaterial() {
         return Materials.Steel;
     }
 
@@ -307,13 +309,14 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
             return false;
         }
 
-        Materials material = MetaGeneratedTool.getPrimaryMaterial(aTurbine);
-        return material != null && material.mToolSpeed > 0;
+        Material material = MetaGeneratedTool.getPrimaryMaterialML(aTurbine);
+        return material != null && MaterialUtils.toolSpeed(material) > 0;
     }
 
     private static boolean isSameTurbineType(ItemStack firstTurbine, ItemStack secondTurbine) {
         return isValidTurbine(firstTurbine) && isValidTurbine(secondTurbine)
-            && MetaGeneratedTool.getPrimaryMaterial(firstTurbine) == MetaGeneratedTool.getPrimaryMaterial(secondTurbine)
+            && MetaGeneratedTool.getPrimaryMaterialML(firstTurbine)
+                == MetaGeneratedTool.getPrimaryMaterialML(secondTurbine)
             && getTurbineSize(firstTurbine) == getTurbineSize(secondTurbine);
     }
 
@@ -379,7 +382,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
 
     public boolean areAllTurbinesTheSame() {
         ItemStack aBaseTurbine = null;
-        Materials aBaseMat = null;
+        Material aBaseMat = null;
         int aBaseSize = 0;
 
         for (int i = 0; i < turbineHolder.getSlots(); i++) {
@@ -389,9 +392,9 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
             }
             if (aBaseTurbine == null) {
                 aBaseTurbine = aTurbine;
-                aBaseMat = MetaGeneratedTool.getPrimaryMaterial(aTurbine);
+                aBaseMat = MetaGeneratedTool.getPrimaryMaterialML(aTurbine);
                 aBaseSize = getTurbineSize(aTurbine);
-            } else if (aBaseMat != MetaGeneratedTool.getPrimaryMaterial(aTurbine)
+            } else if (aBaseMat != MetaGeneratedTool.getPrimaryMaterialML(aTurbine)
                 || aBaseSize != getTurbineSize(aTurbine)) {
                     return false;
                 }

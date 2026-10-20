@@ -51,12 +51,12 @@ import gregtech.api.recipe.lookup.GTOreDictLookupIngredient;
 import gregtech.api.recipe.lookup.GTRecipeLookup;
 import gregtech.api.recipe.lookup.GTRecipeLookupBuilder;
 import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
  * Responsible for recipe addition / search for recipemap.
@@ -87,6 +87,7 @@ public class RecipeMapBackend {
      * All the recipes belonging to this backend, indexed by recipe category.
      */
     private final Map<RecipeCategory, Collection<GTRecipe>> recipesByCategory = new HashMap<>();
+    private final Int2ObjectOpenHashMap<List<GTRecipe>> recipesByIdentityHash = new Int2ObjectOpenHashMap<>();
 
     /** Size of the cache map below. */
     public static final int CACHE_MAP_SIZE = 256;
@@ -152,15 +153,19 @@ public class RecipeMapBackend {
 
     // region add recipe
 
-    /**
-     * Adds the supplied recipe to the recipe list and index, without any check.
-     *
-     * @return Supplied recipe.
-     */
+    /// Adds the supplied recipe to the recipe list and index, unless an identical recipe (see
+    /// [GTRecipe#isIdenticalTo]) is already registered.
+    ///
+    /// @return the supplied recipe, or the identical recipe already registered
     public GTRecipe compileRecipe(GTRecipe recipe) {
         if (recipe.getRecipeCategory() == null) {
             recipe.setRecipeCategory(recipeMap.getDefaultRecipeCategory());
         }
+        List<GTRecipe> sameHash = recipesByIdentityHash.computeIfAbsent(recipe.identityHash(), k -> new ArrayList<>(1));
+        for (GTRecipe existing : sameHash) {
+            if (existing != recipe && recipe.isIdenticalTo(existing)) return existing;
+        }
+        sameHash.add(recipe);
 
         recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
             .add(recipe);
@@ -289,7 +294,7 @@ public class RecipeMapBackend {
             .removeIf(
                 entry -> entry.getValue()
                     .isEmpty());
-        rebuildLookupStructures(false);
+        rebuildLookupStructures();
     }
 
     /**
@@ -310,13 +315,14 @@ public class RecipeMapBackend {
     // endregion
 
     /**
-     * Re-unificates all the items present in recipes. Also reflects recipe removals.
+     * Rebuilds the recipe lookup, reflecting recipe removals.
      */
     public void reInit() {
-        rebuildLookupStructures(true);
+        rebuildLookupStructures();
     }
 
     private void clearLookupStructures() {
+        recipesByIdentityHash.clear();
         meaningfulItems.clear();
         meaningfulFluids.clear();
         Arrays.fill(cacheMap, null);
@@ -324,17 +330,18 @@ public class RecipeMapBackend {
         recipeLookupState = GTRecipeLookupBuilder.newLookupState();
     }
 
-    private void rebuildLookupStructures(boolean reUnificate) {
+    private void rebuildLookupStructures() {
+        recipesByIdentityHash.clear();
+        for (GTRecipe recipe : allRecipes()) {
+            recipesByIdentityHash.computeIfAbsent(recipe.identityHash(), k -> new ArrayList<>(1))
+                .add(recipe);
+        }
         meaningfulItems.clear();
         meaningfulFluids.clear();
         Arrays.fill(cacheMap, null);
 
         GTRecipeLookupBuilder lookupBuilder = new GTRecipeLookupBuilder();
         for (GTRecipe recipe : allRecipes()) {
-            if (reUnificate) {
-                GTOreDictUnificator.setStackArray(true, true, recipe.mInputs);
-                GTOreDictUnificator.setStackArray(true, true, recipe.mOutputs);
-            }
             addToItemMap(recipe);
             lookupBuilder.add(recipe);
         }
@@ -369,7 +376,7 @@ public class RecipeMapBackend {
      * @return True if collision is found.
      */
     boolean checkCollision(GTRecipe recipe) {
-        return matchRecipeStream(recipe.mInputs, recipe.mFluidInputs, null, null, false, true, true).findAny()
+        return matchRecipeStream(recipe.mInputs, recipe.mFluidInputs, null, null, true, true).findAny()
             .isPresent();
     }
 
@@ -415,7 +422,6 @@ public class RecipeMapBackend {
      *                            {@link RecipeMapBuilder#specialSlotSensitive} to make it actually functional.
      *                            Alternatively overriding {@link #filterFindRecipe} will also work.
      * @param cachedRecipe        If this is not null, this method tests it before all other recipes.
-     * @param notUnificated       If this is set to true, item inputs will be unificated.
      * @param dontCheckStackSizes If this is set to true, this method won't check item count and fluid amount for the
      *                            matched recipe.
      * @param forCollisionCheck   If this method is called to check collision with already registered recipes.
@@ -423,7 +429,7 @@ public class RecipeMapBackend {
      */
     Stream<GTRecipe> matchRecipeStream(@Nullable ItemStack @NotNull [] rawItems,
         @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, @Nullable GTRecipe cachedRecipe,
-        boolean notUnificated, boolean dontCheckStackSizes, boolean forCollisionCheck) {
+        boolean dontCheckStackSizes, boolean forCollisionCheck) {
         if (doesOverwriteFindRecipe()) {
             return GTStreamUtil.ofNullable(overwriteFindRecipe(rawItems, fluids, specialSlot, cachedRecipe));
         }
@@ -454,13 +460,7 @@ public class RecipeMapBackend {
             }
         }
 
-        ItemStack[] items;
-        // Unification happens here in case the item input isn't already unificated.
-        if (notUnificated) {
-            items = GTOreDictUnificator.getStackArray(true, (Object[]) rawItems);
-        } else {
-            items = rawItems;
-        }
+        ItemStack[] items = rawItems;
 
         // Recipe lookup uses the trie as fast filtering, the trie does not contain amount checks and nbt checking to
         // allow fast trie traversal. The core logic of the recipe check happens inside filterFindRecipe,

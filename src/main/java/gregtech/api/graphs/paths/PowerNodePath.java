@@ -57,7 +57,7 @@ public class PowerNodePath extends NodePath {
         if (aVoltage > mMaxVoltage) {
             lock.addTileEntity(null);
             for (MetaPipeEntity tCable : mPipes) {
-                if (((MTECable) tCable).mVoltage < this.mVoltage) {
+                if (((MTECable) tCable).getVoltage() < this.mVoltage) {
                     BaseMetaPipeEntity tBaseCable = (BaseMetaPipeEntity) tCable.getBaseMetaTileEntity();
                     if (tBaseCable != null) {
                         tBaseCable.setToFire();
@@ -84,7 +84,7 @@ public class PowerNodePath extends NodePath {
         if (this.mAmps > mMaxAmps * 40) {
             lock.addTileEntity(null);
             for (MetaPipeEntity tCable : mPipes) {
-                if (((MTECable) tCable).mAmperage * 40 < this.mAmps) {
+                if (((MTECable) tCable).getAmperage() * 40 < this.mAmps) {
                     BaseMetaPipeEntity tBaseCable = (BaseMetaPipeEntity) tCable.getBaseMetaTileEntity();
                     if (tBaseCable != null) {
                         tBaseCable.setToFire();
@@ -160,9 +160,9 @@ public class PowerNodePath extends NodePath {
         mLoss = 0;
         for (MetaPipeEntity tCable : mPipes) {
             if (tCable instanceof MTECable) {
-                mMaxAmps = Math.min(((MTECable) tCable).mAmperage, mMaxAmps);
-                mLoss += ((MTECable) tCable).mCableLossPerMeter;
-                mMaxVoltage = Math.min(((MTECable) tCable).mVoltage, mMaxVoltage);
+                mMaxAmps = Math.min(((MTECable) tCable).getAmperage(), mMaxAmps);
+                mLoss += ((MTECable) tCable).getCableLoss();
+                mMaxVoltage = Math.min(((MTECable) tCable).getVoltage(), mMaxVoltage);
             }
         }
     }

@@ -33,19 +33,19 @@ import bartworks.MainMod;
 import bartworks.common.loaders.RadioHatchMaterialLoader.RadioHatchMaterial;
 import bartworks.util.BWColorUtil;
 import bartworks.util.MathUtils;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTERadioHatchGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
@@ -189,10 +189,10 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, ISmart
                         this.mass = this.radioHatchMaterial.recipeMass;
                         this.decayTime = calcDecayTicks(radioHatchMaterial.recipeSievert);
                         this.material = this.lastUsedItem.getDisplayName();
-                        ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
+                        ItemData itemData = MaterialData.getAssociation(lStack);
                         if (itemData != null) {
-                            Materials mat = itemData.mMaterial.mMaterial;
-                            this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
+                            short[] rgba = MaterialUtils.rgba(itemData.material.material);
+                            this.colorForGUI = new short[] { rgba[0], rgba[1], rgba[2] };
                         } else {
                             this.colorForGUI = getEmptyColor();
                         }
@@ -222,10 +222,10 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, ISmart
                     this.mass = radioHatchMaterial.recipeMass;
                     this.decayTime = calcDecayTicks(radioHatchMaterial.recipeSievert);
                     this.material = lStack.getDisplayName();
-                    ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
+                    ItemData itemData = MaterialData.getAssociation(lStack);
                     if (itemData != null) {
-                        Materials mat = itemData.mMaterial.mMaterial;
-                        this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
+                        short[] rgba = MaterialUtils.rgba(itemData.material.material);
+                        this.colorForGUI = new short[] { rgba[0], rgba[1], rgba[2] };
                     } else {
                         this.colorForGUI = getEmptyColor();
                     }

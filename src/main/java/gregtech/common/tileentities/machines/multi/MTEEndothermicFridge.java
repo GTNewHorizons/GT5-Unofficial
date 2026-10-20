@@ -48,21 +48,23 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
@@ -196,10 +198,10 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             .addCasing("750-773", Casings.FridgeCasing.getLocalizedName(), false)
             .addCasing("148", Casings.TungstenSteelReinforcedBlock.getLocalizedName(), false)
             .addCasing("148", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
-            .addCasing("146", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.CallistoIce), false)
+            .addCasing("146", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.CallistoIce)), false)
             .addCasing("135", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
             .addCasing("51", Casings.CoolantDuct.getLocalizedName(), false)
-            .addCasing("40", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Ledox), false)
+            .addCasing("40", OrePrefixes.sheetmetal.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Ledox)), false)
             .addCasing("18", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_fridge_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_fridge_casing"), 1)
@@ -516,20 +518,20 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     // data class
     public static class BoosterFluid {
 
-        public Materials material;
+        public Material material;
         public int perfectOverclock;
         public int amount;
 
-        public BoosterFluid(Materials material, int perfectOverclock, int amount) {
+        public BoosterFluid(Material material, int perfectOverclock, int amount) {
             this.material = material;
             this.perfectOverclock = perfectOverclock;
             this.amount = amount;
         }
 
         public FluidStack getStack() {
-            FluidStack stack = material.getFluid(amount);
+            FluidStack stack = MaterialUtils.fluid(material, amount);
             if (stack == null) {
-                return material.getMolten(amount);
+                return MaterialUtils.molten(material, amount);
             }
             return stack;
         }

@@ -41,18 +41,24 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -65,7 +71,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -435,12 +440,12 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     List<MaterialStack> inputNaniteMats = new ArrayList<>();
 
                     for (ItemStack input : recipe.mInputs) {
-                        ItemData data = GTOreDictUnificator.getAssociation(input);
+                        ItemData data = MaterialData.getAssociation(input);
                         if (data == null) {
                             continue;
                         }
-                        if (data.mPrefix == OrePrefixes.nanite) {
-                            inputNaniteMats.add(data.mMaterial);
+                        if (data.prefix == OrePrefixes.nanite) {
+                            inputNaniteMats.add(data.material);
                         }
                     }
 
@@ -455,18 +460,18 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                             ItemStack inputItem = inputBus.getStackInSlot(j);
 
                             if (inputItem != null) {
-                                ItemData data = GTOreDictUnificator.getAssociation(inputItem);
+                                ItemData data = MaterialData.getAssociation(inputItem);
                                 if (data == null) {
                                     continue;
                                 }
-                                if (data.mPrefix == OrePrefixes.nanite) {
+                                if (data.prefix == OrePrefixes.nanite) {
                                     if (inputItem.isItemEqual(outputNanite)) {
                                         busWithNaniteIndex = i;
                                         slotWithNaniteIndex = j;
                                         foundNanite = true;
                                     } else {
                                         if (!inputNaniteMats
-                                            .contains(GTOreDictUnificator.getAssociation(inputItem).mMaterial)) {
+                                            .contains(MaterialData.getAssociation(inputItem).material)) {
                                             foundNanite = false;
                                             break busScan;
                                         }
@@ -478,10 +483,10 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
                     if (renderActive) {
                         RenderingTileEntityNanoForge tile = getRenderer();
-                        ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
-                        if (data != null) {
-                            Materials mat = data.mMaterial.mMaterial;
-                            short[] color = mat.mRGBa;
+                        ItemData data = MaterialData.getAssociation(outputNanite);
+                        Material mat = data != null ? data.material.material : null;
+                        short[] color = mat == null ? null : MaterialUtils.rgba(mat);
+                        if (color != null) {
                             tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);
                         } else {
                             tile.setColor(1, 1, 1);
@@ -490,8 +495,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
                     if (foundNanite) {
                         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
-                            FluidStack drained = hatch
-                                .drain(ForgeDirection.UNKNOWN, Materials.MagMatter.getMolten(Integer.MAX_VALUE), true);
+                            FluidStack drained = hatch.drain(
+                                ForgeDirection.UNKNOWN,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, Integer.MAX_VALUE),
+                                true);
                             if (drained == null) {
                                 continue;
                             }
@@ -599,7 +607,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             return;
         }
 
-        if (aStack.isItemEqual(Materials.Eternity.getNanite(1))) {
+        if (aStack.isItemEqual(MaterialLibAPI.getStack(Materials.Eternity, Shapes.nanite, 1))) {
             // tier 4
             casingAmount = 0;
             if (!checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 33, 0, errors)) return;
@@ -618,16 +626,16 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         } else {
             if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1, errors)) return;
 
-            if (aStack.isItemEqual(Materials.Carbon.getNanite(1))) {
+            if (aStack.isItemEqual(MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1))) {
                 mSpecialTier = 1;
             }
 
-            if (aStack.isItemEqual(Materials.Neutronium.getNanite(1))
+            if (aStack.isItemEqual(MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 1))
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4, errors)) {
                 mSpecialTier = 2;
             }
 
-            if (aStack.isItemEqual(Materials.TranscendentMetal.getNanite(1))
+            if (aStack.isItemEqual(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 1))
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4, errors)
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4, errors)) {
                 mSpecialTier = 3;
@@ -715,10 +723,10 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     public void onPreviewConstruct(@NotNull ItemStack trigger) {
         mSpecialTier = (byte) trigger.stackSize;
         ItemStack nanite = switch (trigger.stackSize) {
-            case 1 -> Materials.Carbon.getNanite(1);
-            case 2 -> Materials.Neutronium.getNanite(1);
-            case 3 -> Materials.TranscendentMetal.getNanite(1);
-            default -> Materials.Eternity.getNanite(1);
+            case 1 -> MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 1);
+            case 2 -> MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 1);
+            case 3 -> MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 1);
+            default -> MaterialLibAPI.getStack(Materials.Eternity, Shapes.nanite, 1);
         };
         setInventorySlotContents(getControllerSlotIndex(), nanite);
     }

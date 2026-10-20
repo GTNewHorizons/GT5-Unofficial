@@ -38,8 +38,9 @@ import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.events.VeinGenerateEvent;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.net.GTPacketSendOregenPattern;
 import gregtech.api.objects.XSTR;
 import gregtech.api.world.GTWorldgen;
@@ -548,7 +549,8 @@ public class GTWorldgenerator implements IWorldGenerator {
 
                     // Resolve the exact placement seed using the first processed chunk, then cache it so every chunk
                     // in this vein regenerates the same geometry.
-                    long placementSeed = Fnv1a64.hashStep(seed, oreLayer.mPrimary.getId());
+                    long placementSeed = Fnv1a64
+                        .hashStep(seed, oreLayer.mPrimary == null ? 0 : MaterialUtils.oldSubId(oreLayer.mPrimary));
 
                     try {
                         veinRNG.setSeed(placementSeed);

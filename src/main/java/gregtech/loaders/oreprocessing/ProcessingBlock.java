@@ -9,32 +9,40 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
-import static gregtech.loaders.oreprocessing.ProcessingUtils.itemStackKey;
 
-import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingBlock implements PartRecipeGenerator {
+
+    public static final ProcessingBlock INSTANCE = new ProcessingBlock();
 
     private static final int INGOT_RECIPE_REMOVAL = 1;
     private static final int GEM_RECIPE_REMOVAL = 1 << 1;
     private static final int DUST_RECIPE_REMOVAL = 1 << 2;
 
-    // List of effective blocks that had a previous recipe
+    /// Other mods' storage blocks whose unpacking recipes GregTech's own block recipes replace.
     private static final ImmutableSet<String> BLOCK_RECIPE_REMOVALS = ImmutableSet.of(
         "Avaritia:Resource_Block@0",
         "Avaritia:Resource_Block@1",
@@ -62,9 +70,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         "EnderIO:blockIngotStorageEndergy@5",
         "EnderIO:blockIngotStorageEndergy@6",
         "ForbiddenMagic:StarBlock@0",
-        "gregtech:gt.blockgem2@4",
-        "gregtech:gt.blockmetal4@2",
-        "gregtech:gt.blockmetal6@10",
         "harvestcraft:spamcompressedsaltBlockalt@0",
         "minecraft:coal_block@0",
         "minecraft:diamond_block@0",
@@ -93,12 +98,15 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         "Thaumcraft:blockCosmeticSolid@4",
         "thaumicbases:voidBlock@0");
 
-    // Map that tells which item recipe to remove. If not in this map, no previous recipes exist so skipping
-    private static final ImmutableMap<Materials, Integer> PACKING_RECIPE_REMOVALS = ImmutableMap
-        .<Materials, Integer>builder()
+    /// Materials whose own storage block another mod unpacks by crafting.
+    private static final Set<Material> OWN_BLOCK_RECIPE_REMOVALS = Set
+        .of(Materials.Lead, Materials.Olivine, Materials.Silver);
+
+    /// The materials whose nine-item packing recipe is removed, and whether that recipe takes ingots, gems or dusts.
+    private static final ImmutableMap<Material, Integer> PACKING_RECIPE_REMOVALS = ImmutableMap
+        .<Material, Integer>builder()
         .put(Materials.AluminiumBrass, INGOT_RECIPE_REMOVAL)
         .put(Materials.Amber, GEM_RECIPE_REMOVAL)
-        .put(Materials.ClayCompound, INGOT_RECIPE_REMOVAL)
         .put(Materials.Coal, GEM_RECIPE_REMOVAL)
         .put(Materials.ConductiveIron, INGOT_RECIPE_REMOVAL)
         .put(Materials.Copper, INGOT_RECIPE_REMOVAL)
@@ -141,165 +149,191 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         .put(Materials.Void, INGOT_RECIPE_REMOVAL)
         .build();
 
-    private final Set<GTUtility.ItemId> queuedPackingRemovals = new HashSet<>();
+    private ProcessingBlock() {}
 
-    public ProcessingBlock() {
-        OrePrefixes.block.add(this);
+    /// Removes other mods' recipes that unpack the storage blocks in [#BLOCK_RECIPE_REMOVALS] or the blocks of the
+    /// [#OWN_BLOCK_RECIPE_REMOVALS] materials, and those that pack nine ingots, gems or dusts of the
+    /// [#PACKING_RECIPE_REMOVALS] materials. GregTech's own block recipes replace them.
+    public static void removeForeignBlockRecipes() {
+        for (String key : BLOCK_RECIPE_REMOVALS) {
+            int at = key.lastIndexOf('@');
+            int colon = key.indexOf(':');
+            Item item = GameRegistry.findItem(key.substring(0, colon), key.substring(colon + 1, at));
+            if (item != null) {
+                GTModHandler.removeRecipeDelayed(new ItemStack(item, 1, Integer.parseInt(key.substring(at + 1))));
+            }
+        }
+        for (Material material : OWN_BLOCK_RECIPE_REMOVALS) {
+            ItemStack block = MaterialLibAPI.getStack(material, BlockShapes.block, 1);
+            GTModHandler.removeRecipeDelayed(block);
+        }
+        PACKING_RECIPE_REMOVALS.forEach((material, removals) -> {
+            if ((removals & INGOT_RECIPE_REMOVAL) != 0) removePackingRecipe(material, Shapes.ingot);
+            if ((removals & GEM_RECIPE_REMOVAL) != 0) removePackingRecipe(material, Shapes.gem);
+            if ((removals & DUST_RECIPE_REMOVAL) != 0) removePackingRecipe(material, Shapes.dust);
+        });
     }
 
-    private void removePackingRecipe(ItemStack input) {
-        if (input == null || (GTModHandler.isBufferingCraftingRecipes()
-            && !queuedPackingRemovals.add(GTUtility.ItemId.createWithStackSize(input)))) {
-            return;
-        }
-
+    private static void removePackingRecipe(Material material, Shape shape) {
+        ItemStack input = MaterialLibAPI.getStack(material, shape, 1);
         GTModHandler.removeRecipeDelayed(input, input, input, input, input, input, input, input, input);
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-
-        if (aMaterial == Materials.Ichorium || aMaterial == Materials.NetherQuartz) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
+        if (material == Materials.Ichorium || material == Materials.NetherQuartz) {
             return;
         }
 
-        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
-            && GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV && material.hasShape(Shapes.plate)) {
 
-            if (aMaterial == Materials.Livingrock || aMaterial == Materials.Livingwood
-                || aMaterial == Materials.Dreamwood) {
+            if (material == Materials.Livingrock || material == Materials.Livingwood
+                || material == Materials.Dreamwood) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
-                        Materials.Water.getFluid(
+                        GTUtility.getWater(
                             Math.max(
                                 4,
-                                Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))))
-                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                                Math.min(
+                                    1000,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 320))))
+                    .duration(2 * ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
                             Math.max(
                                 3,
-                                Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
-                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 16))
+                                Math.min(
+                                    750,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 426))))
+                    .duration(2 * ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
-                        Materials.Lubricant.getFluid(
-                            Math.max(
+                        MaterialLibAPI.getFluidStack(
+                            Materials.Lubricant,
+                            FluidShapes.fluidLiquid,
+                            (int) (Math.max(
                                 1,
-                                Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
-                    .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 16))
+                                Math.min(
+                                    250,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10, 1)) * TICKS * 30 / 1280)))))
+                    .duration(((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTUtility.copyAmount(1, stack))
                     .circuit(3)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
-                        Materials.DimensionallyShiftedSuperfluid.getFluid(
+                        MaterialUtils.fluid(
+                            Materials.DimensionallyShiftedSuperfluid,
                             Math.max(
                                 1,
-                                Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))))
-                    .duration(((int) Math.max(aMaterial.getMass() * 10L / 2.5, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 16))
+                                Math.min(
+                                    10,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 4000))))
+                    .duration(((int) Math.max(MaterialUtils.mass(material) * 10L / 2.5, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
             }
 
-            else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt && aMaterial != Materials.Obsidian) {
+            else if (material != Materials.Clay && material != Materials.Basalt && material != Materials.Obsidian) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemInputs(GTUtility.copyAmount(1, stack))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
-                        Materials.Water.getFluid(
+                        GTUtility.getWater(
                             Math.max(
                                 4,
-                                Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))))
-                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                                Math.min(
+                                    1000,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 320))))
+                    .duration(2 * ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemInputs(GTUtility.copyAmount(1, stack))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
                             Math.max(
                                 3,
-                                Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
-                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 16))
+                                Math.min(
+                                    750,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 426))))
+                    .duration(2 * ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemInputs(GTUtility.copyAmount(1, stack))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
-                        Materials.Lubricant.getFluid(
-                            Math.max(
+                        MaterialLibAPI.getFluidStack(
+                            Materials.Lubricant,
+                            FluidShapes.fluidLiquid,
+                            (int) (Math.max(
                                 1,
-                                Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
-                    .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 16))
+                                Math.min(
+                                    250,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10, 1)) * TICKS * 30 / 1280)))))
+                    .duration(((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .itemInputs(GTUtility.copyAmount(1, stack))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.plate, 9))
                     .fluidInputs(
-                        Materials.DimensionallyShiftedSuperfluid.getFluid(
+                        MaterialUtils.fluid(
+                            Materials.DimensionallyShiftedSuperfluid,
                             Math.max(
                                 1,
-                                Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))))
-                    .duration(((int) Math.max(aMaterial.getMass() * 10L / 2.5, 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 16))
+                                Math.min(
+                                    10,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 4000))))
+                    .duration(((int) Math.max(MaterialUtils.mass(material) * 10L / 2.5, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
             }
         }
 
-        ItemStack ingot = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
-        ItemStack gem = GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
-        ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
+        ItemStack ingot = MaterialLibAPI.findStack(material, Shapes.ingot, 1);
+        ItemStack gem = MaterialLibAPI.findStack(material, Shapes.gem, 1);
+        ItemStack dust = MaterialLibAPI.findStack(material, Shapes.dust, 1);
+        ItemStack block = MaterialLibAPI.getStack(material, BlockShapes.block, 1);
 
-        if (BLOCK_RECIPE_REMOVALS.contains(itemStackKey(aStack))) {
-            GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
-        }
-
-        int packingRecipeRemovals = PACKING_RECIPE_REMOVALS.getOrDefault(aMaterial, 0);
-        if ((packingRecipeRemovals & INGOT_RECIPE_REMOVAL) != 0) removePackingRecipe(ingot);
-        if ((packingRecipeRemovals & GEM_RECIPE_REMOVAL) != 0) removePackingRecipe(gem);
-        if ((packingRecipeRemovals & DUST_RECIPE_REMOVAL) != 0) removePackingRecipe(dust);
-
-        if (aMaterial.mStandardMoltenFluid != null) {
-            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron
-                || aMaterial == Materials.Obsidian)) {
-                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+        if (MaterialUtils.hasMolten(material)) {
+            if (!(material == Materials.AnnealedCopper || material == Materials.CastIron
+                || material == Materials.Obsidian)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
-                        .fluidInputs(aMaterial.getMolten(9 * INGOTS))
-                        .duration(aMaterial.getMass() * 9 * TICKS)
-                        .eut(calculateRecipeEU(aMaterial, 8))
+                        .itemOutputs(block)
+                        .fluidInputs(MaterialUtils.molten(material, 9 * INGOTS))
+                        .duration(MaterialUtils.mass(material) * 9 * TICKS)
+                        .eut(calculateRecipeEU(material, 8))
                         .addTo(fluidSolidifierRecipes);
                 }
             }
@@ -311,24 +345,25 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (gem != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(aStack)
+                .itemInputs(stack)
                 .itemOutputs(gem)
                 .duration(5 * SECONDS)
                 .eut(24)
                 .addTo(hammerRecipes);
         }
 
-        if (ingot != null && !OrePrefixes.block.isIgnored(aMaterial) && aMaterial != Materials.Obsidian) {
+        if (ingot != null && !OrePrefixes.block.isIgnored(material) && material != Materials.Obsidian) {
             // 9 ingots -> 1 block
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
-                .duration(aMaterial.getMass() * 2 * TICKS)
-                .eut(calculateRecipeEU(aMaterial, 2))
+                .itemInputs(ingot)
+                .itemOutputs(block)
+                .duration(MaterialUtils.mass(material) * 2 * TICKS)
+                .eut(calculateRecipeEU(material, 2))
                 .addTo(compressorRecipes);
         }
 
-        if (aMaterial.mName.equals("Mercury")) {
+        if (MaterialUtils.internalName(material)
+            .equals("Mercury")) {
             GT_FML_LOGGER.error(
                 "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
         }

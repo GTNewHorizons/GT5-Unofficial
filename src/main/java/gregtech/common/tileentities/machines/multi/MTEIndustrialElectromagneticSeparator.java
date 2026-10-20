@@ -38,16 +38,17 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -205,7 +206,7 @@ public class MTEIndustrialElectromagneticSeparator
             .beginStructureBlock(7, 6, 7, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing(MIN_CASING + "-73", Casings.MagTechCasing.getLocalizedName(), false)
-            .addCasing("37", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NeodymiumMagnetic), false)
+            .addCasing("37", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.NeodymiumMagnetic)), false)
             .addCasing("12", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addMiscHatch(
                 "1",

@@ -35,15 +35,17 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -647,8 +649,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     public static FluidStack boostFluidStack(int boostMode, int amount) {
         return switch (boostMode) {
-            case BOOST_QGP -> Materials.QuarkGluonPlasma.getFluid(amount);
-            case BOOST_MAGMATTER -> Materials.MagMatter.getMolten(amount);
+            case BOOST_QGP -> MaterialLibAPI.getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, amount);
+            case BOOST_MAGMATTER -> MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, amount);
             default -> null;
         };
     }

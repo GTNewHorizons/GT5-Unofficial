@@ -14,15 +14,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidBlock;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreManager;
 
@@ -36,15 +35,15 @@ public class BehaviourProspecting extends BehaviourNone {
         this.mEUCosts = aEUCosts;
     }
 
-    private static Materials getOreMaterial(Block block, int meta) {
-        ItemData association = GTOreDictUnificator.getAssociation(new ItemStack(block, 1, meta));
+    private static com.ruling_0.materiallib.api.Material getOreMaterial(Block block, int meta) {
+        ItemData association = MaterialData.getAssociation(new ItemStack(block, 1, meta));
         if (association == null) return null;
-        if (association.mPrefix == null) return null;
-        if (association.mMaterial == null) return null;
-        if (!association.mPrefix.toString()
+        if (association.prefix == null) return null;
+        if (association.material == null) return null;
+        if (!association.prefix.toString()
             .startsWith("ore")) return null;
 
-        return association.mMaterial.mMaterial;
+        return association.material.material;
     }
 
     @Override
@@ -61,17 +60,18 @@ public class BehaviourProspecting extends BehaviourNone {
 
         int aMeta = aWorld.getBlockMetadata(aX, aY, aZ);
 
-        IOreMaterial mat = OreManager.getMaterial(aBlock, aMeta);
+        com.ruling_0.materiallib.api.Material mat = OreManager.getMaterial(aBlock, aMeta);
         if (mat != null) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", mat.getLocalizedName());
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", MaterialUtils.localizedName(mat));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
 
-        Materials oreMat = getOreMaterial(aBlock, aMeta);
+        com.ruling_0.materiallib.api.Material oreMat = getOreMaterial(aBlock, aMeta);
 
         if (oreMat != null) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", oreMat.getLocalizedName());
+            GTUtility
+                .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", MaterialUtils.localizedName(oreMat));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
@@ -119,16 +119,20 @@ public class BehaviourProspecting extends BehaviourNone {
 
                 mat = OreManager.getMaterial(tBlock, tMeta);
                 if (mat != null) {
-                    GTUtility
-                        .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.traces_of", mat.getLocalizedName());
+                    GTUtility.sendChatTrans(
+                        aPlayer,
+                        "GT5U.chat.behaviour.prospecting.traces_of",
+                        MaterialUtils.localizedName(mat));
                     return true;
                 }
 
                 oreMat = getOreMaterial(tBlock, tMeta);
 
                 if (oreMat != null) {
-                    GTUtility
-                        .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.traces_of", oreMat.getLocalizedName());
+                    GTUtility.sendChatTrans(
+                        aPlayer,
+                        "GT5U.chat.behaviour.prospecting.traces_of",
+                        MaterialUtils.localizedName(oreMat));
                     return true;
                 }
             }

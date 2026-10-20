@@ -20,8 +20,8 @@ import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 /**
  * Class containing all non-OreDict Items of GregTech.
@@ -69,13 +69,6 @@ public enum ItemList implements IItemContainer {
     RC_Bed_Stone,
     RC_Rebar,
     TC_Thaumometer,
-    IC2_Item_Casing_Tin,
-    IC2_Item_Casing_Copper,
-    IC2_Item_Casing_Iron,
-    IC2_Item_Casing_Steel,
-    IC2_Item_Casing_Lead,
-    IC2_Item_Casing_Bronze,
-    IC2_Item_Casing_Gold,
     IC2_Scrap,
     IC2_Scrapbox,
     IC2_Mixed_Metal_Ingot,
@@ -196,7 +189,6 @@ public enum ItemList implements IItemContainer {
     Coin_Gold_Ancient,
     Coin_Doge,
     Coin_Chocolate,
-    Cell_Universal_Fluid,
     Cell_Empty,
     Cell_Water,
     Cell_Lava,
@@ -3144,6 +3136,13 @@ public enum ItemList implements IItemContainer {
     LostQuantumCircuitRack,
     RealizedQuantumCircuitRack,
 
+    IridiumAlloyPlate,
+    AdvancedAlloyPlate,
+    CarbonAlloyPlate,
+    MixedMetalIngot,
+    RawCarbonFibre,
+    CarbonMesh,
+
     CultureNullBioCulture,
     CultureSaccharomycesCerevisiae,
     CultureSaccharomycesCerevisiaeVarBayanus,
@@ -3475,7 +3474,7 @@ public enum ItemList implements IItemContainer {
             mWarned = true;
         }
         if (GTUtility.isStackInvalid(aStack)) return false;
-        return GTUtility.areUnificationsEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
+        return GTUtility.areStacksEqual((ItemStack) aStack, aWildcard ? getWildcard(1) : get(1), aIgnoreNBT);
     }
 
     @Override
@@ -3486,28 +3485,28 @@ public enum ItemList implements IItemContainer {
             GT_FML_LOGGER.debug(new NullPointerException());
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
-        return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmount(aAmount, mStack);
     }
 
     @Override
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, WILDCARD, mStack);
     }
 
     @Override
     public ItemStack getUndamaged(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, 0, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, 0, mStack);
     }
 
     @Override
     public ItemStack getAlmostBroken(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, mStack.getMaxDamage() - 1, mStack);
     }
 
     @Override
@@ -3550,20 +3549,20 @@ public enum ItemList implements IItemContainer {
     public ItemStack getWithDamage(long aAmount, long aMetaValue, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, aMetaValue, mStack);
     }
 
     @Override
     public IItemContainer registerOre(Object... aOreNames) {
         sanityCheck();
-        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, get(1));
+        for (Object tOreName : aOreNames) OreDictUtils.registerOre(tOreName, get(1));
         return this;
     }
 
     @Override
     public IItemContainer registerWildcardAsOre(Object... aOreNames) {
         sanityCheck();
-        for (Object tOreName : aOreNames) GTOreDictUnificator.registerOre(tOreName, getWildcard(1));
+        for (Object tOreName : aOreNames) OreDictUtils.registerOre(tOreName, getWildcard(1));
         return this;
     }
 

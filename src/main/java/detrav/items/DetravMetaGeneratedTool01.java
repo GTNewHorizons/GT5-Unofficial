@@ -27,15 +27,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.Material;
+
 import detrav.DetravScannerMod;
 import detrav.enums.DetravToolDictNames;
 import detrav.items.tools.DetravProspector;
 import detrav.items.tools.DetravToolElectricProspector;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MaterialUtils;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -188,7 +191,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
     @Override
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         long tMaxDamage = getToolMaxDamage(aStack);
-        Materials tMaterial = getPrimaryMaterial(aStack);
+        Material tMaterial = getPrimaryMaterialML(aStack);
         IToolStats tStats = getToolStats(aStack);
         int tOffset = aList.size();
         if (tStats == null) return;
@@ -210,7 +213,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                     formatNumber(tMaxDamage)));
             aList.add(
                 tOffset + 1,
-                EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
+                EnumChatFormatting.WHITE + MaterialUtils.localizedName(tMaterial) + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 2,
                 EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
@@ -250,7 +253,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                 formatNumber(tMaxDamage)));
         aList.add(
             tOffset + 1,
-            EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
+            EnumChatFormatting.WHITE + MaterialUtils.localizedName(tMaterial) + EnumChatFormatting.GRAY);
         aList.add(
             tOffset + 2,
             EnumChatFormatting.WHITE + StatCollector

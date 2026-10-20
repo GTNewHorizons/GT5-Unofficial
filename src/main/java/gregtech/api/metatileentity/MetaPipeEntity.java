@@ -11,8 +11,12 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,6 +34,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.ShapeBlock;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -45,7 +53,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.common.blocks.PipeShapeBlock;
+import gregtech.common.blocks.PipeShapeItemBlock;
 import gregtech.common.covers.Cover;
 
 /**
@@ -60,6 +71,7 @@ import gregtech.common.covers.Cover;
 public abstract class MetaPipeEntity extends CommonMetaTileEntity implements IConnectable {
 
     private volatile ITexture[][] inventoryTextureCache;
+    private volatile Map<Material, ITexture[][]> shapeInventoryTextureCache;
 
     /**
      * This variable tells, which directions the Block is connected to. It is a Bitmask.
@@ -74,6 +86,15 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      * accessibility to this Field is no longer given, see below
      */
     private IGregTechTileEntity mBaseMetaTileEntity;
+
+    /// The MaterialLib shape block hosting this pipe, or null for a pipe that is not a material shape, such as a
+    /// data pipe. A shape-scoped instance carries no material of its own: the material is the host block's metadata
+    /// (the material's global index), resolved through [#shapeMaterial] and cached per tile entity.
+    private final ShapeBlock shapeHost;
+    /// The size step within the pipe family for a shape-scoped instance, otherwise -1.
+    private final int shapeSizeIndex;
+    private Material shapeMaterialCache;
+    private Material shapeRenderMaterial;
 
     /**
      * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT. See
@@ -97,7 +118,14 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     public MetaPipeEntity(int aID, String aBasicName, int aInvSlotCount, boolean aAddInfo) {
+        this(aID, aBasicName, aInvSlotCount, aAddInfo, null, -1);
+    }
+
+    protected MetaPipeEntity(int aID, String aBasicName, int aInvSlotCount, boolean aAddInfo, ShapeBlock shapeHost,
+        int shapeSizeIndex) {
         super(aID, aBasicName, aInvSlotCount);
+        this.shapeHost = shapeHost;
+        this.shapeSizeIndex = shapeSizeIndex;
         setBaseMetaTileEntity(new BaseMetaPipeEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
 
@@ -118,7 +146,65 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      * This is the normal Constructor.
      */
     public MetaPipeEntity(String aName, int aInvSlotCount) {
+        this(aName, aInvSlotCount, null, -1);
+    }
+
+    protected MetaPipeEntity(String aName, int aInvSlotCount, ShapeBlock shapeHost, int shapeSizeIndex) {
         super(aName, aInvSlotCount);
+        this.shapeHost = shapeHost;
+        this.shapeSizeIndex = shapeSizeIndex;
+    }
+
+    /// Whether a MaterialLib shape block hosts this instance. A shape-scoped instance's item form is the shape
+    /// block's item, never a machine-block stack at its id.
+    public final boolean isShapeScoped() {
+        return shapeHost != null;
+    }
+
+    protected final ShapeBlock getShapeHost() {
+        return shapeHost;
+    }
+
+    protected final int getShapeSizeIndex() {
+        return shapeSizeIndex;
+    }
+
+    /// The material of a shape-scoped instance: the host block's metadata resolved through
+    /// [MaterialLibAPI#getMaterialByIndex], cached until the tile entity rebinds, with the transient
+    /// material set by [#withShapeMaterial] as the out-of-world fallback. Null while unresolvable.
+    protected final Material shapeMaterial() {
+        if (shapeMaterialCache != null) return shapeMaterialCache;
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe && pipe.getWorldObj() != null) {
+            Material resolved = MaterialLibAPI.getMaterialByIndex(
+                pipe.getWorldObj()
+                    .getBlockMetadata(pipe.xCoord, pipe.yCoord, pipe.zCoord));
+            if (resolved != null) {
+                shapeMaterialCache = resolved;
+                onShapeMaterialResolved(resolved);
+                return resolved;
+            }
+        }
+        return shapeRenderMaterial;
+    }
+
+    /// Called once each time [#shapeMaterial] resolves the host block's material anew, after construction or a
+    /// rebind. Material-sized state is set up here.
+    protected void onShapeMaterialResolved(Material material) {}
+
+    /// Drops the cached [#shapeMaterial] so the next read resolves from the host block again.
+    protected final void clearShapeMaterial() {
+        shapeMaterialCache = null;
+    }
+
+    /// Runs `body` with [#shapeMaterial] answering `material` wherever the host block cannot be consulted.
+    /// Only meaningful on the canonical shape-scoped instances.
+    public final <T> T withShapeMaterial(Material material, Supplier<T> body) {
+        shapeRenderMaterial = material;
+        try {
+            return body.get();
+        } finally {
+            shapeRenderMaterial = null;
+        }
     }
 
     @Override
@@ -155,13 +241,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.setRenderBounds(BLOCK_MIN, pipeMin, pipeMin, BLOCK_MAX, pipeMax, pipeMax);
 
-        ITexture[][] textures = inventoryTextureCache;
-        if (textures == null) {
-            final IGregTechTileEntity mte = getBaseMetaTileEntity();
-            textures = new ITexture[][] { getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false),
-                getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false) };
-            inventoryTextureCache = textures;
-        }
+        final ITexture[][] textures = inventoryTextures();
         final ITexture[] sideTexture = textures[0];
         final ITexture[] endTexture = textures[1];
         ctx.renderNegativeYFacing(sideTexture);
@@ -171,6 +251,40 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         ctx.renderNegativeXFacing(endTexture);
         ctx.renderPositiveXFacing(endTexture);
         return true;
+    }
+
+    /// The side and end textures of this pipe's inventory form. A shape-scoped instance renders every material of
+    /// its shape through its single registry instance, so it keeps one set per rendered material.
+    @SideOnly(Side.CLIENT)
+    private ITexture[][] inventoryTextures() {
+        if (shapeHost == null) {
+            ITexture[][] textures = inventoryTextureCache;
+            if (textures == null) {
+                textures = buildInventoryTextures();
+                inventoryTextureCache = textures;
+            }
+            return textures;
+        }
+        final Material material = shapeMaterial();
+        if (material == null) return buildInventoryTextures();
+        Map<Material, ITexture[][]> cache = shapeInventoryTextureCache;
+        if (cache == null) {
+            cache = new ConcurrentHashMap<>();
+            shapeInventoryTextureCache = cache;
+        }
+        ITexture[][] textures = cache.get(material);
+        if (textures == null) {
+            textures = buildInventoryTextures();
+            cache.put(material, textures);
+        }
+        return textures;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private ITexture[][] buildInventoryTextures() {
+        final IGregTechTileEntity mte = getBaseMetaTileEntity();
+        return new ITexture[][] { getTexture(mte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false),
+            getTexture(mte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false) };
     }
 
     @SuppressWarnings("OverlyComplexMethod") // Naturally complex logic
@@ -534,6 +648,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     @Override
     public final void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
         final IGregTechTileEntity oldBase = mBaseMetaTileEntity;
+        shapeMaterialCache = null;
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
             mBaseMetaTileEntity.getMetaTileEntity()
                 .inValidate();
@@ -558,8 +673,100 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     @Override
     public ItemStack getStackForm(long aAmount) {
+        if (shapeHost != null) {
+            Material material = shapeMaterial();
+            if (material != null) return shapeHost.getStack(material, (int) aAmount);
+        }
         return new ItemStack(GregTechAPI.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
     }
+
+    /// [#renderInInventory] with the material the rendered item stack carries.
+    @SideOnly(Side.CLIENT)
+    public final boolean renderInInventory(ISBRInventoryContext ctx, Material material) {
+        return withShapeMaterial(material, () -> renderInInventory(ctx));
+    }
+
+    /// Swaps a shape-scoped pipe in place onto the shape and material of `handItem`. The same shape swaps by
+    /// rewriting the host block's metadata. A different shape of the same pipe kind replaces the block and respawns
+    /// the tile entity carrying the old one's NBT (connections, covers, contents). Outside creative mode, takes one
+    /// `handItem` and gives the player the replaced pipe. A held item that is not a shape item of this instance's
+    /// own class, or a target that is not shape-scoped, is left untouched.
+    protected final void trySwapShape(IGregTechTileEntity base, EntityPlayer player, ItemStack handItem) {
+        if (!isShapeScoped() || handItem == null) return;
+        if (!(handItem.getItem() instanceof PipeShapeItemBlock shapeItem)) return;
+        PipeShapeBlock handShape = shapeItem.getShape();
+        IMetaTileEntity prototype = GTUtility.getIndexSafe(GregTechAPI.METATILEENTITIES, handShape.getMteId());
+        if (prototype == null || prototype.getClass() != getClass()) return;
+
+        World world = base.getWorld();
+        int x = base.getXCoord(), y = base.getYCoord(), z = base.getZCoord();
+        int newIndex = handItem.getItemDamage();
+        Block currentBlock = world.getBlock(x, y, z);
+        int currentIndex = world.getBlockMetadata(x, y, z);
+        if (currentBlock == handShape && currentIndex == newIndex) return;
+
+        ItemStack returnedStack = null;
+        if (currentBlock instanceof PipeShapeBlock currentShape) {
+            Material currentMaterial = MaterialLibAPI.getMaterialByIndex(currentIndex);
+            if (currentMaterial != null) returnedStack = currentShape.getStack(currentMaterial, 1);
+        }
+
+        if (currentBlock == handShape) {
+            world.setBlockMetadataWithNotify(x, y, z, newIndex, 3);
+            clearShapeMaterial();
+            onShapeSwapped();
+            base.markDirty();
+            base.issueBlockUpdate();
+            base.issueTileUpdate();
+            base.issueTextureUpdate();
+        } else {
+            NBTTagCompound tag = new NBTTagCompound();
+            ((BaseMetaPipeEntity) base).writeToNBT(tag);
+            // Detach the tile entity first: the old block's breakBlock scatters the pipe's inventory, which the
+            // captured NBT already carries.
+            world.removeTileEntity(x, y, z);
+            world.setBlock(x, y, z, handShape, newIndex, 3);
+            if (!(world.getTileEntity(x, y, z) instanceof BaseMetaPipeEntity newBase)) return;
+            newBase.setInitialValuesAsNBT(tag, (short) handShape.getMteId());
+            if (newBase.getMetaTileEntity() instanceof MetaPipeEntity newPipe) {
+                newPipe.onShapeSwapped();
+            }
+            newBase.markDirty();
+            newBase.issueBlockUpdate();
+            newBase.issueTileUpdate();
+            newBase.issueTextureUpdate();
+        }
+
+        if (!player.capabilities.isCreativeMode) {
+            if (returnedStack != null) {
+                boolean added = false;
+                for (int i = 0; i < player.inventory.mainInventory.length; i++) {
+                    ItemStack slot = player.inventory.mainInventory[i];
+                    if (slot != null && slot.getItem() == returnedStack.getItem()
+                        && slot.getItemDamage() == returnedStack.getItemDamage()
+                        && slot.stackSize < slot.getMaxStackSize()) {
+                        slot.stackSize++;
+                        added = true;
+                        break;
+                    }
+                }
+                if (!added) {
+                    added = player.inventory.addItemStackToInventory(returnedStack);
+                }
+                if (!added) {
+                    player.dropPlayerItemWithRandomChoice(returnedStack, false);
+                }
+            }
+            handItem.stackSize--;
+            if (handItem.stackSize <= 0) {
+                player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+            }
+        }
+    }
+
+    /// Called on the pipe occupying the position after [#trySwapShape] swaps it, for material-sized state fixups
+    /// (inventory resizing, fluid capacity clamping).
+    protected void onShapeSwapped() {}
 
     @Override
     public void initDefaultModes(NBTTagCompound nbt) {

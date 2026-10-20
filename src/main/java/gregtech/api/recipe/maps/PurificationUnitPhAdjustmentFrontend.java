@@ -12,9 +12,12 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import codechicken.nei.recipe.StackInfo;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
@@ -57,17 +60,18 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
 
         FluidStack fluid = StackInfo.getFluid(stack);
         // Add pH adjustment values
-        if (stack.isItemEqual(Materials.SodiumHydroxide.getDust(1))) {
+        if (stack.isItemEqual(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 1))) {
             currentTip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.nei.purified_water.grade_4.0",
                     MTEPurificationUnitPhAdjustment.PH_PER_ALKALINE_DUST * 64));
-        } else if (fluid != null && fluid.isFluidEqual(Materials.HydrochloricAcid.getFluid(1_000))) {
-            currentTip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.nei.purified_water.grade_4.1",
-                    MTEPurificationUnitPhAdjustment.PH_PER_10_ACID_LITER * 100));
-        }
+        } else if (fluid != null && fluid
+            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 1_000))) {
+                currentTip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.nei.purified_water.grade_4.1",
+                        MTEPurificationUnitPhAdjustment.PH_PER_10_ACID_LITER * 100));
+            }
 
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
     }

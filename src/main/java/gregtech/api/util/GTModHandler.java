@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicIntegerArray;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -48,31 +49,47 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByteArray;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.jetbrains.annotations.Nullable;
 
-import bartworks.system.material.WerkstoffLoader;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import ganymedes01.etfuturum.recipes.BlastFurnaceRecipes;
 import ganymedes01.etfuturum.recipes.SmokerRecipes;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.ToolboxSlot;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
@@ -90,8 +107,10 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
 import ic2.core.item.ItemToolbox;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
+import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -184,17 +203,17 @@ public class GTModHandler {
      */
     public static boolean isWater(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(Materials.Water.getFluid(1)) || aFluid.isFluidEqual(getDistilledWater(1));
+        return aFluid.isFluidEqual(GTUtility.getWater(1)) || aFluid.isFluidEqual(getDistilledWater(1));
     }
 
     /**
      * Returns a Liquid Stack with given amount of Water.
      *
-     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link GTUtility#getWater} directly.
      */
     @Deprecated
     public static FluidStack getWater(long aAmount) {
-        return Materials.Water.getFluid(aAmount);
+        return GTUtility.getWater(aAmount);
     }
 
     /**
@@ -202,7 +221,7 @@ public class GTModHandler {
      */
     public static FluidStack getDistilledWater(long aAmount) {
         FluidStack tFluid = FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
-        if (tFluid == null) tFluid = Materials.Water.getFluid(aAmount);
+        if (tFluid == null) tFluid = GTUtility.getWater(aAmount);
         return tFluid;
     }
 
@@ -211,7 +230,7 @@ public class GTModHandler {
      */
     public static FluidStack getIC2Coolant(long aAmount) {
         if (IndustrialCraft2.isModLoaded()) return FluidRegistry.getFluidStack("ic2coolant", (int) aAmount);
-        else return Materials.Water.getFluid(aAmount);
+        else return GTUtility.getWater(aAmount);
     }
 
     /**
@@ -219,7 +238,7 @@ public class GTModHandler {
      */
     public static FluidStack getLiquidDNA(long aAmount) {
         if (Gendustry.isModLoaded()) return FluidRegistry.getFluidStack("liquiddna", (int) aAmount);
-        else return Materials.Biomass.getFluid(aAmount);
+        else return MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, (int) (aAmount));
     }
 
     /**
@@ -227,17 +246,17 @@ public class GTModHandler {
      */
     public static boolean isLava(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(Materials.Lava.getFluid(1));
+        return aFluid.isFluidEqual(GTUtility.getLava(1));
     }
 
     /**
      * Returns a Liquid Stack with given amount of Lava.
      *
-     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link GTUtility#getLava} directly.
      */
     @Deprecated
     public static FluidStack getLava(long aAmount) {
-        return Materials.Lava.getFluid(aAmount);
+        return GTUtility.getLava(aAmount);
     }
 
     /**
@@ -245,7 +264,7 @@ public class GTModHandler {
      */
     public static boolean isSteam(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(Materials.Steam.getGas(1));
+        return aFluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 1));
     }
 
     /**
@@ -265,21 +284,21 @@ public class GTModHandler {
     /**
      * Returns a Liquid Stack with given amount of Steam.
      *
-     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link MaterialLibAPI#getFluidStack} with {@link FluidShapes#fluidGas} instead.
      */
     @Deprecated
     public static FluidStack getSteam(long aAmount) {
-        return Materials.Steam.getGas(aAmount);
+        return MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, (int) aAmount);
     }
 
     /**
      * Returns a Liquid Stack with given amount of Milk.
      *
-     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
+     * @deprecated Use {@link MaterialLibAPI#getFluidStack} with the desired material instead.
      */
     @Deprecated
     public static FluidStack getMilk(long aAmount) {
-        return Materials.Milk.getFluid(aAmount);
+        return MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (aAmount));
     }
 
     /**
@@ -324,13 +343,14 @@ public class GTModHandler {
      */
     public static ItemStack getIC2Item(String aItem, long aAmount, ItemStack aReplacement) {
         if (GTUtility.isStringInvalid(aItem) || !GregTechAPI.sPreloadStarted) return null;
-        // if (D1) GT_FML_LOGGER.debug("Requested the Item '" + aItem + "' from the IC2-API");
-        if (!sIC2ItemMap.containsKey(aItem)) {
-            ItemStack tStack = IC2Items.getItem(aItem);
-            sIC2ItemMap.put(aItem, tStack);
-            if (tStack == null && D1) GT_FML_LOGGER.error("{} is not found in the IC2 Items!", aItem);
+        ItemStack tStack = sIC2ItemMap.get(aItem);
+        if (tStack == null) {
+            // Never cache a miss: a lookup here can race IC2's own registration.
+            tStack = IC2Items.getItem(aItem);
+            if (tStack != null) sIC2ItemMap.put(aItem, tStack);
+            else if (D1) GT_FML_LOGGER.error("{} is not found in the IC2 Items!", aItem);
         }
-        return GTUtility.copyAmount(aAmount, sIC2ItemMap.get(aItem), aReplacement);
+        return GTUtility.copyAmount(aAmount, tStack, aReplacement);
     }
 
     /**
@@ -432,7 +452,7 @@ public class GTModHandler {
      * Adds a Scrapbox Drop. Fails at April first for the "suddenly Hoes"-Feature of IC2
      */
     public static boolean addScrapboxDrop(float aChance, ItemStack aOutput) {
-        aOutput = GTOreDictUnificator.get(true, aOutput);
+        aOutput = GTUtility.copyOrNull(aOutput);
         if (aOutput == null || aChance <= 0) return false;
         aOutput.stackSize = 1;
         if (GTConfig.troll && !GTUtility.areStacksEqual(aOutput, new ItemStack(Items.wooden_hoe, 1, 0))) return false;
@@ -474,7 +494,6 @@ public class GTModHandler {
      * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
      */
     public static boolean addSmeltingRecipe(ItemStack input, ItemStack output, float xp) {
-        output = GTOreDictUnificator.get(true, output);
         if (input == null || output == null) return false;
         FurnaceRecipes.smelting()
             .func_151394_a(input, GTUtility.copyOrNull(output), xp);
@@ -492,7 +511,7 @@ public class GTModHandler {
         ItemStack input2 = OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0)
             : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0)
                 : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null;
-        if (Materials.Graphite.contains(aInput)) {
+        if (MaterialParts.isPartOf(aInput, Materials.Graphite)) {
             return false;
         }
         if ((input2 == null) && ((OrePrefixes.ingot.contains(aInput)) || (OrePrefixes.dust.contains(aInput))
@@ -547,10 +566,6 @@ public class GTModHandler {
         return Recipes.oreWashing.getRecipes();
     }
 
-    public static boolean isBufferingCraftingRecipes() {
-        return sBufferCraftingRecipes;
-    }
-
     /**
      * This was supposed to be called once, but since now there is a second buffering pass, this will now be called too
      * at the end of GT5U's load complete if NHCore isn't present, otherwise NHCore will call it in its own load
@@ -562,6 +577,7 @@ public class GTModHandler {
         bulkRemoveRecipeByOutput();
         bulkRemoveByRecipe();
         sBufferRecipeList.forEach(GameRegistry::addRecipe);
+        reportRemovedRepeatedCraftingRecipes();
 
         delayedRemovalByOutput.clear();
         delayedRemovalByOutputFlags.clear();
@@ -601,7 +617,6 @@ public class GTModHandler {
             false,
             false,
             false,
-            true,
             true,
             aRecipe);
     }
@@ -661,7 +676,6 @@ public class GTModHandler {
             (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
             (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
             (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0,
-            (aBitMask & RecipeBits.DONT_UNIFY_OUTPUT) == 0,
             aRecipe);
     }
 
@@ -683,28 +697,28 @@ public class GTModHandler {
             // spotless:off
             aRecipe[i] = switch ((MTEBasicMachineWithRecipe.X) aRecipe[i]) {
                 case CIRCUIT -> switch (machineTier) {
-                    case  0 -> OrePrefixes.circuit.get(Materials.ULV);
-                    case  1 -> OrePrefixes.circuit.get(Materials.LV);
-                    case  2 -> OrePrefixes.circuit.get(Materials.MV);
-                    case  3 -> OrePrefixes.circuit.get(Materials.HV);
-                    case  4 -> OrePrefixes.circuit.get(Materials.EV);
-                    case  5 -> OrePrefixes.circuit.get(Materials.IV);
-                    case  6 -> OrePrefixes.circuit.get(Materials.LuV);
-                    case  7 -> OrePrefixes.circuit.get(Materials.ZPM);
-                    case  8 -> OrePrefixes.circuit.get(Materials.UV);
-                    default -> OrePrefixes.circuit.get(Materials.UHV);
+                    case  0 -> Circuits.ULV.getIngredient();
+                    case  1 -> Circuits.LV.getIngredient();
+                    case  2 -> Circuits.MV.getIngredient();
+                    case  3 -> Circuits.HV.getIngredient();
+                    case  4 -> Circuits.EV.getIngredient();
+                    case  5 -> Circuits.IV.getIngredient();
+                    case  6 -> Circuits.LuV.getIngredient();
+                    case  7 -> Circuits.ZPM.getIngredient();
+                    case  8 -> Circuits.UV.getIngredient();
+                    default -> Circuits.UHV.getIngredient();
                 };
 
                 case BETTER_CIRCUIT -> switch (machineTier) {
-                    case  0 -> OrePrefixes.circuit.get(Materials.LV);
-                    case  1 -> OrePrefixes.circuit.get(Materials.MV);
-                    case  2 -> OrePrefixes.circuit.get(Materials.HV);
-                    case  3 -> OrePrefixes.circuit.get(Materials.EV);
-                    case  4 -> OrePrefixes.circuit.get(Materials.IV);
-                    case  5 -> OrePrefixes.circuit.get(Materials.LuV);
-                    case  6 -> OrePrefixes.circuit.get(Materials.ZPM);
-                    case  7 -> OrePrefixes.circuit.get(Materials.UV);
-                    default -> OrePrefixes.circuit.get(Materials.UHV);
+                    case  0 -> Circuits.LV.getIngredient();
+                    case  1 -> Circuits.MV.getIngredient();
+                    case  2 -> Circuits.HV.getIngredient();
+                    case  3 -> Circuits.EV.getIngredient();
+                    case  4 -> Circuits.IV.getIngredient();
+                    case  5 -> Circuits.LuV.getIngredient();
+                    case  6 -> Circuits.ZPM.getIngredient();
+                    case  7 -> Circuits.UV.getIngredient();
+                    default -> Circuits.UHV.getIngredient();
                 };
 
                 case HULL -> switch (machineTier) {
@@ -721,32 +735,32 @@ public class GTModHandler {
                 };
 
                 case WIRE -> switch (machineTier) {
-                    case  0 -> OrePrefixes.cableGt01.get(Materials.Lead);
-                    case  1 -> OrePrefixes.cableGt01.get(Materials.Tin);
-                    case  2 -> OrePrefixes.cableGt01.get(Materials.AnyCopper);
-                    case  3 -> OrePrefixes.cableGt01.get(Materials.Gold);
-                    case  4 -> OrePrefixes.cableGt01.get(Materials.Aluminium);
-                    case  5 -> OrePrefixes.cableGt01.get(Materials.Platinum);
-                    case  6 -> OrePrefixes.cableGt01.get(Materials.NiobiumTitanium);
-                    case  7 -> OrePrefixes.cableGt01.get(Materials.Naquadah);
-                    case  8 -> OrePrefixes.cableGt04.get(Materials.NaquadahAlloy);
-                    default -> OrePrefixes.wireGt01.get(Materials.SuperconductorUHV);
+                    case  0 -> OrePrefixes.cableGt01.ingredient(Materials.Lead);
+                    case  1 -> OrePrefixes.cableGt01.ingredient(Materials.Tin);
+                    case  2 -> Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt01);
+                    case  3 -> OrePrefixes.cableGt01.ingredient(Materials.Gold);
+                    case  4 -> OrePrefixes.cableGt01.ingredient(Materials.Aluminium);
+                    case  5 -> OrePrefixes.cableGt01.ingredient(Materials.Platinum);
+                    case  6 -> OrePrefixes.cableGt01.ingredient(Materials.NiobiumTitanium);
+                    case  7 -> OrePrefixes.cableGt01.ingredient(Materials.Naquadah);
+                    case  8 -> OrePrefixes.cableGt04.ingredient(Materials.NaquadahAlloy);
+                    default -> OrePrefixes.wireGt01.ingredient(Materials.SuperconductorUHV);
                 };
 
                 case WIRE4 -> switch (machineTier) {
-                    case  0 -> OrePrefixes.cableGt04.get(Materials.Lead);
-                    case  1 -> OrePrefixes.cableGt04.get(Materials.Tin);
-                    case  2 -> OrePrefixes.cableGt04.get(Materials.AnyCopper);
-                    case  3 -> OrePrefixes.cableGt04.get(Materials.Gold);
-                    case  4 -> OrePrefixes.cableGt04.get(Materials.Aluminium);
-                    case  5 -> OrePrefixes.cableGt04.get(Materials.Platinum);
-                    case  6 -> OrePrefixes.cableGt04.get(Materials.NiobiumTitanium);
-                    case  7 -> OrePrefixes.cableGt04.get(Materials.Naquadah);
-                    case  8 -> OrePrefixes.wireGt01.get(Materials.SuperconductorUHV);
-                    default -> OrePrefixes.wireGt04.get(Materials.SuperconductorUHV);
+                    case  0 -> OrePrefixes.cableGt04.ingredient(Materials.Lead);
+                    case  1 -> OrePrefixes.cableGt04.ingredient(Materials.Tin);
+                    case  2 -> Wildcard.AnyCopper.ingredient(OrePrefixes.cableGt04);
+                    case  3 -> OrePrefixes.cableGt04.ingredient(Materials.Gold);
+                    case  4 -> OrePrefixes.cableGt04.ingredient(Materials.Aluminium);
+                    case  5 -> OrePrefixes.cableGt04.ingredient(Materials.Platinum);
+                    case  6 -> OrePrefixes.cableGt04.ingredient(Materials.NiobiumTitanium);
+                    case  7 -> OrePrefixes.cableGt04.ingredient(Materials.Naquadah);
+                    case  8 -> OrePrefixes.wireGt01.ingredient(Materials.SuperconductorUHV);
+                    default -> OrePrefixes.wireGt04.ingredient(Materials.SuperconductorUHV);
                 };
 
-                case STICK_DISTILLATION -> OrePrefixes.stick.get(Materials.Blaze);
+                case STICK_DISTILLATION -> OrePrefixes.stick.ingredient(Materials.Blaze);
 
                 case GLASS -> switch (machineTier) {
                     case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, WILDCARD);
@@ -755,79 +769,79 @@ public class GTModHandler {
                 };
 
                 case PLATE -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.plate.get(Materials.Steel);
-                    case 2    -> OrePrefixes.plate.get(Materials.Aluminium);
-                    case 3    -> OrePrefixes.plate.get(Materials.StainlessSteel);
-                    case 4    -> OrePrefixes.plate.get(Materials.Titanium);
-                    case 5    -> OrePrefixes.plate.get(Materials.TungstenSteel);
-                    case 6    -> OrePrefixes.plate.get(Materials.HSSG);
-                    case 7    -> OrePrefixes.plate.get(Materials.HSSE);
-                    default   -> OrePrefixes.plate.get(Materials.Neutronium);
+                    case 0, 1 -> OrePrefixes.plate.ingredient(Materials.Steel);
+                    case 2    -> OrePrefixes.plate.ingredient(Materials.Aluminium);
+                    case 3    -> OrePrefixes.plate.ingredient(Materials.StainlessSteel);
+                    case 4    -> OrePrefixes.plate.ingredient(Materials.Titanium);
+                    case 5    -> OrePrefixes.plate.ingredient(Materials.TungstenSteel);
+                    case 6    -> OrePrefixes.plate.ingredient(Materials.HSSG);
+                    case 7    -> OrePrefixes.plate.ingredient(Materials.HSSE);
+                    default   -> OrePrefixes.plate.ingredient(Materials.Neutronium);
                 };
 
                 case PIPE -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.pipeMedium.get(Materials.Bronze);
-                    case 2    -> OrePrefixes.pipeMedium.get(Materials.Steel);
-                    case 3    -> OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
-                    case 4    -> OrePrefixes.pipeMedium.get(Materials.Titanium);
-                    case 5    -> OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
-                    case 6    -> OrePrefixes.pipeSmall.get(Materials.ZPM);
-                    case 7    -> OrePrefixes.pipeMedium.get(Materials.ZPM);
-                    case 8    -> OrePrefixes.pipeLarge.get(Materials.ZPM);
-                    default   -> OrePrefixes.pipeHuge.get(Materials.ZPM);
+                    case 0, 1 -> OrePrefixes.pipeMedium.ingredient(Materials.Bronze);
+                    case 2    -> OrePrefixes.pipeMedium.ingredient(Materials.Steel);
+                    case 3    -> OrePrefixes.pipeMedium.ingredient(Materials.StainlessSteel);
+                    case 4    -> OrePrefixes.pipeMedium.ingredient(Materials.Titanium);
+                    case 5    -> OrePrefixes.pipeMedium.ingredient(Materials.TungstenSteel);
+                    case 6    -> TieredItems.ZPM.getPipeSmallIngredient();
+                    case 7    -> TieredItems.ZPM.getPipeMediumIngredient();
+                    case 8    -> TieredItems.ZPM.getPipeLargeIngredient();
+                    default   -> TieredItems.ZPM.getPipeHugeIngredient();
                 };
 
                 case COIL_HEATING -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
-                    case 2    -> OrePrefixes.wireGt02.get(Materials.Cupronickel);
-                    case 3    -> OrePrefixes.wireGt02.get(Materials.Kanthal);
-                    case 4    -> OrePrefixes.wireGt02.get(Materials.Nichrome);
-                    case 5    -> OrePrefixes.wireGt02.get(Materials.TPV);
-                    case 6    -> OrePrefixes.wireGt02.get(Materials.HSSG);
-                    case 7    -> OrePrefixes.wireGt02.get(Materials.Naquadah);
-                    case 8    -> OrePrefixes.wireGt02.get(Materials.NaquadahAlloy);
-                    case 9    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
-                    default   -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
+                    case 0, 1 -> Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt02);
+                    case 2    -> OrePrefixes.wireGt02.ingredient(Materials.Cupronickel);
+                    case 3    -> OrePrefixes.wireGt02.ingredient(Materials.Kanthal);
+                    case 4    -> OrePrefixes.wireGt02.ingredient(Materials.Nichrome);
+                    case 5    -> OrePrefixes.wireGt02.ingredient(Materials.TPV);
+                    case 6    -> OrePrefixes.wireGt02.ingredient(Materials.HSSG);
+                    case 7    -> OrePrefixes.wireGt02.ingredient(Materials.Naquadah);
+                    case 8    -> OrePrefixes.wireGt02.ingredient(Materials.NaquadahAlloy);
+                    case 9    -> OrePrefixes.wireGt04.ingredient(Materials.NaquadahAlloy);
+                    default   -> OrePrefixes.wireGt08.ingredient(Materials.NaquadahAlloy);
                 };
 
                 case COIL_HEATING_DOUBLE -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
-                    case 2    -> OrePrefixes.wireGt04.get(Materials.Cupronickel);
-                    case 3    -> OrePrefixes.wireGt04.get(Materials.Kanthal);
-                    case 4    -> OrePrefixes.wireGt04.get(Materials.Nichrome);
-                    case 5    -> OrePrefixes.wireGt04.get(Materials.TPV);
-                    case 6    -> OrePrefixes.wireGt04.get(Materials.HSSG);
-                    case 7    -> OrePrefixes.wireGt04.get(Materials.Naquadah);
-                    case 8    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
-                    case 9    -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
-                    default   -> OrePrefixes.wireGt16.get(Materials.NaquadahAlloy);
+                    case 0, 1 -> Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt04);
+                    case 2    -> OrePrefixes.wireGt04.ingredient(Materials.Cupronickel);
+                    case 3    -> OrePrefixes.wireGt04.ingredient(Materials.Kanthal);
+                    case 4    -> OrePrefixes.wireGt04.ingredient(Materials.Nichrome);
+                    case 5    -> OrePrefixes.wireGt04.ingredient(Materials.TPV);
+                    case 6    -> OrePrefixes.wireGt04.ingredient(Materials.HSSG);
+                    case 7    -> OrePrefixes.wireGt04.ingredient(Materials.Naquadah);
+                    case 8    -> OrePrefixes.wireGt04.ingredient(Materials.NaquadahAlloy);
+                    case 9    -> OrePrefixes.wireGt08.ingredient(Materials.NaquadahAlloy);
+                    default   -> OrePrefixes.wireGt16.ingredient(Materials.NaquadahAlloy);
                 };
 
                 case STICK_MAGNETIC -> switch (machineTier) {
-                    case 0, 1       -> OrePrefixes.stick.get(Materials.IronMagnetic);
-                    case 2, 3       -> OrePrefixes.stick.get(Materials.SteelMagnetic);
-                    case 4, 5       -> OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
-                    case 6, 7, 8, 9 -> OrePrefixes.stick.get(Materials.SamariumMagnetic);
-                    default         -> OrePrefixes.stick.get(Materials.TengamAttuned);
+                    case 0, 1       -> OrePrefixes.stick.ingredient(Materials.IronMagnetic);
+                    case 2, 3       -> OrePrefixes.stick.ingredient(Materials.SteelMagnetic);
+                    case 4, 5       -> OrePrefixes.stick.ingredient(Materials.NeodymiumMagnetic);
+                    case 6, 7, 8, 9 -> OrePrefixes.stick.ingredient(Materials.SamariumMagnetic);
+                    default         -> OrePrefixes.stick.ingredient(Materials.TengamAttuned);
                 };
 
                 case STICK_ELECTROMAGNETIC -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.stick.get(Materials.AnyIron);
-                    case 2, 3 -> OrePrefixes.stick.get(Materials.Steel);
-                    case 4    -> OrePrefixes.stick.get(Materials.Neodymium);
-                    default   -> OrePrefixes.stick.get(Materials.VanadiumGallium);
+                    case 0, 1 -> Wildcard.AnyIron.ingredient(OrePrefixes.stick);
+                    case 2, 3 -> OrePrefixes.stick.ingredient(Materials.Steel);
+                    case 4    -> OrePrefixes.stick.ingredient(Materials.Neodymium);
+                    default   -> OrePrefixes.stick.ingredient(Materials.VanadiumGallium);
                 };
 
                 case COIL_ELECTRIC -> switch (machineTier) {
-                    case 0  -> OrePrefixes.wireGt01.get(Materials.Lead);
-                    case 1  -> OrePrefixes.wireGt02.get(Materials.Tin);
-                    case 2  -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
-                    case 3  -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
-                    case 4  -> OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
-                    case 5  -> OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
-                    case 6  -> OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
-                    case 7  -> OrePrefixes.wireGt08.get(Materials.Iridium);
-                    default -> OrePrefixes.wireGt16.get(Materials.Osmium);
+                    case 0  -> OrePrefixes.wireGt01.ingredient(Materials.Lead);
+                    case 1  -> OrePrefixes.wireGt02.ingredient(Materials.Tin);
+                    case 2  -> Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt02);
+                    case 3  -> Wildcard.AnyCopper.ingredient(OrePrefixes.wireGt04);
+                    case 4  -> OrePrefixes.wireGt08.ingredient(Materials.AnnealedCopper);
+                    case 5  -> OrePrefixes.wireGt16.ingredient(Materials.AnnealedCopper);
+                    case 6  -> OrePrefixes.wireGt04.ingredient(Materials.YttriumBariumCuprate);
+                    case 7  -> OrePrefixes.wireGt08.ingredient(Materials.Iridium);
+                    default -> OrePrefixes.wireGt16.ingredient(Materials.Osmium);
                 };
 
                 case ROBOT_ARM -> switch (machineTier) {
@@ -967,14 +981,14 @@ public class GTModHandler {
                 };
 
                 case ROTOR -> switch (machineTier) {
-                    case 0, 1 -> OrePrefixes.rotor.get(Materials.Tin);
-                    case 2    -> OrePrefixes.rotor.get(Materials.Bronze);
-                    case 3    -> OrePrefixes.rotor.get(Materials.Steel);
-                    case 4    -> OrePrefixes.rotor.get(Materials.StainlessSteel);
-                    case 5    -> OrePrefixes.rotor.get(Materials.TungstenSteel);
-                    case 6    -> OrePrefixes.rotor.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial());
-                    case 7    -> OrePrefixes.rotor.get(Materials.Iridium);
-                    default   -> OrePrefixes.rotor.get(Materials.Osmium);
+                    case 0, 1 -> OrePrefixes.rotor.ingredient(Materials.Tin);
+                    case 2    -> OrePrefixes.rotor.ingredient(Materials.Bronze);
+                    case 3    -> OrePrefixes.rotor.ingredient(Materials.Steel);
+                    case 4    -> OrePrefixes.rotor.ingredient(Materials.StainlessSteel);
+                    case 5    -> OrePrefixes.rotor.ingredient(Materials.TungstenSteel);
+                    case 6    -> OrePrefixes.rotor.ingredient(Materials.RhodiumPlatedPalladium);
+                    case 7    -> OrePrefixes.rotor.ingredient(Materials.Iridium);
+                    default   -> OrePrefixes.rotor.ingredient(Materials.Osmium);
                 };
 
                 default -> throw new IllegalArgumentException("MISSING TIER MAPPING FOR: " + aRecipe[i] + " AT TIER " + machineTier);
@@ -990,15 +1004,42 @@ public class GTModHandler {
     /**
      * Internal realisation of the Crafting Recipe adding Process.
      */
+    /// The stack that stands in for an [ItemData] ingredient when checking a new recipe for collisions. That is the
+    /// pair's MaterialLib stack when MaterialLib serves the pair, else [#collisionProbe(String)] for the ingredient's
+    /// name.
+    public static ItemStack collisionProbe(ItemData ingredient) {
+        if (ingredient.hasValidPrefixMaterialData()
+            && MaterialParts.isCutOver(ingredient.prefix, ingredient.material.material)) {
+            return MaterialParts.stack(ingredient.prefix, ingredient.material.material, 1);
+        }
+        return collisionProbe(ingredient.toString());
+    }
+
+    /// The stack that stands in for the oredict ingredient `oreName` when checking a new recipe for collisions. That
+    /// is the name's unification target, else the first item registered under it that is not blacklisted, else the
+    /// first item registered under it. Null when nothing is registered under the name.
+    @Nullable
+    public static ItemStack collisionProbe(String oreName) {
+        ItemStack target = OreDictUtils.unificationTarget(oreName);
+        if (target != null) return GTUtility.copyAmount(1, target);
+
+        ItemStack first = null;
+        for (ItemStack ore : OreDictionary.getOres(oreName)) {
+            if (ore == null) continue;
+            if (!OreDictUtils.isBlacklisted(ore)) return GTUtility.copyAmount(1, ore);
+            if (first == null) first = ore;
+        }
+        return GTUtility.copyAmount(1, first);
+    }
+
     private static boolean addCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aRemovable,
         boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
-        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, boolean unifyOutput,
-        Object[] aRecipe) {
+        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
 
-        if (unifyOutput) aResult = GTOreDictUnificator.get(true, aResult);
+        aResult = GTUtility.copyOrNull(aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return false;
         if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length == 0) return false;
@@ -1016,6 +1057,22 @@ public class GTModHandler {
                 || aRecipe[i] instanceof String
                 || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
         }
+
+        String flags = "shaped" + aMirrored
+            + aBuffered
+            + aKeepNBT
+            + aRemovable
+            + aReversible
+            + aRemoveAllOthersWithSameOutput
+            + aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT
+            + aRemoveAllOtherShapedsWithSameOutput
+            + aRemoveAllOtherNativeRecipes
+            + aCheckForCollisions
+            + aOnlyAddIfThereIsAnyRecipeOutputtingThis
+            + Arrays.toString(aEnchantmentsAdded)
+            + Arrays.toString(aEnchantmentLevelsAdded);
+        long recipeKey = craftingRecipeKey(flags, aResult, aRecipe);
+        if (isRepeatedCraftingRecipe(recipeKey, aResult, aRecipe)) return true;
 
         StringBuilder shape = new StringBuilder(E);
         int idx = 0;
@@ -1114,7 +1171,7 @@ public class GTModHandler {
             switch (in) {
                 case ItemStack is -> {
                     tItemStackMap.put(chr, GTUtility.copyOrNull(is));
-                    tItemDataMap.put(chr, GTOreDictUnificator.getItemData(is));
+                    tItemDataMap.put(chr, MaterialData.get(is));
                 }
                 case ItemData itemData -> {
                     String tString = in.toString();
@@ -1125,7 +1182,7 @@ public class GTModHandler {
                         case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
                         default -> tItemDataMap.put(chr, itemData);
                     }
-                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = collisionProbe(itemData);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                     in = aRecipe[idx + 1] = in.toString();
@@ -1143,7 +1200,7 @@ public class GTModHandler {
                         tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
                     else if (in.equals(OreDictNames.craftingAnvil.toString()))
                         tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = collisionProbe(s);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                 }
@@ -1156,7 +1213,7 @@ public class GTModHandler {
             int x = -1;
             for (char chr : shape.toString()
                 .toCharArray()) tData[++x] = tItemDataMap.get(chr);
-            if (GTUtility.arrayContainsNonNull(tData)) GTOreDictUnificator.addItemData(aResult, new ItemData(tData));
+            if (GTUtility.arrayContainsNonNull(tData)) MaterialData.add(aResult, new ItemData(tData));
         }
 
         if (aCheckForCollisions && tRemoveRecipe) {
@@ -1199,7 +1256,7 @@ public class GTModHandler {
                     tRecipe.getClass()
                         .getName()))
                     continue;
-                if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
+                if (GTUtility.areStacksEqual(tRecipe.getRecipeOutput(), aResult, true)) {
                     tList.remove(i--);
                     tList_sS = tList.size();
                     tThereWasARecipe = true;
@@ -1213,22 +1270,14 @@ public class GTModHandler {
         GTUtility.updateItemStack(aResult);
 
         if (tThereWasARecipe || !aOnlyAddIfThereIsAnyRecipeOutputtingThis) {
-            if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
-                new GTShapedRecipe(
-                    GTUtility.copyOrNull(aResult),
-                    aRemovable,
-                    aKeepNBT,
-                    aEnchantmentsAdded,
-                    aEnchantmentLevelsAdded,
-                    aRecipe).setMirrored(aMirrored));
-            else GameRegistry.addRecipe(
-                new GTShapedRecipe(
-                    GTUtility.copyOrNull(aResult),
-                    aRemovable,
-                    aKeepNBT,
-                    aEnchantmentsAdded,
-                    aEnchantmentLevelsAdded,
-                    aRecipe).setMirrored(aMirrored));
+            IRecipe recipe = new GTShapedRecipe(
+                GTUtility.copyOrNull(aResult),
+                aRemovable,
+                aKeepNBT,
+                aEnchantmentsAdded,
+                aEnchantmentLevelsAdded,
+                aRecipe).setMirrored(aMirrored);
+            addCraftingRecipe(recipe, recipeKey, aBuffered);
         }
         return true;
     }
@@ -1264,9 +1313,138 @@ public class GTModHandler {
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
-            (aBitMask & RecipeBits.DONT_UNIFY_OUTPUT) == 0,
             inputValidator,
             aRecipe);
+    }
+
+    /// Crafting recipes GregTech added, by their [#craftingRecipeKey]. Adding one again is skipped, and the repeat is
+    /// kept until [#reportRemovedRepeatedCraftingRecipes] checks that the earlier copy is still registered.
+    private static final Long2ObjectOpenHashMap<IRecipe> sAddedCraftingRecipes = new Long2ObjectOpenHashMap<>();
+    private static final List<RepeatedCraftingRecipe> sRepeatedCraftingRecipes = new ArrayList<>();
+    private static final long NO_CRAFTING_RECIPE_KEY = 0;
+    private static final long FNV_OFFSET_BASIS = 0xcbf29ce484222325L;
+    private static final long FNV_PRIME = 0x100000001b3L;
+
+    private record RepeatedCraftingRecipe(IRecipe earlier, Object[] recipe, @Nullable Exception callSite) {}
+
+    /// Returns whether GregTech already added a recipe for `result` under `key`, recording the repeat if so.
+    private static boolean isRepeatedCraftingRecipe(long key, ItemStack result, Object[] recipe) {
+        IRecipe earlier = key == NO_CRAFTING_RECIPE_KEY ? null : sAddedCraftingRecipes.get(key);
+        if (earlier == null || !GTUtility.areStacksEqual(earlier.getRecipeOutput(), result, true)) return false;
+        Exception callSite = GT_RECIPE_REMOVAL_LOGGER_ENABLED ? new Exception("Repeated crafting recipe") : null;
+        sRepeatedCraftingRecipes.add(new RepeatedCraftingRecipe(earlier, recipe, callSite));
+        return true;
+    }
+
+    /// Logs an error for each repeated crafting recipe whose earlier copy is no longer registered, as the code adding
+    /// it conflicts with the code removing it.
+    private static void reportRemovedRepeatedCraftingRecipes() {
+        if (sRepeatedCraftingRecipes.isEmpty()) return;
+        Set<IRecipe> registered = new ReferenceOpenHashSet<>(
+            CraftingManager.getInstance()
+                .getRecipeList());
+        for (RepeatedCraftingRecipe repeat : sRepeatedCraftingRecipes) {
+            if (registered.contains(repeat.earlier)) continue;
+            GT_FML_LOGGER.error(
+                "Crafting recipe for {} is added more than once and removed: {}",
+                repeat.earlier.getRecipeOutput(),
+                Arrays.deepToString(repeat.recipe),
+                repeat.callSite);
+        }
+        sRepeatedCraftingRecipes.clear();
+    }
+
+    private static void addCraftingRecipe(IRecipe recipe, long key, boolean buffered) {
+        if (sBufferCraftingRecipes && buffered) sBufferRecipeList.add(recipe);
+        else GameRegistry.addRecipe(recipe);
+        if (key != NO_CRAFTING_RECIPE_KEY) sAddedCraftingRecipes.put(key, recipe);
+    }
+
+    /// A 64-bit FNV-1a hash of a crafting recipe's `flags`, result and normalized ingredients, or
+    /// [#NO_CRAFTING_RECIPE_KEY] when an ingredient has no stable name.
+    private static long craftingRecipeKey(String flags, ItemStack result, Object[] recipe) {
+        long key = hashCraftingKey(hashCraftingKey(FNV_OFFSET_BASIS, flags), result);
+        for (Object part : recipe) {
+            if (part instanceof ItemStack stack) {
+                key = hashCraftingKey(key, stack);
+            } else if (part instanceof ItemData data) {
+                String name = data.toString();
+                if (name.isEmpty()) return NO_CRAFTING_RECIPE_KEY;
+                key = hashCraftingKey(mixCraftingKey(key, '#'), name);
+            } else {
+                key = hashCraftingKey(key, String.valueOf(part));
+            }
+        }
+        return key;
+    }
+
+    private static long hashCraftingKey(long key, @Nullable ItemStack stack) {
+        if (stack == null || stack.getItem() == null) return mixCraftingKey(key, -1);
+        key = mixCraftingKey(key, Item.getIdFromItem(stack.getItem()));
+        key = mixCraftingKey(key, stack.getItemDamage());
+        key = mixCraftingKey(key, stack.stackSize);
+        return stack.hasTagCompound() ? hashCraftingKey(key, stack.getTagCompound()) : mixCraftingKey(key, -1);
+    }
+
+    /// Hashes `tag` by structure. A compound's entries combine in any order, so equal compounds hash equal. List
+    /// elements of a type the list has no getter for hash through the list's text.
+    private static long hashCraftingKey(long key, NBTBase tag) {
+        key = mixCraftingKey(key, tag.getId());
+        if (tag instanceof NBTTagCompound compound) {
+            long entries = 0;
+            for (String name : compound.func_150296_c()) {
+                entries += hashCraftingKey(hashCraftingKey(FNV_OFFSET_BASIS, name), compound.getTag(name));
+            }
+            return mixCraftingKey(key, entries);
+        }
+        if (tag instanceof NBTTagList list) {
+            int count = list.tagCount();
+            key = mixCraftingKey(key, count);
+            for (int i = 0; i < count; i++) {
+                key = switch (list.func_150303_d()) {
+                    case 10 -> hashCraftingKey(key, list.getCompoundTagAt(i));
+                    case 8 -> hashCraftingKey(key, list.getStringTagAt(i));
+                    case 6 -> mixCraftingKey(key, Double.doubleToLongBits(list.func_150309_d(i)));
+                    case 5 -> mixCraftingKey(key, Float.floatToIntBits(list.func_150308_e(i)));
+                    case 11 -> hashCraftingKey(key, list.func_150306_c(i));
+                    default -> hashCraftingKey(key, list.toString());
+                };
+            }
+            return key;
+        }
+        if (tag instanceof NBTTagString string) return hashCraftingKey(key, string.func_150285_a_());
+        if (tag instanceof NBTTagFloat || tag instanceof NBTTagDouble) {
+            return mixCraftingKey(key, Double.doubleToLongBits(((NBTBase.NBTPrimitive) tag).func_150286_g()));
+        }
+        if (tag instanceof NBTBase.NBTPrimitive primitive) return mixCraftingKey(key, primitive.func_150291_c());
+        if (tag instanceof NBTTagByteArray bytes) {
+            byte[] values = bytes.func_150292_c();
+            key = mixCraftingKey(key, values.length);
+            for (byte value : values) key = mixCraftingKey(key, value);
+            return key;
+        }
+        if (tag instanceof NBTTagIntArray ints) return hashCraftingKey(key, ints.func_150302_c());
+        return hashCraftingKey(key, tag.toString());
+    }
+
+    private static long hashCraftingKey(long key, int[] values) {
+        key = mixCraftingKey(key, values.length);
+        for (int value : values) key = mixCraftingKey(key, value);
+        return key;
+    }
+
+    private static long hashCraftingKey(long key, String text) {
+        key = mixCraftingKey(key, text.length());
+        for (int i = 0; i < text.length(); i++) key = mixCraftingKey(key, text.charAt(i));
+        return key;
+    }
+
+    private static long mixCraftingKey(long key, int value) {
+        return (key ^ value) * FNV_PRIME;
+    }
+
+    private static long mixCraftingKey(long key, long value) {
+        return mixCraftingKey(mixCraftingKey(key, (int) value), (int) (value >>> 32));
     }
 
     /**
@@ -1274,9 +1452,8 @@ public class GTModHandler {
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aCheckForCollisions, boolean aKeepNBT,
-        boolean aRemovable, boolean overwriteNBT, boolean unifyOutput, Predicate<InventoryCrafting> inputValidator,
-        Object[] aRecipe) {
-        if (unifyOutput) aResult = GTOreDictUnificator.get(true, aResult);
+        boolean aRemovable, boolean overwriteNBT, Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
+        aResult = GTUtility.copyOrNull(aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
@@ -1284,6 +1461,19 @@ public class GTModHandler {
             else if (!(aRecipe[i] == null || aRecipe[i] instanceof ItemStack
                 || aRecipe[i] instanceof String
                 || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
+        }
+
+        long recipeKey = NO_CRAFTING_RECIPE_KEY;
+        if (inputValidator == null) {
+            String flags = "shapeless" + aBuffered
+                + aCheckForCollisions
+                + aKeepNBT
+                + aRemovable
+                + overwriteNBT
+                + Arrays.toString(aEnchantmentsAdded)
+                + Arrays.toString(aEnchantmentLevelsAdded);
+            recipeKey = craftingRecipeKey(flags, aResult, aRecipe);
+            if (isRepeatedCraftingRecipe(recipeKey, aResult, aRecipe)) return true;
         }
 
         ItemStack[] tRecipe = new ItemStack[9];
@@ -1299,7 +1489,7 @@ public class GTModHandler {
                 }
                 case ItemStack itemStack -> tRecipe[i] = itemStack;
                 case String s -> {
-                    tRecipe[i] = GTOreDictUnificator.getFirstOre(tObject, 1);
+                    tRecipe[i] = collisionProbe(s);
                     if (tRecipe[i] == null) break label;
                 }
                 default -> {
@@ -1319,26 +1509,16 @@ public class GTModHandler {
 
         GTUtility.updateItemStack(aResult);
 
-        if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
-            new GTShapelessRecipe(
-                GTUtility.copyOrNull(aResult),
-                aRemovable,
-                aKeepNBT,
-                overwriteNBT,
-                aEnchantmentsAdded,
-                aEnchantmentLevelsAdded,
-                inputValidator,
-                aRecipe));
-        else GameRegistry.addRecipe(
-            new GTShapelessRecipe(
-                GTUtility.copyOrNull(aResult),
-                aRemovable,
-                aKeepNBT,
-                overwriteNBT,
-                aEnchantmentsAdded,
-                aEnchantmentLevelsAdded,
-                inputValidator,
-                aRecipe));
+        IRecipe recipe = new GTShapelessRecipe(
+            GTUtility.copyOrNull(aResult),
+            aRemovable,
+            aKeepNBT,
+            overwriteNBT,
+            aEnchantmentsAdded,
+            aEnchantmentLevelsAdded,
+            inputValidator,
+            aRecipe);
+        addCraftingRecipe(recipe, recipeKey, aBuffered);
         return true;
     }
 
@@ -1401,6 +1581,7 @@ public class GTModHandler {
     static ItemStack removeMatchingRecipes(List<IRecipe> allRecipes, InventoryCrafting craftMatrix,
         IdentityHashMap<IRecipe, Boolean> knownMatches) {
         ItemStack result = null;
+        int occupiedSlots = occupiedSlots(craftMatrix);
         for (int i = 0; i < allRecipes.size(); i++) {
             final IRecipe recipe = allRecipes.get(i);
 
@@ -1409,7 +1590,8 @@ public class GTModHandler {
             }
 
             Boolean knownMatch = knownMatches == null ? null : knownMatches.get(recipe);
-            if (knownMatch != null ? knownMatch : recipe.matches(craftMatrix, DW)) {
+            if (knownMatch != null ? knownMatch
+                : canMatchRecipeShape(recipe, occupiedSlots) && recipe.matches(craftMatrix, DW)) {
                 result = recipe.getCraftingResult(craftMatrix);
                 allRecipes.remove(i--);
             }
@@ -1460,13 +1642,17 @@ public class GTModHandler {
         AtomicIntegerArray matchedDelayedRemovals = GT_RECIPE_REMOVAL_LOGGER_ENABLED
             ? new AtomicIntegerArray(delayedRemovalByRecipe.size())
             : null;
+        int[] occupiedSlots = delayedRemovalByRecipe.stream()
+            .mapToInt(GTModHandler::occupiedSlots)
+            .toArray();
         Set<IRecipe> listToRemove = allRecipes.parallelStream()
             .filter(recipe -> {
                 if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) {
                     return false;
                 }
                 for (int i = 0; i < delayedRemovalByRecipe.size(); i++) {
-                    if (recipe.matches(delayedRemovalByRecipe.get(i), DW)) {
+                    if (canMatchRecipeShape(recipe, occupiedSlots[i])
+                        && recipe.matches(delayedRemovalByRecipe.get(i), DW)) {
                         if (matchedDelayedRemovals != null) matchedDelayedRemovals.set(i, 1);
                         return true;
                     }
@@ -1490,7 +1676,7 @@ public class GTModHandler {
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput) {
         if (sBufferCraftingRecipes) {
-            return delayedRemovalByOutput.add(GTOreDictUnificator.get_nocopy(aOutput));
+            return GTUtility.isStackValid(aOutput) && delayedRemovalByOutput.add(aOutput);
         }
 
         return removeRecipeByOutput(aOutput);
@@ -1500,17 +1686,16 @@ public class GTModHandler {
         boolean onlyRemoveNativeHandlers) {
         // Handling NBT-sensitive stacks would be a nightmare, because we wouldn't be able to use HashMaps anymore.
         // Luckily, ignoreNBT is almost never false, so we're not missing any performance gain by not handling it.
+        if (GTUtility.isStackInvalid(output)) return false;
         if (sBufferCraftingRecipes && ignoreNBT) {
-            ItemStack unifiedOutput = GTOreDictUnificator.get_nocopy(output);
-
             int removalFlags = 0;
             if (keepShapelessRecipes) removalFlags |= DELAYED_REMOVAL_KEEP_SHAPELESS;
             if (onlyRemoveNativeHandlers) removalFlags |= DELAYED_REMOVAL_ONLY_REMOVE_NATIVE;
 
             if (removalFlags != 0) {
-                delayedRemovalByOutputFlags.put(unifiedOutput, removalFlags);
+                delayedRemovalByOutputFlags.put(output, removalFlags);
             }
-            return delayedRemovalByOutput.add(unifiedOutput);
+            return delayedRemovalByOutput.add(output);
         }
 
         return removeRecipeByOutput(output, ignoreNBT, keepShapelessRecipes, onlyRemoveNativeHandlers);
@@ -1529,8 +1714,7 @@ public class GTModHandler {
     public static boolean removeRecipeByOutput(ItemStack output, boolean ignoreNBT, boolean keepShapelessRecipes,
         boolean onlyRemoveNativeHandlers) {
 
-        output = GTOreDictUnificator.get_nocopy(output);
-        if (output == null) return false;
+        if (GTUtility.isStackInvalid(output)) return false;
 
         final ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
@@ -1558,7 +1742,7 @@ public class GTModHandler {
                 if (sSpecialRecipeClasses.contains(recipeClassName)) continue;
             }
 
-            ItemStack recipeOutput = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
+            ItemStack recipeOutput = recipe.getRecipeOutput();
             if (GTUtility.areStacksEqual(recipeOutput, output, ignoreNBT)) {
                 allRecipes.remove(i--);
                 size = allRecipes.size();
@@ -1584,8 +1768,8 @@ public class GTModHandler {
                 return false;
             }
 
-            ItemStack output = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
-            if (output == null) return false;
+            ItemStack output = recipe.getRecipeOutput();
+            if (GTUtility.isStackInvalid(output)) return false;
 
             wildcardItem.func_150996_a(output.getItem());
             if (delayedRemovalByOutput.contains(wildcardItem)) {
@@ -1793,6 +1977,18 @@ public class GTModHandler {
         return candidates;
     }
 
+    /// The bit mask of `craftMatrix`'s non-empty slots, bit `x + 3 * y` for column `x` and row `y`.
+    private static int occupiedSlots(InventoryCrafting craftMatrix) {
+        int occupiedSlots = 0;
+        for (int i = 0; i < 9; i++) {
+            if (craftMatrix.getStackInSlot(i) != null) occupiedSlots |= 1 << i;
+        }
+        return occupiedSlots;
+    }
+
+    /// Whether `recipe` can match a grid whose non-empty slots are `occupiedSlots`. A shaped recipe's pattern must
+    /// cover exactly those slots at some offset, mirrored or not. A shapeless recipe must take as many items as there
+    /// are occupied slots. Any other recipe type can always match.
     private static boolean canMatchRecipeShape(IRecipe recipe, int occupiedSlots) {
         Class<?> recipeClass = recipe.getClass();
         if (recipeClass == ShapedRecipes.class) {
@@ -1878,11 +2074,13 @@ public class GTModHandler {
      */
     public static List<ItemStack> getRecipeOutputs(List<IRecipe> recipeList, boolean deleteFromList,
         ItemStack... shape) {
-        return getRecipeOutputs(recipeList, deleteFromList, shape, null);
+        return getRecipeOutputs(recipeList, deleteFromList, shape, null, null);
     }
 
+    /// [#getRecipeOutputs(List, boolean, ItemStack...)] that also records each match result in `knownMatches` and
+    /// passes each recipe that produced an output to `onOutput`, when given.
     static List<ItemStack> getRecipeOutputs(List<IRecipe> recipeList, boolean deleteFromList, ItemStack[] shape,
-        IdentityHashMap<IRecipe, Boolean> knownMatches) {
+        @Nullable IdentityHashMap<IRecipe, Boolean> knownMatches, @Nullable Consumer<IRecipe> onOutput) {
         final ArrayList<ItemStack> outputList = new ArrayList<>();
         if (shape == null || isAllNulls(shape)) return outputList;
 
@@ -1925,6 +2123,7 @@ public class GTModHandler {
             if (output.getMaxStackSize() != 1) continue;
 
             outputList.add(output);
+            if (onOutput != null) onOutput.accept(recipe);
             if (deleteFromList) iterator.remove();
         }
 
@@ -1945,7 +2144,7 @@ public class GTModHandler {
      */
     public static ItemStack getSmeltingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         if (aInput == null || aInput.stackSize < 1) return null;
-        ItemStack rStack = GTOreDictUnificator.get(
+        ItemStack rStack = GTUtility.copyOrNull(
             FurnaceRecipes.smelting()
                 .getSmeltingResult(aInput));
 
@@ -1959,7 +2158,7 @@ public class GTModHandler {
 
     public static ItemStack getEFRBlastingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         if (aInput == null || aInput.stackSize < 1) return null;
-        ItemStack rStack = GTOreDictUnificator.get(
+        ItemStack rStack = GTUtility.copyOrNull(
             BlastFurnaceRecipes.smelting()
                 .getSmeltingResult(aInput));
 
@@ -1973,7 +2172,7 @@ public class GTModHandler {
 
     public static ItemStack getEFRSmokingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         if (aInput == null || aInput.stackSize < 1) return null;
-        ItemStack rStack = GTOreDictUnificator.get(
+        ItemStack rStack = GTUtility.copyOrNull(
             SmokerRecipes.smelting()
                 .getSmeltingResult(aInput));
 
@@ -2348,10 +2547,6 @@ public class GTModHandler {
             return 1;
         }
 
-        if (GTUtility.areStacksEqual(aStack, getIC2Item("waterCell", 1, WILDCARD))) {
-            return 1;
-        }
-
         for (OrePrefixes cellType : OrePrefixes.CELL_TYPES) {
             if (cellType.contains(aStack)) {
                 return 1;
@@ -2429,10 +2624,6 @@ public class GTModHandler {
          * tags with output item's NBT tags if exists
          */
         public static final long OVERWRITE_NBT = B[14];
-        /**
-         * Keeps the supplied crafting recipe output instead of ore-dictionary-unifying it.
-         */
-        public static final long DONT_UNIFY_OUTPUT = B[15];
         /**
          * Combination of common bits. NOT_REMOVABLE, REVERSIBLE, and BUFFERED
          */

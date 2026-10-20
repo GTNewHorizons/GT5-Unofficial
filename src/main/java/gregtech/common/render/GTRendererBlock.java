@@ -16,23 +16,19 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 import java.util.Arrays;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IBlockWithTextures;
@@ -42,14 +38,15 @@ import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.objects.XSTR;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.SBRContextHolder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockMachines;
+import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.mixin.interfaces.accessors.TesselatorAccessor;
+import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 
 @ThreadSafeISBRH(perThread = true)
 public class GTRendererBlock implements ISimpleBlockRenderingHandler {
@@ -59,6 +56,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     public static final float BLOCK_MAX = 1.0F;
     private static final int[][] INVENTORY_DISPLAY_LISTS = new int[2][GregTechAPI.METATILEENTITIES.length];
     private static final ITexture[][][] INVENTORY_DISPLAY_LIST_TEXTURES = new ITexture[GregTechAPI.METATILEENTITIES.length][][];
+    private static final Long2IntOpenHashMap PIPE_SHAPE_DISPLAY_LISTS = new Long2IntOpenHashMap();
     private final ITexture[][] textureArray = new ITexture[6][];
     private final ITexture[] overlayHolder = new ITexture[1];
 
@@ -141,68 +139,10 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void addHitEffects(EffectRenderer effectRenderer, Block block, World world, int x, int y, int z,
-        int ordinalSide) {
-        double rX = x + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
-        double rY = y + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
-        double rZ = z + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
-        if (ordinalSide == 0) {
-            rY = y - 0.1;
-        } else if (ordinalSide == 1) {
-            rY = y + 1.1;
-        } else if (ordinalSide == 2) {
-            rZ = z - 0.1;
-        } else if (ordinalSide == 3) {
-            rZ = z + 1.1;
-        } else if (ordinalSide == 4) {
-            rX = x - 0.1;
-        } else if (ordinalSide == 5) {
-            rX = x + 1.1;
-        }
-        effectRenderer.addEffect(
-            (new EntityDiggingFX(
-                world,
-                rX,
-                rY,
-                rZ,
-                0.0,
-                0.0,
-                0.0,
-                block,
-                block.getDamageValue(world, x, y, z),
-                ordinalSide)).applyColourMultiplier(x, y, z)
-                    .multiplyVelocity(0.2F)
-                    .multipleParticleScaleBy(0.6F));
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SuppressWarnings("MethodWithTooManyParameters")
-    public static void addDestroyEffects(EffectRenderer effectRenderer, Block block, World world, int x, int y, int z) {
-        for (int iX = 0; iX < 4; ++iX) {
-            for (int iY = 0; iY < 4; ++iY) {
-                for (int iZ = 0; iZ < 4; ++iZ) {
-                    final double bX = x + (iX + 0.5) / 4.0;
-                    final double bY = y + (iY + 0.5) / 4.0;
-                    final double bZ = z + (iZ + 0.5) / 4.0;
-                    effectRenderer.addEffect(
-                        (new EntityDiggingFX(
-                            world,
-                            bX,
-                            bY,
-                            bZ,
-                            bX - x - 0.5,
-                            bY - y - 0.5,
-                            bZ - z - 0.5,
-                            block,
-                            block.getDamageValue(world, x, y, z))).applyColourMultiplier(x, y, z));
-                }
-            }
-        }
-    }
-
     private IMetaTileEntity getMTE(Block block, int meta) {
+        if (block instanceof PipeShapeBlock pipeShape) {
+            return GTUtility.getIndexSafe(GregTechAPI.METATILEENTITIES, pipeShape.getMteId());
+        }
         if (!(block instanceof BlockMachines)) return null;
 
         return GTUtility.getIndexSafe(GregTechAPI.METATILEENTITIES, meta);
@@ -239,7 +179,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             }
         }
 
-        int displayList = INVENTORY_DISPLAY_LISTS[variant][aMeta];
+        int displayList = getInventoryDisplayList(aBlock, variant, aMeta);
         if (displayList == 0) {
             displayList = GL11.glGenLists(1);
             if (displayList == 0) {
@@ -258,11 +198,32 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
                 GL11.glDeleteLists(displayList, 1);
                 throw e;
             }
-            INVENTORY_DISPLAY_LISTS[variant][aMeta] = displayList;
+            putInventoryDisplayList(aBlock, variant, aMeta, displayList);
         }
 
         GL11.glCallList(displayList);
         aRenderer.setRenderBounds(BLOCK_MIN, BLOCK_MIN, BLOCK_MIN, BLOCK_MAX, BLOCK_MAX, BLOCK_MAX);
+    }
+
+    /// A machine stack's metadata is its MTE id and indexes the display list arrays directly. A pipe-shape stack's
+    /// metadata is its material index, so its display list is keyed by the shape's MTE id and that index together.
+    private static int getInventoryDisplayList(Block block, int variant, int meta) {
+        if (block instanceof PipeShapeBlock pipeShape) {
+            return PIPE_SHAPE_DISPLAY_LISTS.get(pipeShapeDisplayListKey(pipeShape, variant, meta));
+        }
+        return INVENTORY_DISPLAY_LISTS[variant][meta];
+    }
+
+    private static void putInventoryDisplayList(Block block, int variant, int meta, int displayList) {
+        if (block instanceof PipeShapeBlock pipeShape) {
+            PIPE_SHAPE_DISPLAY_LISTS.put(pipeShapeDisplayListKey(pipeShape, variant, meta), displayList);
+        } else {
+            INVENTORY_DISPLAY_LISTS[variant][meta] = displayList;
+        }
+    }
+
+    private static long pipeShapeDisplayListKey(PipeShapeBlock pipeShape, int variant, int materialIndex) {
+        return ((long) variant << 48) | ((long) pipeShape.getMteId() << 32) | (materialIndex & 0xFFFFFFFFL);
     }
 
     private void renderInventoryBlockImmediate(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer,
@@ -280,7 +241,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         try {
             final boolean startedDrawing = ctx.beginInventoryBatch();
             try {
-                if (imte != null && !imte.renderInInventory(ctx)) {
+                if (imte != null && !renderMTEInInventory(ctx, aBlock, aMeta, imte)) {
                     renderNormalInventoryMetaTileEntity(ctx, imte);
                 } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
                     ITexture[][] texture = texturedBlock.getInventoryTextures(aMeta);
@@ -308,6 +269,10 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             }
         }
         Arrays.fill(INVENTORY_DISPLAY_LIST_TEXTURES, null);
+        for (int displayList : PIPE_SHAPE_DISPLAY_LISTS.values()) {
+            GL11.glDeleteLists(displayList, 1);
+        }
+        PIPE_SHAPE_DISPLAY_LISTS.clear();
     }
 
     private static void deleteInventoryDisplayList(int variant, int meta) {
@@ -315,6 +280,15 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         if (displayList == 0) return;
         GL11.glDeleteLists(displayList, 1);
         INVENTORY_DISPLAY_LISTS[variant][meta] = 0;
+    }
+
+    /// Renders an MTE's inventory form. A pipe-shape stack encodes its material in the damage value, which the
+    /// material-agnostic MTE takes as an argument.
+    private static boolean renderMTEInInventory(ISBRInventoryContext ctx, Block block, int meta, IMetaTileEntity imte) {
+        if (block instanceof PipeShapeBlock && imte instanceof MetaPipeEntity pipe) {
+            return pipe.renderInInventory(ctx, MaterialLibAPI.getMaterialByIndex(meta));
+        }
+        return imte.renderInInventory(ctx);
     }
 
     private static void renderNormalInventoryMetaTileEntity(ISBRInventoryContext ctx, IMetaTileEntity imte) {

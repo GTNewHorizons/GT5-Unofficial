@@ -289,8 +289,6 @@ import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
 import static gregtech.common.items.IDMetaItem02.Vajra_Core;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -301,23 +299,24 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverExternal;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverInternal;
@@ -336,40 +335,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     private static final String aTextCover = "Usable as Cover";
 
     public MetaGeneratedItem02() {
-        super(
-            "metaitem.02",
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.toolHeadHammer,
-            OrePrefixes.toolHeadFile,
-            OrePrefixes.toolHeadSaw,
-            OrePrefixes.toolHeadDrill,
-            OrePrefixes.toolHeadChainsaw,
-            OrePrefixes.toolHeadWrench,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.toolHeadBuzzSaw,
-            OrePrefixes.turbineBlade,
-            null,
-            OrePrefixes.itemCasing,
-            OrePrefixes.wireFine,
-            OrePrefixes.gearGtSmall,
-            OrePrefixes.rotor,
-            OrePrefixes.stickLong,
-            OrePrefixes.springSmall,
-            OrePrefixes.spring,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.___placeholder___,
-            OrePrefixes.gemChipped,
-            OrePrefixes.gemFlawed,
-            OrePrefixes.gemFlawless,
-            OrePrefixes.gemExquisite,
-            OrePrefixes.gearGt);
+        super("metaitem.02");
         INSTANCE = this;
 
         ItemList.ThermosCan_Coffee.set(
@@ -803,7 +769,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Bottle_Salt_Water.ID,
                 "gt.item.bottle.salt_water.name",
                 "gt.item.bottle.salt_water.tooltip",
-                OrePrefixes.bottle.get(Materials.SaltWater),
+                OrePrefixes.bottle.ingredient(Materials.SaltWater),
                 new GTFoodStat(
                     1,
                     0.0F,
@@ -1493,7 +1459,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Bottle_Milk.ID,
                 "gt.item.bottle.milk.name",
                 "gt.item.bottle.milk.tooltip",
-                OrePrefixes.bottle.get(Materials.Milk),
+                OrePrefixes.bottle.ingredient(Materials.Milk),
                 new GTFoodStat(
                     0,
                     0.0F,
@@ -1510,7 +1476,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Bottle_Holy_Water.ID,
                 "gt.item.bottle.holy_water.name",
                 "gt.item.bottle.holy_water.tooltip",
-                OrePrefixes.bottle.get(Materials.HolyWater),
+                OrePrefixes.bottle.ingredient(Materials.HolyWater),
                 new GTFoodStat(
                     0,
                     0.0F,
@@ -1574,7 +1540,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                     7,
                     0.5F,
                     EnumAction.eat,
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 1L),
+                    MaterialLibAPI.getStack(Materials.Paper, Shapes.plate, 1),
                     false,
                     true,
                     false),
@@ -1620,7 +1586,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                     7,
                     0.5F,
                     EnumAction.eat,
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L),
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.foil, 1),
                     false,
                     true,
                     false),
@@ -1637,7 +1603,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                     7,
                     0.6F,
                     EnumAction.eat,
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L),
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.foil, 1),
                     false,
                     true,
                     false),
@@ -3531,29 +3497,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         return false;
     }
 
-    @Override
-    public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack) {
-        int aDamage = aStack.getItemDamage();
-        return ((aDamage >= 25000) && (aDamage < 27000)) || (super.hasProjectile(aProjectileType, aStack));
-    }
-
-    @Override
-    public boolean isItemStackUsable(ItemStack aStack) {
-        int aDamage = aStack.getItemDamage();
-        Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
-        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mToolEnchantment != null)) {
-            Enchantment tEnchant = aMaterial.mToolEnchantment == Enchantment.fortune ? Enchantment.looting
-                : aMaterial.mToolEnchantment;
-            if (tEnchant.type == EnumEnchantmentType.weapon) {
-                if (!ItemStackNBT.getBoolean(aStack, "GT.HasBeenUpdated")) {
-                    ItemStackNBT.setBoolean(aStack, "GT.HasBeenUpdated", true);
-                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mToolEnchantmentLevel);
-                }
-            }
-        }
-        return super.isItemStackUsable(aStack);
-    }
-
     private void setAllFluidContainerStats() {
         setFluidContainerStats(32000 + Food_Raw_Fries.ID, 0L, 16L);
         setFluidContainerStats(32000 + Food_Fries.ID, 0L, 16L);
@@ -3633,18 +3576,14 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
     public void initAssemblerRecipes() {
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_RedstoneTransmitter.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .itemInputs(ItemList.Cover_RedstoneTransmitter.get(1L), Circuits.EV.get(1))
             .circuit(1)
             .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitter.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_RedstoneReceiver.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .itemInputs(ItemList.Cover_RedstoneReceiver.get(1L), Circuits.EV.get(1))
             .circuit(1)
             .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiver.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
@@ -3805,14 +3744,14 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     public void initMaceratorRecipes() {
         RA.stdBuilder()
             .itemInputs(ItemList.Food_Sliced_Cheese.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cheese, Shapes.dustSmall, 1))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
         RA.stdBuilder()
             .itemInputs(ItemList.Dye_Cocoa.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cocoa, Shapes.dust, 1))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -3833,14 +3772,14 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         RA.stdBuilder()
             .itemInputs(GTModHandler.getIC2Item("crop", 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 1))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Items.stick, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dustSmall, 2))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -3855,7 +3794,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.TranscendentMetal, 8L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.dust, 8))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);
@@ -4071,12 +4010,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             context -> new CoverWirelessMaintenanceDetector(
                 context,
                 TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)));
-    }
-
-    @Override
-    public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (!aPrefix.getName()
-            .startsWith("toolHead"));
     }
 
     @Override

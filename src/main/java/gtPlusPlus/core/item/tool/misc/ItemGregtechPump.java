@@ -41,13 +41,14 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialData;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -564,7 +565,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                         continue;
                     }
                     if (tRandomData == SubTag.NO_UNIFICATION) {
-                        GTOreDictUnificator.addToBlacklist(rStack);
+                        OreDictUtils.addToBlacklist(rStack);
                     }
                 }
             }
@@ -589,14 +590,14 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     }
                     if (tRandomData instanceof ItemData) {
                         if (GTUtility.isStringValid(tRandomData)) {
-                            GTOreDictUnificator.registerOre(tRandomData, rStack);
+                            OreDictUtils.registerOre(tRandomData, rStack);
                         } else {
-                            GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                            MaterialData.add(rStack, (ItemData) tRandomData);
                         }
                         continue;
                     }
                     if (tUseOreDict) {
-                        GTOreDictUnificator.registerOre(tRandomData, rStack);
+                        OreDictUtils.registerOre(tRandomData, rStack);
                     }
                 }
             }

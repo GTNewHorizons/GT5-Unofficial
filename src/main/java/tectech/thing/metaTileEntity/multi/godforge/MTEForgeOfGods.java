@@ -61,14 +61,17 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -82,7 +85,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.threads.RunnableMachineUpdate;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
@@ -121,7 +123,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     private static final String SCANNER_INFO_BAR = EnumChatFormatting.BLUE.toString() + EnumChatFormatting.STRIKETHROUGH
         + "--------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
-        : GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 1);
+        : MaterialLibAPI.getStack(Materials.Neutronium, BlockShapes.block, 1);
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
@@ -270,9 +272,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     private final ArrayList<FluidStack> validFuelList = new ArrayList<>() {
 
         {
-            add(Materials.DTR.getFluid(1));
-            add(Materials.RawStarMatter.getFluid(1));
-            add(Materials.MHDCSM.getMolten(1));
+            add(MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 1));
+            add(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 1));
+            add(MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 1));
         }
     };
 
@@ -388,7 +390,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
                         ItemStack itemToAbsorb = STELLAR_FUEL;
                         if (data.isUpgradeActive(END) && data.getInternalBattery() != 0) {
-                            itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, Materials.GravitonShard, 1);
+                            itemToAbsorb = MaterialLibAPI.getStack(Materials.GravitonShard, Shapes.gem, 1);
                         }
 
                         int invLength = inputBus.getSizeInventory();
@@ -953,7 +955,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
-            ItemStack shard = GTOreDictUnificator.get(OrePrefixes.gem, Materials.GravitonShard, 1);
+            ItemStack shard = MaterialLibAPI.getStack(Materials.GravitonShard, Shapes.gem, 1);
 
             shard.stackSize = data.getGravitonShardsAvailable();
 

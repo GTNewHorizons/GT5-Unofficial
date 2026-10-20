@@ -14,14 +14,20 @@ import java.util.Optional;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.NaniteTier;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IRecipeMap;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
@@ -99,8 +105,8 @@ public class GTRecipeConstants {
     /**
      * Replicator output material.
      */
-    public static final RecipeMetadataKey<Materials> MATERIAL = SimpleRecipeMetadataKey
-        .create(Materials.class, "material");
+    public static final RecipeMetadataKey<Material> MATERIAL = SimpleRecipeMetadataKey
+        .create(Material.class, "material");
     /**
      * Marker for {@link #UniversalArcFurnace} to tell that the recipe belongs to recycling category.
      */
@@ -129,8 +135,8 @@ public class GTRecipeConstants {
     /**
      * PCB Factory nanite material
      */
-    public static final RecipeMetadataKey<Materials> PCB_NANITE_MATERIAL = SimpleRecipeMetadataKey
-        .create(Materials.class, "pcb_nanite_material");
+    public static final RecipeMetadataKey<Material> PCB_NANITE_MATERIAL = SimpleRecipeMetadataKey
+        .create(Material.class, "pcb_nanite_material");
 
     /**
      * FOG Exotic recipe tier.
@@ -326,6 +332,12 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<FluidStack[]> CONDENSATE_INPUT = SimpleRecipeMetadataKey
         .create(FluidStack[].class, "condensate_input");
 
+    /// Marks recipes that are the same recipe repeated over an item's display variants, so NEI can collapse
+    /// them into one cycling entry (see [gregtech.nei.OreVariantGroups]). Stamped by
+    /// [GTRecipeBuilder#withVariantGroup].
+    public static final RecipeMetadataKey<String> VARIANT_GROUP = SimpleRecipeMetadataKey
+        .create(String.class, "variant_group");
+
     /**
      * Add a arc furnace recipe.
      */
@@ -361,13 +373,13 @@ public class GTRecipeConstants {
             }
 
             // Generate recipe with plasma
-            for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
-                int tPlasmaAmount = (int) Math.max(1L, baseDuration / (mat.getMass() * 16L));
+            for (Material mat : new Material[] { Materials.Argon, Materials.Nitrogen }) {
+                int tPlasmaAmount = (int) Math.max(1L, baseDuration / (MaterialUtils.mass(mat) * 16L));
                 GTRecipeBuilder plasmaBuilder = builder.copy()
                     .duration(Math.max(1, mat == Materials.Nitrogen ? baseDuration / 4 : baseDuration / 24))
-                    .fluidInputs(mat.getPlasma(tPlasmaAmount))
+                    .fluidInputs(MaterialUtils.plasma(mat, tPlasmaAmount))
                     .circuit(11)
-                    .fluidOutputs(mat.getGas(tPlasmaAmount));
+                    .fluidOutputs(MaterialUtils.gas(mat, tPlasmaAmount));
                 ret.addAll(RecipeMaps.arcFurnaceRecipes.doAdd(plasmaBuilder));
             }
         }
@@ -460,12 +472,18 @@ public class GTRecipeConstants {
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade1PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 100)))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade2PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade2PurifiedWater, FluidShapes.fluidLiquid, 100)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -474,12 +492,18 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade3PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade3PurifiedWater, FluidShapes.fluidLiquid, 100)))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade4PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade4PurifiedWater, FluidShapes.fluidLiquid, 100)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -488,12 +512,18 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade5PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade5PurifiedWater, FluidShapes.fluidLiquid, 100)))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade6PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade6PurifiedWater, FluidShapes.fluidLiquid, 100)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -503,17 +533,26 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade1PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade1PurifiedWater, FluidShapes.fluidLiquid, 32000)))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade2PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade2PurifiedWater, FluidShapes.fluidLiquid, 32000)))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade3PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade3PurifiedWater, FluidShapes.fluidLiquid, 32000)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -522,12 +561,18 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade4PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade4PurifiedWater, FluidShapes.fluidLiquid, 32000)))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade5PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade5PurifiedWater, FluidShapes.fluidLiquid, 32000)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -536,17 +581,26 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade6PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade6PurifiedWater, FluidShapes.fluidLiquid, 32000)))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade7PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade7PurifiedWater, FluidShapes.fluidLiquid, 32000)))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade8PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 32000)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -728,7 +782,7 @@ public class GTRecipeConstants {
      */
     public static IRecipeMap AssemblerOD = IRecipeMap.newRecipeMap(builder -> {
         Collection<GTRecipe> ret = new ArrayList<>();
-        for (ItemStack input : GTOreDictUnificator.getOresImmutable(builder.getMetadata(OREDICT_INPUT))) {
+        for (ItemStack input : OreDictionary.getOres(String.valueOf(builder.getMetadata(OREDICT_INPUT)))) {
             ret.addAll(
                 builder.copy()
                     .itemInputs(GTRecipeMapUtil.appendArray(builder.getItemInputsBasic(), input))

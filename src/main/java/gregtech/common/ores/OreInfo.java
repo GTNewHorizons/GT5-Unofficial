@@ -4,8 +4,8 @@ import org.jetbrains.annotations.ApiStatus;
 
 import com.gtnewhorizon.gtnhlib.util.ObjectPooler;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 
 /**
@@ -29,38 +29,37 @@ import gregtech.api.interfaces.IStoneType;
  * <pre>
  * {@code
  *  void foo(Block block, int meta) {
- *   try (OreInfo<?> info = OreManager.getOreInfo(block, meta)) {
+ *   try (OreInfo info = OreManager.getOreInfo(block, meta)) {
  *     // do something with info
  *   }
  * }
  * </pre>
  */
-public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
+public class OreInfo implements AutoCloseable {
 
     /**
      * The cached adapter that produced this info. May not be valid, so use {@link OreManager#getAdapter(OreInfo)}
      * instead.
      */
     @ApiStatus.Internal
-    IOreAdapter<TMat> cachedAdapter;
+    IOreAdapter cachedAdapter;
 
-    public TMat material;
+    public Material material;
     public IStoneType stoneType;
     public boolean isSmall;
     public ImmutableBlockMeta sourceBlock;
     /** Natural ores can be mined by machines and can be fortuned. Ores placed by the player aren't natural. */
     public boolean isNatural;
 
-    static final ObjectPooler<OreInfo<?>> ORE_INFO_POOL = new ObjectPooler<>(OreInfo::new);
+    static final ObjectPooler<OreInfo> ORE_INFO_POOL = new ObjectPooler<>(OreInfo::new);
 
-    @SuppressWarnings("unchecked")
-    public static <T extends IOreMaterial> OreInfo<T> getNewInfo() {
+    public static OreInfo getNewInfo() {
         synchronized (ORE_INFO_POOL) {
-            return (OreInfo<T>) ORE_INFO_POOL.getInstance();
+            return ORE_INFO_POOL.getInstance();
         }
     }
 
-    public static void releaseInfo(OreInfo<?> info) {
+    public static void releaseInfo(OreInfo info) {
         synchronized (ORE_INFO_POOL) {
             ORE_INFO_POOL.releaseInstance(info.reset());
         }
@@ -75,7 +74,7 @@ public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
         releaseInfo(this);
     }
 
-    public OreInfo<TMat> reset() {
+    public OreInfo reset() {
         cachedAdapter = null;
         material = null;
         stoneType = null;
@@ -86,8 +85,8 @@ public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
     }
 
     @Override
-    public OreInfo<TMat> clone() {
-        OreInfo<TMat> dup = getNewInfo();
+    public OreInfo clone() {
+        OreInfo dup = getNewInfo();
         dup.cachedAdapter = this.cachedAdapter;
         dup.material = this.material;
         dup.stoneType = this.stoneType;
@@ -113,7 +112,7 @@ public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        OreInfo<?> other = (OreInfo<?>) obj;
+        OreInfo other = (OreInfo) obj;
         if (material == null) {
             if (other.material != null) return false;
         } else if (!material.equals(other.material)) return false;

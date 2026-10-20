@@ -52,15 +52,17 @@ import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -1013,14 +1015,21 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 16, 16, 0);
     }
 
+    private static final Fluid HYDROGEN_GAS = MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1)
+        .getFluid();
+    private static final Fluid HELIUM_GAS = MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1)
+        .getFluid();
+    private static final Fluid RAW_STAR_MATTER = MaterialLibAPI
+        .getFluid(Materials.RawStarMatter, FluidShapes.fluidLiquid);
+
     private final Map<Fluid, Long> validFluidMap = new HashMap<>() {
 
         private static final long serialVersionUID = -8452610443191188130L;
 
         {
-            put(Materials.Hydrogen.mGas, 0L);
-            put(Materials.Helium.mGas, 0L);
-            put(Materials.RawStarMatter.mFluid, 0L);
+            put(HYDROGEN_GAS, 0L);
+            put(HELIUM_GAS, 0L);
+            put(RAW_STAR_MATTER, 0L);
         }
     };
 
@@ -1087,15 +1096,15 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     }
 
     private long getHydrogenStored() {
-        return validFluidMap.get(Materials.Hydrogen.mGas);
+        return validFluidMap.get(HYDROGEN_GAS);
     }
 
     private long getHeliumStored() {
-        return validFluidMap.get(Materials.Helium.mGas);
+        return validFluidMap.get(HELIUM_GAS);
     }
 
     private long getStellarPlasmaStored() {
-        return validFluidMap.get(Materials.RawStarMatter.mFluid);
+        return validFluidMap.get(RAW_STAR_MATTER);
     }
 
     public CheckRecipeResult processRecipe(EyeOfHarmonyRecipe recipeObject) {
@@ -1217,10 +1226,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
         // Reduce internal storage by input fluid quantity required for recipe.
         if (parallelAmount > 1) {
-            validFluidMap.put(Materials.RawStarMatter.mFluid, 0L);
+            validFluidMap.put(RAW_STAR_MATTER, 0L);
         } else {
-            validFluidMap.put(Materials.Hydrogen.mGas, 0L);
-            validFluidMap.put(Materials.Helium.mGas, 0L);
+            validFluidMap.put(HYDROGEN_GAS, 0L);
+            validFluidMap.put(HELIUM_GAS, 0L);
         }
 
         yield = recipeYieldCalculator();
@@ -1305,7 +1314,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         if (failedParallelAmount > 0) {
             // 2^Tier spacetime released upon recipe failure.
             outputFluidToAENetwork(
-                Materials.SpaceTime.getMolten(1),
+                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1),
                 (long) ((successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
                     * GTUtility.powInt(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
             if (parallelAmount == 1) {
@@ -1501,7 +1510,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                         YELLOW + formatNumber(starMatterOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
 
                 FluidStackLong stellarPlasmaOutput = new FluidStackLong(
-                    Materials.RawStarMatter.getFluid(0),
+                    MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 0),
                     (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
                 str.add(
                     IGregTechDeviceInformation.encode(

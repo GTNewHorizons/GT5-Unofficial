@@ -1,10 +1,9 @@
 package tectech.recipe;
 
 import static com.google.common.math.IntMath.pow;
-import static gregtech.api.GregTechAPI.getUnificatedOreDictStack;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTUtility.getPlasmaFuelValueInEUPerLiterFromMaterial;
+import static gregtech.api.util.GTUtility.getPlasmaFuelValueInEUPerLiterFromFluid;
 import static java.lang.Math.min;
 
 import java.util.ArrayList;
@@ -19,19 +18,18 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import bartworks.system.material.Werkstoff;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.interfaces.IOreMaterial;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialStack;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
@@ -43,16 +41,32 @@ import tectech.util.ItemStackLong;
 public class EyeOfHarmonyRecipe {
 
     static final FluidStackLong[] SPECIAL_FLUIDS = new FluidStackLong[] {
-        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(1_152), 1_152),
-        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(1_152), 1_152),
-        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(4_608), 4_608),
-        new FluidStackLong(Materials.WhiteDwarfMatter.getMolten(18_432), 18_432),
-        new FluidStackLong(Materials.BlackDwarfMatter.getMolten(1_152), 1_152),
-        new FluidStackLong(Materials.BlackDwarfMatter.getMolten(4_608), 4_608),
-        new FluidStackLong(Materials.BlackDwarfMatter.getMolten(18_432), 18_432),
-        new FluidStackLong(Materials.Universium.getMolten(1_152), 1_152),
-        new FluidStackLong(Materials.Universium.getMolten(4_608), 4_608),
-        new FluidStackLong(Materials.Universium.getMolten(18_432), 18_432) };
+        new FluidStackLong(
+            MaterialLibAPI.getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, 1_152),
+            1_152),
+        new FluidStackLong(
+            MaterialLibAPI.getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, 1_152),
+            1_152),
+        new FluidStackLong(
+            MaterialLibAPI.getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, 4_608),
+            4_608),
+        new FluidStackLong(
+            MaterialLibAPI.getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, 18_432),
+            18_432),
+        new FluidStackLong(
+            MaterialLibAPI.getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, 1_152),
+            1_152),
+        new FluidStackLong(
+            MaterialLibAPI.getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, 4_608),
+            4_608),
+        new FluidStackLong(
+            MaterialLibAPI.getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, 18_432),
+            18_432),
+        new FluidStackLong(MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 1_152), 1_152),
+        new FluidStackLong(MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 4_608), 4_608),
+        new FluidStackLong(
+            MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 18_432),
+            18_432) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
 
@@ -60,7 +74,6 @@ public class EyeOfHarmonyRecipe {
 
         @Override
         public int computeHashCode(ItemStack stack) {
-            // Not really sure how this works or if it is "unique enough".
             int result = stack.getItem()
                 .hashCode();
             result = 31 * result + stack.getItemDamage();
@@ -69,8 +82,7 @@ public class EyeOfHarmonyRecipe {
 
         @Override
         public boolean equals(ItemStack item1, ItemStack item2) {
-            return item1.getUnlocalizedName()
-                .equals(item2.getUnlocalizedName());
+            return item1.getItem() == item2.getItem() && item1.getItemDamage() == item2.getItemDamage();
         }
     };
 
@@ -122,7 +134,7 @@ public class EyeOfHarmonyRecipe {
         return rocketTier;
     }
 
-    public EyeOfHarmonyRecipe(final ArrayList<Pair<IOreMaterial, Long>> materialList, final BlockDimensionDisplay block,
+    public EyeOfHarmonyRecipe(final ArrayList<Pair<Object, Long>> materialList, final BlockDimensionDisplay block,
         final double recipeEnergyEfficiency, final long hydrogenRequirement, final long heliumRequirement,
         final long miningTimeSeconds, final long rocketTierOfRecipe, final double baseSuccessChance) {
 
@@ -160,8 +172,9 @@ public class EyeOfHarmonyRecipe {
 
         // If DeepDark then it should output all plasmas involved in making exotic catalyst.
         if (rocketTier == 9) {
-            for (Materials material : VALID_PLASMAS) {
-                fluidStackLongArrayList.add(new FluidStackLong(material.getPlasma(plasmaAmount), plasmaAmount));
+            for (Material material : VALID_PLASMAS) {
+                fluidStackLongArrayList
+                    .add(new FluidStackLong(MaterialUtils.plasma(material, plasmaAmount), plasmaAmount));
             }
         } else {
             // --- Output and process fluids of the recipe.
@@ -175,7 +188,10 @@ public class EyeOfHarmonyRecipe {
         // Add a bonus fluid of compressed star matter.
         fluidStackLongArrayList.add(
             new FluidStackLong(
-                Materials.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000),
+                MaterialLibAPI.getFluidStack(
+                    Materials.RawStarMatter,
+                    FluidShapes.fluidLiquid,
+                    (int) ((this.spacetimeCasingTierRequired + 1) * 100_000)),
                 (this.spacetimeCasingTierRequired + 1) * 100_000));
 
         // Tier 0 & 1 - 576 White
@@ -213,10 +229,10 @@ public class EyeOfHarmonyRecipe {
     }
 
     private ItemStack getStoneDustType(String key) {
-        ItemStack placeholder = GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
+        ItemStack placeholder = MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1);
         return switch (key) {
-            case "Ne" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1);
-            case "ED", "VA", "EA" -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1);
+            case "Ne" -> MaterialLibAPI.getStack(Materials.Netherrack, Shapes.dust, 1);
+            case "ED", "VA", "EA" -> MaterialLibAPI.getStack(Materials.Endstone, Shapes.dust, 1);
             case "Mo", "Ra" -> getModItem(NewHorizonsCoreMod.ID, "MoonStoneDust", 1, placeholder);
             case "De" -> getModItem(NewHorizonsCoreMod.ID, "DeimosStoneDust", 1, placeholder);
             case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "MarsStoneDust", 1, placeholder);
@@ -327,178 +343,99 @@ public class EyeOfHarmonyRecipe {
 
     private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER };
 
-    public static class HashMapHelper extends HashMap<IOreMaterial, Double> {
+    /// Accumulates output quantities keyed by [Material].
+    public static class HashMapHelper extends HashMap<Object, Double> {
 
         private static final long serialVersionUID = 2297018142561480614L;
 
-        void add(Materials material, double value) {
+        void add(Material material, double value) {
+            if (material == null) return;
 
-            // If key already exists.
             if (this.containsKey(material)) {
                 this.put(material, value + this.get(material));
                 return;
             }
 
-            // Otherwise, add value to hashmap entry.
-            this.put(material, value);
-        }
-
-        void addGTpp(Material mat, double value) {
-            IOreMaterial material = mat.getGTMaterial() != null ? mat.getGTMaterial() : mat;
-            // If key already exists.
-            if (this.containsKey(material)) {
-                this.put(material, value + this.get(material));
-                return;
-            }
-
-            // Otherwise, add value to hashmap entry.
             this.put(material, value);
         }
     }
 
-    public static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier,
+    /// Adds `material`'s ore processing yield -- its direct smelting result, its washing and electromagnetic
+    /// separation extras, and its byproducts -- to `outputMap`, each scaled by `mainMultiplier * probability`.
+    public static void processHelper(HashMapHelper outputMap, Material material, double mainMultiplier,
         double probability) {
         if (material == null) return;
-        outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
+        outputMap.add(
+            MaterialUtils.directSmelting(material),
+            (MaterialUtils.oreMultiplier(material) * 2) * mainMultiplier * probability);
 
-        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD))
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_GOLD))
             outputMap.add(Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
-        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON))
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
             outputMap.add(Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
-        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
             outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
-        if (material.mOreByProducts.isEmpty()) {
-            if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
-                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-            else if (material.contains(SubTag.WASHING_MERCURY))
-                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
-                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        List<Material> byProducts = MaterialUtils.oreByProducts(material);
+
+        if (byProducts.isEmpty()) {
+            if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap.add(
+                MaterialUtils.directSmelting(material),
+                mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            else if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_MERCURY)) outputMap.add(
+                MaterialUtils.directSmelting(material),
+                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap.add(
+                MaterialUtils.directSmelting(material),
+                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
         }
 
-        if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
-            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-        else if (material.contains(SubTag.WASHING_MERCURY))
-            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-        else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
-            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap
+            .add(MaterialUtils.directSmelting(material), mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+        else if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_MERCURY)) outputMap
+            .add(MaterialUtils.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        else if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap
+            .add(MaterialUtils.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
 
         int index = 0;
-        for (Materials byProductMaterial : material.mOreByProducts) {
-            if (index < 3) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
+        for (Material byProductMaterial : byProducts) {
+            if (index < 3) outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
             // For Materials that index is > 3, normally they will not be used (unless using Chem bath).
 
-            if (byProductMaterial.mMaterialInto == material.mMaterialInto) continue;
+            // MaterialLib hands out one canonical instance per material.
+            if (byProductMaterial == material) continue;
 
             // Will never duplicate since mOreByProducts does not support duplicate.
-            if (byProductMaterial.contains(SubTag.WASHING_MERCURY_99_PERCENT)) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-            else if (byProductMaterial.contains(SubTag.WASHING_MERCURY)) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (byProductMaterial.contains(SubTag.WASHING_SODIUMPERSULFATE)) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (index >= 3) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            if (MaterialUtils.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            else if (MaterialUtils.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY)) outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (MaterialUtils.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (index >= 3) outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             // EOH is better than other ore processing so it can get products that normally cannot get.
 
             index++;
         }
 
         for (int i = index; i < 3; i++) {
-            Materials byProductMaterial = GTUtility
-                .selectItemInList(i, material.mMacerateInto, material.mOreByProducts);
-            outputMap.add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
+            Material byProductMaterial = GTUtility
+                .selectItemInList(i, MaterialUtils.macerateInto(material), byProducts);
+            outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
             // Since it's duplicate, do not check if it can Mercury/chem bath.
         }
     }
 
-    private static final double GTPP_PRIMARY_MULTIPLIER = (2.0 / 9.0 + 0.1);
-    private static final double GTPP_SECONDARY_MULTIPLIER = (1.0 / 9.0);
-
-    public static void processHelperGTpp(HashMapHelper outputMap, Material material, double mainMultiplier,
-        double probability) {
-        if (material == null) return;
-        outputMap.addGTpp(material, 2 * mainMultiplier * probability);
-
-        // Copied from src/main/java/gtPlusPlus/core/material/Material.java
-        Material bonusA = null; // Ni
-        Material bonusB = null; // Tin
-
-        // Setup Bonuses
-        ArrayList<Material> aMatComp = new ArrayList<>(MaterialUtils.getCompoundMaterialsRecursively(material));
-
-        if (aMatComp.size() < 3) {
-            while (aMatComp.size() < 3) {
-                aMatComp.add(material);
-            }
-        }
-
-        final ArrayList<Material> amJ = new ArrayList<>(2);
-        for (Material g : aMatComp) {
-            if (g.hasSolidForm()) {
-                amJ.add(g);
-                if (amJ.size() >= 2) break;
-            }
-        }
-
-        boolean allFailed = false;
-        final ArrayList<MaterialStack> composites = material.getComposites();
-        if (amJ.size() < 2) {
-            allFailed = true;
-            if (!composites.isEmpty() && composites.get(0) != null) {
-                bonusA = composites.get(0)
-                    .getStackMaterial();
-            } else {
-                bonusA = material;
-            }
-
-            // If Secondary Output has no solid output, try the third (If it exists), then the fourth/fifth
-            for (byte i = 1; i < Math.min(composites.size(), 5); i++) {
-                if (composites.get(i) == null) break;
-                bonusB = composites.get(i)
-                    .getStackMaterial();
-                if (bonusB != null && bonusB.hasSolidForm()) {
-                    allFailed = false;
-                    break;
-                }
-            }
-            // If Fifth Output has no solid output, default {see if(allFailed...)}
-        } else {
-            bonusA = amJ.get(0);
-            bonusB = amJ.get(1);
-        }
-
-        // Default out if it's made of fluids or some stuff.
-        if (bonusA == null && material.tier >= 2) {
-            bonusA = material;
-        }
-        // Default out if it's made of fluids or some stuff.
-        if ((allFailed || bonusB == null) && material.tier >= 2) {
-            bonusB = material;
-        }
-
-        // Need two valid outputs
-        if (bonusA != null && bonusA.hasSolidForm()) {
-            outputMap.addGTpp(bonusA, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
-        } else outputMap.add(Materials.Stone, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
-        if (bonusB != null && bonusB.hasSolidForm()) {
-            outputMap.addGTpp(bonusB, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
-        } else outputMap.add(Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
-    }
-
-    public static void processHelperIfPossible(HashMapHelper outputMap, IOreMaterial material, double mainMultiplier,
-        double probability) {
-        if (material instanceof Materials gtMat) processHelper(outputMap, gtMat, mainMultiplier, probability);
-        else if (material instanceof Werkstoff bwMat)
-            processHelper(outputMap, bwMat.getBridgeMaterial(), mainMultiplier, probability);
-        else if (material instanceof Material gtppMat) {
-            processHelperGTpp(outputMap, gtppMat, mainMultiplier, probability);
-        }
-    }
-
-    private static ArrayList<Pair<IOreMaterial, Long>> processDimension(
+    private static ArrayList<Pair<Object, Long>> processDimension(
         GT5OreLayerHelper.NormalOreDimensionWrapper normalOreDimWrapper,
         GT5OreSmallHelper.SmallOreDimensionWrapper smallOreDimWrapper, long timeInSeconds) {
         HashMapHelper outputMap = new HashMapHelper();
@@ -507,11 +444,11 @@ public class EyeOfHarmonyRecipe {
 
         if (normalOreDimWrapper != null) {
             normalOreDimWrapper.oreVeinToProbabilityInDimension.forEach((veinInfo, probability) -> {
-                processHelperIfPossible(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
-                processHelperIfPossible(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
+                processHelper(outputMap, veinInfo.mPrimaryVeinMaterial, mainMultiplier, probability);
+                processHelper(outputMap, veinInfo.mSecondaryMaterial, mainMultiplier, probability);
                 // 8.0 to replicate void miner getDropsVanillaVeins method yields.
-                processHelperIfPossible(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
-                processHelperIfPossible(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
+                processHelper(outputMap, veinInfo.mBetweenMaterial, mainMultiplier / 8.0, probability);
+                processHelper(outputMap, veinInfo.mSporadicMaterial, mainMultiplier / 8.0, probability);
             });
         }
 
@@ -519,39 +456,38 @@ public class EyeOfHarmonyRecipe {
         if (smallOreDimWrapper != null) {
             smallOreDimWrapper.oreVeinProbabilities.forEach(
                 (veinInfo, probability) -> {
-                    processHelperIfPossible(outputMap, veinInfo.material, mainMultiplier, probability);
+                    processHelper(outputMap, veinInfo.material, mainMultiplier, probability);
                 });
         }
 
-        ArrayList<Pair<IOreMaterial, Long>> outputList = new ArrayList<>();
+        ArrayList<Pair<Object, Long>> outputList = new ArrayList<>();
 
         outputMap.forEach((material, quantity) -> outputList.add(Pair.of(material, (long) Math.floor(quantity))));
 
         return outputList;
     }
 
-    private static ArrayList<FluidStack> validPlasmaGenerator(final List<Pair<IOreMaterial, Long>> planetList) {
+    private static ArrayList<FluidStack> validPlasmaGenerator(final List<Pair<Object, Long>> planetList) {
 
         ArrayList<FluidStack> plasmaList = new ArrayList<>();
 
-        for (Pair<IOreMaterial, Long> pair : planetList) {
-            if (!(pair.getLeft() instanceof Materials left)) continue;
+        for (Pair<Object, Long> pair : planetList) {
+            if (!(pair.getLeft() instanceof Material left)) continue;
             if (VALID_PLASMAS.contains(left)) {
-                plasmaList.add(left.getPlasma(1));
+                plasmaList.add(MaterialUtils.plasma(left, 1));
             }
         }
 
         return plasmaList;
     }
 
-    private TMap<ItemStack, Long> validDustGenerator(final ArrayList<Pair<IOreMaterial, Long>> planetList) {
+    private TMap<ItemStack, Long> validDustGenerator(final ArrayList<Pair<Object, Long>> planetList) {
         TMap<ItemStack, Long> dustList = new TCustomHashMap<>(itemStackHashingStrategy);
 
-        for (Pair<IOreMaterial, Long> pair : planetList) {
-            final IOreMaterial mat = pair.getLeft();
+        for (Pair<Object, Long> pair : planetList) {
+            final Object mat = pair.getLeft();
             final ItemStack dust;
-            if (mat instanceof Materials material) dust = getUnificatedOreDictStack(material.getDust(1));
-            else if (mat instanceof Material) dust = ((Material) mat).getDust(1);
+            if (mat instanceof Material ml) dust = MaterialLibAPI.findStack(ml, Shapes.dust, 1);
             else dust = null;
             if (dust != null) {
                 dustList.merge(dust, pair.getRight(), Long::sum);
@@ -582,7 +518,7 @@ public class EyeOfHarmonyRecipe {
         return 3.85;
     }
 
-    private static final List<Materials> VALID_PLASMAS = Stream
+    private static final List<Material> VALID_PLASMAS = Stream
         .of(
             Materials.Helium,
             Materials.Iron,
@@ -609,10 +545,11 @@ public class EyeOfHarmonyRecipe {
         {
             VALID_PLASMAS.forEach(
                 (material -> put(
-                    material.getPlasma(1)
+                    MaterialUtils.plasma(material, 1)
                         .getFluid()
                         .getUnlocalizedName(),
-                    (long) (getPlasmaFuelValueInEUPerLiterFromMaterial(material) * getMaxPlasmaTurbineEfficiency()))));
+                    (long) (getPlasmaFuelValueInEUPerLiterFromFluid(MaterialUtils.plasma(material, 1))
+                        * getMaxPlasmaTurbineEfficiency()))));
         }
     };
 }

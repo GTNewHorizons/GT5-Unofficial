@@ -42,11 +42,13 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -58,7 +60,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -98,8 +99,8 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
         .addElement('D', Casings.FlotationCellCasings.asElement())
         .addElement('E', Casings.InconelReinforcedCasing.asElement())
-        .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
-        .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
+        .addElement('A', ofFrame(Materials.Inconel690))
+        .addElement('B', ofFrame(Materials.Staballoy))
         .addElement('W', ofChain(ofAnyWater(false), isAir()))
         .build();
 
@@ -129,8 +130,8 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("110-120", Casings.InconelReinforcedCasing.getLocalizedName(), false)
             .addCasing("31", Casings.FlotationCellCasings.getLocalizedName(), false)
-            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.STABALLOY), false)
-            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.INCONEL_690), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Staballoy)), false)
+            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Inconel690)), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)

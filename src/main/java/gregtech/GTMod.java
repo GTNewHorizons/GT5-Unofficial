@@ -12,7 +12,6 @@ import static gregtech.api.util.GTRecipe.setItemStacks;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
@@ -21,24 +20,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.common.ChestGenHooks;
-
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.common.MinecraftForge;
 
 import com.falsepattern.chunk.api.DataRegistry;
 import com.google.common.base.Stopwatch;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.MaterialRegistrationEvent;
 
+import bartworks.common.loaders.RadioHatchMaterialLoader;
 import bwcrossmod.galacticgreg.VoidMinerLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
@@ -61,17 +58,22 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialSystem;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialDeclarationValidator;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ItemData;
-import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeLookupValidator;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.registries.LHECoolantRegistry;
@@ -81,10 +83,10 @@ import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.GTCapesLoader;
 import gregtech.common.GTClient;
 import gregtech.common.GTDummyWorld;
@@ -97,6 +99,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
+import gregtech.common.items.CauldronWashing;
 import gregtech.common.misc.GTDebugCommand;
 import gregtech.common.misc.GTMiscCommand;
 import gregtech.common.misc.GTPowerfailCommand;
@@ -104,20 +107,23 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
-import gregtech.common.oredict.OreDictRegistrationHandler;
 import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.chunkapi.ClientMetaManager;
+import gregtech.crossmod.forgemultipart.MicroblockMaterials;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
+import gregtech.loaders.materialrecipes.CrackingRecipes;
+import gregtech.loaders.materialrecipes.LoaderMaterialRecipes;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
 import gregtech.loaders.misc.GTBees;
+import gregtech.loaders.oreprocessing.ShapeRecipeTable;
 import gregtech.loaders.postload.BlockResistanceLoader;
 import gregtech.loaders.postload.BookAndLootLoader;
 import gregtech.loaders.postload.CraftingRecipeLoader;
@@ -137,10 +143,9 @@ import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
 import gregtech.loaders.preload.LoaderGTItemData;
 import gregtech.loaders.preload.LoaderGTOreDictionary;
-import gregtech.loaders.preload.LoaderMetaPipeEntities;
+import gregtech.loaders.preload.LoaderMaterialPartOredict;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
-import gregtech.loaders.preload.LoaderOreProcessing;
-import gtnhlanth.loader.RecipeLoader;
+import gregtech.loaders.preload.LoaderPipeShapeEntities;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -153,6 +158,8 @@ import ic2.api.recipe.RecipeOutput;
         + "required-after:gtnhlib@[0.6.35,);"
         + "required-after:modularui@[1.1.12,);"
         + "required-after:appliedenergistics2@[rv3-beta-258,);"
+        + "required-after:materiallib;"
+        + "required-after:postea;"
         + "after:dreamcraft;"
         + "after:Forestry;"
         + "after:PFAAGeologica;"
@@ -254,6 +261,10 @@ public class GTMod {
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
+    /// Set once [gregtech.api.enums.OrePrefixes#lateStaticInit] has completed during preInit. An `OreRegisterEvent`
+    /// listener must skip instead of touching material state while this is false.
+    public static volatile boolean sMaterialsReady = false;
+
     public static GTAchievements achievements;
 
     public GTMod() {
@@ -303,6 +314,21 @@ public class GTMod {
     }
 
     @Mod.EventHandler
+    public void construct(FMLConstructionEvent event) {
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @SubscribeEvent
+    public void materialRegistration(MaterialRegistrationEvent event) {
+        MaterialSystem.init();
+        OrePrefixes.copyDataFromShapes();
+        ShapeRecipeTable.register();
+        CrackingRecipes.register();
+        RadioHatchMaterialLoader.registerMaterialRods();
+        CauldronWashing.register();
+    }
+
+    @Mod.EventHandler
     public void onPreInitialization(FMLPreInitializationEvent event) {
         // Keep string handling on English, mainly to avoid the Turkish dotless I breaking case conversions.
         // Number and date formatting stays on the player's locale, other mods read it to format their own output.
@@ -317,6 +343,10 @@ public class GTMod {
         for (Runnable tRunnable : GregTechAPI.sBeforeGTPreload) {
             tRunnable.run();
         }
+
+        LegacyMaterialIDIndex.init();
+        LegacyWerkstoffIndex.init();
+        MaterialDeclarationValidator.validate();
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
 
@@ -340,7 +370,10 @@ public class GTMod {
         new EnchantmentEnderDamage();
         new EnchantmentRadioactivity();
 
-        Materials.init();
+        OrePrefixes.lateStaticInit();
+        sMaterialsReady = true;
+        proxy.catchUpPreExistingOreDictEntries();
+        UnificationOreAdapter.catchUp();
 
         GTPreLoad.initLocalization(
             event.getModConfigurationDirectory()
@@ -349,14 +382,12 @@ public class GTMod {
 
         AE2Compat.onPreInit();
 
-        GTPreLoad.runMineTweakerCompat();
-
-        new LoaderOreProcessing().run();
         new LoaderGTOreDictionary().run();
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();
+        new LoaderMaterialPartOredict().run();
         new LoaderMetaTileEntities().run();
-        new LoaderMetaPipeEntities().run();
+        new LoaderPipeShapeEntities().run();
 
         new LoaderCircuitBehaviors().run();
 
@@ -389,6 +420,8 @@ public class GTMod {
             return;
         }
 
+        OreDictUtils.useMaterialLibTargets();
+
         for (Runnable tRunnable : GregTechAPI.sBeforeGTLoad) {
             tRunnable.run();
         }
@@ -405,6 +438,7 @@ public class GTMod {
         }
 
         proxy.onInitialization(event);
+        if (Mods.ForgeMicroblocks.isModLoaded()) MicroblockMaterials.register();
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
@@ -464,6 +498,7 @@ public class GTMod {
         new BlockResistanceLoader().run();
         new RecyclerBlacklistLoader().run();
         new MachineRecipeLoader().run();
+        LoaderMaterialRecipes.run();
         new ScrapboxDropLoader().run();
         new GTWorldgenloader().run();
         new CoverLoader().run();
@@ -477,14 +512,14 @@ public class GTMod {
             new ItemStack(Blocks.stone, 1),
             new ItemStack(Items.leather, 1));
 
-        GTOreDictUnificator.addItemData(
+        MaterialData.add(
             GTModHandler.getRecipeOutput(
                 null,
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),
                 null,
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),
                 null,
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1L),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),
                 null,
                 null,
                 null),
@@ -540,7 +575,7 @@ public class GTMod {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.get(Materials.Iron) });
+            new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.ingredient(Materials.Iron) });
 
         GTPostLoad.registerFluidCannerRecipes();
 
@@ -602,8 +637,6 @@ public class GTMod {
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
         NaquadahRecipePatches.patchCropsNhRecipes();
-        RecipeLoader.registerCauldronRemaps();
-        GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
         GTPostLoad.processToolboxBans();
 
@@ -658,127 +691,6 @@ public class GTMod {
 
         proxy.onServerStarting(event);
         GTModHandler.removeAllIC2Recipes();
-        GT_FML_LOGGER.debug("GTMod: Unificating outputs of all known Recipe Types.");
-        ArrayList<ItemStack> tStacks = new ArrayList<>(10000);
-        GT_FML_LOGGER.debug("GTMod: IC2 Machines");
-
-        ic2.api.recipe.Recipes.cannerBottle.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.centrifuge.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.compressor.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.extractor.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.macerator.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.metalformerCutting.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.metalformerExtruding.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.metalformerRolling.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.matterAmplifier.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-        ic2.api.recipe.Recipes.oreWashing.getRecipes()
-            .values()
-            .stream()
-            .map(t -> t.items)
-            .forEach(tStacks::addAll);
-
-        GT_FML_LOGGER.debug("GTMod: Dungeon Loot");
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("dungeonChest")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("bonusChest")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("villageBlacksmith")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdCrossing")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdLibrary")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("strongholdCorridor")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidJungleDispenser")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidJungleChest")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("pyramidDesertyChest")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("mineshaftCorridor")
-            .getItems(new XSTR())) {
-            tStacks.add(tContent.theItemId);
-        }
-        GT_FML_LOGGER.debug("GTMod: Smelting");
-
-        // Deal with legacy Minecraft raw types
-        tStacks.addAll(
-            FurnaceRecipes.smelting()
-                .getSmeltingList()
-                .values());
-
-        if (proxy.mCraftingUnification) {
-            GT_FML_LOGGER.debug("GTMod: Crafting Recipes");
-            for (IRecipe tRecipe : CraftingManager.getInstance()
-                .getRecipeList()) {
-                if ((tRecipe instanceof IRecipe)) {
-                    tStacks.add(tRecipe.getRecipeOutput());
-                }
-            }
-        }
-        for (ItemStack tOutput : tStacks) {
-            if (!OreDictRegistrationHandler.isRegisteredOre(tOutput)) {
-                GTOreDictUnificator.setStack(tOutput);
-            } else {
-                logMultilineError(GT_FML_LOGGER, generateGTErr01Message(tOutput));
-                tOutput.setStackDisplayName("ERROR! PLEASE CHECK YOUR LOG FOR 'GT-ERR-01'!");
-            }
-        }
         GregTechAPI.mServerStarted = true;
         GT_FML_LOGGER.debug("GTMod: ServerStarting-Phase finished!");
         GT_ORE_DICT_LOGGER.info("GTMod: ServerStarting-Phase finished!");
@@ -855,20 +767,5 @@ public class GTMod {
         final StringWriter sw = new StringWriter();
         t.printStackTrace(new PrintWriter(sw));
         GT_FML_LOGGER.error(sw);
-    }
-
-    private static String[] generateGTErr01Message(ItemStack stack) {
-        // The message is presented on a per-line basis to make possible formatting in the future easier.
-        return new String[] { "GT-ERR-01 at " + stack.getUnlocalizedName() + "   " + stack.getDisplayName(),
-            "A recipe used an OreDict item as output directly, without copying the item before that. This is a typical CallByReference/CallByValue error.",
-            "The said item will be renamed to make the invalid recipe visible.",
-            "Please check all recipes that output this item, and report them to the mod that introduced the recipes.", };
-    }
-
-    @SuppressWarnings("SameParameterValue") // The method is used with one logger, but that might change in the future.
-    private static void logMultilineError(Logger logger, String[] errorMessageLines) {
-        for (String errorMessage : errorMessageLines) {
-            logger.error(errorMessage);
-        }
     }
 }

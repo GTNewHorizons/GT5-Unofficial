@@ -12,10 +12,10 @@ import java.util.List;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.RecipeAdder;
@@ -171,7 +171,8 @@ public class TTRecipeAdder extends RecipeAdder {
                 }
             } else if (obj instanceof Object[]objs) {
                 List<ItemStack> tList;
-                if (objs.length >= 2 && !(tList = GTOreDictUnificator.getOres(objs[0])).isEmpty()) {
+                if (objs.length >= 2
+                    && !(tList = new ArrayList<>(OreDictionary.getOres(objs[0].toString()))).isEmpty()) {
                     try {
                         // sort the output, so the hash code is stable across launches
                         tList.sort(

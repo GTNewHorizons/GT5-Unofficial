@@ -60,11 +60,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.util.OreDictUtils;
 import ic2.api.item.IKineticRotor;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
@@ -225,8 +225,6 @@ public class ItemRegistry {
     public static ItemStack humongousInputHatch;
 
     public static void run() {
-
-        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BWItemBlocks.class, "BW_Machinery_Casings");
         GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
         GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
         GameRegistry.registerItem(ItemRegistry.PAPER_ROTOR, "BW_PaperRotor");
@@ -259,17 +257,9 @@ public class ItemRegistry {
             "ElectricImplosionCompressor",
             "Electric Implosion Compressor").getStackForm(1L);
 
-        // EIC depend on neutronium block to pass on structure updates
-        int bitmask = GregTechAPI.sMachineIDs.getOrDefault(GregTechAPI.sBlockMetal5, 0) | 1 << 2;
-        GregTechAPI.registerMachineBlock(GregTechAPI.sBlockMetal5, bitmask);
-
-        // Also spacetime, transcendent metal, and universium
-        bitmask = GregTechAPI.sMachineIDs.getOrDefault(GregTechAPI.sBlockMetal9, 0) | 1 << 3 | 1 << 4 | 1 << 8;
-        GregTechAPI.registerMachineBlock(GregTechAPI.sBlockMetal9, bitmask);
-
         if (Mods.Avaritia.isModLoaded()) {
-            // Also infinity
-            bitmask = GregTechAPI.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
+            // EIC depends on the infinity block to pass on structure updates
+            int bitmask = GregTechAPI.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
             GregTechAPI.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
         }
 
@@ -282,9 +272,7 @@ public class ItemRegistry {
 
         // ID 12728 + 15 + 49 IS TAKEN !!! (12792)
 
-        GTOreDictUnificator
-            .add(OrePrefixes.block, Materials.BorosilicateGlass, new ItemStack(ItemRegistry.bw_glasses[0], 1, 0));
-        GTOreDictUnificator
+        OreDictUtils
             .registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(ItemRegistry.BW_BLOCKS[2]));
 
         int[] Diode2A = new int[] { Diode2A_ULV.ID, Diode2A_LV.ID, Diode2A_MV.ID, Diode2A_HV.ID, Diode2A_EV.ID,

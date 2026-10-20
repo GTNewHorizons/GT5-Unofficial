@@ -22,10 +22,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.junit.jupiter.api.Test;
 
+import com.ruling_0.materiallib.api.Material;
+
 import goodgenerator.api.recipe.ExtremeHeatExchangerBackend;
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FormingPressBackend;
@@ -289,7 +292,7 @@ class GTRecipeBackendLifecycleTest {
                 .addTo(map));
     }
 
-    private static GTRecipe addReplicatorRecipe(RecipeMap<ReplicatorBackend> map, Materials material) {
+    private static GTRecipe addReplicatorRecipe(RecipeMap<ReplicatorBackend> map, Material material) {
         GTRecipe recipe = RA.stdBuilder()
             .metadata(GTRecipeConstants.MATERIAL, material)
             .itemOutputs(new ItemStack(iron_ingot, 1))
@@ -301,10 +304,13 @@ class GTRecipeBackendLifecycleTest {
             .compileRecipe(recipe);
     }
 
-    private static ItemStack elementalScanOrb(Materials material) {
+    private static ItemStack elementalScanOrb(Material material) {
         ItemStack orb = ItemList.Tool_DataOrb.get(1);
         BehaviourDataOrb.setDataTitle(orb, "Elemental-Scan");
-        BehaviourDataOrb.setDataName(orb, material.mElement.name());
+        BehaviourDataOrb.setDataName(
+            orb,
+            MaterialUtils.element(material)
+                .name());
         return orb;
     }
 

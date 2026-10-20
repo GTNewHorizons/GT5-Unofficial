@@ -16,10 +16,11 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.GTMod;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -104,13 +105,11 @@ public class ToolHardHammer extends GTTool {
         int rConversions = 0;
         GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
             .items(new ItemStack(aBlock, 1, aMetaData))
-            .notUnificated(true)
             .find();
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
                 tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
                     .items(GTUtility.copyAmount(1, tDrop))
-                    .notUnificated(true)
                     .find();
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
@@ -132,16 +131,14 @@ public class ToolHardHammer extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadHammer
-                .getTextureIndex()]
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.getTextureIndex()];
+        return aIsToolHead ? GTMaterialIcons.item("toolHeadHammer", MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : GTMaterialIcons.item("stick", MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+        return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MaterialUtils.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

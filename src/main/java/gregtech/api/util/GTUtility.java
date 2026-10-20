@@ -8,9 +8,7 @@ import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -46,7 +44,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiConsumer;
@@ -65,7 +62,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -133,12 +129,12 @@ import org.joml.Vector3i;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.mojang.authlib.GameProfile;
+import com.ruling_0.materiallib.api.Material;
 
 import buildcraft.api.transport.IPipeTile;
 import codechicken.translocator.TileItemTranslocator;
@@ -154,16 +150,12 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
-import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IHasIndexedTexture;
@@ -174,7 +166,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemEnergyArmor;
-import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
@@ -1189,17 +1183,6 @@ public class GTUtility {
             && (ignoreStackSize || lhs.stackSize == rhs.stackSize);
     }
 
-    public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2) {
-        return areUnificationsEqual(aStack1, aStack2, false);
-    }
-
-    public static boolean areUnificationsEqual(ItemStack aStack1, ItemStack aStack2, boolean aIgnoreNBT) {
-        return areStacksEqual(
-            GTOreDictUnificator.get_nocopy(aStack1),
-            GTOreDictUnificator.get_nocopy(aStack2),
-            aIgnoreNBT);
-    }
-
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
         if (aFluid == null) return E;
         if (!aLocalized) return aFluid.getUnlocalizedName();
@@ -1256,9 +1239,10 @@ public class GTUtility {
         return fullContainer;
     }
 
-    public static int calculateRecipeEU(Materials aMaterial, int defaultRecipeEUPerTick) {
-        return aMaterial.getProcessingMaterialTierEU() == 0 ? defaultRecipeEUPerTick
-            : aMaterial.getProcessingMaterialTierEU();
+    /// The recipe voltage a material's processing tier calls for, or `defaultEU` when it declares no tier.
+    public static long calculateRecipeEU(Material material, long defaultEU) {
+        Integer tierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+        return tierEU == null || tierEU == 0 ? defaultEU : tierEU;
     }
 
     public static ItemStack getFluidDisplayStack(FluidStack fluid, FluidDisplayStackMode stackMode) {
@@ -1297,9 +1281,10 @@ public class GTUtility {
             aFluid.getFluid()
                 .isGaseous(aFluid));
         tNBT.setBoolean("mHideStackSize", aHideStackSize);
-        try {
-            tNBT.setString("mFluidMaterialName", FLUID_MAP.get(aFluid.getFluid()).mName);
-        } catch (Exception ignored) {}
+        Material fluidMaterial = MaterialUtils.materialOfFluid(aFluid.getFluid());
+        if (fluidMaterial != null) {
+            tNBT.setString("mFluidMaterialName", MaterialUtils.internalName(fluidMaterial));
+        }
         rStack.setTagCompound(tNBT);
         return rStack;
     }
@@ -1322,6 +1307,28 @@ public class GTUtility {
         }
 
         return FluidContainerRegistry.getFluidForFilledItem(stack);
+    }
+
+    /// A [FluidStack] of the vanilla `water` fluid, which is not part of the material system.
+    public static FluidStack getWater(long aAmount) {
+        return FluidRegistry.getFluidStack("water", (int) aAmount);
+    }
+
+    /// A [FluidStack] of the vanilla `lava` fluid. See [#getWater].
+    public static FluidStack getLava(long aAmount) {
+        return FluidRegistry.getFluidStack("lava", (int) aAmount);
+    }
+
+    /// A [FluidStack] of GregTech's `ice` solid fluid, registered by
+    /// `gregtech.loaders.preload.LoaderGTBlockFluid`. Not modelled as a material fluid slot. See [#getWater].
+    public static FluidStack getIceSolid(long aAmount) {
+        return FluidRegistry.getFluidStack("ice", (int) aAmount);
+    }
+
+    /// An [ItemStack] of the empty cell every cell shape drains to ([ItemList#Cell_Empty]), with the amount
+    /// clamped to 64. See [#getWater].
+    public static ItemStack getEmptyCell(long aAmount) {
+        return ItemList.Cell_Empty.get(aAmount);
     }
 
     /**
@@ -1425,14 +1432,13 @@ public class GTUtility {
         boolean rReturn = false;
         Iterator<Map.Entry<ICannerBottleRecipeManager.Input, RecipeOutput>> tIterator = aRecipeList.entrySet()
             .iterator();
-        aOutput = GTOreDictUnificator.get(aOutput);
         while (tIterator.hasNext()) {
             Map.Entry<ICannerBottleRecipeManager.Input, RecipeOutput> tEntry = tIterator.next();
             if (aInput == null || tEntry.getKey()
                 .matches(aContainer, aInput)) {
                 List<ItemStack> tList = tEntry.getValue().items;
-                if (tList != null) for (ItemStack tOutput : tList)
-                    if (aOutput == null || areStacksEqual(GTOreDictUnificator.get(tOutput), aOutput)) {
+                if (tList != null)
+                    for (ItemStack tOutput : tList) if (aOutput == null || areStacksEqual(tOutput, aOutput)) {
                         tIterator.remove();
                         rReturn = true;
                         break;
@@ -1448,14 +1454,13 @@ public class GTUtility {
         boolean rReturn = false;
         Iterator<Map.Entry<IRecipeInput, RecipeOutput>> tIterator = aRecipeList.entrySet()
             .iterator();
-        aOutput = GTOreDictUnificator.get(aOutput);
         while (tIterator.hasNext()) {
             Map.Entry<IRecipeInput, RecipeOutput> tEntry = tIterator.next();
             if (aInput == null || tEntry.getKey()
                 .matches(aInput)) {
                 List<ItemStack> tList = tEntry.getValue().items;
-                if (tList != null) for (ItemStack tOutput : tList)
-                    if (aOutput == null || areStacksEqual(GTOreDictUnificator.get(tOutput), aOutput)) {
+                if (tList != null)
+                    for (ItemStack tOutput : tList) if (aOutput == null || areStacksEqual(tOutput, aOutput)) {
                         tIterator.remove();
                         rReturn = true;
                         break;
@@ -1470,11 +1475,9 @@ public class GTUtility {
         if (aRecipeList == null || aRecipeList.isEmpty()) return;
         toRemove.entrySet()
             .removeIf(aEntry -> (isStackInvalid(aEntry.getKey()) && isStackInvalid(aEntry.getValue())));
-        final Map<ItemStack, ItemStack> finalToRemove = Maps.transformValues(toRemove, GTOreDictUnificator::get_nocopy);
-
         aRecipeList.entrySet()
             .removeIf(
-                tEntry -> finalToRemove.entrySet()
+                tEntry -> toRemove.entrySet()
                     .stream()
                     .anyMatch(aEntry -> {
                         final ItemStack aInput = aEntry.getKey(), aOutput = aEntry.getValue();
@@ -1485,23 +1488,22 @@ public class GTUtility {
                             .matches(aInput)) return false;
 
                         return tList.stream()
-                            .anyMatch(
-                                tOutput -> (aOutput == null
-                                    || areStacksEqual(GTOreDictUnificator.get(tOutput), aOutput)));
+                            .anyMatch(tOutput -> (aOutput == null || areStacksEqual(tOutput, aOutput)));
                     }));
     }
 
     public static boolean addSimpleIC2MachineRecipe(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList,
         NBTTagCompound aNBT, Object... aOutput) {
         if (isStackInvalid(aInput) || aOutput.length == 0 || aRecipeList == null) return false;
-        ItemData tOreName = GTOreDictUnificator.getAssociation(aInput);
+        ItemData tOreName = MaterialData.getAssociation(aInput);
         for (Object o : aOutput) {
             if (o == null) {
                 GT_FML_LOGGER.info("EmptyIC2Output!{}", aInput.getUnlocalizedName());
                 return false;
             }
         }
-        ItemStack[] tStack = GTOreDictUnificator.getStackArray(true, aOutput);
+        ItemStack[] tStack = new ItemStack[aOutput.length];
+        for (int i = 0; i < aOutput.length; i++) tStack[i] = copy(aOutput[i]);
         if (tStack.length > 0 && areStacksEqual(aInput, tStack[0])) return false;
         if (tOreName != null) {
             if (tOreName.toString()
@@ -2002,24 +2004,6 @@ public class GTUtility {
         return aNBT;
     }
 
-    public static float getHeatDamageFromItem(ItemStack aStack) {
-        ItemData tData = GTOreDictUnificator.getItemData(aStack);
-        return tData == null ? 0
-            : (tData.mPrefix == null ? 0 : tData.mPrefix.mHeatDamage)
-                + (tData.hasValidMaterialData() ? tData.mMaterial.mMaterial.mHeatDamage : 0);
-    }
-
-    public static int getRadioactivityLevel(ItemStack aStack) {
-        ItemData tData = GTOreDictUnificator.getItemData(aStack);
-        if (tData != null && tData.hasValidMaterialData()) {
-            if (tData.mMaterial.mMaterial.mArmorEnchantment instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.mArmorEnchantmentLevel;
-            if (tData.mMaterial.mMaterial.mToolEnchantment instanceof EnchantmentRadioactivity)
-                return tData.mMaterial.mMaterial.mToolEnchantmentLevel;
-        }
-        return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
-    }
-
     public static boolean applyHeatDamage(EntityLivingBase entity, float damage) {
         return applyHeatDamage(entity, damage, GTDamageSources.getHeatDamage());
     }
@@ -2275,16 +2259,8 @@ public class GTUtility {
     public static ItemStack loadItem(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
         ItemStack tRawStack = ItemStack.loadItemStackFromNBT(aNBT);
-        int tRealStackSize = 0;
-        if (tRawStack != null && aNBT.hasKey("Count", NBT.TAG_INT)) {
-            tRealStackSize = aNBT.getInteger("Count");
-            tRawStack.stackSize = tRealStackSize;
-        } else if (tRawStack != null) {
-            tRealStackSize = tRawStack.stackSize;
-        }
-        ItemStack tRet = GTOreDictUnificator.get(true, tRawStack);
-        if (tRet != null) tRet.stackSize = tRealStackSize;
-        return tRet;
+        if (tRawStack != null && aNBT.hasKey("Count", NBT.TAG_INT)) tRawStack.stackSize = aNBT.getInteger("Count");
+        return tRawStack;
     }
 
     public static void saveItem(NBTTagCompound aParentTag, String aTagName, ItemStack aStack) {
@@ -2394,13 +2370,6 @@ public class GTUtility {
         LinkedHashMap<X, Y> rMap = new LinkedHashMap<>();
         for (Map.Entry<X, Y> tEntry : tEntrySet) rMap.put(tEntry.getKey(), tEntry.getValue());
         return rMap;
-    }
-
-    /**
-     * Translates a Material Amount into an Amount of Fluid in Fluid Material Units.
-     */
-    public static long translateMaterialToFluidAmount(long aMaterialAmount, boolean aRoundUp) {
-        return translateMaterialToAmount(aMaterialAmount, 1 * INGOTS, aRoundUp);
     }
 
     /**
@@ -2690,9 +2659,8 @@ public class GTUtility {
      * Check if stack has enough items of given gregtech material (will be oredicted) and subtract from stack, if
      * there's no creative or 111 stack.
      */
-    public static boolean consumeItems(EntityPlayer player, ItemStack stack, Materials mat, int count) {
-        if (stack != null && GTOreDictUnificator.getItemData(stack).mMaterial.mMaterial == mat
-            && stack.stackSize >= count) {
+    public static boolean consumeItems(EntityPlayer player, ItemStack stack, Material mat, int count) {
+        if (stack != null && MaterialData.get(stack).material.material == mat && stack.stackSize >= count) {
             if ((!player.capabilities.isCreativeMode) && (stack.stackSize != 111)) stack.stackSize -= count;
             return true;
         }
@@ -3205,16 +3173,6 @@ public class GTUtility {
         return new String(chars);
     }
 
-    public static boolean isPartOfMaterials(ItemStack aStack, Materials aMaterials) {
-        return GTOreDictUnificator.getAssociation(aStack) != null
-            && GTOreDictUnificator.getAssociation(aStack).mMaterial.mMaterial.equals(aMaterials);
-    }
-
-    public static boolean isPartOfOrePrefix(ItemStack aStack, OrePrefixes aPrefix) {
-        return GTOreDictUnificator.getAssociation(aStack) != null
-            && GTOreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
-    }
-
     public static boolean isOre(Block block, int meta) {
         OptionalBoolean isOre = OreManager.isOre(block, meta);
 
@@ -3237,139 +3195,6 @@ public class GTUtility {
         }
         sOreTable.put(tItem, false);
         return false;
-    }
-
-    public static Optional<GTRecipe> reverseShapelessRecipe(ItemStack output, Object... aRecipe) {
-        if (output == null) {
-            return Optional.empty();
-        }
-
-        List<ItemStack> inputs = new ArrayList<>();
-
-        for (Object o : aRecipe) {
-            switch (o) {
-                case ItemStack itemStack -> {
-                    ItemStack toAdd = itemStack.copy();
-                    inputs.add(toAdd);
-                }
-                case String s -> {
-                    ItemStack stack = GTOreDictUnificator.get(o, 1);
-                    if (stack == null) {
-                        Optional<ItemStack> oStack = OreDictionary.getOres(s)
-                            .stream()
-                            .findAny();
-                        if (oStack.isPresent()) {
-                            ItemStack copy = oStack.get()
-                                .copy();
-                            inputs.add(copy);
-                        }
-                    } else {
-                        ItemStack copy = stack.copy();
-                        inputs.add(copy);
-                    }
-                }
-                case Item item -> inputs.add(new ItemStack(item));
-                case Block block -> inputs.add(new ItemStack(block));
-                case null, default ->
-                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
-            }
-        }
-
-        inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
-
-        return Optional.of(
-            new GTRecipe(
-                new ItemStack[] { output },
-                inputs.toArray(new ItemStack[0]),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                300,
-                30,
-                0));
-    }
-
-    public static Optional<GTRecipe> reverseShapedRecipe(ItemStack output, Object... aRecipe) {
-        if (output == null) {
-            return Optional.empty();
-        }
-
-        Map<Object, Integer> recipeAsMap = new HashMap<>();
-        Map<Character, Object> ingridients = new HashMap<>();
-        Map<Character, Integer> amounts = new HashMap<>();
-        boolean startFound = false;
-        for (int i = 0, aRecipeLength = aRecipe.length; i < aRecipeLength; i++) {
-            Object o = aRecipe[i];
-            if (!startFound) {
-                if (o instanceof String) {
-                    for (Character c : ((String) o).toCharArray()) amounts.merge(c, 1, (a, b) -> ++a);
-                } else if (o instanceof Character) startFound = true;
-            } else if (!(o instanceof Character)) ingridients.put((Character) aRecipe[i - 1], o);
-        }
-        for (Map.Entry<Character, Object> characterObjectEntry : ingridients.entrySet()) {
-            for (Map.Entry<Character, Integer> characterIntegerEntry : amounts.entrySet()) {
-                if (characterObjectEntry.getKey() != characterIntegerEntry.getKey()) continue;
-                recipeAsMap.put(characterObjectEntry.getValue(), characterIntegerEntry.getValue());
-            }
-        }
-        List<ItemStack> inputs = new ArrayList<>();
-
-        for (Map.Entry<Object, Integer> o : recipeAsMap.entrySet()) {
-            final int amount = o.getValue();
-            switch (o.getKey()) {
-                case ItemStack itemStack -> {
-                    ItemStack toAdd = itemStack.copy();
-                    toAdd.stackSize = amount;
-                    inputs.add(toAdd);
-                }
-                case String dictName -> {
-                    // Do not register tools dictName in inputs
-                    if (ToolDictNames.contains(dictName)) continue;
-                    ItemStack stack = GTOreDictUnificator.get(dictName, null, amount, false, true);
-                    if (stack == null) {
-                        Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
-                            .stream()
-                            .findAny();
-                        if (oStack.isPresent()) {
-                            ItemStack copy = oStack.get()
-                                .copy();
-                            copy.stackSize = amount;
-                            inputs.add(copy);
-                        }
-                    } else {
-                        ItemStack copy = stack.copy();
-                        copy.stackSize = amount;
-                        inputs.add(copy);
-                    }
-                }
-                case Item item -> inputs.add(new ItemStack(item, amount));
-                case Block block -> inputs.add(new ItemStack(block, amount));
-                case null, default ->
-                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
-            }
-        }
-
-        // Remove tools from inputs in case a recipe has one as a direct Item or ItemStack reference
-        inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
-
-        return Optional.of(
-            new GTRecipe(
-                new ItemStack[] { output },
-                inputs.toArray(new ItemStack[0]),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                300,
-                30,
-                0));
     }
 
     /**
@@ -3950,22 +3775,6 @@ public class GTUtility {
         /**
          * This method copies NBT, as it is mutable.
          */
-        public static ItemId createWithStackSize(ItemStack itemStack) {
-            NBTTagCompound nbt = itemStack.getTagCompound();
-            if (nbt != null) {
-                nbt = (NBTTagCompound) nbt.copy();
-            }
-
-            return new AutoValue_GTUtility_ItemId(
-                itemStack.getItem(),
-                Items.feather.getDamage(itemStack),
-                nbt,
-                itemStack.stackSize);
-        }
-
-        /**
-         * This method copies NBT, as it is mutable.
-         */
         public static ItemId create(Item item, int metaData, @Nullable NBTTagCompound nbt) {
             if (nbt != null) {
                 nbt = (NBTTagCompound) nbt.copy();
@@ -4152,10 +3961,6 @@ public class GTUtility {
         public boolean matches(Fluid fluid) {
             return fluid() == fluid;
         }
-    }
-
-    public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Materials material) {
-        return getPlasmaFuelValueInEUPerLiterFromFluid(material.getPlasma(1));
     }
 
     public static int getPlasmaFuelValueInEUPerLiterFromFluid(FluidStack aLiquid) {

@@ -32,18 +32,22 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -138,7 +142,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
         while (i < inputFluids.size()) {
             FluidStack inputFluid = inputFluids.get(i);
-            if (inputFluid.isFluidEqual(Materials.Antimatter.getFluid(1))) {
+            if (inputFluid
+                .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Antimatter, FluidShapes.fluidLiquid, 1))) {
                 containedAntimatter += inputFluid.amount;
             } else {
                 catalystFluid = inputFluid.copy();
@@ -166,11 +171,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     public void createEU(long antimatter, FluidStack catalyst) {
         Float modifier = null;
 
-        if (catalyst.isFluidEqual(Materials.Copper.getMolten(1L))) {
+        if (isMolten(catalyst, Materials.Copper)) {
             modifier = 1.0F;
-        } else if (catalyst.isFluidEqual(Materials.SuperconductorUIVBase.getMolten(1L))) {
+        } else if (isMolten(catalyst, Materials.SuperconductorUIVBase)) {
             modifier = 1.02F;
-        } else if (catalyst.isFluidEqual(Materials.SuperconductorUMVBase.getMolten(1L))) {
+        } else if (isMolten(catalyst, Materials.SuperconductorUMVBase)) {
             modifier = 1.03F;
         }
         long catalystCount = catalyst.amount;
@@ -210,6 +215,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
                 tHatch.setEUVar(tHatch.getEUVar() + (long) (generatedEU * invHatchCount));
             }
         }
+    }
+
+    private static boolean isMolten(FluidStack stack, Material material) {
+        return stack.isFluidEqual(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, 1));
     }
 
     @Override
@@ -296,7 +305,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             .addCasing("2481-2544", new ItemStack(Loaders.gravityStabilizationCasing, 1).getDisplayName(), false)
             .addCasing("1008", StatCollector.translateToLocalFormatted("GT5U.MBTT.HatchInfo", new ItemStack(ItemRegistry.bw_realglas, 1, 8).getDisplayName()), false)
             .addCasing("600", new ItemStack(Loaders.antimatterAnnihilationMatrix, 1).getDisplayName(), false)
-            .addCasing("292", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Naquadria), false)
+            .addCasing("292", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Naquadria)), false)
             .addCasing("209", new ItemStack(GregTechAPI.sBlockCasings9, 1, 1).getDisplayName(), false)
             .addCasing("32", new ItemStack(Loaders.protomatterActivationCoil, 1).getDisplayName(), false)
             .addMiscHatch("1-64", StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_leg_casing"), 2)

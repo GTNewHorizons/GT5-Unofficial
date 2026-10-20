@@ -23,6 +23,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -35,7 +36,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialElectrolyzer>
@@ -104,7 +104,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
                         " DDD "
                     }})
                 //spotless:on
-                .addElement('A', ofFrame(MaterialsAlloy.POTIN))
+                .addElement('A', ofFrame(Materials.Potin))
                 .addElement('B', Casings.BrassItemPipeCasing.asElement())
                 .addElement('C', Casings.TinItemPipeCasing.asElement())
                 .addElement(

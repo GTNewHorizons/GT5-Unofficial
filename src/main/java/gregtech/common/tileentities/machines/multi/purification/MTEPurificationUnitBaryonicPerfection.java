@@ -33,12 +33,14 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -437,7 +439,8 @@ public class MTEPurificationUnitBaryonicPerfection
                 if (isCatalyst(stack)) {
                     // Try to deplete catalyst cost first
                     int cost = calculateCatalystCost(stack);
-                    FluidStack inputCost = Materials.Infinity.getMolten(cost);
+                    FluidStack inputCost = MaterialLibAPI
+                        .getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, cost);
                     // Drain the input cost directly from a hatch since we are not inside
                     // recipe processing
                     boolean drained = false;
@@ -473,8 +476,11 @@ public class MTEPurificationUnitBaryonicPerfection
             // Now check the sequence for a correct combination
             correctStartIndex = checkSequence();
             // If we found something, immediately output stable baryonic matter
-            if (correctStartIndex != -1)
-                addOutputPartial(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
+            if (correctStartIndex != -1) addOutputPartial(
+                MaterialLibAPI.getFluidStack(
+                    Materials.StableBaryonicMatter,
+                    FluidShapes.fluidLiquid,
+                    (int) BARYONIC_MATTER_OUTPUT));
         }
     }
 

@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.TurbineStatCalculator;
@@ -122,9 +125,11 @@ public class MTELargerTurbineHPSteamLegacy extends MTELargerTurbineBaseLegacy {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow; // SH Steam has 1 EU per litre so the flow equals base EU produced
         if (isUsingDenseSteam) {
-            addOutputPartial(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
+            addOutputPartial(
+                MaterialLibAPI
+                    .getFluidStack(Materials.DenseSteam, FluidShapes.fluidGas, (int) (steamFlowForNextSteam)));
         } else {
-            addOutputPartial(Materials.Steam.getGas(totalFlow));
+            addOutputPartial(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

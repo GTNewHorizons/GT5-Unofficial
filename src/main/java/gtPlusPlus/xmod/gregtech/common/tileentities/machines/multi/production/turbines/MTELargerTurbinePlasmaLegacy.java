@@ -8,9 +8,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -141,9 +144,10 @@ public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
                         aTotalOptimalFlow = 100;
                     }
 
-                    flowMultipliers[0] = MetaGeneratedTool.getPrimaryMaterial(aStack).mSteamMultiplier;
-                    flowMultipliers[1] = MetaGeneratedTool.getPrimaryMaterial(aStack).mGasMultiplier;
-                    flowMultipliers[2] = MetaGeneratedTool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
+                    Material aMaterial = MetaGeneratedTool.getPrimaryMaterialML(aStack);
+                    flowMultipliers[0] = MaterialUtils.steamMultiplier(aMaterial);
+                    flowMultipliers[1] = MaterialUtils.gasMultiplier(aMaterial);
+                    flowMultipliers[2] = MaterialUtils.plasmaMultiplier(aMaterial);
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     euPerTurbine = MathUtils.roundToClosestInt(aEUPerTurbine);

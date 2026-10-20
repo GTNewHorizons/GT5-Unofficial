@@ -16,8 +16,7 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
-import gtPlusPlus.core.material.Particle;
-import gtPlusPlus.core.material.Particle.ElementaryGroup;
+import gtPlusPlus.core.item.chemistry.Particle.ElementaryGroup;
 import gtPlusPlus.core.util.Utils;
 
 public class StandardBaseParticles extends BaseItemParticle {

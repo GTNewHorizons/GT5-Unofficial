@@ -26,6 +26,8 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizons.postea.api.CustomDataReplacementManager;
+import com.gtnewhorizons.postea.utility.VersionStamps;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
@@ -37,7 +39,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTELinkedInputBusGui;
@@ -185,8 +186,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     @Override
     protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
         for (int i = 0; i < SIZE_INVENTORY; i++)
-            if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(aStack), mRealInventory.stacks[i]))
-                return i == aIndex - 1;
+            if (GTUtility.areStacksEqual(aStack, mRealInventory.stacks[i])) return i == aIndex - 1;
         return mRealInventory.stacks[aIndex - 1] == null;
     }
 
@@ -599,6 +599,9 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         @Override
         public void readFromNBT(NBTTagCompound tag) {
             data.clear();
+            CustomDataReplacementManager.transform("gregtech:linkedInputBusses", tag);
+            // every key of this tag is a channel, so the version stamp the transform writes must not become one
+            tag.removeTag(VersionStamps.KEY);
             @SuppressWarnings("unchecked")
             Set<Map.Entry<String, NBTBase>> set = tag.tagMap.entrySet();
             for (Map.Entry<String, NBTBase> e : set) {
@@ -614,6 +617,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     e.getValue()
                         .save());
             }
+            CustomDataReplacementManager.stamp(tag);
         }
 
         public SharedInventory get(Object channel) {

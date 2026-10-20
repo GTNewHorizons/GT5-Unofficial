@@ -46,14 +46,17 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -70,7 +73,6 @@ import gregtech.api.objects.RingBuffer;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -416,32 +418,38 @@ public class MTETeslaTower extends TTMultiblockBase
         }
 
         for (MTEHatchInput fluidHatch : mInputHatches) {
-            if (fluidHatch.mFluid != null) {
-                if (fluidHatch.mFluid.isFluidEqual(Materials.Helium.getPlasma(1))
-                    && fluidHatch.mFluid.amount >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM) {
-                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
-                        - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;
+            if (fluidHatch.mFluid == null) continue;
 
-                    plasmaTier = 1;
-                    return;
-                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && fluidHatch.mFluid.amount
-                    >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN) {
-                        fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
-                            - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN;
-
-                        plasmaTier = 1;
-                        return;
-                    } else if (fluidHatch.mFluid.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidHatch.mFluid.amount
-                        >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON) {
-                            fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
-                                - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON;
-
-                            plasmaTier = 2;
-                            return;
-                        }
+            if (drainPlasma(
+                fluidHatch,
+                Materials.Helium,
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM)) {
+                plasmaTier = 1;
+                return;
+            }
+            if (drainPlasma(
+                fluidHatch,
+                Materials.Nitrogen,
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN)) {
+                plasmaTier = 1;
+                return;
+            }
+            if (drainPlasma(
+                fluidHatch,
+                Materials.Radon,
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON)) {
+                plasmaTier = 2;
+                return;
             }
         }
         plasmaTier = 0;
+    }
+
+    private static boolean drainPlasma(MTEHatchInput hatch, Material material, int amount) {
+        FluidStack plasma = MaterialLibAPI.getFluidStack(material, FluidShapes.fluidPlasma, 1);
+        if (!hatch.mFluid.isFluidEqual(plasma) || hatch.mFluid.amount < amount) return false;
+        hatch.mFluid.amount -= amount;
+        return true;
     }
 
     @Override
@@ -563,7 +571,7 @@ public class MTETeslaTower extends TTMultiblockBase
             .addCasing("128", CustomItemList.tM_TeslaToroid.get(1L).getDisplayName(), false)
             .addCasing("17-33", CustomItemList.tM_TeslaBase.get(1L).getDisplayName(), false)
             .addCasing("20", TTCasingsContainer.sBlockCasingsBA0.getLocalizedName(), true)
-            .addCasing("16", GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1L).getDisplayName(), false)
+            .addCasing("16", MaterialLibAPI.getStack(Materials.Titanium, TEBlockShapes.frameGt, 1).getDisplayName(), false)
             .addCasing("12", CustomItemList.tM_TeslaSecondary.get(1L).getDisplayName(), false)
             .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"), translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)

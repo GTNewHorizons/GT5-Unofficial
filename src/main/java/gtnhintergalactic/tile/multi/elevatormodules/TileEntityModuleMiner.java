@@ -27,14 +27,19 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.StackMaterialInfo;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ggfab.mte.MTELinkedInputBus;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -59,7 +64,6 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtnhintergalactic.item.ItemMiningDrones;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.SpaceMiningData;
@@ -651,23 +655,18 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         if (fluidStack == null) {
             return 0;
         }
-        if ((fluidStack.isFluidEqual(Materials.Plutonium241.getPlasma(1))
-            && fluidStack.amount >= PLASMA_PLUTONIUM241_USAGE)) {
-            return 5;
-        } else if ((fluidStack.isFluidEqual(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 1))
-            && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE)) {
-                return 4;
-            } else
-            if (fluidStack.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidStack.amount >= PLASMA_RADON_USAGE) {
-                return 3;
-            } else if (fluidStack.isFluidEqual(Materials.Bismuth.getPlasma(1))
-                && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
-                    return 2;
-                } else if (fluidStack.isFluidEqual(Materials.Helium.getPlasma(1))
-                    && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
-                        return 1;
-                    }
+        if (hasPlasma(fluidStack, Materials.Plutonium241, PLASMA_PLUTONIUM241_USAGE)) return 5;
+        if (fluidStack.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Technetium, FluidShapes.fluidPlasma, 1))
+            && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE) return 4;
+        if (hasPlasma(fluidStack, Materials.Radon, PLASMA_RADON_USAGE)) return 3;
+        if (hasPlasma(fluidStack, Materials.Bismuth, PLASMA_BISMUTH_USAGE)) return 2;
+        if (hasPlasma(fluidStack, Materials.Helium, PLASMA_HELIUM_USAGE)) return 1;
         return 0;
+    }
+
+    private static boolean hasPlasma(FluidStack fluidStack, Material material, int usage) {
+        return fluidStack.isFluidEqual(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidPlasma, 1))
+            && fluidStack.amount >= usage;
     }
 
     /**
@@ -733,22 +732,17 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         generateOreConfigurationList();
     }
 
-    /**
-     * Get the string that represents the input ore stack (name:itemDamage)
-     *
-     * @param oreStack Ore stack of which the string will be gotten
-     * @return String that represents the input ore stack
-     */
+    /// The filter key of `oreStack`: `ore:<material key>` for a GregTech ore, so one entry matches every stone type
+    /// and size, else `<unlocalized name>:<damage>`. Null for an empty stack.
     protected String getOreString(ItemStack oreStack) {
         if (oreStack == null || oreStack.getItem() == null) {
             return null;
         }
-        // For GT ores we want to save the ore independent of its stone type
-        if (oreStack.getUnlocalizedName()
-            .startsWith("gt.blockores")) {
-            return oreStack.getItem()
-                .getUnlocalizedName() + ":"
-                + oreStack.getItemDamage() % 1000;
+        StackMaterialInfo ore = MaterialLibAPI.lookupStack(oreStack);
+        if (ore != null && ore.material() != null
+            && (ore.shape() == OreShapes.ore || ore.shape() == OreShapes.oreSmall)) {
+            return "ore:" + ore.material()
+                .getKey();
         } else {
             return oreStack.getItem()
                 .getUnlocalizedName() + ":"

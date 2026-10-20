@@ -43,21 +43,18 @@ import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.crossmod.nei.NEIConfig;
 import goodgenerator.items.GGItem;
 import goodgenerator.items.GGItemBlocks;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.items.RadioactiveItem;
 import goodgenerator.main.GoodGenerator;
-import goodgenerator.util.CrackRecipeAdder;
-import goodgenerator.util.MaterialFix;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.generators.MTEDieselGenerator;
 import kekztech.common.blocks.BlockTFFTStorageField;
@@ -370,9 +367,6 @@ public class Loaders {
             MetaTileEntityIDs.ComponentAssemblyLine.ID,
             "ComponentAssemblyLine",
             "Component Assembly Line").getStackForm(1L);
-        CrackRecipeAdder.registerPipe(MetaTileEntityIDs.PipeIncoloy903.ID, GGMaterial.incoloy903, 15000, 8000, true);
-        CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireSignalium.ID, GGMaterial.signalium, 12, 131072, 32, true);
-        CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireLumiium.ID, GGMaterial.lumiium, 8, 524288, 64, true);
         Loaders.AMForge = new AntimatterForge(
             MetaTileEntityIDs.AntimatterForge.ID,
             "AntimatterForge",
@@ -495,21 +489,11 @@ public class Loaders {
     public static void addOreDic() {
         OreDictionary.registerOre("dustAluminumNitride", aluminumNitride);
 
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.ULV, new ItemStack(circuitWrap, 1, 0));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.LV, new ItemStack(circuitWrap, 1, 1));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.MV, new ItemStack(circuitWrap, 1, 2));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.HV, new ItemStack(circuitWrap, 1, 3));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.EV, new ItemStack(circuitWrap, 1, 4));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.IV, new ItemStack(circuitWrap, 1, 5));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.LuV, new ItemStack(circuitWrap, 1, 6));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.ZPM, new ItemStack(circuitWrap, 1, 7));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UV, new ItemStack(circuitWrap, 1, 8));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UHV, new ItemStack(circuitWrap, 1, 9));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UEV, new ItemStack(circuitWrap, 1, 10));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UIV, new ItemStack(circuitWrap, 1, 11));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UMV, new ItemStack(circuitWrap, 1, 12));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UXV, new ItemStack(circuitWrap, 1, 13));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.MAX, new ItemStack(circuitWrap, 1, 14));
+        for (Circuits circuit : Circuits.values()) {
+            OreDictUtils.registerOre(
+                OrePrefixes.wrapCircuit.oreDictName(circuit.materialName()),
+                new ItemStack(circuitWrap, 1, circuit.ordinal()));
+        }
     }
 
     public static void addTexturePage() {
@@ -559,10 +543,8 @@ public class Loaders {
 
     public static void postInitLoad() {
         RecipeLoader.RecipeLoad();
-        RecipeLoader.Fixer();
         RecipeLoader2.RecipeLoad();
         NeutronActivatorLoader.NARecipeLoad();
-        MaterialFix.addRecipeForMultiItems();
         ComponentAssemblyLineLoader.run();
     }
 

@@ -1,10 +1,6 @@
 package gregtech.common;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
-import static gregtech.api.enums.FluidState.GAS;
-import static gregtech.api.enums.FluidState.LIQUID;
-import static gregtech.api.enums.FluidState.MOLTEN;
-import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.GTValues.debugEntityCramming;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Forestry;
@@ -13,17 +9,11 @@ import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
-import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtnhlanth.util.LanthanidesRecipeOutputs.convertCrafting;
-import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -56,7 +46,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
@@ -66,9 +55,7 @@ import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -79,6 +66,7 @@ import org.lwjgl.input.Keyboard;
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import com.gtnewhorizon.gtnhlib.teams.TeamDataRegistry;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
@@ -106,13 +94,13 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TierEU;
-import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.enums.materials.CellShapes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -120,11 +108,11 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
+import gregtech.api.material.MaterialData;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
@@ -132,11 +120,11 @@ import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTShapelessRecipe;
 import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.OPStuff;
@@ -180,15 +168,12 @@ public class GTProxy implements IFuelHandler {
     public final GTBlockMap<Boolean> mCTMBlockCache = new GTBlockMap<>();
     public boolean mDisableVanillaOres = true;
     public boolean mAllowSmallBoilerAutomation = false;
-    public boolean mCraftingUnification = true;
-    public boolean mInventoryUnification = true;
     public boolean mIncreaseDungeonLoot = true;
     public boolean mAxeWhenAdventure = true;
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
     public boolean mChangeWoodenVanillaTools = true;
     public boolean mAchievements = true;
-    public boolean mChangeHarvestLevels = false;
     public boolean mGTBees = true;
     public boolean mPollution = true;
     public boolean mExplosionItemDrop = false;
@@ -196,8 +181,6 @@ public class GTProxy implements IFuelHandler {
     public int mFlintChance = 30;
     public int mItemDespawnTime = 6000;
     public int mUpgradeCount = 4;
-    public int[] mHarvestLevel = new int[1000];
-    public int mGraniteHavestLevel = 3;
     public int mMaxHarvestLevel = 7;
     public double replicatorExponent = 1.2D;
     public int mPollutionSmogLimit = 550000;
@@ -230,13 +213,11 @@ public class GTProxy implements IFuelHandler {
     public final GTUODimensionList mUndergroundOil = new GTUODimensionList();
     public boolean enableUndergroundGravelGen = true;
     public boolean enableUndergroundDirtGen = true;
-    public boolean mEnableAllMaterials = false;
     public boolean mEnableCleanroom = true;
     public boolean mLowGravProcessing = false;
     public boolean mAMHInteraction = true;
     public boolean mForceFreeFace = true;
     public boolean mMixedOreOnlyYieldsTwoThirdsOfPureOre = false;
-    public boolean mRichOreYieldMultiplier = true;
     public boolean mNetherOreYieldMultiplier = true;
     public boolean mEndOreYieldMultiplier = true;
     public boolean enableBlackGraniteOres = true;
@@ -400,6 +381,7 @@ public class GTProxy implements IFuelHandler {
         oreDictBurnTimes.put("dustCharcoal", 1600);
         oreDictBurnTimes.put("dustSmallLithium", 1500);
         oreDictBurnTimes.put("dustSmallCaesium", 2000);
+        oreDictBurnTimes.put("dustPyrotheum", 2400);
         oreDictBurnTimes.put("gemSodium", 4000);
         oreDictBurnTimes.put("crushedSodium", 4000);
         oreDictBurnTimes.put("dustImpureSodium", 4000);
@@ -435,14 +417,22 @@ public class GTProxy implements IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(this);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new MaterialHazardHandler());
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
         }
-        // Register previously registered oredict entries (from Forge) with the GT oredict handler.
+    }
+
+    /// Passes every oredict entry registered so far, by other mods or Forge, to [OreDictRegistrationHandler]. Must
+    /// run after [OrePrefixes#lateStaticInit].
+    public void catchUpPreExistingOreDictEntries() {
         for (String tOreName : OreDictionary.getOreNames()) {
             for (ItemStack itemStack : OreDictionary.getOres(tOreName)) {
-                registerOre(new OreDictionary.OreRegisterEvent(tOreName, itemStack));
+                OreDictRegistrationHandler
+                    .registerPreExistingOre(new OreDictionary.OreRegisterEvent(tOreName, itemStack));
             }
         }
     }
@@ -521,19 +511,11 @@ public class GTProxy implements IFuelHandler {
 
         ItemList.Bottle_Empty.set(new ItemStack(Items.glass_bottle, 1));
 
-        ItemList.Cell_Universal_Fluid.set(GTModHandler.getIC2Item("FluidCell", 1L));
-        ItemList.Cell_Empty.set(GTModHandler.getIC2Item("cell", 1L, GTModHandler.getIC2Item("cellEmpty", 1L, GTModHandler.getIC2Item("emptyCell", 1L))));
-        ItemList.Cell_Water.set(GTModHandler.getIC2Item("waterCell", 1L, GTModHandler.getIC2Item("cellWater", 1L)));
-        ItemList.Cell_Lava.set(GTModHandler.getIC2Item("lavaCell", 1L, GTModHandler.getIC2Item("cellLava", 1L)));
-        ItemList.Cell_Air.set(GTModHandler.getIC2Item("airCell", 1L, GTModHandler.getIC2Item("cellAir", 1L, GTModHandler.getIC2Item("cellOxygen", 1L))));
+        ItemList.Cell_Empty.set(CellShapes.emptyCell.getStack(1));
+        ItemList.Cell_Water.set(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1));
+        ItemList.Cell_Lava.set(MaterialLibAPI.getStack(Materials.Lava, CellShapes.cell, 1));
+        ItemList.Cell_Air.set(MaterialLibAPI.getStack(Materials.Air, CellShapes.cellGas, 1));
 
-        ItemList.IC2_Item_Casing_Iron.set(GTModHandler.getIC2Item("casingiron", 1L));
-        ItemList.IC2_Item_Casing_Gold.set(GTModHandler.getIC2Item("casinggold", 1L));
-        ItemList.IC2_Item_Casing_Bronze.set(GTModHandler.getIC2Item("casingbronze", 1L));
-        ItemList.IC2_Item_Casing_Copper.set(GTModHandler.getIC2Item("casingcopper", 1L));
-        ItemList.IC2_Item_Casing_Tin.set(GTModHandler.getIC2Item("casingtin", 1L));
-        ItemList.IC2_Item_Casing_Lead.set(GTModHandler.getIC2Item("casinglead", 1L));
-        ItemList.IC2_Item_Casing_Steel.set(GTModHandler.getIC2Item("casingadviron", 1L));
         ItemList.IC2_Mixed_Metal_Ingot.set(GTModHandler.getIC2Item("mixedMetalIngot", 1L));
         ItemList.IC2_Resin.set(GTModHandler.getIC2Item("resin", 1L));
         ItemList.IC2_Plantball.set(GTModHandler.getIC2Item("plantBall", 1L));
@@ -591,11 +573,11 @@ public class GTProxy implements IFuelHandler {
         ItemList.Food_Baked_Potato.set(new ItemStack(Items.baked_potato, 1, 0));
         ItemList.Food_Poisonous_Potato.set(new ItemStack(Items.poisonous_potato, 1, 0));
 
-        OrePrefixes.bottle.mContainerItem = ItemList.Bottle_Empty.get(1L);
-        OrePrefixes.bucket.mContainerItem = new ItemStack(Items.bucket, 1);
-        OrePrefixes.cellPlasma.mContainerItem = ItemList.Cell_Empty.get(1L);
-        OrePrefixes.cellMolten.mContainerItem = ItemList.Cell_Empty.get(1L);
-        OrePrefixes.cell.mContainerItem = ItemList.Cell_Empty.get(1L);
+        OrePrefixes.bottle.containerItem = ItemList.Bottle_Empty.get(1L);
+        OrePrefixes.bucket.containerItem = new ItemStack(Items.bucket, 1);
+        OrePrefixes.cellPlasma.containerItem = ItemList.Cell_Empty.get(1L);
+        OrePrefixes.cellMolten.containerItem = ItemList.Cell_Empty.get(1L);
+        OrePrefixes.cell.containerItem = ItemList.Cell_Empty.get(1L);
 
         GTModHandler.sNonReplaceableItems.add(new ItemStack(Items.bow, 1, 32767));
         GTModHandler.sNonReplaceableItems.add(new ItemStack(Items.fishing_rod, 1, 32767));
@@ -670,30 +652,30 @@ public class GTProxy implements IFuelHandler {
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {
-            OrePrefixes.bucketClay.mContainerItem = GTModHandler
+            OrePrefixes.bucketClay.containerItem = GTModHandler
                 .getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0);
-            GTOreDictUnificator.set(
+            OreDictUtils.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Empty,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0));
-            GTOreDictUnificator.set(
+            OreDictUtils.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Water,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketWater", 1L, 0));
-            GTOreDictUnificator.set(
+            OreDictUtils.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Lava,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketLava", 1L, 0));
-            GTOreDictUnificator.set(
+            OreDictUtils.registerAndAssociate(
                 OrePrefixes.bucketClay,
                 Materials.Milk,
                 GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketMilk", 1L, 0));
 
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
-                    Materials.Milk.getFluid(1_000),
-                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Milk, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
+                    MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 1_000),
+                    GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketMilk", 1L, 0),
+                    GTModHandler.getModItem(IguanaTweaksTinkerConstruct.ID, "clayBucketFired", 1L, 0)));
         }
 
         if (!this.enableUndergroundGravelGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
@@ -743,9 +725,8 @@ public class GTProxy implements IFuelHandler {
         // onInitialization() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
         MetaGeneratedItem98.init();
 
-        GTOreDictUnificator.addItemData(new ItemStack(Items.iron_door, 1), new ItemData(Materials.Iron, 21772800L));
-        GTOreDictUnificator
-            .addItemData(new ItemStack(Items.wooden_door, 1, 32767), new ItemData(Materials.Wood, 21772800L));
+        MaterialData.add(new ItemStack(Items.iron_door, 1), new ItemData(Materials.Iron, 21772800L));
+        MaterialData.add(new ItemStack(Items.wooden_door, 1, 32767), new ItemData(Materials.Wood, 21772800L));
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -761,75 +742,6 @@ public class GTProxy implements IFuelHandler {
                 } catch (Exception e) {
                     GT_FML_LOGGER.error("Could not load config for MTE {}", GregTechAPI.METATILEENTITIES[i], e);
                 }
-            }
-        }
-        GT_FML_LOGGER.debug("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
-        for (Materials aMaterial : Materials.values()) {
-            if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
-                if (!aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
-                    GTModHandler.addCraftingRecipe(
-                        convertCrafting(
-                            aMaterial.mMacerateInto,
-                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)),
-                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.get(aMaterial) });
-                    GTModHandler.addCraftingRecipe(
-                        convertCrafting(
-                            aMaterial.mMacerateInto,
-                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)),
-                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crystalline.get(aMaterial) });
-                    GTModHandler.addCraftingRecipe(
-                        convertCrafting(
-                            aMaterial.mMacerateInto,
-                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)),
-                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crystal.get(aMaterial) });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crushedPurified.get(aMaterial) });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.cleanGravel.get(aMaterial) });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.reduced.get(aMaterial) });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.clump.get(aMaterial) });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.shard.get(aMaterial) });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.crushed.get(aMaterial) });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "h", "X", 'X', OrePrefixes.dirtyGravel.get(aMaterial) });
-                }
-                GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 4L),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { " X ", "   ", "   ", 'X', OrePrefixes.dust.get(aMaterial) });
-                GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 9L),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "X  ", "   ", "   ", 'X', OrePrefixes.dust.get(aMaterial) });
-                GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "XX", "XX", 'X', OrePrefixes.dustSmall.get(aMaterial) });
-                GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "XXX", "XXX", "XXX", 'X', OrePrefixes.dustTiny.get(aMaterial) });
             }
         }
         // Cover GUI needs to know text color which can be configured with resource packs. In theory it's not needed on
@@ -1055,22 +967,6 @@ public class GTProxy implements IFuelHandler {
     }
 
     @SubscribeEvent
-    public void onEntitySpawningEvent(EntityJoinWorldEvent aEvent) {
-        if (aEvent.entity == null) {
-            return;
-        }
-
-        if (aEvent.entity.worldObj.isRemote) {
-            return;
-        }
-
-        if ((aEvent.entity instanceof EntityItem)) {
-            ((EntityItem) aEvent.entity)
-                .setEntityItemStack(GTOreDictUnificator.get(true, ((EntityItem) aEvent.entity).getEntityItem(), true));
-        }
-    }
-
-    @SubscribeEvent
     public void onPlayerJoinEvent(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event) {
         if (event.player == null || event.player.isClientWorld()
             || !(event.player instanceof EntityPlayerMP mpPlayer)) {
@@ -1184,8 +1080,8 @@ public class GTProxy implements IFuelHandler {
             && (aFluidEvent.data.filledContainer.getItemDamage() == 0)) {
             aFluidEvent.data.fluid.amount = 0;
         }
-        GTOreDictUnificator.addToBlacklist(aFluidEvent.data.emptyContainer);
-        GTOreDictUnificator.addToBlacklist(aFluidEvent.data.filledContainer);
+        OreDictUtils.addToBlacklist(aFluidEvent.data.emptyContainer);
+        OreDictUtils.addToBlacklist(aFluidEvent.data.filledContainer);
         GTUtility.insertInFluidToContainersMap(aFluidEvent.data);
     }
 
@@ -1283,41 +1179,6 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
-    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
-        final EntityPlayer player = event.player;
-        if (!event.side.isServer() || event.phase == TickEvent.Phase.END
-            || player.isDead
-            || player.ticksExisted % 120 != 0) {
-            return;
-        }
-
-        final ItemStack[] mainInventory = player.inventory.mainInventory;
-        for (ItemStack stack : mainInventory) {
-            applyItemEffects(player, stack);
-            if (this.mInventoryUnification) {
-                GTOreDictUnificator.setStack(true, stack);
-            }
-        }
-        final ItemStack[] armorInventory = player.inventory.armorInventory;
-        for (final ItemStack stack : armorInventory) {
-            applyItemEffects(player, stack);
-        }
-    }
-
-    private static void applyItemEffects(EntityPlayer player, ItemStack stack) {
-        if (stack == null || player.capabilities.isCreativeMode) {
-            return;
-        }
-        GTUtility.applyRadioactivity(player, GTUtility.getRadioactivityLevel(stack), stack.stackSize);
-        final float heat = GTUtility.getHeatDamageFromItem(stack);
-        if (heat > 0.0F) {
-            GTUtility.applyHeatDamageFromItem(player, heat, stack);
-        } else if (heat < 0.0F) {
-            GTUtility.applyFrostDamage(player, -heat);
-        }
-    }
-
     public GTClientPreference getClientPreference(UUID aPlayerID) {
         return mClientPrefernces.get(aPlayerID);
     }
@@ -1380,233 +1241,6 @@ public class GTProxy implements IFuelHandler {
             }
         }
         return seen ? best : 0;
-    }
-
-    // ------------------------ Adds all fluids corresponding to materials ------------------------
-
-    public Fluid addAutoGeneratedCorrespondingFluid(Materials aMaterial) {
-        // If the fluid is registered as custom inside the Material's constructor then to add custom fluid
-        // textures go to blocks/fluids and place the .png. File should be called fluid.fluid.{unlocalised_name}.png.
-        // All lower case.
-        // White Dwarf Matter intentionally shares its molten animation for both fluid registrations.
-        final String fluidTexture = aMaterial == Materials.WhiteDwarfMatter
-            ? "molten." + aMaterial.mName.toLowerCase(Locale.ENGLISH)
-            : aMaterial.mIconSet.is_custom ? "fluid." + aMaterial.mName.toLowerCase() : "autogenerated";
-
-        return GTFluidFactory.builder(aMaterial.mName.toLowerCase(Locale.ENGLISH))
-            .withDefaultLocalName(aMaterial.mDefaultLocalName)
-            .withTextureName(fluidTexture)
-            .withColorRGBA(aMaterial.mRGBa)
-            .withStateAndTemperature(LIQUID, aMaterial.getLiquidTemperature())
-            .buildAndRegister()
-            .configureMaterials(aMaterial)
-            .addLocalizedName(aMaterial)
-            .registerBContainers(GTOreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), ItemList.Cell_Empty.get(1L))
-            .asFluid();
-    }
-
-    public Fluid addAutoGeneratedCorrespondingGas(Materials aMaterial) {
-        // If the fluid is registered as custom inside the Material's constructor then to add custom fluid
-        // textures go to blocks/fluids and place the .png. File should be called fluid.gas.{unlocalised_name}.png. All
-        // lower case.
-        final String fluidTexture = aMaterial.mIconSet.is_custom ? ("gas." + aMaterial.mName.toLowerCase())
-            : "autogenerated";
-
-        return GTFluidFactory.builder(aMaterial.mName.toLowerCase(Locale.ENGLISH))
-            .withDefaultLocalName(aMaterial.mDefaultLocalName)
-            .withTextureName(fluidTexture)
-            .withColorRGBA(aMaterial.mRGBa)
-            .withStateAndTemperature(GAS, aMaterial.getGasTemperature())
-            .buildAndRegister()
-            .configureMaterials(aMaterial)
-            .addLocalizedName(aMaterial)
-            .registerBContainers(GTOreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), ItemList.Cell_Empty.get(1L))
-            .asFluid();
-    }
-
-    public Fluid addAutogeneratedPlasmaFluid(Materials aMaterial) {
-        // If the fluid is registered as custom inside the Material's constructor then to add custom fluid
-        // textures go to blocks/fluids and place the .png. File should be called fluid.plasma.{texture_set_name}.png.
-        // All lower case.
-        final String fluidTexture = aMaterial.mIconSet.is_custom
-            ? ("plasma." + aMaterial.mIconSet.aTextCustomAutogenerated.toLowerCase())
-            : "plasma.autogenerated";
-
-        return GTFluidFactory.builder("plasma." + aMaterial.mName.toLowerCase(Locale.ENGLISH))
-            .withDefaultLocalName(aMaterial.mDefaultLocalName + " Plasma")
-            .withTextureName(fluidTexture)
-            .withColorRGBA(aMaterial.mMoltenRGBa)
-            .withStateAndTemperature(PLASMA, 10000)
-            .buildAndRegister()
-            .configureMaterials(aMaterial)
-            .addLocalizedName(aMaterial)
-            .registerContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellPlasma, aMaterial, 1L),
-                ItemList.Cell_Empty.get(1L),
-                aMaterial.getMolten(1) != null ? 1 * INGOTS : 1_000)
-            .asFluid();
-    }
-
-    public Fluid addAutogeneratedMoltenFluid(Materials aMaterial) {
-        // If the fluid is registered as custom inside the Material's constructor then to add custom fluid
-        // textures go to blocks/fluids and place the .png. File should be called fluid.molten.{texture_set_name}.png.
-        // All lower case.
-        final String fluidTexture = aMaterial.mIconSet.is_custom
-            ? ("molten." + aMaterial.mIconSet.aTextCustomAutogenerated.toLowerCase())
-            : "molten.autogenerated";
-
-        return GTFluidFactory.builder("molten." + aMaterial.mName.toLowerCase(Locale.ENGLISH))
-            .withDefaultLocalName("Molten " + aMaterial.mDefaultLocalName)
-            .withTextureName(fluidTexture)
-            .withColorRGBA(aMaterial.mMoltenRGBa)
-            .withStateAndTemperature(MOLTEN, aMaterial.mMeltingPoint < 0 ? 1000 : aMaterial.mMeltingPoint)
-            .buildAndRegister()
-            .configureMaterials(aMaterial)
-            .addLocalizedName(aMaterial)
-            .registerContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellMolten, aMaterial, 1L),
-                ItemList.Cell_Empty.get(1L),
-                1 * INGOTS)
-            .asFluid();
-    }
-
-    // ------------------------------------------------------------------------------------------------------------
-
-    public void addAutoGeneratedHydroCrackedFluids(Materials aMaterial) {
-        Fluid[] crackedFluids = new Fluid[3];
-        String[] namePrefixes = { "lightlyhydrocracked.", "moderatelyhydrocracked.", "severelyhydrocracked." };
-        OrePrefixes[] orePrefixes = { OrePrefixes.cellHydroCracked1, OrePrefixes.cellHydroCracked2,
-            OrePrefixes.cellHydroCracked3 };
-        final Fluid uncrackedFluid;
-        if (aMaterial.mFluid != null) {
-            uncrackedFluid = aMaterial.mFluid;
-        } else if (aMaterial.mGas != null) {
-            uncrackedFluid = aMaterial.mGas;
-        } else return;
-        for (int i = 0; i < 3; i++) {
-            crackedFluids[i] = GTFluidFactory.builder(namePrefixes[i] + aMaterial.mName.toLowerCase(Locale.ENGLISH))
-                .withIconsFrom(uncrackedFluid)
-                .withDefaultLocalName(orePrefixes[i].getMaterialPrefix() + aMaterial.mDefaultLocalName)
-                .withColorRGBA(aMaterial.mRGBa)
-                .withStateAndTemperature(GAS, 775)
-                .buildAndRegister()
-                .addLocalizedName(aMaterial)
-                .registerBContainers(
-                    GTOreDictUnificator.get(orePrefixes[i], aMaterial, 1L),
-                    ItemList.Cell_Empty.get(1L))
-                .asFluid();
-
-            int hydrogenAmount = 2 * i + 2;
-            GTValues.RA.stdBuilder()
-                .circuit(i + 1)
-                .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 800))
-                .fluidOutputs(new FluidStack(crackedFluids[i], 1000))
-                .duration((1 + i) * SECONDS)
-                .eut(TierEU.RECIPE_HV / 2)
-                .addTo(crackingRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(Materials.Hydrogen.getCells(hydrogenAmount))
-                .circuit(i + 1)
-                .itemOutputs(Materials.Empty.getCells(hydrogenAmount))
-                .fluidInputs(new FluidStack(uncrackedFluid, 1000))
-                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
-                .duration((8 + 4 * i) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(RecipeMaps.chemicalReactorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(aMaterial.getCells(1))
-                .circuit(i + 1)
-                .itemOutputs(Materials.Empty.getCells(1))
-                .fluidInputs(Materials.Hydrogen.getGas(hydrogenAmount * 1000))
-                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
-                .duration((8 + 4 * i) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(RecipeMaps.chemicalReactorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .circuit(i + 1)
-                .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 1000))
-                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
-                .duration((4 + 2 * i) * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
-        }
-        aMaterial.setHydroCrackedFluids(crackedFluids);
-    }
-
-    public void addAutoGeneratedSteamCrackedFluids(Materials aMaterial) {
-        Fluid[] crackedFluids = new Fluid[3];
-        String[] namePrefixes = { "lightlysteamcracked.", "moderatelysteamcracked.", "severelysteamcracked." };
-        OrePrefixes[] orePrefixes = { OrePrefixes.cellSteamCracked1, OrePrefixes.cellSteamCracked2,
-            OrePrefixes.cellSteamCracked3 };
-        final Fluid uncrackedFluid;
-        if (aMaterial.mFluid != null) {
-            uncrackedFluid = aMaterial.mFluid;
-        } else if (aMaterial.mGas != null) {
-            uncrackedFluid = aMaterial.mGas;
-        } else return;
-        for (int i = 0; i < 3; i++) {
-            crackedFluids[i] = GTFluidFactory.builder(namePrefixes[i] + aMaterial.mName.toLowerCase(Locale.ENGLISH))
-                .withIconsFrom(uncrackedFluid)
-                .withDefaultLocalName(orePrefixes[i].getMaterialPrefix() + aMaterial.mDefaultLocalName)
-                .withColorRGBA(aMaterial.mRGBa)
-                .withStateAndTemperature(GAS, 775)
-                .buildAndRegister()
-                .addLocalizedName(aMaterial)
-                .registerBContainers(
-                    GTOreDictUnificator.get(orePrefixes[i], aMaterial, 1L),
-                    ItemList.Cell_Empty.get(1L))
-                .asFluid();
-
-            GTValues.RA.stdBuilder()
-                .circuit(i + 1)
-                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), Materials.Steam.getGas(1_000))
-                .fluidOutputs(new FluidStack(crackedFluids[i], 1_200))
-                .duration((1 + i) * SECONDS)
-                .eut(TierEU.RECIPE_HV / 2)
-                .addTo(crackingRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getIC2Item("steamCell", 1L))
-                .circuit(i + 1)
-                .itemOutputs(Materials.Empty.getCells(1))
-                .fluidInputs(new FluidStack(uncrackedFluid, 1_000))
-                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
-                .duration((8 + 4 * i) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(RecipeMaps.chemicalReactorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(aMaterial.getCells(1))
-                .circuit(i + 1)
-                .itemOutputs(Materials.Empty.getCells(1))
-                .fluidInputs(Materials.Steam.getGas(1_000))
-                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
-                .duration((8 + 4 * i) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(RecipeMaps.chemicalReactorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(aMaterial.getCells(1))
-                .circuit(i + 1)
-                .itemOutputs(Materials.Empty.getCells(1))
-                .fluidInputs(getFluidStack("ic2steam", 1000))
-                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
-                .duration((8 + 4 * i) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(RecipeMaps.chemicalReactorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .circuit(i + 1)
-                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), Materials.Steam.getGas(1_000))
-                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
-                .duration((4 + 2 * i) * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(RecipeMaps.multiblockChemicalReactorRecipes);
-        }
-        aMaterial.setSteamCrackedFluids(crackedFluids);
     }
 
     @SubscribeEvent

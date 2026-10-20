@@ -5,8 +5,8 @@ import java.util.function.Consumer;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 
 public final class GTItemDataLookupIngredient extends GTRecipeLookupIngredient {
 
@@ -17,20 +17,16 @@ public final class GTItemDataLookupIngredient extends GTRecipeLookupIngredient {
         this.unificationName = unificationName;
     }
 
-    public static GTItemDataLookupIngredient fromItemData(ItemData itemData) {
-        Objects.requireNonNull(itemData, "itemData");
-        if (!itemData.hasValidPrefixMaterialData()) {
-            throw new IllegalArgumentException("itemData must have prefix and material data");
+    public static GTItemDataLookupIngredient fromAssociationName(String associationName) {
+        Objects.requireNonNull(associationName, "associationName");
+        if (associationName.isEmpty()) {
+            throw new IllegalArgumentException("associationName must not be empty");
         }
-        String unificationName = itemData.toString();
-        if (unificationName.isEmpty()) {
-            throw new IllegalArgumentException("itemData unification name must not be empty");
-        }
-        return new GTItemDataLookupIngredient(unificationName);
+        return new GTItemDataLookupIngredient(associationName);
     }
 
     public static void fromRuntime(Consumer<? super GTItemDataLookupIngredient> ingredients, ItemStack stack) {
-        ItemData itemData = GTOreDictUnificator.getAssociation(stack);
+        ItemData itemData = MaterialData.get(stack);
         if (itemData == null) return;
         String unificationName = itemData.toString();
         if (unificationName.isEmpty()) return;

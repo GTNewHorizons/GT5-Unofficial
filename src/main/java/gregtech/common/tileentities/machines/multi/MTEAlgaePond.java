@@ -38,15 +38,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -118,7 +119,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
             .addCasing("64", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing("20-25", Casings.AlgaeCasing.getLocalizedName(), false)
-            .addCasing("6", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addCasing("6", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.StainlessSteel)), false)
             .addCasing("5", Casings.FilterMachineCasing.getLocalizedName(), false)
             .addEnergyHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)

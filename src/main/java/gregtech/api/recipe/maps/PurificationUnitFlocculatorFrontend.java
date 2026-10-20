@@ -12,9 +12,11 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import codechicken.nei.recipe.StackInfo;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
@@ -58,16 +60,18 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
 
         FluidStack fluid = StackInfo.getFluid(stack);
         if (fluid != null) {
-            if (fluid.isFluidEqual(Materials.PolyAluminiumChloride.getFluid(1_000))) {
+            if (fluid.isFluidEqual(
+                MaterialLibAPI.getFluidStack(Materials.PolyAluminiumChloride, FluidShapes.fluidLiquid, 1_000))) {
                 currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.0"));
                 currentTip.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.nei.purified_water.grade_3.1",
                         MTEPurificationUnitFlocculation.SUCCESS_PER_LEVEL,
                         MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL));
-            } else if (fluid.isFluidEqual(Materials.FlocculationWasteLiquid.getFluid(1_000))) {
-                currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.2"));
-            }
+            } else if (fluid.isFluidEqual(
+                MaterialLibAPI.getFluidStack(Materials.FlocculationWasteLiquid, FluidShapes.fluidLiquid, 1_000))) {
+                    currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.2"));
+                }
         }
 
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);

@@ -5,11 +5,9 @@ import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceRes
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
-import static gregtech.api.GregTechAPI.sBlockSheetmetalBW;
-import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 import static gregtech.api.util.GTUtility.isFlowingWater;
 import static gregtech.api.util.GTUtility.isWater;
 
@@ -59,27 +57,31 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
+import com.ruling_0.materiallib.api.BlockMaterialInfo;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
-import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCyclotronCoils;
-import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.core.material.Material;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 public class GTStructureUtility {
@@ -198,53 +200,41 @@ public class GTStructureUtility {
         return allFilled;
     }
 
-    public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
-        if (material == null) throw new IllegalArgumentException("material for sheet metal cannot be null!");
-        return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID)) {
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI.hintParticleTinted(
-                    world,
-                    x,
-                    y,
-                    z,
-                    sBlockSheetmetalGT,
-                    material.mMetaItemSubID,
-                    material.getRGBA());
-                return true;
-            }
-        };
+    /// The storage block structure element, matching the `block` [gregtech.common.blocks.GTStorageShapeBlock] at
+    /// the target material's index.
+    public static <T> IStructureElement<T> ofStorageBlock(Material material) {
+        return ofMaterialBlock(material, BlockShapes.block, "block");
     }
 
-    public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
-        if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal cannot be null!");
-        return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalBW, werkstoff.getmID())) {
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI
-                    .hintParticleTinted(world, x, y, z, sBlockSheetmetalBW, werkstoff.getmID(), werkstoff.getRGBA());
-                return true;
-            }
-        };
+    /// The sheetmetal structure element, matching the `sheetmetal` [gregtech.common.blocks.SheetmetalShapeBlock]
+    /// at the target material's index.
+    public static <T> IStructureElement<T> ofSheetMetal(Material material) {
+        return ofMaterialBlock(material, BlockShapes.sheetmetal, "sheetmetal");
     }
 
-    public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
-        if (aFrameMaterial == null) throw new IllegalArgumentException();
+    /// The bolted casing structure element, matching the `blockCasing` [gregtech.common.blocks.GTCasingShapeBlock]
+    /// at the target material's index.
+    public static <T> IStructureElement<T> ofBlockCasing(Material material) {
+        return ofMaterialBlock(material, BlockShapes.blockCasing, "blockCasing");
+    }
+
+    /// [#ofBlockCasing], for the rebolted `blockCasingAdvanced` shape.
+    public static <T> IStructureElement<T> ofBlockCasingAdvanced(Material material) {
+        return ofMaterialBlock(material, BlockShapes.blockCasingAdvanced, "blockCasingAdvanced");
+    }
+
+    /// A structure element matching the MaterialLib `shape` block at the target material's index, hinted with the
+    /// block art filed under `iconName` and placed from the pair's stack.
+    private static <T> IStructureElement<T> ofMaterialBlock(Material material, Shape shape, String iconName) {
+        if (material == null)
+            throw new IllegalArgumentException("material for " + shape.getName() + " cannot be null!");
         return new IStructureElement<>() {
-
-            private IIcon[] mIcons;
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                if (block instanceof BlockFrameBox frameBox) {
-                    int meta = world.getBlockMetadata(x, y, z);
-                    Materials material = BlockFrameBox.getMaterial(meta);
-                    return aFrameMaterial == material;
-                }
-                return false;
+                BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, world.getBlockMetadata(x, y, z));
+                return info != null && info.shape() == shape && info.material() == material;
             }
 
             @Override
@@ -254,14 +244,115 @@ public class GTStructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                if (mIcons == null && FMLLaunchHandler.side()
+                short[] rgba = MaterialUtils.rgba(material);
+                if (rgba == null) return false;
+                IIcon[] icons = null;
+                if (FMLLaunchHandler.side()
                     .isClient()) {
-                    mIcons = new IIcon[6];
-                    Arrays.fill(
-                        mIcons,
-                        aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon());
+                    IIconContainer icon = GTMaterialIcons.block(iconName, material);
+                    icons = new IIcon[6];
+                    Arrays.fill(icons, icon.getIcon());
+                    if (icon.hasOverrideIcon()) rgba = UNCOLORED_RGBA;
                 }
-                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, aFrameMaterial.mRGBa);
+                StructureLibAPI.hintParticleTinted(world, x, y, z, icons, rgba);
+                return true;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                ItemStack tStack = getStack();
+                if (!GTUtility.isStackValid(tStack) || !(tStack.getItem() instanceof ItemBlock tStackItem))
+                    return false;
+                return tStackItem
+                    .placeBlockAt(tStack, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tStack));
+            }
+
+            private ItemStack getStack() {
+                return MaterialLibAPI.findStack(material, shape, 1);
+            }
+
+            @Override
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                ItemStack tStack = getStack();
+                if (!GTUtility.isStackValid(tStack) || !(tStack.getItem() instanceof ItemBlock))
+                    return BlocksToPlace.errored;
+                return BlocksToPlace.create(tStack);
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                return survivalPlaceBlock(
+                    t,
+                    world,
+                    x,
+                    y,
+                    z,
+                    trigger,
+                    AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                if (check(t, world, x, y, z)) return SKIP;
+                ItemStack tStack = getStack();
+                if (!GTUtility.isStackValid(tStack) || !(tStack.getItem() instanceof ItemBlock)) return REJECT;
+                return StructureUtility.survivalPlaceBlock(
+                    tStack,
+                    ItemStackPredicate.NBTMode.IGNORE_KNOWN_INSIGNIFICANT_TAGS,
+                    null,
+                    false,
+                    world,
+                    x,
+                    y,
+                    z,
+                    env.getSource(),
+                    env.getActor(),
+                    env.getChatter());
+            }
+        };
+    }
+
+    public static <T> IStructureElement<T> ofFrame(Material material) {
+        if (material == null) throw new IllegalArgumentException();
+        return ofFrameElement(() -> material);
+    }
+
+    /// The frame structure element, matching the `frameGt` [gregtech.common.blocks.FrameShapeBlock] at the
+    /// target material's index. The target resolves lazily so elements built in static initializers, before
+    /// the MaterialLib registry settles, still work.
+    private static <T> IStructureElement<T> ofFrameElement(Supplier<Material> materialSupplier) {
+        return new IStructureElement<>() {
+
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+                BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, world.getBlockMetadata(x, y, z));
+                return info != null && info.shape() == TEBlockShapes.frameGt
+                    && info.material() == materialSupplier.get();
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                Material material = materialSupplier.get();
+                short[] rgba = MaterialUtils.rgba(material);
+                if (material == null || rgba == null) return false;
+                IIcon[] icons = null;
+                if (FMLLaunchHandler.side()
+                    .isClient()) {
+                    IIconContainer frame = GTMaterialIcons.block("frameGt", material);
+                    icons = new IIcon[6];
+                    Arrays.fill(icons, frame.getIcon());
+                    if (frame.hasOverrideIcon()) rgba = UNCOLORED_RGBA;
+                }
+                StructureLibAPI.hintParticleTinted(world, x, y, z, icons, rgba);
                 return true;
             }
 
@@ -275,7 +366,7 @@ public class GTStructureUtility {
             }
 
             private ItemStack getFrameStack() {
-                return GTOreDictUnificator.get(OrePrefixes.frameGt, aFrameMaterial, 1);
+                return MaterialLibAPI.findStack(materialSupplier.get(), TEBlockShapes.frameGt, 1);
             }
 
             @Override
@@ -321,18 +412,6 @@ public class GTStructureUtility {
                     env.getChatter());
             }
         };
-    }
-
-    public static <T> IStructureElement<T> ofFrame(Supplier<ItemStack> frameSupplier) {
-        return lazy(t -> {
-            ItemStack stack = frameSupplier.get();
-            Block block = Block.getBlockFromItem(stack.getItem());
-            return ofBlock(block, stack.getItemDamage());
-        });
-    }
-
-    public static <T> IStructureElement<T> ofFrame(Material material) {
-        return ofFrame(() -> material.getFrameBox(1));
     }
 
     public static <T> HatchElementBuilder<T> buildHatchAdder() {

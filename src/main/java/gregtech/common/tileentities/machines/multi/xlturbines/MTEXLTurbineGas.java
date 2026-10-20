@@ -19,9 +19,12 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -46,7 +49,7 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
 
     static {
         BLACKLIST.add(
-            Materials.Benzene.getFluid(0)
+            MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 0)
                 .getFluid());
     }
 
@@ -165,7 +168,7 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
+    protected Material getFrameMaterial() {
         return Materials.StainlessSteel;
     }
 

@@ -12,10 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.OreDictUtils;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
@@ -253,18 +252,13 @@ public final class GTRecipeLookupBuilder {
             return;
         }
         addIfAbsent(group, GTItemStackLookupIngredient.fromRecipe(stack, recipe.isNBTSensitive));
-        addItemDataIngredient(stack, group);
-        ItemStack unified = GTOreDictUnificator.get_nocopy(true, stack);
-        if (unified != null) {
-            addIfAbsent(group, GTItemStackLookupIngredient.fromRecipe(unified, recipe.isNBTSensitive));
-            addItemDataIngredient(unified, group);
-        }
+        if (!recipe.exactItemInputs) addItemDataIngredient(stack, group);
     }
 
     private static void addItemDataIngredient(ItemStack stack, List<GTRecipeLookupIngredient> group) {
-        ItemData itemData = GTOreDictUnificator.getAssociation(stack);
-        if (itemData != null && itemData.hasValidPrefixMaterialData()) {
-            addIfAbsent(group, GTItemDataLookupIngredient.fromItemData(itemData));
+        String associationName = OreDictUtils.inputAssociationName(stack);
+        if (associationName != null) {
+            addIfAbsent(group, GTItemDataLookupIngredient.fromAssociationName(associationName));
         }
     }
 

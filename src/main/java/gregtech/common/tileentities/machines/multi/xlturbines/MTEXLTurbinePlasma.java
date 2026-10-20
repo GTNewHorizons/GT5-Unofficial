@@ -17,12 +17,14 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -159,7 +161,7 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
+    protected Material getFrameMaterial() {
         return Materials.TungstenSteel;
     }
 
@@ -265,10 +267,10 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
                         aTotalOptimalFlow = 100;
                     }
 
-                    Materials turbineMaterial = MetaGeneratedTool.getPrimaryMaterial(turbineItem);
-                    flowMultipliers[0] = turbineMaterial.mSteamMultiplier;
-                    flowMultipliers[1] = turbineMaterial.mGasMultiplier;
-                    flowMultipliers[2] = turbineMaterial.mPlasmaMultiplier;
+                    Material turbineMaterial = MetaGeneratedTool.getPrimaryMaterialML(turbineItem);
+                    flowMultipliers[0] = MaterialUtils.steamMultiplier(turbineMaterial);
+                    flowMultipliers[1] = MaterialUtils.gasMultiplier(turbineMaterial);
+                    flowMultipliers[2] = MaterialUtils.plasmaMultiplier(turbineMaterial);
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     euPerTurbine = MathUtils.roundToClosestInt(aEUPerTurbine);

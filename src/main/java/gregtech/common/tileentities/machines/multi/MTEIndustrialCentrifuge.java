@@ -41,12 +41,14 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -60,7 +62,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -138,7 +139,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
                         " AAA "
                     }})
                 //spotless:on
-                .addElement('A', ofFrame(MaterialsAlloy.EGLIN_STEEL))
+                .addElement('A', ofFrame(Materials.EglinSteel))
                 .addElement('B', Casings.LargeSieveGrate.asElement())
                 .addElement(
                     'C',
@@ -191,7 +192,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .beginStructureBlock(5, 5, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
             .addCasing("6-32", Casings.CentrifugeCasing.getLocalizedName(), false)
-            .addCasing("24", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.EGLIN_STEEL), false)
+            .addCasing("24", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.EglinSteel)), false)
             .addCasing("18", Casings.LargeSieveGrate.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)

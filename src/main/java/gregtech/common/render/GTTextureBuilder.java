@@ -13,6 +13,7 @@ public final class GTTextureBuilder implements ITextureBuilder {
     private short[] rgba;
     private boolean extFacing;
     private boolean glow;
+    private boolean untintOverrideIcon;
 
     public GTTextureBuilder() {
         rgba = Dyes._NULL.getRGBA();
@@ -56,6 +57,12 @@ public final class GTTextureBuilder implements ITextureBuilder {
         return this;
     }
 
+    @Override
+    public ITextureBuilder untintOverrideIcon() {
+        this.untintOverrideIcon = true;
+        return this;
+    }
+
     /**
      * @inheritDoc
      */
@@ -64,6 +71,6 @@ public final class GTTextureBuilder implements ITextureBuilder {
         if (iconContainer == null) {
             throw new IllegalStateException("iconContainer not specified!");
         }
-        return new GTRenderedTexture(iconContainer, rgba, glow, extFacing);
+        return new GTRenderedTexture(iconContainer, rgba, glow, extFacing, untintOverrideIcon);
     }
 }

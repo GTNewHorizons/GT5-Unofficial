@@ -118,7 +118,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                         Block block = c.getBlock(x, y, z);
                                         int meta = c.getBlockMetadata(x, y, z);
 
-                                        try (OreInfo<?> info = OreManager.getOreInfo(block, meta)) {
+                                        try (OreInfo info = OreManager.getOreInfo(block, meta)) {
                                             if (info == null || !info.isNatural) continue;
                                             if (data != MODE_ALL_ORES && info.isSmall) continue;
 

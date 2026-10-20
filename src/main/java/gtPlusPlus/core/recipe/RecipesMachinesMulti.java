@@ -20,21 +20,24 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialMacerator;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipesMachinesMulti {
@@ -75,20 +78,21 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_IndustrialFluidHeater.get(1),
             BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IHI", "PDP", 'P', MaterialsAlloy.INCONEL_625.getPlate(1), 'C', "circuitElite", 'I',
-                "pipeHugeTantalloy60", 'H', ItemList.Machine_IV_FluidHeater.get(1), 'D', "circuitData" });
+            new Object[] { "PCP", "IHI", "PDP", 'P', MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 1),
+                'C', "circuitElite", 'I', "pipeHugeTantalloy60", 'H', ItemList.Machine_IV_FluidHeater.get(1), 'D',
+                "circuitData" });
     }
 
     private static void advHeatExchanger() {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Machine_Multi_HeatExchanger.get(1),
-                MaterialsAlloy.ZERON_100.getPlateDouble(8),
-                MaterialsAlloy.ZERON_100.getScrew(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plateDouble, 8),
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.screw, 16),
+                Circuits.IV.get(8))
             .circuit(18)
             .itemOutputs(GregtechItemList.XL_HeatExchanger.get(1))
-            .fluidInputs(Materials.TungstenSteel.getMolten(8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -96,11 +100,11 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_StableTitanium.get(1),
-                MaterialsAlloy.INCONEL_625.getPlate(4),
-                MaterialsAlloy.INCONEL_625.getScrew(8))
+                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.screw, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_XL_HeatExchanger.get(1))
-            .fluidInputs(Materials.TungstenSteel.getMolten(2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -111,12 +115,12 @@ public class RecipesMachinesMulti {
             .itemInputs(
                 ItemList.Hull_IV.get(2),
                 ItemList.Machine_IV_Hammer.get(1),
-                MaterialsAlloy.INCOLOY_DS.getPlate(8),
-                MaterialsAlloy.ENERGYCRYSTAL.getBolt(32),
-                MaterialsElements.getInstance().ZIRCONIUM.getFineWire(32),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4L))
+                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.EnergyCrystal, Shapes.bolt, 32),
+                MaterialLibAPI.getStack(Materials.Zirconium, Shapes.wireFine, 32),
+                Circuits.IV.get(4))
             .itemOutputs(ItemList.IndustrialForgeHammer.get(1))
-            .fluidInputs(MaterialsAlloy.INCOLOY_DS.getFluidStack(12 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.IncoloyDS, FluidShapes.fluidMolten, 12 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -124,9 +128,9 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_IndustrialForgeHammer.get(1),
             BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "IBI", "HCH", "IHI", 'I', MaterialsAlloy.INCOLOY_DS.getPlate(1), 'B',
-                MaterialsAlloy.BABBIT_ALLOY.getPlate(1), 'C', ItemList.Casing_HeatProof.get(1), 'H',
-                MaterialsAlloy.HASTELLOY_X.getRod(1) });
+            new Object[] { "IBI", "HCH", "IHI", 'I', MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 1), 'B',
+                MaterialLibAPI.getStack(Materials.BabbitAlloy, Shapes.plate, 1), 'C', ItemList.Casing_HeatProof.get(1),
+                'H', MaterialLibAPI.getStack(Materials.HastelloyX, Shapes.stick, 1) });
     }
 
     private static void multiReplicator() {
@@ -140,18 +144,18 @@ public class RecipesMachinesMulti {
                 ItemList.Electric_Motor_ZPM.get(16),
                 ItemList.Electric_Piston_ZPM.get(4),
                 GregtechItemList.Energy_Core_LuV.get(2),
-                MaterialsAlloy.PIKYONIUM.getPlate(16),
-                MaterialsAlloy.PIKYONIUM.getScrew(32),
-                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getBolt(32),
-                MaterialsAlloy.ZERON_100.getRod(10),
+                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 16),
+                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.screw, 32),
+                MaterialLibAPI.getStack(Materials.TriniumNaquadahCarbonite, Shapes.bolt, 32),
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.stick, 10),
                 new Object[] { "circuitUltimate", 20 },
                 ItemList.Tool_DataOrb.get(32),
                 GregtechItemList.Laser_Lens_Special.get(1))
             .fluidInputs(
-                MaterialsAlloy.PIKYONIUM.getFluidStack(32 * INGOTS),
-                MaterialsAlloy.LAFIUM.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(128 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Pikyonium64B, FluidShapes.fluidMolten, 32 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.LafiumCompound, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.TriniumNaquadahCarbonite, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.BabbitAlloy, FluidShapes.fluidMolten, 128 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_ElementalDuplicator.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(60 * SECONDS)
@@ -165,17 +169,17 @@ public class RecipesMachinesMulti {
                 GregtechItemList.GTPP_Casing_ZPM.get(2),
                 ItemList.Field_Generator_EV.get(4),
                 GregtechItemList.Energy_Core_EV.get(2),
-                MaterialsAlloy.PIKYONIUM.getPlate(8),
-                MaterialsAlloy.ZERON_100.getScrew(16),
-                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getBolt(16),
-                MaterialsAlloy.INCONEL_625.getRod(16),
+                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.screw, 16),
+                MaterialLibAPI.getStack(Materials.TriniumNaquadahCarbonite, Shapes.bolt, 16),
+                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.stick, 16),
                 new Object[] { "circuitMaster", 32 },
                 ItemList.Tool_DataOrb.get(32))
             .fluidInputs(
-                MaterialsAlloy.ZERON_100.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.ARCANITE.getFluidStack(8 * INGOTS),
-                MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(8 * INGOTS),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(64 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Zeron100, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Arcanite, FluidShapes.fluidMolten, 8 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.EnergyCrystal, FluidShapes.fluidMolten, 8 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.BabbitAlloy, FluidShapes.fluidMolten, 64 * INGOTS))
             .itemOutputs(GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(60 * SECONDS)
@@ -189,17 +193,17 @@ public class RecipesMachinesMulti {
                 ItemList.Hull_LuV.get(5),
                 ItemList.Field_Generator_HV.get(16),
                 GregtechItemList.Energy_Core_MV.get(2),
-                MaterialsAlloy.PIKYONIUM.getPlate(4),
-                MaterialsAlloy.PIKYONIUM.getScrew(4),
-                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getBolt(8),
-                MaterialsAlloy.INCONEL_625.getRod(4),
+                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.screw, 4),
+                MaterialLibAPI.getStack(Materials.TriniumNaquadahCarbonite, Shapes.bolt, 8),
+                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.stick, 4),
                 new Object[] { "circuitElite", 4 },
                 ItemList.Tool_DataStick.get(4))
             .fluidInputs(
-                MaterialsAlloy.INCONEL_625.getFluidStack(16 * INGOTS),
-                MaterialsAlloy.INCONEL_792.getFluidStack(8 * INGOTS),
-                MaterialsAlloy.HASTELLOY_N.getFluidStack(8 * INGOTS),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Inconel625, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Inconel792, FluidShapes.fluidMolten, 8 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.HastelloyN, FluidShapes.fluidMolten, 8 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.BabbitAlloy, FluidShapes.fluidMolten, 16 * INGOTS))
             .itemOutputs(GregtechItemList.Casing_ElementalDuplicator.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(30 * SECONDS)
@@ -211,12 +215,12 @@ public class RecipesMachinesMulti {
             .itemInputs(
                 ItemList.Hull_EV.get(1),
                 ItemList.Machine_IV_AlloySmelter.get(1),
-                MaterialsAlloy.TANTALUM_CARBIDE.getGear(16),
-                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Titanium, 64),
-                MaterialsAlloy.INCOLOY_DS.getPlate(16))
+                MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.gearGt, 16),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.bolt, 64),
+                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 16))
             .circuit(6)
             .itemOutputs(GregtechItemList.Industrial_AlloySmelter.get(1))
-            .fluidInputs(MaterialsAlloy.INCONEL_792.getFluidStack(8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Inconel792, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -227,13 +231,13 @@ public class RecipesMachinesMulti {
             .itemInputs(
                 ItemList.Distillation_Tower.get(2),
                 GregtechItemList.GTPP_Casing_IV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8))
+                Circuits.LuV.get(8))
             .itemOutputs(GregtechItemList.Machine_Adv_DistillationTower.get(1))
             .fluidInputs(
-                MaterialsAlloy.AQUATIC_STEEL.getFluidStack(32 * INGOTS),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(16 * INGOTS),
-                Materials.Bronze.getMolten(64 * INGOTS),
-                Materials.Kanthal.getMolten(16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.WatertightSteel, FluidShapes.fluidMolten, 32 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.BabbitAlloy, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Bronze, FluidShapes.fluidMolten, 64 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Kanthal, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -246,54 +250,56 @@ public class RecipesMachinesMulti {
             GregtechItemList.Controller_SteamMaceratorMulti.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CDC", "PFP", "CDC", 'C', ItemList.Casing_BronzePlatedBricks, 'D', "gemDiamond", 'P',
-                OreDictNames.craftingPiston, 'F', MaterialsAlloy.TUMBAGA.getFrameBox(1) });
+                OreDictNames.craftingPiston, 'F',
+                MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1) });
 
         // Steam Purifier
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_SteamWasherMulti.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CPC", "RFR", "CPC", 'C', ItemList.Casing_BronzePlatedBricks, 'P',
-                OrePrefixes.plate.get(Materials.CastIron), 'R', OrePrefixes.rotor.get(Materials.Tin), 'F',
-                MaterialsAlloy.TUMBAGA.getFrameBox(1), });
+                OrePrefixes.plate.ingredient(Materials.CastIron), 'R', OrePrefixes.rotor.ingredient(Materials.Tin), 'F',
+                MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1), });
 
         // Steam Blender
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_SteamMixerMulti.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CRC", "OFO", "CRC", 'C', ItemList.Casing_BronzePlatedBricks, 'R',
-                MaterialsAlloy.TUMBAGA.getRing(1), 'O', MaterialsAlloy.TUMBAGA.getRotor(1), 'F',
-                MaterialsAlloy.TUMBAGA.getFrameBox(1) });
+                MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.ring, 1), 'O',
+                MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.rotor, 1), 'F',
+                MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1) });
 
         // Water Pump
         GTModHandler.addCraftingRecipe(
             GregtechItemList.WaterPump.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "FFF", "FGF", "CCC", 'F', OrePrefixes.frameGt.get(Materials.Bronze), 'G',
-                OrePrefixes.gearGt.get(Materials.Bronze), 'C', ItemList.WoodenCasing });
+            new Object[] { "FFF", "FGF", "CCC", 'F', OrePrefixes.frameGt.ingredient(Materials.Bronze), 'G',
+                OrePrefixes.gearGt.ingredient(Materials.Bronze), 'C', ItemList.WoodenCasing });
 
         // Steam Separator
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_SteamCentrifugeMulti.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CPC", "GFG", "CPC", 'C', ItemList.Casing_BronzePlatedBricks, 'P',
-                OrePrefixes.plate.get(Materials.CastIron), 'G', OrePrefixes.gearGt.get(Materials.Bronze), 'F',
-                MaterialsAlloy.TUMBAGA.getFrameBox(1) });
+                OrePrefixes.plate.ingredient(Materials.CastIron), 'G', OrePrefixes.gearGt.ingredient(Materials.Bronze),
+                'F', MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1) });
 
         // Steam Presser
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_SteamForgeHammerMulti.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CPC", "PAP", "CFC", 'C', ItemList.Casing_BronzePlatedBricks, 'P',
-                OrePrefixes.plate.get(Materials.CastIron), 'A', OreDictNames.craftingAnvil, 'F',
-                MaterialsAlloy.TUMBAGA.getFrameBox(1) });
+                OrePrefixes.plate.ingredient(Materials.CastIron), 'A', OreDictNames.craftingAnvil, 'F',
+                MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1) });
 
         // Steam Squasher
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_SteamCompressorMulti.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CPC", "GFG", "CPC", 'C', ItemList.Casing_BronzePlatedBricks, 'P',
-                OreDictNames.craftingPiston, 'G', MaterialsAlloy.TUMBAGA.getGear(1), 'F',
-                MaterialsAlloy.TUMBAGA.getFrameBox(1) });
+                OreDictNames.craftingPiston, 'G', MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 1), 'F',
+                MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1) });
 
         if (EtFuturumRequiem.isModLoaded()) {
             // Steam Fuser
@@ -301,42 +307,45 @@ public class RecipesMachinesMulti {
                 GregtechItemList.Controller_SteamAlloySmelterMulti.get(1),
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "BTB", "FUF", "BLB", 'B', ItemList.Casing_BronzePlatedBricks.get(1L), 'T',
-                    GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bronze, 1L), 'F',
-                    getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0), 'U', MaterialsAlloy.TUMBAGA.getFrameBox(1),
-                    'L', GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Bronze, 1L) });
+                    MaterialLibAPI.getStack(Materials.Bronze, TEBlockShapes.pipeTiny, 1), 'F',
+                    getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0), 'U',
+                    MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1), 'L',
+                    MaterialLibAPI.getStack(Materials.Bronze, TEBlockShapes.pipeLarge, 1) });
 
             // Steam Hearth
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamFurnaceMulti.get(1),
                 GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                new Object[] { "RGR", "YBZ", "WFW", 'R', OrePrefixes.plateDouble.get(Materials.Bronze), 'G',
-                    MaterialsAlloy.TUMBAGA.getGear(1), 'Y', getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0), 'B',
-                    ItemList.Machine_HP_Furnace, 'Z', getModItem(EtFuturumRequiem.ID, "smoker", 1, 0), 'W',
-                    OrePrefixes.plateDouble.get(Materials.CastIron), 'F', MaterialsAlloy.TUMBAGA.getFrameBox(1) });
+                new Object[] { "RGR", "YBZ", "WFW", 'R', OrePrefixes.plateDouble.ingredient(Materials.Bronze), 'G',
+                    MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 1), 'Y',
+                    getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0), 'B', ItemList.Machine_HP_Furnace, 'Z',
+                    getModItem(EtFuturumRequiem.ID, "smoker", 1, 0), 'W',
+                    OrePrefixes.plateDouble.ingredient(Materials.CastIron), 'F',
+                    MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1) });
         }
 
         // Steam Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Steam.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PBP", "PTP", "PBP", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B',
-                OrePrefixes.pipeMedium.get(Materials.Bronze), 'T', GregtechItemList.GTFluidTank_ULV.get(1) });
+            new Object[] { "PBP", "PTP", "PBP", 'P', OrePrefixes.plate.ingredient(Materials.Bronze), 'B',
+                OrePrefixes.pipeMedium.ingredient(Materials.Bronze), 'T', GregtechItemList.GTFluidTank_ULV.get(1) });
 
         // Steam Input Bus
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Bus_Steam.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "BTB", "SHS", "BTB", 'B', OrePrefixes.plate.get(Materials.Bronze), 'T',
-                MaterialsAlloy.TUMBAGA.getPlate(1), 'S', OrePrefixes.plate.get(Materials.Tin), 'H',
-                new ItemStack(Blocks.hopper) });
+            new Object[] { "BTB", "SHS", "BTB", 'B', OrePrefixes.plate.ingredient(Materials.Bronze), 'T',
+                MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.plate, 1), 'S',
+                OrePrefixes.plate.ingredient(Materials.Tin), 'H', new ItemStack(Blocks.hopper) });
 
         // Steam Output Bus
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Output_Bus_Steam.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "BSB", "THT", "BSB", 'B', OrePrefixes.plate.get(Materials.Bronze), 'T',
-                MaterialsAlloy.TUMBAGA.getPlate(1), 'S', OrePrefixes.plate.get(Materials.Tin), 'H',
-                new ItemStack(Blocks.hopper) });
+            new Object[] { "BSB", "THT", "BSB", 'B', OrePrefixes.plate.ingredient(Materials.Bronze), 'T',
+                MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.plate, 1), 'S',
+                OrePrefixes.plate.ingredient(Materials.Tin), 'H', new ItemStack(Blocks.hopper) });
     }
 
     public static void multiCentrifuge() {
@@ -345,14 +354,16 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Centrifuge1.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "ABA", "CBC", "ABA", 'A', MaterialsAlloy.MARAGING250.getPlate(1), 'B',
-                MaterialsAlloy.TUMBAGA.getRod(1), 'C', MaterialsAlloy.INCONEL_792.getPlate(1) });
+            new Object[] { "ABA", "CBC", "ABA", 'A',
+                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'B',
+                MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.stick, 1), 'C',
+                MaterialLibAPI.getStack(Materials.Inconel792, Shapes.plate, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.MARAGING250.getPlate(4),
-                MaterialsAlloy.INCONEL_792.getPlate(2),
-                MaterialsAlloy.TUMBAGA.getRod(3))
+                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Inconel792, Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.stick, 3))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Centrifuge1.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -365,21 +376,22 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialCokeOven.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "HOH", "PCP", 'P', MaterialsAlloy.TANTALLOY_61.getPlate(1), 'C', "circuitData", 'H',
-                ItemList.Casing_EV, 'O', ItemList.CokeOvenController });
+            new Object[] { "PCP", "HOH", "PCP", 'P', MaterialLibAPI.getStack(Materials.Tantalloy61, Shapes.plate, 1),
+                'C', "circuitData", 'H', ItemList.Casing_EV, 'O', ItemList.CokeOvenController });
 
         // Structural Coke Oven Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_CokeOven.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PRP", "RFR", "PRP", 'P', MaterialsAlloy.TANTALLOY_61.getPlate(1), 'R',
-                MaterialsAlloy.TANTALLOY_61.getRod(1), 'F', MaterialsAlloy.TANTALLOY_61.getFrameBox(1) });
+            new Object[] { "PRP", "RFR", "PRP", 'P', MaterialLibAPI.getStack(Materials.Tantalloy61, Shapes.plate, 1),
+                'R', MaterialLibAPI.getStack(Materials.Tantalloy61, Shapes.stick, 1), 'F',
+                MaterialLibAPI.getStack(Materials.Tantalloy61, TEBlockShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.TANTALLOY_61.getPlate(4),
-                MaterialsAlloy.TANTALLOY_61.getRod(4),
-                MaterialsAlloy.TANTALLOY_61.getFrameBox(1))
+                MaterialLibAPI.getStack(Materials.Tantalloy61, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Tantalloy61, Shapes.stick, 4),
+                MaterialLibAPI.getStack(Materials.Tantalloy61, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_CokeOven.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -390,15 +402,15 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_CokeOven_Coil1.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PPP", "FCF", "PPP", 'P', OrePrefixes.plate.get(Materials.Bronze), 'F',
-                OrePrefixes.frameGt.get(Materials.TPV), 'C', ItemList.Casing_Gearbox_Bronze });
+            new Object[] { "PPP", "FCF", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Bronze), 'F',
+                OrePrefixes.frameGt.ingredient(Materials.TPV), 'C', ItemList.Casing_Gearbox_Bronze });
 
         // Heat Proof Coke Oven Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_CokeOven_Coil2.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PPP", "FCF", "PPP", 'P', OrePrefixes.plate.get(Materials.Steel), 'F',
-                OrePrefixes.frameGt.get(Materials.HSSS), 'C', ItemList.Casing_Gearbox_Steel });
+            new Object[] { "PPP", "FCF", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Steel), 'F',
+                OrePrefixes.frameGt.ingredient(Materials.HSSS), 'C', ItemList.Casing_Gearbox_Steel });
     }
 
     private static void multiElectrolyzer() {
@@ -406,16 +418,17 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Electrolyzer.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "RFR", "PRP", 'P', MaterialsAlloy.POTIN.getPlate(1), 'C',
-                OrePrefixes.stickLong.get(Materials.Chrome), 'R', MaterialsAlloy.POTIN.getLongRod(1), 'F',
-                MaterialsAlloy.POTIN.getFrameBox(1) });
+            new Object[] { "PCP", "RFR", "PRP", 'P', MaterialLibAPI.getStack(Materials.Potin, Shapes.plate, 1), 'C',
+                OrePrefixes.stickLong.ingredient(Materials.Chrome), 'R',
+                MaterialLibAPI.getStack(Materials.Potin, Shapes.stickLong, 1), 'F',
+                MaterialLibAPI.getStack(Materials.Potin, TEBlockShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.POTIN.getPlate(4),
-                MaterialsAlloy.POTIN.getLongRod(3),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Chrome, 1),
-                MaterialsAlloy.POTIN.getFrameBox(1))
+                MaterialLibAPI.getStack(Materials.Potin, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Potin, Shapes.stickLong, 3),
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.stickLong, 1),
+                MaterialLibAPI.getStack(Materials.Potin, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Electrolyzer.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -428,16 +441,17 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_MaterialPress.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PBP", "TFT", "PBP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'B',
-                MaterialsAlloy.TUMBAGA.getLongRod(1), 'T', MaterialsAlloy.TANTALLOY_60.getRod(1), 'F',
-                MaterialsAlloy.TUMBAGA.getFrameBox(1) });
+            new Object[] { "PBP", "TFT", "PBP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'B',
+                MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.stickLong, 1), 'T',
+                MaterialLibAPI.getStack(Materials.Tantalloy60, Shapes.stick, 1), 'F',
+                MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4),
-                MaterialsAlloy.TANTALLOY_60.getRod(2),
-                MaterialsAlloy.TUMBAGA.getLongRod(2),
-                MaterialsAlloy.TUMBAGA.getFrameBox(1))
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Tantalloy60, Shapes.stick, 2),
+                MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.stickLong, 2),
+                MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_MaterialPress.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -448,17 +462,19 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialBendingMachine.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PGP", "MFM", "PRP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
-                OrePrefixes.gearGt.get(Materials.Titanium), 'R', MaterialsAlloy.TANTALLOY_60.getGear(1), 'M',
-                OrePrefixes.stick.get(Materials.Titanium), 'F', ItemList.Machine_EV_Bender });
+            new Object[] { "PGP", "MFM", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'G',
+                OrePrefixes.gearGt.ingredient(Materials.Titanium), 'R',
+                MaterialLibAPI.getStack(Materials.Tantalloy60, Shapes.gearGt, 1), 'M',
+                OrePrefixes.stick.ingredient(Materials.Titanium), 'F', ItemList.Machine_EV_Bender });
 
         // Industrial Forming Press
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialFormingPress.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PGP", "MFM", "PRP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
-                OrePrefixes.gearGt.get(Materials.Titanium), 'R', MaterialsAlloy.TANTALLOY_60.getGear(1), 'M',
-                OrePrefixes.stick.get(Materials.Titanium), 'F', ItemList.Machine_EV_Press });
+            new Object[] { "PGP", "MFM", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'G',
+                OrePrefixes.gearGt.ingredient(Materials.Titanium), 'R',
+                MaterialLibAPI.getStack(Materials.Tantalloy60, Shapes.gearGt, 1), 'M',
+                OrePrefixes.stick.ingredient(Materials.Titanium), 'F', ItemList.Machine_EV_Press });
     }
 
     private static void multiMacerator() {
@@ -466,16 +482,17 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_MacerationStack.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PPP", "RFR", "PXP", 'P', OrePrefixes.plate.get(Materials.Palladium), 'R',
-                OrePrefixes.stick.get(Materials.Platinum), 'F', MaterialsAlloy.INCONEL_625.getFrameBox(1), 'X',
-                OrePrefixes.stickLong.get(Materials.Palladium) });
+            new Object[] { "PPP", "RFR", "PXP", 'P', OrePrefixes.plate.ingredient(Materials.Palladium), 'R',
+                OrePrefixes.stick.ingredient(Materials.Platinum), 'F',
+                MaterialLibAPI.getStack(Materials.Inconel625, TEBlockShapes.frameGt, 1), 'X',
+                OrePrefixes.stickLong.ingredient(Materials.Palladium) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 5),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Platinum, 2),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Palladium, 1),
-                MaterialsAlloy.INCONEL_625.getFrameBox(1))
+                MaterialLibAPI.getStack(Materials.Palladium, Shapes.plate, 5),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.stick, 2),
+                MaterialLibAPI.getStack(Materials.Palladium, Shapes.stickLong, 1),
+                MaterialLibAPI.getStack(Materials.Inconel625, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_MacerationStack.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -486,14 +503,14 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.MacerationStack.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PMP", "MCM", "PMP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'M',
+            new Object[] { "PMP", "MCM", "PMP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'M',
                 ItemList.Machine_EV_Macerator, 'C', "circuitData" });
 
         // Maceration Upgrade Chip
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Maceration_Upgrade_Chip.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PMP", "MCM", "PMP", 'P', OrePrefixes.plate.get(Materials.TungstenCarbide), 'M',
+            new Object[] { "PMP", "MCM", "PMP", 'P', OrePrefixes.plate.ingredient(Materials.TungstenCarbide), 'M',
                 ItemList.Machine_IV_Macerator, 'C', "circuitUltimate" });
 
         // Maceration Stack T2 Shapeless Craft
@@ -523,14 +540,15 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_WireFactory.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PRP", "RFR", "PRP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'R',
-                OrePrefixes.stick.get(Materials.BlueSteel), 'F', OrePrefixes.frameGt.get(Materials.BlueSteel), });
+            new Object[] { "PRP", "RFR", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.BlueSteel), 'R',
+                OrePrefixes.stick.ingredient(Materials.BlueSteel), 'F',
+                OrePrefixes.frameGt.ingredient(Materials.BlueSteel), });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlueSteel, 4),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.BlueSteel, 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueSteel, 1))
+                MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.stick, 4),
+                MaterialLibAPI.getStack(Materials.BlueSteel, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_WireFactory.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -544,22 +562,23 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Industrial_MassFab.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "WHW", "PCP", 'P', MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(1), 'C',
-                "circuitSuperconductor", 'W', OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 'H',
-                ItemList.Casing_UV });
+            new Object[] { "PCP", "WHW", "PCP", 'P',
+                MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 1), 'C', "circuitSuperconductor", 'W',
+                OrePrefixes.cableGt04.ingredient(Materials.NaquadahAlloy), 'H', ItemList.Casing_UV });
 
         // Matter Fabricator Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_MatterFab.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PRP", "RFR", "PRP", 'P', MaterialsAlloy.NIOBIUM_CARBIDE.getPlate(1), 'R',
-                MaterialsAlloy.INCONEL_792.getRod(1), 'F', MaterialsAlloy.INCONEL_690.getFrameBox(1) });
+            new Object[] { "PRP", "RFR", "PRP", 'P', MaterialLibAPI.getStack(Materials.NiobiumCarbide, Shapes.plate, 1),
+                'R', MaterialLibAPI.getStack(Materials.Inconel792, Shapes.stick, 1), 'F',
+                MaterialLibAPI.getStack(Materials.Inconel690, TEBlockShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.NIOBIUM_CARBIDE.getPlate(4),
-                MaterialsAlloy.INCONEL_792.getRod(4),
-                MaterialsAlloy.INCONEL_690.getFrameBox(1))
+                MaterialLibAPI.getStack(Materials.NiobiumCarbide, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Inconel792, Shapes.stick, 4),
+                MaterialLibAPI.getStack(Materials.Inconel690, TEBlockShapes.frameGt, 1))
             .itemOutputs(GregtechItemList.Casing_MatterFab.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -569,16 +588,16 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_MatterGen.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PRP", "FHF", "PRP", 'P', MaterialsAlloy.ZERON_100.getPlate(1), 'R',
-                MaterialsAlloy.PIKYONIUM.getPlate(1), 'F', MaterialsAlloy.STELLITE.getFrameBox(1), 'H',
-                ItemList.Casing_UV });
+            new Object[] { "PRP", "FHF", "PRP", 'P', MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 1), 'R',
+                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 1), 'F',
+                MaterialLibAPI.getStack(Materials.Stellite, TEBlockShapes.frameGt, 1), 'H', ItemList.Casing_UV });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_UV.get(1),
-                MaterialsAlloy.ZERON_100.getPlate(4),
-                MaterialsAlloy.PIKYONIUM.getPlate(2),
-                MaterialsAlloy.STELLITE.getFrameBox(2))
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Stellite, TEBlockShapes.frameGt, 2))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_MatterGen.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -604,22 +623,22 @@ public class RecipesMachinesMulti {
                 ItemList.Field_Generator_IV.get(32),
                 ItemList.Electric_Motor_EV.get(64),
                 ItemList.Energy_LapotronicOrb.get(32),
-                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.YttriumBariumCuprate, 32),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Platinum, 64),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadria, 64),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gadolinium, 32),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Samarium, 16),
-                MaterialsAlloy.ARCANITE.getGear(8),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.cableGt12, 32),
+                MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.wireGt16, 64),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.plate, 64),
+                MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.dust, 32),
+                MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 16),
+                MaterialLibAPI.getStack(Materials.Arcanite, Shapes.gearGt, 8),
                 new Object[] { "circuitElite", 64 },
                 new Object[] { "circuitMaster", 32 },
                 new Object[] { "circuitUltimate", 16 },
                 GregtechItemList.Laser_Lens_Special.get(1),
                 GregtechItemList.DehydratorCoilWireZPM.get(64))
             .fluidInputs(
-                MaterialsAlloy.NITINOL_60.getFluidStack(36 * INGOTS),
-                MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(1 * STACKS + 8 * INGOTS),
-                MaterialsAlloy.TUMBAGA.getFluidStack(4 * STACKS + 32 * INGOTS),
-                Materials.Nichrome.getMolten(16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Nitinol60, FluidShapes.fluidMolten, 36 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.EnergyCrystal, FluidShapes.fluidMolten, 1 * STACKS + 8 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Tumbaga, FluidShapes.fluidMolten, 4 * STACKS + 32 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Nichrome, FluidShapes.fluidMolten, 16 * INGOTS))
             .itemOutputs(new ItemStack(ModBlocks.blockCasings3Misc, 32, 15))
             .eut(TierEU.RECIPE_LuV)
             .duration(20 * MINUTES)
@@ -631,18 +650,21 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.LargeSifter.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.EGLIN_STEEL.getPlate(1), 'C', "circuitAdvanced",
-                'W', OrePrefixes.cableGt04.get(Materials.Gold), 'M', ItemList.Machine_HV_Sifter });
+            new Object[] { "PCP", "WMW", "PCP", 'P', MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 1),
+                'C', "circuitAdvanced", 'W', OrePrefixes.cableGt04.ingredient(Materials.Gold), 'M',
+                ItemList.Machine_HV_Sifter });
 
         // Industrial Sieve Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Sifter.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PPP", "PFP", "PPP", 'P', MaterialsAlloy.EGLIN_STEEL.getPlate(1), 'F',
-                MaterialsAlloy.TUMBAGA.getFrameBox(1) });
+            new Object[] { "PPP", "PFP", "PPP", 'P', MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 1),
+                'F', MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsAlloy.EGLIN_STEEL.getPlate(8), MaterialsAlloy.TUMBAGA.getFrameBox(1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Sifter.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -653,13 +675,14 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_SifterGrate.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "FWF", "WWW", "FWF", 'F', MaterialsAlloy.EGLIN_STEEL.getFrameBox(1), 'W',
-                OrePrefixes.wireFine.get(Materials.Steel) });
+            new Object[] { "FWF", "WWW", "FWF", 'F',
+                MaterialLibAPI.getStack(Materials.EglinSteel, TEBlockShapes.frameGt, 1), 'W',
+                OrePrefixes.wireFine.ingredient(Materials.Steel) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 5),
-                MaterialsAlloy.EGLIN_STEEL.getFrameBox(4))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.wireFine, 5),
+                MaterialLibAPI.getStack(Materials.EglinSteel, TEBlockShapes.frameGt, 4))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_SifterGrate.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -672,13 +695,13 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_ThermalCentrifuge.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.plate.get(Materials.RedSteel), 'F',
-                OrePrefixes.frameGt.get(Materials.BlackSteel) });
+            new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.plate.ingredient(Materials.RedSteel), 'F',
+                OrePrefixes.frameGt.ingredient(Materials.BlackSteel) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.RedSteel, 6),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1))
+                MaterialLibAPI.getStack(Materials.RedSteel, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.BlackSteel, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_ThermalCentrifuge.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -689,9 +712,10 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.LargeThermalRefinery.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "RMR", "PGP", 'P', OrePrefixes.plate.get(Materials.RedSteel), 'C', "circuitData", 'R',
-                MaterialsAlloy.TALONITE.getRod(1), 'M', ItemList.Machine_EV_ThermalCentrifuge, 'G',
-                MaterialsAlloy.TALONITE.getGear(1) });
+            new Object[] { "PCP", "RMR", "PGP", 'P', OrePrefixes.plate.ingredient(Materials.RedSteel), 'C',
+                "circuitData", 'R', MaterialLibAPI.getStack(Materials.Talonite, Shapes.stick, 1), 'M',
+                ItemList.Machine_EV_ThermalCentrifuge, 'G',
+                MaterialLibAPI.getStack(Materials.Talonite, Shapes.gearGt, 1) });
     }
 
     private static void multiWasher() {
@@ -699,14 +723,15 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_WashPlant.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PhP", "TFT", "PwP", 'P', MaterialsAlloy.LEAGRISIUM.getPlate(1), 'T',
-                MaterialsAlloy.TALONITE.getPlate(1), 'F', MaterialsAlloy.LEAGRISIUM.getFrameBox(1) });
+            new Object[] { "PhP", "TFT", "PwP", 'P', MaterialLibAPI.getStack(Materials.Grisium, Shapes.plate, 1), 'T',
+                MaterialLibAPI.getStack(Materials.Talonite, Shapes.plate, 1), 'F',
+                MaterialLibAPI.getStack(Materials.Grisium, TEBlockShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.LEAGRISIUM.getPlate(4),
-                MaterialsAlloy.TALONITE.getPlate(2),
-                MaterialsAlloy.LEAGRISIUM.getFrameBox(1))
+                MaterialLibAPI.getStack(Materials.Grisium, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Talonite, Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Grisium, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_WashPlant.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -717,15 +742,17 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.OreWashingPlant.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PPP", "TCT", "PAP", 'P', MaterialsAlloy.LEAGRISIUM.getPlate(1), 'A',
-                ItemList.Machine_EV_OreWasher, 'T', MaterialsAlloy.TALONITE.getPlate(1), 'C', "circuitData" });
+            new Object[] { "PPP", "TCT", "PAP", 'P', MaterialLibAPI.getStack(Materials.Grisium, Shapes.plate, 1), 'A',
+                ItemList.Machine_EV_OreWasher, 'T', MaterialLibAPI.getStack(Materials.Talonite, Shapes.plate, 1), 'C',
+                "circuitData" });
 
         // Industrial Chemical Plant
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialChemicalBath.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PPP", "TCT", "PBP", 'P', MaterialsAlloy.LEAGRISIUM.getPlate(1), 'T',
-                MaterialsAlloy.TALONITE.getPlate(1), 'C', "circuitData", 'B', ItemList.Machine_EV_ChemicalBath });
+            new Object[] { "PPP", "TCT", "PBP", 'P', MaterialLibAPI.getStack(Materials.Grisium, Shapes.plate, 1), 'T',
+                MaterialLibAPI.getStack(Materials.Talonite, Shapes.plate, 1), 'C', "circuitData", 'B',
+                ItemList.Machine_EV_ChemicalBath });
     }
 
     private static void multiCutter() {
@@ -733,14 +760,16 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_CuttingFactoryFrame.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.getPlate(1), 'S',
-                MaterialsAlloy.STELLITE.getPlate(1), 'F', MaterialsAlloy.TANTALUM_CARBIDE.getFrameBox(1) });
+            new Object[] { "PhP", "SFS", "PwP", 'P',
+                MaterialLibAPI.getStack(Materials.TungstenTitaniumCarbide, Shapes.plate, 1), 'S',
+                MaterialLibAPI.getStack(Materials.Stellite, Shapes.plate, 1), 'F',
+                MaterialLibAPI.getStack(Materials.TantalumCarbide, TEBlockShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.getPlate(4),
-                MaterialsAlloy.STELLITE.getPlate(2),
-                MaterialsAlloy.TANTALUM_CARBIDE.getFrameBox(1))
+                MaterialLibAPI.getStack(Materials.TungstenTitaniumCarbide, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Stellite, Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.TantalumCarbide, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_CuttingFactoryFrame.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -751,8 +780,9 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialCuttingMachine.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.getPlate(1), 'C',
-                "circuitData", 'W', OrePrefixes.wireFine.get(Materials.Platinum), 'M', ItemList.Machine_IV_Cutter });
+            new Object[] { "PCP", "WMW", "PCP", 'P',
+                MaterialLibAPI.getStack(Materials.TungstenTitaniumCarbide, Shapes.plate, 1), 'C', "circuitData", 'W',
+                OrePrefixes.wireFine.ingredient(Materials.Platinum), 'M', ItemList.Machine_IV_Cutter });
     }
 
     private static void multiExtruder() {
@@ -760,14 +790,15 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Extruder.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PhP", "TFT", "PwP", 'P', MaterialsAlloy.INCONEL_690.getPlate(1), 'T',
-                MaterialsAlloy.TALONITE.getPlate(1), 'F', MaterialsAlloy.STABALLOY.getFrameBox(1) });
+            new Object[] { "PhP", "TFT", "PwP", 'P', MaterialLibAPI.getStack(Materials.Inconel690, Shapes.plate, 1),
+                'T', MaterialLibAPI.getStack(Materials.Talonite, Shapes.plate, 1), 'F',
+                MaterialLibAPI.getStack(Materials.Staballoy, TEBlockShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.INCONEL_690.getPlate(4),
-                MaterialsAlloy.TALONITE.getPlate(2),
-                MaterialsAlloy.STABALLOY.getFrameBox(1))
+                MaterialLibAPI.getStack(Materials.Inconel690, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Talonite, Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Staballoy, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Extruder.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -778,8 +809,8 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialExtruder.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "IMI", "PCP", 'P', MaterialsAlloy.INCONEL_690.getPlate(1), 'C', "circuitElite", 'I',
-                ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Extruder });
+            new Object[] { "PCP", "IMI", "PCP", 'P', MaterialLibAPI.getStack(Materials.Inconel690, Shapes.plate, 1),
+                'C', "circuitElite", 'I', ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Extruder });
     }
 
     private static void cryoFreezer() {
@@ -787,26 +818,30 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_AdvancedVacuum.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PGP", "AFB", "PGP", 'P', MaterialsAlloy.LEAGRISIUM.getPlateDouble(1), 'G',
-                MaterialsAlloy.INCOLOY_MA956.getGear(1), 'A', ItemList.Reactor_Coolant_He_6, 'F',
-                MaterialsAlloy.NITINOL_60.getFrameBox(1), 'B', ItemList.Reactor_Coolant_NaK_6.get(1) });
+            new Object[] { "PGP", "AFB", "PGP", 'P', MaterialLibAPI.getStack(Materials.Grisium, Shapes.plateDouble, 1),
+                'G', MaterialLibAPI.getStack(Materials.IncoloyMA956, Shapes.gearGt, 1), 'A',
+                ItemList.Reactor_Coolant_He_6, 'F',
+                MaterialLibAPI.getStack(Materials.Nitinol60, TEBlockShapes.frameGt, 1), 'B',
+                ItemList.Reactor_Coolant_NaK_6.get(1) });
 
         // Cryogenic Freezer
         GTModHandler.addCraftingRecipe(
             ItemList.CryogenicFreezer.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "GCG", "PXP", "DOD", 'G', MaterialsAlloy.INCOLOY_MA956.getGear(1), 'C', "circuitMaster", 'P',
-                ItemList.Electric_Piston_IV, 'X', GregtechItemList.Casing_AdvancedVacuum, 'D',
-                MaterialsAlloy.LEAGRISIUM.getPlateDouble(1), 'O', GregtechItemList.Gregtech_Computer_Cube });
+            new Object[] { "GCG", "PXP", "DOD", 'G', MaterialLibAPI.getStack(Materials.IncoloyMA956, Shapes.gearGt, 1),
+                'C', "circuitMaster", 'P', ItemList.Electric_Piston_IV, 'X', GregtechItemList.Casing_AdvancedVacuum,
+                'D', MaterialLibAPI.getStack(Materials.Grisium, Shapes.plateDouble, 1), 'O',
+                GregtechItemList.Gregtech_Computer_Cube });
 
         // Cryotheum Cooling Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Cryotheum.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "MGM", "CBC", "PHP", 'M', MaterialsAlloy.MARAGING250.getPlate(1), 'G',
-                MaterialsAlloy.MARAGING250.getGear(1), 'C', "circuitData", 'B',
-                GregtechItemList.Casing_AdvancedVacuum.get(1), 'P', Materials.Aluminium.getPlates(1), 'H',
-                ItemList.Hatch_Input_IV.get(1) });
+            new Object[] { "MGM", "CBC", "PHP", 'M',
+                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'G',
+                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.gearGt, 1), 'C', "circuitData", 'B',
+                GregtechItemList.Casing_AdvancedVacuum.get(1), 'P',
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1), 'H', ItemList.Hatch_Input_IV.get(1) });
     }
 
     private static void volcanus() {
@@ -814,17 +849,19 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Adv_BlastFurnace.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PAP", "BFC", "PGP", 'P', MaterialsAlloy.HASTELLOY_N.getPlateDouble(1), 'A',
+            new Object[] { "PAP", "BFC", "PGP", 'P',
+                MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plateDouble, 1), 'A',
                 getModItem(Mods.IndustrialCraft2.ID, "reactorHeatSwitchDiamond", 1, 1), 'B',
                 getModItem(Mods.IndustrialCraft2.ID, "reactorVentGold", 1, 1), 'C',
                 getModItem(Mods.IndustrialCraft2.ID, "reactorVentDiamond", 1, 1), 'F',
-                MaterialsAlloy.HASTELLOY_X.getFrameBox(1), 'G', MaterialsAlloy.HASTELLOY_W.getGear(1) });
+                MaterialLibAPI.getStack(Materials.HastelloyX, TEBlockShapes.frameGt, 1), 'G',
+                MaterialLibAPI.getStack(Materials.HastelloyW, Shapes.gearGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.HASTELLOY_X.getFrameBox(1),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(4),
-                MaterialsAlloy.HASTELLOY_W.getGear(1),
+                MaterialLibAPI.getStack(Materials.HastelloyX, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plateDouble, 4),
+                MaterialLibAPI.getStack(Materials.HastelloyW, Shapes.gearGt, 1),
                 getModItem(Mods.IndustrialCraft2.ID, "reactorHeatSwitchDiamond", 1, 1),
                 getModItem(Mods.IndustrialCraft2.ID, "reactorVentGold", 1, 1),
                 getModItem(Mods.IndustrialCraft2.ID, "reactorVentDiamond", 1, 1))
@@ -838,25 +875,27 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Machine_Adv_BlastFurnace.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "GCG", "RXR", "PZP", 'G', MaterialsAlloy.HASTELLOY_W.getGear(1), 'C', "circuitMaster", 'R',
-                ItemList.Robot_Arm_IV, 'X', GregtechItemList.Casing_Adv_BlastFurnace, 'P',
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(1), 'Z', GregtechItemList.Gregtech_Computer_Cube });
+            new Object[] { "GCG", "RXR", "PZP", 'G', MaterialLibAPI.getStack(Materials.HastelloyW, Shapes.gearGt, 1),
+                'C', "circuitMaster", 'R', ItemList.Robot_Arm_IV, 'X', GregtechItemList.Casing_Adv_BlastFurnace, 'P',
+                MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plateDouble, 1), 'Z',
+                GregtechItemList.Gregtech_Computer_Cube });
 
         // Pyrotheum Heating Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Pyrotheum.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "MGM", "CBC", "MHM", 'M', MaterialsAlloy.MARAGING250.getPlate(1), 'G',
-                MaterialsAlloy.MARAGING300.getGear(1), 'C', "circuitElite", 'B',
+            new Object[] { "MGM", "CBC", "MHM", 'M',
+                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'G',
+                MaterialLibAPI.getStack(Materials.MaragingSteel300, Shapes.gearGt, 1), 'C', "circuitElite", 'B',
                 GregtechItemList.Casing_Adv_BlastFurnace.get(1), 'H', ItemList.Hatch_Input_IV.get(1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hatch_Input_IV.get(1),
                 GregtechItemList.Casing_Adv_BlastFurnace.get(1),
-                MaterialsAlloy.MARAGING250.getPlate(4),
-                MaterialsAlloy.MARAGING300.getGear(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 2))
+                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.MaragingSteel300, Shapes.gearGt, 1),
+                Circuits.IV.get(2))
             .circuit(1)
             .itemOutputs(GregtechItemList.Hatch_Input_Pyrotheum.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -869,9 +908,9 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             ItemList.AdvancedImplosionCompressor.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "GCG", "FHR", "IXI", 'G', MaterialsAlloy.LEAGRISIUM.getGear(1), 'C', "circuitMaster", 'F',
-                ItemList.Field_Generator_IV, 'H', ItemList.Casing_RobustTungstenSteel, 'R', ItemList.Robot_Arm_IV, 'I',
-                "plateAlloyIridium", 'X', GregtechItemList.Gregtech_Computer_Cube });
+            new Object[] { "GCG", "FHR", "IXI", 'G', MaterialLibAPI.getStack(Materials.Grisium, Shapes.gearGt, 1), 'C',
+                "circuitMaster", 'F', ItemList.Field_Generator_IV, 'H', ItemList.Casing_RobustTungstenSteel, 'R',
+                ItemList.Robot_Arm_IV, 'I', "plateAlloyIridium", 'X', GregtechItemList.Gregtech_Computer_Cube });
     }
 
     private static void multiPackager() {
@@ -879,14 +918,16 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_AmazonWarehouse.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PMP", "wFh", "PCP", 'P', MaterialsAlloy.HASTELLOY_C276.getPlateDouble(1), 'M',
-                ItemList.Electric_Motor_HV, 'F', MaterialsAlloy.TUNGSTEN_CARBIDE.getFrameBox(1), 'C',
+            new Object[] { "PMP", "wFh", "PCP", 'P',
+                MaterialLibAPI.getStack(Materials.HastelloyC276, Shapes.plateDouble, 1), 'M',
+                ItemList.Electric_Motor_HV, 'F',
+                MaterialLibAPI.getStack(Materials.TungstenCarbide, TEBlockShapes.frameGt, 1), 'C',
                 ItemList.Conveyor_Module_HV, });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.TUNGSTEN_CARBIDE.getFrameBox(1),
-                MaterialsAlloy.HASTELLOY_C276.getPlateDouble(4),
+                MaterialLibAPI.getStack(Materials.TungstenCarbide, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.HastelloyC276, Shapes.plateDouble, 4),
                 ItemList.Electric_Motor_HV.get(1),
                 ItemList.Conveyor_Module_HV.get(1))
             .itemOutputs(GregtechItemList.Casing_AmazonWarehouse.get(1L))
@@ -901,15 +942,15 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Multi_Use.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.STABALLOY.getPlate(1), 'S',
-                OrePrefixes.plate.get(Materials.StainlessSteel), 'F',
-                MaterialsAlloy.ZIRCONIUM_CARBIDE.getFrameBox(1) });
+            new Object[] { "PhP", "SFS", "PwP", 'P', MaterialLibAPI.getStack(Materials.Staballoy, Shapes.plate, 1), 'S',
+                OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'F',
+                MaterialLibAPI.getStack(Materials.ZirconiumCarbide, TEBlockShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsAlloy.STABALLOY.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2),
-                MaterialsAlloy.ZIRCONIUM_CARBIDE.getFrameBox(1))
+                MaterialLibAPI.getStack(Materials.Staballoy, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.ZirconiumCarbide, TEBlockShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Multi_Use.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -924,10 +965,10 @@ public class RecipesMachinesMulti {
                 GregtechItemList.Casing_Multi_Use.get(1),
                 ItemList.Casing_Coil_Nichrome.get(1),
                 ItemList.Electric_Piston_HV.get(2),
-                MaterialsAlloy.ZERON_100.getPlate(4),
-                MaterialsAlloy.ZERON_100.getGear(2))
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.gearGt, 2))
             .itemOutputs(GregtechItemList.Casing_Vacuum_Furnace.get(1))
-            .fluidInputs(MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.EnergyCrystal, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -936,12 +977,12 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Vacuum_Furnace.get(1),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.YttriumBariumCuprate, 4),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, TEBlockShapes.wireGt16, 4),
                 ItemList.Robot_Arm_EV.get(4),
-                MaterialsAlloy.ZERON_100.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8))
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 8),
+                Circuits.LuV.get(8))
             .itemOutputs(GregtechItemList.Controller_Vacuum_Furnace.get(1))
-            .fluidInputs(MaterialsAlloy.ZERON_100.getFluidStack(20 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Zeron100, FluidShapes.fluidMolten, 20 * INGOTS))
             .duration(12 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -952,13 +993,13 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.GT_Chisel_HV.get(1),
-                MaterialsAlloy.INCOLOY_DS.getPlate(8),
+                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 8),
                 ItemList.Electric_Motor_EV.get(8),
                 ItemList.Conveyor_Module_EV.get(8),
                 ItemList.Robot_Arm_EV.get(4))
             .circuit(14)
             .itemOutputs(ItemList.IndustrialPrinter.get(1))
-            .fluidInputs(MaterialsAlloy.INCOLOY_DS.getFluidStack(8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.IncoloyDS, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -967,13 +1008,13 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_SolidSteel.get(2),
-                MaterialsAlloy.INCOLOY_DS.getPlate(2),
-                MaterialsAlloy.TANTALUM_CARBIDE.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Titanium, 8),
-                MaterialsAlloy.EGLIN_STEEL.getRod(4))
+                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.ring, 8),
+                MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.stick, 4))
             .circuit(14)
             .itemOutputs(GregtechItemList.Casing_IndustrialAutoChisel.get(1))
-            .fluidInputs(MaterialsAlloy.EGLIN_STEEL.getFluidStack(2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.EglinSteel, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -984,13 +1025,13 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Machine_EV_RockBreaker.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StainlessSteel, 4),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Aluminium, 8),
-                MaterialsAlloy.EGLIN_STEEL.getScrew(8))
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.ring, 4),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plateDouble, 8),
+                MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.screw, 8))
             .circuit(12)
             .itemOutputs(ItemList.Boldarnator.get(1))
-            .fluidInputs(Materials.Aluminium.getMolten(8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1002,12 +1043,13 @@ public class RecipesMachinesMulti {
             .itemInputs(
                 GregtechItemList.Casing_Multi_Use.get(1),
                 ItemList.Block_IridiumTungstensteel.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 16),
-                MaterialsAlloy.INCONEL_625.getScrew(32),
-                MaterialsAlloy.ENERGYCRYSTAL.getBolt(12),
-                MaterialsAlloy.ZERON_100.getPlate(8))
+                Circuits.MV.get(16),
+                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.screw, 32),
+                MaterialLibAPI.getStack(Materials.EnergyCrystal, Shapes.bolt, 12),
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 8))
             .itemOutputs(GregtechItemList.Casing_Autocrafter.get(1))
-            .fluidInputs(MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFluidStack(4 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.TriniumNaquadahCarbonite, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1017,12 +1059,12 @@ public class RecipesMachinesMulti {
             .itemInputs(
                 GregtechItemList.Casing_Refinery_Structural.get(4),
                 GregtechItemList.LFTRControlCircuit.get(1),
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Platinum, 16),
+                MaterialLibAPI.getStack(Materials.Platinum, TEBlockShapes.cableGt08, 16),
                 ItemList.Sensor_IV.get(4),
                 ItemList.Emitter_IV.get(4),
                 GregtechItemList.Gregtech_Computer_Cube.get(1))
             .itemOutputs(GregtechItemList.GT4_Multi_Crafter.get(1))
-            .fluidInputs(MaterialsAlloy.PIKYONIUM.getFluidStack(8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Pikyonium64B, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

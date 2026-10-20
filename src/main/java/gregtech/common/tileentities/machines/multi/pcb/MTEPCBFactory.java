@@ -48,16 +48,19 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -388,7 +391,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 // Here we check the dynamic parallels, which depend on the recipe
                 int numberOfNanites = 0;
-                Materials naniteMaterial = recipe.getMetadata(GTRecipeConstants.PCB_NANITE_MATERIAL);
+                Material naniteMaterial = recipe.getMetadata(GTRecipeConstants.PCB_NANITE_MATERIAL);
                 if (naniteMaterial != null) {
                     if (naniteBuses.isEmpty()) {
                         return SimpleCheckRecipeResult.ofFailure("nanites_missing");
@@ -396,7 +399,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     boolean nanitesFound = false;
                     for (MTEHatchNanite naniteBus : naniteBuses) {
                         ItemStack storedNanites = naniteBus.getItemStack();
-                        Materials storedNaniteMaterial = naniteBus.getStoredNaniteMaterial();
+                        Material storedNaniteMaterial = naniteBus.getStoredNaniteMaterial();
                         if (storedNanites == null || storedNaniteMaterial != naniteMaterial) {
                             continue;
                         }
@@ -502,7 +505,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     if (compatMode.coolantHatch != null) {
                         FluidStack tFluid = compatMode.OCTier == 1
                             ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
-                            : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
+                            : MaterialLibAPI.getFluidStack(
+                                Materials.SuperCoolant,
+                                FluidShapes.fluidLiquid,
+                                COOLANT_CONSUMED_PER_SEC);
                         if (!drain(compatMode.coolantHatch, tFluid, true)) {
                             stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
                         }
@@ -511,7 +517,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     }
                 } else {
                     FluidStack tFluid = mCoolingTower.isTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
-                        : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
+                        : MaterialLibAPI
+                            .getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, COOLANT_CONSUMED_PER_SEC);
                     if (!mCoolingTower.drain(mCoolingTower.mCoolantInputHatch, tFluid, true)) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
                         return false;

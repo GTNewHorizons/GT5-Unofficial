@@ -491,15 +491,5 @@ public class Client {
         @Config.DefaultBoolean(true)
         @Config.Name("Show GT++ Ctrl Text")
         public boolean showCtrlText;
-
-        @Config.Comment("Enabled show GT++ Ore contains Text")
-        @Config.DefaultBoolean(true)
-        @Config.Name("Show GT++ Ore contains Text")
-        public boolean showOreContainsText;
-
-        @Config.Comment("Enabled show GT++ Mining Level Text")
-        @Config.DefaultBoolean(true)
-        @Config.Name("Show GT++ Mining Level Text")
-        public boolean showMiningLevelText;
     }
 }

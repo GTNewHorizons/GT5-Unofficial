@@ -9,17 +9,21 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import kekztech.Items;
 import kekztech.common.Blocks;
 import kekztech.common.TileEntities;
-import kekztech.common.items.ErrorItem;
 import kekztech.common.items.MetaItemCraftingComponent;
 
 public class Assembler implements Runnable {
@@ -30,12 +34,13 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.DarkSteel, 3),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.EnderPearl, 3))
+                MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.DarkSteel, Shapes.plate, 3),
+                MaterialLibAPI.getStack(Materials.EnderPearl, Shapes.plate, 3))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1))
-            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -46,9 +51,9 @@ public class Assembler implements Runnable {
                 ItemList.Hull_HV.get(1),
                 ItemList.Cover_FluidStorageMonitor.get(1),
                 ItemList.Field_Generator_LV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polytetrafluoroethylene, 25))
+                MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, TEBlockShapes.pipeTiny, 25))
             .itemOutputs(TileEntities.tfftHatch.getStackForm(1))
-            .fluidInputs(Materials.Polyethylene.getMolten(3 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -56,13 +61,13 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.ClayCompound, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ClayCompound, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Steel, 3),
+                MaterialLibAPI.getStack(Materials.ClayCompound, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.ClayCompound, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Steel, TEBlockShapes.pipeNonuple, 3),
                 ItemList.FluidRegulator_LV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
-            .fluidInputs(Materials.Glass.getMolten(1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -71,12 +76,12 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_Tank_1.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.EnergeticSilver, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Polyethylene, 3),
+                MaterialLibAPI.getStack(Materials.EnergeticSilver, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Polyethylene, TEBlockShapes.pipeNonuple, 3),
                 ItemList.FluidRegulator_MV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 2))
-            .fluidInputs(Materials.Polyethylene.getMolten(2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -85,13 +90,13 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_Tank_3.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.VividAlloy, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.StainlessSteel, 3),
+                MaterialLibAPI.getStack(Materials.VividAlloy, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, TEBlockShapes.pipeNonuple, 3),
                 ItemList.Field_Generator_LV.get(1),
                 ItemList.FluidRegulator_HV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 3))
-            .fluidInputs(Materials.Polyethylene.getMolten(3 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -100,13 +105,13 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_Tank_5.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Enderium, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Polytetrafluoroethylene, 3),
+                MaterialLibAPI.getStack(Materials.Enderium, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, TEBlockShapes.pipeNonuple, 3),
                 ItemList.Field_Generator_MV.get(2),
                 ItemList.FluidRegulator_EV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 4))
-            .fluidInputs(Materials.Epoxid.getMolten(6 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, 6 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -115,13 +120,13 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_Tank_7.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrystallineAlloy, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Enderium, 3),
+                MaterialLibAPI.getStack(Materials.CrystallineAlloy, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Enderium, TEBlockShapes.pipeNonuple, 3),
                 ItemList.Field_Generator_HV.get(4),
                 ItemList.FluidRegulator_IV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 5))
-            .fluidInputs(Materials.Epoxid.getMolten(8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -129,10 +134,10 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tantalum, 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 2),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 2),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Lapis, 1))
+                MaterialLibAPI.getStack(Materials.Tantalum, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.frameGt, 2),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stickLong, 2),
+                MaterialLibAPI.getStack(Materials.Lapis, BlockShapes.block, 1))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -162,8 +167,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Energy_LapotronicOrb2.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24))
+                MaterialLibAPI.getStack(Materials.Osmiridium, TEBlockShapes.frameGt, 4),
+                MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
             .duration(40 * SECONDS)
@@ -174,8 +179,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Energy_Module.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24))
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, TEBlockShapes.frameGt, 4),
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .duration(1 * MINUTES + 20 * SECONDS)
@@ -186,8 +191,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Energy_Cluster.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24))
+                MaterialLibAPI.getStack(Materials.Neutronium, TEBlockShapes.frameGt, 4),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .duration(2 * MINUTES + 40 * SECONDS)
@@ -198,8 +203,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM3.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24))
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, TEBlockShapes.frameGt, 4),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5))
             .duration(5 * MINUTES + 20 * SECONDS)
@@ -210,8 +215,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM4.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24))
+                MaterialLibAPI.getStack(Materials.Infinity, TEBlockShapes.frameGt, 4),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8))
             .duration(10 * MINUTES + 40 * SECONDS)
@@ -222,8 +227,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM5.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24))
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, TEBlockShapes.frameGt, 4),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9))
             .duration(10 * MINUTES + 40 * SECONDS)
@@ -234,8 +239,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ZPM6.get(1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24))
+                MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.frameGt, 4),
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.screw, 24))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10))
             .duration(10 * MINUTES + 40 * SECONDS)
@@ -249,12 +254,12 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicPlate.getMetaID(), 4),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Yttrium, 1),
-                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1),
+                MaterialLibAPI.getStack(Materials.Yttrium, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.rotor, 1),
                 ItemList.Electric_Motor_HV.get(1L))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.yszUnit, 1))
-            .fluidInputs(Materials.Hydrogen.getGas(4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 4_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -263,14 +268,12 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 8),
-                GTOreDictUnificator
-                    .get(OrePrefixes.frameGt, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
-                GTOreDictUnificator
-                    .get(OrePrefixes.rotor, Materials.Desh, new ItemStack(ErrorItem.getInstance(), 1), 1),
+                MaterialLibAPI.getStack(Materials.Gadolinium, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.Desh, Shapes.rotor, 1),
                 ItemList.Electric_Motor_IV.get(1L))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.gdcUnit, 1))
-            .fluidInputs(Materials.Hydrogen.getGas(16_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 16_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -278,9 +281,9 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.stone, Materials.Concrete, 1),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.DarkSteel, 2))
+                new ItemStack(GregTechAPI.sBlockConcretes, 1, 0),
+                MaterialLibAPI.getStack(Materials.Steel, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.DarkSteel, Shapes.foil, 2))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.largeHexPlate, 2))
             .fluidInputs(FluidRegistry.getFluidStack("molten.plastic", 36))

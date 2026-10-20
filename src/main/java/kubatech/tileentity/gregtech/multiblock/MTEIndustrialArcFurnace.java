@@ -19,9 +19,9 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.furnaceRecipes;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasing;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeDetectorHatch;
 import static kubatech.tileentity.gregtech.multiblock.MTEIndustrialArcFurnace.ArcFurnaceHatches.ElectrodeHatch;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -55,6 +55,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -62,16 +63,19 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
@@ -84,7 +88,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -102,6 +105,7 @@ import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 import kubatech.api.enums.ItemList;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.ArcFurnaceElectrode;
+import kubatech.loaders.item.arcfurnace.ElectrodeItem;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrode;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
 
@@ -226,7 +230,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             return true;
         }, te -> te.coilTier))))
         .addElement('D', ofFrame(Materials.Steel))
-        .addElement('E', Casings.BoltedNaquadahCasing.asElement())
+        .addElement('E', ofBlockCasing(Materials.Naquadah))
         .addElement('F', Casings.InsulatedFluidPipeCasing.asElement())
         .addElement('G', Casings.HeatProofCokeOvenCasing.asElement())
         .addElement('H', Casings.BlastSmelterHeatContainmentCoil.asElement())
@@ -272,7 +276,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             if (electrode == null && electrodeHatch.getStackInSlot(0) != null) electrodeChanged();
             if (electrodeDetectorHatch != null) {
                 if (electrode != null) updateDetectorHatches(
-                    ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)),
+                    ElectrodeItem.remainingDurability(electrodeHatch.getStackInSlot(0)),
                     electrode.durability);
                 else updateDetectorHatches(0, 0);
             }
@@ -380,10 +384,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             .addSupportMultiAmp()
             .beginStructureBlock(17, 11, 19, true)
             .addController(translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-            .addCasing("175", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("175", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)), false)
             .addCasing("10-172", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
             .addCasing("101", Casings.SteelPipeCasing.getLocalizedName(), false)
-            .addCasing("72", Casings.BoltedNaquadahCasing.getLocalizedName(), false)
+            .addCasing("72", MaterialLibAPI.getStack(Materials.Naquadah, BlockShapes.blockCasing, 1).getDisplayName(), false)
             .addCasing("30", translateToLocal("GT5U.structure.heating_coil"), false)
             .addCasing("17", Casings.BlastSmelterHeatContainmentCoil.getLocalizedName(), false)
             .addCasing("15", Casings.RefinedGraphiteBlock.getLocalizedName(), false)
@@ -647,9 +651,9 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         ItemStack electrodeStack = electrodeHatch.getStackInSlot(0);
         electrode = ArcFurnaceElectrode.getByStack(electrodeStack);
         if (electrode != null) {
-            electrodeDamagePercentage = (double) ARC_FURNACE_ELECTRODE.usedDurability(electrodeStack)
+            electrodeDamagePercentage = (double) ElectrodeItem.usedDurability(electrodeStack)
                 / (double) electrode.durability;
-            updateDetectorHatches(ARC_FURNACE_ELECTRODE.remainingDurability(electrodeStack), electrode.durability);
+            updateDetectorHatches(ElectrodeItem.remainingDurability(electrodeStack), electrode.durability);
             return;
         }
         updateDetectorHatches(0, 0);
@@ -691,14 +695,14 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             for (ItemStack inputItem : getAllStoredInputs()) {
                 ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(inputItem, false, null);
                 if (smeltedOutput != null) {
-                    ItemData data = GTOreDictUnificator.getItemData(inputItem);
-                    if (data != null && data.mPrefix != null
-                        && data.mPrefix.getMaterialPostfix()
+                    ItemData data = MaterialData.get(inputItem);
+                    if (data != null && data.prefix != null
+                        && data.prefix.getMaterialPostfix()
                             .equals(" Ore")) {
-                        ItemData outputData = GTOreDictUnificator.getItemData(smeltedOutput);
+                        ItemData outputData = MaterialData.get(smeltedOutput);
                         if (outputData != null) {
-                            FluidStack output = outputData.mMaterial.mMaterial.getMolten(1);
-                            long amount = outputData.mPrefix.getMaterialAmount() / (GTValues.M / 144L)
+                            FluidStack output = MaterialUtils.molten(outputData.material.material, 1);
+                            long amount = outputData.prefix.getMaterialAmount() / (GTValues.M / 144L)
                                 * smeltedOutput.stackSize;
                             if (output != null) {
                                 int toDo = Math.min(paraToDoLeft, inputItem.stackSize);
@@ -790,7 +794,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             if (electrode != null) {
                 ItemStack electrodeStack = electrodeHatch.getStackInSlot(0);
                 if (electrodeStack != null) {
-                    boolean shouldRemove = ARC_FURNACE_ELECTRODE.damageElectrode(electrodeStack, durabilityCostThisRun);
+                    boolean shouldRemove = ElectrodeItem.damageElectrode(electrodeStack, durabilityCostThisRun);
                     durabilityCostThisRun = 1;
                     if (shouldRemove) {
                         startShutDown();
@@ -798,10 +802,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                         electrodeChanged();
                     } else {
                         electrodeHatch.markDirty();
-                        electrodeDamagePercentage = (double) ARC_FURNACE_ELECTRODE.usedDurability(electrodeStack)
+                        electrodeDamagePercentage = (double) ElectrodeItem.usedDurability(electrodeStack)
                             / (double) electrode.durability;
                         updateDetectorHatches(
-                            ARC_FURNACE_ELECTRODE.remainingDurability(electrodeHatch.getStackInSlot(0)),
+                            ElectrodeItem.remainingDurability(electrodeHatch.getStackInSlot(0)),
                             electrode.durability);
                     }
                 }
@@ -881,9 +885,9 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 for (ItemStack inputItem : inputItems) {
                     ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(inputItem, false, null);
                     if (smeltedOutput != null) {
-                        ItemData data = GTOreDictUnificator.getItemData(inputItem);
-                        if (data != null && data.mPrefix != null
-                            && data.mPrefix.getMaterialPostfix()
+                        ItemData data = MaterialData.get(inputItem);
+                        if (data != null && data.prefix != null
+                            && data.prefix.getMaterialPostfix()
                                 .equals(" Ore")) {
                             GTRecipe fake = fakeRecipe();
                             fake.mEUt = 16;

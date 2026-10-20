@@ -9,13 +9,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
-import goodgenerator.items.GGMaterial;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
@@ -59,14 +60,15 @@ public final class NaquadahRecipePatches {
 
     private static FluidStack replaceNaquadahOutput(FluidStack output) {
         if (output == null) return null;
-        if (output.isFluidEqual(Materials.Naquadah.getMolten(1))) {
-            return GGMaterial.naquadahGoo.getFluidOrGas(output.amount * 2);
+        if (output.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, 1))) {
+            return MaterialLibAPI.getFluidStack(Materials.NaquadahGoo, FluidShapes.fluidLiquid, output.amount * 2);
         }
-        if (output.isFluidEqual(Materials.NaquadahEnriched.getMolten(1))) {
-            return GGMaterial.enrichedNaquadahGoo.getFluidOrGas(output.amount * 2);
+        if (output.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.NaquadahEnriched, FluidShapes.fluidMolten, 1))) {
+            return MaterialLibAPI
+                .getFluidStack(Materials.EnrichedNaquadahGoo, FluidShapes.fluidLiquid, output.amount * 2);
         }
-        if (output.isFluidEqual(Materials.Naquadria.getMolten(1))) {
-            return GGMaterial.naquadriaGoo.getFluidOrGas(output.amount * 2);
+        if (output.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, 1))) {
+            return MaterialLibAPI.getFluidStack(Materials.NaquadriaGoo, FluidShapes.fluidLiquid, output.amount * 2);
         }
         return null;
     }
@@ -76,14 +78,11 @@ public final class NaquadahRecipePatches {
             || recipe.mInputs[0].getItem() != materialLeaf
             || recipe.mInputs[0].getItemDamage() != 18) return false;
         for (ItemStack input : recipe.mInputs) {
-            if (GTUtility
-                .areStacksEqual(input, GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Naquadah, 1), true)
-                || GTUtility.areStacksEqual(
-                    input,
-                    GTOreDictUnificator.get(OrePrefixes.crushed, Materials.NaquadahEnriched, 1),
-                    true)
+            if (GTUtility.areStacksEqual(input, MaterialLibAPI.getStack(Materials.Naquadah, Shapes.crushed, 1), true)
                 || GTUtility
-                    .areStacksEqual(input, GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Naquadria, 1), true))
+                    .areStacksEqual(input, MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.crushed, 1), true)
+                || GTUtility
+                    .areStacksEqual(input, MaterialLibAPI.getStack(Materials.Naquadria, Shapes.crushed, 1), true))
                 return true;
         }
         return false;

@@ -8,13 +8,16 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import ggfab.api.GigaGramFabAPI;
 import ggfab.items.SingleUseTool;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -56,8 +59,8 @@ class SingleUseToolRecipeLoader implements Runnable {
         return (double) outputQuantity / (long) SOLIDIFIER_QUANTITY_MAX;
     }
 
-    private void addSingleUseToolRecipes(Materials material, List<SingleUseTool> singleUseTools) {
-        if (material.mStandardMoltenFluid == null) {
+    private void addSingleUseToolRecipes(Material material, List<SingleUseTool> singleUseTools) {
+        if (!MaterialUtils.hasMolten(material)) {
             throw new IllegalArgumentException("material does not have molten fluid form");
         }
 
@@ -73,10 +76,14 @@ class SingleUseToolRecipeLoader implements Runnable {
             int damagePerCraft = toolStats.getToolDamagePerContainerCraft();
 
             long fluidPerCraft = toolCost * INGOTS / GTValues.M;
-            long outputQuantity = (long) (material.mDurability * durabilityMultiplier * 100 / damagePerCraft);
+            long outputQuantity = (long) (MaterialUtils.durability(material) * durabilityMultiplier
+                * 100
+                / damagePerCraft);
             long solidifierFluidPerCraft = toolCost * INGOTS / GTValues.M;
             long solidifierRecipeDuration = SOLIDIFIER_RECIPE_DURATION;
-            long solidifierOutputQuantity = (long) (material.mDurability * durabilityMultiplier * 100 / damagePerCraft);
+            long solidifierOutputQuantity = (long) (MaterialUtils.durability(material) * durabilityMultiplier
+                * 100
+                / damagePerCraft);
 
             if (solidifierOutputQuantity > SOLIDIFIER_QUANTITY_MAX) {
                 // Too much output — scale down.
@@ -106,7 +113,7 @@ class SingleUseToolRecipeLoader implements Runnable {
             solidifierOutput.stackSize = (int) solidifierOutputQuantity;
 
             GTValues.RA.stdBuilder()
-                .fluidInputs(material.getMolten(solidifierFluidPerCraft))
+                .fluidInputs(MaterialUtils.molten(material, solidifierFluidPerCraft))
                 .itemInputs(singleUseTool.mold.get(0L))
                 .itemOutputs(solidifierOutput)
                 .eut(TierEU.RECIPE_MV)

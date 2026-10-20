@@ -35,6 +35,7 @@ import static galacticgreg.api.enums.DimensionDef.Triton;
 import static galacticgreg.api.enums.DimensionDef.VegaB;
 import static galacticgreg.api.enums.DimensionDef.Venus;
 
+import gregtech.api.enums.materials.Materials;
 import gregtech.common.SmallOreBuilder;
 import gregtech.common.WorldgenGTOreSmallPieces;
 
@@ -353,7 +354,8 @@ public enum SmallOres {
         .heightRange(5, 15)
         .amount(2)
         .ore(Materials.Firestone)
-        .enableInDim(Io, Venus)),
+        .enableInDim(Io, Venus)
+        .enableInDim(NETHER)),
 
     Neutronium(new SmallOreBuilder().name("ore.small.neutronium")
         .heightRange(5, 15)
