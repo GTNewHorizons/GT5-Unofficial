@@ -242,6 +242,8 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         }
 
         // from here, it's for the electric prospector scanners
+        // must match the scan area in BehaviourDetravToolElectricProspector
+        range = 2 * getHarvestLevel(aStack, "") + 1;
         aList.add(
             tOffset,
             EnumChatFormatting.GREEN + StatCollector.translateToLocalFormatted(
