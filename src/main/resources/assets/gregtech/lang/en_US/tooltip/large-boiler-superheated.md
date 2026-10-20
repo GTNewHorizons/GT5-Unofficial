@@ -4,4 +4,4 @@ Burning solid and liquid fuel at the same time gives a {color_speed:{var:multi_f
 {color_note:Only some fuels are allowed, check NEI}
 {hr}
 Takes {color_time:{var:heat_seconds}} seconds to warm up
-A {color_name:Programmed Circuit} in the controller reduces output by {color_amount:{var:throttle_amount} {L}/s} per value
+A {color_name:Programmed Circuit} in the controller reduces output by {color_steam:{var:throttle_amount} {L}/s} per value

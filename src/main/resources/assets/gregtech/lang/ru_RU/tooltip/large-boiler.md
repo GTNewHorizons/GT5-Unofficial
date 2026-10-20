@@ -4,4 +4,4 @@
 {color_note:Топливо с малым временем горения не работает}
 {hr}
 Нагревается за {color_time:{var:heat_seconds}} с
-{color_name:Запрограммированная схема} в контроллере снижает выработку на {color_amount:{var:throttle_amount} {L}/с} за каждое значение
+{color_name:Запрограммированная схема} в контроллере снижает выработку на {color_steam:{var:throttle_amount} {L}/с} за каждое значение
