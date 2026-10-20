@@ -19,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -53,6 +54,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
     private static final int OFFSET_X = 2;
     private static final int OFFSET_Y = 7;
     private static final int OFFSET_Z = 1;
+    private static final int PARALLEL_PER_TIER = 6;
 
     private Byte solenoidLevel = null;
     private int casingAmount;
@@ -78,7 +80,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.forge_hammer"))
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
-            .addMarkdown(new ResourceLocation("gregtech", "industrial-forge-hammer"))
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-forge-hammer"), ImmutableMap.of("parallel", PARALLEL_PER_TIER))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 9, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
@@ -204,7 +206,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public int getMaxParallelRecipes() {
-        return (6 * (solenoidLevel == null ? 1 : solenoidLevel) * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (PARALLEL_PER_TIER * (solenoidLevel == null ? 1 : solenoidLevel) * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
