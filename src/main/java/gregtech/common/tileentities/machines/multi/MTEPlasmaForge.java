@@ -32,7 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,7 +41,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -92,7 +90,6 @@ import it.unimi.dsi.fastutil.longs.LongArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForge>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -582,16 +579,47 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Forge, DTPF")
-            .addMarkdown(
-                new ResourceLocation("gregtech", "plasma-forge"),
-                ImmutableMap.<String, Object>builder()
-                    .put("hours", formatNumber(max_efficiency_time_in_ticks / (3600 * 20)))
-                    .put("max_discount", formatNumber(100 * maximum_discount))
-                    .put("decay_rate", formatNumber(efficiency_decay_rate))
-                    .build())
+            .addInfo("Transcending Dimensional Boundaries.")
+            .addInfo(
+                "Takes " + EnumChatFormatting.RED
+                    + formatNumber(max_efficiency_time_in_ticks / (3600 * 20))
+                    + EnumChatFormatting.GRAY
+                    + " hours of continuous run time to fully breach dimensional")
+            .addInfo(
+                "boundaries and achieve maximum efficiency, reducing fuel consumption by up to "
+                    + EnumChatFormatting.RED
+                    + formatNumber(100 * maximum_discount)
+                    + "%")
+            .addInfo(
+                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
+                    + formatNumber(efficiency_decay_rate)
+                    + EnumChatFormatting.GRAY
+                    + " as fast as it builds up, draining")
+            .addInfo("the total amount of stored runtime")
+            .addSeparator()
+            .addInfo("Multidimensional spaces can be perfectly aligned and synchronized in this state, ")
+            .addInfo(
+                "allowing " + EnumChatFormatting.GOLD
+                    + "Dimensional Convergence "
+                    + EnumChatFormatting.GRAY
+                    + "to occur. To reach the required stability threshold,")
+            .addInfo(
+                "a " + EnumChatFormatting.AQUA
+                    + "Transdimensional Alignment Matrix "
+                    + EnumChatFormatting.GRAY
+                    + "must be placed in the controller")
+            .addInfo(
+                "When " + EnumChatFormatting.GOLD
+                    + "Convergence "
+                    + EnumChatFormatting.GRAY
+                    + "is active, it allows the forge to perform "
+                    + EnumChatFormatting.RED
+                    + "Perfect Overclocks"
+                    + EnumChatFormatting.GRAY
+                    + ",")
+            .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
             .addUnlimitedTierSkips()
             .addSupportAny()
             .beginStructureBlock(33, 24, 33, false)
@@ -606,7 +634,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

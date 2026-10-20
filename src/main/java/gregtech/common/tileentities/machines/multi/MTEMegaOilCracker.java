@@ -207,9 +207,12 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                     TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
                     EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addInfo(
+                EnumChatFormatting.AQUA + "0.9^(Heating Coil Tier)"
+                    + EnumChatFormatting.GRAY + " EU Usage")
             .addSeparator()
             .addMarkdown(
-                new ResourceLocation("gregtech", "oil-cracker"),
+                new ResourceLocation("gregtech", "mega-oil-cracker"),
                 ImmutableMap.<String, Object>builder()
                     .put("hydro_h2_saving", HYDRO_H2_SAVING_PERCENT)
                     .put("hydro_output_bonus", HYDRO_OUTPUT_BONUS_PERCENT)
