@@ -1,2 +1,2 @@
 Takes in particle beams and sends them back out
-{gold:That's literally it.}
+{color_note:That's literally it.}

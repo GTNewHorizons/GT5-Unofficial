@@ -15,7 +15,7 @@ Switches to Collider mode automatically when the {light_purple:maximum number of
 {hr}
 {color_mode:Collider mode}
 Splits the beam into {color_formula:two} beams that go in opposite directions in the larger LHC ring and collide to generate new particles
-The {color_electron_volt:Collision Energy} is two times the {color_electron_volt:Beam Energy}
+The {color_electron_volt:Collision Energy} is {color_formula:{var:collision_multiplier}} times the {color_electron_volt:Beam Energy}
 A particle appears in the outputs once the {color_electron_volt:Collision Energy} exceeds its rest mass
 {color_name:Filtered Beam Output Hatches} and the Probability Table show the list of possible outputs and let you filter them
 {hr}

@@ -94,6 +94,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static final float RATE_NERF_POWER_QGP = 0.7F;
     public static final float RATE_NERF_POWER_MAGMATTER = 0.9F;
     public static final int POWER_TIER = VoltageIndex.UV;
+    public static final int COLLISION_ENERGY_MULTIPLIER = 2;
     public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
     public static final float OVERALL_POWER_MULT_FACTOR = 1F; // reminder: update tooltip text if this is not set to 1
 
@@ -359,6 +360,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                     .put("nerf_power_qgp", formatNumber(RATE_NERF_POWER_QGP))
                     .put("nerf_power_magmatter", formatNumber(RATE_NERF_POWER_MAGMATTER))
                     .put("tier", GTUtility.getColoredTierNameForTooltip(POWER_TIER))
+                    .put("collision_multiplier", formatNumber(COLLISION_ENERGY_MULTIPLIER))
                     .build())
             .addSeparator()
             .addSupportAny()
@@ -721,7 +723,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = TickTime.SECOND;
 
-            this.outputEnergy = (inputEnergy) * 2; // output energy = collision energy = input energy * 2
+            this.outputEnergy = (inputEnergy) * COLLISION_ENERGY_MULTIPLIER; // output energy = collision energy
             this.outputRate = max(0, (inputRate));
             this.outputFocus = inputFocus;
 
