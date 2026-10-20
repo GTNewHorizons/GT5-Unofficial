@@ -5,11 +5,11 @@
 {hr}
 {color_mode:Режим ускорителя}
 Ускоряет пучок в малом кольце LHC
-Каждый цикл повышает {color_electron_volt:энергию пучка} на {color_eu_usage:EU, потреблённые за цикл} * {color_formula:{var:ev_per_eu} eV} / {color_amount:интенсивность пучка}, пока не будет достигнута {color_electron_volt:целевая энергия пучка} или {color_time:максимальное число циклов}
+Каждый цикл повышает {color_electron_volt:энергию пучка} на {color_eu_usage:{EU}, потреблённые за цикл} * {color_formula:{var:ev_per_eu} eV} / {color_amount:интенсивность пучка}, пока не будет достигнута {color_electron_volt:целевая энергия пучка} или {color_time:максимальное число циклов}
 Когда {color_electron_volt:целевая энергия пучка} достигнута, к текущей {color_amount:интенсивности пучка} добавляется {color_formula:{var:rate_gain}} * {color_amount:интенсивность пучка}
 При {color_amount:интенсивности пучка} выше {color_amount:{var:nerf_cutoff}} вместо этого добавляется ({color_formula:{var:rate_gain}} * {color_amount:интенсивность пучка})^{color_danger:{var:nerf_power}}
-{color_eu_usage:Мощность} начинается с {color_eu_usage:1A} {color_tier:UV} на единицу {color_amount:интенсивности пучка} и растёт квадратично с {color_time:числом завершённых циклов}
-{color_eu_usage:P} = ({color_eu_usage:1A} {color_tier:UV}) * {color_amount:R} * ({color_time:N}+1)^2
+{color_eu_usage:Мощность} начинается с {color_amperage:1A} {color_tier:UV} на единицу {color_amount:интенсивности пучка} и растёт квадратично с {color_time:числом завершённых циклов}
+{color_eu_usage:P} = ({color_amperage:1A} {color_tier:UV}) * {color_amount:R} * ({color_time:N}+1)^2
 Переключается в режим коллайдера, когда достигнуто {color_time:максимальное число циклов}
 {hr}
 {color_mode:Режим коллайдера}
@@ -23,7 +23,7 @@
 {color_name:Без жидкости}: {color_danger:{var:nerf_power}}
 {color_name:{fluid:quarkgluonplasma}}: {color_danger:{var:nerf_power_qgp}}
 {color_name:{fluid:molten.magmatter}}: {color_danger:{var:nerf_power_magmatter}}
-С усилителем {color_electron_volt:энергия пучка} сразу становится {color_electron_volt:{var:max_energy} TeV}, а каждый цикл расходуется {color_amount:интенсивность пучка} {L} жидкости
+С усилителем {color_electron_volt:энергия пучка} сразу становится {color_electron_volt:{var:max_energy} TeV}, а каждый цикл расходуется {color_amount:интенсивность пучка {L}} жидкости
 Если сменить {color_name:усиливающую жидкость}, пучок придётся разгонять заново
 {hr}
 Модулей LHC четыре, каждый отмечен буквой на верхней грани:

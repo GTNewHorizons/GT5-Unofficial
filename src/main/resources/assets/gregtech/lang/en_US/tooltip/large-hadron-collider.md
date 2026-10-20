@@ -5,11 +5,11 @@ Cycles every second
 {hr}
 {color_mode:Accelerator mode}
 Accelerates the beam in the smaller LHC ring
-Each cycle increases the {color_electron_volt:Beam Energy} by {color_eu_usage:EU consumed in cycle} * {color_formula:{var:ev_per_eu} eV} / {color_amount:Beam Rate}, until the {color_electron_volt:Target Beam Energy} or the {color_time:maximum number of cycles} is reached
+Each cycle increases the {color_electron_volt:Beam Energy} by {color_eu_usage:{EU} consumed in cycle} * {color_formula:{var:ev_per_eu} eV} / {color_amount:Beam Rate}, until the {color_electron_volt:Target Beam Energy} or the {color_time:maximum number of cycles} is reached
 If the {color_electron_volt:Target Beam Energy} is reached, adds {color_formula:{var:rate_gain}} * {color_amount:Beam Rate} to the current {color_amount:Beam Rate}
 Above a {color_amount:Beam Rate} of {color_amount:{var:nerf_cutoff}}, adds ({color_formula:{var:rate_gain}} * {color_amount:Beam Rate})^{color_danger:{var:nerf_power}} instead
-{color_eu_usage:Power} cost starts at {color_eu_usage:1A} of {color_tier:UV} per {color_amount:Beam Rate} and grows quadratically with the {color_time:number of completed cycles}
-{color_eu_usage:P} = ({color_eu_usage:1A} {color_tier:UV}) * {color_amount:R} * ({color_time:N}+1)^2
+{color_eu_usage:Power} cost starts at {color_amperage:1A} of {color_tier:UV} per {color_amount:Beam Rate} and grows quadratically with the {color_time:number of completed cycles}
+{color_eu_usage:P} = ({color_amperage:1A} {color_tier:UV}) * {color_amount:R} * ({color_time:N}+1)^2
 Switches to Collider mode automatically when the {color_time:maximum number of cycles} is reached
 {hr}
 {color_mode:Collider mode}
@@ -23,7 +23,7 @@ A particle appears in the outputs once the {color_electron_volt:Collision Energy
 {color_name:No fluid}: {color_danger:{var:nerf_power}}
 {color_name:{fluid:quarkgluonplasma}}: {color_danger:{var:nerf_power_qgp}}
 {color_name:{fluid:molten.magmatter}}: {color_danger:{var:nerf_power_magmatter}}
-With a booster, the {color_electron_volt:Beam Energy} is set to {color_electron_volt:{var:max_energy} TeV} at once, and {color_amount:Beam Rate} {L} of fluid is consumed every cycle
+With a booster, the {color_electron_volt:Beam Energy} is set to {color_electron_volt:{var:max_energy} TeV} at once, and {color_amount:Beam Rate {L}} of fluid is consumed every cycle
 If the supplied {color_name:Booster Fluid} changes, the beam must be re-accelerated from scratch
 {hr}
 There are four LHC modules, marked by the letter on top of the module:
