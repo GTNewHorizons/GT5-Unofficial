@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -86,6 +87,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     private static final int HYDRO_H2_SAVING_PERCENT = 20;
     private static final int HYDRO_OUTPUT_BONUS_PERCENT = 25;
     private static final int STEAM_OUTPUT_BONUS_PERCENT = 50;
+    private static final double EU_USAGE_BASE = 0.9;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VERTICAL_OFFSET = 7;
@@ -207,13 +209,13 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                     TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
                     EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addSeparator()
             .addMarkdown(
-                new ResourceLocation("gregtech", "oil-cracker"),
+                new ResourceLocation("gregtech", "mega-oil-cracker"),
                 ImmutableMap.<String, Object>builder()
                     .put("hydro_h2_saving", HYDRO_H2_SAVING_PERCENT)
                     .put("hydro_output_bonus", HYDRO_OUTPUT_BONUS_PERCENT)
                     .put("steam_output_bonus", STEAM_OUTPUT_BONUS_PERCENT)
+                    .put("eu_usage_base", formatNumber(EU_USAGE_BASE))
                     .build())
             .addSeparator()
             .addSupportAny()

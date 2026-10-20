@@ -604,7 +604,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addInputAny("1+", "Any injection casing", 1)
             .addOutputAny("1+", "Any injection casing", 1)
             .addStructureInfo("")
-            .addSubChannel(GTStructureChannels.HEATING_COIL);
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
