@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -35,8 +36,10 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -54,6 +57,7 @@ import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalBoiler>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -250,25 +254,24 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger")
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc3"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.ThermalBoiler.desc4"))
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.heat_exchanger"))
+            .addMarkdown(new ResourceLocation("gregtech", "thermal-boiler"))
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front center, 3rd layer")
-            .addCasing("20-25", "Thermal Containment Casing", false)
-            .addCasing("10-17", "Robust Tungstensteel Machine Casing", false)
-            .addCasing("10-17", "Thermal Processing Casing", false)
-            .addCasing("16", "Maraging Steel 350 Frame Box", false)
-            .addCasing("6", "Tungstensteel Pipe Casing", false)
-            .addCasing("6", "Bronze Pipe Casing", false)
-            .addMaintenanceHatch("1", "Any middle casing", 2)
-            .addInputBus("0+", "Any side casing", 1)
-            .addInputHatch("1+", "Any side casing", 1)
-            .addOutputBus("0+", "Any side casing", 1)
-            .addOutputHatch("1+", "Any side casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("20-25", Casings.ThermalContainmentCasing.getLocalizedName(), false)
+            .addCasing("10-17", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("10-17", Casings.ThermalProcessingCasing.getLocalizedName(), false)
+            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.MARAGING350), false)
+            .addCasing("6", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
+            .addCasing("6", Casings.BronzePipeCasing.getLocalizedName(), false)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_middle_casing"), 2)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_side_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

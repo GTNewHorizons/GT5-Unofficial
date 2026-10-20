@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -23,6 +22,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -57,6 +58,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -119,42 +121,18 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger, LHE")
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.desc1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.desc2"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.desc3"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.desc4"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.desc5"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.HeatExchanger.lava",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.HeatExchanger.hotcoolant",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.HeatExchanger.hotsolarsalt",
-                    getFluidUnit(),
-                    getFluidUnit(),
-                    getFluidUnit()))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.throttle1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.throttle2"))
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.large_heat_exchanger"))
+            .addMarkdown(new ResourceLocation("gregtech", "heat-exchanger"))
             .beginStructureBlock(3, 4, 3, false)
-            .addController("Front bottom center")
-            .addCasing("20-28", "Stable Titanium Machine Casing", false)
-            .addCasing("2", "Titanium Pipe Casing", false)
-            .addMaintenanceHatch("1", "Any machine casing", 1)
-            .addInputHatch("2+", "Bottom center casing (hot fluid), any machine casing (distilled water)", 1, 2)
-            .addOutputHatch("2+", "Top center casing (cool fluid), any machine casing (steam)", 1, 3)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("20-28", Casings.StableTitaniumMachineCasing.getLocalizedName(), false)
+            .addCasing("2", Casings.TitaniumPipeCasing.getLocalizedName(), false)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.heat_exchanger_input_hatch"), 1, 2)
+            .addOutputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.heat_exchanger_output_hatch"), 1, 3)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

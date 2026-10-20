@@ -3,5 +3,5 @@ Fuels with long burn times receive bonus ticks: {color_efficiency:1 + log(BurnTi
 Burning solid and liquid fuel at the same time gives a {color_speed:{var:multi_fuel_boost}} speed boost
 {color_note:Only some fuels are allowed, check NEI}
 {hr}
-Takes {color_time:{var:heat_seconds}} seconds to warm-up
-A {color_name:Programmed Circuit} in the controller reduces output by {white:{var:throttle_amount} {L}/s} per value
+Takes {color_time:{var:heat_seconds}} seconds to warm up
+A {color_name:Programmed Circuit} in the controller reduces output by {color_amount:{var:throttle_amount} {L}/s} per value
