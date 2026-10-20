@@ -111,6 +111,8 @@ public class MultiblockTooltipBuilder {
 
     private int tierNoteIndex = -1;
 
+    private boolean deprecated;
+
     private String[] iArray;
     private String[] sArray;
     private String[] hArray;
@@ -156,6 +158,7 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addDeprecatedLine(String info) {
         iLines.add(translateToLocalFormatted("GT5U.MBTT.Deprecated", info));
+        deprecated = true;
         return this;
     }
 
@@ -1710,5 +1713,9 @@ public class MultiblockTooltipBuilder {
 
     public String[] getStructureHint() {
         return hArray;
+    }
+
+    public boolean isDeprecated() {
+        return deprecated;
     }
 }
