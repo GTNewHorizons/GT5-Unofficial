@@ -188,7 +188,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                 ImmutableMap.<String, Object>builder()
                     .put("power", formatNumber(getSingleHatchPower()))
                     .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
-                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
+                    .put("tier", GTUtility.getColoredTierNameForTooltip(tier()))
                     .put("base_para", formatNumber(getMaxPara()))
                     .put("per_tier_para", formatNumber(getMaxPara()))
                     .put("eu_per_oc", formatNumber(fod.getEUtIncreasePerOC()))
