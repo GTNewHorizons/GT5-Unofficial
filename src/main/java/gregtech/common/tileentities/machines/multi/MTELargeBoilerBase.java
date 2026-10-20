@@ -154,10 +154,10 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     "FFFFF"
                 }, {
                     "  CCC",
-                    "  C C",
-                    "PPC C",
-                    "PCC P",
-                    "C   C",
+                    "  C-C",
+                    "PPC-C",
+                    "PCC-P",
+                    "C---C",
                     "FFFFF"
                 }, {
                     "   C ",

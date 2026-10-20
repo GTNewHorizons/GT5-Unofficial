@@ -183,7 +183,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                     { "AAA", "AAA", "AAA" }}))
                 .addShape(STRUCTURE_PIECE_MAIN, new String[][] {
                     {" A ", "CAC", "C~C", "AAA"},
-                    {"ABA", "A A", "A A", "AAA"},
+                    {"ABA", "A-A", "A-A", "AAA"},
                     {" A ", "CAC", "CAC", "AAA"}})
                 // spotless:on
                 .addElement(
