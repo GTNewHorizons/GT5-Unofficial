@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -134,7 +133,6 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                     .put("boosted_output", formatNumber(BOOSTED_OUTPUT_EU))
                     .put("boosted_eff", formatNumber(BOOSTED_EFFICIENCY_PERCENT))
                     .put("wait_power", formatNumber(WAIT_POWER_PERCENT))
-                    .put("fluid_unit", getFluidUnit())
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(8, 3, 3, false)
