@@ -206,7 +206,8 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public int getMaxParallelRecipes() {
-        return (PARALLEL_PER_TIER * (solenoidLevel == null ? 1 : solenoidLevel) * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (PARALLEL_PER_TIER * (solenoidLevel == null ? 1 : solenoidLevel)
+            * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
