@@ -203,7 +203,9 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker>
     }
 
     public double getEuModifier() {
-        return 1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F);
+        double discountPerTier = EU_USAGE_REDUCTION_PERCENT / 100.0;
+        double maxDiscount = MAX_DISCOUNT_PERCENT / 100.0;
+        return 1.0 - Math.min(discountPerTier * (heatLevel.getTier() + 1), maxDiscount);
     }
 
     private boolean addMiddleInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
