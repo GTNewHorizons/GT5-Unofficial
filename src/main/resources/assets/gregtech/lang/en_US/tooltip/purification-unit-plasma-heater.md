@@ -7,8 +7,8 @@ Initial temperature is reset to {color_cold:0{K}} on recipe start
 Each completed heating cycle boosts success chance by {color_misc:{var:success}%}
 If the temperature ever reaches {color_danger:{var:max_temp}{K}} the recipe will fail and output {color_steam:steam}
 {hr}
-Consumes up to {color_amount:{var:max_plasma} {L}/s} {color_name:{var:plasma}} and up to {color_amount:{var:max_coolant} {L}/s} {color_name:{var:coolant}}
-{color_mechanic:Raises} the temperature by {color_heat:{var:plasma_temp}{K}} per {color_amount:1 {L}} of plasma consumed
+Consumes up to {color_hot:{var:max_plasma} {L}/s} {color_hot:{var:plasma}} and up to {color_cold:{var:max_coolant} {L}/s} {color_cold:{var:coolant}}
+{color_mechanic:Raises} the temperature by {color_hot:{var:plasma_temp}{K}} per {color_amount:1 {L}} of plasma consumed
 {color_mechanic:Lowers} the temperature by {color_cold:{var:coolant_temp}{K}} per {color_amount:1 {L}} of coolant consumed
 {hr}
 {aqua:{italic:Step five of water purification is to evaporate complex organic polymers and extremophile organisms}}

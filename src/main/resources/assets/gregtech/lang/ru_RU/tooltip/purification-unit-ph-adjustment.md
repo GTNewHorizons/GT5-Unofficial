@@ -9,7 +9,7 @@
 {hr}
 Каждые {color_time:{var:interval}} тиков расходует ВСЕ вещества {color_name:{var:alkaline}} и {color_name:{var:acid}} в специальных люке и шлюзе
 {color_mechanic:Повышает} pH на {color_amount:{var:ph_per_dust} pH} за каждый предмет {color_name:{var:dust}}
-{color_mechanic:Понижает} pH на {color_amount:{var:ph_per_acid} pH} за каждые {color_amount:10 {L}} вещества {color_name:{var:acid}}
+{color_mechanic:Понижает} pH на {color_amount:{var:ph_per_acid} pH} за каждые {white:10 {L}} вещества {white:{var:acid}}
 {hr}
 {aqua:{italic:Четвёртый этап очистки воды: нейтрализовать раствор и довести его pH ровно до 7, после чего}}
 {aqua:{italic:раствор становится инертным. Кислоты и основания из почвы и горных пород}}

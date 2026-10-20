@@ -9,7 +9,7 @@ For safety, the machine will shut down if the pH goes below 0 or exceeds 14
 {hr}
 Every {color_time:{var:interval}} ticks, consumes ALL {color_name:{var:alkaline}} and {color_name:{var:acid}} in the special hatches
 {color_mechanic:Raises} the pH value by {color_amount:{var:ph_per_dust} pH} per {color_name:{var:dust}}
-{color_mechanic:Lowers} the pH value by {color_amount:{var:ph_per_acid} pH} per {color_amount:10 {L}} of {color_name:{var:acid}}
+{color_mechanic:Lowers} the pH value by {color_amount:{var:ph_per_acid} pH} per {white:10 {L}} of {white:{var:acid}}
 {hr}
 {aqua:{italic:The fourth step of water purification is to neutralize the solution and bring its pH to exactly 7, rendering}}
 {aqua:{italic:the solution inert with no hydrogen ion activity beyond water's natural amphiproticity. Acids and bases from soils}}

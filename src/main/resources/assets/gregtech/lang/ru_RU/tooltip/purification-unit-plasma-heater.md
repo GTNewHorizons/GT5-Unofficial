@@ -7,8 +7,8 @@
 Каждый завершённый цикл нагрева увеличивает шанс успеха на {color_misc:{var:success}%}
 Если температура достигнет {color_danger:{var:max_temp}{K}}, рецепт провалится и выдаст {color_steam:пар}
 {hr}
-Расходует до {color_amount:{var:max_plasma} {L}/с} вещества {color_name:{var:plasma}} и до {color_amount:{var:max_coolant} {L}/с} вещества {color_name:{var:coolant}}
-{color_mechanic:Повышает} температуру на {color_heat:{var:plasma_temp}{K}} за каждый {color_amount:1 {L}} израсходованной плазмы
+Расходует до {color_hot:{var:max_plasma} {L}/с} вещества {color_hot:{var:plasma}} и до {color_cold:{var:max_coolant} {L}/с} вещества {color_cold:{var:coolant}}
+{color_mechanic:Повышает} температуру на {color_hot:{var:plasma_temp}{K}} за каждый {color_amount:1 {L}} израсходованной плазмы
 {color_mechanic:Понижает} температуру на {color_cold:{var:coolant_temp}{K}} за каждый {color_amount:1 {L}} израсходованного хладагента
 {hr}
 {aqua:{italic:Пятый этап очистки воды: испарить сложные органические полимеры и экстремофильные организмы,}}

@@ -4,7 +4,7 @@ Must be linked to a Purification Plant using a {color_name:{item:gregtech:gt.met
 During operation, swap the lens in the {color_name:{var:housing}}
 The multiblock will output a signal through the {color_name:{var:indicator}}
 when the current lens must be swapped
-Lens swaps will be requested in random intervals of {color_time:{var:min_swap}} to {color_time:{var:max_swap}} seconds
+Lens swaps will be requested in random intervals of {color_time:{var:min_swap}} to {color_time:{var:max_swap} seconds}
 {hr}
 Success chance is boosted by {color_misc:{var:success}%} for each successful swap performed
 Removing a lens too early will fail the recipe

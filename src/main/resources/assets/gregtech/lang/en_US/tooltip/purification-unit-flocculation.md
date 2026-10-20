@@ -5,7 +5,7 @@ Supply with {color_name:{var:input}} to operate
 Outputs {color_name:{var:waste}} that can be recycled
 {hr}
 During operation, will consume ALL {color_name:{var:input}} in the input hatch
-At the end of the recipe, for every {color_amount:{var:per_level} {L}} of {color_name:{var:input}} consumed
+At the end of the recipe, for every {white:{var:per_level} {L}} of {white:{var:input}} consumed
 gain an additive {color_misc:{var:success}%} increase to success. If total fluid supplied is not
 a multiple of {color_amount:{var:per_level} {L}}, a penalty to success is applied using the following formula:
 {color_misc:Success}{color_formula: = Success * 2^(-10 * Overflow ratio)}

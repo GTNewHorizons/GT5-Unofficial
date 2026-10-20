@@ -9,22 +9,22 @@
 {white:{bold:Бит 1: }}{color_misc:{bold:Барботаж инертным газом}}
 Если этот бит включён, в механизм нужно подать {color_name:инертный газ}
 Чтобы узнать, какой газ подать, считайте биты {color_misc:2-3} 2-битным числом
-0: {color_amount:{var:gas0_amount} {L}} {color_name:{var:gas0}} / 1: {color_amount:{var:gas1_amount} {L}} {color_name:{var:gas1}} / 2: {color_amount:{var:gas2_amount} {L}} {color_name:{var:gas2}} / 3: {color_amount:{var:gas3_amount} {L}} {color_name:{var:gas3}}
+0: {white:{var:gas0_amount} {L} {var:gas0}} / 1: {white:{var:gas1_amount} {L} {var:gas1}} / 2: {white:{var:gas2_amount} {L} {var:gas2}} / 3: {white:{var:gas3_amount} {L} {var:gas3}}
 {hr}
 {white:{bold:Бит 2: }}{color_misc:{bold:Деионизация сверхпроводником}}
-Если этот бит включён, нужно подать {color_amount:{var:supercon_amount} {L}} {color_name:расплавленной основы сверхпроводника}
+Если этот бит включён, нужно подать {white:{var:supercon_amount} {L}} {white:расплавленной основы сверхпроводника}
 Сверхпроводник более высокого тира даёт бонус к выходу
-Множитель выхода: {dark_green:UV}: {white:1x} / {dark_red:UHV}: {white:1.25x} / {dark_purple:UEV}: {white:1.5x} / {dark_blue:{bold:UIV}}: {white:1.75x} / {red:{bold:UMV}}: {white:2x}
+Множитель выхода: {var:tier0}: {white:{var:mult0}x} / {var:tier1}: {white:{var:mult1}x} / {var:tier2}: {white:{var:mult2}x} / {var:tier3}: {white:{var:mult3}x} / {var:tier4}: {white:{var:mult4}x}
 {hr}
 {white:{bold:Бит 3: }}{color_misc:{bold:Гравитационная дифференциальная вакуумная экстракция}}
-Если этот бит включён, нужно подать {color_amount:{var:catalyst_amount} {L}} вещества {color_name:{var:catalyst}}
+Если этот бит включён, нужно подать {white:{var:catalyst_amount} {L}} вещества {white:{var:catalyst}}
 {hr}
 {white:{bold:Бит 4: }}{color_misc:{bold:Селдоновский процесс урегулирования}}
 Если этот бит включён, {color_note:ИГНОРИРУЙТЕ} все остальные биты и ничего не подавайте
 {hr}
 {white:{bold:Нет битов: }}{color_misc:{bold:Перегрузка механизма}}
 В редких случаях механизм может перегрузиться и вообще не выдать управляющий сигнал
-Чтобы не повредить механизм, подайте {color_amount:{var:coolant_amount} {L}} вещества {color_name:{var:coolant}}
+Чтобы не повредить механизм, подайте {color_cold:{var:coolant_amount} {L}} вещества {color_cold:{var:coolant}}
 {hr}
 Рецепт успешен, только если весь сигнал расшифрован правильно
 Подача любой жидкости, которую сигнал не запрашивал, всегда аннулирует рецепт

@@ -178,6 +178,8 @@ public class MTEPurificationUnitBaryonicPerfection
 
     private static final long CATALYST_BASE_COST = 1 * INGOTS;
 
+    private static final int CONSUME_INTERVAL = 20;
+
     private int correctStartIndex = -1;
     private int numCasings = 0;
     private static final int MIN_CASINGS = 300;
@@ -260,7 +262,7 @@ public class MTEPurificationUnitBaryonicPerfection
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_baryonic_perfection"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-baryonic-perfection"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("catalyst_cost", formatNumber(CATALYST_BASE_COST)).put("infinity", Materials.Infinity.getMolten(1).getLocalizedName()).put("output", formatNumber(BARYONIC_MATTER_OUTPUT)).put("extra_output", formatNumber(PurifiedWaterRecipes.extraBaryonicOutput)).put("baryonic", Materials.StableBaryonicMatter.getFluid(1).getLocalizedName()).build())
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-baryonic-perfection"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("interval", CONSUME_INTERVAL).put("catalyst_cost",formatNumber(CATALYST_BASE_COST)).put("infinity", Materials.Infinity.getMolten(1).getLocalizedName()).put("output", formatNumber(BARYONIC_MATTER_OUTPUT)).put("extra_output", formatNumber(PurifiedWaterRecipes.extraBaryonicOutput)).put("baryonic", Materials.StableBaryonicMatter.getFluid(1).getLocalizedName()).build())
             .beginStructureBlock(17, 17, 17, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
             .addCasing(MIN_CASINGS + "-339", Casings.QuarkExclusionCasing.getLocalizedName(), false)
@@ -352,7 +354,7 @@ public class MTEPurificationUnitBaryonicPerfection
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.runMachine(aBaseMetaTileEntity, aTick);
         // Every 20 ticks, add all catalysts from the input bus to the internal inventory.
-        if (mMaxProgresstime > 0 && aTick % 20 == 0) {
+        if (mMaxProgresstime > 0 && aTick % CONSUME_INTERVAL == 0) {
             startRecipeProcessing();
             ArrayList<ItemStack> storedInputs = getStoredInputs();
             // For each stack in the input, check if it is a valid catalyst item and if so consume it

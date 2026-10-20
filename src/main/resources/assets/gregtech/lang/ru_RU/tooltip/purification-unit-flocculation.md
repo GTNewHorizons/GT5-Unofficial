@@ -5,7 +5,7 @@
 Выдаёт {color_name:{var:waste}}, которые можно переработать
 {hr}
 Во время работы потребляет ВСЁ вещество {color_name:{var:input}} во входном шлюзе
-В конце рецепта за каждые {color_amount:{var:per_level} {L}} израсходованного вещества {color_name:{var:input}}
+В конце рецепта за каждые {white:{var:per_level} {L}} израсходованного вещества {white:{var:input}}
 шанс успеха растёт на {color_misc:{var:success}%}. Если общий объём поданной жидкости
 не кратен {color_amount:{var:per_level} {L}}, к успеху применяется штраф по формуле:
 {color_misc:Успех}{color_formula: = Успех * 2^(-10 * Коэффициент переполнения)}

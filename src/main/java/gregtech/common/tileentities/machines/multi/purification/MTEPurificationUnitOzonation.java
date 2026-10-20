@@ -78,6 +78,11 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
      */
     public static final int MAX_OZONE_GAS_FOR_EXPLOSION = 1000 * (int) GTUtility.powInt(2, 10);
 
+    /**
+     * Success chance bonus in percent for each doubling of ozone in the recipe.
+     */
+    public static final float SUCCESS_PER_OZONE_DOUBLING = 20.0f;
+
     private int casingCount = 0;
     private static final int MIN_CASING = 96;
 
@@ -173,7 +178,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_ozonation"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-ozonation"), ImmutableMap.of("tier", formatNumber(getWaterTier()), "max_ozone", formatNumber(MAX_OZONE_GAS_FOR_EXPLOSION), "ozone", Materials.Ozone.getGas(1).getLocalizedName()))
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-ozonation"), ImmutableMap.of("tier", formatNumber(getWaterTier()), "max_ozone", formatNumber(MAX_OZONE_GAS_FOR_EXPLOSION), "bonus", formatNumber(SUCCESS_PER_OZONE_DOUBLING), "ozone", Materials.Ozone.getGas(1).getLocalizedName()))
             .beginStructureBlock(9, 10, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing(MIN_CASING + "-99", Casings.InertFiltrationCasing.getLocalizedName(), false)

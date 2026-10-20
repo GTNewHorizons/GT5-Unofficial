@@ -46,6 +46,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -60,6 +61,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -284,8 +286,14 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         FluidStack[] gases = INERT_GASES.get();
         // spotless:off
+        SuperconductorMaterial[] superconductors = SUPERCONDUCTOR_MATERIALS.get();
+        ImmutableMap.Builder<String, Object> vars = ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("control_hatch", StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch")).put("gas0", gases[0].getLocalizedName()).put("gas0_amount", formatNumber(gases[0].amount)).put("gas1", gases[1].getLocalizedName()).put("gas1_amount", formatNumber(gases[1].amount)).put("gas2", gases[2].getLocalizedName()).put("gas2_amount", formatNumber(gases[2].amount)).put("gas3", gases[3].getLocalizedName()).put("gas3_amount", formatNumber(gases[3].amount)).put("supercon_amount", formatNumber(SUPERCON_FLUID_AMOUNT)).put("catalyst", CATALYST_FLUID.getLocalizedName()).put("catalyst_amount", formatNumber(CATALYST_FLUID.amount)).put("coolant", COOLANT_FLUID.getLocalizedName()).put("coolant_amount", formatNumber(COOLANT_FLUID.amount));
+        // SUPERCONDUCTOR_MATERIALS lists the UV to UMV superconductors in tier order
+        for (int i = 0; i < superconductors.length; i++) {
+            vars.put("tier" + i, GTUtility.getColoredTierNameForTooltip(VoltageIndex.UV + i)).put("mult" + i, formatNumber(superconductors[i].multiplier));
+        }
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_degasser"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-degasser"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("control_hatch", StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch")).put("gas0", gases[0].getLocalizedName()).put("gas0_amount", formatNumber(gases[0].amount)).put("gas1", gases[1].getLocalizedName()).put("gas1_amount", formatNumber(gases[1].amount)).put("gas2", gases[2].getLocalizedName()).put("gas2_amount", formatNumber(gases[2].amount)).put("gas3", gases[3].getLocalizedName()).put("gas3_amount", formatNumber(gases[3].amount)).put("supercon_amount", formatNumber(SUPERCON_FLUID_AMOUNT)).put("catalyst", CATALYST_FLUID.getLocalizedName()).put("catalyst_amount", formatNumber(CATALYST_FLUID.amount)).put("coolant", COOLANT_FLUID.getLocalizedName()).put("coolant_amount", formatNumber(COOLANT_FLUID.amount)).build())
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-degasser"), vars.build())
             .beginStructureBlock(17, 25, 17, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing(MIN_CASING + "-800", Casings.HeatResistantTriniumPlatedCasing.getLocalizedName(), false)
