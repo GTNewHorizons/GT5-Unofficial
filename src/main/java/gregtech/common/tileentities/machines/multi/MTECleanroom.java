@@ -41,7 +41,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.ITexture;
@@ -153,7 +152,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     .put("startup_eu", formatNumber(STARTUP_EU))
                     .put("idle_eu", formatNumber(IDLE_EU))
                     .put("lv_amperage", LV_AMPERAGE)
-                    .put("tier", VoltageIndex.UMV)
                     .put("maint_penalty", formatNumber(MAINTENANCE_PENALTY_PERCENT))
                     .put("voltageTier_LV", voltageTooltipFormatted(1))
                     .put("voltageTier_HV", voltageTooltipFormatted(3))
