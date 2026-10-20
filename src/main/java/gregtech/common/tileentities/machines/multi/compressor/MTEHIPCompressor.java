@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR;
@@ -30,6 +31,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -65,6 +67,17 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompressor>
     implements ISurvivalConstructable, IHeatProducer, ICasingTextureProvider {
+
+    private static final double SPEED_BONUS = 1.0D / 3.5D;
+    private static final double EU_MODIFIER = 0.75D;
+    private static final double OVERHEATED_SPEED_BONUS = 2.5D;
+    private static final double OVERHEATED_EU_MODIFIER = 1.1D;
+    private static final int PARALLELS_PER_TIER = 4;
+    private static final int OVERHEATED_PARALLELS_PER_TIER = 1;
+    private static final int HEAT_PER_SECOND = 5;
+    private static final double COIL_HEAT_FACTOR = 0.9;
+    private static final int BASE_COOLING_PER_SECOND = 2;
+    private static final int COOLING_INCREASE_PER_SECOND = 2;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHIPCompressor> STRUCTURE_DEFINITION = StructureDefinition
@@ -171,7 +184,20 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.isostatic_press_compressor"))
-            .addMarkdown(new ResourceLocation("gregtech", "hip-compressor"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "hip-compressor"),
+                ImmutableMap.<String, Object>builder()
+                    .put("heat", HEAT_PER_SECOND)
+                    .put("coil_factor", formatNumber(COIL_HEAT_FACTOR))
+                    .put("base_cooling", BASE_COOLING_PER_SECOND)
+                    .put("cooling_increase", COOLING_INCREASE_PER_SECOND)
+                    .put("speed", Math.round(100 / SPEED_BONUS))
+                    .put("overheated_speed", Math.round(100 / OVERHEATED_SPEED_BONUS))
+                    .put("eu", Math.round(EU_MODIFIER * 100))
+                    .put("overheated_eu", Math.round(OVERHEATED_EU_MODIFIER * 100))
+                    .put("parallels", PARALLELS_PER_TIER)
+                    .put("overheated_parallels", OVERHEATED_PARALLELS_PER_TIER)
+                    .build())
             .beginStructureBlock(15, 10, 7, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("95-124", Casings.ElectricCompressorCasing.getLocalizedName(), false)
@@ -269,13 +295,13 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                setSpeedBonus(1.0D / 3.5D);
-                setEuModifier(0.75D);
+                setSpeedBonus(SPEED_BONUS);
+                setEuModifier(EU_MODIFIER);
 
                 // Nerf when heated
                 if (overheated) {
-                    setSpeedBonus(2.5D);
-                    setEuModifier(1.1D);
+                    setSpeedBonus(OVERHEATED_SPEED_BONUS);
+                    setEuModifier(OVERHEATED_EU_MODIFIER);
                 }
 
                 // If Black Hole required, no recipe
@@ -310,18 +336,18 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         if (aTick % 20 != 0 || aBaseMetaTileEntity.isClientSide()) return;
 
         // Default to cooling by 2%
-        float heatMod = -2;
+        float heatMod = -BASE_COOLING_PER_SECOND;
 
         // If the machine is running, heat by 5% x 0.90 ^ (Coil Tier)
         // Cupronickel is 0, so base will be 5% increase
         // Also reset cooling speed
         if (this.maxProgresstime() != 0) {
-            heatMod = (float) (5 * GTUtility.powInt(0.9, coilTier));
+            heatMod = (float) (HEAT_PER_SECOND * GTUtility.powInt(COIL_HEAT_FACTOR, coilTier));
             coolingTimer = 0;
         } else {
             // If the machine isn't running, add and increment the cooling timer
             heatMod -= coolingTimer;
-            coolingTimer += 2;
+            coolingTimer += COOLING_INCREASE_PER_SECOND;
         }
 
         heat = MathUtils.clamp(heat + heatMod, 0, 100);
@@ -341,8 +367,8 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
     @Override
     public int getMaxParallelRecipes() {
-        return overheated ? GTUtility.getTier(this.getMaxInputVoltage())
-            : (4 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (overheated ? OVERHEATED_PARALLELS_PER_TIER : PARALLELS_PER_TIER)
+            * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
