@@ -155,7 +155,9 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         int maxInput = threshold * 2;
         vars.put(prefix + "_threshold", formatNumber(threshold))
             .put(prefix + "_max_input", formatNumber(maxInput))
-            .put(prefix + "_max_output", formatNumber((int) (maxInput * BASE_STEAM_MULTIPLIER * coolant.steamMultiplier)));
+            .put(
+                prefix + "_max_output",
+                formatNumber((int) (maxInput * BASE_STEAM_MULTIPLIER * coolant.steamMultiplier)));
     }
 
     @Override
@@ -215,7 +217,8 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
 
         superheated_threshold = BASE_SH_THRESHOLD; // default: must have 4000L per second to generate superheated steam
         float efficiency = 1f; // default: operate at 100% efficiency with no integrated circuitry
-        int shs_reduction_per_config = SH_THRESHOLD_REDUCTION_PER_CONFIG; // reduce threshold 150L/s per circuitry level (1-25)
+        int shs_reduction_per_config = SH_THRESHOLD_REDUCTION_PER_CONFIG; // reduce threshold 150L/s per circuitry level
+                                                                          // (1-25)
         float steam_output_multiplier = BASE_STEAM_MULTIPLIER; // default: multiply output by 4 * 10 (boosted x5)
         float penalty = 0.0f; // penalty to apply to output based on circuitry level (1-25).
 
