@@ -396,7 +396,7 @@ public class ProcessingShaping implements PartRecipeGenerator {
                         .addTo(extruderRecipes);
                 }
 
-                if (!(material == Materials.StyreneButadieneRubber || material == Materials.Silicone)) {
+                if (!(material == Materials.StyreneButadieneRubber || material == Materials.RubberSilicone)) {
                     if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                         if (target.hasShape(Shapes.plate)) {
                             GTValues.RA.stdBuilder()

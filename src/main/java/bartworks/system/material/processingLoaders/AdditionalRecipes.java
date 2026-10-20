@@ -239,11 +239,11 @@ public class AdditionalRecipes {
         }
 
         List<Pair<Material, Integer>> liquidFuels = Arrays.asList(
-            ImmutablePair.of(Materials.PhosphoricAcidGT5U, 66),
-            ImmutablePair.of(Materials.DilutedHydrochloricAcidGT5U, 26),
+            ImmutablePair.of(Materials.PhosphoricAcid, 66),
+            ImmutablePair.of(Materials.DilutedHydrochloricAcid, 26),
             ImmutablePair.of(Materials.HypochlorousAcid, 56),
-            ImmutablePair.of(Materials.HydrofluoricAcidGT5U, 60),
-            ImmutablePair.of(Materials.HydrochloricAcidGT5U, 52),
+            ImmutablePair.of(Materials.HydrofluoricAcid, 60),
+            ImmutablePair.of(Materials.HydrochloricAcid, 52),
             ImmutablePair.of(Materials.IndustrialStrengthHydrofluoricAcid, 320),
             ImmutablePair.of(Materials.IndustrialStrengthHydrogenChloride, 224),
             ImmutablePair.of(Materials.NitricAcid, 72),
@@ -326,7 +326,7 @@ public class AdditionalRecipes {
                 MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, 4))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 10))
+                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 10))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

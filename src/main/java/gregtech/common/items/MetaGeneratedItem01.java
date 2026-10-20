@@ -1058,7 +1058,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements EnderSt
                 Fuel_Can_Plastic_Empty.ID,
                 "gt.item.fuel_can.plastic.empty.name",
                 "gt.item.fuel_can.plastic.empty.tooltip",
-                new ItemData(Materials.Plastic, OrePrefixes.plate.getMaterialAmount()),
+                new ItemData(Materials.Polyethylene, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
         ItemList.Fuel_Can_Plastic_Filled.set(
@@ -1066,7 +1066,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements EnderSt
                 Fuel_Can_Plastic_Filled.ID,
                 "gt.item.fuel_can.plastic.filled.name",
                 "gt.item.fuel_can.plastic.filled.tooltip",
-                new ItemData(Materials.Plastic, OrePrefixes.plate.getMaterialAmount()),
+                new ItemData(Materials.Polyethylene, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
 
@@ -4435,7 +4435,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements EnderSt
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Plastic) });
+            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Polyethylene) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_1by1.get(1L),

@@ -87,7 +87,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     /**
      * Fluid that needs to be supplied to boost success chance
      */
-    private static final Material INPUT_CHEMICAL = Materials.PolyaluminiumChloride;
+    private static final Material INPUT_CHEMICAL = Materials.PolyAluminiumChloride;
     /**
      * Output fluid to be produced as waste. The intended behaviour is that this output fluid can be cycled
      * semi-perfectly into the input fluid.

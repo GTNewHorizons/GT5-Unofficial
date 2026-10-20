@@ -119,12 +119,12 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     /**
      * Alkaline catalyst material
      */
-    public static final Material ALKALINE_MATERIAL = Materials.SodiumHydroxideGT5U;
+    public static final Material ALKALINE_MATERIAL = Materials.SodiumHydroxide;
 
     /**
      * Acidic catalyst material
      */
-    public static final Material ACIDIC_MATERIAL = Materials.HydrochloricAcidGT5U;
+    public static final Material ACIDIC_MATERIAL = Materials.HydrochloricAcid;
 
     /**
      * The input hatch for the acidic material

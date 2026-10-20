@@ -61,7 +61,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
         FluidStack fluid = StackInfo.getFluid(stack);
         if (fluid != null) {
             if (fluid.isFluidEqual(
-                MaterialLibAPI.getFluidStack(Materials.PolyaluminiumChloride, FluidShapes.fluidLiquid, 1_000))) {
+                MaterialLibAPI.getFluidStack(Materials.PolyAluminiumChloride, FluidShapes.fluidLiquid, 1_000))) {
                 currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.0"));
                 currentTip.add(
                     StatCollector.translateToLocalFormatted(

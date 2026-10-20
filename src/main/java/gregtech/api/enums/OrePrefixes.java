@@ -2196,7 +2196,7 @@ public class OrePrefixes {
     }
 
     public String getDefaultLocalNameFormatForItem() {
-        return getDefaultLocalNameForItem(Materials.NULL);
+        return getDefaultLocalNameForItem(Materials._NULL);
     }
 
     public static String getOreprefixKey(String prefix, String formatString) {
@@ -2217,7 +2217,7 @@ public class OrePrefixes {
     }
 
     public String getOreprefixKey() {
-        return getOreprefixKeyForMaterial(MaterialUtils.internalName(Materials.NULL));
+        return getOreprefixKeyForMaterial(MaterialUtils.internalName(Materials._NULL));
     }
 
     public String getLocalizedNameForItem(String materialName) {

@@ -66,7 +66,7 @@ public final class ForeignPartRecipes {
     /// invalid stack, or under a material-based prefix whose name named no material.
     public static void run(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
         if (material == null || MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
-        if (material == Materials.NULL && !prefix.isSelfReferencing() && prefix.isMaterialBased()) return;
+        if (material == Materials._NULL && !prefix.isSelfReferencing() && prefix.isMaterialBased()) return;
         if (!GTUtility.isStackValid(stack)) return;
 
         clampStackSize(prefix, stack);

@@ -27,10 +27,10 @@ final class ForeignPartRecipeTable {
             // appliedenergistics2
             part(OrePrefixes.crystal, XModMaterials.Fluix, "appliedenergistics2", "item.ItemMultiMaterial", 7),
             ore(Materials.CertusQuartz, "appliedenergistics2", "tile.OreQuartz", 0),
-            ore(Materials.ChargedCertusQuartz, "appliedenergistics2", "tile.OreQuartzCharged", 0),
+            ore(Materials.CertusQuartzCharged, "appliedenergistics2", "tile.OreQuartzCharged", 0),
             part(
                 OrePrefixes.crystal,
-                Materials.ChargedCertusQuartz,
+                Materials.CertusQuartzCharged,
                 "appliedenergistics2",
                 "item.ItemMultiMaterial",
                 1),
@@ -171,7 +171,7 @@ final class ForeignPartRecipeTable {
             ore(Materials.Gold, "GalaxySpace", "barnardaEoregold", 0),
             ore(Materials.Adamantium, "GalaxySpace", "oberonblocks", 3),
             // HardcoreEnderExpansion
-            ore(Materials.HeeEndium, "HardcoreEnderExpansion", "endium_ore", 0),
+            ore(Materials.Endium, "HardcoreEnderExpansion", "endium_ore", 0),
             // harvestcraft
             ore(Materials.Salt, "harvestcraft", "salt", 0),
             // IC2

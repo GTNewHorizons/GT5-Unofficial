@@ -133,7 +133,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(6)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.WoodTar, FluidShapes.fluidLiquid, 200))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials._13Dimethylbenzene, FluidShapes.fluidLiquid, 30))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.IIIDimethylbenzene, FluidShapes.fluidLiquid, 30))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
@@ -141,7 +141,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(6)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CharcoalByproducts, FluidShapes.fluidGas, 200))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials._13Dimethylbenzene, FluidShapes.fluidLiquid, 20))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.IIIDimethylbenzene, FluidShapes.fluidLiquid, 20))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
@@ -149,7 +149,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(7)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.WoodTar, FluidShapes.fluidLiquid, 200))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials._14Dimethylbenzene, FluidShapes.fluidLiquid, 30))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.IVDimethylbenzene, FluidShapes.fluidLiquid, 30))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
@@ -157,7 +157,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(7)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CharcoalByproducts, FluidShapes.fluidGas, 200))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials._14Dimethylbenzene, FluidShapes.fluidLiquid, 20))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.IVDimethylbenzene, FluidShapes.fluidLiquid, 20))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
@@ -431,7 +431,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.DiphenylmethaneDiisocyanateMixture, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 5_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 5_000))
             .duration(2 * MINUTES + 5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
@@ -444,7 +444,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.WoodTar, FluidShapes.fluidLiquid, 250),
                 MaterialLibAPI.getFluidStack(Materials.WoodVinegar, FluidShapes.fluidLiquid, 400),
                 MaterialLibAPI.getFluidStack(Materials.WoodGas, FluidShapes.fluidGas, 250),
-                MaterialLibAPI.getFluidStack(Materials._13Dimethylbenzene, FluidShapes.fluidLiquid, 100))
+                MaterialLibAPI.getFluidStack(Materials.IIIDimethylbenzene, FluidShapes.fluidLiquid, 100))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
@@ -457,7 +457,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Phenol, FluidShapes.fluidLiquid, 100),
                 MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 400),
                 MaterialLibAPI.getFluidStack(Materials.Toluene, FluidShapes.fluidLiquid, 100),
-                MaterialLibAPI.getFluidStack(Materials._13Dimethylbenzene, FluidShapes.fluidLiquid, 150))
+                MaterialLibAPI.getFluidStack(Materials.IIIDimethylbenzene, FluidShapes.fluidLiquid, 150))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
@@ -470,7 +470,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Phenol, FluidShapes.fluidLiquid, 100),
                 MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 400),
                 MaterialLibAPI.getFluidStack(Materials.Toluene, FluidShapes.fluidLiquid, 100),
-                MaterialLibAPI.getFluidStack(Materials._14Dimethylbenzene, FluidShapes.fluidLiquid, 150))
+                MaterialLibAPI.getFluidStack(Materials.IVDimethylbenzene, FluidShapes.fluidLiquid, 150))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
@@ -483,7 +483,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.WoodTar, FluidShapes.fluidLiquid, 250),
                 MaterialLibAPI.getFluidStack(Materials.WoodVinegar, FluidShapes.fluidLiquid, 400),
                 MaterialLibAPI.getFluidStack(Materials.WoodGas, FluidShapes.fluidGas, 250),
-                MaterialLibAPI.getFluidStack(Materials._14Dimethylbenzene, FluidShapes.fluidLiquid, 100))
+                MaterialLibAPI.getFluidStack(Materials.IVDimethylbenzene, FluidShapes.fluidLiquid, 100))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
@@ -497,8 +497,8 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.WoodVinegar, FluidShapes.fluidLiquid, 400),
                 MaterialLibAPI.getFluidStack(Materials.WoodGas, FluidShapes.fluidGas, 250),
                 MaterialLibAPI.getFluidStack(Materials.Dimethylbenzene, FluidShapes.fluidLiquid, 20),
-                MaterialLibAPI.getFluidStack(Materials._13Dimethylbenzene, FluidShapes.fluidLiquid, 60),
-                MaterialLibAPI.getFluidStack(Materials._14Dimethylbenzene, FluidShapes.fluidLiquid, 20))
+                MaterialLibAPI.getFluidStack(Materials.IIIDimethylbenzene, FluidShapes.fluidLiquid, 60),
+                MaterialLibAPI.getFluidStack(Materials.IVDimethylbenzene, FluidShapes.fluidLiquid, 20))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
@@ -512,8 +512,8 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 400),
                 MaterialLibAPI.getFluidStack(Materials.Toluene, FluidShapes.fluidLiquid, 100),
                 MaterialLibAPI.getFluidStack(Materials.Dimethylbenzene, FluidShapes.fluidLiquid, 30),
-                MaterialLibAPI.getFluidStack(Materials._13Dimethylbenzene, FluidShapes.fluidLiquid, 90),
-                MaterialLibAPI.getFluidStack(Materials._14Dimethylbenzene, FluidShapes.fluidLiquid, 30))
+                MaterialLibAPI.getFluidStack(Materials.IIIDimethylbenzene, FluidShapes.fluidLiquid, 90),
+                MaterialLibAPI.getFluidStack(Materials.IVDimethylbenzene, FluidShapes.fluidLiquid, 30))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
@@ -573,9 +573,9 @@ public class DistilleryRecipes implements Runnable {
         // 9C5H12O = 4C6H14O + 5CH4O + 4C4H8
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.MTBEReactionMixtureButene, FluidShapes.fluidGas, 900))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.MTBEMixture, FluidShapes.fluidGas, 900))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.EthylTertButylEther, FluidShapes.fluidLiquid, 400),
+                MaterialLibAPI.getFluidStack(Materials.AntiKnock, FluidShapes.fluidLiquid, 400),
                 MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 500),
                 MaterialLibAPI.getFluidStack(Materials.Butene, FluidShapes.fluidGas, 400))
             .duration(2 * SECONDS)
@@ -583,9 +583,9 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.MTBEReactionMixtureButane, FluidShapes.fluidGas, 900))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.MTBEMixtureAlt, FluidShapes.fluidGas, 900))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.EthylTertButylEther, FluidShapes.fluidLiquid, 400),
+                MaterialLibAPI.getFluidStack(Materials.AntiKnock, FluidShapes.fluidLiquid, 400),
                 MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 500),
                 MaterialLibAPI.getFluidStack(Materials.Butane, FluidShapes.fluidGas, 400))
             .duration(2 * SECONDS)
@@ -714,9 +714,9 @@ public class DistilleryRecipes implements Runnable {
 
         // 2 0.5HCl(Diluted) = HCl + H2O
         addUniversalDistillationRecipe(
-            MaterialLibAPI.getFluidStack(Materials.DilutedHydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000),
+            MaterialLibAPI.getFluidStack(Materials.DilutedHydrochloricAcid, FluidShapes.fluidLiquid, 2_000),
             new FluidStack[] { GTUtility.getWater(1_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000) },
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 1_000) },
             GTValues.NI,
             600,
             64);

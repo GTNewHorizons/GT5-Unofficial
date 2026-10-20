@@ -26,8 +26,8 @@ public class Unpackager implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.CrudeSteel, TEBlockShapes.frameGt, 1),
-                    MaterialLibAPI.getStack(Materials.CrudeSteel, Shapes.plate, 6))
+                    MaterialLibAPI.getStack(Materials.ClayCompound, TEBlockShapes.frameGt, 1),
+                    MaterialLibAPI.getStack(Materials.ClayCompound, Shapes.plate, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);

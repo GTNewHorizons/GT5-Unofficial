@@ -60,7 +60,7 @@ public class MaterialUtils {
         }
         Material found = legacyNameToMaterial.get(name);
         if (found == null) found = MaterialLibAPI.getMaterial("gregtech", name);
-        return found == Materials.NULL ? null : found;
+        return found == Materials._NULL ? null : found;
     }
 
     private static Map<String, Material> legacyNameToMaterial;

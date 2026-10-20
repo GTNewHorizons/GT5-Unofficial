@@ -36,9 +36,7 @@ public class LaserEngraverRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.DimensionallyTranscendentCrudeCatalyst, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DTCC, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTCC, FluidShapes.fluidLiquid, 1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
@@ -46,9 +44,7 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.DimensionallyTranscendentProsaicCatalyst, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DTPC, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTPC, FluidShapes.fluidLiquid, 1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
@@ -56,11 +52,7 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.DimensionallyTranscendentResplendentCatalyst,
-                    FluidShapes.fluidLiquid,
-                    1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DTRC, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, 1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
@@ -68,9 +60,7 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.DimensionallyTranscendentExoticCatalyst, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DTEC, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, 1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
@@ -78,9 +68,7 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.DimensionallyTranscendentStellarCatalyst, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DTSC, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)

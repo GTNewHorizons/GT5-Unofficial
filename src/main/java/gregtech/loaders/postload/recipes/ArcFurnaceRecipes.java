@@ -112,7 +112,7 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_TungstenSteel.get(1L))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.TPVAlloy, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.TPV, Shapes.ingot, 8),
                 MaterialLibAPI.getStack(Materials.Nichrome, Shapes.ingot, 1),
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 5))
             .duration(15 * SECONDS)
@@ -124,7 +124,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemInputs(ItemList.Casing_Coil_HSSG.get(1L))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HSSG, Shapes.ingot, 8),
-                MaterialLibAPI.getStack(Materials.TPVAlloy, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.TPV, Shapes.ingot, 1),
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 6))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)

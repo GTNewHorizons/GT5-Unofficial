@@ -64,7 +64,7 @@ final class LegacyStorageBlockTable {
             "gregtech:gt.blockgem1",
             new Material[] { Materials.InfusedAir, Materials.Amber, Materials.Amethyst, Materials.InfusedWater,
                 Materials.BlueTopaz, Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
-                Materials.EnderPearl, Materials.FoolsRuby, Materials.Force, Materials.Forcicium, Materials.Forcillium,
+                Materials.EnderPearl, Materials.Spinel, Materials.Force, Materials.Forcicium, Materials.Forcillium,
                 Materials.GreenSapphire, Materials.InfusedFire, Materials.Jasper }),
         Map.entry(
             "gregtech:gt.blockgem2",
@@ -78,11 +78,10 @@ final class LegacyStorageBlockTable {
                 Materials.Charcoal, Materials.Blaze }),
         Map.entry(
             "gregtech:gt.blockmetal9",
-            new Material[] { Materials.Cryolite, Materials.SiliconSolarGrade, Materials.NickelAluminide,
-                Materials.SpaceTime, Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
-                Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.Magmatter,
-                Materials.SixPhasedCopper, Materials.HellishMetal,
-                Materials.MagnetohydrodynamicallyConstrainedStarMatter, Materials.Hexanite }),
+            new Material[] { Materials.Cryolite, Materials.SiliconSG, Materials.NickelAluminide, Materials.SpaceTime,
+                Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
+                Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.MagMatter,
+                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM, Materials.Hexanite }),
         Map.entry("gregtech:gt.blockmetal10", new Material[] { Materials.Shijima, Materials.Churitsu }));
 
     private LegacyStorageBlockTable() {}

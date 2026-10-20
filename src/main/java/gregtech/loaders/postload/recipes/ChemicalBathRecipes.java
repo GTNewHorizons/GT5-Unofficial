@@ -350,7 +350,7 @@ public class ChemicalBathRecipes implements Runnable {
         // Na + H2O = NaOH + H
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 3))
             .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .duration(5 * SECONDS)

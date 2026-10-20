@@ -342,7 +342,7 @@ public class RecipesMachinesCustom {
                 GregtechItemList.GTPP_Casing_MV.get(4),
                 MaterialLibAPI.getStack(Materials.Aluminium, Shapes.gearGt, 4),
                 MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.plate, 16),
-                MaterialLibAPI.getStack(Materials.Plastic, TEBlockShapes.pipeLarge, 4),
+                MaterialLibAPI.getStack(Materials.Polyethylene, TEBlockShapes.pipeLarge, 4),
                 MaterialLibAPI.getStack(Materials.BlackMetal, TEBlockShapes.frameGt, 4))
             .circuit(19)
             .itemOutputs(GregtechItemList.ChemicalPlant_Controller.get(1))

@@ -322,7 +322,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     public short[] getRGBa(ItemStack aStack) {
         RegisteredFluidData fluidData = registeredFluidDataMap.get(aStack.getItemDamage());
         if (fluidData == null) {
-            return MaterialUtils.rgba(Materials.NULL);
+            return MaterialUtils.rgba(Materials._NULL);
         }
 
         return fluidData.rgba;

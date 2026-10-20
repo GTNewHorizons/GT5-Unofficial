@@ -151,7 +151,7 @@ public class FuelRecipeLoader {
                 MaterialLibAPI.getStack(Materials.AtomicSeparationCatalyst, Shapes.dust, 32))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NaquadahBasedLiquidFuelMkIV, FluidShapes.fluidLiquid, 2_000),
-                MaterialLibAPI.getFluidStack(Materials.HeavyRadox, FluidShapes.fluidLiquid, 250))
+                MaterialLibAPI.getFluidStack(Materials.RadoxHeavy, FluidShapes.fluidLiquid, 250))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.NaquadahBasedLiquidFuelMkV, FluidShapes.fluidLiquid, 500))
             .duration(10 * SECONDS)
@@ -166,7 +166,7 @@ public class FuelRecipeLoader {
                 MaterialLibAPI.getStack(Materials.AtomicSeparationCatalyst, Shapes.dust, 48))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NaquadahBasedLiquidFuelMkIV, FluidShapes.fluidLiquid, 2_000),
-                MaterialLibAPI.getFluidStack(Materials.HeavyRadox, FluidShapes.fluidLiquid, 250),
+                MaterialLibAPI.getFluidStack(Materials.RadoxHeavy, FluidShapes.fluidLiquid, 250),
                 MaterialLibAPI.getFluidStack(Materials.Mellion, FluidShapes.fluidMolten, 2 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidMolten, 2 * INGOTS))
             .fluidOutputs(

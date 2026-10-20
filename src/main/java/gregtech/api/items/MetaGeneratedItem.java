@@ -344,7 +344,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        return MaterialUtils.rgba(Materials.NULL);
+        return MaterialUtils.rgba(Materials._NULL);
     }
 
     /**

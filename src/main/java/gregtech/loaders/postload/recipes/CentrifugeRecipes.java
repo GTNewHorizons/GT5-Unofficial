@@ -440,7 +440,7 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Resin.get(1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, 3), ItemList.IC2_Plantball.get(1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.RubberRaw, Shapes.dust, 3), ItemList.IC2_Plantball.get(1))
             .outputChances(10000, 1000)
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 100))
             .duration(15 * SECONDS)
@@ -718,7 +718,7 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1))
@@ -952,7 +952,7 @@ public class CentrifugeRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Terbium, Shapes.dust, 7),
                 MaterialLibAPI.getStack(Materials.Technetium, Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials.Unstable, Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.FleroviumGT5U, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Flerovium, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, 1))
             .duration(60 * SECONDS)
             .eut(122880)

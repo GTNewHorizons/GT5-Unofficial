@@ -401,7 +401,7 @@ public class SpaceMiningRecipes {
             null,
             null,
             new int[] { 2000, 4500, 2500 },
-            new Material[] { Materials.Mica, Materials.Silicon, Materials.SiliconSolarGrade },
+            new Material[] { Materials.Mica, Materials.Silicon, Materials.SiliconSG },
             StoneType.Endstone,
             20,
             80,

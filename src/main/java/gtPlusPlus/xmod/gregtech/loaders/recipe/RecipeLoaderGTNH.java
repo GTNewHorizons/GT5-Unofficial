@@ -57,7 +57,7 @@ public class RecipeLoaderGTNH {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidMolten, INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, INGOTS))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.FleroviumGT5U, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Flerovium, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(8 * SECONDS)
             .eut(196608)
             .metadata(FUSION_THRESHOLD, 1_000_000_000L)

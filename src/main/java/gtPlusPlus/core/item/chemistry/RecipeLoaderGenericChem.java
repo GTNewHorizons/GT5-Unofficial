@@ -132,7 +132,7 @@ public class RecipeLoaderGenericChem {
     private static void recipeCarbonDisulfide() {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("fuelCoke", 8), MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 16))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, 1))
             .fluidOutputs(new FluidStack(GTPPFluids.CarbonDisulfide, 4_000))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LV)
@@ -187,7 +187,7 @@ public class RecipeLoaderGenericChem {
         ItemStack aluminaBallOutput = GregtechItemList.Milling_Ball_Alumina.get(8);
         ItemGenericChemBase.createMillingBallNBT(aluminaBallOutput);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 64))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 64))
             .circuit(10)
             .itemOutputs(aluminaBallOutput)
             .fluidInputs(new FluidStack(GTPPFluids.Aniline, 4_000))

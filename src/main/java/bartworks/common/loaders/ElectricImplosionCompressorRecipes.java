@@ -91,11 +91,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 1),
                 MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, STACKS))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.MagnetohydrodynamicallyConstrainedStarMatter,
-                    FluidShapes.fluidMolten,
-                    16 * INGOTS))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);
@@ -112,11 +108,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Eternity, Shapes.nanite, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 4 * STACKS))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.MagnetohydrodynamicallyConstrainedStarMatter,
-                    FluidShapes.fluidMolten,
-                    72 * INGOTS))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 72 * INGOTS))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);
@@ -124,9 +116,9 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         // Flawed Amalgatite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.Magmatter, Shapes.nanite, 1)),
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.MagMatter, Shapes.nanite, 1)),
                 MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemChipped, 3),
-                MaterialLibAPI.getStack(Materials.FoolsRuby, Shapes.gemFlawless, 64),
+                MaterialLibAPI.getStack(Materials.Spinel, Shapes.gemFlawless, 64),
                 MaterialLibAPI.getStack(Materials.Amethyst, Shapes.gemFlawless, 64),
                 MaterialLibAPI.getStack(Materials.Fluorspar, Shapes.gemFlawless, 64),
                 MaterialLibAPI.getStack(Materials.Tanzanite, Shapes.gemFlawless, 64))
@@ -174,11 +166,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                 getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
                 MaterialLibAPI.getStack(Materials.Eternity, part, multiplier))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, part, multiplier))
-            .fluidInputs(
-                MaterialUtils
-                    .molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, (long) partFraction * multiplier))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.MHDCSM, part, multiplier))
+            .fluidInputs(MaterialUtils.molten(Materials.MHDCSM, (long) partFraction * multiplier))
             .duration((int) (multiplier * (20 * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);

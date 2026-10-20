@@ -529,7 +529,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 32),
+                MaterialLibAPI.getStack(Materials.SiliconSG, Shapes.dust, 32),
                 ItemList.GalliumArsenideCrystalSmallPart.get(1))
             .circuit(2)
             .itemOutputs(ItemList.Circuit_Silicon_Ingot.get(1))
@@ -540,7 +540,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.SiliconSG, Shapes.dust, 64),
                 ItemList.GalliumArsenideCrystalSmallPart.get(2),
                 MaterialLibAPI.getStack(Materials.Phosphorus, Shapes.dust, 8))
             .circuit(3)
@@ -553,7 +553,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SiliconSolarGrade, BlockShapes.block, 16),
+                MaterialLibAPI.getStack(Materials.SiliconSG, BlockShapes.block, 16),
                 ItemList.GalliumArsenideCrystal.get(1),
                 MaterialLibAPI.getStack(Materials.Naquadah, Shapes.ingot, 1))
             .circuit(3)
@@ -566,7 +566,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SiliconSolarGrade, BlockShapes.block, 32),
+                MaterialLibAPI.getStack(Materials.SiliconSG, BlockShapes.block, 32),
                 ItemList.GalliumArsenideCrystal.get(2),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.ingot, 2))
             .circuit(3)
@@ -579,7 +579,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SiliconSolarGrade, BlockShapes.block, 64),
+                MaterialLibAPI.getStack(Materials.SiliconSG, BlockShapes.block, 64),
                 ItemList.GalliumArsenideCrystal.get(4),
                 MaterialLibAPI.getStack(Materials.Americium, Shapes.ingot, 4))
             .circuit(3)
@@ -594,7 +594,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.CalciumHydride, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Calciumhydride, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 2))
             .itemOutputs(MaterialLibAPI.getStack(Materials.CalciumDisilicide, Shapes.dust, 3))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000))
@@ -645,7 +645,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 2),
                 MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 3))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.CacliumCarbide, Shapes.dust, 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CalciumCarbide, Shapes.dust, 3))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
@@ -855,7 +855,7 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 6))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 4_000))
             .duration(5 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
             .metadata(COIL_HEAT, 9000)
@@ -864,7 +864,7 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 7))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 2))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 4_000))
             .duration(5 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
             .metadata(COIL_HEAT, 10000)
@@ -873,7 +873,7 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 8))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 3))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 4_000))
             .duration(5 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 11000)
@@ -882,7 +882,7 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 4))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 4_000))
             .duration(5 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
             .metadata(COIL_HEAT, 12000)
@@ -891,7 +891,7 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 10))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 5))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 4_000))
             .duration(5 * SECONDS)
             .eut((int) TierEU.RECIPE_UMV)
             .metadata(COIL_HEAT, 13000)

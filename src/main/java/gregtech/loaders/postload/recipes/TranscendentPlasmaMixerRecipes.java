@@ -132,8 +132,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI
-                    .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PrimordialMatter, FluidShapes.fluidLiquid, 1_000))
             .duration(100)
             .eut(PRIMORDIAL_MATTER)
@@ -146,8 +145,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Thorium, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.CelestialTungsten, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, 1_000),
-                MaterialLibAPI
-                    .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidPlasma, 5_000))
             .duration(100)
             .eut(TierEU.RECIPE_UMV)
@@ -156,8 +154,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(24)
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Antimony, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidPlasma, 1_000),
@@ -172,7 +169,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidPlasma, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.FleroviumGT5U, FluidShapes.fluidPlasma, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Flerovium, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.ChromaticGlass, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidPlasma, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Ichorium, FluidShapes.fluidPlasma, 1_000),

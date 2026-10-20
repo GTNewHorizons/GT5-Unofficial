@@ -80,7 +80,7 @@ public class AssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.foil, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 16 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, 1872),
+                MaterialLibAPI.getFluidStack(Materials.RubberSilicone, FluidShapes.fluidMolten, 1872),
                 GTModHandler.getIC2Coolant(2_000),
                 MaterialUtils.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), 9 * INGOTS))
             .itemOutputs(CustomItemList.eM_Coil.get(4))

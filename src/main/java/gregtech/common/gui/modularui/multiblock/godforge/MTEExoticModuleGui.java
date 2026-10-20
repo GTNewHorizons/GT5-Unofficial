@@ -58,7 +58,7 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(new DynamicDrawable(() -> {
                 if (magmatterMode.getBoolValue()) {
-                    return new ItemDrawable(MaterialLibAPI.getStack(Materials.Magmatter, Shapes.dust, 1));
+                    return new ItemDrawable(MaterialLibAPI.getStack(Materials.MagMatter, Shapes.dust, 1));
                 }
                 return new ItemDrawable(CustomItemList.Godforge_FakeItemQGP.get(1));
             }))

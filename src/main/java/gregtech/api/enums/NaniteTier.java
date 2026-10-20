@@ -56,7 +56,7 @@ public enum NaniteTier {
             case BlackDwarf -> Materials.BlackDwarfMatter;
             case SixPhasedCopper -> Materials.SixPhasedCopper;
             case Universium -> Materials.Universium;
-            case MagMatter -> Materials.Magmatter;
+            case MagMatter -> Materials.MagMatter;
             case Eternity -> Materials.Eternity;
         };
     }
@@ -84,7 +84,7 @@ public enum NaniteTier {
         if (mat == Materials.BlackDwarfMatter) return BlackDwarf;
         if (mat == Materials.SixPhasedCopper) return SixPhasedCopper;
         if (mat == Materials.Universium) return Universium;
-        if (mat == Materials.Magmatter) return MagMatter;
+        if (mat == Materials.MagMatter) return MagMatter;
         if (mat == Materials.Eternity) return Eternity;
 
         return null;

@@ -140,7 +140,7 @@ public class ForgeHammerRecipes implements Runnable {
         if (HardcoreEnderExpansion.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(HardcoreEnderExpansion.ID, "endium_ore", 1))
-                .itemOutputs(MaterialLibAPI.getStack(Materials.HeeEndium, Shapes.crushed, 1))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Endium, Shapes.crushed, 1))
                 .duration(16)
                 .eut(10)
                 .addTo(hammerRecipes);

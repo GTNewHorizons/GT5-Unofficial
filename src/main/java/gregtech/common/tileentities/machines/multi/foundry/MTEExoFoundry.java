@@ -311,7 +311,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('s', ofBlock(GregTechAPI.sBlockGlass1,3))
         .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
         .addElement('u', ofSheetMetal(Materials.CallistoIce))
-        .addElement('v', ofSheetMetal(Materials.Longasssuperconductornameforuhvwire))
+        .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
         .addElement(
             'w',
             lazy(
@@ -372,12 +372,12 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('Q', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
         .addElement('R', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
         .addElement('S', ofFrame(Materials.Universium))
-        .addElement('T', ofFrame(Materials.MagnetohydrodynamicallyConstrainedStarMatter))
+        .addElement('T', ofFrame(Materials.MHDCSM))
         .addElement('U', ofFrame(Materials.WhiteDwarfMatter))
         .addElement('V', ofFrame(Materials.BlackDwarfMatter))
         .addElement('W', ofStorageBlock(Materials.WhiteDwarfMatter))
         .addElement('X',ofStorageBlock(Materials.BlackDwarfMatter))
-        .addElement('Y',ofStorageBlock(Materials.MagnetohydrodynamicallyConstrainedStarMatter))
+        .addElement('Y',ofStorageBlock(Materials.MHDCSM))
         .addElement('Z', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
         .addShape(
             FoundryModule.UNSET.structureID,

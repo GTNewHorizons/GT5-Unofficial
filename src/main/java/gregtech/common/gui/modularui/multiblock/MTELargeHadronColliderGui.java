@@ -109,7 +109,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
                 MaterialUtils.localizedName(Materials.QuarkGluonPlasma));
             case MTELargeHadronCollider.BOOST_MAGMATTER -> StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.LHC.boostmode.fluid",
-                MaterialUtils.localizedName(Materials.Magmatter));
+                MaterialUtils.localizedName(Materials.MagMatter));
             default -> "GT5U.gui.text.LHC.boostmode.none";
         };
     }

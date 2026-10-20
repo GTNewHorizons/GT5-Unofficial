@@ -180,7 +180,8 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 4))
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 1L))
             .outputChances(10000)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * QUARTER_INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 1 * QUARTER_INGOTS))
             .duration(1 * SECONDS + 17 * TICKS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
@@ -305,7 +306,7 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Magmatter, Shapes.round, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.MagMatter, Shapes.round, 1))
             .itemOutputs(ItemList.Phononic_Seed_Crystal.get(5))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhononCrystalSolution, FluidShapes.fluidLiquid, 250))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -315,7 +316,7 @@ public class AutoclaveRecipes implements Runnable {
         // Exquisite Amalgatite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.Magmatter, Shapes.nanite, 1)),
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.MagMatter, Shapes.nanite, 1)),
                 MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemFlawless, 3),
                 MaterialLibAPI.getStack(Materials.Olenite, Shapes.gemChipped, 64),
                 MaterialLibAPI.getStack(Materials.Salt, Shapes.gemChipped, 64),

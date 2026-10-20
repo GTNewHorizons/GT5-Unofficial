@@ -272,11 +272,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     private final ArrayList<FluidStack> validFuelList = new ArrayList<>() {
 
         {
-            add(MaterialLibAPI.getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 1));
+            add(MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 1));
             add(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 1));
-            add(
-                MaterialLibAPI
-                    .getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 1));
+            add(MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 1));
         }
     };
 

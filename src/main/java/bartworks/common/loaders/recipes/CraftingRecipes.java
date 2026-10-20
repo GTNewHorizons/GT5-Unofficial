@@ -448,7 +448,7 @@ public class CraftingRecipes implements Runnable {
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 MaterialLibAPI.getStack(Materials.TungstenSteel, TEBlockShapes.frameGt, 1), 'W',
-                MaterialLibAPI.getStack(Materials.TPVAlloy, TEBlockShapes.wireGt01, 1), 'P',
+                MaterialLibAPI.getStack(Materials.TPV, TEBlockShapes.wireGt01, 1), 'P',
                 MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plate, 1), 'O',
                 MaterialLibAPI.getStack(Materials.Polystyrene, Shapes.plate, 1), 'G',
                 OrePrefixes.circuit.oreDictName(Circuits.IV.materialName()), 'C', ItemList.MACHINE_HULLS[5].get(1L) });

@@ -808,10 +808,10 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.plank.ingredient(Materials.Wood), 'S',
                 OrePrefixes.stick.ingredient(Materials.Wood) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Plastic, Materials.Plastic, null),
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Polyethylene, Materials.Polyethylene, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.ingredient(Materials.Plastic), 'S',
-                OrePrefixes.stick.ingredient(Materials.Plastic) });
+            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.ingredient(Materials.Polyethylene), 'S',
+                OrePrefixes.stick.ingredient(Materials.Polyethylene) });
         GTModHandler.addCraftingRecipe(
             INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Aluminium, Materials.Aluminium, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,

@@ -650,7 +650,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static FluidStack boostFluidStack(int boostMode, int amount) {
         return switch (boostMode) {
             case BOOST_QGP -> MaterialLibAPI.getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, amount);
-            case BOOST_MAGMATTER -> MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, amount);
+            case BOOST_MAGMATTER -> MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, amount);
             default -> null;
         };
     }

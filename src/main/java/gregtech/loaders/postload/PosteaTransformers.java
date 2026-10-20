@@ -741,12 +741,12 @@ public class PosteaTransformers implements Runnable {
         // For players updating from dailies
         addItemReplacement(
             "dreamcraft:PotassiumHydroxideDust",
-            MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.PotassiumHydroxide, Shapes.dust, 1),
             true);
         // For players updating directly from 2.8.4 or before
         addItemReplacement(
             "dreamcraft:item.PotassiumHydroxideDust",
-            MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.PotassiumHydroxide, Shapes.dust, 1),
             true); // FML Warning suppression in coremod
     }
 

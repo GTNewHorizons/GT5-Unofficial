@@ -25,7 +25,7 @@ public class ImplosionCompressorRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Compressed_Coal_Chunk.get(1L))
             .itemOutputs(
                 ItemList.IC2_Industrial_Diamond.get(1L),
-                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 4))
+                MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, 4))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -35,7 +35,7 @@ public class ImplosionCompressorRecipes implements Runnable {
             .itemInputs(ItemList.Ingot_IridiumAlloy.get(1L))
             .itemOutputs(
                 getModItem(IndustrialCraft2.ID, "itemPartIridium", 1L, 0),
-                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 4))
+                MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, 4))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)

@@ -51,7 +51,7 @@ public class RecipesRareEarthProcessing {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1),
-                MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 1))
             .fluidInputs(new FluidStack(mBrine, 2_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -112,7 +112,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.RareEarthII, Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials.RareEarthII, Shapes.crushed, 2))
             .outputChances(9000, 8000, 7000)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalBathRecipes);
@@ -139,7 +139,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.RareEarthIII, Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials.RareEarthIII, Shapes.crushed, 2))
             .outputChances(9000, 8000, 7000)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 2_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);

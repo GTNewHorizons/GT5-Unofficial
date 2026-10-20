@@ -118,11 +118,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private final static ItemStack FRANCIUM_HYDROXIDE_DUST = MaterialLibAPI
         .getStack(Materials.FranciumHydroxide, Shapes.dust, 1);
     private final static ItemStack CAESIUM_HYDROXIDE_DUST = MaterialLibAPI
-        .getStack(Materials.CaesiumHydroxideGT5U, Shapes.dust, 1);
+        .getStack(Materials.CaesiumHydroxide, Shapes.dust, 1);
     private final static ItemStack POTASSIUM_HYDROXIDE_DUST = MaterialLibAPI
-        .getStack(Materials.PotassiumHydroxideGT5U, Shapes.dust, 1);
+        .getStack(Materials.PotassiumHydroxide, Shapes.dust, 1);
     private final static ItemStack SODIUM_HYDROXIDE_DUST = MaterialLibAPI
-        .getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1);
+        .getStack(Materials.SodiumHydroxide, Shapes.dust, 1);
 
     private final ArrayList<MTEToxicResidueSensor> sensorHatches = new ArrayList<>();
 

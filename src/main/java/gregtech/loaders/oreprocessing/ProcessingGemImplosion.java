@@ -41,7 +41,7 @@ public final class ProcessingGemImplosion implements PartRecipeGenerator {
     private static final Map<Material, Yield> YIELDS = new IdentityHashMap<>();
 
     static {
-        register(16, 32, Materials.Diamond, Materials.ManaDiamond, Materials.BotaniaDragonstone);
+        register(16, 32, Materials.Diamond, Materials.ManaDiamond, Materials.Dragonstone);
         register(
             12,
             24,
@@ -58,7 +58,7 @@ public final class ProcessingGemImplosion implements PartRecipeGenerator {
         register(
             8,
             16,
-            Materials.FoolsRuby,
+            Materials.Spinel,
             Materials.GarnetRed,
             Materials.GarnetYellow,
             Materials.Jasper,
@@ -103,7 +103,7 @@ public final class ProcessingGemImplosion implements PartRecipeGenerator {
     private static void implode(ItemStack dust, ItemStack gems, Yield yield) {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(4, dust))
-            .itemOutputs(gems, MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, yield.darkAsh()))
+            .itemOutputs(gems, MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, yield.darkAsh()))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(ADDITIVE_AMOUNT, yield.additive())

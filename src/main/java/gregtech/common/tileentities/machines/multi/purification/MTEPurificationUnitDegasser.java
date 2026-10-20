@@ -135,16 +135,12 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     private static final Supplier<SuperconductorMaterial[]> SUPERCONDUCTOR_MATERIALS = () -> new SuperconductorMaterial[] {
         new SuperconductorMaterial(
-            MaterialLibAPI.getFluidStack(
-                Materials.Longasssuperconductornameforuvwire,
-                FluidShapes.fluidMolten,
-                SUPERCON_FLUID_AMOUNT),
+            MaterialLibAPI
+                .getFluidStack(Materials.SuperconductorUVBase, FluidShapes.fluidMolten, SUPERCON_FLUID_AMOUNT),
             1.0f),
         new SuperconductorMaterial(
-            MaterialLibAPI.getFluidStack(
-                Materials.Longasssuperconductornameforuhvwire,
-                FluidShapes.fluidMolten,
-                SUPERCON_FLUID_AMOUNT),
+            MaterialLibAPI
+                .getFluidStack(Materials.SuperconductorUHVBase, FluidShapes.fluidMolten, SUPERCON_FLUID_AMOUNT),
             1.25f),
         new SuperconductorMaterial(
             MaterialLibAPI

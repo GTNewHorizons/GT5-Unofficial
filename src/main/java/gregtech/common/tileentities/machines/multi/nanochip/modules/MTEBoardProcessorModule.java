@@ -264,7 +264,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         Arrays.asList(
             MaterialLibAPI.getFluid(Materials.IronIIIChloride, FluidShapes.fluidLiquid),
             MaterialLibAPI.getFluid(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid),
-            MaterialLibAPI.getFluid(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid),
+            MaterialLibAPI.getFluid(Materials.BioMediumSterilized, FluidShapes.fluidLiquid),
             MaterialLibAPI.getFluid(Materials.PrismaticAcid, FluidShapes.fluidLiquid),
             MaterialLibAPI.getFluid(Materials.UUMatter, FluidShapes.fluidLiquid)));
 
@@ -304,7 +304,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         }
 
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 3
-            && !holds(storedFluidStack, Materials.BiohMediumSterilized)) {
+            && !holds(storedFluidStack, Materials.BioMediumSterilized)) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 4
@@ -386,7 +386,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                         impurityFluidStack = liquid(Materials.IronIIChloride);
                     } else if (holds(storedFluidStack, Materials.GrowthMediumSterilized)) {
                         impurityFluidStack = liquid(Materials.GrowthMediumRaw);
-                    } else if (holds(storedFluidStack, Materials.BiohMediumSterilized)) {
+                    } else if (holds(storedFluidStack, Materials.BioMediumSterilized)) {
                         impurityFluidStack = liquid(Materials.BioMediumRaw);
                     } else if (holds(storedFluidStack, Materials.PrismaticAcid)) {
                         impurityFluidStack = liquid(Materials.PrismaticGas);

@@ -168,7 +168,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         if (baseMulti.bioT3Active) {
             fakeFluids.add(
                 MaterialLibAPI
-                    .getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, Integer.MAX_VALUE));
+                    .getFluidStack(Materials.BioMediumSterilized, FluidShapes.fluidLiquid, Integer.MAX_VALUE));
         }
         FluidStack[] inputFluids = fakeFluids.toArray(new FluidStack[] {});
         this.fluidInputs = inputFluids;

@@ -61,7 +61,7 @@ public final class LegacyPipeCutoverTable {
         wireCable(Materials.Naquadah, 1780);
         wireCable(Materials.NaquadahAlloy, 1800);
         wireCable(Materials.Duranium, 1820);
-        wireCable(Materials.TPVAlloy, 1840);
+        wireCable(Materials.TPV, 1840);
         wireCable(Materials.EndSteel, 1860);
         wireCable(Materials.ElectrumFlux, 1900);
         wireCable(Materials.RedAlloy, 2000);
@@ -72,12 +72,12 @@ public final class LegacyPipeCutoverTable {
         wireOnly(Materials.SuperconductorUMVBase, 2072);
         wireOnly(Materials.SuperconductorUIV, 2081);
         wireOnly(Materials.SuperconductorUMV, 2089);
-        wireOnly(Materials.Pentacadmiummagnesiumhexaoxid, 2200);
-        wireOnly(Materials.Titaniumonabariumdecacoppereikosaoxid, 2220);
-        wireOnly(Materials.Uraniumtriplatinid, 2240);
-        wireOnly(Materials.Vanadiumtriindinid, 2260);
-        wireOnly(Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid, 2280);
-        wireOnly(Materials.Tetranaquadahdiindiumhexaplatiumosminid, 2300);
+        wireOnly(Materials.SuperconductorMVBase, 2200);
+        wireOnly(Materials.SuperconductorHVBase, 2220);
+        wireOnly(Materials.SuperconductorEVBase, 2240);
+        wireOnly(Materials.SuperconductorIVBase, 2260);
+        wireOnly(Materials.SuperconductorLuVBase, 2280);
+        wireOnly(Materials.SuperconductorZPMBase, 2300);
         wireOnly(Materials.SuperconductorMV, 2320);
         wireOnly(Materials.SuperconductorHV, 2340);
         wireOnly(Materials.SuperconductorEV, 2360);
@@ -85,8 +85,8 @@ public final class LegacyPipeCutoverTable {
         wireOnly(Materials.SuperconductorLuV, 2400);
         wireOnly(Materials.SuperconductorZPM, 2420);
         wireOnly(Materials.SuperconductorUV, 2440);
-        wireOnly(Materials.Longasssuperconductornameforuvwire, 2500);
-        wireOnly(Materials.Longasssuperconductornameforuhvwire, 2520);
+        wireOnly(Materials.SuperconductorUVBase, 2500);
+        wireOnly(Materials.SuperconductorUHVBase, 2520);
         wireOnly(Materials.Ichorium, 2600);
         wireOnly(Materials.SpaceTime, 2606);
         wireCable(Materials.Bedrockium, 11310);
@@ -118,7 +118,7 @@ public final class LegacyPipeCutoverTable {
         fluidPipe(Materials.Titanium, 5150);
         fluidPipe(Materials.TungstenSteel, 5160, 5270);
         threeSizeFluidPipe(Materials.Redstone, 5165);
-        fluidPipe(Materials.Plastic, 5170);
+        fluidPipe(Materials.Polyethylene, 5170);
         fluidPipe(Materials.NiobiumTitanium, 5180);
         fluidPipe(Materials.Enderium, 5190);
         fluidPipe(Materials.Naquadah, 5200);
@@ -132,7 +132,7 @@ public final class LegacyPipeCutoverTable {
         fluidPipe(Materials.SpaceTime, 5300);
         fluidPipe(Materials.TranscendentMetal, 5310);
         fluidPipe(Materials.Polytetrafluoroethylene, 5680);
-        fluidPipe(Materials.RadoxPoly, 5760);
+        fluidPipe(Materials.RadoxPolymer, 5760);
         fluidPipeNoMulti(Materials.TriniumNaquadahCarbonite, 30500);
         fluidPipeNoMulti(Materials.Staballoy, 30700);
         fluidPipeNoMulti(Materials.Tantalloy60, 30705);

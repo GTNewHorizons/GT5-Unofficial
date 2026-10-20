@@ -93,7 +93,7 @@ public class BECRecipes implements Runnable {
                 ItemList.Sensor_UMV.get(16), ItemList.Field_Generator_UMV.get(4), ItemList.ZPM5.get(1),
                 ItemList.EnergisedTesseract.get(32),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 16),
-                MaterialLibAPI.getStack(Materials.FleroviumGT5U, Shapes.plateDense, 64),
+                MaterialLibAPI.getStack(Materials.Flerovium, Shapes.plateDense, 64),
                 MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.plateDense, 32),
                 ItemList.MetaMaterial_SensorArray1.get(32), ItemList.MetaMaterial_FieldManipulator1.get(32) },
             nanites(1, 2, 4, 4, 4, 3, 2, 4, 1, 1, 2, 3),
@@ -124,16 +124,14 @@ public class BECRecipes implements Runnable {
         // UXV Component Assembly Line Casing (UXV CoAL)
         addBec(
             Compassline_Casing_UXV.get(1),
-            new ItemStack[] {
-                MaterialLibAPI
-                    .getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, TEBlockShapes.frameGt, 1),
-                MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.plateDense, 3),
-                MaterialLibAPI.getStack(Materials.Magmatter, Shapes.plateDense, 3), ItemList.Robot_Arm_UXV.get(8),
+            new ItemStack[] { MaterialLibAPI.getStack(Materials.MHDCSM, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.MHDCSM, Shapes.plateDense, 3),
+                MaterialLibAPI.getStack(Materials.MagMatter, Shapes.plateDense, 3), ItemList.Robot_Arm_UXV.get(8),
                 ItemList.Electric_Piston_UXV.get(10), ItemList.Electric_Motor_UXV.get(16),
-                MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.gearGt, 2),
-                MaterialLibAPI.getStack(Materials.Magmatter, Shapes.gearGt, 2),
-                MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.gearGtSmall, 8),
-                MaterialLibAPI.getStack(Materials.Magmatter, Shapes.gearGtSmall, 8),
+                MaterialLibAPI.getStack(Materials.MHDCSM, Shapes.gearGt, 2),
+                MaterialLibAPI.getStack(Materials.MagMatter, Shapes.gearGt, 2),
+                MaterialLibAPI.getStack(Materials.MHDCSM, Shapes.gearGtSmall, 8),
+                MaterialLibAPI.getStack(Materials.MagMatter, Shapes.gearGtSmall, 8),
                 MaterialLibAPI.getStack(Materials.SpaceTime, TEBlockShapes.wireGt04, 8), Circuits.UXV.get(8),
                 Circuits.UMV.get(16), ItemList.MetaMaterial_Shielding3.get(64),
                 ItemList.MetaMaterial_EnergyConduit3.get(64), ItemList.MetaMaterial_Waveguide3.get(64) },
@@ -636,7 +634,7 @@ public class BECRecipes implements Runnable {
             int tp1 = t + 1;
             ItemStack[] inputs = { timeGens[t].get(1), spaceGens[t].get(1),
                 CustomItemList.EOH_Infinite_Energy_Casing.get(1), Circuits.UXV.get(tp1),
-                MaterialLibAPI.getStack(Materials.Longasssuperconductornameforuhvwire, TEBlockShapes.frameGt, 4 * tp1),
+                MaterialLibAPI.getStack(Materials.SuperconductorUHVBase, TEBlockShapes.frameGt, 4 * tp1),
                 MaterialLibAPI.getStack(Materials.SuperconductorUEVBase, TEBlockShapes.frameGt, 4 * tp1),
                 MaterialLibAPI.getStack(Materials.SuperconductorUIVBase, TEBlockShapes.frameGt, 4 * tp1),
                 MaterialLibAPI.getStack(Materials.SuperconductorUMVBase, TEBlockShapes.frameGt, 4 * tp1),

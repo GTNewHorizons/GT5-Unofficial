@@ -147,7 +147,7 @@ public final class LegacyOreTransformers {
                 ImmutableBlockMeta ore = GTOreAdapter.INSTANCE.getBlock(info);
                 if (ore != null) return ore;
             }
-            if (material == Materials.HeeEndium && Mods.HardcoreEnderExpansion.isModLoaded()) {
+            if (material == Materials.Endium && Mods.HardcoreEnderExpansion.isModLoaded()) {
                 return new BlockMeta(GameRegistry.findBlock(Mods.HardcoreEnderExpansion.ID, "endium_ore"), 0);
             }
         }

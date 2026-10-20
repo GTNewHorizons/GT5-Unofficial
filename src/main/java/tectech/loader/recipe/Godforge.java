@@ -439,7 +439,7 @@ public class Godforge implements Runnable {
             // Multi-step
             ItemStack[] solids_t2_xstep = { MaterialLibAPI.getStack(Materials.Hypogen, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Tritanium, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.FleroviumGT5U, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Flerovium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.dust, 1) };
 
@@ -448,7 +448,7 @@ public class Godforge implements Runnable {
             FluidStack[] solid_plasmas_t2_xstep = {
                 MaterialLibAPI.getFluidStack(Materials.Hypogen, FluidShapes.fluidPlasma, 144),
                 MaterialLibAPI.getFluidStack(Materials.Tritanium, FluidShapes.fluidPlasma, 1 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.FleroviumGT5U, FluidShapes.fluidPlasma, 1 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Flerovium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.SixPhasedCopper, FluidShapes.fluidPlasma, 1 * INGOTS) };
 
@@ -579,7 +579,7 @@ public class Godforge implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.Iron, FluidShapes.fluidMolten, 1),
                     MaterialLibAPI.getFluidStack(Materials.Bismuth, FluidShapes.fluidMolten, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 4 * INGOTS))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UXV)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -770,7 +770,7 @@ public class Godforge implements Runnable {
         exoticModuleMagmatterItemMap.put(MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.dust, 1), 100000);
         exoticModuleMagmatterItemMap.put(MaterialLibAPI.getStack(Materials.Ichorium, Shapes.dust, 1), 100000);
         exoticModuleMagmatterItemMap.put(MaterialLibAPI.getStack(Materials.Neutronium, Shapes.dust, 1), 100000);
-        exoticModuleMagmatterItemMap.put(MaterialLibAPI.getStack(Materials.FleroviumGT5U, Shapes.dust, 1), 100000);
+        exoticModuleMagmatterItemMap.put(MaterialLibAPI.getStack(Materials.Flerovium, Shapes.dust, 1), 100000);
         exoticModuleMagmatterItemMap.put(MaterialLibAPI.getStack(Materials.Bedrockium, Shapes.dust, 1), 100000);
         exoticModuleMagmatterItemMap.put(MaterialLibAPI.getStack(Materials.Infinity, Shapes.dust, 1), 100000);
         exoticModuleMagmatterItemMap.put(MaterialLibAPI.getStack(Materials.Tritanium, Shapes.dust, 1), 100000);
@@ -867,14 +867,13 @@ public class Godforge implements Runnable {
                 ItemList.Robot_Arm_UMV.get(64));
 
             ForgeOfGodsUpgrade.END.addExtraCost(
-                MaterialLibAPI
-                    .getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, TEBlockShapes.frameGt, 64),
+                MaterialLibAPI.getStack(Materials.MHDCSM, TEBlockShapes.frameGt, 64),
                 MaterialLibAPI.getStack(Materials.Eternity, TEBlockShapes.frameGt, 64),
-                MaterialLibAPI.getStack(Materials.Magmatter, TEBlockShapes.frameGt, 64),
+                MaterialLibAPI.getStack(Materials.MagMatter, TEBlockShapes.frameGt, 64),
                 CustomItemList.StabilisationFieldGeneratorTier8.get(64),
                 CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(64),
                 CustomItemList.astralArrayFabricator.get(4),
-                MaterialLibAPI.getStack(Materials.Magmatter, Shapes.nanite, 1),
+                MaterialLibAPI.getStack(Materials.MagMatter, Shapes.nanite, 1),
                 ItemList.ZPM6.get(32),
                 ItemList.Field_Generator_UXV.get(64),
                 ItemList.Robot_Arm_UXV.get(64));
@@ -944,7 +943,7 @@ public class Godforge implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ForgeOfGodsUpgrade.EE.getExtraCostNoNulls())
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 4 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 4 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidPlasma, 1_000))
             .duration(1)
             .eut(1)

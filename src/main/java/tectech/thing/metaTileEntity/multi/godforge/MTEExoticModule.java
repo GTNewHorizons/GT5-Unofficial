@@ -266,7 +266,7 @@ public class MTEExoticModule extends MTEBaseModule {
                 MaterialLibAPI.getFluidStack(Materials.Time, FluidShapes.fluidLiquid, timeAmount),
                 MaterialLibAPI.getFluidStack(Materials.Space, FluidShapes.fluidLiquid, spaceAmount)),
             new FluidStack[] { MaterialLibAPI
-                .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, (int) (576 * actualParallel)) },
+                .getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, (int) (576 * actualParallel)) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -454,7 +454,7 @@ public class MTEExoticModule extends MTEBaseModule {
             FluidStack outputFluid;
             if (magmatterMode) {
                 outputFluid = MaterialLibAPI
-                    .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, (int) (actualParallel * 4 * INGOTS));
+                    .getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, (int) (actualParallel * 4 * INGOTS));
             } else {
                 outputFluid = MaterialLibAPI
                     .getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, (int) (1000 * actualParallel));

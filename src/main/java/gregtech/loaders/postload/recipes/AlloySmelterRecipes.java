@@ -109,7 +109,7 @@ public class AlloySmelterRecipes implements Runnable {
         // We use rubber
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.RubberRaw, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, 1))
             .duration(10 * SECONDS)

@@ -313,7 +313,7 @@ public final class OreDictRegistrationHandler {
 
         GTLoggers.GT_ORE_DICT_LOGGER.info(oreOriginPath);
 
-        Material registeredMaterial = material == null ? Materials.NULL : material;
+        Material registeredMaterial = material == null ? Materials._NULL : material;
 
         // GT++ registers cells for these materials that contain different fluids from their BartWorks counterparts.
         // They share OreDict names but must not unify. Remove this once the duplicate cells are removed.

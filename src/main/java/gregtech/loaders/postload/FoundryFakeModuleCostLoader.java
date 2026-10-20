@@ -54,9 +54,8 @@ public class FoundryFakeModuleCostLoader {
                 CustomItemList.EOH_Reinforced_Temporal_Casing.get(48),
                 MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, BlockShapes.block, 28),
                 MaterialLibAPI.getStack(Materials.BlackDwarfMatter, BlockShapes.block, 28),
-                MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, BlockShapes.block, 4),
-                MaterialLibAPI
-                    .getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, TEBlockShapes.frameGt, 40),
+                MaterialLibAPI.getStack(Materials.MHDCSM, BlockShapes.block, 4),
+                MaterialLibAPI.getStack(Materials.MHDCSM, TEBlockShapes.frameGt, 40),
                 MaterialLibAPI.getStack(Materials.Universium, TEBlockShapes.frameGt, 16),
                 MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, TEBlockShapes.frameGt, 8),
                 MaterialLibAPI.getStack(Materials.BlackDwarfMatter, TEBlockShapes.frameGt, 8))
@@ -144,7 +143,7 @@ public class FoundryFakeModuleCostLoader {
                 ItemList.InfinityCooledCasing.get(20),
                 GregtechItemList.Casing_AdvancedVacuum.get(19),
                 MaterialLibAPI.getStack(Materials.CallistoIce, BlockShapes.sheetmetal, 64),
-                MaterialLibAPI.getStack(Materials.Longasssuperconductornameforuhvwire, BlockShapes.sheetmetal, 16),
+                MaterialLibAPI.getStack(Materials.SuperconductorUHVBase, BlockShapes.sheetmetal, 16),
                 MaterialLibAPI.getStack(Materials.InfinityCatalyst, TEBlockShapes.frameGt, 48),
                 ItemList.Hatch_Input_LV.get(1))
             .itemOutputs(ItemList.Hypercooler_ExoFoundry.get(1))

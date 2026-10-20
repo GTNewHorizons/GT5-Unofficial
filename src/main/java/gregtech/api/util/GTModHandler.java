@@ -796,7 +796,7 @@ public class GTModHandler {
                     case 2    -> OrePrefixes.wireGt02.ingredient(Materials.Cupronickel);
                     case 3    -> OrePrefixes.wireGt02.ingredient(Materials.Kanthal);
                     case 4    -> OrePrefixes.wireGt02.ingredient(Materials.Nichrome);
-                    case 5    -> OrePrefixes.wireGt02.ingredient(Materials.TPVAlloy);
+                    case 5    -> OrePrefixes.wireGt02.ingredient(Materials.TPV);
                     case 6    -> OrePrefixes.wireGt02.ingredient(Materials.HSSG);
                     case 7    -> OrePrefixes.wireGt02.ingredient(Materials.Naquadah);
                     case 8    -> OrePrefixes.wireGt02.ingredient(Materials.NaquadahAlloy);
@@ -809,7 +809,7 @@ public class GTModHandler {
                     case 2    -> OrePrefixes.wireGt04.ingredient(Materials.Cupronickel);
                     case 3    -> OrePrefixes.wireGt04.ingredient(Materials.Kanthal);
                     case 4    -> OrePrefixes.wireGt04.ingredient(Materials.Nichrome);
-                    case 5    -> OrePrefixes.wireGt04.ingredient(Materials.TPVAlloy);
+                    case 5    -> OrePrefixes.wireGt04.ingredient(Materials.TPV);
                     case 6    -> OrePrefixes.wireGt04.ingredient(Materials.HSSG);
                     case 7    -> OrePrefixes.wireGt04.ingredient(Materials.Naquadah);
                     case 8    -> OrePrefixes.wireGt04.ingredient(Materials.NaquadahAlloy);

@@ -391,7 +391,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             } else if (rotorStack.getItem() instanceof MetaGeneratedTool01) {
                 Material t1 = MetaGeneratedTool.getPrimaryMaterialML(rotorStack);
                 Material t2 = MetaGeneratedTool.getSecondaryMaterialML(rotorStack);
-                if (t1 == Materials.NULL && t2 == Materials.NULL) {
+                if (t1 == Materials._NULL && t2 == Materials._NULL) {
                     creativeRotor = true;
                 }
             } else {
@@ -585,7 +585,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             if (rotorStack.getItem() instanceof MetaGeneratedTool01) {
                 Material t1 = MetaGeneratedTool.getPrimaryMaterialML(rotorStack);
                 Material t2 = MetaGeneratedTool.getSecondaryMaterialML(rotorStack);
-                if (t1 == Materials.NULL && t2 == Materials.NULL) {
+                if (t1 == Materials._NULL && t2 == Materials._NULL) {
                     creativeRotor = true;
                 }
             }

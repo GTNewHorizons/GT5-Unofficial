@@ -61,7 +61,7 @@ public enum CircuitComponent {
     WireMagMatter(
         8,
         "gt.circuitcomponent.wiremagmatter",
-        () -> MaterialLibAPI.getStack(Materials.Magmatter, Shapes.wireFine, 1)),
+        () -> MaterialLibAPI.getStack(Materials.MagMatter, Shapes.wireFine, 1)),
     WireCopper(
         9,
         "gt.circuitcomponent.wirecopper",
@@ -370,7 +370,7 @@ public enum CircuitComponent {
     FrameboxMagMatter(
         1404,
         "gt.circuitcomponent.frame.magmatter",
-        () -> MaterialLibAPI.getStack(Materials.Magmatter, TEBlockShapes.frameGt, 1)),
+        () -> MaterialLibAPI.getStack(Materials.MagMatter, TEBlockShapes.frameGt, 1)),
 
     ProcessedFrameboxAluminium(1500, "gt.circuitcomponent.processed.frame.aluminium", () -> FrameboxAluminium, true),
     ProcessedFrameboxTritanium(1501, "gt.circuitcomponent.processed.frame.tritanium", () -> FrameboxTritanium, true),
@@ -383,7 +383,7 @@ public enum CircuitComponent {
     FoilSiliconeRubber(
         1600,
         "gt.circuitcomponent.sheet.siliconerubber",
-        () -> MaterialLibAPI.getStack(Materials.Silicone, Shapes.foil, 1)),
+        () -> MaterialLibAPI.getStack(Materials.RubberSilicone, Shapes.foil, 1)),
     FoilPolybenzimidazole(
         1601,
         "gt.circuitcomponent.sheet.polybenzimidazole",
@@ -391,7 +391,7 @@ public enum CircuitComponent {
     FoilRadoxPolymer(
         1602,
         "gt.circuitcomponent.sheet.radoxpolymer",
-        () -> MaterialLibAPI.getStack(Materials.RadoxPoly, Shapes.foil, 1)),
+        () -> MaterialLibAPI.getStack(Materials.RadoxPolymer, Shapes.foil, 1)),
     FoilShirabon(
         1603,
         "gt.circuitcomponent.sheet.shirabon",

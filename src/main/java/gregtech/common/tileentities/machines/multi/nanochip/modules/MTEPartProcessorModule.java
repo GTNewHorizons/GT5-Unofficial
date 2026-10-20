@@ -44,7 +44,7 @@ public class MTEPartProcessorModule extends MTENanochipAssemblyModuleBase<MTEPar
         // UEV Machine Casings
         .addElement('C', ofBlock(GregTechAPI.sBlockCasingsNH, 10))
         // Radox polymer frame
-        .addElement('D', ofFrame(Materials.RadoxPoly))
+        .addElement('D', ofFrame(Materials.RadoxPolymer))
         // Nanochip Glass
         .addElement('E', Casings.NanochipComplexGlass.asElement())
         .build();

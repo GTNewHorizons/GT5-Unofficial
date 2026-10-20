@@ -71,7 +71,7 @@ final class OreDictAliases {
         aliasToOreDict(OrePrefixes.cableGt01, Materials.Gold, OreDictNames.craftingWireGold.name());
         aliasToOreDict(Wildcard.AnyIron.oreDictName(OrePrefixes.cableGt01), OreDictNames.craftingWireIron.name());
 
-        aliasToPrefix(OrePrefixes.plate, Materials.Plastic, OrePrefixes.sheet);
+        aliasToPrefix(OrePrefixes.plate, Materials.Polyethylene, OrePrefixes.sheet);
         aliasToPrefix(OrePrefixes.plate, Materials.Rubber, OrePrefixes.sheet);
         aliasToPrefix(OrePrefixes.plate, Materials.Silicon, OrePrefixes.item);
         aliasToPrefix(OrePrefixes.plate, Materials.Wood, OrePrefixes.plank);
@@ -94,7 +94,7 @@ final class OreDictAliases {
         aliasToOreDict("stoneCobble", "cobblestone");
         aliasToOreDict("woodRubber", "logRubber");
 
-        aliasToMaterial("sheetPlastic", OrePrefixes.plate, Materials.Plastic);
+        aliasToMaterial("sheetPlastic", OrePrefixes.plate, Materials.Polyethylene);
         aliasToMaterial("sheetRubber", OrePrefixes.plate, Materials.Rubber);
         aliasToMaterial("craftingWireCopper", OrePrefixes.wire, Materials.Copper);
         aliasToMaterial("foodCocoapowder", OrePrefixes.dust, Materials.Cocoa);

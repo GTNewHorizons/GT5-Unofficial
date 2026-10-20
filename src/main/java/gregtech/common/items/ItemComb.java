@@ -215,7 +215,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         addProcessGT(CombType.APATITE, new Material[] { Materials.Apatite }, Voltage.LV);
         addCentrifugeToMaterial(
             CombType.ASH,
-            new Material[] { Materials.DarkAsh, Materials.Ash },
+            new Material[] { Materials.AshDark, Materials.Ash },
             new int[] { 50 * 100, 50 * 100 },
             GTValues.emptyIntArray,
             Voltage.ULV,
@@ -733,7 +733,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 GTBees.drop.getStackForType(DropType.ENDERGOO), new ItemStack(Items.spawn_egg, 1, 60) },
             new int[] { 25 * 100, 10 * 100, 20 * 100, 15 * 100 },
             Voltage.EV);
-        addProcessGT(CombType.ENDIUM, new Material[] { Materials.HeeEndium }, Voltage.HV);
+        addProcessGT(CombType.ENDIUM, new Material[] { Materials.Endium }, Voltage.HV);
 
         addCentrifugeToItemStack(
             CombType.RUNEI,
@@ -1250,13 +1250,12 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         /** @return FluidStack needed for chemical process related to the Tier **/
         public FluidStack getComplexChemical() {
             if (this.compareTo(Voltage.MV) < 0) {
-                return MaterialUtils
-                    .fluid(Materials.HydrofluoricAcidGT5U, (this.compareTo(Voltage.ULV) > 0) ? 1000 : 500);
+                return MaterialUtils.fluid(Materials.HydrofluoricAcid, (this.compareTo(Voltage.ULV) > 0) ? 1000 : 500);
             } else if (this.compareTo(Voltage.HV) < 0) {
                 return GTModHandler.getDistilledWater(1_000);
             } else if (this.compareTo(Voltage.LuV) < 0) {
                 return MaterialUtils.fluid(
-                    Materials.HydrofluoricAcidGT5U,
+                    Materials.HydrofluoricAcid,
                     (long) (GTUtility.powInt(2, this.compareTo(Voltage.HV)) * INGOTS));
             } else if (this.compareTo(Voltage.UHV) < 0) {
                 return FluidRegistry
@@ -1281,14 +1280,14 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, fluidAmount);
                 case 2 ->
                     /* MV */
-                    MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, fluidAmount);
+                    MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, fluidAmount);
                 case 3 ->
                     /* HV */
-                    MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, fluidAmount);
+                    MaterialLibAPI.getFluidStack(Materials.PhosphoricAcid, FluidShapes.fluidLiquid, fluidAmount);
                 case 4 ->
                     /* EV */
                     MaterialLibAPI
-                        .getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, this.getFluidAmount());
+                        .getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, this.getFluidAmount());
                 default -> MaterialLibAPI.getFluidStack(Materials.PhthalicAcid, FluidShapes.fluidLiquid, fluidAmount);
             };
         }
@@ -1350,7 +1349,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .itemInputs(
                 GTBees.combs.getStackForType(CombType.ELVEN, 6),
                 MaterialLibAPI.getStack(Materials.ManaDiamond, Shapes.gemFlawless, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.BotaniaDragonstone, Shapes.gem, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Dragonstone, Shapes.gem, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * EIGHTH_INGOTS)))
             .duration(20 * SECONDS)
@@ -1444,7 +1443,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 new ItemStack(ModItems.manaCookie, 1))
             .outputChances(35 * 100, 15 * 100, 15 * 100, 15 * 100, 15 * 100, 5 * 100, 2 * 100, 1 * 10)
             .duration(20 * SECONDS)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 250))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 250))
             .eut(TierEU.RECIPE_EV)
             .addTo(sifterRecipes);
     }

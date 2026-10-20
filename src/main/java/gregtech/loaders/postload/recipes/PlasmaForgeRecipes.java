@@ -51,13 +51,12 @@ public class PlasmaForgeRecipes implements Runnable {
                     MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 4 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 12_800),
                     new FluidStack(celestialTungstenPlasma, 1 * STACKS + 32 * INGOTS),
-                    MaterialLibAPI.getFluidStack(Materials.HeavyRadox, FluidShapes.fluidLiquid, 32_000),
+                    MaterialLibAPI.getFluidStack(Materials.RadoxHeavy, FluidShapes.fluidLiquid, 32_000),
                     MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 2_000))
                 .fluidOutputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 360_000),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 4_000))
+                    MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 4_000))
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut((int) TierEU.RECIPE_UXV)
                 .metadata(COIL_HEAT, 13500)
@@ -73,13 +72,12 @@ public class PlasmaForgeRecipes implements Runnable {
                     MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 2 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 3_200),
                     new FluidStack(celestialTungstenPlasma, 48 * INGOTS),
-                    MaterialLibAPI.getFluidStack(Materials.HeavyRadox, FluidShapes.fluidLiquid, 4_000),
+                    MaterialLibAPI.getFluidStack(Materials.RadoxHeavy, FluidShapes.fluidLiquid, 4_000),
                     MaterialLibAPI.getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, 2_000))
                 .fluidOutputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 90_000),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 2_000))
+                    MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 2_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)
                 .metadata(COIL_HEAT, 13500)
@@ -96,13 +94,12 @@ public class PlasmaForgeRecipes implements Runnable {
                     MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 1_600),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
-                    MaterialLibAPI.getFluidStack(Materials.SuperHeavyRadox, FluidShapes.fluidLiquid, 2_000),
+                    MaterialLibAPI.getFluidStack(Materials.RadoxSuperHeavy, FluidShapes.fluidLiquid, 2_000),
                     MaterialLibAPI.getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, 2_000))
                 .fluidOutputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 30_000),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 1_000))
+                    MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 1_000))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)
                 .metadata(COIL_HEAT, 12600)
@@ -116,13 +113,12 @@ public class PlasmaForgeRecipes implements Runnable {
                     MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 400),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
-                    MaterialLibAPI.getFluidStack(Materials.SuperHeavyRadox, FluidShapes.fluidLiquid, 2_000),
+                    MaterialLibAPI.getFluidStack(Materials.RadoxSuperHeavy, FluidShapes.fluidLiquid, 2_000),
                     MaterialLibAPI.getFluidStack(Materials.ExcitedDTPC, FluidShapes.fluidLiquid, 1_000))
                 .fluidOutputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 7_500),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 250))
+                    MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 250))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_UIV)
                 .metadata(COIL_HEAT, 10800)
@@ -154,8 +150,7 @@ public class PlasmaForgeRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, 92),
                 MaterialLibAPI.getFluidStack(Materials.Duranium, FluidShapes.fluidMolten, INGOTS))
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 46))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 46))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
             .metadata(COIL_HEAT, 10800)
@@ -186,9 +181,9 @@ public class PlasmaForgeRecipes implements Runnable {
         // Chipped Amalgatite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.Magmatter, Shapes.nanite, 1)),
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.MagMatter, Shapes.nanite, 1)),
                 MaterialLibAPI.getStack(Materials.Eternity, Shapes.round, 64),
-                MaterialLibAPI.getStack(Materials.Magmatter, Shapes.round, 64),
+                MaterialLibAPI.getStack(Materials.MagMatter, Shapes.round, 64),
                 MaterialLibAPI.getStack(Materials.Hexanite, Shapes.round, 64),
                 MaterialLibAPI.getStack(Materials.Ruby, Shapes.gemExquisite, 64),
                 MaterialLibAPI.getStack(Materials.Jasper, Shapes.gemExquisite, 64),
@@ -198,9 +193,7 @@ public class PlasmaForgeRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.StargateCrystalSlurry, FluidShapes.fluidLiquid, 5_000),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 72_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemChipped, 64))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 144_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 144_000))
             .duration(420 * SECONDS)
             .eut((int) TierEU.RECIPE_MAX)
             .metadata(COIL_HEAT, 13500)

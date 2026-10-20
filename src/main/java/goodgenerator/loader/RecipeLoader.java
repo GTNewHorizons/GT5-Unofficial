@@ -320,7 +320,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 100),
+                MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 100),
                 MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 8_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.ThoriumNitrate, FluidShapes.fluidLiquid, 1_000),
@@ -331,7 +331,7 @@ public class RecipeLoader {
 
         // 4NaOH + Th(NO3)4 = Th(OH)4 + 4NaNO3
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 12))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 12))
             .circuit(1)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ThoriumNitrate, FluidShapes.fluidLiquid, 1_000))
             .itemOutputs(
@@ -356,7 +356,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.ThoriumHydroxide, Shapes.dust, 9))
             .circuit(1)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.ThoriumTetrafluoride, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -525,7 +525,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.RawGasoline, CellShapes.cell, 9),
+                MaterialLibAPI.getStack(Materials.GasolineRaw, CellShapes.cell, 9),
                 MaterialLibAPI.getStack(Materials.Ethanol, CellShapes.cell, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.EthanolGasoline, CellShapes.cell, 10))
             .duration(15 * TICKS)
@@ -601,10 +601,10 @@ public class RecipeLoader {
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AntimonyPentachloride, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 5_000))
+                MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 5_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.AntimonyPentafluoride, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 5_000))
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 5_000))
             .duration(21 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -614,7 +614,7 @@ public class RecipeLoader {
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AntimonyPentafluoride, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.FluoroantimonicAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(42 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -623,7 +623,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, 16))
             .circuit(16)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 3_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AcidNaquadahEmulsion, FluidShapes.fluidLiquid, 2_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.RadioactiveSludge, Shapes.dust, 3))
             .duration(3 * MINUTES)
@@ -875,7 +875,7 @@ public class RecipeLoader {
                 ItemRefer.Aluminum_Nitride_Dust.get(4),
                 MaterialLibAPI.getStack(Materials.YttriumOxide, Shapes.dust, 5))
             .circuit(9)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.GlueAdvanced, FluidShapes.fluidLiquid, 1_000))
             .itemOutputs(ItemRefer.Special_Ceramics_Dust.get(9))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -886,7 +886,7 @@ public class RecipeLoader {
                 ItemRefer.Aluminum_Nitride_Dust.get(4),
                 MaterialLibAPI.getStack(Materials.Uraninite, Shapes.dust, 5))
             .circuit(9)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.GlueAdvanced, FluidShapes.fluidLiquid, 1_000))
             .itemOutputs(ItemRefer.Special_Ceramics_Dust.get(9))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -992,7 +992,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.stick, 4),
-                MaterialLibAPI.getStack(Materials.Plastic, Shapes.itemCasing, 4))
+                MaterialLibAPI.getStack(Materials.Polyethylene, Shapes.itemCasing, 4))
             .circuit(8)
             .fluidInputs(FluidRegistry.getFluidStack("dye.chemical.dyecyan", 1 * INGOTS))
             .itemOutputs(ItemRefer.Plastic_Case.get(1))
@@ -1003,7 +1003,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.stick, 4),
-                MaterialLibAPI.getStack(Materials.Plastic, Shapes.itemCasing, 4))
+                MaterialLibAPI.getStack(Materials.Polyethylene, Shapes.itemCasing, 4))
             .circuit(8)
             .fluidInputs(FluidRegistry.getFluidStack("dye.watermixed.dyecyan", 1 * INGOTS))
             .itemOutputs(ItemRefer.Plastic_Case.get(1))
@@ -1016,7 +1016,7 @@ public class RecipeLoader {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "CDC", "PCP", 'P',
                 MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.stick, 1), 'C',
-                MaterialLibAPI.getStack(Materials.Plastic, Shapes.itemCasing, 1), 'D', "dyeCyan" });
+                MaterialLibAPI.getStack(Materials.Polyethylene, Shapes.itemCasing, 1), 'D', "dyeCyan" });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1158,7 +1158,7 @@ public class RecipeLoader {
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_MV.get(1L),
                 MaterialLibAPI.getStack(Materials.SuperconductorMV, TEBlockShapes.wireGt01, 2),
-                MaterialLibAPI.getStack(Materials.Plastic, Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.Polyethylene, Shapes.plate, 1),
                 MaterialLibAPI.getStack(Materials.Beryllium, Shapes.plate, 2),
                 ItemList.Electric_Motor_MV.get(2))
             .itemOutputs(Loaders.NeutronAccelerators[2].copy())
@@ -1201,7 +1201,7 @@ public class RecipeLoader {
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_IV.get(1L),
                 MaterialLibAPI.getStack(Materials.SuperconductorIV, TEBlockShapes.wireGt01, 2),
-                MaterialLibAPI.getStack(Materials.Silicone, Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.RubberSilicone, Shapes.plate, 1),
                 MaterialLibAPI.getStack(Materials.SteelMagnetic, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.TungstenCarbide, Shapes.plateDouble, 2),
                 ItemList.Electric_Motor_IV.get(2))
@@ -1316,7 +1316,7 @@ public class RecipeLoader {
                 ItemList.Hull_UIV.get(1L),
                 MaterialLibAPI.getStack(Materials.SuperconductorUIV, TEBlockShapes.wireGt04, 4),
                 MaterialLibAPI.getStack(Materials.ChromaticGlass, Shapes.plate, 8),
-                MaterialLibAPI.getStack(Materials.RadoxPoly, Shapes.plateDouble, 16),
+                MaterialLibAPI.getStack(Materials.RadoxPolymer, Shapes.plateDouble, 16),
                 ItemList.UEV_Coil.get(8),
                 ItemList.Tesseract.get(8),
                 ItemList.Electromagnet_Tengam.get(1),
@@ -1340,7 +1340,7 @@ public class RecipeLoader {
                 ItemList.Hull_UMV.get(1L),
                 MaterialLibAPI.getStack(Materials.SuperconductorUMV, TEBlockShapes.wireGt04, 4),
                 MaterialLibAPI.getStack(Materials.ChromaticGlass, Shapes.plate, 32),
-                MaterialLibAPI.getStack(Materials.RadoxPoly, Shapes.plateSuperdense, 1),
+                MaterialLibAPI.getStack(Materials.RadoxPolymer, Shapes.plateSuperdense, 1),
                 ItemList.UIV_Coil.get(8),
                 ItemList.EnergisedTesseract.get(12),
                 ItemList.Electromagnet_Tengam.get(1),
@@ -1410,7 +1410,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_HeatProof.get(4),
-                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.itemCasing, 1),
                 GTModHandler.getIC2Item("reactorVentDiamond", 1L, 1))
             .itemOutputs(ItemList.CasingHearth.get(4))
@@ -1453,7 +1453,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 5),
+                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 5),
                 MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 3_000))

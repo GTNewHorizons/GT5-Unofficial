@@ -91,7 +91,7 @@ public class RecipeLoaderGlueLine {
                 MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.ChloroaceticAcid, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000),
                 GTUtility.getWater(1_000))
@@ -158,7 +158,7 @@ public class RecipeLoaderGlueLine {
     private static void chemicalReactorRecipes() {
         // NaOH + HCN = NaCN + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 3))
             .circuit(17)
             .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumCyanide, Shapes.dust, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrogenCyanide, FluidShapes.fluidGas, 1_000))
@@ -169,7 +169,7 @@ public class RecipeLoaderGlueLine {
 
         // #UniversalChemical recipemap won't generate LCR recipe if config >= 10
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 3))
             .circuit(17)
             .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumCyanide, Shapes.dust, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrogenCyanide, FluidShapes.fluidGas, 1_000))
@@ -183,7 +183,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(GregtechItemList.CalciumCarbonateDust.get(5))
             .circuit(8)
             .itemOutputs(MaterialLibAPI.getStack(Materials.CalciumChloride, Shapes.dust, 3))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)

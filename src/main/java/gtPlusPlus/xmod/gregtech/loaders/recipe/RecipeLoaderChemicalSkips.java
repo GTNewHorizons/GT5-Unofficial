@@ -148,7 +148,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 16_000),
                 MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 16_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 4 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 4 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.PolyvinylChloride, FluidShapes.fluidMolten, 2 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Polystyrene, FluidShapes.fluidMolten, STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 2 * STACKS),
@@ -169,7 +169,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 16_000),
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 16_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, STACKS),
+                MaterialLibAPI.getFluidStack(Materials.RubberSilicone, FluidShapes.fluidMolten, STACKS),
                 MaterialLibAPI.getFluidStack(Materials.StyreneButadieneRubber, FluidShapes.fluidMolten, STACKS),
                 MaterialLibAPI.getFluidStack(Materials.PolyphenyleneSulfide, FluidShapes.fluidMolten, 2 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, 4 * STACKS))
@@ -190,7 +190,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 10_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.EthylCyanoacrylateSuperGlue, FluidShapes.fluidLiquid, 32_000),
-                MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 16_000),
+                MaterialLibAPI.getFluidStack(Materials.GlueAdvanced, FluidShapes.fluidLiquid, 16_000),
                 MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 1 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 2 * STACKS))
             .duration(20 * SECONDS)
@@ -354,8 +354,8 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 16_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Xenoxene, FluidShapes.fluidLiquid, 16_000),
-                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, STACKS),
-                MaterialLibAPI.getFluidStack(Materials.HeavyRadox, FluidShapes.fluidLiquid, 16_000),
+                MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, STACKS),
+                MaterialLibAPI.getFluidStack(Materials.RadoxHeavy, FluidShapes.fluidLiquid, 16_000),
                 MaterialLibAPI.getFluidStack(Materials.Kevlar, FluidShapes.fluidMolten, STACKS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -406,7 +406,7 @@ public class RecipeLoaderChemicalSkips {
             .itemOutputs(biocells)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 2 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, 1000 * 256),
+                MaterialLibAPI.getFluidStack(Materials.BioMediumSterilized, FluidShapes.fluidLiquid, 1000 * 256),
                 MaterialLibAPI.getFluidStack(Materials.BioMediumRaw, FluidShapes.fluidLiquid, 1000 * 512))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -509,7 +509,7 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
-                MaterialLibAPI.getStack(Materials.Silicone, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.RubberSilicone, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.StyreneButadieneRubber, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Carbon, Shapes.nanite, 64))
             .circuit(10)
@@ -782,7 +782,7 @@ public class RecipeLoaderChemicalSkips {
             new ItemStack[] { MaterialLibAPI.getStack(Materials.Quantum, TEBlockShapes.frameGt, 2),
                 MaterialLibAPI.getStack(Materials.EnrichedNaquadahAlloy, Shapes.plateDense, 4),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, 2),
-                ItemList.Field_Generator_UEV.get(1), MaterialLibAPI.getStack(Materials.RadoxPoly, Shapes.screw, 16),
+                ItemList.Field_Generator_UEV.get(1), MaterialLibAPI.getStack(Materials.RadoxPolymer, Shapes.screw, 16),
                 ItemList.StableAdhesive.get(4) },
             new FluidStack[] {
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 20 * INGOTS), },

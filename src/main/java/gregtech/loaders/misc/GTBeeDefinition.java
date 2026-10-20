@@ -273,7 +273,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     FERTILIZER(GTBranchDefinition.ORGANIC, "Fertilizer", true, new Color(0x7fcef5), new Color(0x654525), beeSpecies -> {
         beeSpecies.addProduct(GTModHandler.getModItem(ExtraBees.ID, "honeyComb", 1, 9), 0.15f);
         beeSpecies.addSpecialty(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, 1), 0.2f);
-        beeSpecies.addSpecialty(MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 1), 0.2f);
+        beeSpecies.addSpecialty(MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, 1), 0.2f);
         beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(WARM);

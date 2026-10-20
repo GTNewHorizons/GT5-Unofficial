@@ -342,7 +342,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 .buildAndChain(GregTechAPI.sBlockCasings8, 10))
         .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 5))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings13, 7))
-        .addElement('M', ofFrame(Materials.Magmatter))
+        .addElement('M', ofFrame(Materials.MagMatter))
         .addElement('N', ofFrame(Materials.BlackDwarfMatter))
         .addElement('O', ofFrame(Materials.WhiteDwarfMatter))
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings13, 8))
@@ -498,7 +498,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                             FluidStack drained = hatch.drain(
                                 ForgeDirection.UNKNOWN,
                                 MaterialLibAPI
-                                    .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, Integer.MAX_VALUE),
+                                    .getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, Integer.MAX_VALUE),
                                 true);
                             if (drained == null) {
                                 continue;

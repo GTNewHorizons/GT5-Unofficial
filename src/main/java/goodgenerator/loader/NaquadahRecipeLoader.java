@@ -93,7 +93,7 @@ public class NaquadahRecipeLoader {
                 MaterialLibAPI.getStack(Materials.Indium, Shapes.dust, 64),
                 ItemList.NaquadriaSupersolid.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, 16_000),
+                MaterialLibAPI.getFluidStack(Materials.PhosphoricAcid, FluidShapes.fluidLiquid, 16_000),
                 MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 16_000),
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 100))
             .duration(5 * SECONDS)
@@ -157,7 +157,7 @@ public class NaquadahRecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.TitaniumTrifluoride, Shapes.dust, 4))
             .circuit(1)
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 3_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 3_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Titanium, Shapes.ingotHot, 1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -180,7 +180,7 @@ public class NaquadahRecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials._2Ethyl1Hexanol, FluidShapes.fluidLiquid, 2_000),
-                MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.PhosphoricAcid, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 1_000))
             .duration(1 * MINUTES)
@@ -225,7 +225,7 @@ public class NaquadahRecipeLoader {
             MaterialLibAPI.getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, 10_000),
             new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, 3_000),
                 MaterialLibAPI.getFluidStack(Materials.Phenol, FluidShapes.fluidLiquid, 2_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 5_000) },
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 5_000) },
             MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, 3),
             15 * SECONDS,
             TierEU.RECIPE_HV);
@@ -244,7 +244,7 @@ public class NaquadahRecipeLoader {
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 27))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 27))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NaquadahRichSolution, FluidShapes.fluidLiquid, 5_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadahine, Shapes.dust, 30))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.P507, FluidShapes.fluidLiquid, 1_000))
@@ -265,7 +265,7 @@ public class NaquadahRecipeLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 27))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 27))
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.LowQualityNaquadahEmulsion, FluidShapes.fluidLiquid, 10_000))
@@ -306,7 +306,7 @@ public class NaquadahRecipeLoader {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 60))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 60))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.EnrichedNaquadahRichSolution, FluidShapes.fluidLiquid, 10_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.ConcentratedEnrichedNaquadahSludge, Shapes.dust, 8))
@@ -355,7 +355,7 @@ public class NaquadahRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.NaquadriaOxideMixture, Shapes.dust, 4))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcid, FluidShapes.fluidLiquid, 4_000))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.IndiumPhosphate, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.LowQualityNaquadriaPhosphate, Shapes.dust, 4))
@@ -371,7 +371,7 @@ public class NaquadahRecipeLoader {
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 3))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Gallium, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 9))
+                MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 9))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -510,7 +510,7 @@ public class NaquadahRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SiliconSolarGrade, BlockShapes.block, 16),
+                MaterialLibAPI.getStack(Materials.SiliconSG, BlockShapes.block, 16),
                 MaterialLibAPI.getStack(Materials.Naquadahine, Shapes.dust, 3),
                 ItemList.GalliumArsenideCrystal.get(1L))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot3.get(1))

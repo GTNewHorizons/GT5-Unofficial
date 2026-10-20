@@ -263,7 +263,7 @@ public enum SmallOres {
     Foolsruby(new SmallOreBuilder().name("ore.small.foolsruby")
         .heightRange(5, 35)
         .amount(2)
-        .ore(Materials.FoolsRuby)
+        .ore(Materials.Spinel)
         .enableInDim(Horus)
         .enableInDim(TWILIGHT_FOREST)),
 
@@ -530,7 +530,7 @@ public enum SmallOres {
     Chargedcertus(new SmallOreBuilder().name("ore.small.chargedcertus")
         .heightRange(5, 115)
         .amount(4)
-        .ore(Materials.ChargedCertusQuartz)
+        .ore(Materials.CertusQuartzCharged)
         .enableInDim(Horus));
     // spotless : on
 

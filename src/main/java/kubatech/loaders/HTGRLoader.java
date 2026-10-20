@@ -411,7 +411,9 @@ public class HTGRLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 4), ItemList.Shape_Mold_Ring.get(0))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 4),
+                ItemList.Shape_Mold_Ring.get(0))
             .itemOutputs(ItemList.Alumina_Support_Ring_Raw.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 25)
             .eut(TierEU.RECIPE_IV)

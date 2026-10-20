@@ -126,7 +126,7 @@ public class ProcessingOre implements PartRecipeGenerator {
                         .itemInputs(oreStack, MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, multiplier))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 3 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
-                            MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, 1))
+                            MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, 1))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -136,7 +136,7 @@ public class ProcessingOre implements PartRecipeGenerator {
                         .itemInputs(oreStack, MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, multiplier))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 3 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
-                            MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, 1))
+                            MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, 1))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -149,7 +149,7 @@ public class ProcessingOre implements PartRecipeGenerator {
                         .itemInputs(oreStack, MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, multiplier))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 2 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
-                            MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, 1))
+                            MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, 1))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -159,7 +159,7 @@ public class ProcessingOre implements PartRecipeGenerator {
                         .itemInputs(oreStack, MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, multiplier))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 2 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
-                            MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, 1))
+                            MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, 1))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)

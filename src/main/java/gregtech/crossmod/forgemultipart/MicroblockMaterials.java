@@ -43,7 +43,7 @@ public final class MicroblockMaterials {
         Materials.TungstenCarbide, Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE, Materials.HSSS,
         Materials.Steeleaf, Materials.Ichorium, Materials.Firestone, Materials.InfusedAir, Materials.Amber,
         Materials.Amethyst, Materials.InfusedWater, Materials.BlueTopaz, Materials.CertusQuartz, Materials.Dilithium,
-        Materials.EnderEye, Materials.EnderPearl, Materials.FoolsRuby, Materials.Force, Materials.Forcicium,
+        Materials.EnderEye, Materials.EnderPearl, Materials.Spinel, Materials.Force, Materials.Forcicium,
         Materials.Forcillium, Materials.GreenSapphire, Materials.InfusedFire, Materials.Jasper, Materials.Lazurite,
         Materials.Lignite, Materials.Monazite, Materials.Niter, Materials.Olivine, Materials.Opal,
         Materials.InfusedOrder, Materials.InfusedEntropy, Materials.TricalciumPhosphate, Materials.Quartzite,

@@ -430,8 +430,8 @@ public class RecipeLoaderMilling {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, 5),
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, 5),
-                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 5),
-                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 5))
+                MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, 5),
+                MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, 5))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
             .duration(60 * SECONDS)
@@ -445,8 +445,8 @@ public class RecipeLoaderMilling {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, 5),
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, 5),
-                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 5),
-                MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 5))
+                MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, 5),
+                MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, 5))
             .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 1_500))
             .duration(45 * SECONDS)

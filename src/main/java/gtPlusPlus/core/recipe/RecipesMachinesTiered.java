@@ -73,8 +73,7 @@ public class RecipesMachinesTiered {
                 Circuits.HV.get(4))
             .itemOutputs(GregtechItemList.Charger_MV.get(1))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Pentacadmiummagnesiumhexaoxid, FluidShapes.fluidMolten, 16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorMVBase, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(67 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -90,10 +89,7 @@ public class RecipesMachinesTiered {
                 Circuits.EV.get(4))
             .itemOutputs(GregtechItemList.Charger_HV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Titaniumonabariumdecacoppereikosaoxid,
-                    FluidShapes.fluidMolten,
-                    16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorHVBase, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(90 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -109,7 +105,7 @@ public class RecipesMachinesTiered {
                 Circuits.IV.get(4))
             .itemOutputs(GregtechItemList.Charger_EV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Uraniumtriplatinid, FluidShapes.fluidMolten, 16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorEVBase, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(112 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -125,7 +121,7 @@ public class RecipesMachinesTiered {
                 Circuits.LuV.get(4))
             .itemOutputs(GregtechItemList.Charger_IV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Vanadiumtriindinid, FluidShapes.fluidMolten, 16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorIVBase, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(135 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -141,10 +137,7 @@ public class RecipesMachinesTiered {
                 Circuits.ZPM.get(4))
             .itemOutputs(GregtechItemList.Charger_LuV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-                    FluidShapes.fluidMolten,
-                    16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorLuVBase, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(157 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -160,10 +153,7 @@ public class RecipesMachinesTiered {
                 Circuits.UV.get(4))
             .itemOutputs(GregtechItemList.Charger_ZPM.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Tetranaquadahdiindiumhexaplatiumosminid,
-                    FluidShapes.fluidMolten,
-                    16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorZPMBase, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(180 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -179,8 +169,7 @@ public class RecipesMachinesTiered {
                 Circuits.UHV.get(4))
             .itemOutputs(GregtechItemList.Charger_UV.get(1))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Longasssuperconductornameforuvwire, FluidShapes.fluidMolten, 16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorUVBase, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(202 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -196,8 +185,7 @@ public class RecipesMachinesTiered {
                 Circuits.UEV.get(4))
             .itemOutputs(GregtechItemList.Charger_UHV.get(1))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Longasssuperconductornameforuhvwire, FluidShapes.fluidMolten, 16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorUHVBase, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(225 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -1101,7 +1089,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_LV.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1125,7 +1113,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.gearGt, 2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_MV.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1149,7 +1137,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.Chrome, Shapes.gearGt, 2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_HV.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1173,7 +1161,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.gearGt, 2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_EV.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

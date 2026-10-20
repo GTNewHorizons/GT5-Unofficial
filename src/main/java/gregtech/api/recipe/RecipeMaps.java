@@ -954,7 +954,7 @@ public final class RecipeMaps {
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, Math.min(64, aDustAmount)))
+                        MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, Math.min(64, aDustAmount)))
                     .setOutputChances(coalChances);
                 coll.derive()
                     .setInputs(
@@ -964,7 +964,7 @@ public final class RecipeMaps {
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, Math.min(64, aDustAmount)))
+                        MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, Math.min(64, aDustAmount)))
                     .setOutputChances(coalChances);
             }
             int aDuration = builder.getDuration();
@@ -1033,7 +1033,7 @@ public final class RecipeMaps {
                         .setOutputs(
                             aOutput1,
                             aOutput2,
-                            MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, Math.min(64, aCoalAmount)))
+                            MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, Math.min(64, aCoalAmount)))
                         .setDuration(aDuration * 10);
                 }
                 if (Railcraft.isModLoaded()) {

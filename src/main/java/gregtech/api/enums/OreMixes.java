@@ -994,7 +994,7 @@ public enum OreMixes {
         .enableInDim(Horus, Neper)
         .primary(Materials.CertusQuartz)
         .secondary(Materials.CertusQuartz)
-        .inBetween(Materials.ChargedCertusQuartz)
+        .inBetween(Materials.CertusQuartzCharged)
         .sporadic(Materials.QuartzSand)),
 
     InfinityCatalyst(new OreMixBuilder().name("ore.mix.infinitycatalyst")

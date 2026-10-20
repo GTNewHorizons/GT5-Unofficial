@@ -138,8 +138,8 @@ public class EyeOfHarmonyRecipeStorage {
 
     /// Materials whose ores exist only as other mods' blocks (HEE's endium ore, Twilight Forest's shard clusters,
     /// AmunRa's concrete ores), which [GTOreAdapter] does not report.
-    private static final Material[] FOREIGN_ORE_MATERIALS = { Materials.HeeEndium, Materials.Knightmetal,
-        Materials.Steel, Materials.Thaumium };
+    private static final Material[] FOREIGN_ORE_MATERIALS = { Materials.Endium, Materials.Knightmetal, Materials.Steel,
+        Materials.Thaumium };
 
     private void specialDeepDarkRecipe(final HashMap<String, EyeOfHarmonyRecipe> hashMap,
         final BlockDimensionDisplay planetItem) {

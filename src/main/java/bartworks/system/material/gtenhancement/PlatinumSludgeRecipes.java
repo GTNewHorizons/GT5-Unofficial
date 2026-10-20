@@ -115,7 +115,7 @@ public final class PlatinumSludgeRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 1),
-                MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 3))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumFormate, CellShapes.cell, 1))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_LV)
@@ -144,7 +144,7 @@ public final class PlatinumSludgeRecipes {
         // AquaRegia
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 3),
+                MaterialLibAPI.getStack(Materials.HydrochloricAcid, CellShapes.cell, 3),
                 MaterialLibAPI.getStack(Materials.NitricAcid, CellShapes.cell, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.AquaRegia, CellShapes.cell, 4))
@@ -153,7 +153,7 @@ public final class PlatinumSludgeRecipes {
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 3),
+                MaterialLibAPI.getStack(Materials.HydrochloricAcid, CellShapes.cell, 3),
                 MaterialLibAPI.getStack(Materials.NitricAcid, CellShapes.cell, 1))
             .circuit(2)
             .itemOutputs(GTUtility.getEmptyCell(4))
@@ -165,13 +165,13 @@ public final class PlatinumSludgeRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.NitricAcid, CellShapes.cell, 1))
             .circuit(3)
             .itemOutputs(GTUtility.getEmptyCell(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 3_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AquaRegia, FluidShapes.fluidLiquid, 4_000))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydrochloricAcid, CellShapes.cell, 3))
             .circuit(4)
             .itemOutputs(GTUtility.getEmptyCell(3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 1_000))
@@ -186,12 +186,12 @@ public final class PlatinumSludgeRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.AmmoniumChloride, CellShapes.cell, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydrochloricAcid, CellShapes.cell, 1))
             .circuit(1)
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 1_000))
@@ -203,7 +203,7 @@ public final class PlatinumSludgeRecipes {
             .circuit(9)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 64_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 64_000))
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 64_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AmmoniumChloride, FluidShapes.fluidLiquid, 64_000))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -277,7 +277,7 @@ public final class PlatinumSludgeRecipes {
                 MaterialLibAPI.getStack(Materials.PlatinumSalt, Shapes.dustTiny, 16),
                 MaterialLibAPI.getStack(Materials.ReprecipitatedPlatinum, Shapes.dustTiny, 4),
                 MaterialLibAPI.getStack(Materials.NitrogenDioxide, CellShapes.cellGas, 1),
-                MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 3))
+                MaterialLibAPI.getStack(Materials.HydrochloricAcid, CellShapes.cell, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AmmoniumChloride, FluidShapes.fluidLiquid, 400))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.PalladiumEnrichedAmmonia, FluidShapes.fluidLiquid, 400))
@@ -295,7 +295,7 @@ public final class PlatinumSludgeRecipes {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.PalladiumEnrichedAmmonia, FluidShapes.fluidLiquid, 400),
                 MaterialLibAPI.getFluidStack(Materials.NitrogenDioxide, FluidShapes.fluidGas, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 3_000))
             .duration(1 * MINUTES + 4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -310,7 +310,7 @@ public final class PlatinumSludgeRecipes {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.PalladiumEnrichedAmmonia, FluidShapes.fluidLiquid, 3_600),
                 MaterialLibAPI.getFluidStack(Materials.NitrogenDioxide, FluidShapes.fluidGas, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 27_000))
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 27_000))
             .duration(700)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -503,7 +503,7 @@ public final class PlatinumSludgeRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.RutheniumTetroxide, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 6))
+                MaterialLibAPI.getStack(Materials.HydrochloricAcid, CellShapes.cell, 6))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Ruthenium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 6))
@@ -519,7 +519,7 @@ public final class PlatinumSludgeRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.RarestMetalResidue, Shapes.dust, 2))
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.IridiumMetalResidue, Shapes.dust, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 500))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 500))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AcidicOsmiumSolution, FluidShapes.fluidLiquid, 1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -536,7 +536,7 @@ public final class PlatinumSludgeRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.OsmiumSolution, CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 6))
+                MaterialLibAPI.getStack(Materials.HydrochloricAcid, CellShapes.cell, 6))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 7))
@@ -561,7 +561,7 @@ public final class PlatinumSludgeRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.IridiumDioxide, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.HydrochloricAcid, CellShapes.cell, 1))
             .itemOutputs(GTUtility.getEmptyCell(1))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AcidicIridiumSolution, FluidShapes.fluidLiquid, 1_000))
             .duration(15 * SECONDS)
@@ -661,7 +661,7 @@ public final class PlatinumSludgeRecipes {
             .addTo(UniversalChemical);
         // NaOH + HNO3 = NaNO3 + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 3))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumNitrate, Shapes.dust, 5))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(GTUtility.getWater(1_000))
@@ -707,7 +707,7 @@ public final class PlatinumSludgeRecipes {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Rhodium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 1_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)

@@ -672,10 +672,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     ItemList.Hull_LuV.get(1),
-                    MaterialLibAPI.getStack(
-                        Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-                        Shapes.spring,
-                        2),
+                    MaterialLibAPI.getStack(Materials.SuperconductorLuVBase, Shapes.spring, 2),
                     ItemList.Circuit_Chip_UHPIC.get(2),
                     new Object[] { Circuits.LuV.getIngredient(), 2 },
                     ItemList.LuV_Coil.get(2),
@@ -698,7 +695,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     ItemList.Hull_ZPM.get(1),
-                    MaterialLibAPI.getStack(Materials.Tetranaquadahdiindiumhexaplatiumosminid, Shapes.spring, 4),
+                    MaterialLibAPI.getStack(Materials.SuperconductorZPMBase, Shapes.spring, 4),
                     ItemList.Circuit_Chip_NPIC.get(2),
                     new Object[] { Circuits.ZPM.getIngredient(), 2 },
                     ItemList.ZPM_Coil.get(2),
@@ -721,7 +718,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
                 .itemInputs(
                     ItemList.Hull_UV.get(1),
-                    MaterialLibAPI.getStack(Materials.Longasssuperconductornameforuvwire, Shapes.spring, 4),
+                    MaterialLibAPI.getStack(Materials.SuperconductorUVBase, Shapes.spring, 4),
                     ItemList.Circuit_Chip_PPIC.get(2),
                     new Object[] { Circuits.UV.getIngredient(), 2 },
                     ItemList.UV_Coil.get(2),

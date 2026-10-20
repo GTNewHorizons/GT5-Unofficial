@@ -49,7 +49,7 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
         // Superconductor UEV Base Sheetmetal
         .addElement('C', ofSheetMetal(Materials.SuperconductorUEVBase))
         // Superconductor UHV Base Framebox
-        .addElement('D', ofFrame(Materials.Longasssuperconductornameforuhvwire))
+        .addElement('D', ofFrame(Materials.SuperconductorUHVBase))
         // Nanochip Glass
         .addElement('E', Casings.NanochipComplexGlass.asElement())
         .build();

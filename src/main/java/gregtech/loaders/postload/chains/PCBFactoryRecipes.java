@@ -576,10 +576,8 @@ public class PCBFactoryRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialLibAPI.getStack(PCBFactoryManager.getPlasticMaterialFromTier(tier), Shapes.plate, 1),
-                    MaterialLibAPI.getStack(
-                        Materials.Longasssuperconductornameforuvwire,
-                        Shapes.foil,
-                        (int) (16 * (Math.sqrt(tier - 5)))),
+                    MaterialLibAPI
+                        .getStack(Materials.SuperconductorUVBase, Shapes.foil, (int) (16 * (Math.sqrt(tier - 5)))),
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.foil, (int) (16 * (Math.sqrt(tier - 5)))))
                 .circuit(1)
                 .fluidInputs(
@@ -592,7 +590,7 @@ public class PCBFactoryRecipes {
                         FluidShapes.fluidLiquid,
                         (int) ((7500 * (Math.sqrt(tier - 5))))),
                     MaterialLibAPI.getFluidStack(
-                        Materials.BiohMediumSterilized,
+                        Materials.BioMediumSterilized,
                         FluidShapes.fluidLiquid,
                         (int) (4000 * (Math.sqrt(tier - 5)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
@@ -613,10 +611,8 @@ public class PCBFactoryRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialLibAPI.getStack(PCBFactoryManager.getPlasticMaterialFromTier(tier), Shapes.plate, 1),
-                    MaterialLibAPI.getStack(
-                        Materials.Longasssuperconductornameforuvwire,
-                        Shapes.foil,
-                        (int) (16 * (Math.sqrt(tier - 5)))),
+                    MaterialLibAPI
+                        .getStack(Materials.SuperconductorUVBase, Shapes.foil, (int) (16 * (Math.sqrt(tier - 5)))),
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.foil, (int) (16 * (Math.sqrt(tier - 5)))))
                 .circuit(2)
                 .fluidInputs(
@@ -629,7 +625,7 @@ public class PCBFactoryRecipes {
                         FluidShapes.fluidLiquid,
                         (int) ((7500 * (Math.sqrt(tier - 5))))),
                     MaterialLibAPI.getFluidStack(
-                        Materials.BiohMediumSterilized,
+                        Materials.BioMediumSterilized,
                         FluidShapes.fluidLiquid,
                         (int) (4000 * (Math.sqrt(tier - 5)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
@@ -651,10 +647,8 @@ public class PCBFactoryRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialLibAPI.getStack(PCBFactoryManager.getPlasticMaterialFromTier(tier), Shapes.plate, 1),
-                    MaterialLibAPI.getStack(
-                        Materials.Longasssuperconductornameforuvwire,
-                        Shapes.foil,
-                        (int) (16 * (Math.sqrt(tier - 5)))),
+                    MaterialLibAPI
+                        .getStack(Materials.SuperconductorUVBase, Shapes.foil, (int) (16 * (Math.sqrt(tier - 5)))),
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.foil, (int) (16 * (Math.sqrt(tier - 5)))))
                 .circuit(3)
                 .fluidInputs(
@@ -667,7 +661,7 @@ public class PCBFactoryRecipes {
                         FluidShapes.fluidLiquid,
                         (int) ((7500 * (Math.sqrt(tier - 5))))),
                     MaterialLibAPI.getFluidStack(
-                        Materials.BiohMediumSterilized,
+                        Materials.BioMediumSterilized,
                         FluidShapes.fluidLiquid,
                         (int) (4000 * (Math.sqrt(tier - 5)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))

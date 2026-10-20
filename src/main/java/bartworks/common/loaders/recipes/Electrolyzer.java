@@ -74,7 +74,7 @@ public class Electrolyzer implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.GreenFuchsite, Shapes.dust, 21), ItemList.Cell_Empty.get(2))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
@@ -131,7 +131,7 @@ public class Electrolyzer implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.Fluorine, CellShapes.cellGas, 3))
@@ -144,7 +144,7 @@ public class Electrolyzer implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.Olenite, Shapes.dust, 51), ItemList.Cell_Empty.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 1))

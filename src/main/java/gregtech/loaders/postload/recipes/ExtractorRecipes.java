@@ -23,7 +23,7 @@ public class ExtractorRecipes implements Runnable {
     public void run() {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("logRubber", 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.RubberRaw, Shapes.dust, 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(extractorRecipes);
@@ -31,14 +31,14 @@ public class ExtractorRecipes implements Runnable {
         addExtractionRecipe(new ItemStack(Blocks.bookshelf, 1, WILDCARD), new ItemStack(Items.book, 3, 0));
         addExtractionRecipe(
             new ItemStack(Items.slime_ball, 1),
-            MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, 2));
-        addExtractionRecipe(ItemList.IC2_Resin.get(1L), MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, 3));
+            MaterialLibAPI.getStack(Materials.RubberRaw, Shapes.dust, 2));
+        addExtractionRecipe(ItemList.IC2_Resin.get(1L), MaterialLibAPI.getStack(Materials.RubberRaw, Shapes.dust, 3));
         addExtractionRecipe(
             getIC2Item("rubberSapling", 1L),
-            MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, 1));
+            MaterialLibAPI.getStack(Materials.RubberRaw, Shapes.dust, 1));
         addExtractionRecipe(
             getIC2Item("rubberLeaves", 16L),
-            MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, 1));
+            MaterialLibAPI.getStack(Materials.RubberRaw, Shapes.dust, 1));
 
         addExtractionRecipe(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L));
         addExtractionRecipe(ItemList.IC2_Food_Can_Filled.get(1L), ItemList.IC2_Food_Can_Empty.get(1L));

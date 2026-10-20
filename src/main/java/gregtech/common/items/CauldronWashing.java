@@ -61,7 +61,7 @@ public final class CauldronWashing {
 
     /// Returns the washed form of `stackSize` items of `prefix` and `material`, or null when they do not wash.
     public static ItemStack result(OrePrefixes prefix, Material material, int stackSize) {
-        if (material == null || material == Materials.Empty || material == Materials.NULL) return null;
+        if (material == null || material == Materials.Empty || material == Materials._NULL) return null;
         return switch (prefix.getName()) {
             case "dustImpure", "dustPure" -> ProcessingSubstitutes.washing(material, stackSize);
             case "crushed" -> MaterialLibAPI.findStack(material, Shapes.crushedPurified, stackSize);

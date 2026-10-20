@@ -43,8 +43,7 @@ public class SpacePumpingRecipes {
             Pair.of(3, 2),
             MaterialLibAPI.getFluidStack(Materials.OilExtraHeavy, FluidShapes.fluidLiquid, 1_400_000));
         RECIPES.put(Pair.of(3, 3), GTUtility.getLava(1_800_000));
-        RECIPES
-            .put(Pair.of(3, 4), MaterialLibAPI.getFluidStack(Materials.NatruralGas, FluidShapes.fluidGas, 1_400_000));
+        RECIPES.put(Pair.of(3, 4), MaterialLibAPI.getFluidStack(Materials.NaturalGas, FluidShapes.fluidGas, 1_400_000));
 
         // T4
         RECIPES
@@ -87,7 +86,7 @@ public class SpacePumpingRecipes {
         // T7
         RECIPES.put(
             Pair.of(7, 1),
-            MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 672_000));
+            MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 672_000));
         RECIPES.put(Pair.of(7, 2), MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 1_792_000));
         RECIPES.put(Pair.of(7, 3), MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 1_792_000));
         RECIPES.put(Pair.of(7, 4), MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_792_000));

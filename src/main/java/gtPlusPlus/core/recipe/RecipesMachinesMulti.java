@@ -403,7 +403,7 @@ public class RecipesMachinesMulti {
             GregtechItemList.Casing_CokeOven_Coil1.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PPP", "FCF", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Bronze), 'F',
-                OrePrefixes.frameGt.ingredient(Materials.TPVAlloy), 'C', ItemList.Casing_Gearbox_Bronze });
+                OrePrefixes.frameGt.ingredient(Materials.TPV), 'C', ItemList.Casing_Gearbox_Bronze });
 
         // Heat Proof Coke Oven Casing
         GTModHandler.addCraftingRecipe(

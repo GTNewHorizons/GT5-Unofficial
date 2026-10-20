@@ -47,7 +47,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
             renderToolPart(type, stack, toolStats, true);
 
             if ((type == ItemRenderType.INVENTORY)
-                && (MetaGeneratedTool.getPrimaryMaterialML(stack) != Materials.NULL)) {
+                && (MetaGeneratedTool.getPrimaryMaterialML(stack) != Materials._NULL)) {
                 if (GTMod.proxy.mRenderItemDurabilityBar) {
                     IIconContainer iconContainer;
                     long damage = MetaGeneratedTool.getToolDamage(stack);

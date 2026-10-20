@@ -70,7 +70,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer.get(16),
-                    MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 4) },
+                    MaterialLibAPI.getStack(Materials.SiliconSG, Shapes.dust, 4) },
                 20 * SECONDS,
                 TierEU.RECIPE_LV,
                 false);
@@ -78,7 +78,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot2.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer2.get(32),
-                    MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 8) },
+                    MaterialLibAPI.getStack(Materials.SiliconSG, Shapes.dust, 8) },
                 40 * SECONDS,
                 TierEU.RECIPE_MV,
                 true);
@@ -86,7 +86,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot3.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(64),
-                    MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 16) },
+                    MaterialLibAPI.getStack(Materials.SiliconSG, Shapes.dust, 16) },
                 1 * MINUTES + 20 * SECONDS,
                 TierEU.RECIPE_HV,
                 true);
@@ -94,7 +94,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot3.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer3.get(128),
-                    MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 16) },
+                    MaterialLibAPI.getStack(Materials.SiliconSG, Shapes.dust, 16) },
                 Materials.Grade1PurifiedWater,
                 Materials.Grade2PurifiedWater,
                 (int) ((1 * MINUTES + 20 * SECONDS) * 0.75),
@@ -104,7 +104,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot4.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer4.get(64), ItemList.Circuit_Silicon_Wafer4.get(32),
-                    MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 32) },
+                    MaterialLibAPI.getStack(Materials.SiliconSG, Shapes.dust, 32) },
                 Materials.Grade3PurifiedWater,
                 Materials.Grade4PurifiedWater,
                 2 * MINUTES,
@@ -114,7 +114,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithPurifiedWater(
                 new ItemStack[] { ItemList.Circuit_Silicon_Ingot5.get(1) },
                 new ItemStack[] { ItemList.Circuit_Silicon_Wafer5.get(64), ItemList.Circuit_Silicon_Wafer5.get(64),
-                    MaterialLibAPI.getStack(Materials.SiliconSolarGrade, Shapes.dust, 64) },
+                    MaterialLibAPI.getStack(Materials.SiliconSG, Shapes.dust, 64) },
                 Materials.Grade5PurifiedWater,
                 Materials.Grade6PurifiedWater,
                 2 * MINUTES + 40 * SECONDS,

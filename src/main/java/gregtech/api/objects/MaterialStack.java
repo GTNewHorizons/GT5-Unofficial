@@ -12,7 +12,7 @@ public class MaterialStack implements Cloneable {
     public Material material;
 
     public MaterialStack(Material material, long amount) {
-        this.material = material == null ? Materials.NULL : material;
+        this.material = material == null ? Materials._NULL : material;
         this.amount = amount;
     }
 

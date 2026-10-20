@@ -825,12 +825,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI.getFluidStack(Materials.Fuel, FluidShapes.fluidLiquid, 100),
+                MaterialLibAPI.getFluidStack(Materials.Diesel, FluidShapes.fluidLiquid, 100),
                 ItemList.Tool_Lighter_Invar_Full.get(1L),
                 ItemList.Tool_Lighter_Invar_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI.getFluidStack(Materials.Fuel, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Diesel, FluidShapes.fluidLiquid, 1_000),
                 ItemList.Tool_Lighter_Platinum_Full.get(1L),
                 ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 
@@ -1519,14 +1519,14 @@ public class LoaderGTBlockFluid implements Runnable {
 
         // Special secondary oredict for Sodium Hydroxide
         OreDictUtils
-            .registerOre("dustSodiumHydroxide", MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1));
+            .registerOre("dustSodiumHydroxide", MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 1));
         OreDictUtils.registerOre("dustCalciumSulfate", MaterialLibAPI.getStack(Materials.Gypsum, Shapes.dust, 1));
         OreDictUtils.registerOre(
             "dustSmallSodiumHydroxide",
-            MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dustSmall, 1));
+            MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dustSmall, 1));
         OreDictUtils.registerOre(
             "dustTinySodiumHydroxide",
-            MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dustTiny, 1));
+            MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dustTiny, 1));
 
         OreDictUtils.registerOre(
             OrePrefixes.dust,

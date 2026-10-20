@@ -29,7 +29,7 @@ public class GTParallelHelperTest {
     @BeforeAll
     static void setup() {
         machine = new MockIVoidableMachine();
-        ItemStack rubberDust = MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, 1);
+        ItemStack rubberDust = MaterialLibAPI.getStack(Materials.RubberRaw, Shapes.dust, 1);
         ItemStack sulfurDust = MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1);
         rubberRecipe = new GTRecipe(
             new ItemStack[] { rubberDust.copy(), sulfurDust.copy() },

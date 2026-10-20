@@ -328,11 +328,8 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.plate, 64))
-            .itemOutputs(
-                MaterialLibAPI
-                    .getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.plateSuperdense, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.MHDCSM, Shapes.plate, 64))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.MHDCSM, Shapes.plateSuperdense, 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
             .duration(1 * HOURS + 15 * MINUTES)

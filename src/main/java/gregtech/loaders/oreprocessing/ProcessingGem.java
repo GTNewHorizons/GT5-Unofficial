@@ -465,7 +465,7 @@ public class ProcessingGem implements PartRecipeGenerator {
         if (output == null) return;
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(3, stack))
-            .itemOutputs(output, MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 2))
+            .itemOutputs(output, MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, 2))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(ADDITIVE_AMOUNT, 8)

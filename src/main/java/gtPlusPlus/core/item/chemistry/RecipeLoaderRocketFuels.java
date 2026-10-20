@@ -53,7 +53,7 @@ public class RecipeLoaderRocketFuels {
     private static void createKerosene() {
         GTValues.RA.stdBuilder()
             .circuit(23)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Fuel, FluidShapes.fluidLiquid, 250))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Diesel, FluidShapes.fluidLiquid, 250))
             .fluidOutputs(new FluidStack(GTPPFluids.Kerosene, 150))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -184,7 +184,7 @@ public class RecipeLoaderRocketFuels {
                 new FluidStack(GTPPFluids.Formaldehyde, 2_000),
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 4_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials._11Dimethylhydrazine, FluidShapes.fluidLiquid, 2_000),
+                MaterialLibAPI.getFluidStack(Materials.Dimethylhydrazine, FluidShapes.fluidLiquid, 2_000),
                 GTUtility.getWater(2_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -257,7 +257,7 @@ public class RecipeLoaderRocketFuels {
         GTValues.RA.stdBuilder()
             .circuit(4)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials._11Dimethylhydrazine, FluidShapes.fluidLiquid, 2_000),
+                MaterialLibAPI.getFluidStack(Materials.Dimethylhydrazine, FluidShapes.fluidLiquid, 2_000),
                 new FluidStack(GTPPFluids.NitrogenTetroxide, 2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.H8N4C2O4RocketFuel, 5_000))
             .duration(60 * SECONDS)

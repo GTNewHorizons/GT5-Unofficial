@@ -237,7 +237,7 @@ public class GTClient extends GTProxy {
         MaterialLibClient.setItemRenderer(Materials.CosmicNeutronium, new CosmicNeutroniumRenderer());
         MaterialLibClient.setItemRenderer(Materials.Universium, new UniversiumRenderer());
         MaterialLibClient.setItemRenderer(Materials.Eternity, new InfinityRenderer());
-        MaterialLibClient.setItemRenderer(Materials.Magmatter, new InfinityRenderer());
+        MaterialLibClient.setItemRenderer(Materials.MagMatter, new InfinityRenderer());
         MaterialLibClient.setItemRenderer(Materials.SixPhasedCopper, new GlitchEffectRenderer());
         MaterialLibClient.setItemRenderer(Materials.GravitonShard, new InfinityRenderer());
         MaterialLibClient.setItemRenderer(Materials.ExoHalkonite, new InfinityRenderer());

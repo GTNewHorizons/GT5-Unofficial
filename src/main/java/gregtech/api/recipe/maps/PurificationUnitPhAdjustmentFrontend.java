@@ -60,13 +60,13 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
 
         FluidStack fluid = StackInfo.getFluid(stack);
         // Add pH adjustment values
-        if (stack.isItemEqual(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 1))) {
+        if (stack.isItemEqual(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 1))) {
             currentTip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.nei.purified_water.grade_4.0",
                     MTEPurificationUnitPhAdjustment.PH_PER_ALKALINE_DUST * 64));
-        } else if (fluid != null && fluid.isFluidEqual(
-            MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))) {
+        } else if (fluid != null && fluid
+            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 1_000))) {
                 currentTip.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.nei.purified_water.grade_4.1",

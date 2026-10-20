@@ -41,7 +41,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1), GTUtility.getEmptyCell(4))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 4))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 6_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 6_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -62,7 +62,7 @@ public class ArtificialMicaLine {
             .itemInputs(MaterialLibAPI.getStack(Materials.RockSalt, Shapes.dust, 4))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Potassiumfluorosilicate, Shapes.dust, 9))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 2_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -97,7 +97,7 @@ public class ArtificialMicaLine {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.QuartzSand, Shapes.dust, 55),
                 MaterialLibAPI.getStack(Materials.Potassiumfluorosilicate, Shapes.dust, 20),
-                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 12),
+                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 12),
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 4))
             .circuit(4)
             .itemOutputs(
@@ -112,7 +112,7 @@ public class ArtificialMicaLine {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Quartzite, Shapes.dust, 55),
                 MaterialLibAPI.getStack(Materials.Potassiumfluorosilicate, Shapes.dust, 20),
-                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 57),
+                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 57),
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 4))
             .circuit(4)
             .itemOutputs(
@@ -128,7 +128,7 @@ public class ArtificialMicaLine {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.dust, 55),
                 MaterialLibAPI.getStack(Materials.Potassiumfluorosilicate, Shapes.dust, 20),
-                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 57),
+                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 57),
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 4))
             .circuit(4)
             .itemOutputs(
@@ -144,7 +144,7 @@ public class ArtificialMicaLine {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, 62),
                 MaterialLibAPI.getStack(Materials.Potassiumfluorosilicate, Shapes.dust, 10),
-                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 12),
+                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 12),
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 7))
             .circuit(4)
             .itemOutputs(

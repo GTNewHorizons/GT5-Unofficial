@@ -197,7 +197,7 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_TungstenSteel.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.TPVAlloy, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.TPV, Shapes.dust, 8),
                 MaterialLibAPI.getStack(Materials.Nichrome, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.QuartzSand, Shapes.dust, 5))
             .duration(1 * MINUTES + 15 * SECONDS)
@@ -209,7 +209,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(ItemList.Casing_Coil_HSSG.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HSSG, Shapes.dust, 8),
-                MaterialLibAPI.getStack(Materials.TPVAlloy, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.TPV, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.QuartzSand, Shapes.dust, 6))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(80)
@@ -406,7 +406,7 @@ public class Pulverizer implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 2))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.Plastic, Shapes.dust, 12),
+                    MaterialLibAPI.getStack(Materials.Polyethylene, Shapes.dust, 12),
                     MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dustSmall, 3))
                 .duration(22 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_ULV)

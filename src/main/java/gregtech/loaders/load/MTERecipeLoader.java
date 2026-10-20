@@ -435,7 +435,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
-                OrePrefixes.pipeMedium.ingredient(Materials.Plastic) },
+                OrePrefixes.pipeMedium.ingredient(Materials.Polyethylene) },
             3);
 
         GTModHandler.addMachineCraftingRecipe(
@@ -443,7 +443,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
-                OrePrefixes.pipeLarge.ingredient(Materials.Plastic) },
+                OrePrefixes.pipeLarge.ingredient(Materials.Polyethylene) },
             4);
 
         GTModHandler.addMachineCraftingRecipe(
@@ -451,7 +451,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "GRG", "WEW", aTextCableHull, 'M', MTEBasicMachineWithRecipe.X.HULL, 'R',
                 MTEBasicMachineWithRecipe.X.ROTOR, 'E', MTEBasicMachineWithRecipe.X.MOTOR, 'C',
                 MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE, 'G',
-                OrePrefixes.pipeHuge.ingredient(Materials.Plastic) },
+                OrePrefixes.pipeHuge.ingredient(Materials.Polyethylene) },
             5);
     }
 
@@ -1619,7 +1619,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.ExtruderMachineCasing.get(1),
             BUFFERED,
-            new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.ingredient(Materials.TPVAlloy), 'S',
+            new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.ingredient(Materials.TPV), 'S',
                 OrePrefixes.plate.ingredient(Materials.Titanium), 'F',
                 OrePrefixes.frameGt.ingredient(Materials.TungstenSteel) });
 

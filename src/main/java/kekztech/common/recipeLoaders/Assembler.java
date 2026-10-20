@@ -53,7 +53,7 @@ public class Assembler implements Runnable {
                 ItemList.Field_Generator_LV.get(4),
                 MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, TEBlockShapes.pipeTiny, 25))
             .itemOutputs(TileEntities.tfftHatch.getStackForm(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -61,8 +61,8 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.CrudeSteel, TEBlockShapes.frameGt, 1),
-                MaterialLibAPI.getStack(Materials.CrudeSteel, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.ClayCompound, TEBlockShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.ClayCompound, Shapes.plate, 6),
                 MaterialLibAPI.getStack(Materials.Steel, TEBlockShapes.pipeNonuple, 3),
                 ItemList.FluidRegulator_LV.get(1))
             .circuit(6)
@@ -77,11 +77,11 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Casing_Tank_1.get(1),
                 MaterialLibAPI.getStack(Materials.EnergeticSilver, Shapes.plate, 6),
-                MaterialLibAPI.getStack(Materials.Plastic, TEBlockShapes.pipeNonuple, 3),
+                MaterialLibAPI.getStack(Materials.Polyethylene, TEBlockShapes.pipeNonuple, 3),
                 ItemList.FluidRegulator_MV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 2))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -96,7 +96,7 @@ public class Assembler implements Runnable {
                 ItemList.FluidRegulator_HV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 3))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

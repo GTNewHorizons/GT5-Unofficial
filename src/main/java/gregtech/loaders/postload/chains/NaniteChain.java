@@ -180,8 +180,7 @@ public class NaniteChain {
             .itemOutputs(MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.nanite, 8))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 500_000),
-                MaterialLibAPI
-                    .getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 50_000),
+                MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 50_000),
                 MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidMolten, 8 * STACKS))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(100 * SECONDS)
@@ -274,10 +273,10 @@ public class NaniteChain {
                 MaterialLibAPI.getStack(Materials.Forcicium, Shapes.lens, 0),
                 MaterialLibAPI.getStack(Materials.Forcillium, Shapes.lens, 0),
                 MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 4),
-                MaterialLibAPI.getStack(Materials.Magmatter, BlockShapes.block, 8),
+                MaterialLibAPI.getStack(Materials.MagMatter, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_YPIC.get(64),
                 Circuits.MAX.get(1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Magmatter, Shapes.nanite, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.MagMatter, Shapes.nanite, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, 100_000),
                 MaterialLibAPI.getFluidStack(Materials.PhononMedium, FluidShapes.fluidLiquid, 64_000),

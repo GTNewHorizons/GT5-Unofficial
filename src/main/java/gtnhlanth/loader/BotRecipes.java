@@ -40,7 +40,7 @@ public class BotRecipes {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cellGas, 1),
                 MaterialLibAPI.getStack(Materials.CalciumChloride, Shapes.dust, 3))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(GTUtility.getWater(1_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -102,7 +102,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(scheelite)
             .itemOutputs(H2WO4, Ca2Cl)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 2_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
@@ -183,7 +183,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Phosphorus, Shapes.dust, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(GTUtility.getWater(500))
             .eut(TierEU.RECIPE_HV)
             .duration(1 * SECONDS)
@@ -196,7 +196,7 @@ public class BotRecipes {
             .itemInputs(cells)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cellGas, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AmmoniumChloride, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(2 * SECONDS + 10 * TICKS)
             .addTo(distilleryRecipes);
@@ -205,7 +205,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.AmmoniumNitrate, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 3))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumNitrate, Shapes.dust, 5))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 1_000))
             .duration(5 * SECONDS)
@@ -215,7 +215,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.AmmoniumNitrate, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 3))
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumNitrate, Shapes.dust, 5))
             .fluidOutputs(
@@ -229,7 +229,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.AmmoniumNitrate, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 3))
             .circuit(24)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1))
             .fluidInputs(

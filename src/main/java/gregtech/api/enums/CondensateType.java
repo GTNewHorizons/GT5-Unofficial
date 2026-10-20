@@ -109,14 +109,14 @@ public enum CondensateType {
         () -> MaterialLibAPI.getFluidStack(Materials.BoundlessCosmicSolder, FluidShapes.fluidLiquid, 1000), 160 * SECONDS, TierEU.RECIPE_UMV),
     MHDCSM(
         "mhdcsm",
-        () -> Materials.MagnetohydrodynamicallyConstrainedStarMatter,
+        () -> Materials.MHDCSM,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 144), 240 * SECONDS, TierEU.RECIPE_UXV),
+        () -> MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 144), 240 * SECONDS, TierEU.RECIPE_UXV),
     MagMatter(
         "magmatter",
-        () -> Materials.Magmatter,
+        () -> Materials.MagMatter,
         144,
-        () -> MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 144), 240 * SECONDS, TierEU.RECIPE_UXV),
+        () -> MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 144), 240 * SECONDS, TierEU.RECIPE_UXV),
     Universium(
         "universium",
         () -> Materials.Universium,

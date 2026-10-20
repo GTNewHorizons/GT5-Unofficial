@@ -293,7 +293,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
-                                    Materials.Silicone,
+                                    Materials.RubberSilicone,
                                     FluidShapes.fluidMolten,
                                     costMultiplier * HALF_INGOTS))
                             .duration(5 * SECONDS)
@@ -330,7 +330,7 @@ public class ProcessingWire implements PartRecipeGenerator {
                             .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
-                                    Materials.Silicone,
+                                    Materials.RubberSilicone,
                                     FluidShapes.fluidMolten,
                                     costMultiplier * HALF_INGOTS))
                             .duration(5 * SECONDS)
@@ -448,8 +448,10 @@ public class ProcessingWire implements PartRecipeGenerator {
                     .circuit(24)
                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                     .fluidInputs(
-                        MaterialLibAPI
-                            .getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, costMultiplier * HALF_INGOTS))
+                        MaterialLibAPI.getFluidStack(
+                            Materials.RubberSilicone,
+                            FluidShapes.fluidMolten,
+                            costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ULV)
                     .addTo(cableRecipes);
@@ -483,8 +485,10 @@ public class ProcessingWire implements PartRecipeGenerator {
                     .circuit(24)
                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                     .fluidInputs(
-                        MaterialLibAPI
-                            .getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, costMultiplier * HALF_INGOTS))
+                        MaterialLibAPI.getFluidStack(
+                            Materials.RubberSilicone,
+                            FluidShapes.fluidMolten,
+                            costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ULV)
                     .addTo(assemblerRecipes);
@@ -546,8 +550,10 @@ public class ProcessingWire implements PartRecipeGenerator {
                     .circuit(24)
                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                     .fluidInputs(
-                        MaterialLibAPI
-                            .getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, costMultiplier * HALF_INGOTS))
+                        MaterialLibAPI.getFluidStack(
+                            Materials.RubberSilicone,
+                            FluidShapes.fluidMolten,
+                            costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(cableRecipes);
@@ -559,8 +565,10 @@ public class ProcessingWire implements PartRecipeGenerator {
                     .circuit(24)
                     .itemOutputs(MaterialLibAPI.getStack(material, correspondingCable, 1))
                     .fluidInputs(
-                        MaterialLibAPI
-                            .getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, costMultiplier * HALF_INGOTS))
+                        MaterialLibAPI.getFluidStack(
+                            Materials.RubberSilicone,
+                            FluidShapes.fluidMolten,
+                            costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(assemblerRecipes);

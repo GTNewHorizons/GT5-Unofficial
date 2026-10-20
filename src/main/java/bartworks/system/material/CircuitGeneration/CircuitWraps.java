@@ -141,7 +141,7 @@ public enum CircuitWraps {
         GTValues.RA.stdBuilder()
             .itemInputs(itemSingle.get(16), GTUtility.getIntegratedCircuit(16))
             .itemOutputs(getCircuitParts().getStack(id))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);

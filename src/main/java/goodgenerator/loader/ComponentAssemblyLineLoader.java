@@ -1900,10 +1900,10 @@ public class ComponentAssemblyLineLoader {
             .circuit(MOTOR_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 384_000),
-                MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 31 * STACKS + 10 * INGOTS + 6 * NUGGETS),
+                MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 31 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 28 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 15 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 12 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SuperconductorUMVBase, FluidShapes.fluidMolten, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 3 * STACKS))
             .duration(40 * MINUTES)
@@ -1921,10 +1921,10 @@ public class ComponentAssemblyLineLoader {
             .circuit(PISTON_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 384_000),
-                MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 26 * STACKS + 21 * INGOTS + 3 * NUGGETS),
+                MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 26 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 23 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 15 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 9 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 9 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UMV)
@@ -1946,9 +1946,9 @@ public class ComponentAssemblyLineLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 384_000),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 21 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 19 * STACKS + 32 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 19 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 16 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 10 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UMV)
@@ -1966,10 +1966,10 @@ public class ComponentAssemblyLineLoader {
             .circuit(PUMP_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 384_000),
-                MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 20 * STACKS + 5 * INGOTS + 3 * NUGGETS),
+                MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 20 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 17 * STACKS + 5 * INGOTS + 3 * NUGGETS),
-                MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 12 * STACKS + 48 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, 12 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 12 * STACKS + 48 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Kevlar, FluidShapes.fluidMolten, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 3 * STACKS))
@@ -1989,9 +1989,9 @@ public class ComponentAssemblyLineLoader {
             .circuit(CONVEYOR_CIRCUIT)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 384_000),
-                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, 59 * STACKS + 58 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 59 * STACKS + 58 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Kevlar, FluidShapes.fluidMolten, 59 * STACKS + 58 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 11 * STACKS + 21 * INGOTS + 3 * NUGGETS),
+                MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 11 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 8 * STACKS + 21 * INGOTS + 3 * NUGGETS),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 3 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 3 * STACKS))
@@ -2004,7 +2004,7 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Sensor_UXV.get(64))
             .itemInputsUnsafe(
-                get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 48),
+                get(OrePrefixes.frameGt, Materials.MHDCSM, 48),
                 get(Electric_Motor_UXV, 48),
                 get(PseudoStar, 48),
                 get(Circuits.UXV.getWrap(1), 12),
@@ -2014,10 +2014,10 @@ public class ComponentAssemblyLineLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 75 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 36 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 21 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 21 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 18 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 15 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 12 * STACKS))
+                MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 12 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UMV)
             .metadata(COAL_CASING_TIER, COAL_UXV)
@@ -2027,7 +2027,7 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Emitter_UXV.get(64))
             .itemInputsUnsafe(
-                get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 48),
+                get(OrePrefixes.frameGt, Materials.MHDCSM, 48),
                 get(Electric_Motor_UXV, 48),
                 get(PseudoStar, 48),
                 get(Circuits.UXV.getWrap(1), 12),
@@ -2037,10 +2037,10 @@ public class ComponentAssemblyLineLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 75 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 36 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 21 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 21 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 18 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 15 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 12 * STACKS))
+                MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 12 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UMV)
             .metadata(COAL_CASING_TIER, COAL_UXV)
@@ -2050,7 +2050,7 @@ public class ComponentAssemblyLineLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(Field_Generator_UXV.get(64))
             .itemInputsUnsafe(
-                get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 48),
+                get(OrePrefixes.frameGt, Materials.MHDCSM, 48),
                 get(PseudoStar, 192),
                 get(Emitter_UXV, 192),
                 get(Circuits.MAX.getWrap(1), 12),
@@ -2060,10 +2060,10 @@ public class ComponentAssemblyLineLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 75 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 27 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, FluidShapes.fluidMolten, 19 * STACKS + 32 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 19 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 16 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 15 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 12 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.MagMatter, FluidShapes.fluidMolten, 12 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.SuperconductorUMVBase, FluidShapes.fluidMolten, 12 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UMV)

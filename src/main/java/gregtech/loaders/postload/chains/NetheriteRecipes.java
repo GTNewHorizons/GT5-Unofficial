@@ -138,7 +138,7 @@ public class NetheriteRecipes {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.PrismarineSolution, FluidShapes.fluidLiquid, 1000),
                     MaterialLibAPI.getFluidStack(
-                        Materials.PrismarineContaminatedNitrobenzeneSolution,
+                        Materials.PrismarineContaminatedNitrobenzeSolution,
                         FluidShapes.fluidLiquid,
                         3000))
                 .fluidOutputs(
@@ -168,7 +168,7 @@ public class NetheriteRecipes {
                         .getFluidStack(Materials.PrismarineRichNitrobenzeneSolution, FluidShapes.fluidLiquid, 16000))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials.PrismarineContaminatedNitrobenzeneSolution,
+                        Materials.PrismarineContaminatedNitrobenzeSolution,
                         FluidShapes.fluidLiquid,
                         12000),
                     new FluidStack(GTPPFluids.Nitrobenzene, 4000))

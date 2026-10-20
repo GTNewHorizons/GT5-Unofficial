@@ -485,7 +485,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         putLens(colors, Materials.Ruby, Colors.Red);
         putLens(colors, Materials.Firestone, Colors.Red);
         putLens(colors, Materials.Jasper, Colors.Red);
-        putLens(colors, Materials.FoolsRuby, Colors.Red);
+        putLens(colors, Materials.Spinel, Colors.Red);
         putLens(colors, Materials.GarnetRed, Colors.Red);
         putLens(colors, Materials.InfusedFire, Colors.Red);
 

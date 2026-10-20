@@ -69,7 +69,7 @@ public class PurifiedWaterRecipes {
         // Activated Carbon Line
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcid, FluidShapes.fluidLiquid, 1_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.PreActivatedCarbon, Shapes.dust, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -85,7 +85,7 @@ public class PurifiedWaterRecipes {
             .itemInputs(MaterialLibAPI.getStack(Materials.DirtyActivatedCarbon, Shapes.dust, 1))
             .fluidInputs(GTUtility.getWater(1_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.ActivatedCarbon, Shapes.dust, 1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PhosphoricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);
@@ -137,7 +137,7 @@ public class PurifiedWaterRecipes {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Grade2PurifiedWater, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.PolyaluminiumChloride, FluidShapes.fluidLiquid, 100_000))
+                MaterialLibAPI.getFluidStack(Materials.PolyAluminiumChloride, FluidShapes.fluidLiquid, 100_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Grade3PurifiedWater, FluidShapes.fluidLiquid, 900),
                 MaterialLibAPI.getFluidStack(Materials.FlocculationWasteLiquid, FluidShapes.fluidLiquid, 100_000))
@@ -168,10 +168,10 @@ public class PurifiedWaterRecipes {
 
         // 2 Al(OH)3 + 3 HCl -> Al2(OH)3 Cl3 + 3 H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.AluminiumHydroxide, Shapes.dust, 8))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminiumhydroxide, Shapes.dust, 8))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 3_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.PolyaluminiumChloride, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.PolyAluminiumChloride, FluidShapes.fluidLiquid, 1_000),
                 GTUtility.getWater(3_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -183,17 +183,17 @@ public class PurifiedWaterRecipes {
             .itemOutputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, 20))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 30_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 30_000))
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 30_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
 
         // Grade 4 - pH adjustment
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 64))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Grade3PurifiedWater, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Grade4PurifiedWater, FluidShapes.fluidLiquid, 900))
             .ignoreCollision()
             .duration(duration)

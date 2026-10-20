@@ -93,7 +93,7 @@ public class AssemblyLine implements Runnable {
                 GTModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.CrystallinePinkSlime, FluidShapes.fluidMolten, 30 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, 20 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 20 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 8))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -117,7 +117,7 @@ public class AssemblyLine implements Runnable {
                 GTModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.MelodicAlloy, FluidShapes.fluidMolten, 40 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, 24 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 24 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 9))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
@@ -141,7 +141,7 @@ public class AssemblyLine implements Runnable {
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.StellarAlloy, FluidShapes.fluidMolten, 50 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, 32 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.RadoxPolymer, FluidShapes.fluidMolten, 32 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 10))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UXV)

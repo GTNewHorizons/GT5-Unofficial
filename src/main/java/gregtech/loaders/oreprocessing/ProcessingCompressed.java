@@ -41,7 +41,7 @@ public class ProcessingCompressed implements PartRecipeGenerator {
         if (triplePlate == null) return;
         GTValues.RA.stdBuilder()
             .itemInputs(triplePlate)
-            .itemOutputs(GTUtility.copyAmount(1, stack), MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dustTiny, 1))
+            .itemOutputs(GTUtility.copyAmount(1, stack), MaterialLibAPI.getStack(Materials.AshDark, Shapes.dustTiny, 1))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(ADDITIVE_AMOUNT, 2)

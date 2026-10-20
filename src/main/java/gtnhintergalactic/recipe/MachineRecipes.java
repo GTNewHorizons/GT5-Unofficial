@@ -98,7 +98,7 @@ public class MachineRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Graphene, TEBlockShapes.wireGt16, 64),
                 MaterialLibAPI.getStack(Materials.Graphene, TEBlockShapes.wireGt16, 64))
             .itemOutputs(ItemList.NanotubeSpool.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 720))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.GlueAdvanced, FluidShapes.fluidLiquid, 720))
             .duration(1 * MINUTE)
             .eut(TierEU.RECIPE_ZPM)
             .requiresCleanRoom()
@@ -431,11 +431,10 @@ public class MachineRecipes implements Runnable {
             256000000,
             4,
             new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.AssemblingMachineUMV.get(4),
-                ItemList.CircuitAssemblerUMV.get(4),
-                MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.gearGt, 8),
-                MaterialLibAPI.getStack(Materials.Magmatter, Shapes.gearGt, 8),
-                MaterialLibAPI.getStack(Materials.MagnetohydrodynamicallyConstrainedStarMatter, Shapes.gearGtSmall, 16),
-                MaterialLibAPI.getStack(Materials.Magmatter, Shapes.gearGtSmall, 16), ItemList.Robot_Arm_UXV.get(8),
+                ItemList.CircuitAssemblerUMV.get(4), MaterialLibAPI.getStack(Materials.MHDCSM, Shapes.gearGt, 8),
+                MaterialLibAPI.getStack(Materials.MagMatter, Shapes.gearGt, 8),
+                MaterialLibAPI.getStack(Materials.MHDCSM, Shapes.gearGtSmall, 16),
+                MaterialLibAPI.getStack(Materials.MagMatter, Shapes.gearGtSmall, 16), ItemList.Robot_Arm_UXV.get(8),
                 ItemList.Conveyor_Module_UXV.get(16), highComputationStationT5_32,
                 new Object[] { Circuits.UXV.getIngredient(), 16 },
                 MaterialLibAPI.getStack(Materials.Universium, TEBlockShapes.frameGt, 8),

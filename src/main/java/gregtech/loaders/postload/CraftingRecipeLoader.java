@@ -1300,7 +1300,7 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "dustRedstone", "dustSilicon", "dustCoal" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.CrudeSteel, Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.ClayCompound, Shapes.dust, 2),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "dustClay", "dustFlint", "dustStone" });
         GTModHandler.addShapelessCraftingRecipe(
