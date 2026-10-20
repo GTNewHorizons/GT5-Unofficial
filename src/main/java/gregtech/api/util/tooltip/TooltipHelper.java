@@ -201,7 +201,7 @@ public class TooltipHelper {
      * @return Italic String
      */
     public static String italicText(String text) {
-        return String.format("%s%s%s", ITALIC, text, EnumChatFormatting.RESET);
+        return ITALIC + text + EnumChatFormatting.RESET;
     }
 
     /**
