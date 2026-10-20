@@ -90,7 +90,6 @@ import forestry.apiculture.genetics.Bee;
 import forestry.plugins.PluginApiculture;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -150,6 +149,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private static final int MAX_JELLY_BONUS_PERCENT = 200;
     private static final int JELLY_BONUS_PER_BEE_PERCENT = 5;
     private static final float MAX_PRODUCTION_MODIFIER_FROM_UPGRADES = 17.19926784f; // 4*1.2^8
+
+    private static final int NORMAL_MODE_VOLTAGE_INDEX = VoltageIndex.LuV;
+    private static final int SWARMER_MODE_VOLTAGE_INDEX = VoltageIndex.IV;
 
     protected static final ItemStack royalJelly = PluginApiculture.items.royalJelly.getItemStack(1);
 
@@ -410,8 +412,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         Map<String, Object> ttVars = new HashMap<>();
-        ttVars.put("voltageTier_LuV", voltageTooltipFormatted(6));
-        ttVars.put("voltageTier_IV", voltageTooltipFormatted(5));
+        ttVars.put("normalTier", GTUtility.getColoredTierNameForTooltip(NORMAL_MODE_VOLTAGE_INDEX));
+        ttVars.put("swarmerTier", GTUtility.getColoredTierNameForTooltip(SWARMER_MODE_VOLTAGE_INDEX));
         ttVars.put("bee_acceleration", BEE_ACCELERATION);
         ttVars.put("swarmer_jelly_cost", SWARMER_JELLY_COST);
         ttVars.put("normal_seconds", NORMAL_PROCESSING_TICKS / 20);
@@ -464,7 +466,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.footer"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.AuthorKuba, "Runakai");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -546,8 +548,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     private void updateMaxSlots() {
         long v = this.getMaxInputEu();
-        if (v < GTValues.V[6]) mMaxSlots = 0;
-        else if (mSecondaryMode == 0) mMaxSlots = (int) (v / GTValues.V[6]);
+        if (v < GTValues.V[NORMAL_MODE_VOLTAGE_INDEX]) mMaxSlots = 0;
+        else if (mSecondaryMode == 0) mMaxSlots = (int) (v / GTValues.V[NORMAL_MODE_VOLTAGE_INDEX]);
         else mMaxSlots = 1;
     }
 
@@ -657,7 +659,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                             productionModifier);
                     }
 
-                    this.lEUt = -(long) ((double) GTValues.V[6] * (double) mMaxSlots * 0.99d);
+                    this.lEUt = -(long) ((double) GTValues.V[NORMAL_MODE_VOLTAGE_INDEX] * (double) mMaxSlots * 0.99d);
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
                     this.mMaxProgresstime = NORMAL_PROCESSING_TICKS;
@@ -669,7 +671,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                         this.updateSlots();
                         return CheckRecipeResultRegistry.NO_RECIPE;
                     }
-                    calculateOverclock(GTValues.V[5] - 2L, SWARMER_PROCESSING_TICKS);
+                    calculateOverclock(GTValues.V[SWARMER_MODE_VOLTAGE_INDEX] - 2L, SWARMER_PROCESSING_TICKS);
                     if (this.lEUt > 0) this.lEUt = -this.lEUt;
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;

@@ -1,24 +1,24 @@
 Accelerates particle beams until they produce a photon beam from the relativistic Larmor effect
-Electrically neutral §5particles§7 and beams with less than 25 §2Focus§7 are therefore unaffected
+Electrically neutral {dark_purple:particles} and beams with less than 25 {dark_green:Focus} are therefore unaffected
 {lang:gtnhlanth.tt.beaminfo}
-{gray:{hr}}
-Requires §f32,000 {var:fluidUnit}/s§7 of §bcoolant§7 to run, returns as §chot coolant
+{hr}
+Requires {color_amount:32,000 {var:fluidUnit}/s} of {color_cold:coolant} to run, returns as {color_hot:hot coolant}
 {lang:gtnhlanth.tt.coolant.oxygen}
 {lang:gtnhlanth.tt.coolant.nitrogen}
 {lang:gtnhlanth.tt.coolant.coolant}
 {lang:gtnhlanth.tt.coolant.Scoolant}
-{gray:{hr}}
+{hr}
 Increasing power increases the §6Output Beam Rate
-Preserve §2Beam Focus§7 more effectively with lower temperature §bcoolant
-Increasing the tier of the §dAntenna Casings§7 improves the efficiency of the machine
-The §9energies§7 in the following formulae must all be in keV
-{gray:{hr}}
-§9Output Beam Energy§f = §eIR§f * §ePower Scale Factor
-where §eIR§f = (§9Input Beam Energy§f)^(1.13 * (§dAntenna Tier§f)^(4/9)) / 40,000,000
-and §ePower Scale Factor§f = 1 - 0.15^(§3Total EU/t Provided§f / (30,384 * (§dAntenna Tier§f)^2.5))
-{gray:{hr}}
-§2Output Beam Focus§f = (§2Input Beam Focus§f + §eMachine Focus§f)/2.5§7 if §2Input Beam Focus§f > §eMachine Focus
-§2Output Beam Focus§f = §2Input Beam Focus§f * §eMachine Focus§f/100§7 if §2Input Beam Focus§f <= §eMachine Focus
-where §eMachine Focus§f = max(10, min(90, 1.5^(12 - §bCoolant Temperature§f/40)))
-{gray:{hr}}
-§6Output Beam Rate§f = floor(2.5^(§dAntenna Tier§f) * sqrt(§3Total EU/t Provided§f) * §6Input Beam Rate§f/15,000)
+Preserve {dark_green:Beam Focus} more effectively with lower temperature §bcoolant
+Increasing the tier of the {light_purple:Antenna Casings} improves the efficiency of the machine
+The {blue:energies} in the following formulae must all be in keV
+{hr}
+{blue:Output Beam Energy}{color_formula: = {color_note:IR} * {color_note:Power Scale Factor}}
+where {color_note:IR}{color_formula: = ({blue:Input Beam Energy})^(1.13 * ({light_purple:Antenna Tier})^(4/9)) / 40,000,000}
+and {color_note:Power Scale Factor}{color_formula: = 1 - 0.15^({color_eu_usage:Total {EU/t} Provided} / (30,384 * ({light_purple:Antenna Tier})^2.5))}
+{hr}
+{dark_green:Output Beam Focus}{color_formula: = ({dark_green:Input Beam Focus} + {color_note:Machine Focus})/2.5} if {dark_green:Input Beam Focus} > {color_note:Machine Focus}
+{dark_green:Output Beam Focus}{color_formula: = {dark_green:Input Beam Focus} * {color_note:Machine Focus}/100} if {dark_green:Input Beam Focus} <= {color_note:Machine Focus}
+where {color_note:Machine Focus}{color_formula: = max(10, min(90, 1.5^(12 - {color_cold:Coolant Temperature}/40)))}
+{hr}
+{gold:Output Beam Rate}{color_formula: = floor(2.5^({light_purple:Antenna Tier}) * sqrt({color_eu_usage:Total {EU/t} Provided}) * {gold:Input Beam Rate}/15,000)}

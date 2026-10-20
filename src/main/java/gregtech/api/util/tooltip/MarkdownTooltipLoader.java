@@ -1,5 +1,7 @@
 package gregtech.api.util.tooltip;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,11 +61,64 @@ public class MarkdownTooltipLoader {
             addCommand(format.getFriendlyName(), new ColorMarkdownCommand(format));
         }
 
+        // standard coloring for certain concepts
+        addCommand("color_tier", new ColorMarkdownCommand(TooltipHelper.TIER_COLOR));
+        addCommand("color_name", new ColorMarkdownCommand(TooltipHelper.NAME_COLOR));
+        addCommand("color_formula", new ColorMarkdownCommand(TooltipHelper.FORMULA_COLOR));
+        addCommand("color_steam", new ColorMarkdownCommand(TooltipHelper.STEAM_COLOR));
+        addCommand("color_note", new ColorMarkdownCommand(TooltipHelper.NOTE_COLOR));
+        addCommand("color_machine_type", new ColorMarkdownCommand(TooltipHelper.MACHINE_TYPE_COLOR));
+        addCommand("color_misc", new ColorMarkdownCommand(TooltipHelper.MISC_COLOR));
+        addCommand("color_cold", new ColorMarkdownCommand(TooltipHelper.COLD_COLOR));
+        addCommand("color_speed", new ColorMarkdownCommand(TooltipHelper.SPEED_COLOR));
+        addCommand("color_range", new ColorMarkdownCommand(TooltipHelper.RANGE_COLOR));
+        addCommand("color_amount", new ColorMarkdownCommand(TooltipHelper.AMOUNT_COLOR));
+        addCommand("color_hatch", new ColorMarkdownCommand(TooltipHelper.HATCH_COLOR));
+        addCommand("color_loss", new ColorMarkdownCommand(TooltipHelper.LOSS_COLOR));
+        addCommand("color_parallel", new ColorMarkdownCommand(TooltipHelper.PARALLEL_COLOR));
+        addCommand("color_mode", new ColorMarkdownCommand(TooltipHelper.MODE_COLOR));
+        addCommand("color_key", new ColorMarkdownCommand(TooltipHelper.KEY_COLOR));
+        addCommand("color_efficiency", new ColorMarkdownCommand(TooltipHelper.EFF_COLOR));
+        addCommand("color_eu_usage", new ColorMarkdownCommand(TooltipHelper.EU_USAGE_COLOR));
+        addCommand("color_heat", new ColorMarkdownCommand(TooltipHelper.HEAT_COLOR));
+        addCommand("color_hot", new ColorMarkdownCommand(TooltipHelper.HOT_COLOR));
+        addCommand("color_electron_volt", new ColorMarkdownCommand(TooltipHelper.ELECTRON_VOLT_COLOR));
+        addCommand("color_deprecated", new ColorMarkdownCommand(TooltipHelper.DEPRECATED_COLOR));
+        addCommand("color_danger", new ColorMarkdownCommand(TooltipHelper.DANGER_COLOR));
+        addCommand("color_mechanic", new ColorMarkdownCommand(TooltipHelper.MECHANIC_COLOR));
+        addCommand("color_time", new ColorMarkdownCommand(TooltipHelper.TIME_COLOR));
+        addCommand("color_pollution", new ColorMarkdownCommand(TooltipHelper.POLLUTION_COLOR));
+        addCommand("color_amperage", new ColorMarkdownCommand(TooltipHelper.AMP_COLOR));
+
         addCommand("hr", new HRMarkdownCommand());
         addCommand("var", new VarMarkdownCommand(false));
         addCommand("var-eval", new VarMarkdownCommand(true));
         addCommand("lang", new LangMarkdownCommand(false));
         addCommand("lang-eval", new LangMarkdownCommand(true));
+
+        addAliases(new FluidUnitCommand(), "fluid-unit", "l", "L", "mb", "mB");
+        addAliases(new SimpleUnitCommand("EU"), "energy-unit", "eu", "EU");
+        addAliases(
+            new SimpleUnitCommand("EU/t"),
+            "energy-usage-unit",
+            "eut",
+            "EUt",
+            "EUT",
+            "eu/t",
+            "EU/t",
+            "eu/T",
+            "EU/T");
+        addAliases(new SimpleUnitCommand("GeV"), "giga-electron-volt-unit", "gev", "GeV", "GEV");
+        addAliases(new SimpleUnitCommand("MeV"), "mega-electron-volt-unit", "mev", "MeV", "MEV");
+        addAliases(new SimpleUnitCommand("KeV"), "kilo-electron-volt-unit", "kev", "KeV", "KEV");
+        addAliases(new SimpleUnitCommand("K"), "heat-unit", "K", "k", "Kelvin", "kelvin");
+
+    }
+
+    public void addAliases(MarkdownCommand command, String... aliases) {
+        for (String alias : aliases) {
+            addCommand(alias, command);
+        }
     }
 
     public void addCommand(String name, MarkdownCommand command) {
@@ -485,6 +540,30 @@ public class MarkdownTooltipLoader {
             } else {
                 lineOutput.append(loc);
             }
+        }
+    }
+
+    public static class FluidUnitCommand implements MarkdownCommand {
+
+        @Override
+        public void process(MarkdownTooltipLoader loader, String arg, StringBuilder lineOutput,
+            Map<String, Object> vars) {
+            lineOutput.append(getFluidUnit());
+        }
+    }
+
+    public static class SimpleUnitCommand implements MarkdownCommand {
+
+        final String unit;
+
+        public SimpleUnitCommand(String unit) {
+            this.unit = unit;
+        }
+
+        @Override
+        public void process(MarkdownTooltipLoader loader, String arg, StringBuilder lineOutput,
+            Map<String, Object> vars) {
+            lineOutput.append(unit);
         }
     }
 }
