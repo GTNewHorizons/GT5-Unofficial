@@ -238,9 +238,9 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         HashMap<String, ItemStack> stackMap = new HashMap<>();
         HashMap<String, BeeGroup> firstGroupMap = new HashMap<>();
         for (BeeGroup group : multiblock.getBeeGroups()) {
-            String key = group.speciesKey;
+            String key = group.getSpeciesKey();
             countMap.merge(key, group.getCount(), Integer::sum);
-            stackMap.computeIfAbsent(key, unused -> createDisplayStack(group.queen));
+            stackMap.computeIfAbsent(key, unused -> createDisplayStack(group.copyQueen()));
             firstGroupMap.putIfAbsent(key, group);
         }
         List<GTHelper.StackableItemSlot> result = new ArrayList<>(countMap.size());

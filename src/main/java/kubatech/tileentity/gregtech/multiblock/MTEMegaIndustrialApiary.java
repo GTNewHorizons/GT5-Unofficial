@@ -749,7 +749,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         for (BeeGroup group : beeGroups.values()) {
             StringBuilder builder = new StringBuilder();
             builder.append(EnumChatFormatting.GOLD);
-            builder.append(group.queen.getDisplayName());
+            builder.append(group.getDisplayName());
             // bee flower info
             String flowerType = group.getFlowerType();
             boolean flowerExists = !missingFlowers || flowerCheckingMap.get(flowerType) == null;
@@ -865,15 +865,14 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
      */
     public static class BeeGroup {
 
-        /** Size 1, never modified or handed out, see {@link #copyQueen()}. */
-        public final ItemStack queen;
+        private final ItemStack queen;
         private int count;
         final List<BeeDrop> drops = new ArrayList<>();
         final List<BeeDrop> specialDrops = new ArrayList<>();
         float beeSpeed;
         String flowerType;
         String flowerTypeDescription;
-        public String speciesKey;
+        private String speciesKey;
 
         private BeeGroup(ItemStack queen) {
             this.queen = queen.copy();
@@ -882,6 +881,14 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
         public int getCount() {
             return count;
+        }
+
+        public String getDisplayName() {
+            return queen.getDisplayName();
+        }
+
+        public String getSpeciesKey() {
+            return speciesKey;
         }
 
         public ItemStack copyQueen() {
