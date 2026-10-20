@@ -97,6 +97,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     private static final int BASE_SH_THRESHOLD = 4000; // L per second, scaled by the coolant
     private static final int SH_THRESHOLD_REDUCTION_PER_CONFIG = 150; // L per second per circuitry level (1-25)
     private static final float BASE_STEAM_MULTIPLIER = 20f; // scaled by the coolant
+    private static final int MIN_CIRCUIT_CONFIG = 1; // circuit level without penalty or threshold reduction
 
     private MTEHatchInput mInputHotFluidHatch;
     private MTEHatchOutput mOutputColdFluidHatch;
@@ -128,7 +129,8 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         final ImmutableMap.Builder<String, Object> vars = ImmutableMap.builder();
         vars.put("explode_seconds", formatNumber(dryHeatMaximum / 20))
             .put("threshold_reduction", formatNumber(100.0 * SH_THRESHOLD_REDUCTION_PER_CONFIG / BASE_SH_THRESHOLD))
-            .put("steam_penalty", formatNumber(100.0 * penalty_per_config));
+            .put("steam_penalty", formatNumber(100.0 * penalty_per_config))
+            .put("min_circuit", formatNumber(MIN_CIRCUIT_CONFIG));
         putCoolantVars(vars, "lava", "lava");
         putCoolantVars(vars, "coolant", "ic2hotcoolant");
         putCoolantVars(vars, "salt", "molten.solarsalthot");
@@ -218,7 +220,6 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         superheated_threshold = BASE_SH_THRESHOLD; // default: must have 4000L per second to generate superheated steam
         float efficiency = 1f; // default: operate at 100% efficiency with no integrated circuitry
         int shs_reduction_per_config = SH_THRESHOLD_REDUCTION_PER_CONFIG; // reduce threshold 150L/s per circuitry level
-                                                                          // (1-25)
         float steam_output_multiplier = BASE_STEAM_MULTIPLIER; // default: multiply output by 4 * 10 (boosted x5)
         float penalty = 0.0f; // penalty to apply to output based on circuitry level (1-25).
 
@@ -226,10 +227,10 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         if (mInventory[1] != null && mInventory[1].getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) {
             int circuit_config = mInventory[1].getItemDamage();
-            if (circuit_config >= 1 && circuit_config <= 25) {
+            if (circuit_config >= MIN_CIRCUIT_CONFIG && circuit_config <= 25) {
                 // If so, apply the penalty and reduce the threshold.
-                penalty = (circuit_config - 1) * penalty_per_config;
-                superheated_threshold -= shs_reduction_per_config * (circuit_config - 1);
+                penalty = (circuit_config - MIN_CIRCUIT_CONFIG) * penalty_per_config;
+                superheated_threshold -= shs_reduction_per_config * (circuit_config - MIN_CIRCUIT_CONFIG);
             }
         }
 
