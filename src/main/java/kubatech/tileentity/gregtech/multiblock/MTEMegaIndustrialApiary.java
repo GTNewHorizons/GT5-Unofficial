@@ -330,7 +330,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
      * After {@code checkMachine}, the remaining entries are the missing flowers, which is shown on the GUI as error
      * message.
      *
-     * @see #checkRequiredFlowers()
+     * @see #onStorageContentChanged(boolean)
      */
     @NotNull
     protected Map<String, String> flowerCheckingMap = new HashMap<>();
@@ -338,7 +338,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     /**
      * {@code true} if there is any required flower missing.
      *
-     * @see #checkRequiredFlowers()
+     * @see #flowerCheckingMap
      */
     private boolean missingFlowers = false;
 
@@ -360,7 +360,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     /**
-     * This should be called when the stored bees are changed. And this will trigger the flower check update.
+     * This should be called when the stored bees are changed. It rebuilds the required flower types and updates the
+     * missing ones. The structure is only scanned for flower types that were not required before.
      * <p>
      * The flower check should be ignored when the storage is updated when loading world (or loadNBTData specifically),
      * which the world itself is not ready yet.
@@ -370,6 +371,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
      * @see #flowerCheckingMap
      */
     public void onStorageContentChanged(boolean ignoreFlowerCheck) {
+        Map<String, String> previouslyRequired = flowerRequiredMap;
         flowerRequiredMap = new HashMap<>();
         for (BeeGroup group : beeGroups.values()) {
             String type = group.getFlowerType();
@@ -378,9 +380,20 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             }
         }
 
-        if (!ignoreFlowerCheck) {
-            checkRequiredFlowers();
+        if (ignoreFlowerCheck) return;
+
+        flowerCheckingMap.keySet()
+            .retainAll(flowerRequiredMap.keySet());
+        Map<String, String> newlyRequired = new HashMap<>(flowerRequiredMap);
+        newlyRequired.keySet()
+            .removeAll(previouslyRequired.keySet());
+        if (!newlyRequired.isEmpty()) {
+            Map<String, String> stillMissing = flowerCheckingMap;
+            flowerCheckingMap = newlyRequired;
+            checkPiece(STRUCTURE_PIECE_FLOWERS, 7, 8, 0, new ArrayList<>());
+            flowerCheckingMap.putAll(stillMissing);
         }
+        missingFlowers = !flowerCheckingMap.isEmpty();
     }
 
     @Override
@@ -812,21 +825,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     .getProductionModifier(null, MAX_PRODUCTION_MODIFIER_FROM_UPGRADES);
             needsWaterFill = true;
         }
-    }
-
-    /**
-     * Runs the flower checking.
-     * <p>
-     * You should update the {@link #flowerRequiredMap} before invoking this.
-     */
-    protected void checkRequiredFlowers() {
-        flowerCheckingMap = new HashMap<>(flowerRequiredMap);
-
-        // check the flowers in the machine structure
-        // the found flower types are removed from the flowerCheckingMap.
-        checkPiece(STRUCTURE_PIECE_FLOWERS, 7, 8, 0, new ArrayList<>());
-
-        missingFlowers = !flowerCheckingMap.isEmpty();
     }
 
     @Override
