@@ -4373,6 +4373,7 @@ GT5U.chat.rendering.off=Rendering off
 GT5U.chat.rendering.on=Rendering on
 GT5U.chat.auto_place.done=§aAuto placing done!
 GT5U.chat.auto_place.done.water=§aAuto placing done! Now go place the water yourself!
+GT5U.chat.auto_place.done.flowers=§aAuto placing done! Now go place the flowers yourself!
 
 GT5U.chat.cover.decorative.redstone=Redstone
 GT5U.chat.cover.decorative.energy=Energy
