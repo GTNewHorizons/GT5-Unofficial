@@ -505,9 +505,7 @@ public class GTUtility {
     }
 
     public static String getColoredTierNameForTooltip(int voltageIndex) {
-        return GTUtility.FORMAT_PUSH_STACK + GTValues.TIER_COLORS[voltageIndex]
-            + GTValues.VN[voltageIndex]
-            + GTUtility.FORMAT_POP_STACK;
+        return wrapFormatting(GTValues.TIER_COLORS[voltageIndex], GTValues.VN[voltageIndex]);
     }
 
     /**
@@ -698,8 +696,39 @@ public class GTUtility {
         }
     }
 
+    /**
+     * Isolates any formatting within the given text, returning to the original formatting once the text is rendered.
+     *
+     * @param message The text to format.
+     * @return The formatted string
+     */
     public static String wrapStack(String message) {
         return FORMAT_PUSH_STACK + message + FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(String formatting, String text) {
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
+    }
+
+    /**
+     * Applies a formatting to the given text and isolates any changes to the message itself, returning to the original
+     * formatting once the text is rendered.
+     *
+     * @param formatting The formatting codes to apply to the text.
+     * @param text       The text to format.
+     * @return The formatted string
+     */
+    public static String wrapFormatting(EnumChatFormatting formatting, String text) {
+        // duplicated code to reduce stack pressure
+        return GTUtility.FORMAT_PUSH_STACK + formatting + text + GTUtility.FORMAT_POP_STACK;
     }
 
     public static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
