@@ -8,7 +8,6 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -100,7 +99,6 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
             .addAir("3x3 area in front of controller")
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
-            .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
         return tt;
     }
