@@ -1,6 +1,6 @@
 Transcending Dimensional Boundaries.
 Takes {color_time:{var:hours}} hours of continuous run time to fully breach dimensional boundaries
-At maximum efficiency, fuel consumption is reduced by up to {color_efficiency:{var:discount}%}
+At maximum efficiency, fuel consumption is reduced by up to {color_amount:{var:discount}%}
 While no recipe is running, stored run time drains {color_time:{var:decay}x} as fast as it builds up
 {hr}
 A {color_key:Transdimensional Alignment Matrix} in the controller enables {color_mode:Dimensional Convergence}

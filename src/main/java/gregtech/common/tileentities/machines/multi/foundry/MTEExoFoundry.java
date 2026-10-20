@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -137,6 +139,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     public final FoundryData foundryData = new FoundryData();
 
+    private static final int MAX_MACHINE_TIER = 3;
     public static final int MIN_CASINGS = 462; // 462 is the total casings (489) - 1 casing for ehatch - 1 casing for
                                                // output
                                                // bus - 25 casings to hold recipes
@@ -472,7 +475,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_solidifier"))
             .addBulkMachineInfo(foundryData.parallelScaleBase, foundryData.speedModifierBase, foundryData.euEffBase)
-            .addMarkdown(new ResourceLocation("gregtech", "exo-foundry"), ImmutableMap.of("options", FoundryModule.values().length - 1))
+            .addMarkdown(new ResourceLocation("gregtech", "exo-foundry"), ImmutableMap.of(
+                "uiv", GTUtility.getColoredTierNameForTooltip(VoltageIndex.UIV),
+                "tiers", MAX_MACHINE_TIER,
+                "slots", IntStream.rangeClosed(1, MAX_MACHINE_TIER).mapToObj(t -> String.valueOf(getModuleSlots(t))).collect(Collectors.joining("/")),
+                "options", FoundryModule.values().length - 1))
             .addSupportAny()
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + StatCollector.translateToLocal("gt.mbtt.flavor.exo_foundry"))
@@ -500,7 +507,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffset, verticalOffset, depthOffset);
-        for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
+        for (int i = 0; i < getModuleSlots(foundryData.tier); i++) {
             FoundryModule m = foundryData.modules[i];
             if (m != FoundryModule.UNSET) {
                 buildPiece(
@@ -519,7 +526,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         int built = 0;
-        for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
+        for (int i = 0; i < getModuleSlots(foundryData.tier); i++) {
             FoundryModule m = foundryData.modules[i];
             if (m != FoundryModule.UNSET) {
                 built += survivalBuildPiece(
@@ -565,8 +572,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Nullable
     private static Integer getTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasingsFoundry) return null;
-        if (metaID < 1 || metaID > 3) return null;
+        if (metaID < 1 || metaID > MAX_MACHINE_TIER) return null;
         return metaID;
+    }
+
+    /** Returns the number of module slots for the given machine tier. */
+    private static int getModuleSlots(int tier) {
+        return tier + 1;
     }
 
     @Override
@@ -603,7 +615,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     private boolean checkModules(List<StructureError> errors) {
-        for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
+        for (int i = 0; i < getModuleSlots(foundryData.tier); i++) {
             FoundryModule m = foundryData.modules[i];
             if (!checkPiece(
                 m.structureID,
