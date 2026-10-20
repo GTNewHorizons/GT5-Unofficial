@@ -15,4 +15,4 @@
 {hr}
 Скорость {color_speed:{var:speed}%} от одноблочных механизмов того же вольтажа ({color_danger:{var:overheated_speed}% при перегреве})
 Использует {color_eu_usage:{var:eu}%} от требуемого {EU/t} ({color_danger:{var:overheated_eu}% при перегреве})
-{color_parallel:{var:parallels}} параллели за каждый тир вольтажа ({color_danger:{var:overheated_parallels} при перегреве})
+{color_parallel:{var:parallels}} параллели за каждый тир {color_tier:вольтажа} ({color_danger:{var:overheated_parallels} при перегреве})

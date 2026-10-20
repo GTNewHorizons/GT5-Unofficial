@@ -13,6 +13,6 @@ Unit {color_hot:heats} by {color_hot:({var:heat}% x {var:coil_factor} ^ (Coil Ti
 Unit {color_cold:cools} by {color_cold:{var:base_cooling}%} base every second while not running
 Cooling rate increases by an additional {color_cold:{var:cooling_increase}%} for each second since running
 {hr}
-{color_speed:{var:speed}%} speed of singleblock machines of the same voltage ({color_danger:{var:overheated_speed}% when overheated})
+{color_speed:{var:speed}%} Speed of singleblock machines of the same voltage ({color_danger:{var:overheated_speed}% when overheated})
 Uses {color_eu_usage:{var:eu}%} of the {EU/t} normally required ({color_danger:{var:overheated_eu}% when overheated})
-{color_parallel:{var:parallels}} parallels per Voltage Tier ({color_danger:{var:overheated_parallels} when overheated})
+{color_parallel:{var:parallels}} Parallels per {color_tier:Voltage} Tier ({color_danger:{var:overheated_parallels} when overheated})

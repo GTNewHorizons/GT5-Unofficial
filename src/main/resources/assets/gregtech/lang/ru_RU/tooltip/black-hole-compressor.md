@@ -17,7 +17,7 @@
 Она работает как при стабильности ниже {color_amount:{var:critical_stability}}: {color_parallel:{var:superstable_multiplier}x} параллели, {color_parallel:без ограничений} для рецептов, не требующих чёрной дыры
 {hr}
 Используйте схему {color_mode:{var:circuit_compressor} для Компрессора} и {color_mode:{var:circuit_neutronium} для Нейтронного компрессора}
-{color_parallel:{var:parallels}} параллелей за каждый тир вольтажа
+{color_parallel:{var:parallels}} параллелей за каждый тир {color_tier:вольтажа}
 Скорость {color_speed:{var:speed}%}
 Потребление {EU} {color_eu_usage:{var:eu}%}
 {color_parallel:{var:low_multiplier}x/{var:critical_multiplier}x} параллели, если стабильность ниже {color_amount:{var:low_stability}/{var:critical_stability}}

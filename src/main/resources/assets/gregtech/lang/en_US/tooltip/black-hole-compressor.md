@@ -14,13 +14,13 @@ Insert a {color_key:{lang:gt.item.black_hole.collapser.name}} to close the black
 To restore stability and reset spacetime costs, close the black hole and open a new one
 {hr}
 A {color_key:{lang:gt.item.black_hole.stabilizer.name}} opens a black hole that never decays and needs no spacetime
-It counts as stability below {color_amount:{var:critical_stability}}: {color_parallel:{var:superstable_multiplier}x} parallels, {color_parallel:uncapped} for recipes that do not require a black hole
+It counts as stability below {color_amount:{var:critical_stability}}: {color_parallel:{var:superstable_multiplier}x} Parallels, {color_parallel:uncapped} for recipes that do not require a black hole
 {hr}
 Use circuit {color_mode:{var:circuit_compressor} for Compressor} and {color_mode:{var:circuit_neutronium} for Neutronium Compressor}
-{color_parallel:{var:parallels}} parallels per Voltage Tier
-{color_speed:{var:speed}%} speed
+{color_parallel:{var:parallels}} Parallels per {color_tier:Voltage} Tier
+{color_speed:{var:speed}%} Speed
 {color_eu_usage:{var:eu}%} {EU} usage
-{color_parallel:{var:low_multiplier}x/{var:critical_multiplier}x} parallels when stability is below {color_amount:{var:low_stability}/{var:critical_stability}}
-Below {color_amount:{var:critical_stability}} stability, parallels are {color_parallel:uncapped} for recipes that do not require a black hole
+{color_parallel:{var:low_multiplier}x/{var:critical_multiplier}x} Parallels when stability is below {color_amount:{var:low_stability}/{var:critical_stability}}
+Below {color_amount:{var:critical_stability}} stability, Parallels are {color_parallel:uncapped} for recipes that do not require a black hole
 {color_note:Recipe Tier is limited to Hatch Tier + 1. Will not perform overclocks above the Hatch Tier}
 {color_note:Limited to one energy hatch if using a Multi-Amp or Laser hatch}
