@@ -1,11 +1,11 @@
 Ускоряет частицы до высоких энергий, а затем сталкивает их, порождая новые частицы
 Электрически нейтральные частицы не ускоряются
-Задайте {color_electron_volt:целевую энергию пучка} (до {color_electron_volt:{var:max_energy} TeV}) и {light_purple:максимальное число циклов}
+Задайте {color_electron_volt:целевую энергию пучка} (до {color_electron_volt:{var:max_energy} {TeV}}) и {light_purple:максимальное число циклов}
 Один цикл в секунду
 {hr}
 {color_mode:Режим ускорителя}
 Ускоряет пучок в малом кольце LHC
-Каждый цикл повышает {color_electron_volt:энергию пучка} на {color_eu_usage:{EU}, потреблённые за цикл} * {color_formula:{var:ev_per_eu} eV} / {gold:интенсивность пучка}
+Каждый цикл повышает {color_electron_volt:энергию пучка} на {color_eu_usage:{EU}, потреблённые за цикл} * {color_electron_volt:{var:ev_per_eu} {eV}} / {gold:интенсивность пучка}
 пока не будет достигнута {color_electron_volt:целевая энергия пучка} или {light_purple:максимальное число циклов}
 Когда {color_electron_volt:целевая энергия пучка} достигнута, к текущей {gold:интенсивности пучка} добавляется {color_formula:{var:rate_gain}} * {gold:интенсивность пучка}
 При {gold:интенсивности пучка} выше {color_formula:{var:nerf_cutoff}} вместо этого добавляется ({color_formula:{var:rate_gain}} * {gold:интенсивность пучка})^{dark_red:{var:nerf_power}}
@@ -24,7 +24,7 @@
 {color_name:Без жидкости}: {dark_red:{var:nerf_power}}
 {color_name:{fluid:quarkgluonplasma}}: {dark_red:{var:nerf_power_qgp}}
 {color_name:{fluid:molten.magmatter}}: {dark_red:{var:nerf_power_magmatter}}
-С усилителем {color_electron_volt:энергия пучка} сразу становится {color_electron_volt:{var:max_energy} TeV}, а каждый цикл расходуется {gold:интенсивность пучка {L}} жидкости
+С усилителем {color_electron_volt:энергия пучка} сразу становится {color_electron_volt:{var:max_energy} {TeV}}, а каждый цикл расходуется {gold:интенсивность пучка {L}} жидкости
 Если сменить {color_name:усиливающую жидкость}, пучок придётся разгонять заново
 {hr}
 Модулей LHC четыре, каждый отмечен буквой на верхней грани:

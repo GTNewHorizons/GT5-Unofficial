@@ -108,9 +108,12 @@ public class MarkdownTooltipLoader {
             "EU/t",
             "eu/T",
             "EU/T");
+        addAliases(new SimpleUnitCommand("TeV"), "tera-electron-volt-unit", "tev", "TeV", "TEV");
         addAliases(new SimpleUnitCommand("GeV"), "giga-electron-volt-unit", "gev", "GeV", "GEV");
         addAliases(new SimpleUnitCommand("MeV"), "mega-electron-volt-unit", "mev", "MeV", "MEV");
         addAliases(new SimpleUnitCommand("KeV"), "kilo-electron-volt-unit", "kev", "KeV", "KEV");
+        // No "ev"/"EV" aliases: EV is also a voltage tier name.
+        addAliases(new SimpleUnitCommand("eV"), "electron-volt-unit", "eV");
         addAliases(new SimpleUnitCommand("K"), "heat-unit", "K", "k", "Kelvin", "kelvin");
 
     }

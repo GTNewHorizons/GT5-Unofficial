@@ -1,11 +1,11 @@
 Accelerates particles to high energies and then collides them to generate new particles
 Electrically neutral particles are unaffected
-Set the {color_electron_volt:Target Beam Energy} (up to {color_electron_volt:{var:max_energy} TeV}) and the {light_purple:maximum number of cycles}
+Set the {color_electron_volt:Target Beam Energy} (up to {color_electron_volt:{var:max_energy} {TeV}}) and the {light_purple:maximum number of cycles}
 Cycles every second
 {hr}
 {color_mode:Accelerator mode}
 Accelerates the beam in the smaller LHC ring
-Each cycle increases the {color_electron_volt:Beam Energy} by {color_eu_usage:{EU} consumed in cycle} * {color_formula:{var:ev_per_eu} eV} / {gold:Beam Rate}
+Each cycle increases the {color_electron_volt:Beam Energy} by {color_eu_usage:{EU} consumed in cycle} * {color_electron_volt:{var:ev_per_eu} {eV}} / {gold:Beam Rate}
 until the {color_electron_volt:Target Beam Energy} or the {light_purple:maximum number of cycles} is reached
 If the {color_electron_volt:Target Beam Energy} is reached, adds {color_formula:{var:rate_gain}} * {gold:Beam Rate} to the current {gold:Beam Rate}
 Above a {gold:Beam Rate} of {color_formula:{var:nerf_cutoff}}, adds ({color_formula:{var:rate_gain}} * {gold:Beam Rate})^{dark_red:{var:nerf_power}} instead
@@ -24,7 +24,7 @@ A particle appears in the outputs once the {color_electron_volt:Collision Energy
 {color_name:No fluid}: {dark_red:{var:nerf_power}}
 {color_name:{fluid:quarkgluonplasma}}: {dark_red:{var:nerf_power_qgp}}
 {color_name:{fluid:molten.magmatter}}: {dark_red:{var:nerf_power_magmatter}}
-With a booster, the {color_electron_volt:Beam Energy} is set to {color_electron_volt:{var:max_energy} TeV} at once, and {gold:Beam Rate {L}} of fluid is consumed every cycle
+With a booster, the {color_electron_volt:Beam Energy} is set to {color_electron_volt:{var:max_energy} {TeV}} at once, and {gold:Beam Rate {L}} of fluid is consumed every cycle
 If the supplied {color_name:Booster Fluid} changes, the beam must be re-accelerated from scratch
 {hr}
 There are four LHC modules, marked by the letter on top of the module:
