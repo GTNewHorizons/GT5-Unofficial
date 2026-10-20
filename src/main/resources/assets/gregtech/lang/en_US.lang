@@ -279,6 +279,9 @@ gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.batterybuffer.name=%1$s Battery Buffer
+gt.blockmachines.batterybuffer.small.name=Small %1$s Battery Buffer
+gt.blockmachines.batterybuffer.large.name=Large %1$s Battery Buffer
+gt.blockmachines.batterybuffer.huge.name=Huge %1$s Battery Buffer
 gt.blockmachines.hatch.energy.name=%s Energy Hatch
 gt.blockmachines.hatch.energy.debug.name=Debug Energy Hatch
 gt.blockmachines.hatch.dynamo.name=%s Dynamo Hatch
