@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 import bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 import ic2.core.WorldData;
 
 public class ItemSimpleWindMeter extends Item {
@@ -67,8 +68,7 @@ public class ItemSimpleWindMeter extends Item {
                 : windStrength < 20f ? "tooltip.windmeter.4.name"
                     : windStrength < 30f ? "tooltip.windmeter.5.name"
                         : windStrength < 50f ? "tooltip.windmeter.6.name" : "tooltip.windmeter.7.name";
-        entityPlayer.addChatMessage(
-            new ChatComponentTranslation("tooltip.windmeter.9.name", new ChatComponentTranslation(windSKey)));
+        GTUtility.sendChatTrans(entityPlayer, "tooltip.windmeter.8.name.s", new ChatComponentTranslation(windSKey));
         itemStack.damageItem(1, entityPlayer);
         return itemStack;
     }

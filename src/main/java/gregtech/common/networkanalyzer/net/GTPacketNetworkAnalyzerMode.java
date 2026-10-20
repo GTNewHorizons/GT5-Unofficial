@@ -14,6 +14,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.net.GTPacket;
 import gregtech.api.net.GTPacketTypes;
 import gregtech.api.util.GTDataUtils;
+import gregtech.api.util.GTUtility;
 import gregtech.common.networkanalyzer.NetworkAnalyzerData.AnalyzerModes;
 import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
 import gregtech.common.tools.ItemNetworkAnalyzer;
@@ -74,8 +75,7 @@ public class GTPacketNetworkAnalyzerMode extends GTPacket {
 
             ItemNetworkAnalyzer.setMode(currentItem, mode);
             NetworkAnalyzerPlayerTracker.reset(player);
-            this.player.addChatMessage(
-                new ChatComponentTranslation("gt.NetworkAnalyzer.set", new ChatComponentTranslation(modeKey)));
+            GTUtility.sendChatTrans(this.player, "gt.NetworkAnalyzer.set", new ChatComponentTranslation(modeKey));
         }
     }
 }
