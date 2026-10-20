@@ -1,6 +1,7 @@
 package detrav.proxies;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -29,6 +30,10 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void openProspectorGUI() {
+        // just Client code
+    }
+
+    public void addClientChatMessage(IChatComponent message) {
         // just Client code
     }
 

@@ -20,9 +20,8 @@ detrav.scanner.found.texts.4= §e较多(60-99)§r.
 detrav.scanner.found.texts.5= §d极多(100+)§r.
 detrav.scanner.found.texts.6=发现%s
 
-# Don't translate "%badluck"
 detrav.scanner.success=全部区块勘探成功!
-detrav.scanner.fail=%badluck区块勘探失败，祝你下次好运！
+detrav.scanner.fail=%s区块勘探失败，祝你下次好运！
 
 detrav.scanner.prospecting=正在勘探
 

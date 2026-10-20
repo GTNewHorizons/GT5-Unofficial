@@ -15,9 +15,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,6 +27,7 @@ import com.sinthoras.visualprospecting.VisualProspecting_API;
 import detrav.items.DetravMetaGeneratedTool01;
 import detrav.net.DetravNetwork;
 import detrav.net.ProspectingPacket;
+import detrav.net.ScannerChatPacket;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.task.CooperativeScheduler;
 import gregtech.common.UndergroundOil;
@@ -178,16 +178,20 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
     }
 
     @Override
-    void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
-        if (value < 0) {
-            aPlayer.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name)));
-        } else if (value < 1) {
-            aPlayer.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", "")));
-        } else aPlayer.addChatMessage(
-            new ChatComponentText(
-                StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name) + " " + value));
+    void addChatMassageByValue(EntityPlayer aPlayer, int value, IChatComponent name) {
+        aPlayer.addChatMessage(amountMessage(value, name));
+    }
+
+    /** Builds the "Found <name> <amount>" chat line. */
+    public static IChatComponent amountMessage(int value, IChatComponent name) {
+        if (value < 0) return new ChatComponentTranslation("detrav.scanner.found.texts.6", name);
+        if (value < 1) return new ChatComponentTranslation("detrav.scanner.found.texts.6", "");
+        return new ChatComponentTranslation("detrav.scanner.found.texts.6", name).appendText(" " + value);
+    }
+
+    /** Sends the fluid line in a packet so the client localizes the fluid name. */
+    private static void sendFluid(EntityPlayer aPlayer, FluidStack fluid) {
+        DetravNetwork.INSTANCE.sendToPlayer(ScannerChatPacket.fluid(fluid, fluid.amount), (EntityPlayerMP) aPlayer);
     }
 
     @Override
@@ -198,7 +202,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             if (aWorld.getBlock(aX, aY, aZ) == Blocks.bedrock) {
                 if (!aWorld.isRemote) {
                     FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
-                    addChatMassageByValue(aPlayer, fStack.amount, fStack.getLocalizedName());
+                    sendFluid(aPlayer, fStack);
                     if (!aPlayer.capabilities.isCreativeMode)
                         ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
                 }
@@ -211,12 +215,15 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
         }
         if (data < 3) if (!aWorld.isRemote) {
             FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
-            addChatMassageByValue(aPlayer, fStack.amount, fStack.getLocalizedName());
+            sendFluid(aPlayer, fStack);
             if (!aPlayer.capabilities.isCreativeMode) ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
             return true;
         }
         if (!aWorld.isRemote) {
-            addChatMassageByValue(aPlayer, getPollution(aWorld, aX, aZ), "Pollution");
+            addChatMassageByValue(
+                aPlayer,
+                getPollution(aWorld, aX, aZ),
+                new ChatComponentTranslation("gui.detrav.scanner.pollution"));
         }
         return true;
     }
