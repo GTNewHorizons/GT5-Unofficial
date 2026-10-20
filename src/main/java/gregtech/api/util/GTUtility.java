@@ -2299,7 +2299,7 @@ public class GTUtility {
         return t;
     }
 
-    public static NBTTagList saveItemList(List<ItemStack> stacks) {
+    public static NBTTagList saveItemList(Collection<ItemStack> stacks) {
         NBTTagList list = new NBTTagList();
 
         if (stacks != null) {

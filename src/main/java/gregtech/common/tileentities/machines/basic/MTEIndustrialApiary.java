@@ -24,9 +24,9 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -40,7 +40,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
@@ -137,7 +139,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private IBee usedQueenBee = null;
     private IEffectData[] effectData = new IEffectData[2];
 
-    private final Queue<ItemStack> mOutputQueue = new LinkedList<>();
+    private final Queue<ItemStack> mOutputQueue = new ArrayDeque<>();
 
     public MTEIndustrialApiary(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -249,14 +251,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         aNBT.setBoolean("retrievingPollenInThisOperation", retrievingPollenInThisOperation);
         aNBT.setInteger("pollinationDelay", pollinationDelay);
         aNBT.setFloat("usedBeeLife", usedBeeLife);
-
-        int idx = 0;
-        for (ItemStack stack : this.mOutputQueue) {
-            if (stack != null) {
-                GTUtility.saveItem(aNBT, "mOutputQueue" + idx, stack);
-            }
-            ++idx;
-        }
+        aNBT.setTag("mOutputQueue", GTUtility.saveItemList(mOutputQueue));
     }
 
     @Override
@@ -278,15 +273,10 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             mOutputItems[i] = null;
         }
 
-        // func_150296_c() is keySet()
-        aNBT.func_150296_c()
-            .stream()
-            .filter(x -> x.startsWith("mOutputQueue"))
-            .sorted(Comparator.comparingInt(x -> Integer.parseInt(x.substring("mOutputQueue".length()))))
-            .forEachOrdered(x -> {
-                ItemStack item = GTUtility.loadItem(aNBT, x);
-                mOutputQueue.add(item);
-            });
+        NBTBase outputQueue = aNBT.getTag("mOutputQueue");
+        if (outputQueue instanceof NBTTagList outputList) {
+            mOutputQueue.addAll(GTUtility.loadItemList(outputList));
+        }
     }
 
     boolean retrievingPollenInThisOperation = false;
@@ -645,21 +635,18 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                 if (this.mProgresstime >= this.mMaxProgresstime) {
                     if (usedQueenBee != null) doAcceleratedEffects();
                     updateModifiers();
-                    ItemStack maybeQueen = this.mOutputQueue.peek();
-                    boolean isQueen = maybeQueen != null && beeRoot.isMember(maybeQueen, EnumBeeType.QUEEN.ordinal());
-                    boolean isPrincess = maybeQueen != null
-                        && beeRoot.isMember(maybeQueen, EnumBeeType.PRINCESS.ordinal());
+                    for (ItemStack stack : this.mOutputQueue) {
+                        boolean isQueen = stack != null && beeRoot.isMember(stack, EnumBeeType.QUEEN.ordinal());
+                        boolean isPrincess = stack != null && beeRoot.isMember(stack, EnumBeeType.PRINCESS.ordinal());
+                        boolean isDrone = stack != null && beeRoot.isMember(stack, EnumBeeType.DRONE.ordinal());
                     if ((mAutoQueen && isQueen) || (isAutomated && (isQueen || isPrincess))) {
-                        if (aBaseMetaTileEntity.addStackToSlot(queen, maybeQueen)) {
-                            this.mOutputQueue.remove();
-                        }
-                    }
-
-                    ItemStack maybeDrone = this.mOutputQueue.peek();
-                    boolean isDrone = maybeDrone != null && beeRoot.isMember(maybeDrone, EnumBeeType.DRONE.ordinal());
-                    if (isAutomated && isDrone) {
-                        if (aBaseMetaTileEntity.addStackToSlot(drone, maybeDrone)) {
-                            this.mOutputQueue.remove();
+                            if (aBaseMetaTileEntity.addStackToSlot(queen, stack)) {
+                                this.mOutputQueue.remove(stack);
+                            }
+                        } else if (isAutomated && isDrone) {
+                            if (aBaseMetaTileEntity.addStackToSlot(drone, stack)) {
+                                this.mOutputQueue.remove(stack);
+                            }
                         }
                     }
 
@@ -682,7 +669,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             if (getOutputAt(i) != null) continue;
 
             ItemStack itemStack = this.mOutputQueue.peek();
-            if (itemStack == null) break;
+            if (itemStack == null) continue;
 
             int qty = Integer.min(itemStack.getMaxStackSize(), itemStack.stackSize);
             ItemStack qtyAdjustedStack = itemStack.splitStack(qty);
