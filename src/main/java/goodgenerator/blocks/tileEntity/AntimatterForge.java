@@ -479,8 +479,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     @Override
     public void clearHatches() {
         super.clearHatches();
-        // Antimatter output hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
-        clearCraftingIcons(amOutputHatches);
         amOutputHatches.clear();
     }
 
