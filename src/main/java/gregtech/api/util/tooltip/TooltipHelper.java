@@ -191,7 +191,7 @@ public class TooltipHelper {
      */
     public static String coloredText(String text, EnumChatFormatting coloring) {
         if (coloring.isColor() || coloring == EnumChatFormatting.GRAY)
-            return String.format("%s%s%s", coloring, text, EnumChatFormatting.GRAY);
+            return coloring + text + EnumChatFormatting.GRAY;
         return text;
     }
 
