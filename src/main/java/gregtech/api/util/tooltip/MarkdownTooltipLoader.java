@@ -109,6 +109,10 @@ public class MarkdownTooltipLoader {
             "VNF");
         addAliases(new CommentMarkdownCommand(), "comment", "#", "//");
         addCommand("color-pattern", new ColorPatternMarkdownCommand());
+        addAliases(new IfMarkdownCommand(true), "if-true", "if");
+        addAliases(new IfMarkdownCommand(false), "if-false", "if-not");
+        addAliases(new PluralityMarkdownCommand(true), "singular", "if-1");
+        addAliases(new PluralityMarkdownCommand(false), "plural", "if-n-1");
 
         addAliases(new FluidUnitCommand(), "fluid-unit", "l", "L", "mb", "mB");
         addAliases(new SimpleUnitCommand("EU"), "energy-unit", "eu", "EU");
@@ -896,6 +900,103 @@ public class MarkdownTooltipLoader {
                     remaining = active.keyInt();
                 }
             }
+        }
+    }
+
+    /**
+     * <p>
+     * Only appends the given text if the variable parameter has the right boolean value.
+     * </p>
+     * <p>
+     * Usage Examples:<br>
+     * - <code>{if-true:boolVar:Shown if boolVar is true}</code><br>
+     * - <code>{if-false:boolVar:Shown if boolVar is false}</code>
+     * </p>
+     */
+    public static class IfMarkdownCommand implements MarkdownCommand {
+
+        final boolean wantsTrue;
+
+        public IfMarkdownCommand(boolean mustBeTrue) {
+            this.wantsTrue = mustBeTrue;
+        }
+
+        @Override
+        public void process(MarkdownTooltipLoader loader, String arg, StringBuilder lineOutput,
+            Map<String, Object> vars) {
+            String[] parts = arg.split(":", 2);
+
+            // must have 2 parts
+            if (parts.length != 2) {
+                lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
+                    .append(EnumChatFormatting.RED)
+                    .append("[IF MUST HAVE 2 ARGS]")
+                    .append(GTUtility.FORMAT_POP_STACK);
+                return;
+            }
+
+            // check if the arg is the correct type
+            Object unparsed = vars.get(parts[0]);
+            if (!(unparsed instanceof Boolean value)) {
+                lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
+                    .append(EnumChatFormatting.RED)
+                    .append("[IF ERROR MISSING VAR: ")
+                    .append(arg)
+                    .append("]")
+                    .append(GTUtility.FORMAT_POP_STACK);
+                return;
+            }
+
+            // check if it's a valid value
+            if (value == wantsTrue) loader.emit(parts[1], lineOutput, vars);
+        }
+    }
+
+    /**
+     * <p>
+     * Allows the insertion of plurality suffixes depending on a numeric variable.
+     * </p>
+     * <p>
+     * Usage Examples:<br>
+     * - <code>There {plural:count:are}{singular:count:is} {var:count} bird{plural:count:s}</code><br>
+     * </p>
+     */
+    public static class PluralityMarkdownCommand implements MarkdownCommand {
+
+        final boolean wantsSingular;
+
+        public PluralityMarkdownCommand(boolean wantsSingular) {
+            this.wantsSingular = wantsSingular;
+        }
+
+        @Override
+        public void process(MarkdownTooltipLoader loader, String arg, StringBuilder lineOutput,
+            Map<String, Object> vars) {
+            String[] parts = arg.split(":", 2);
+
+            // must have 2 parts
+            if (parts.length != 2) {
+                lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
+                    .append(EnumChatFormatting.RED)
+                    .append("[PLURALITY MUST HAVE 2 ARGS]")
+                    .append(GTUtility.FORMAT_POP_STACK);
+                return;
+            }
+
+            // check if the arg is the correct type
+            Object unparsed = vars.get(parts[0]);
+            if (!(unparsed instanceof Integer value)) {
+                lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
+                    .append(EnumChatFormatting.RED)
+                    .append("[PLURALITY ERROR MISSING VAR: ")
+                    .append(arg)
+                    .append("]")
+                    .append(GTUtility.FORMAT_POP_STACK);
+                return;
+            }
+
+            // check if it's a valid value
+            if (wantsSingular ^ (value != 1 && value != -1)) loader.emit(parts[1], lineOutput, vars);
         }
     }
 
