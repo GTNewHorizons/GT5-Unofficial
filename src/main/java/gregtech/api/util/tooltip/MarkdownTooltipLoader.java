@@ -1,5 +1,6 @@
 package gregtech.api.util.tooltip;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 
 import java.io.FileNotFoundException;
@@ -540,7 +541,11 @@ public class MarkdownTooltipLoader {
             if (eval) {
                 loader.emit(value.toString(), lineOutput, vars);
             } else {
-                lineOutput.append(value);
+                if (value instanceof Number v) {
+                    lineOutput.append(formatNumber(v));
+                } else {
+                    lineOutput.append(value);
+                }
             }
         }
     }
@@ -681,8 +686,7 @@ public class MarkdownTooltipLoader {
             }
 
             // check if the arg is the correct type
-            Object unparsed = vars.get(parts[0]);
-            if (!(unparsed instanceof Integer tierIndex)) {
+            if (!(vars.get(parts[0]) instanceof Number num)) {
                 lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
                     .append(EnumChatFormatting.RED)
                     .append("[TIER FORMAT ERROR MISSING VAR: ")
@@ -691,6 +695,7 @@ public class MarkdownTooltipLoader {
                     .append(GTUtility.FORMAT_POP_STACK);
                 return;
             }
+            int tierIndex = num.intValue();
 
             // check if it's a valid value
             if (tierIndex < 0 || tierIndex >= GTValues.TIER_COLORS.length) {
@@ -732,8 +737,7 @@ public class MarkdownTooltipLoader {
             Map<String, Object> vars) {
 
             // check if the arg is the correct type
-            Object unparsed = vars.get(arg);
-            if (!(unparsed instanceof Integer tierIndex)) {
+            if (!(vars.get(arg) instanceof Number num)) {
                 lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
                     .append(EnumChatFormatting.RED)
                     .append("[TIER NAME ERROR MISSING VAR: ")
@@ -742,6 +746,7 @@ public class MarkdownTooltipLoader {
                     .append(GTUtility.FORMAT_POP_STACK);
                 return;
             }
+            int tierIndex = num.intValue();
 
             // check if it's a valid value
             if (tierIndex < 0 || tierIndex >= GTValues.VN.length) {
@@ -772,8 +777,7 @@ public class MarkdownTooltipLoader {
             Map<String, Object> vars) {
 
             // check if the arg is the correct type
-            Object unparsed = vars.get(arg);
-            if (!(unparsed instanceof Integer tierIndex)) {
+            if (!(vars.get(arg) instanceof Number num)) {
                 lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
                     .append(EnumChatFormatting.RED)
                     .append("[TIER NAME ERROR MISSING VAR: ")
@@ -782,9 +786,10 @@ public class MarkdownTooltipLoader {
                     .append(GTUtility.FORMAT_POP_STACK);
                 return;
             }
+            int voltageIndex = num.intValue();
 
             // check if it's a valid value
-            if (tierIndex < 0 || tierIndex >= GTValues.VN.length) {
+            if (voltageIndex < 0 || voltageIndex >= GTValues.VN.length) {
                 lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
                     .append(EnumChatFormatting.RED)
                     .append("[TIER FORMAT ERROR: value is not a tier]")
@@ -793,7 +798,7 @@ public class MarkdownTooltipLoader {
             }
 
             // else just append the code
-            lineOutput.append(GTUtility.getColoredTierNameForTooltip(tierIndex));
+            lineOutput.append(GTUtility.wrapFormatting(GTValues.TIER_COLORS[voltageIndex], GTValues.VN[voltageIndex]));
         }
     }
 
@@ -936,8 +941,7 @@ public class MarkdownTooltipLoader {
             }
 
             // check if the arg is the correct type
-            Object unparsed = vars.get(parts[0]);
-            if (!(unparsed instanceof Boolean value)) {
+            if (!(vars.get(parts[0]) instanceof Boolean value)) {
                 lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
                     .append(EnumChatFormatting.RED)
                     .append("[IF ERROR MISSING VAR: ")
@@ -985,18 +989,23 @@ public class MarkdownTooltipLoader {
 
             // check if the arg is the correct type
             Object unparsed = vars.get(parts[0]);
-            if (!(unparsed instanceof Integer value)) {
-                lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
-                    .append(EnumChatFormatting.RED)
-                    .append("[PLURALITY ERROR MISSING VAR: ")
-                    .append(arg)
-                    .append("]")
-                    .append(GTUtility.FORMAT_POP_STACK);
-                return;
+            boolean result;
+            switch (unparsed) {
+                case String v -> result = wantsSingular ^ (!v.equals("1") && !v.equals("-1"));
+                case Number v -> result = wantsSingular ^ (v.longValue() != 1L && v.longValue() != -1L);
+                default -> {
+                    lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
+                        .append(EnumChatFormatting.RED)
+                        .append("[PLURALITY ERROR MISSING VAR: ")
+                        .append(arg)
+                        .append("]")
+                        .append(GTUtility.FORMAT_POP_STACK);
+                    return;
+                }
             }
 
             // check if it's a valid value
-            if (wantsSingular ^ (value != 1 && value != -1)) loader.emit(parts[1], lineOutput, vars);
+            if (result) loader.emit(parts[1], lineOutput, vars);
         }
     }
 
