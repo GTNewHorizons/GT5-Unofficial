@@ -28,20 +28,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -58,6 +62,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEPurificationPlantGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPurificationPlant>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -145,81 +150,23 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Plant, WPP")
-            .addInfo("Main controller block for the Water Purification Plant")
-            .addInfo(
-                "Freely place " + EnumChatFormatting.YELLOW
-                    + "Purification Units "
-                    + EnumChatFormatting.GRAY
-                    + "within "
-                    + EnumChatFormatting.RED
-                    + MAX_UNIT_DISTANCE
-                    + EnumChatFormatting.GRAY
-                    + " blocks along each axis")
-            .addInfo("Left click this controller with a data stick, then right click a purification unit to link")
-            .addInfo("Supplies power to linked purification units")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_plant"))
+            .addMarkdown(new ResourceLocation("gregtech", "purification-plant"), ImmutableMap.of("distance", MAX_UNIT_DISTANCE, "cycle", CYCLE_TIME_TICKS / SECONDS, "boost_fluid", formatNumber(WATER_BOOST_NEEDED_FLUID * 100), "boost_chance", formatNumber(WATER_BOOST_BONUS_CHANCE * 100), "debug_cycle", CYCLE_TIME_IN_DEBUG / SECONDS))
             .addSupportAny()
-            .addSeparator()
-            .addInfo(
-                "Works in fixed time processing cycles of " + EnumChatFormatting.RED
-                    + CYCLE_TIME_TICKS / SECONDS
-                    + EnumChatFormatting.GRAY
-                    + " seconds")
-            .addInfo("All linked units follow this cycle")
-            .addSeparator()
-            .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
-            .addInfo("by using a portion of the target output as a secondary input")
-            .addInfo(
-                EnumChatFormatting.RED + formatNumber(WATER_BOOST_NEEDED_FLUID * 100)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " of output yield will be consumed in exchange for an")
-            .addInfo(
-                "additive " + EnumChatFormatting.RED
-                    + formatNumber(WATER_BOOST_BONUS_CHANCE * 100)
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " increase to success")
-            .addInfo(
-                "On recipe failure, each purification unit has a " + EnumChatFormatting.RED
-                    + "50%"
-                    + EnumChatFormatting.GRAY
-                    + " chance")
-            .addInfo("to return water of the same quality as the input or lower")
-            .addSeparator()
-            .addInfo("Every purification unit has a configuration window to configure maximum parallel amount")
-            .addInfo(
-                "This will only scale purified water input, ALL fluid output and power usage. Other catalysts and outputs are unchanged")
-            .addInfo("Toggle debug mode to reduce cycle time to 30s but disable water I/O")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Contaminants and ionized particles in water can cause significant imperfections in delicate")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "processes related to the cutting and engraving of silicon wafers and chips. It is crucial that")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "the water is systematically purified through a series of increasingly precise and complex")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "purification processes, and this multiblock is the heart of the operation")
             .beginStructureBlock(7, 9, 8, true)
-            .addController("Front center, 3rd layer")
-            .addCasing("77", "Reinforced Sterile Water Plant Casing", false)
-            .addCasing("71-72", "Sterile Water Plant Casing", false)
-            .addCasing("56", "Superplasticizer-Treated High Strength Concrete", false)
-            .addCasing("30", "Tungsten Frame Box", false)
-            .addCasing("6", "Tinted Industrial Glass (any color)", false)
-            .addEnergyHatch("1-2", "Adjacent to controller", 1)
-            .addMaintenanceHatch("1", "Adjacent to controller", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("77", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("71-72", Casings.SterileWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("56", Casings.SuperplasticizerTreatedHighStrengthConcrete.getLocalizedName(), false)
+            .addCasing("30", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("6", StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_color", StatCollector.translateToLocal("gt.blocktintedglass.name")), false)
+            .addEnergyHatch("1-2", StatCollector.translateToLocal("gt.mbtt.structure.adjacent_to_controller"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.adjacent_to_controller"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

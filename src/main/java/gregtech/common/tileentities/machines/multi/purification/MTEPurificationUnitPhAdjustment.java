@@ -23,6 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -30,13 +31,16 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -57,6 +61,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTEPurificationUnitPhAdjustment>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -310,109 +315,23 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit, NPU")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.BOLD
-                    + "Water Tier: "
-                    + EnumChatFormatting.WHITE
-                    + formatNumber(getWaterTier())
-                    + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo(
-                "Initial pH value every cycle varies from " + EnumChatFormatting.RED
-                    + (PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION)
-                    + EnumChatFormatting.GRAY
-                    + " - "
-                    + EnumChatFormatting.RED
-                    + (PH_NEUTRAL_VALUE + INITIAL_PH_DEVIATION)
-                    + " pH")
-            .addInfo(
-                "If the pH value is within " + EnumChatFormatting.RED
-                    + PH_MAX_DEVIATION
-                    + " pH "
-                    + EnumChatFormatting.GRAY
-                    + "of 7.0 pH at the end of the cycle, the recipe always succeeds")
-            .addInfo("Otherwise, the recipe always fails")
-            .addInfo("Use a pH Sensor Hatch to read the current pH value")
-            .addInfo("For safety, the machine will shut down if the pH goes below 0 or exceeds 14")
-            .addSeparator()
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + CONSUME_INTERVAL
-                    + EnumChatFormatting.GRAY
-                    + " ticks, consumes ALL "
-                    + EnumChatFormatting.WHITE
-                    + addFormattedString(ALKALINE_MATERIAL.getLocalizedName())
-                    + EnumChatFormatting.GRAY
-                    + " and "
-                    + EnumChatFormatting.WHITE
-                    + addFormattedString(ACIDIC_MATERIAL.getLocalizedName())
-                    + EnumChatFormatting.GRAY
-                    + " in the special hatches")
-            .addInfo(
-                EnumChatFormatting.RED + "Raises "
-                    + EnumChatFormatting.GRAY
-                    + "the pH value by "
-                    + EnumChatFormatting.RED
-                    + PH_PER_ALKALINE_DUST
-                    + " pH "
-                    + EnumChatFormatting.GRAY
-                    + "per piece of "
-                    + EnumChatFormatting.WHITE
-                    + ALKALINE_MATERIAL.getDust(1)
-                        .getDisplayName())
-            .addInfo(
-                EnumChatFormatting.RED + "Lowers "
-                    + EnumChatFormatting.GRAY
-                    + "the pH value by "
-                    + EnumChatFormatting.RED
-                    + -PH_PER_10_ACID_LITER
-                    + " pH "
-                    + EnumChatFormatting.GRAY
-                    + "per "
-                    + EnumChatFormatting.RED
-                    + "10L "
-                    + EnumChatFormatting.GRAY
-                    + "of "
-                    + EnumChatFormatting.WHITE
-                    + ACIDIC_MATERIAL.getFluid(1L)
-                        .getLocalizedName())
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The fourth step of water purification is to neutralize the solution and bring its pH to exactly 7, rendering")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "the solution inert with no hydrogen ion activity beyond water’s natural amphiproticity. Acids and bases from soils")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "and geology cause natural alkalinity variations in water which can cause corrosive reactions with sensitive")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water.")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_ph_adjustment"))
+            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-ph-adjustment"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("ph_min", formatNumber(PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION)).put("ph_max", formatNumber(PH_NEUTRAL_VALUE + INITIAL_PH_DEVIATION)).put("ph_deviation", formatNumber(PH_MAX_DEVIATION)).put("ph_neutral", formatNumber(PH_NEUTRAL_VALUE)).put("sensor", StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch")).put("interval", CONSUME_INTERVAL).put("alkaline", ALKALINE_MATERIAL.getLocalizedName()).put("acid", ACIDIC_MATERIAL.getLocalizedName()).put("dust", ALKALINE_MATERIAL.getDust(1).getDisplayName()).put("ph_per_dust", formatNumber(PH_PER_ALKALINE_DUST)).put("ph_per_acid", formatNumber(-PH_PER_10_ACID_LITER)).build())
             .beginStructureBlock(15, 6, 5, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("134", "Inert Neutralization Water Plant Casing", false)
-            .addCasing("48", "Naquadah Alloy Frame Box", false)
-            .addCasing("18", "Chemical Grade Glass", false)
-            .addCasing("12-17", "Stabilized Naquadah Water Plant Casing", false)
-            .addMiscHatch(
-                "0-2",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"),
-                "Below controller",
-                2)
-            .addInputBus("1", "Top of left chamber (sodium hydroxide)", 3)
-            .addInputHatch("2+", "Top of right chamber (hydrochloric acid), behind controller (water)", 1, 4)
-            .addOutputHatch("1+", "Behind controller", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("134", Casings.InertNeutralizationWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("48", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
+            .addCasing("18", Casings.ChemicalGradeGlass.getLocalizedName(), false)
+            .addCasing("12-17", Casings.StabilizedNaquadahWaterPlantCasing.getLocalizedName(), false)
+            .addMiscHatch("0-2", StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.below_controller"), 2)
+            .addInputBus("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.ph_adjustment_input_bus", ALKALINE_MATERIAL.getLocalizedName()), 3)
+            .addInputHatch("2+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.ph_adjustment_input_hatch", ACIDIC_MATERIAL.getLocalizedName()), 1, 4)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.behind_controller"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
