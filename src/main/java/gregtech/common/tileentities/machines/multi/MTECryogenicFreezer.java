@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.CryotheumHatch;
@@ -89,12 +90,12 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.VacuumFreezer.machine_type"))
             .addStaticParallelInfo(PARALLELS)
-            .addStaticSpeedInfo((float)SPEED_BONUS)
-            .addStaticEuEffInfo((float)EU_MODIFIER)
+            .addStaticSpeedInfo((float) SPEED_BONUS)
+            .addStaticEuEffInfo((float) EU_MODIFIER)
             .addMarkdown(
                 new ResourceLocation("gregtech", "cryogenic-freezer"),
                 ImmutableMap.<String, Object>builder()
-                    .put("cryotheum", CRYOTHEUM_PER_SECOND)
+                    .put("cryotheum", formatNumber(CRYOTHEUM_PER_SECOND))
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 7, true)
@@ -107,7 +108,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addMufflerHatch("1", anyCasingText(), 1)
             .addInputAny("1+", anyCasingText(), 1)
             .addOutputAny("1+", anyCasingText(), 1)
-                        .toolTipFinisher();
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }
