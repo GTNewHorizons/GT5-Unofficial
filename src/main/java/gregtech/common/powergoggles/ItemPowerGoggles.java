@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -24,6 +23,7 @@ import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketUpdateItem;
+import gregtech.api.util.GTUtility;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 
 public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
@@ -46,8 +46,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
 
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (!PowerGogglesUtil.isLSC(tileEntity)) {
-            player
-                .addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.link_fail")));
+            GTUtility.sendChatTrans(player, "GT5U.power_goggles.link_fail");
             return true;
         }
 
@@ -69,8 +68,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
         setEnchantmentData(oldStack, stack);
         NW.sendToServer(new GTPacketUpdateItem(tag));
 
-        player.addChatMessage(
-            new ChatComponentText(StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
+        GTUtility.sendChatTrans(player, "GT5U.power_goggles.link_lsc", x, y, z);
     }
 
     @Override
@@ -93,7 +91,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
         ItemStack oldStack = stack.copy();
         stack.setTagCompound(new NBTTagCompound());
         setEnchantmentData(oldStack, stack);
-        player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.unlink")));
+        GTUtility.sendChatTrans(player, "GT5U.power_goggles.unlink");
     }
 
     private void setEnchantmentData(ItemStack oldStack, ItemStack newStack) {
