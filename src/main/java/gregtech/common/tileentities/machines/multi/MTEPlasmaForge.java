@@ -583,15 +583,16 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.plasma_forge"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "plasma-forge"),
-                ImmutableMap.of(
-                    "hours", formatNumber(max_efficiency_time_in_ticks / (3600 * 20)),
-                    "discount", formatNumber(100 * maximum_discount),
-                    "decay", formatNumber(efficiency_decay_rate)))
+                ImmutableMap.<String, Object>builder()
+                    .put("hours", formatNumber(max_efficiency_time_in_ticks / (3600 * 20)))
+                    .put("max_discount", formatNumber(100 * maximum_discount))
+                    .put("decay_rate", formatNumber(efficiency_decay_rate))
+                    .build())
             .addUnlimitedTierSkips()
             .addSupportAny()
             .beginStructureBlock(33, 24, 33, false)
