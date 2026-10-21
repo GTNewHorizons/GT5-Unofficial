@@ -143,7 +143,6 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
         int planet = 2;
         int gas = 0;
         int index = 0;
-        // int pumpRecipes = Math.max(EXPECTED_PUMPING_SLOTS, SpacePumpingRecipes.RECIPES.size());
 
         var rowFluids = new ArrayList<IWidget>();
         rowFluids.add(new TextWidget<>(IKey.lang("tt.spacepump.planettier", planet)));
@@ -160,7 +159,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             }
             int gasDelta = Math.abs(planetGasPair.getRight() - gas);
             while (gasDelta > 1) {
-                // stack null
+                // stack null, as a spacer (mostly dev env)
                 gasDelta--;
                 rowFluids.add(createFluidUtilityButton(syncManager, index, null, 0, 0));
                 index++;
@@ -216,6 +215,8 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
     }
 
     private IWidget createBatchSlider(PanelSyncManager syncManager) {
+        // potentially should use a second sync value temporarily, so it doesn't directly apply
+        // and gets applied after the "apply" button was pressed
         IntSyncValue batchSyncer = syncManager.findSyncHandler("batch", IntSyncValue.class);
         SliderWidget slider = new SliderWidget().value(batchSyncer)
             .widthRel(0.75f)
