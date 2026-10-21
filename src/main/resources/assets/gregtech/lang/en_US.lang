@@ -279,6 +279,9 @@ gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.batterybuffer.name=%1$s Battery Buffer
+gt.blockmachines.batterybuffer.small.name=Small %1$s Battery Buffer
+gt.blockmachines.batterybuffer.large.name=Large %1$s Battery Buffer
+gt.blockmachines.batterybuffer.huge.name=Huge %1$s Battery Buffer
 gt.blockmachines.hatch.energy.name=%s Energy Hatch
 gt.blockmachines.hatch.energy.debug.name=Debug Energy Hatch
 gt.blockmachines.hatch.dynamo.name=%s Dynamo Hatch
@@ -1797,7 +1800,7 @@ GTPP.algae.yellow-green_algae.name=Yellow-Green Algae
 GT5U.power_goggles.open_config_gui=Open Power Goggles Config
 GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
 GT5U.power_goggles.toggle_measurements_section=Toggle Power Goggles measurements section
-GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
+GT5U.power_goggles.link_lsc.s=Goggles linked to LSC at %s, %s, %s.
 GT5U.power_goggles.link_fail=That's not an LSC...
 GT5U.power_goggles.unlink=Goggles Unlinked.
 GT5U.power_goggles.link_tooltip=Linked to LSC at %d,%d,%d: %s
@@ -1881,6 +1884,9 @@ GT5U.MBTT.PowerUsage=Power Usage
 GT5U.MBTT.BaseAmperage=Base Amperage
 GT5U.MBTT.StaticParallels=Processes up to %s recipes at once
 GT5U.MBTT.Dimensions=Dimensions
+GT5U.MBTT.Dimensions.Length=L
+GT5U.MBTT.Dimensions.Width=W
+GT5U.MBTT.Dimensions.Height=H
 GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure
 GT5U.MBTT.Controller=Controller
@@ -2024,6 +2030,12 @@ GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData S
 
 gt.mbtt.structure.back_center=Back center
 gt.mbtt.structure.front_bottom_center=Front bottom center
+gt.mbtt.structure.middle_of_structure_6th_layer=Middle of structure, 6th layer
+gt.mbtt.structure.any_electric_compressor_casing=Any electric compressor casing
+gt.mbtt.structure.any_side_pipe_casing=Any side pipe casing
+gt.mbtt.structure.any_neutronium_casing=Any neutronium casing
+gt.mbtt.structure.any_absorbent_casing=Any absorbent casing
+gt.mbtt.structure.any_absorbent_casing_or_behind_laser=Any absorbent casing (inputs), the casing behind each laser (spacetime)
 gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
 gt.mbtt.structure.front_center_4th_layer=Front center, 4th layer
@@ -2168,6 +2180,13 @@ gt.mbtt.structure.containment_block=Containment Block
 gt.mbtt.structure.heat_resistant_proof_coke_oven_casing=Heat Resistant/Proof Coke Oven Casing
 gt.mbtt.structure.input_or_solidifier_hatch=Input/Solidifier Hatch
 gt.mbtt.structure.input_or_chisel_bus=Input/Chisel Bus
+gt.mbtt.structure.any_machine_or_firebox_casing=Any machine or firebox casing
+gt.mbtt.structure.large_boiler_fuel=Use solid fuel, liquid fuel, or both
+gt.mbtt.structure.large_boiler_water=Use regular or distilled water
+gt.mbtt.structure.any_middle_casing=Any middle casing
+gt.mbtt.structure.any_side_casing=Any side casing
+gt.mbtt.structure.heat_exchanger_input_hatch=Bottom center casing (hot fluid), any casing (distilled water)
+gt.mbtt.structure.heat_exchanger_output_hatch=Top center casing (cooled fluid), any casing (steam)
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -2192,6 +2211,10 @@ gt.mbtt.machine_type.arc_furnace_iaf=Arc Furnace, IAF
 gt.mbtt.machine_type.solar_tower=Solar Tower
 gt.mbtt.machine_type.macerator_ims=Macerator, IMS
 gt.mbtt.machine_type.compressor=Compressor
+gt.mbtt.machine_type.electric_compressor=Compressor, LEC
+gt.mbtt.machine_type.isostatic_press_compressor=Compressor, HIP
+gt.mbtt.machine_type.neutronium_compressor=Neutronium Compressor
+gt.mbtt.machine_type.black_hole_compressor=Compressor, Advanced Neutronium Compressor, BHC
 gt.mbtt.machine_type.forge_hammer=Forge Hammer
 gt.mbtt.machine_type.furnace=Furnace
 gt.mbtt.machine_type.furnace_blaster_smoker=Furnace, Blaster, Smoker
@@ -2243,6 +2266,9 @@ gt.mbtt.machine_type.industrial_coke_oven=Coke Oven, ICO
 gt.mbtt.machine_type.cutting_machine=Cutting Machine, ICF
 gt.mbtt.machine_type.electromagnetic_separator=Electromagnetic Separator/Polarizer, MFE
 gt.mbtt.machine_type.fish_trap=Fish Trap, ZFP
+gt.mbtt.machine_type.boiler=Boiler
+gt.mbtt.machine_type.heat_exchanger=Heat Exchanger
+gt.mbtt.machine_type.large_heat_exchanger=Heat Exchanger, LHE
 
 # BartWorks multiblock structure text
 GT5U.tooltip.manual_trafo.winding_layers=1 Layer for each tier transformed
@@ -2331,17 +2357,6 @@ gt.multiblock.ThermalBoiler.desc1=Uses the heat from §chot fluids§7 to evapora
 gt.multiblock.ThermalBoiler.desc2=Filters raw materials from §clava§7 and §cpahoehoe lava
 gt.multiblock.ThermalBoiler.desc3=Requires a Lava Filter in the controller slot for byproducts
 gt.multiblock.ThermalBoiler.desc4=Explodes after 10s if it runs out of water
-
-gt.multiblock.HeatExchanger.desc1=Inputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt
-gt.multiblock.HeatExchanger.desc2=Outputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt
-gt.multiblock.HeatExchanger.desc3=Converts distilled water into §rSteam§7 or §rSH Steam§7 in the process
-gt.multiblock.HeatExchanger.desc4=Outputs §rSH Steam§7 if the input rate of hot fluid is above a certain §dthreshold
-gt.multiblock.HeatExchanger.desc5=Explodes after 100s if it runs out of distilled water
-gt.multiblock.HeatExchanger.lava=§cLava§7 | SH Threshold §d1,000 %s/s§7 | Max Input §c2,000 %s/s§7 | Max Output §r8,000 %s/t SH Steam
-gt.multiblock.HeatExchanger.hotcoolant=§cHot Coolant§7 | SH Threshold §d800 %s/s§7 | Max Input §c1,600 %s/s§7 | Max Output §r16,000 %s/t SH Steam
-gt.multiblock.HeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SH Threshold §d160 %s/s§7 | Max Input §c320 %s/s§7 | Max Output §r16,000 %s/t SH Steam
-gt.multiblock.HeatExchanger.throttle1=A circuit in the controller lowers the SH threshold at the cost of steam
-gt.multiblock.HeatExchanger.throttle2=§d-3.75%§7 SH Threshold and §r-1.5%§7 steam output per circuit over 1
 
 gt.multiblock.AdvHeatExchanger.desc1=Equivalent to 32 Large Heat Exchangers
 gt.multiblock.AdvHeatExchanger.desc2=Inputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt
@@ -4777,7 +4792,7 @@ GT5U.nei.purified_water.grade_4.1=%s pH/1000L
 GT5U.nei.cauldron.consumed=Consumed per operation
 GT5U.nei.cauldron.anystack=Works with any stack size
 GT5U.nei.foundry_module.chassis_tier=Chassis must match Foundry Tier!
-
+GT5U.nei.hover_to_see=Hover to see stack trace
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation
