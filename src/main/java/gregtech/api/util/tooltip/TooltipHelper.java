@@ -190,8 +190,7 @@ public class TooltipHelper {
      * @return Colored String, resets to gray coloring after
      */
     public static String coloredText(String text, EnumChatFormatting coloring) {
-        if (coloring.isColor() || coloring == EnumChatFormatting.GRAY)
-            return String.format("%s%s%s", coloring, text, EnumChatFormatting.GRAY);
+        if (coloring.isColor() || coloring == EnumChatFormatting.GRAY) return coloring + text + EnumChatFormatting.GRAY;
         return text;
     }
 
@@ -202,7 +201,7 @@ public class TooltipHelper {
      * @return Italic String
      */
     public static String italicText(String text) {
-        return String.format("%s%s%s", ITALIC, text, EnumChatFormatting.RESET);
+        return ITALIC + text + EnumChatFormatting.RESET;
     }
 
     /**
