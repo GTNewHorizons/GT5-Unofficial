@@ -81,7 +81,8 @@ public class TooltipHelper {
     public static final EnumChatFormatting EU_VOLT_COLOR = EnumChatFormatting.YELLOW;
     /** For amperage measurements. */
     public static final EnumChatFormatting AMP_COLOR = EnumChatFormatting.AQUA;
-    public static final EnumChatFormatting CAPACITY_COLOR = EnumChatFormatting.BLUE;
+    /** For eu capacity measurements. */
+    public static final EnumChatFormatting EU_CAPACITY_COLOR = EnumChatFormatting.BLUE;
     public static final EnumChatFormatting EU_AMOUNT_COLOR = EnumChatFormatting.GRAY;
     public static final EnumChatFormatting CABLE_LOSS_COLOR = EnumChatFormatting.RED;
     public static final EnumChatFormatting L_COLOR = EnumChatFormatting.WHITE;
@@ -250,7 +251,7 @@ public class TooltipHelper {
      * @return The given number of EU, formatted.
      */
     public static String euCapacityText(long capacity) {
-        return CAPACITY_COLOR + NumberFormatUtil.formatNumber(capacity) + EU_AMOUNT_COLOR + " EU";
+        return EU_CAPACITY_COLOR + NumberFormatUtil.formatNumber(capacity) + EU_AMOUNT_COLOR + " EU";
     }
 
     /**
