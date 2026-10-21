@@ -65,6 +65,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
@@ -189,7 +190,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 ImmutableMap.<String, Object>builder()
                     .put("power", formatNumber(GTValues.V[tier()] / MAX_ENERGY_HATCHES))
                     .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
-                    .put("tier", GTValues.TIER_COLORS[tier()] + GTValues.VN[tier()])
+                    .put("tier", GTUtility.getColoredTierNameForTooltip(tier()))
                     .put("eu_per_oc", formatNumber(fod.getEUtIncreasePerOC()))
                     .put("time_per_oc", formatNumber(fod.getDurationDecreasePerOC()))
                     .build())

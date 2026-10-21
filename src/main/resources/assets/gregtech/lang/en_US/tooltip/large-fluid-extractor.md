@@ -1,2 +1,2 @@
-{green:{var:speed}%} Speed {green:+{var:speed_bonus}%} per {white:Heating Coil} tier
-{aqua:{var:eu_eff}%} EU Usage {aqua:x{var:eu_eff_bonus}} per {white:Heating Coil} tier
+{color_speed:{var:speed}%} Speed {color_speed:+{var:speed_bonus}%} per {color_name:Heating Coil} tier
+{color_efficiency:{var:eu_eff}%} {EU} Usage {color_efficiency:x{var:eu_eff_bonus}} per {color_name:Heating Coil} tier

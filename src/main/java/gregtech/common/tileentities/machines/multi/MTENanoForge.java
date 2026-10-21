@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -30,6 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -77,6 +77,7 @@ import gregtech.common.gui.modularui.multiblock.MTENanoForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
@@ -744,18 +745,10 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Nanite Fabricator")
-            .addInfo("Requires insane amounts of power to create nanites")
-            .addInfo("Each tier requires some structural changes")
-            .addInfo("Machine Tier depends on Nanite in controller slot")
-            .addInfo("Tier 4 has additional mechanics, check the controller")
-            .addSeparator()
-            .addInfo(
-                "Performs " + EnumChatFormatting.LIGHT_PURPLE
-                    + "perfect overclocks"
-                    + EnumChatFormatting.GRAY
-                    + " on lower-tier recipes")
+            .addMarkdown(new ResourceLocation("gregtech", "nano-forge"))
             .addSupportAny()
             .addUnlimitedTierSkips()
             .beginStructureBlock(41, 52, 41, false)
@@ -799,7 +792,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addOutputBus("1+", "Any anchor casing", 1)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
-            .toolTipFinisher(AuthorBlueWeabo);
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
