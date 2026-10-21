@@ -1869,6 +1869,7 @@ tt.spaceminer.filter.minableAsteroids=Currently minable asteroids for
 tt.spaceminer.filter.noValidInputs=No valid inputs!
 tt.spaceminer.filter.addOre=Click to add this ore to the filter
 # Space Pump
+tt.spacepump.batchslider=Modifies the current batch recipe time (in s)
 tt.spacepump.rate=Pumps %s/s
 tt.spacepump.ratemax=Up to %s/s per recipe
 tt.spacepump.pendingqueue=Confirm or modify selected recipes:

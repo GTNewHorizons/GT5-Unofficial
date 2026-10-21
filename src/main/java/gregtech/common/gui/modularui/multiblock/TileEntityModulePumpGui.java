@@ -1,6 +1,8 @@
 package gregtech.common.gui.modularui.multiblock;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModulePump.PUMP_BATCH_MAX;
+import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModulePump.PUMP_BATCH_MIN;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,6 +22,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -30,9 +33,11 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.SliderWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
@@ -42,6 +47,7 @@ import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModulePump;
 
 public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityModulePump> {
 
+    private static final int DARK_GREY = 0x363636;
     public static final int EXPECTED_PUMPING_SLOTS = 40;
     // properly needs to use GenericListSync
     private final List<IndexGasMapping> indexQueue = new CopyOnWriteArrayList<>();
@@ -126,6 +132,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                             .height(2)
                             .marginTop(2)
                             .marginBottom(4))
+                    .child(createBatchSlider(syncManager))
                     .child(new TextWidget<>(IKey.lang("tt.spacepump.pendingqueue")))
                     .child(queueRowAndApply(syncManager)));
     }
@@ -208,6 +215,25 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
         });
     }
 
+    private IWidget createBatchSlider(PanelSyncManager syncManager) {
+        IntSyncValue batchSyncer = syncManager.findSyncHandler("batch", IntSyncValue.class);
+        SliderWidget slider = new SliderWidget().value(batchSyncer)
+            .widthRel(0.75f)
+            .bounds(PUMP_BATCH_MIN, PUMP_BATCH_MAX)
+            .background(GuiTextures.MC_BUTTON)
+            .tooltip(t -> t.add(IKey.lang("tt.spacepump.batchslider")));
+        return Flow.row()
+            .fullWidth()
+            .coverChildrenHeight()
+            .reverseLayout()
+            .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN)
+            .child(
+                new TextFieldWidget().value(batchSyncer)
+                    .numbersInt(PUMP_BATCH_MIN, PUMP_BATCH_MAX)
+                    .setTextAlignment(Alignment.Center))
+            .child(slider);
+    }
+
     // selected fluids display
     private IWidget queueRowAndApply(PanelSyncManager syncManager) {
         return Flow.row()
@@ -260,13 +286,13 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
             .coverChildren()
             .mainAxisAlignment(Alignment.MainAxis.END)
             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
-            .child(new TextWidget<>(IKey.lang("tt.spacepump.utilityapply")))
             .child(
                 new ButtonWidget<>().overlay(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                     .onMousePressed(_ -> {
                         applyQueueToPumpParameters(syncManager);
                         return true;
-                    }));
+                    })
+                    .tooltip(t -> t.add(IKey.lang("tt.spacepump.utilityapply"))));
     }
 
     private void applyQueueToPumpParameters(PanelSyncManager syncManager) {
@@ -286,6 +312,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                 gasSync.setValue(index.gas);
             }
         }
+        getIndexQueue().clear();
         spacePumpUtilityPanel.closePanel();
     }
 

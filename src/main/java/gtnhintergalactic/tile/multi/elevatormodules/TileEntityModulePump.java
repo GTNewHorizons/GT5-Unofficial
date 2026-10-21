@@ -70,6 +70,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     private IntegerParameter[] gasTypeParameters;
     private IntegerParameter[] parallelParameters;
 
+    public static final int PUMP_BATCH_MIN = 1;
+    public static final int PUMP_BATCH_MAX = 128;
     /** Name of the planet type setting */
     private static final INameFunction<TileEntityModulePump> PLANET_TYPE_SETTING_NAME = (base,
         p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.cfgi.0") + " "
@@ -98,7 +100,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         .translateToLocal("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
     /** Status of the batch setting */
     private static final IStatusFunction<TileEntityModulePump> BATCH_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
+        .fromLimitsInclusiveOuterBoundary(p.get(), PUMP_BATCH_MIN, 0, 32, PUMP_BATCH_MAX);
 
     /** Flag if this machine has an ME output hatch, will be updated in the structure check */
     protected boolean hasMeOutputHatch = false;
@@ -135,11 +137,11 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         int recipes = getParallelRecipes();
 
         batchParameter = new IntegerParameter(
-            1,
+            PUMP_BATCH_MIN,
             "gt.blockmachines.multimachine.project.ig.pump.cfgi.3",
             "batch",
-            () -> 1,
-            () -> 128);
+            () -> PUMP_BATCH_MIN,
+            () -> PUMP_BATCH_MAX);
 
         planetTypeParameters = new IntegerParameter[recipes];
         gasTypeParameters = new IntegerParameter[recipes];
@@ -216,12 +218,12 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         ArrayList<FluidStack> outputs = new ArrayList<>();
         int usedEUt = 0;
         // We store the highest batch size as time multiplier
-        int maxBatchSize = Math.clamp(batchParameter.getValue(), 1, 128);
+        int maxBatchSize = Math.clamp(batchParameter.getValue(), PUMP_BATCH_MIN, PUMP_BATCH_MAX);
         for (int i = 0; i < getParallelRecipes(); i++) {
             FluidStack fluid = SpacePumpingRecipes.RECIPES
                 .get(Pair.of(planetTypeParameters[i].getValue(), gasTypeParameters[i].getValue()));
             if (fluid != null) {
-                int batchSize = Math.clamp(batchParameter.getValue(), 1, 128);
+                int batchSize = Math.clamp(batchParameter.getValue(), PUMP_BATCH_MIN, PUMP_BATCH_MAX);
                 MTEHatchOutput targetOutput = null;
                 if (!hasMeOutputHatch && !eSafeVoid) {
                     for (MTEHatchOutput output : mOutputHatches) {
@@ -318,7 +320,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
                 .makeInParameter(0, getParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
         }
         batchSetting = parametrization.getGroup(9, false)
-            .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
+            .makeInParameter(1, PUMP_BATCH_MIN, BATCH_SETTING_NAME, BATCH_STATUS);
     }
 
     /** Texture that will be displayed on the side of the module */
