@@ -32,7 +32,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import appeng.api.storage.data.IAEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -42,7 +41,7 @@ import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.IGTHatchAdder;
@@ -56,7 +55,6 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import it.unimi.dsi.fastutil.Pair;
 import tectech.mechanics.boseEinsteinCondensate.BECInventory;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
-import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECStorageGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchCondensateDetector;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -100,7 +98,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public IStructureDefinition<MTEBECStorage> compile(String[][] definition) {
         structure.addCasing('A', CoherencePreservingPlasmaConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 21, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
+            .withHatches(1, 42, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
@@ -146,7 +144,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         StructureWrapperTooltipBuilder<MTEBECStorage> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         // spotless:off
-        tt.addMachineType("BEC Storage, Entangled Condensate Storage")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_storage"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-storage"))
             .addSupportAny();
 
@@ -163,7 +161,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
             .addMiscHatch("1-4", "Bose-Einstein Condensate Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.bec-hatch-pos"), 2)
             .addMiscHatch("0+", "Bose-Einstein Condensate Detector Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }
@@ -203,7 +201,17 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 .removeIf(e -> e.getLongValue() <= 0);
         }
 
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        return SimpleCheckRecipeResult.ofSuccess("routing");
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRunningText() {
+        return false;
     }
 
     public double getAmountStored() {
@@ -377,9 +385,15 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
             .collect(Collectors.toList());
     }
 
-    private static class DetectorHatchElement implements IHatchElement<MTEBECStorage> {
+    private enum DetectorHatchElement implements IHatchElement<MTEBECStorage> {
 
-        public static final DetectorHatchElement INSTANCE = new DetectorHatchElement();
+        INSTANCE("GT5U.MBTT.CondensateDetectorHatch");
+
+        private final String name;
+
+        DetectorHatchElement(String name) {
+            this.name = name;
+        }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
@@ -405,13 +419,13 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         }
 
         @Override
-        public String name() {
-            return "DetectorHatchElement";
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
         }
 
         @Override
-        public String getDisplayName() {
-            return CustomItemList.Hatch_BEC_CondensateDetector.getDisplayName();
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override

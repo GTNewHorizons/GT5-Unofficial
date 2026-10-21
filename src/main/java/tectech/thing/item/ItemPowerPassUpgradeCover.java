@@ -15,7 +15,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import tectech.Reference;
 import tectech.thing.CustomItemList;
-import tectech.util.CommonValues;
 
 public final class ItemPowerPassUpgradeCover extends Item {
 
@@ -29,7 +28,6 @@ public final class ItemPowerPassUpgradeCover extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
-        aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(translateToLocal("item.tm.powerpassupgradecover.desc.0")); // Add power pass functionality to TecTech
                                                                              // Multiblocks
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.powerpassupgradecover.desc.1")); // Active

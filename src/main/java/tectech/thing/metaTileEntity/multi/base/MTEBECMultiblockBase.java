@@ -78,6 +78,18 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return false;
     }
 
+    // disables hoverable widget in GUI
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    // bec multiblocks do not support this by default, not that they need to be.
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
@@ -279,7 +291,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
 
     public enum BECHatches implements IHatchElement<MTEBECMultiblockBase<?>> {
 
-        Hatch(MTEHatchBEC.class) {
+        Hatch("GT5U.MBTT.CondensateHatch", MTEHatchBEC.class) {
 
             @Override
             public long count(MTEBECMultiblockBase<?> t) {
@@ -287,11 +299,14 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
             }
         };
 
+        private final String name;
+
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         @SafeVarargs
-        BECHatches(Class<? extends IMetaTileEntity>... mteClasses) {
+        BECHatches(String name, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.name = name;
         }
 
         @Override
@@ -301,9 +316,12 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
 
         @Override
         public String getDisplayName() {
-            return switch (this) {
-                case Hatch -> StatCollector.translateToLocal("gt.blockmachines.hatch.bec.name");
-            };
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override

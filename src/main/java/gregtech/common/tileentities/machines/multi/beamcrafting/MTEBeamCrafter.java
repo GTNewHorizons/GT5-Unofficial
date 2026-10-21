@@ -29,7 +29,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -328,7 +327,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .addOutputHatch("0+", "Any accelerator casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTAuthors.AuthorHamCorp);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -458,7 +457,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 }
                 return result;
             }
-        }.setEuModifier(0) // Set eu/t to 0 for parallel calculation
+        }.setEuModifier(0.0D) // Set eu/t to 0 for parallel calculation
             .setMaxParallel(MAX_PARALLEL)
             .setUnlimitedTierSkips();
     }

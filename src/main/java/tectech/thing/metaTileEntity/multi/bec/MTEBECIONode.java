@@ -44,7 +44,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -77,7 +76,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECIONodeGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.Mode;
@@ -209,9 +207,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECIONode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_io_node"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode"));
 
+        // spotless:off
         tt.beginStructureBlock(7, 23, 13, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
             .addCasing("94", CoherencePreservingPlasmaConduit.getLocalizedName(), false)
@@ -222,25 +221,14 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             .addCasing("44", CondensateTransformativeCoil.getLocalizedName(), false)
             .addCasing("32", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("20", CondensateGuidanceCoil.getLocalizedName(), false)
-            .addMiscHatch(
-                "0+",
-                "Nanite Detector Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
-                1)
-            .addMiscHatch(
-                "0+",
-                "Teleportation Node Controller Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
-                1)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.NaniteTierDetectorHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.TeleportationControllerHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
             .addInputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
             .addOutputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
-            .addMiscHatch(
-                "1",
-                "Line-of-Sight Connector Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.los-hatch-pos"),
-                2)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.los-hatch-pos"), 2)
+            .toolTipFinisher();
         return tt;
+        //spotless:on
     }
 
     @Override
@@ -998,16 +986,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     public enum NaniteHatch implements IHatchElement<MTEBECIONode> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.NaniteTierDetectorHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Collections.singletonList(MTEHatchNaniteDetector.class);
         }
 
+        NaniteHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_BEC_Nanites.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -1037,16 +1036,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     public enum ControllerHatch implements IHatchElement<MTEBECIONode> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.TeleportationControllerHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Collections.singletonList(MTEHatchIONodeController.class);
         }
 
+        ControllerHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_BEC_IOController.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override
@@ -1075,16 +1085,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     public enum IONodeLineOfSightHatch implements IHatchElement<MTEBECIONode> {
 
-        INSTANCE;
+        INSTANCE("GT5U.MBTT.LineOfSightHatch");
+
+        private final String name;
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return List.of(MTEHatchLoS.class);
         }
 
+        IONodeLineOfSightHatch(String name) {
+            this.name = name;
+        }
+
         @Override
         public String getDisplayName() {
-            return CustomItemList.Hatch_LineOfSight_Connector.getDisplayName();
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
 
         @Override

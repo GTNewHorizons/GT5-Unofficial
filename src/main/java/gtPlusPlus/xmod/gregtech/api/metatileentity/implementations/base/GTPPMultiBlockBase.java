@@ -1219,7 +1219,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public enum GTPPHatchElement implements IHatchElement<GTPPMultiBlockBase<?>> {
 
-        AirIntake(GTPPMultiBlockBase::addAirIntakeToMachineList, MTEHatchAirIntake.class) {
+        AirIntake("GT5U.MBTT.AirIntakeHatch", GTPPMultiBlockBase::addAirIntakeToMachineList, MTEHatchAirIntake.class) {
 
             @Override
             public long count(GTPPMultiBlockBase<?> t) {
@@ -1230,7 +1230,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
          * @deprecated use {@link gregtech.api.enums.HatchElement#ExoticDynamo}
          */
         @Deprecated
-        TTDynamo(GTPPMultiBlockBase::addMultiAmpDynamoToMachineList, MTEHatchDynamoMulti.class) {
+        TTDynamo("GT5U.MBTT.ExoticEnergyDynamo", GTPPMultiBlockBase::addMultiAmpDynamoToMachineList,
+            MTEHatchDynamoMulti.class) {
 
             @Override
             public long count(GTPPMultiBlockBase<?> t) {
@@ -1242,7 +1243,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
          *             {@link gregtech.api.enums.HatchElement#MultiAmpEnergy}
          */
         @Deprecated
-        TTEnergy(GTPPMultiBlockBase::addMultiAmpEnergyToMachineList, MTEHatchEnergyMulti.class) {
+        TTEnergy("GT5U.MBTT.ExoticEnergyHatch", GTPPMultiBlockBase::addMultiAmpEnergyToMachineList,
+            MTEHatchEnergyMulti.class) {
 
             @Override
             public long count(GTPPMultiBlockBase<?> t) {
@@ -1250,12 +1252,14 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
         };
 
+        private final String name;
         private final List<? extends Class<? extends IMetaTileEntity>> mMteClasses;
         private final IGTHatchAdder<? super GTPPMultiBlockBase<?>> mAdder;
 
         @SafeVarargs
-        GTPPHatchElement(IGTHatchAdder<? super GTPPMultiBlockBase<?>> aAdder,
+        GTPPHatchElement(String name, IGTHatchAdder<? super GTPPMultiBlockBase<?>> aAdder,
             Class<? extends IMetaTileEntity>... aMteClasses) {
+            this.name = name;
             this.mMteClasses = Arrays.asList(aMteClasses);
             this.mAdder = aAdder;
         }
@@ -1268,6 +1272,16 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         @Override
         public IGTHatchAdder<? super GTPPMultiBlockBase<?>> adder() {
             return mAdder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

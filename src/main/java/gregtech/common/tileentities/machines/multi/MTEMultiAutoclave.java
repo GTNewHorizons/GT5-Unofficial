@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorVolence;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -226,7 +225,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addSubChannel(GTStructureChannels.PIPE_CASING)
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
-            .toolTipFinisher(AuthorVolence);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -292,12 +291,12 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return new MTEMultiAutoclave(this.mName);
     }
 
-    public float euModifier(int fluidPipeTier) {
-        return (float) (12 - fluidPipeTier) / 12;
+    public double euModifier(int fluidPipeTier) {
+        return (double) (12 - fluidPipeTier) / 12;
     }
 
-    public float speedBoost(int coilTier) {
-        return (float) 1 / (1 + 0.25f * coilTier);
+    public double speedBoost(int coilTier) {
+        return 1.0D / (1.0D + 0.25D * coilTier);
     }
 
     @Override
