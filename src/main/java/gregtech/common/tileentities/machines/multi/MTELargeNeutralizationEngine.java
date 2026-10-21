@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,6 +40,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -47,9 +49,11 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -74,6 +78,7 @@ import gregtech.common.gui.modularui.multiblock.MTELargeNeutralizationEngineGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTELargeNeutralizationEngine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -294,73 +299,30 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Acid Generator, LNE")
-            .addInfo("(Dis)solves all your problems!")
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.efficiency"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.alkali_text",
-                    "Sodium Hydroxide",
-                    150,
-                    60))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.alkali_text",
-                    "Potassium Hydroxide",
-                    190,
-                    24))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.alkali_text",
-                    "Caesium Hydroxide",
-                    250,
-                    6))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.alkali_text",
-                    "Francium Hydroxide",
-                    500,
-                    5))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.2"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.toxic_residue.3",
-                    (float) RANDOM_MIN / 1000,
-                    (float) RANDOM_MAX / 1000))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.4"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.5"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.6"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.2"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.3"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.4"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.structure_tiers"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.tier_info",
-                    1,
-                    "Strengthened Inanimate Machine Casing",
-                    200,
-                    formatNumber(375000)))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.tier_info",
-                    2,
-                    "Precise Stationary Machine Casing",
-                    400,
-                    formatNumber(1000000)))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.tier_info",
-                    3,
-                    "Ultimate Static Machine Casing",
-                    700,
-                    formatNumber(2500000)))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "large-neutralization-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("sodium_hydroxide_eff", 150)
+                    .put("sodium_hydroxide_rate", 60)
+                    .put("potassium_hydroxide_eff", 190)
+                    .put("potassium_hydroxide_rate", 24)
+                    .put("caesium_hydroxide_eff", 250)
+                    .put("caesium_hydroxide_rate", 6)
+                    .put("francium_hydroxide_eff", 500)
+                    .put("francium_hydroxide_rate", 5)
+                    .put("residue_rand_min", String.format("%.1f", (float) RANDOM_MIN / 1000))
+                    .put("residue_rand_max", String.format("%.1f", (float) RANDOM_MAX / 1000))
+                    .put("tier1_decay", 200)
+                    .put("tier1_capacity", formatNumber(375000))
+                    .put("tier2_decay", 400)
+                    .put("tier2_capacity", formatNumber(1000000))
+                    .put("tier3_decay", 700)
+                    .put("tier3_capacity", formatNumber(2500000))
+                    .put("tier_iv", GTValues.TIER_COLORS[VoltageIndex.IV] + GTValues.VN[VoltageIndex.IV])
+                    .put("tier_luv", GTValues.TIER_COLORS[VoltageIndex.LuV] + GTValues.VN[VoltageIndex.LuV])
+                    .build())
             .addSupportAny()
             .beginStructureBlock(11, 7, 3, true)
             .addController("Top center, 6th layer")
@@ -375,6 +337,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -694,7 +657,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private enum SpecialHatchElement implements IHatchElement<MTELargeNeutralizationEngine> {
 
-        ToxicResidueSensor(MTELargeNeutralizationEngine::addSensorHatchToMachineList, MTEToxicResidueSensor.class) {
+        ToxicResidueSensor("GT5U.MBTT.ToxicResidueSensorHatch",
+            MTELargeNeutralizationEngine::addSensorHatchToMachineList, MTEToxicResidueSensor.class) {
 
             @Override
             public long count(MTELargeNeutralizationEngine gtMetaTileEntityLargeNeutralizationEngine) {
@@ -702,12 +666,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             }
         };
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTELargeNeutralizationEngine> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTELargeNeutralizationEngine> adder,
+        SpecialHatchElement(String name, IGTHatchAdder<MTELargeNeutralizationEngine> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -719,6 +685,16 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
         public IGTHatchAdder<? super MTELargeNeutralizationEngine> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
         }
     }
 }

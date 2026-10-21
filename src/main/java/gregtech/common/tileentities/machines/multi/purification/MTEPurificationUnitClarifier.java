@@ -150,7 +150,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         // Now do random roll to determine if the filter should be destroyed
         ThreadLocalRandom random = ThreadLocalRandom.current();
         int roll = random.nextInt(1, 101);
-        if (roll < FILTER_DAMAGE_RATE) {
+        if (roll <= FILTER_DAMAGE_RATE) {
             this.depleteInput(this.currentRecipe.mInputs[0]);
         }
     }

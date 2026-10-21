@@ -144,7 +144,6 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
     }
@@ -490,6 +489,6 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     }
 
     public double getSpeedBonus() {
-        return 1F / (structureTier == 2 ? 6.4f : 1.6f);
+        return 1.0D / (structureTier == 2 ? 6.4D : 1.6D);
     }
 }

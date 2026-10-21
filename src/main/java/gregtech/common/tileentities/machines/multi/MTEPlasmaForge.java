@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTAuthors.AuthorColen;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -33,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,14 +42,18 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.CoilLeaseType;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -69,21 +73,26 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.common.data.GTCoilTracker;
 import gregtech.common.gui.modularui.multiblock.MTEPlasmaForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForge>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -555,7 +564,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     MTEPlasmaForge::onCasingFound,
                     ofBlock(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))))
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings1, DIM_TRANS_CASING))
-        .addElement('s', ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING))
+        .addElement('s', activeBridge(ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING)))
         .build();
 
     public MTEPlasmaForge(int aID, String aName, String aNameRegional) {
@@ -573,47 +582,16 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Plasma Forge, DTPF")
-            .addInfo("Transcending Dimensional Boundaries.")
-            .addInfo(
-                "Takes " + EnumChatFormatting.RED
-                    + formatNumber(max_efficiency_time_in_ticks / (3600 * 20))
-                    + EnumChatFormatting.GRAY
-                    + " hours of continuous run time to fully breach dimensional")
-            .addInfo(
-                "boundaries and achieve maximum efficiency, reducing fuel consumption by up to "
-                    + EnumChatFormatting.RED
-                    + formatNumber(100 * maximum_discount)
-                    + "%")
-            .addInfo(
-                "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
-                    + formatNumber(efficiency_decay_rate)
-                    + EnumChatFormatting.GRAY
-                    + " as fast as it builds up, draining")
-            .addInfo("the total amount of stored runtime")
-            .addSeparator()
-            .addInfo("Multidimensional spaces can be perfectly aligned and synchronized in this state, ")
-            .addInfo(
-                "allowing " + EnumChatFormatting.GOLD
-                    + "Dimensional Convergence "
-                    + EnumChatFormatting.GRAY
-                    + "to occur. To reach the required stability threshold,")
-            .addInfo(
-                "a " + EnumChatFormatting.AQUA
-                    + "Transdimensional Alignment Matrix "
-                    + EnumChatFormatting.GRAY
-                    + "must be placed in the controller")
-            .addInfo(
-                "When " + EnumChatFormatting.GOLD
-                    + "Convergence "
-                    + EnumChatFormatting.GRAY
-                    + "is active, it allows the forge to perform "
-                    + EnumChatFormatting.RED
-                    + "Perfect Overclocks"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "plasma-forge"),
+                ImmutableMap.<String, Object>builder()
+                    .put("hours", formatNumber(max_efficiency_time_in_ticks / (3600 * 20)))
+                    .put("max_discount", formatNumber(100 * maximum_discount))
+                    .put("decay_rate", formatNumber(efficiency_decay_rate))
+                    .build())
             .addUnlimitedTierSkips()
             .addSupportAny()
             .beginStructureBlock(33, 24, 33, false)
@@ -627,7 +605,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addOutputAny("1+", "Any injection casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
-            .toolTipFinisher(AuthorColen);
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -641,18 +620,34 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         IIconContainer glow = OVERLAY_FUSION1_GLOW;
-        if (convergence && discount == maximum_discount) {
+        ITexture casing = casingTexturePages[0][DIM_BRIDGE_CASING];
+        if (isConvergenceActive()) {
             glow = OVERLAY_RAINBOWSCREEN_GLOW;
+            if (aActive) casing = TextureFactory.of(Textures.BlockIcons.MACHINE_DIM_BRIDGE_CONVERGENCE);
         }
-        return Textures.BlockIcons.createTextureWithCasing(
-            this,
-            side,
-            aFacing,
-            aActive,
-            OVERLAY_DTPF_OFF,
-            OVERLAY_DTPF_OFF_GLOW,
-            OVERLAY_DTPF_ON,
-            glow);
+
+        if (side == aFacing) {
+            if (aActive) return new ITexture[] { this.getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_DTPF_ON)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(glow)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { this.getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_DTPF_OFF)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_DTPF_OFF_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { casing };
+
     }
 
     @Override
@@ -719,7 +714,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 overclockCalculator = super.createOverclockCalculator(recipeAfterAdjustments(recipe, inputFluids))
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity);
-                if (convergence && discount == maximum_discount && enoughCatalyst) {
+                if (isConvergenceActive() && enoughCatalyst) {
                     overclockCalculator = overclockCalculator.enablePerfectOC();
                 }
                 return overclockCalculator;
@@ -747,7 +742,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             for (FluidStack fuel : valid_fuels) {
                 if (tRecipe.mFluidInputs[i].isFluidEqual(fuel)) {
                     recalculateDiscount();
-                    if (convergence && discount == maximum_discount) {
+                    if (isConvergenceActive()) {
                         calculateCatalystIncrease(tRecipe, inputFluids, i);
                         getBaseMetaTileEntity()
                             .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
@@ -758,7 +753,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             }
         }
         // Convergence adjusts the recipe even if it has no catalyst input
-        if (convergence && discount == maximum_discount) {
+        if (isConvergenceActive()) {
             // Append 0 of the chosen catalyst to input fluids for calculations.
             FluidStack[] fluidInputsWithCatalyst = new FluidStack[tRecipe.mFluidInputs.length + 1];
             for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
@@ -831,6 +826,11 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     public void clearHatches() {
         super.clearHatches();
         mExoticEnergyHatches.clear();
+        bridges.clear();
+    }
+
+    boolean isConvergenceActive() {
+        return this.convergence && this.discount == maximum_discount;
     }
 
     @Override
@@ -944,10 +944,19 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 if (convergence && (controllerStack == null
                     || !controllerStack.isItemEqual(ItemList.Transdimensional_Alignment_Matrix.get(1)))) {
                     convergence = false;
+                    deactivateBridgeLease();
                     getBaseMetaTileEntity()
                         .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
                 }
             }
+        }
+    }
+
+    @Override
+    protected void tryActivateCoilLease() {
+        super.tryActivateCoilLease();
+        if (isConvergenceActive() && !bridges.isEmpty() && bridgeLease == null) {
+            bridgeLease = GTCoilTracker.activate(this, CoilLeaseType.BRIDGE, bridges);
         }
     }
 
@@ -1004,6 +1013,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     public void setConvergenceStatus(boolean value) {
         this.convergence = value;
+        if (!convergence) {
+            this.deactivateBridgeLease();
+        }
     }
 
     public int getCatalystTypeForRecipesWithoutCatalyst() {
@@ -1075,6 +1087,35 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     "GT5U.infodata.plasma_forge.fuel_discount",
                     formatNumber(100 * (1 - tag.getDouble("discount")))));
 
+        }
+    }
+
+    public LongArrayList bridges = new LongArrayList();
+    private GTCoilTracker.MultiCoilLease bridgeLease = null;
+
+    public static IStructureElement<MTEPlasmaForge> activeBridge(IStructureElement<MTEPlasmaForge> element) {
+        return new GTStructureUtility.ProxyStructureElement<>(element) {
+
+            @Override
+            public boolean check(MTEPlasmaForge t, World world, int x, int y, int z) {
+                if (!element.check(t, world, x, y, z)) return false;
+                t.bridges.add(CoordinatePacker.pack(x, y, z));
+
+                return true;
+            }
+        };
+    }
+
+    @Override
+    protected void deactivateCoilLease() {
+        super.deactivateCoilLease();
+        deactivateBridgeLease();
+    }
+
+    public void deactivateBridgeLease() {
+        if (bridgeLease != null) {
+            GTCoilTracker.deactivate(bridgeLease, CoilLeaseType.BRIDGE);
+            bridgeLease = null;
         }
     }
 }

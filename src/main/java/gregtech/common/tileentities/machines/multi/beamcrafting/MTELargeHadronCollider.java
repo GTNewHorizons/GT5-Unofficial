@@ -38,7 +38,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -512,7 +511,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 6)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.modules"))
-            .toolTipFinisher(GTAuthors.AuthorHamCorp);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -601,7 +600,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         int outRate = inputRate;
 
         // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV so player can type '2G eV' instead of '2M keV'
-        if (inputEnergy <= playerTargetBeamEnergyeV / 1000) {
+        if (inputEnergy < playerTargetBeamEnergyeV / 1000) {
             outEnergy += (float) perCycleEnergyGainKeV(accelerationCycleCounter, this.mMaxProgresstime);
             if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
                 return new BeamInformation(
@@ -682,7 +681,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         long EUtCost = 0;
 
         for (int c = 0; c < numCycles; c++) {
-            if (outEnergy <= targetEnergyKeV) {
+            if (outEnergy < targetEnergyKeV) {
                 outEnergy += perCycleEnergyGainKeV(c, progressTime);
                 if (outEnergy >= MAXIMUM_PARTICLE_ENERGY_keV) {
                     outEnergy = MAXIMUM_PARTICLE_ENERGY_keV;
@@ -785,8 +784,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 } else {
 
-                    lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
-
                     if (checkIfNotEnoughBoosterFluid()) {
                         stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.boostinterrupt"));
                         return CheckRecipeResultRegistry.NO_RECIPE;
@@ -798,6 +795,9 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                     } else {
                         machineMode = MACHINEMODE_COLLIDER;
                     }
+
+                    lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
+
                 }
             }
         } else {

@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.CryotheumHatch;
@@ -14,12 +13,13 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -62,8 +62,8 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int PARALLELS = 16;
-    private static final float SPEED_BONUS = 3F;
-    private static final float EU_MODIFIER = 0.9F;
+    private static final double SPEED_BONUS = 3.0D;
+    private static final double EU_MODIFIER = 0.9D;
     private static final int CRYOTHEUM_PER_SECOND = 10;
 
     private static IStructureDefinition<MTECryogenicFreezer> STRUCTURE_DEFINITION = null;
@@ -87,29 +87,27 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Vacuum Freezer, VF")
+        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.VacuumFreezer.machine_type"))
+            .addStaticParallelInfo(PARALLELS)
+            .addStaticSpeedInfo((float)SPEED_BONUS)
+            .addStaticEuEffInfo((float)EU_MODIFIER)
             .addMarkdown(
                 new ResourceLocation("gregtech", "cryogenic-freezer"),
                 ImmutableMap.<String, Object>builder()
-                    .put("parallels", PARALLELS)
-                    .put("speed", Math.round(SPEED_BONUS * 100))
-                    .put("eu_eff", Math.round(EU_MODIFIER * 100))
                     .put("cryotheum", CRYOTHEUM_PER_SECOND)
-                    .put("unit", getFluidUnit())
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 7, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("46-56", "Advanced Cryogenic Casing", false)
-            .addCasing("24", "Grisium Frame Box", false)
-            .addMiscHatch("1", "Cryotheum Cooling Hatch", "Any casing", 1)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputAny("1+", "Any casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "REDR")
-            .toolTipFinisher();
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("46-56", Casings.AdvancedCryogenicCasing.getLocalizedName(), false)
+            .addCasing("24", MaterialsAlloy.LEAGRISIUM.getFrameBox(1).getDisplayName(), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.MBTT.CryotheumHatch"), anyCasingText(), 1)
+            .addEnergyHatch("1+", anyCasingText(), 1)
+            .addMaintenanceHatch("1", anyCasingText(), 1)
+            .addMufflerHatch("1", anyCasingText(), 1)
+            .addInputAny("1+", anyCasingText(), 1)
+            .addOutputAny("1+", anyCasingText(), 1)
+                        .toolTipFinisher();
         // spotless:on
         return tt;
     }
@@ -207,7 +205,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching()
-            .setSpeedBonus(1F / SPEED_BONUS)
+            .setSpeedBonus(1.0D / SPEED_BONUS)
             .setEuModifier(EU_MODIFIER)
             .setMaxParallelSupplier(this::getTrueParallel);
     }

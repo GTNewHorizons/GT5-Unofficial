@@ -157,6 +157,7 @@ import gregtech.common.tileentities.machines.multi.drone.production.ProductionRe
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
@@ -671,9 +672,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 deactivateCoilLease();
             }
 
-            if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
-                coilLease = GTCoilTracker.activate(this, mCoils);
+            if (mMachine && isActive) {
+                tryActivateCoilLease();
             }
+        }
+    }
+
+    // method to hook into for non-coil coilLeases.
+    protected void tryActivateCoilLease() {
+        if (!mCoils.isEmpty() && coilLease == null) {
+            coilLease = GTCoilTracker.activate(this, mCoils);
         }
     }
 
@@ -1120,6 +1128,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         result = postCheckRecipe(result, processingLogic);
         // inputs are consumed at this point
         updateSlots();
+        // a fully consumed controller slot stack must not linger as a 0-size stack, it can be duped from the GUI
+        if (mInventory[1] != null && mInventory[1].stackSize <= 0) mInventory[1] = null;
         if (!result.wasSuccessful()) return result;
 
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -1177,32 +1187,44 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected CheckRecipeResult doCheckRecipe() {
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
-        // check crafting input hatches first
-        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-            ItemStack[] sharedItems = dualInputHatch.getSharedItems();
-            for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                IDualInputInventory slot = it.next();
+        short craftingHatchColors = 0;
+        for (var hatch : mDualInputHatches) {
+            craftingHatchColors |= (short) (1 << ((MetaTileEntity) hatch).getColor());
+        }
+        boolean doCraftingColorChecking = craftingHatchColors != 0;
 
-                if (!slot.isEmpty()) {
-                    // try to cache the possible recipes from pattern
-                    if (slot instanceof IDualInputInventoryWithPattern withPattern) {
-                        if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
-                            // move on to next slots if it returns false, which means there is no possible recipes with
-                            // given pattern.
-                            continue;
+        // Crafting inputs are always separated: check unpainted hatches once, then colors 0-15.
+        for (byte color = -1; color < (doCraftingColorChecking ? 16 : 0); color++) {
+            if (color != -1 && isColorAbsent(craftingHatchColors, color)) continue;
+            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                byte hatchColor = ((MetaTileEntity) dualInputHatch).getColor();
+                if (hatchColor != color) continue;
+
+                ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+                for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                    IDualInputInventory slot = it.next();
+
+                    if (!slot.isEmpty()) {
+                        // try to cache the possible recipes from pattern
+                        if (slot instanceof IDualInputInventoryWithPattern withPattern) {
+                            if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
+                                // move on to next slots if it returns false, which means there is no possible recipes
+                                // with given pattern.
+                                continue;
+                            }
                         }
-                    }
 
-                    processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
-                    processingLogic.setInputFluids(slot.getFluidInputs());
+                        processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
+                        processingLogic.setInputFluids(slot.getFluidInputs());
 
-                    CheckRecipeResult foundResult = processingLogic.process();
-                    if (foundResult.wasSuccessful()) {
-                        return foundResult;
-                    }
-                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                        // Recipe failed in interesting way, so remember that and continue searching
-                        result = foundResult;
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) {
+                            return foundResult;
+                        }
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                            // Recipe failed in interesting way, so remember that and continue searching
+                            result = foundResult;
+                        }
                     }
                 }
             }
@@ -1213,7 +1235,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             return result;
         }
 
-        // Use hatch colors if any; fallback to color 1 otherwise.
+        // Use ordinary hatch colors if any; otherwise check unpainted inputs in a single pass.
         short hatchColors = getHatchColors();
         boolean doColorChecking = hatchColors != 0;
         if (!doColorChecking) hatchColors = 0b1;
@@ -1279,7 +1301,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Builds a bitmask of all input bus and hatch colors. Each set bit in the result marks a present color index.
+     * Builds a bitmask of ordinary input bus and hatch colors, including steam inputs.
      *
      * @return bitmask of used color indices.
      */
@@ -1931,6 +1953,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             setHatchRecipeMap(tHatch);
             switch (tHatch) {
+                case MTEHatchSolidifier ignored -> {}
                 case MTEHatchMultiInput multiInputHatch -> {
                     for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
                         if (tFluid != null) {
@@ -2742,12 +2765,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
             }
         }
-        currentTip.add(
-            GTWaila.getMachineProgressString(
-                isActive,
-                tag.getBoolean("isAllowedToWork"),
-                tag.getInteger("maxProgress"),
-                tag.getInteger("progress")));
+        // disables progress time display if recipe text is hidden
+        if (this.showRecipeTextInGUI()) {
+            currentTip.add(
+                GTWaila.getMachineProgressString(
+                    isActive,
+                    tag.getBoolean("isAllowedToWork"),
+                    tag.getInteger("maxProgress"),
+                    tag.getInteger("progress")));
+        }
         // Show ns on the tooltip
         if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
@@ -4070,10 +4096,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean shouldCheckMaintenance() {
         return !disableMaintenance && hasMaintenanceChecks;
-    }
-
-    public void setMaxParallelForPanel(int parallel) {
-        this.maxParallel = parallel;
     }
 
     @Nonnull

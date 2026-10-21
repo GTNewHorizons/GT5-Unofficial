@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.hatch;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.drawable.GuiTextures;
@@ -80,7 +81,7 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
                 .tooltip(t -> {
                     t.addLine(StatCollector.translateToLocal("GT5U.hatch.outputme.refresh_time"));
                     t.addLine(
-                        StatCollector.translateToLocalFormatted(
+                        EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                             "GT5U.hatch.outputme.refresh_time.tooltip",
                             MTEHatchOutputMEBase.MIN_REFRESH_TIME / MTEHatchOutputMEBase.TICKS_PER_SECOND));
                 })

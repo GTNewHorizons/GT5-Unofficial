@@ -16,8 +16,6 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -27,7 +25,6 @@ import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 import gregtech.GTMod;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
@@ -75,8 +72,12 @@ public class MultiblockTooltipBuilder {
     private final String TT_Steam_StaticSteamEff = StatCollector.translateToLocal("GT5U.MBTT.SteamDiscount.Base");
 
     private final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
+    private final String TT_length = StatCollector.translateToLocal("GT5U.MBTT.Dimensions.Length");
+    private final String TT_width = StatCollector.translateToLocal("GT5U.MBTT.Dimensions.Width");
+    private final String TT_height = StatCollector.translateToLocal("GT5U.MBTT.Dimensions.Height");
     private final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
     private final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
+    private final String TT_tier = StatCollector.translateToLocal("GT5U.MBTT.Tier");
     private final String TT_controller = StatCollector.translateToLocal("GT5U.MBTT.Controller");
     private final String TT_minimum = StatCollector.translateToLocal("GT5U.MBTT.Minimum");
     private final String TT_tiered = StatCollector.translateToLocal("GT5U.MBTT.Tiered");
@@ -99,21 +100,19 @@ public class MultiblockTooltipBuilder {
     private final String TT_hold = StatCollector.translateToLocal("GT5U.MBTT.Hold");
     private final String TT_todisplay = StatCollector.translateToLocal("GT5U.MBTT.Display");
     private final String TT_structurehint = StatCollector.translateToLocal("GT5U.MBTT.StructureHint");
-    private final String TT_addedBy = StatCollector.translateToLocal("GT5U.MBTT.Mod");
     private final String TT_air = StatCollector.translateToLocal("GT5U.MBTT.Air");
     private final String TT_projector = StatCollector.translateToLocal("GT5U.MBTT.Structure.Projector");
     private final String TT_PerfectOC = StatCollector.translateToLocal("GT5U.MBTT.PerfectOC");
     private final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
-    private final String TT_StructureAuthor = StatCollector.translateToLocal("GT5U.MBTT.StructureBy");
 
     private List<String> iLines;
     private List<String> sLines;
     private List<String> hLines;
-    private List<String> authors;
-    private List<String> structureAuthors;
     private SetMultimap<Integer, String> hBlocks;
+
+    private int tierNoteIndex = -1;
 
     private String[] iArray;
     private String[] sArray;
@@ -123,8 +122,6 @@ public class MultiblockTooltipBuilder {
         iLines = new LinkedList<>();
         sLines = new LinkedList<>();
         hLines = new LinkedList<>();
-        authors = new LinkedList<>();
-        structureAuthors = new LinkedList<>();
         hBlocks = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
         hBlocks.put(StructureLibAPI.HINT_BLOCK_META_AIR, TT_air);
     }
@@ -429,18 +426,19 @@ public class MultiblockTooltipBuilder {
                 + EnumChatFormatting.GRAY
                 + " ("
                 + EnumChatFormatting.GOLD
-                + "L"
+                + TT_length
                 + EnumChatFormatting.GRAY
                 + "x"
                 + EnumChatFormatting.GOLD
-                + "W"
+                + TT_width
                 + EnumChatFormatting.GRAY
                 + "x"
                 + EnumChatFormatting.GOLD
-                + "H"
+                + TT_height
                 + EnumChatFormatting.GRAY
                 + ") "
                 + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
+        tierNoteIndex = sLines.size();
         sLines.add(EnumChatFormatting.WHITE + TT_structure + COLON);
         return this;
     }
@@ -479,15 +477,15 @@ public class MultiblockTooltipBuilder {
                 + EnumChatFormatting.GRAY
                 + " ("
                 + EnumChatFormatting.GOLD
-                + "L"
+                + TT_length
                 + EnumChatFormatting.GRAY
                 + "x"
                 + EnumChatFormatting.GOLD
-                + "W"
+                + TT_width
                 + EnumChatFormatting.GRAY
                 + "x"
                 + EnumChatFormatting.GOLD
-                + "H"
+                + TT_height
                 + EnumChatFormatting.GRAY
                 + ") "
                 + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
@@ -1254,21 +1252,6 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * t-tier Glass required for Laser Hatches
-     *
-     * @param t Tier of glass that unlocks all energy hatches
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addMinGlassForLaser(int t) {
-        iLines.add(
-            GTValues.TIER_COLORS[t] + GTValues.VN[t]
-                + EnumChatFormatting.GRAY
-                + StatCollector.translateToLocal("GT5U.MBTT.Structure.MinGlassForLaser"));
-        return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
      * Energy Hatch limited by Glass tier
      *
      * @return Instance this method was called on.
@@ -1311,6 +1294,18 @@ public class MultiblockTooltipBuilder {
      * Add a line of information about the structure:<br>
      * This machine can run recipes regardless of tier, if given enough energy
      *
+     * @param skips The number of tier skips it can run
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMaxTierSkips(int skips) {
+        iLines.add(StatCollector.translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", skips));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * This machine can run recipes regardless of tier, if given enough energy
+     *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addUnlimitedTierSkips() {
@@ -1320,14 +1315,26 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * This machine can run recipes at most n tiers above the average energy hatch tier
+     * Energy Hatch limited by Glass Tier
      *
-     * @param n The max number of tier skips allowed
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addMaxTierSkips(int n) {
-        iLines.add(translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", n));
-        return this;
+    public MultiblockTooltipBuilder addEnergyHatchGlassTier() {
+        return addTierNote(StatCollector.translateToLocal("GT5U.MBTT.Structure.EnergyHatchGlassTier"));
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * t-tier Glass required for Laser Hatches
+     *
+     * @param t Tier of glass that unlocks all energy hatches
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMinGlassForLaser(int t) {
+        return addTierNote(
+            GTValues.TIER_COLORS[t] + GTValues.VN[t]
+                + EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("GT5U.MBTT.Structure.MinGlassForLaser"));
     }
 
     /**
@@ -1515,6 +1522,23 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Use this method to add a note about relevant tiering:<br>
+     * (indent)info
+     *
+     * @param info The line to be added
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addTierNote(String info) {
+        if (tierNoteIndex < 0) {
+            sLines.add(info);
+            return this;
+        }
+        sLines.add(tierNoteIndex, info);
+        tierNoteIndex++;
+        return this;
+    }
+
+    /**
      * Add a colored separator line with specified length to structure info<br>
      *
      * @return Instance this method was called on.
@@ -1621,71 +1645,21 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Adds the given list of authors to the contributor list's author list, to be displayed at the end of the tooltip.
+     * Completes the tooltip with structure display instructions.
+     */
+    public MultiblockTooltipBuilder toolTipFinisher() {
+        return toolTipFinisher(EnumChatFormatting.GRAY, 41);
+    }
+
+    /**
+     * Preserves binary compatibility with callers compiled before author credits were removed.
      *
-     * @param authors List of authors to add to tooltip
+     * @param ignoredAuthors Author names are no longer displayed.
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addAuthors(String... authors) {
-        Collections.addAll(this.authors, authors);
-        return this;
+    public MultiblockTooltipBuilder toolTipFinisher(String... ignoredAuthors) {
+        return toolTipFinisher();
     }
-
-    /**
-     * Adds the given list of structure authors to the contributor list's structure author list,
-     * to be displayed at the end of the tooltip.
-     *
-     * @param structureAuthors List of structure authors to add to tooltip
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addStructureAuthors(String... structureAuthors) {
-        Collections.addAll(this.structureAuthors, structureAuthors);
-        return this;
-    }
-
-    /**
-     * Call at the very end.<br>
-     * Adds a line jump.<br>
-     * Adds information on how to display the structure guidelines.<br>
-     * Adds credit for creators of this multi, if any.<br>
-     * <p>
-     * Ends the building process.
-     *
-     * @param authors Formatted names of the creators of this multiblock machine - if any
-     */
-    public MultiblockTooltipBuilder toolTipFinisher(@Nullable String... authors) {
-        return toolTipFinisher(EnumChatFormatting.GRAY, 41, authors);
-    }
-
-    /**
-     * Call at the very end.<br>
-     * Adds a line jump with configurable color and length.<br>
-     * Adds information on how to display the structure guidelines.<br>
-     * Adds credit for creators of this multi, if any.<br>
-     * <p>
-     * Ends the building process.
-     *
-     * @param separatorColor  Color of the separator line
-     * @param separatorLength Length of the separator line
-     * @param authors         Formatted names of the creators of this multiblock machine - if any
-     */
-    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
-        @Nullable String... authors) {
-        this.addAuthors(authors);
-        return toolTipFinisher(separatorColor, separatorLength);
-    }
-
-    /**
-     * Call at the very end.<br>
-     * Adds a line jump with configurable color and length.<br>
-     * Adds information on how to display the structure guidelines.<br>
-     * Adds credit for creators of this multi, if any.<br>
-     * <p>
-     * Ends the building process.
-     *
-     * @param separatorColor  Color of the separator line
-     * @param separatorLength Length of the separator line
-     */
 
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength) {
 
@@ -1707,13 +1681,6 @@ public class MultiblockTooltipBuilder {
                 + " "
                 + TT_todisplay);
 
-        if (!authors.isEmpty()) {
-            iLines.add(TT_addedBy + COLON + GTAuthors.formatAuthors(authors));
-        }
-        if (!structureAuthors.isEmpty()) {
-            iLines.add(TT_StructureAuthor + COLON + GTAuthors.formatAuthors(structureAuthors));
-        }
-
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
         sLines.add(TT_projector);
@@ -1732,8 +1699,6 @@ public class MultiblockTooltipBuilder {
         iLines = null;
         sLines = null;
         hLines = null;
-        authors = null;
-        structureAuthors = null;
         hBlocks = null;
         return this;
     }
