@@ -268,7 +268,7 @@ public class CircuitPartsItem extends Item {
         }
         if (isSliced(id)) {
             CircuitImprint imprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(id - CIRCUIT_SLICED_OFFSET);
-            if (imprint != null) {
+            if (imprint != null && imprint.circuit.hasBeenSet()) {
                 return StatCollector.translateToLocalFormatted(
                     "item.CircuitParts.Sliced.tagged.name",
                     imprint.circuit.get(1)
