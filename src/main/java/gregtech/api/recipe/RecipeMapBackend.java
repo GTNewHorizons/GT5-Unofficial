@@ -344,7 +344,7 @@ public class RecipeMapBackend {
     }
 
     private void addRecipeToLookup(GTRecipe recipe) {
-        GTRecipeLookupBuilder.addToLookup(recipeLookup, recipeLookupState, recipe);
+        GTRecipeLookupBuilder.queueForLookup(recipeLookupState, recipe);
     }
 
     /**
@@ -511,6 +511,7 @@ public class RecipeMapBackend {
             return Stream.empty();
         }
 
+        GTRecipeLookupBuilder.addQueuedToLookup(recipeLookup, recipeLookupState);
         Iterator<GTRecipe> iterator = recipeLookup.iterator(ingredients);
         return StreamSupport
             .stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.NONNULL | Spliterator.IMMUTABLE), false);
