@@ -28,7 +28,6 @@ import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
@@ -39,7 +38,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTUtility;
@@ -142,7 +141,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
-        tt.addMachineType("BEC Assembler, Observation Array")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_assembler"))
             .addMarkdown(
                 new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"),
                 ImmutableMap.of("max-nanites", NumberFormatUtil.formatNumber(MAX_NANITES)))
@@ -159,23 +159,12 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
             .addCasing("560", CondensateTransformativeCoil.getLocalizedName(), false)
             .addCasing("464", CondensateGuidanceCoil.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
-            .addMiscHatch(
-                "1+",
-                "Nanite Containment Bus",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"),
-                1)
-            .addMiscHatch(
-                "1+",
-                "Line-of-Sight Connector Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.los-hatch-pos"),
-                3)
-            .addMiscHatch(
-                "1-2",
-                "Bose-Einstein Condensate Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"),
-                2)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.NaniteContainmentBus"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
+            .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.los-hatch-pos"), 3)
+            .addMiscHatch("1-2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"), 2)
+            .toolTipFinisher();
         return tt;
+        // spotless:on
     }
 
     @Override
@@ -208,12 +197,24 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     }
 
     @Override
+    public boolean hasRunningText() {
+        return false;
+    }
+
+    // recipe doesn't actually do anything player-facing.
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
     protected @NotNull CheckRecipeResult checkProcessing_EM() {
         mMaxProgresstime = 20;
         mEfficiency = 10_000;
         useLongPower = true;
 
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        // 'Routing' makes more sense than 'Processing Recipe'
+        return SimpleCheckRecipeResult.ofSuccess("routing");
     }
 
     public List<MTEBECIONode> getIONodes() {

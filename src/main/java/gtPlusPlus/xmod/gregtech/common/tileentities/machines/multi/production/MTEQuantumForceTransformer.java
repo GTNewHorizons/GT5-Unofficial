@@ -47,7 +47,6 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -187,7 +186,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         tt.addMachineType("Quantum Force Transformer, QFT")
             .addInfo("Allows Complex processing lines to be performed instantly in one step")
             .addSeparator()
-            .addInfo(catalystText("Pulse Manipulator") + " Tier determines maximum recipe tier")
+            .addInfo(catalystText("Pulse Manipulator") + " Tier determines maximum Recipe Tier")
             .addInfo("Every recipe requires a specific " + catalystText("catalyst"))
             .addInfo(catalystText("Catalysts") + " have to be placed in a Bulk Catalyst Housing")
             .addInfo("Gains " + TooltipHelper.parallelText("1") + " Parallel per " + catalystText("Catalyst"))
@@ -220,7 +219,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.QFT_MANIPULATOR)
             .addSubChannel(GTStructureChannels.QFT_SHIELDING)
-            .toolTipFinisher(GTAuthors.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
+            .toolTipFinisher();
         return tt;
         //spotless:on
     }

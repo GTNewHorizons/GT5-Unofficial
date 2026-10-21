@@ -30,6 +30,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.gui.modularui.multiblock.TileEntityModulePumpGui;
@@ -472,7 +473,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk1"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk1"),
+                    ImmutableMap.of("voltageTier", GTUtility.getColoredTierNameForTooltip(MODULE_VOLTAGE_TIER)))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
@@ -560,7 +562,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk2"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk2"),
+                    ImmutableMap.of("voltageTier", GTUtility.getColoredTierNameForTooltip(MODULE_VOLTAGE_TIER)))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
@@ -648,7 +651,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk3"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-pumping-module-mk3"),
+                    ImmutableMap.of("voltageTier", GTUtility.getColoredTierNameForTooltip(MODULE_VOLTAGE_TIER)))
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)

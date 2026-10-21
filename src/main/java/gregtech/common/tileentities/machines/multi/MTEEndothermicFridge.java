@@ -33,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,6 +43,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -53,6 +55,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -78,8 +81,14 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndothermicFridge>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final float MAX_SPEED_BONUS = 1.5f;
+    private static final int WARMUP_SECONDS = 300;
+    private static final int CRYO_SPEEDUP = 5;
+    private static final int SUBSPACE_COOLING_TIER = 2;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int HORIZONTAL_OFFSET = 11;
@@ -93,25 +102,25 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             // spotless:off
             transpose(
                 new String[][]{
-                {"                       ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","         ECCCE         ","        CEFFFEC        ","       CCECCCECC       ","       CCECCCECC       ","       CCECCCECC       ","        CEFFFEC        ","         ECCCE         ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","                       ","                       ","                       ","          CCC          ","       CCECCCECC       ","      CCCECCCECCC      ","     CCCCFDDDFCCCC     ","     CCCFDDDDDFCCC     ","    CCCCDDDDDDDCCCC    ","     CCCFDDDDDFCCC     ","     CCCCFDDDFCCCC     ","      CCCECCCECCC      ","       CCECCCECC       ","          CCC          ","                       ","                       ","                       ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","                       ","                       ","                       ","       CCECCCECC       ","     CCCCGGGGGCCCC     ","    CCCGG     GGCCC    ","    CCG         GCC    ","   CCCG         GCCC   ","   CCDDD       DDDCC   ","   CCCG         GCCC   ","    CCG         GCC    ","    CCCGG     GGCCC    ","     CCCCGGGGGCCCC     ","       CCECCCECC       ","                       ","                       ","                       ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","                       ","                       ","          DDD          ","      CCCECCCECCC      ","     CC         CC     ","    C             C    ","   CC             CC   ","  FC               CF  ","  FCD             DCF  ","  FC               CF  ","   CC             CC   ","    C             C    ","     CC         CC     ","      CCCECCCECCC      ","          DDD          ","                       ","                       ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","                       ","                       ","        DEFFFED        ","      CCCEDDDECCC      ","    CC           CC    ","   CC             CC   ","  FC               CF  ","  EC               CE  ","  EDI             IDE  ","  EC               CE  ","  FC               CF  ","   CC             CC   ","    CC           CC    ","      CCCEDDDECCC      ","        DEFFFED        ","                       ","                       ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","                       ","                       ","       DDE   EDD       ","     CCCFDAAADFCCC     ","   CCC           CCC   ","  FC               CF  ","  EC               CE  ","   E               E   ","  GFI             IFG  ","   E               E   ","  EC               CE  ","  FC               CF  ","   CCC           CCC   ","     CCCFDAAADFCCC     ","       DDE   EDD       ","                       ","                       ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","                       ","                       ","       DFE   EFD       ","    CCCCDDAAADDCCCC    ","   CCDDD       DDDCC   ","  FCD             DCF  ","  EDI             IDE  ","  GFI             IFG  "," BBBB             BBBB ","  GFI             IFG  ","  EDI             IDE  ","  FCD             DCF  ","   CCDDDB     BDDDCC   ","    CCCCBDAAADBCCCC    ","       DBE   EBD       ","        B     B        ","        B     B        ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","                       ","                       ","       DDE   EDD       ","     CCCFDAAADFCCC     ","   CCC           CCC   ","  FC               CF  ","  EC               CE  ","   E               E   ","  GFI             IFG  ","   E               E   ","  EC               CE  ","  FC               CF  ","   CCC           CCC   ","     CCCFDAAADFCCC     ","       DDE   EDD       ","                       ","        B     B        ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","                       ","                       ","        DEFFFED        ","     GCCCEDDDECCCG     ","    CC           CC    ","   CC             CC   ","  FC               CF  ","  EC               CE  ","  EDI             IDE  ","  EC               CE  ","  FC               CF  ","   CC             CC   ","    CC           CC    ","     GCCCEDDDECCCG     ","        DEFFFED        ","        E     E        ","        B     B        ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","                       ","                       ","          DDD          ","     GCCCECCCECCCG     ","    GCC         CCG    ","    C             C    ","   CC             CC   ","  FC               CF  ","  FCD             DCF  ","  FC               CF  ","   CC             CC   ","    C             C    ","    GCC         CCG    ","     GCCCECCCECCCG     ","          DDD          ","                       ","        B     B        ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","                       ","           E           ","           E           ","     G CCECECECC G     ","    GCCCCGGGGGCCCCG    ","    CCCGG     GGCCC    ","    CCG         GCC    ","   CCCG         GCCC   ","   CCDDD   B   DDDCC   ","   CCCG         GCCC   ","    CCG         GCC    ","    CCCGG     GGCCC    ","    GCCCCGGGGGCCCCG    ","     G CCECCCECC G     ","                       ","                       ","        B     B        ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","          CCC          ","           E           ","                       ","     G    CCC    G     ","    GIGCCECCCECCGIG    ","     GCCCECCCECCCG     ","     CCCCFDDDFCCCC     ","     CCCFDEEEDFCCC     ","    CCCCDDEBEDDCCCC    ","     CCCFDEEEDFCCC     ","     CCCCFDDDFCCCC     ","     GCCCECCCECCCG     ","    GIGCCECCCECCGIG    ","     G    CCC    G     ","                       ","                       ","        B     B        ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","          C~C          ","          CEC          ","                       ","     G           G     ","    GI           IG    ","         ECCCE         ","        CEFFFEC        ","       CCEIIIECC       ","       CCEIBIECC       ","       CCEIIIECC       ","        CEFFFEC        ","         ECCCE         ","    GI           IG    ","     G           G     ","                       ","                       ","        B     B        ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","          CCC          ","          CEC          ","       E       E       ","     G   JJJJJ   G     ","    GI  G     G  IG    ","       G       G       ","      J  G   G  J      ","      J  G   G  J      ","      J  G B G  J      ","      J  G   G  J      ","      J  G   G  J      ","       G       G       ","    GI  G     G  IG    ","     G   JJJJJ   G     ","       E       E       ","                       ","        B     B        ","                       ","                       ","                       "},
-                {"                       ","                       ","                       ","          FJF          ","       FFJFJFJFF       ","      FEFFJJJFFEF      ","     GJFJJJJJJJFJG     ","    GIGJJJJJJJJJGIG    ","    FGJJJJJJJJJJJGF    ","    JFJJJJJJJJJJJFJ    ","   FFJJJJJJJJJJJJJFF   ","   JJJJJJJJBJJJJJJJJ   ","   FFJJJJJJBJJJJJJFF   ","    JFJJJJJBJJJJJFJ    ","    FGJJJJJBJJJJJGF    ","    GIGJJJJBJJJJGIG    ","     GJFJJJBJJJFJG     ","      FEEFJBJFEEF      ","       FEJFBFJEF       ","        BBBBBBB        ","          FFF          ","                       ","                       "},
-                {"          HHH          ","       HHHCCCHHH       ","     HHCCCCCCCCCHH     ","    HCCCCCHJHCCCCCH    ","   HCCCHHHHCHHHHCCCH   ","  HCCCHHHHCCCHHHHCCCH  ","  HCCHJHCHJCJHCHJHCCH  "," HCCHHHJJCJCJCJJHHHCCH "," HCCHHCJJJCCCJJJCHHCCH "," HCCHHHCJCJCJCJCHHHCCH ","HCCHHCJJCJCCCJCJJCHHCCH","HCCJCCCCCCCCCCCCCCCJCCH","HCCHHCJJCJCCCJCJJCHHCCH"," HCCHHHCJCJCJCJCHHHCCH "," HCCHHCJJJCCCJJJCHHCCH "," HCCHHHJJCJCJCJJHHHCCH ","  HCCHJHCHJCJHCHJHCCH  ","  HCCCHHHHCCCHHHHCCCH  ","   HCCCHHHHCHHHHCCCH   ","    HCCCCCHJHCCCCCH    ","     HHCCCCCCCCCHH     ","       HHHCCCHHH       ","          HHH          "}
-            }
-        ))
-    //spotless:on
+                    {"                       ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","         ECCCE         ","        CEFFFEC        ","       CCECCCECC       ","       CCECCCECC       ","       CCECCCECC       ","        CEFFFEC        ","         ECCCE         ","                       ","                       ","                       ","                       ","                       ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","                       ","                       ","                       ","          CCC          ","       CCECCCECC       ","      CCCECCCECCC      ","     CCCCFDDDFCCCC     ","     CCCFDDDDDFCCC     ","    CCCCDDDDDDDCCCC    ","     CCCFDDDDDFCCC     ","     CCCCFDDDFCCCC     ","      CCCECCCECCC      ","       CCECCCECC       ","          CCC          ","                       ","                       ","                       ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","                       ","                       ","                       ","       CCECCCECC       ","     CCCCGGGGGCCCC     ","    CCCGG     GGCCC    ","    CCG         GCC    ","   CCCG         GCCC   ","   CCDDD       DDDCC   ","   CCCG         GCCC   ","    CCG         GCC    ","    CCCGG     GGCCC    ","     CCCCGGGGGCCCC     ","       CCECCCECC       ","                       ","                       ","                       ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","                       ","                       ","          DDD          ","      CCCECCCECCC      ","     CC         CC     ","    C             C    ","   CC             CC   ","  FC               CF  ","  FCD             DCF  ","  FC               CF  ","   CC             CC   ","    C             C    ","     CC         CC     ","      CCCECCCECCC      ","          DDD          ","                       ","                       ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","                       ","                       ","        DEFFFED        ","      CCCEDDDECCC      ","    CC           CC    ","   CC             CC   ","  FC               CF  ","  EC               CE  ","  EDI             IDE  ","  EC               CE  ","  FC               CF  ","   CC             CC   ","    CC           CC    ","      CCCEDDDECCC      ","        DEFFFED        ","                       ","                       ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","                       ","                       ","       DDE   EDD       ","     CCCFDAAADFCCC     ","   CCC           CCC   ","  FC               CF  ","  EC               CE  ","   E               E   ","  GFI             IFG  ","   E               E   ","  EC               CE  ","  FC               CF  ","   CCC           CCC   ","     CCCFDAAADFCCC     ","       DDE   EDD       ","                       ","                       ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","                       ","                       ","       DFE   EFD       ","    CCCCDDAAADDCCCC    ","   CCDDD       DDDCC   ","  FCD             DCF  ","  EDI             IDE  ","  GFI             IFG  "," BBBB             BBBB ","  GFI             IFG  ","  EDI             IDE  ","  FCD             DCF  ","   CCDDDB     BDDDCC   ","    CCCCBDAAADBCCCC    ","       DBE   EBD       ","        B     B        ","        B     B        ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","                       ","                       ","       DDE   EDD       ","     CCCFDAAADFCCC     ","   CCC           CCC   ","  FC               CF  ","  EC               CE  ","   E               E   ","  GFI             IFG  ","   E               E   ","  EC               CE  ","  FC               CF  ","   CCC           CCC   ","     CCCFDAAADFCCC     ","       DDE   EDD       ","                       ","        B     B        ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","                       ","                       ","        DEFFFED        ","     GCCCEDDDECCCG     ","    CC           CC    ","   CC             CC   ","  FC               CF  ","  EC               CE  ","  EDI             IDE  ","  EC               CE  ","  FC               CF  ","   CC             CC   ","    CC           CC    ","     GCCCEDDDECCCG     ","        DEFFFED        ","        E     E        ","        B     B        ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","                       ","                       ","          DDD          ","     GCCCECCCECCCG     ","    GCC         CCG    ","    C             C    ","   CC             CC   ","  FC               CF  ","  FCD             DCF  ","  FC               CF  ","   CC             CC   ","    C             C    ","    GCC         CCG    ","     GCCCECCCECCCG     ","          DDD          ","                       ","        B     B        ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","                       ","           E           ","           E           ","     G CCECECECC G     ","    GCCCCGGGGGCCCCG    ","    CCCGG     GGCCC    ","    CCG         GCC    ","   CCCG         GCCC   ","   CCDDD   B   DDDCC   ","   CCCG         GCCC   ","    CCG         GCC    ","    CCCGG     GGCCC    ","    GCCCCGGGGGCCCCG    ","     G CCECCCECC G     ","                       ","                       ","        B     B        ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","          CCC          ","           E           ","                       ","     G    CCC    G     ","    GIGCCECCCECCGIG    ","     GCCCECCCECCCG     ","     CCCCFDDDFCCCC     ","     CCCFDEEEDFCCC     ","    CCCCDDEBEDDCCCC    ","     CCCFDEEEDFCCC     ","     CCCCFDDDFCCCC     ","     GCCCECCCECCCG     ","    GIGCCECCCECCGIG    ","     G    CCC    G     ","                       ","                       ","        B     B        ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","          C~C          ","          CEC          ","                       ","     G           G     ","    GI           IG    ","         ECCCE         ","        CEFFFEC        ","       CCEIIIECC       ","       CCEIBIECC       ","       CCEIIIECC       ","        CEFFFEC        ","         ECCCE         ","    GI           IG    ","     G           G     ","                       ","                       ","        B     B        ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","          CCC          ","          CEC          ","       E       E       ","     G   JJJJJ   G     ","    GI  G     G  IG    ","       G       G       ","      J  G   G  J      ","      J  G   G  J      ","      J  G B G  J      ","      J  G   G  J      ","      J  G   G  J      ","       G       G       ","    GI  G     G  IG    ","     G   JJJJJ   G     ","       E       E       ","                       ","        B     B        ","                       ","                       ","                       "},
+                    {"                       ","                       ","                       ","          FJF          ","       FFJFJFJFF       ","      FEFFJJJFFEF      ","     GJFJJJJJJJFJG     ","    GIGJJJJJJJJJGIG    ","    FGJJJJJJJJJJJGF    ","    JFJJJJJJJJJJJFJ    ","   FFJJJJJJJJJJJJJFF   ","   JJJJJJJJBJJJJJJJJ   ","   FFJJJJJJBJJJJJJFF   ","    JFJJJJJBJJJJJFJ    ","    FGJJJJJBJJJJJGF    ","    GIGJJJJBJJJJGIG    ","     GJFJJJBJJJFJG     ","      FEEFJBJFEEF      ","       FEJFBFJEF       ","        BBBBBBB        ","          FFF          ","                       ","                       "},
+                    {"          HHH          ","       HHHCCCHHH       ","     HHCCCCCCCCCHH     ","    HCCCCCHJHCCCCCH    ","   HCCCHHHHCHHHHCCCH   ","  HCCCHHHHCCCHHHHCCCH  ","  HCCHJHCHJCJHCHJHCCH  "," HCCHHHJJCJCJCJJHHHCCH "," HCCHHCJJJCCCJJJCHHCCH "," HCCHHHCJCJCJCJCHHHCCH ","HCCHHCJJCJCCCJCJJCHHCCH","HCCJCCCCCCCCCCCCCCCJCCH","HCCHHCJJCJCCCJCJJCHHCCH"," HCCHHHCJCJCJCJCHHHCCH "," HCCHHCJJJCCCJJJCHHCCH "," HCCHHHJJCJCJCJJHHHCCH ","  HCCHJHCHJCJHCHJHCCH  ","  HCCCHHHHCCCHHHHCCCH  ","   HCCCHHHHCHHHHCCCH   ","    HCCCCCHJHCCCCCH    ","     HHCCCCCCCCCHH     ","       HHHCCCHHH       ","          HHH          "}
+                }
+            ))
+        //spotless:on
         .addElement('A', chainAllGlasses())
         .addElement('B', Casings.CoolantDuct.asElement())
         .addElement(
@@ -163,104 +172,52 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Vacuum Freezer, EnF, MVF")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.vacuum_freezer"))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addSeparator()
-            .addInfo(
-                "While active, the machine will cool down and increase its speed bonus up to "
-                    + EnumChatFormatting.GREEN
-                    + "1.5x")
-            .addInfo(
-                "Takes " + EnumChatFormatting.LIGHT_PURPLE
-                    + "5 minutes"
-                    + EnumChatFormatting.GRAY
-                    + " of constant running to reach maximum bonus")
-            .addInfo("While not running, the machine will return to normal temperatures")
-            .addInfo(
-                "Optionally supply " + EnumChatFormatting.DARK_AQUA
-                    + formatFluid(CRYOTHEUM_DRAIN_BASE)
-                    + EnumChatFormatting.GRAY
-                    + "/s of "
-                    + EnumChatFormatting.AQUA
-                    + "Cryotheum"
-                    + EnumChatFormatting.GRAY
-                    + " to speed up cooling by "
-                    + EnumChatFormatting.BLUE
-                    + "5x")
-            .addInfo(
-                "The drain rate of " + EnumChatFormatting.AQUA
-                    + "Cryotheum"
-                    + EnumChatFormatting.GRAY
-                    + " will increase "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "linearly"
-                    + EnumChatFormatting.GRAY
-                    + " with the speed modifier")
-            .addSeparator()
-            .addInfo(
-                "Upgrade to " + EnumChatFormatting.LIGHT_PURPLE
-                    + "Tier 2"
-                    + EnumChatFormatting.GRAY
-                    + " to unlock "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Subspace Cooling")
-            .addInfo(
-                "Will apply " + EnumChatFormatting.GREEN
-                    + "perfect overclocks "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.GOLD
-                    + "consuming "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "exotic coolants:")
-            .addInfo(getCoolantTextFormatted("Molten Infinity", 1))
-            .addInfo(getCoolantTextFormatted("Molten Spacetime", 2))
-            .addInfo(getCoolantTextFormatted("Molten Eternity", 3))
-            .addSeparator()
+            .addMarkdown(
+                new ResourceLocation("gregtech", "endothermic-fridge"),
+                ImmutableMap.<String, Object>builder()
+                    .put("max_speed", formatNumber(MAX_SPEED_BONUS))
+                    .put("warmup_minutes", WARMUP_SECONDS / 60)
+                    .put("cryo_speedup", CRYO_SPEEDUP)
+                    .put("subspace_tier", SUBSPACE_COOLING_TIER)
+                    .put("booster_drain", formatNumber(BOOSTER_DRAIN))
+                    .put("min_cryo", formatNumber(CRYOTHEUM_DRAIN_BASE))
+                    .put("max_cryo", formatNumber(CRYOTHEUM_DRAIN_BASE * MAX_SPEED_BONUS))
+                    .build())
             .addSupportAny()
             .addUnlimitedTierSkips()
             .addSeparator()
-            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.AQUA + "... without the other!")
+            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.mbtt.flavor.endothermic_fridge"))
             .beginStructureBlock(23, 16, 23, true)
-            .addController("Front center, 4th layer")
-            .addCasing("750-773", "Fridge Casing", false)
-            .addCasing("148", "Tungstensteel Reinforced Block", false)
-            .addCasing("148", "Tungstensteel Pipe Casing", false)
-            .addCasing("146", "Callisto Ice Frame Box", false)
-            .addCasing("135", "Robust Tungstensteel Machine Casing", false)
-            .addCasing("51", "Coolant Duct", false)
-            .addCasing("40", "Ledox Sheetmetal", false)
-            .addCasing("18", "Any Tiered Glass", false)
-            .addEnergyHatch("1+", "Any fridge casing", 1)
-            .addMaintenanceHatch("1", "Any fridge casing", 1)
-            .addInputAny("1+", "Any fridge casing", 1)
-            .addOutputAny("1+", "Any fridge casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("750-773", Casings.FridgeCasing.getLocalizedName(), false)
+            .addCasing("148", Casings.TungstenSteelReinforcedBlock.getLocalizedName(), false)
+            .addCasing("148", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
+            .addCasing("146", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.CallistoIce), false)
+            .addCasing("135", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("51", Casings.CoolantDuct.getLocalizedName(), false)
+            .addCasing("40", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Ledox), false)
+            .addCasing("18", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_fridge_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_fridge_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_fridge_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_fridge_casing"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addCasing("351", "Frost Proof Machine Casing", false)
+            .addCasing("351", Casings.FrostProofMachineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
-            .addCasing("208", "Infinity Cooled Casing", false)
-            .addCasing("143", "Frost Proof Machine Casing", false)
+            .addCasing("208", Casings.InfinityCooledCasing.getLocalizedName(), false)
+            .addCasing("143", Casings.FrostProofMachineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors("Pix3lated")
             .toolTipFinisher();
+        // spotless:on
         return tt;
-    }
-
-    private String getCoolantTextFormatted(String fluidType, int speedBoost) {
-        return String.format(
-            "%s%s/s%s : %s%d %s: %s%s",
-            EnumChatFormatting.GOLD,
-            formatFluid(BOOSTER_DRAIN),
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.GREEN,
-            speedBoost,
-            EnumChatFormatting.GRAY,
-            EnumChatFormatting.LIGHT_PURPLE,
-            fluidType);
     }
 
     @Override
