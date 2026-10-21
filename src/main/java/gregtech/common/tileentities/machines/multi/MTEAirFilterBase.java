@@ -203,12 +203,12 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addMarkdown(
                 new ResourceLocation("gregtech", "air-filter"),
                 ImmutableMap.<String, Object>builder()
-                    .put("chunk_size", 2 * multiTier + 1)
+                    .put("chunk_size", formatNumber(2 * multiTier + 1))
                     .put("global_multiplier", formatNumber(GLOBAL_MULTIPLIER))
                     .put("scaling_factor", formatNumber(SCALING_FACTOR))
                     .put("tier_bonus", formatNumber(getBonusByTier()))
                     .put("eu_usage", formatNumber(getEUt()))
-                    .put("filter_lifespan", USES_PER_FILTER * PROGRESS_TIME / 20)
+                    .put("filter_lifespan", formatNumber(USES_PER_FILTER * PROGRESS_TIME / 20))
                     .put("boost_per_filter", formatNumber(BOOST_PER_FILTER))
                     .put("maint_penalty", formatNumber(MAINTENANCE_PENALTY_PERCENT))
                     .build())
