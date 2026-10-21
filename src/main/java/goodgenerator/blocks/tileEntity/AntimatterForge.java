@@ -703,9 +703,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     /**
-     * @param createOrDestroy true for creating, false for destroying
+     * @param create true for creating, false for destroying
      */
-    public void updateAntimatterRender(boolean createOrDestroy) {
+    public void updateAntimatterRender(boolean create) {
         IGregTechTileEntity gregTechTileEntity = getBaseMetaTileEntity();
         if (gregTechTileEntity == null) return;
 
@@ -716,17 +716,14 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         final int y = getTargetY(gregTechTileEntity);
         final int z = getTargetZ(gregTechTileEntity);
 
-        Block opposite = createOrDestroy ? Blocks.air : Loaders.antimatterRenderBlock;
-        Block target = createOrDestroy ? Loaders.antimatterRenderBlock : Blocks.air;
-
-        if (createOrDestroy) {
+        if (create) {
             if (world.isAirBlock(x, y, z)) {
-                world.setBlock(x, y, z, target);
+                world.setBlock(x, y, z, Loaders.antimatterRenderBlock);
             }
         } else {
             if (world.getBlock(x, y, z)
-                .equals(opposite)) {
-                world.setBlock(x, y, z, target);
+                .equals(Loaders.antimatterRenderBlock)) {
+                world.setBlock(x, y, z, Blocks.air);
             }
         }
 

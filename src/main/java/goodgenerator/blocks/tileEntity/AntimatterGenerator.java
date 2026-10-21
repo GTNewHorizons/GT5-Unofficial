@@ -203,9 +203,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             addEUToGlobalEnergyMap(owner_uuid, generatedEU);
         } else {
             this.euLastCycle = generatedEU;
-            float euPerHatch = generatedEU / (float) mExoticDynamoHatches.size();
+            long euPerHatch = generatedEU / mExoticDynamoHatches.size();
             for (MTEHatch tHatch : getExoticDynamoHatches()) {
-                tHatch.setEUVar(tHatch.getEUVar() + (long) (euPerHatch));
+                tHatch.setEUVar(tHatch.getEUVar() + euPerHatch);
             }
         }
     }
