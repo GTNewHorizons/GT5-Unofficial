@@ -259,7 +259,7 @@ public class CircuitPartsItem extends Item {
         final int id = stack.getItemDamage();
         if (isImprint(id)) {
             CircuitImprint imprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(id);
-            if (imprint != null) {
+            if (imprint != null && imprint.circuit.hasBeenSet()) {
                 return StatCollector.translateToLocalFormatted(
                     "item.CircuitParts.Imprint.tagged.name",
                     imprint.circuit.get(1)
