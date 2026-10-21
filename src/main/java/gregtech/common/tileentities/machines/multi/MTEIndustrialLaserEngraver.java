@@ -232,7 +232,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 ImmutableMap.<String, Object>builder()
                     .put("speed", 350)
                     .put("eu_eff", 80)
-                    .put("tier", GTUtility.getColoredTierNameForTooltip(GLASS_TIER_FOR_LAZER))
+                    .put("tier", GLASS_TIER_FOR_LAZER)
                     .build())
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front bottom center")
