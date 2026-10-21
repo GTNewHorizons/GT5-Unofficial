@@ -769,7 +769,7 @@ public class MarkdownTooltipLoader {
 
             // check if the arg is the correct type
             Object unparsed = vars.get(arg);
-            if (!(unparsed instanceof Integer tierIndex)) {
+            if (!(unparsed instanceof Integer voltageIndex)) {
                 lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
                     .append(EnumChatFormatting.RED)
                     .append("[TIER NAME ERROR MISSING VAR: ")
@@ -780,7 +780,7 @@ public class MarkdownTooltipLoader {
             }
 
             // check if it's a valid value
-            if (tierIndex < 0 || tierIndex >= GTValues.VN.length) {
+            if (voltageIndex < 0 || voltageIndex >= GTValues.VN.length) {
                 lineOutput.append(GTUtility.FORMAT_PUSH_STACK)
                     .append(EnumChatFormatting.RED)
                     .append("[TIER FORMAT ERROR: value is not a tier]")
@@ -789,7 +789,7 @@ public class MarkdownTooltipLoader {
             }
 
             // else just append the code
-            lineOutput.append(GTUtility.getColoredTierNameForTooltip(tierIndex));
+            lineOutput.append(GTUtility.wrapFormatting(GTValues.TIER_COLORS[voltageIndex], GTValues.VN[voltageIndex]));
         }
     }
 

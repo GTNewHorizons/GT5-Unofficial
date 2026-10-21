@@ -3,7 +3,7 @@
 {color_efficiency:{var:eu_eff}%} {EU} Usage
 {hr}
 Recipes and overclocks limited to {color_amount:(Laser Source Tier + 1)}
-A {var:tier}+ Laser Source allows for a single {color_hatch:Multi-Amp Energy Hatch}
+A {tier-color:glass_tier_for_laser:{VN:glass_tier_for_laser}+} Laser Source allows for a single {color_hatch:Multi-Amp Energy Hatch}
 {hr}
 {color_name:Glass} tier determines maximum Laser Source Tier
 Use {color_name:Wire Cutters} on the controller to straighten the laser
