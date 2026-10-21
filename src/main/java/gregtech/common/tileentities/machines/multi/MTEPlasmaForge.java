@@ -936,9 +936,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (running_time < 576000) {
-                running_time = 576000;
-            }
             if (mMaxProgresstime == 0) {
                 running_time = Math.max(0, running_time - (long) efficiency_decay_rate);
             }
