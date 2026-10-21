@@ -3841,9 +3841,8 @@ GT5U.gui.text.wormhole_generator.status.no_destination=§7Статус Черв�
 GT5U.gui.text.wormhole_generator.status.decaying=§7Статус Червоточины: §6Распад§f
 GT5U.gui.text.wormhole_generator.status.active=§7Статус Червоточины: §bАктивен§f
 GT5U.gui.text.wormhole_generator.status.inactive=§7Статус Червоточины: Неактивен§f
-GT5U.gui.text.wormhole_generator.diameter=§7Диаметр червоточины: §b%,d§7 Å§f
-GT5U.gui.text.wormhole_generator.max_io=§7Макс. ввод/вывод на шлюз: §b%,d§7 EU/t§f
-GT5U.gui.text.wormhole_generator.max_io.large=§7Макс. ввод/вывод на шлюз: §b%3.3e§7 EU/t§f
+GT5U.gui.text.wormhole_generator.diameter=§7Диаметр червоточины: §b%s§7 Å§f
+GT5U.gui.text.wormhole_generator.max_io=§7Макс. ввод/вывод на шлюз:\n§b%s§7 EU/t§f
 
 GT5U.gui.text.status.active=Активен
 GT5U.gui.text.status.online=В сети
@@ -8051,10 +8050,10 @@ GT5U.infodata.wormhole_generator.status.active=Статус Червоточин
 GT5U.infodata.wormhole_generator.status.decaying=Статус Червоточины: §6Распад§f
 GT5U.infodata.wormhole_generator.status.inactive=Статус Червоточины: §7Неактивен§f
 GT5U.infodata.wormhole_generator.status.no_energy=Статус Червоточины: §7Отсутствет энергия во энерговводах§f
-GT5U.infodata.wormhole_generator.diameter=Диаметр червоточины: §b%,d§r ангстрем
-GT5U.infodata.wormhole_generator.optimal_transfer_speed=Оптимальная скорость передачи: §b%,.0f§r EU/t
-GT5U.infodata.wormhole_generator.transferred=Шлюз %s (%,dA/t %s) передал §b%,d§f EU (эквивалент %,dA/t) с эффективностью %.3f%% за последние %d секунд
-GT5U.infodata.wormhole_generator.received=Шлюз %s (%,dA/t %s) принял §b%,d§f EU (эквивалент %,dA/t) с эффективностью %.3f%% за последние %d секунд
+GT5U.infodata.wormhole_generator.diameter=Диаметр червоточины: §b%s§r ангстрем
+GT5U.infodata.wormhole_generator.optimal_transfer_speed=Оптимальная скорость передачи: §b%s§r EU/t
+GT5U.infodata.wormhole_generator.transferred=Шлюз %s (%sA/t %s) передал §b%s§f EU (эквивалент %sA/t) с эффективностью %s%% за последние %s секунд
+GT5U.infodata.wormhole_generator.received=Шлюз %s (%sA/t %s) принял §b%s§f EU (эквивалент %sA/t) с эффективностью %s%% за последние %s секунд
 GT5U.infodata.wormhole_generator.not_present=Шлюз %s отсутствует
 
 GT5U.infodata.wormhole_generator.hatch.top=Сверху
