@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static goodgenerator.main.GGConfigLoader.*;
@@ -366,7 +365,6 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-naquadah-reactor"),
                 ImmutableMap.<String, Object>builder()
-                    .put("fluid_unit", getFluidUnit())
                     .put("liquid_air", formatNumber(LiquidAirConsumptionPerSecond))
                     .put("coolant_ic2", formatNumber(CoolantEfficiency[3]))
                     .put("coolant_super", formatNumber(CoolantEfficiency[2]))
@@ -392,7 +390,6 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
             .addMaintenanceHatch("1", "Any reactor casing", 1)
             .addInputHatch("1+", "Any reactor casing", 1)
             .addOutputHatch("1+", "Any reactor casing", 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         // spotless:on
         return tt;

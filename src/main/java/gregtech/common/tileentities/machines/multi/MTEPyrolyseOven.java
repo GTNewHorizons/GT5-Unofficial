@@ -20,7 +20,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -120,7 +119,6 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
             .addOutputAny("1+", "Any bottom casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Ya9yu")
             .toolTipFinisher();
         return tt;
     }
