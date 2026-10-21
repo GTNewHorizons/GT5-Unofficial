@@ -2138,6 +2138,13 @@ gt.mbtt.structure.containment_block=Блок удержания взрыва
 gt.mbtt.structure.heat_resistant_proof_coke_oven_casing=Жаростойкий/жаропрочный корпус коксовой печи
 gt.mbtt.structure.input_or_solidifier_hatch=Входной шлюз/шлюз отвердителя
 gt.mbtt.structure.input_or_chisel_bus=Входной люк/люк стамески
+gt.mbtt.structure.any_machine_or_firebox_casing=Любой блок корпуса или корпус камеры сгорания
+gt.mbtt.structure.large_boiler_fuel=Использует твёрдое топливо, жидкое или оба сразу
+gt.mbtt.structure.large_boiler_water=Использует обычную или дистиллированную воду
+gt.mbtt.structure.any_middle_casing=Любой блок корпуса в середине
+gt.mbtt.structure.any_side_casing=Любой блок корпуса сбоку
+gt.mbtt.structure.heat_exchanger_input_hatch=Нижний центральный корпус (горячая жидкость), любой корпус (дистиллированная вода)
+gt.mbtt.structure.heat_exchanger_output_hatch=Верхний центральный корпус (охлаждённая жидкость), любой корпус (пар)
 gt.mbtt.machine_type.restorer=Восстановитель
 gt.mbtt.machine_type.fusion_reactor=Термоядерный реактор
 gt.mbtt.machine_type.antimatter_forge=Кузница антиматерии, SSASS
@@ -2205,6 +2212,9 @@ gt.mbtt.machine_type.industrial_coke_oven=Коксовая печь, ICO
 gt.mbtt.machine_type.cutting_machine=Режущий станок, ICF
 gt.mbtt.machine_type.electromagnetic_separator=Электромагнитный сепаратор/Поляризатор, MFE
 gt.mbtt.machine_type.fish_trap=Рыбная ловушка, ZFP
+gt.mbtt.machine_type.boiler=Бойлер
+gt.mbtt.machine_type.heat_exchanger=Теплообменник
+gt.mbtt.machine_type.large_heat_exchanger=Теплообменник, LHE
 gt.mbtt.flavor.endothermic_fridge=... без другого!
 
 # BartWorks multiblock structure text
@@ -2280,17 +2290,6 @@ gt.multiblock.ThermalBoiler.desc1=Использует тепло §cгоряч�
 gt.multiblock.ThermalBoiler.desc2=Фильтрует сырье из §cлавы§7 и §cбазальтовой лавы
 gt.multiblock.ThermalBoiler.desc3=Для получения побочной продукции поместите требуется Лавовый фильтр в слот контроллере
 gt.multiblock.ThermalBoiler.desc4=Взрывается через 10с, если в нём заканчивается вода
-
-gt.multiblock.HeatExchanger.desc1=Вводите §cлаву§7, §cгорячий хладагент§7, или §cраскалённую солнечную соль§7
-gt.multiblock.HeatExchanger.desc2=Выдаёт§9 базальтовую лаву§7,§9 IC2 хладагент§7, или§9 охлаждённую солнечную соль§7
-gt.multiblock.HeatExchanger.desc3=Преобразует дистиллированную воду в §fпар/ПГ пар§7 в процессе
-gt.multiblock.HeatExchanger.desc4=Выдаёт §fПГ пар§7, если входной поток равен или превышает §dпороговое§7 значение:
-gt.multiblock.HeatExchanger.desc5=Взрывается через 100с, если в нём заканчивается Дистиллированная вода
-gt.multiblock.HeatExchanger.lava=§cЛава§7 | порог ПГ §d1,000 %s/с§7 | макс. ввод §c2,000 %s/с§7 | макс. выход §f8,000 %s/t ПГ пара
-gt.multiblock.HeatExchanger.hotcoolant=§cГорячий хладагент§7 | порог ПГ §d800 %s/с§7 | макс. ввод §c1,600 %s/с§7 | макс. выход §f16,000 %s/t ПГ пара
-gt.multiblock.HeatExchanger.hotsolarsalt=§cРаскалённая солнечная соль§7 | порог ПГ §d160 %s/с§7 | макс. ввод §c320 %s/с§7 | макс. выход §f16,000 %s/t ПГ пара
-gt.multiblock.HeatExchanger.throttle1=Схема в контроллере снижает порог и эффективность ПГ пара
-gt.multiblock.HeatExchanger.throttle2=§d-3.75%§7 снижения и §f-1.5%§7 потери эффективности на конфигурацию схемы более 1
 
 gt.multiblock.AdvHeatExchanger.desc1=Эквивалентно 32 большым теплообменникам
 gt.multiblock.AdvHeatExchanger.desc2=Вводите §cлаву§7, §cгорячий хладагент§7, или §cраскалённую солнечную соль§7
