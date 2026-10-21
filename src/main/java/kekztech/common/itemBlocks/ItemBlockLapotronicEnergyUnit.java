@@ -35,6 +35,8 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
+    public static int LSC_wireless_eu_cap_tier_multiplier = 100;
+
     // 5 Minutes, 5 mins * 60s * 20 ticks.
     public static long LSC_time_between_wireless_rebalance_in_ticks = 5L * 60L * 20L;
 
@@ -46,21 +48,24 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
         .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     // 6 Quadrillion EU.
-    public static BigInteger UEV_wireless_eu_cap = BigInteger.valueOf(100 * 60 * pow(10, 12));
+    public static BigInteger UEV_wireless_eu_cap = LSC_wireless_eu_cap
+        .multiply(BigInteger.valueOf(LSC_wireless_eu_cap_tier_multiplier));
 
     // 1 Trillion EU/t
     private static final BigInteger UEV_cap_eu_per_tick = UEV_wireless_eu_cap
         .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     // 600 Quadrillion EU.
-    public static BigInteger UIV_wireless_eu_cap = BigInteger.valueOf(60 * pow(10, 16));
+    public static BigInteger UIV_wireless_eu_cap = UEV_wireless_eu_cap
+        .multiply(BigInteger.valueOf(LSC_wireless_eu_cap_tier_multiplier));
 
     // 100 Trillion EU/t
     private static final BigInteger UIV_cap_eu_per_tick = UIV_wireless_eu_cap
         .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     // 60 Quintillion EU.
-    public static BigInteger UMV_wireless_eu_cap = UIV_wireless_eu_cap.multiply(BigInteger.valueOf(100));
+    public static BigInteger UMV_wireless_eu_cap = UIV_wireless_eu_cap
+        .multiply(BigInteger.valueOf(LSC_wireless_eu_cap_tier_multiplier));
 
     // 10 Quadrillion EU/t
     private static final BigInteger UMV_cap_eu_per_tick = UMV_wireless_eu_cap

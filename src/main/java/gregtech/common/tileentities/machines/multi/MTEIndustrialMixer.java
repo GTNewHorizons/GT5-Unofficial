@@ -188,7 +188,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
                 ImmutableMap.<String, Object>builder()
                     .put("speed_increase", formatNumber(SPEED_INCREASE_TIER * 100))
                     .put("eu_eff", 100)
-                    .put("tier", GTUtility.getColoredTierNameForTooltip(GLASS_TIER_FOR_MULTI_AMP))
+                    .put("glass_tier_for_multiamp", GLASS_TIER_FOR_MULTI_AMP)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
