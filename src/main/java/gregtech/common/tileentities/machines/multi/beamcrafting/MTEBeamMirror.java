@@ -6,7 +6,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -31,6 +31,7 @@ import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -181,49 +182,32 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(
-            StatCollector
-                .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2"))
+        String shieldedCasing = StatCollector
+            .translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing");
+        String grateCasing = StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing");
+        String anyGlass = StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass");
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.beam_mirror"))
+            .addMarkdown(new ResourceLocation("gregtech", "beam-mirror"))
             .beginStructureBlock(3, 6, 5, false)
-            .addController("Front bottom center")
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Above controller", 1)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"),
-                "Opposite controller",
-                2)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.above_controller"), 1)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), StatCollector.translateToLocal("gt.mbtt.structure.opposite_controller"), 2)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "90 Degree Bend " + EnumChatFormatting.AQUA + "(T1)")
-            .addCasing(
-                "31",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
-                false)
-            .addCasing(
-                "9",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                false)
-            .addCasing("5", "Any Tiered Glass", false)
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.beam_mirror_bend", 90, 1))
+            .addCasing("31", shieldedCasing, false)
+            .addCasing("9", grateCasing, false)
+            .addCasing("5", anyGlass, false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "180 Degree Bend " + EnumChatFormatting.AQUA + "(T2)")
-            .addCasing(
-                "52",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
-                false)
-            .addCasing(
-                "9",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                false)
-            .addCasing("8", "Any Tiered Glass", false)
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.beam_mirror_bend", 180, 2))
+            .addCasing("52", shieldedCasing, false)
+            .addCasing("9", grateCasing, false)
+            .addCasing("8", anyGlass, false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

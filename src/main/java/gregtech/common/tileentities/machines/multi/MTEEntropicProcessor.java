@@ -55,6 +55,9 @@ import io.netty.buffer.ByteBuf;
 public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntropicProcessor>
     implements ISurvivalConstructable, IStructureProvider<MTEEntropicProcessor>, ICasingTextureProvider {
 
+    private static final int BASE_PARALLELS = 8;
+    private static final int CONSTRUCT_PARALLELS = 32;
+
     protected final StructureWrapper<MTEEntropicProcessor> structure;
     protected final StructureWrapperInstanceInfo<MTEEntropicProcessor> structureInstanceInfo;
 
@@ -202,7 +205,7 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
                     .put("advanced_parallels", 32)
                     .build())
             .beginStructureBlock(7, 5, 7, true)
-            .addController("Front center")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CASING)
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CONSTRUCT)
             .toolTipFinisher();
@@ -265,7 +268,7 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
 
     @Override
     public int getMaxParallelRecipes() {
-        return getConstructTier() == 1 ? 32 : 8;
+        return getConstructTier() == 1 ? CONSTRUCT_PARALLELS : BASE_PARALLELS;
     }
 
     @Override

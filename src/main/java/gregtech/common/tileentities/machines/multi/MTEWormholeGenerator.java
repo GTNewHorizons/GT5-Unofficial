@@ -58,6 +58,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -998,16 +999,16 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addSupportAny()
             .beginStructureBlock(7, 7, 7, true)
             .addEnergyHatchGlassTier()
-            .addController("Front center, 4th layer")
-            .addCasing("0-51", "High Power Casing", false)
-            .addCasing("36", "Any Tiered Glass", true)
-            .addCasing("24", "Molecular Casing", false)
-            .addCasing("22", "Fusion Coil Block", false)
-            .addCasing("8", "Europium Reinforced Radiation Proof Machine Casing", false)
-            .addMiscHatch("0-4", "Laser Target Hatch", "Any center side casing", 2)
-            .addMiscHatch("0-4", "Laser Source Hatch", "Any center side casing", 2)
-            .addMaintenanceHatch("1", "Any high power casing", 1)
-            .addInputBus("1+", "Any high power casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-51", Casings.HighPowerCasing.getLocalizedName(), false)
+            .addCasing("36", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("24", Casings.MolecularCasing.getLocalizedName(), false)
+            .addCasing("22", Casings.FusionCoilBlock.getLocalizedName(), false)
+            .addCasing("8", Casings.EuropiumReinforcedRadiationProofMachineCasing.getLocalizedName(), false)
+            .addMiscHatch("0-4", StatCollector.translateToLocal("GT5U.MBTT.LaserTargetHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 2)
+            .addMiscHatch("0-4", StatCollector.translateToLocal("GT5U.MBTT.LaserSourceHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_high_power_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_high_power_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

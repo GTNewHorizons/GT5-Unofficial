@@ -39,6 +39,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -111,13 +112,13 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         tt.addMachineType("Transcendent Mixer, TPM")
             .addMarkdown(new ResourceLocation("gregtech", "transcendent-plasma-mixer"), ImmutableMap.of())
             .beginStructureBlock(5, 7, 5, true)
-            .addController("Front center, 4th layer")
-            .addCasing("48", "Dimensionally Transcendent Casing", false)
-            .addCasing("0-35", "Dimensional Injection Casing", false)
-            .addCasing("16", "Dimensional Bridge", false)
-            .addInputBus("0+", "Any injection casing", 1)
-            .addInputHatch("1+", "Any injection casing", 1)
-            .addOutputHatch("1+", "Any injection casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("48", Casings.DimensionallyTranscendentCasing.getLocalizedName(), false)
+            .addCasing("0-35", Casings.DimensionalInjectionCasing.getLocalizedName(), false)
+            .addCasing("16", Casings.DimensionalBridge.getLocalizedName(), false)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_injection_casing"), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;
