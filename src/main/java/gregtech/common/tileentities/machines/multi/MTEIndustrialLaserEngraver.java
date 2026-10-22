@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTI
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_GLOW;
 import static gregtech.api.util.GTStructureUtility.*;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +72,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int GLASS_TIER_FOR_LASER = VoltageIndex.UEV;
+    private static final double SPEED_BONUS = 3.5D;
+    private static final double EU_MODIFIER = 0.8D;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialLaserEngraver> STRUCTURE_DEFINITION = StructureDefinition
@@ -230,8 +233,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-laser-engraver"),
                 ImmutableMap.<String, Object>builder()
-                    .put("speed", 350)
-                    .put("eu_eff", 80)
+                    .put("speed", formatNumber(SPEED_BONUS * 100))
+                    .put("eu_eff", formatNumber(EU_MODIFIER * 100))
                     .put("glass_tier_for_laser", GLASS_TIER_FOR_LASER)
                     .build())
             .beginStructureBlock(5, 5, 5, false)

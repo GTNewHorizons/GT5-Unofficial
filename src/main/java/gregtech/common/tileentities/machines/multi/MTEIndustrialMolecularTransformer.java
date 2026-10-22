@@ -13,6 +13,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -37,6 +38,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMolecularTransformer>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -63,10 +65,10 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Molecular Transformer")
-            .addInfo("Changes the structure of items to produce new ones")
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-molecular-transformer"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
             .addController("Front center, 2nd layer")
@@ -82,6 +84,7 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

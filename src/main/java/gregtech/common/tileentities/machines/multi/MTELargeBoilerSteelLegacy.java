@@ -7,6 +7,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeBoilerSteelLegacy extends MTELargeBoiler {
 
     public MTELargeBoilerSteelLegacy(int aID, String aName, String aNameRegional) {

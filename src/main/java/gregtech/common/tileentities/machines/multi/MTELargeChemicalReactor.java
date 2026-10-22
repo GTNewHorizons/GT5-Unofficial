@@ -28,6 +28,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -110,7 +111,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Chemical Reactor, LCR")
-            .addMarkdown(new ResourceLocation("gregtech", "large-chemical-reactor"))
+            .addMarkdown(new ResourceLocation("gregtech", "large-chemical-reactor"), ImmutableMap.of())
             .beginStructureBlock(3, 3, 3, false)
             .addController("Front center, 2nd layer")
             .addCasing("8-22", "Chemically Inert Machine Casing", false)
@@ -121,7 +122,6 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addInputAny("1+", "Any casing", 1)
             .addOutputAny("1+", "Any casing", 1)
             .addStructureInfo("")
-            .addStructureFooter("Heating Coil can be any tier and on any side")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         // spotless:on

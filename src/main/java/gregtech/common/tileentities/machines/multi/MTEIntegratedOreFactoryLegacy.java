@@ -67,6 +67,7 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBase<MTEIntegratedOreFactoryLegacy>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
