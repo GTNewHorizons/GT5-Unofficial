@@ -15,7 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.ModularUI;
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -62,7 +61,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
 import kubatech.api.helpers.GTHelper;
 import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary;
-import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary.BeeSimulator;
+import kubatech.tileentity.gregtech.multiblock.MTEMegaIndustrialApiary.BeeGroup;
 
 public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndustrialApiary> {
 
@@ -87,7 +86,8 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     private int beePageCount = 1;
     private IntSyncValue beePageSyncer;
     private List<GTHelper.StackableItemSlot> cachedFullBeeList;
-    private long cachedBeeListTick = -1;
+    private List<BeeGroup> cachedSlotGroups = new ArrayList<>();
+    private int cachedStorageVersion = -1;
 
     public MTEMegaIndustrialApiaryGui(MTEMegaIndustrialApiary multiblock) {
         super(multiblock);
@@ -117,7 +117,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         IntSyncValue maxSlotsSyncer = new IntSyncValue(() -> multiblock.mMaxSlots, val -> maxSlots = val);
         syncManager.syncValue("apiaryMaxSlots", maxSlotsSyncer);
 
-        IntSyncValue usedSlotsSyncer = new IntSyncValue(() -> multiblock.mStorage.size(), val -> usedSlots = val);
+        IntSyncValue usedSlotsSyncer = new IntSyncValue(multiblock::getBeeCount, val -> usedSlots = val);
         syncManager.syncValue("apiaryUsedSlots", usedSlotsSyncer);
 
         beeClickSyncer = new IntSyncValue(() -> 0, this::handleBeeClick).allowC2S();
@@ -178,7 +178,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
             .singletonSlotGroup(SlotGroup.STORAGE_SLOT_PRIO)
             .changeListener((newItem, onlyAmountChanged, client, init) -> {
                 if (client || init || newItem == null) return;
-                tryAddBeeToStorage(newItem.copy());
+                tryAddBeeToStorage(newItem);
                 queenBufferInv.setStackInSlot(0, null);
             });
         syncManager.syncValue("queenBuffer", new ItemSlotSH(queenBufferSlot));
@@ -187,23 +187,11 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     private boolean canAcceptQueen(ItemStack stack) {
         if (multiblock.mPrimaryMode == MTEMegaIndustrialApiary.MODE_PRIMARY_OPERATING
             && multiblock.mMaxProgresstime > 0) return false;
-        return beeRoot.getType(stack) == EnumBeeType.QUEEN && multiblock.mStorage.size() < multiblock.mMaxSlots;
-    }
-
-    private void tryAddBeeToStorage(ItemStack queenStack) {
-        World world = multiblock.getBaseMetaTileEntity()
-            .getWorld();
-        float voltageTier = (float) multiblock.getVoltageTierExact();
-        BeeSimulator bee = new BeeSimulator(queenStack, world, voltageTier);
-        if (bee.isValid) {
-            multiblock.mStorage.add(bee);
-            multiblock.onStorageContentChanged(false);
-            invalidateBeeListCache();
-        }
+        return beeRoot.getType(stack) == EnumBeeType.QUEEN && multiblock.getBeeCount() < multiblock.mMaxSlots;
     }
 
     private void notifyBeeInventoryUpdate(int pagedListSize) {
-        boolean hasEmptySlot = multiblock.mStorage.size() < multiblock.mMaxSlots;
+        boolean hasEmptySlot = multiblock.getBeeCount() < multiblock.mMaxSlots;
         boolean isLastPage = (beePage >= beePageCount - 1);
         int activeCount = pagedListSize + (hasEmptySlot && isLastPage ? 1 : 0);
         beeInventoryHandler.notifyUpdate(buf -> buf.writeInt(activeCount));
@@ -242,38 +230,42 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         return display;
     }
 
-    private List<GTHelper.StackableItemSlot> buildAggregatedBeeList() {
+    /**
+     * Returns one slot per species. The group each slot acts on is appended to slotGroups in the same order.
+     */
+    private List<GTHelper.StackableItemSlot> buildAggregatedBeeList(List<BeeGroup> slotGroups) {
         HashMap<String, Integer> countMap = new HashMap<>();
         HashMap<String, ItemStack> stackMap = new HashMap<>();
-        HashMap<String, Integer> firstSlotMap = new HashMap<>();
-        for (int i = 0; i < multiblock.mStorage.size(); i++) {
-            BeeSimulator bee = multiblock.mStorage.get(i);
-            String key = bee.speciesKey;
-            countMap.merge(key, 1, Integer::sum);
-            stackMap.computeIfAbsent(key, unused -> createDisplayStack(bee.queenStack));
-            firstSlotMap.putIfAbsent(key, i);
+        HashMap<String, BeeGroup> firstGroupMap = new HashMap<>();
+        for (BeeGroup group : multiblock.getBeeGroups()) {
+            String key = group.getSpeciesKey();
+            countMap.merge(key, group.getCount(), Integer::sum);
+            stackMap.computeIfAbsent(key, unused -> createDisplayStack(group.copyQueen()));
+            firstGroupMap.putIfAbsent(key, group);
         }
         List<GTHelper.StackableItemSlot> result = new ArrayList<>(countMap.size());
         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-            ArrayList<Integer> slots = new ArrayList<>(1);
-            slots.add(firstSlotMap.get(entry.getKey()));
-            result.add(new GTHelper.StackableItemSlot(entry.getValue(), stackMap.get(entry.getKey()), slots));
+            result
+                .add(new GTHelper.StackableItemSlot(entry.getValue(), stackMap.get(entry.getKey()), new ArrayList<>()));
+            slotGroups.add(firstGroupMap.get(entry.getKey()));
         }
         return result;
     }
 
     private List<GTHelper.StackableItemSlot> getFullAggregatedBeeList() {
         if (mainSyncManager == null || mainSyncManager.isClient()) {
-            return cachedFullBeeList != null ? cachedFullBeeList : buildAggregatedBeeList();
+            return cachedFullBeeList != null ? cachedFullBeeList : buildAggregatedBeeList(new ArrayList<>());
         }
-        World world = multiblock.getBaseMetaTileEntity()
-            .getWorld();
-        long currentTick = world != null ? world.getTotalWorldTime() : -1;
-        if (cachedFullBeeList == null || cachedBeeListTick != currentTick) {
-            cachedFullBeeList = buildAggregatedBeeList();
-            cachedBeeListTick = currentTick;
-        }
+        refreshBeeListCache();
         return cachedFullBeeList;
+    }
+
+    private void refreshBeeListCache() {
+        if (cachedFullBeeList == null || cachedStorageVersion != multiblock.getStorageVersion()) {
+            cachedSlotGroups = new ArrayList<>();
+            cachedFullBeeList = buildAggregatedBeeList(cachedSlotGroups);
+            cachedStorageVersion = multiblock.getStorageVersion();
+        }
     }
 
     private List<GTHelper.StackableItemSlot> buildPagedAggregatedBeeList() {
@@ -286,11 +278,6 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         int end = Math.min(start + BEE_ENTRIES_PER_PAGE, full.size());
         if (start >= full.size()) return new ArrayList<>();
         return new ArrayList<>(full.subList(start, end));
-    }
-
-    private void invalidateBeeListCache() {
-        cachedFullBeeList = null;
-        cachedBeeListTick = -1;
     }
 
     @Override
@@ -507,82 +494,68 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         EntityPlayer player = mainSyncManager.getPlayer();
         if (!(player instanceof EntityPlayerMP playerMP)) return;
 
-        List<GTHelper.StackableItemSlot> serverSlots = getFullAggregatedBeeList();
+        refreshBeeListCache();
+        List<BeeGroup> serverGroups = cachedSlotGroups;
         int slotIdx = beePage * BEE_ENTRIES_PER_PAGE + visibleSlotIdx;
 
-        if (slotIdx >= 0 && slotIdx < serverSlots.size()) {
-            handleOccupiedSlotClick(serverSlots.get(slotIdx), mouseButton, shift, player, playerMP);
+        if (slotIdx >= 0 && slotIdx < serverGroups.size()) {
+            handleOccupiedSlotClick(serverGroups.get(slotIdx), mouseButton, shift, player, playerMP);
         } else {
             handleEmptySlotClick(mouseButton, player, playerMP);
         }
-        invalidateBeeListCache();
     }
 
-    private void handleOccupiedSlotClick(GTHelper.StackableItemSlot serverSlot, int mouseButton, boolean shift,
-        EntityPlayer player, EntityPlayerMP playerMP) {
+    private void handleOccupiedSlotClick(BeeGroup group, int mouseButton, boolean shift, EntityPlayer player,
+        EntityPlayerMP playerMP) {
         if (mouseButton == 2) {
-            creativePickBee(serverSlot, player, playerMP);
+            creativePickBee(group, player, playerMP);
         } else if (shift) {
-            extractBeeToInventory(serverSlot, player, playerMP);
+            extractBeeToInventory(group, player);
         } else if (player.inventory.getItemStack() != null) {
-            replaceBeeWithHeldItem(serverSlot, player, playerMP);
+            replaceBeeWithHeldItem(group, player, playerMP);
         } else {
-            extractBeeToCursor(serverSlot, player, playerMP);
+            extractBeeToCursor(group, player, playerMP);
         }
     }
 
-    private void creativePickBee(GTHelper.StackableItemSlot serverSlot, EntityPlayer player, EntityPlayerMP playerMP) {
+    private void creativePickBee(BeeGroup group, EntityPlayer player, EntityPlayerMP playerMP) {
         if (!player.capabilities.isCreativeMode || player.inventory.getItemStack() != null) return;
-        int realID = serverSlot.realSlots.get(0);
-        if (realID >= multiblock.mStorage.size()) return;
-        ItemStack stack = multiblock.mStorage.get(realID).queenStack.copy();
+        if (group.getCount() <= 0) return;
+        ItemStack stack = group.copyQueen();
         stack.stackSize = stack.getMaxStackSize();
         player.inventory.setItemStack(stack);
         playerMP.isChangingQuantityOnly = false;
         playerMP.updateHeldItem();
     }
 
-    private void extractBeeToInventory(GTHelper.StackableItemSlot serverSlot, EntityPlayer player,
-        EntityPlayerMP playerMP) {
-        int realID = serverSlot.realSlots.get(0);
-        if (realID >= multiblock.mStorage.size()) return;
-        BeeSimulator removed = multiblock.mStorage.remove(realID);
-        multiblock.onStorageContentChanged(false);
+    private void extractBeeToInventory(BeeGroup group, EntityPlayer player) {
+        ItemStack removed = multiblock.removeQueen(group);
         if (removed == null) return;
-        if (player.inventory.addItemStackToInventory(removed.queenStack)) {
+        multiblock.onStorageContentChanged(false);
+        if (player.inventory.addItemStackToInventory(removed)) {
             player.inventoryContainer.detectAndSendChanges();
         } else {
-            player.entityDropItem(removed.queenStack, 0.f);
+            player.entityDropItem(removed, 0.f);
         }
     }
 
-    private void replaceBeeWithHeldItem(GTHelper.StackableItemSlot serverSlot, EntityPlayer player,
-        EntityPlayerMP playerMP) {
+    private void replaceBeeWithHeldItem(BeeGroup group, EntityPlayer player, EntityPlayerMP playerMP) {
         ItemStack input = player.inventory.getItemStack();
         if (input.stackSize != 1) return;
-        int realID = serverSlot.realSlots.get(0);
-        if (realID >= multiblock.mStorage.size()) return;
-        World world = multiblock.getBaseMetaTileEntity()
-            .getWorld();
-        float voltageTier = (float) multiblock.getVoltageTierExact();
-        BeeSimulator bee = new BeeSimulator(input, world, voltageTier);
-        if (!bee.isValid) return;
-        BeeSimulator removed = multiblock.mStorage.remove(realID);
-        multiblock.mStorage.add(realID, bee);
+        if (group.getCount() <= 0) return;
+        if (!multiblock.addQueen(input)) return;
+        ItemStack removed = multiblock.removeQueen(group);
         multiblock.onStorageContentChanged(false);
-        player.inventory.setItemStack(removed.queenStack);
+        player.inventory.setItemStack(removed);
         playerMP.isChangingQuantityOnly = false;
         playerMP.updateHeldItem();
     }
 
-    private void extractBeeToCursor(GTHelper.StackableItemSlot serverSlot, EntityPlayer player,
-        EntityPlayerMP playerMP) {
-        int realID = serverSlot.realSlots.get(0);
-        if (realID >= multiblock.mStorage.size()) return;
-        BeeSimulator removed = multiblock.mStorage.remove(realID);
-        multiblock.onStorageContentChanged(false);
+    private void extractBeeToCursor(BeeGroup group, EntityPlayer player, EntityPlayerMP playerMP) {
+        ItemStack removed = multiblock.removeQueen(group);
         if (removed == null) return;
-        player.inventory.setItemStack(removed.queenStack);
+        multiblock.onStorageContentChanged(false);
+        player.inventory.setItemStack(removed);
         playerMP.isChangingQuantityOnly = false;
         playerMP.updateHeldItem();
     }
@@ -590,7 +563,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     private void handleEmptySlotClick(int mouseButton, EntityPlayer player, EntityPlayerMP playerMP) {
         ItemStack input = player.inventory.getItemStack();
         if (input == null) return;
-        if (multiblock.mStorage.size() >= multiblock.mMaxSlots) return;
+        if (multiblock.getBeeCount() >= multiblock.mMaxSlots) return;
         if (beeRoot.getType(input) != EnumBeeType.QUEEN) return;
 
         if (mouseButton == 1) {
@@ -601,9 +574,7 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private void injectSingleBee(ItemStack input, EntityPlayer player, EntityPlayerMP playerMP) {
-        ItemStack singleQueen = input.copy();
-        singleQueen.stackSize = 1;
-        if (!tryAddBeeToStorage(singleQueen, player)) return;
+        if (!tryAddBeeToStorage(input)) return;
         input.stackSize--;
         if (input.stackSize <= 0) {
             player.inventory.setItemStack(null);
@@ -613,7 +584,8 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
     }
 
     private void injectEntireStack(ItemStack input, EntityPlayer player, EntityPlayerMP playerMP) {
-        if (!tryAddBeeToStorage(input, player)) return;
+        if (!tryAddBeeToStorage(input)) return;
+        input.stackSize--;
         if (input.stackSize > 0) {
             playerMP.isChangingQuantityOnly = true;
             playerMP.updateHeldItem();
@@ -624,13 +596,8 @@ public class MTEMegaIndustrialApiaryGui extends MTEMultiBlockBaseGui<MTEMegaIndu
         playerMP.updateHeldItem();
     }
 
-    private boolean tryAddBeeToStorage(ItemStack queenStack, EntityPlayer player) {
-        World world = multiblock.getBaseMetaTileEntity()
-            .getWorld();
-        float voltageTier = (float) multiblock.getVoltageTierExact();
-        BeeSimulator bee = new BeeSimulator(queenStack, world, voltageTier);
-        if (!bee.isValid) return false;
-        multiblock.mStorage.add(bee);
+    private boolean tryAddBeeToStorage(ItemStack queenStack) {
+        if (!multiblock.addQueen(queenStack)) return false;
         multiblock.onStorageContentChanged(false);
         return true;
     }
