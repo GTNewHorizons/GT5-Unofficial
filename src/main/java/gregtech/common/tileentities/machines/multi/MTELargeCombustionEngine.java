@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -20,7 +19,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -135,7 +133,6 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                     .put("boosted_output", formatNumber(BOOSTED_OUTPUT_EU))
                     .put("boosted_eff", formatNumber(BOOSTED_EFFICIENCY_PERCENT))
                     .put("wait_power", formatNumber(WAIT_POWER_PERCENT))
-                    .put("fluid_unit", getFluidUnit())
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(8, 3, 3, false)
@@ -152,7 +149,6 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
             .addAir("4x2 area in front of the engine intake casings")
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
-            .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         // spotless:on
         return tt;
@@ -204,8 +200,8 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
         return 2048;
     }
 
-    protected Materials getBooster() {
-        return Materials.Oxygen;
+    protected FluidStack getBooster(long amount) {
+        return Materials.Oxygen.getGas(amount);
     }
 
     /**
@@ -270,7 +266,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
 
                 // Deplete that amount, try next fuel if this one is insufficient
                 if (!depleteInput(tLiquid)) continue;
-                boostEu = depleteInput(getBooster().getGas(2L * getAdditiveFactor()));
+                boostEu = depleteInput(getBooster(2L * getAdditiveFactor()));
 
                 // Check to prevent burning HOG without consuming it, if not boosted
                 if (!boostEu && fuelValue > getNominalOutput()) {

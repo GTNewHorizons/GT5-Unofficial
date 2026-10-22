@@ -50,7 +50,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -460,6 +459,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             });
     }
 
+    private static final String AUTHOR_NOT_A_PENGUIN = EnumChatFormatting.WHITE + "Not"
+        + EnumChatFormatting.AQUA
+        + "APenguin";
+
     private ModularPanel openContributorsPanel(ModularPanel parent) {
         ModularPanel panel = new ModularPanel("contributorsPanel").relative(parent)
             .size(getBasePanelWidth(), getBasePanelHeight() + 20)
@@ -486,14 +489,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.contributors.projectlead",
-                createContributorEntry(GTAuthors.AuthorNotAPenguin, -1)));
+                createContributorEntry(AUTHOR_NOT_A_PENGUIN, -1)));
 
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.contributors.programming",
                 createContributorEntry("JurreJelle", Color.INDIGO.brighterSafe(2)),
                 createContributorEntry("FourIsTheNumber", Color.PURPLE.brighterSafe(1)),
-                createContributorEntry(GTAuthors.AuthorNotAPenguin, -1),
+                createContributorEntry(AUTHOR_NOT_A_PENGUIN, -1),
                 createContributorEntry("TheEpicGamer274", 0xFF2BCAD9),
                 createContributorEntry("Nockyx", Color.YELLOW.brighterSafe(1)),
                 createContributorEntry("Serenibyss", 0xFFFFA3FB),

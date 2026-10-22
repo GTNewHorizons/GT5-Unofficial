@@ -30,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.enums.CondensateType;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -124,6 +123,17 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
     }
 
     @Override
+    public boolean hasRunningText() {
+        return false;
+    }
+
+    // recipe doesn't actually do anything player-facing.
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
     public void clearHatches() {
         super.clearHatches();
 
@@ -214,7 +224,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
             .addInputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
             .addMiscHatch("2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-diode.bec-hatch-pos"), 2, 3)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .toolTipFinisher();
         return tt;
         // spotless:on
     }

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -25,12 +26,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -38,13 +41,13 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -67,6 +70,7 @@ import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.register.LanthItemList;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronCollider> implements ISurvivalConstructable {
 
     private static final int MACHINEMODE_ACCELERATOR = 0;
@@ -89,6 +93,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static final float RATE_NERF_POWER = 0.5F;
     public static final float RATE_NERF_POWER_QGP = 0.7F;
     public static final float RATE_NERF_POWER_MAGMATTER = 0.9F;
+    public static final int POWER_TIER = VoltageIndex.UV;
+    public static final int COLLISION_ENERGY_MULTIPLIER = 2;
     public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
     public static final float OVERALL_POWER_MULT_FACTOR = 1F; // reminder: update tooltip text if this is not set to 1
 
@@ -334,185 +340,71 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(
-            StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.machinetype"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip1"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip2"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip4"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip17"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip31"))
-            .addSeparator()
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip32"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip33"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip34"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip35"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip36"))
+        String colliderCasing = StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing");
+        String anyNeonite = StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite");
+        String shieldedGlass = StatCollector
+            .translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass");
+        String filteredOutput = StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered");
+        String moduleInnerSide = StatCollector.translateToLocal("gt.mbtt.structure.lhc_module_inner_side");
+        String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.particle_collider"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "large-hadron-collider"),
+                ImmutableMap.<String, Object>builder()
+                    .put("max_energy", formatNumber(MAXIMUM_PARTICLE_ENERGY_keV / 1_000_000_000))
+                    .put("ev_per_eu", formatNumber(keV_EU_RATIO * 1000))
+                    .put("rate_gain", formatNumber(RATE_SCALE_FACTOR - 1))
+                    .put("nerf_cutoff", formatNumber(RATE_NERF_CUTOFF))
+                    .put("nerf_power", formatNumber(RATE_NERF_POWER))
+                    .put("nerf_power_qgp", formatNumber(RATE_NERF_POWER_QGP))
+                    .put("nerf_power_magmatter", formatNumber(RATE_NERF_POWER_MAGMATTER))
+                    .put("tier", GTUtility.getColoredTierNameForTooltip(POWER_TIER))
+                    .put("collision_multiplier", formatNumber(COLLISION_ENERGY_MULTIPLIER))
+                    .build())
             .addSeparator()
             .addSupportAny()
             .beginStructureBlock(109, 13, 122, true)
-            .addController("Front center of accelerator ring, 12th layer")
-            .addCasing(
-                "5664",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                false)
-            .addCasing(
-                "73",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
-                false)
-            .addCasing(
-                "20",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
-                false)
-            .addCasing(
-                "16",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
-                false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"),
-                "Entrance to accelerator ring",
-                2)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addInputHatch("1", "Any casing", 7)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.lhc_controller"))
+            .addCasing("5664", colliderCasing, false)
+            .addCasing("73", anyNeonite, false)
+            .addCasing("20", shieldedGlass, false)
+            .addCasing("16", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.lhc_ring_entrance"), 2)
+            .addEnergyHatch("1+", anyCasing, 1)
+            .addInputHatch("1", anyCasing, 7)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "CMS Module " + EnumChatFormatting.BLUE + "(E)")
-            .addCasing(
-                "523",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                false)
-            .addCasing("148", "Charged Matter Sensor Casing", false)
-            .addCasing(
-                "126",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
-                false)
-            .addCasing(
-                "11",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
-                false)
-            .addMiscHatch(
-                "2",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
-                "Inner side of module",
-                3)
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.lhc_module", "CMS", "E"))
+            .addCasing("523", colliderCasing, false)
+            .addCasing("148", Casings.CMSCasing.getLocalizedName(), false)
+            .addCasing("126", shieldedGlass, false)
+            .addCasing("11", anyNeonite, false)
+            .addMiscHatch("2", filteredOutput, moduleInnerSide, 3)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "ATLAS Module " + EnumChatFormatting.BLUE + "(W)")
-            .addCasing(
-                "515",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                false)
-            .addCasing("160", "Advanced Total Lepton Assimilation Snare Casing", false)
-            .addCasing(
-                "126",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
-                false)
-            .addCasing(
-                "13",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
-                false)
-            .addMiscHatch(
-                "2",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
-                "Inner side of module",
-                4)
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.lhc_module", "ATLAS", "W"))
+            .addCasing("515", colliderCasing, false)
+            .addCasing("160", Casings.ATLASCasing.getLocalizedName(), false)
+            .addCasing("126", shieldedGlass, false)
+            .addCasing("13", anyNeonite, false)
+            .addMiscHatch("2", filteredOutput, moduleInnerSide, 4)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "ALICE Module " + EnumChatFormatting.BLUE + "(S)")
-            .addCasing(
-                "517",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                false)
-            .addCasing("158", "Absolute Lattice Integrated Chromodynamic Encapsulator Casing", false)
-            .addCasing(
-                "140",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
-                false)
-            .addCasing(
-                "11",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
-                false)
-            .addMiscHatch(
-                "2",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
-                "Inner side of module",
-                5)
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.lhc_module", "ALICE", "S"))
+            .addCasing("517", colliderCasing, false)
+            .addCasing("158", Casings.ALICECasing.getLocalizedName(), false)
+            .addCasing("140", shieldedGlass, false)
+            .addCasing("11", anyNeonite, false)
+            .addMiscHatch("2", filteredOutput, moduleInnerSide, 5)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.AQUA + "LHCb Module " + EnumChatFormatting.BLUE + "(G)")
-            .addCasing(
-                "511",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                false)
-            .addCasing("144", "Localized Horizon Curvature Binder Casing", false)
-            .addCasing(
-                "126",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
-                false)
-            .addCasing(
-                "17",
-                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
-                false)
-            .addMiscHatch(
-                "2",
-                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
-                "Inner side of module",
-                6)
+            .addStructureInfo(StatCollector.translateToLocalFormatted("gt.mbtt.structure.lhc_module", "LHCb", "G"))
+            .addCasing("511", colliderCasing, false)
+            .addCasing("144", Casings.LHCbCasing.getLocalizedName(), false)
+            .addCasing("126", shieldedGlass, false)
+            .addCasing("17", anyNeonite, false)
+            .addMiscHatch("2", filteredOutput, moduleInnerSide, 6)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.modules"))
-            .toolTipFinisher(GTAuthors.AuthorHamCorp);
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -630,7 +522,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static long perCyclePowerCost(int rate, int cycleIndex) {
         // counter starts at 0, so +1
         // start at 1A UV power cost
-        return (long) (OVERALL_POWER_MULT_FACTOR * GTValues.V[8] * Math.pow(cycleIndex + 1, 2) * rate);
+        return (long) (OVERALL_POWER_MULT_FACTOR * GTValues.V[POWER_TIER] * Math.pow(cycleIndex + 1, 2) * rate);
     }
 
     public static double perCycleEnergyGainKeV(int cycleIndex, int progressTime) {
@@ -831,7 +723,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             this.mEfficiencyIncrease = 10000;
             this.mMaxProgresstime = TickTime.SECOND;
 
-            this.outputEnergy = (inputEnergy) * 2; // output energy = collision energy = input energy * 2
+            this.outputEnergy = (inputEnergy) * COLLISION_ENERGY_MULTIPLIER; // output energy = collision energy
             this.outputRate = max(0, (inputRate));
             this.outputFocus = inputFocus;
 

@@ -24,7 +24,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -199,7 +198,6 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Ducked")
             .toolTipFinisher();
         // spotless:on
         return tt;
@@ -211,7 +209,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                // ensures heavy mode recipes can not run
+                // ensures heavy mode recipes cannot run
                 if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE))
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 return super.validateRecipe(recipe);
