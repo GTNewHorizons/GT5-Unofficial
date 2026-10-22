@@ -348,6 +348,14 @@ public class RecipeMapBackend {
     }
 
     /**
+     * The lookup with every queued recipe added to it.
+     */
+    GTRecipeLookup recipeLookup() {
+        GTRecipeLookupBuilder.addQueuedToLookup(recipeLookup, recipeLookupState);
+        return recipeLookup;
+    }
+
+    /**
      * @return If supplied item is a valid input for any of the recipes
      */
     public boolean containsInput(ItemStack item) {
@@ -511,8 +519,7 @@ public class RecipeMapBackend {
             return Stream.empty();
         }
 
-        GTRecipeLookupBuilder.addQueuedToLookup(recipeLookup, recipeLookupState);
-        Iterator<GTRecipe> iterator = recipeLookup.iterator(ingredients);
+        Iterator<GTRecipe> iterator = recipeLookup().iterator(ingredients);
         return StreamSupport
             .stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.NONNULL | Spliterator.IMMUTABLE), false);
     }
