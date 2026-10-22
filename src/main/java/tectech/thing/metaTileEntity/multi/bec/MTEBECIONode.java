@@ -503,7 +503,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
 
         this.requiredTier = step.nanite;
-        setRequiredTier(this.requiredTier);
 
         if (this.requiredTier == null) {
             state = NodeState.InternalError;
