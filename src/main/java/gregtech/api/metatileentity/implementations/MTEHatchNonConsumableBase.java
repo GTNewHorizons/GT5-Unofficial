@@ -324,8 +324,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("itemCount")) setItemCount(aNBT.getInteger("itemCount"));
-        if (aNBT.getTag("itemStack") instanceof NBTTagCompound compound)
-            setItemStack(GTUtility.loadItem(compound));
+        if (aNBT.getTag("itemStack") instanceof NBTTagCompound compound) setItemStack(GTUtility.loadItem(compound));
         if (aNBT.hasKey("outputLocked")) isOutputSlotLocked = aNBT.getBoolean("outputLocked");
     }
 
