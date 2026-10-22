@@ -21,7 +21,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -48,7 +47,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -107,16 +105,12 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Chemical Reactor, MCR")
-            .addInfo(
-                TooltipHelper
-                    .coloredText(TooltipHelper.italicText("Infinite Potential!"), EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(PARALLELS)
-            .addSeparator()
             .addMarkdown(
                 new ResourceLocation("gregtech", "mega-chemical-reactor"),
-                ImmutableMap.<String, Object>builder().build())
-            .addSupportAny()
+                ImmutableMap.of())
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(5, 5, 9, false)
             .addEnergyHatchGlassTier()
             .addMinGlassForLaser(VoltageIndex.UV)

@@ -11,9 +11,10 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -34,6 +35,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings2;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanner>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -99,9 +101,10 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Canner, TCP")
             .addBulkMachineInfo(8, 2f, 1)
-            .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
+            .addMarkdown(new ResourceLocation("gregtech", "multi-canner"), ImmutableMap.of())
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front center, 3rd layer")
             .addCasing("85-93", "Solid Steel Machine Casing", false)
@@ -111,6 +114,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
             .addInputAny("1+", "Any machine casing", 1)
             .addOutputAny("1+", "Any machine casing", 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

@@ -65,6 +65,11 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 public class MTELargeNaquadahReactor extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
+    private static final int COOLANT_AMT_HIGH = 1000;
+    private static final int COOLANT_AMT_LOW = 20;
+    private static final int EXCITED_AMT_HIGH = 180;
+    private static final int EXCITED_AMT_LOW = 20;
+
     private static final int OFFSET_X = 3;
     private static final int OFFSET_Y = 10;
     private static final int OFFSET_Z = 0;
@@ -375,10 +380,10 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
                     .put("excited_naquadah", formatNumber(ExcitedLiquidCoe[2]))
                     .put("excited_asc", formatNumber(ExcitedLiquidCoe[1]))
                     .put("excited_space", formatNumber(ExcitedLiquidCoe[0]))
-                    .put("coolant_amt_high", formatNumber(1000))
-                    .put("coolant_amt_low", formatNumber(20))
-                    .put("excited_amt_high", formatNumber(180))
-                    .put("excited_amt_low", formatNumber(20))
+                    .put("coolant_amt_high", formatNumber(COOLANT_AMT_HIGH))
+                    .put("coolant_amt_low", formatNumber(COOLANT_AMT_LOW))
+                    .put("excited_amt_high", formatNumber(EXCITED_AMT_HIGH))
+                    .put("excited_amt_low", formatNumber(EXCITED_AMT_LOW))
                     .build())
             .addSupportAny()
             .beginStructureBlock(7, 11, 7, false)

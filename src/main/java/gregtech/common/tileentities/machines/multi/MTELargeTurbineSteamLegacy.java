@@ -26,6 +26,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeTurbineSteamLegacy extends MTELargeTurbineLegacy {
 
     private int excessWater;

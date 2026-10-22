@@ -26,6 +26,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeTurbineGasLegacy extends MTELargeTurbineLegacy {
 
     public MTELargeTurbineGasLegacy(int aID, String aName, String aNameRegional) {

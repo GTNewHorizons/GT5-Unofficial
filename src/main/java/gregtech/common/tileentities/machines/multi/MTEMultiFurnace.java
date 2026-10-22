@@ -54,9 +54,10 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -106,9 +107,9 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Furnace")
-            .addStaticParallelInfo(4)
-            .addDynamicMultiplicativeParallelInfo(2, TooltipTier.COIL)
+            .addInfo(TooltipHelper.parallelText("4 + (2 * Voltage Tier)") + " Parallels")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front bottom center")
@@ -123,6 +124,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

@@ -18,7 +18,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 
 import java.util.List;
 import java.util.Objects;
@@ -297,7 +296,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         // spotless:off
         tt.addMachineType("Cable Coater, LATEX")
             .addInfo(
-                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminate Application and Thermal Enclosure eXocoater")
+                EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminate Application and Thermal Enclosure eXocoater")
             .addBulkMachineInfo(8, 2F, 0.85F)
             .addMarkdown(
                 new ResourceLocation("gregtech", "latex"),

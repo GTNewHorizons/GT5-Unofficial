@@ -27,7 +27,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -592,7 +591,6 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                     .build())
             .addSupportAny()
             .addUnlimitedTierSkips()
-            .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
             .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
             .addController("Front center, 3rd Layer")
             .addEnergyHatch("1+", "Any base reinforced distillation casing", 1)
