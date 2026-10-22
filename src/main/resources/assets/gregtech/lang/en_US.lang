@@ -141,6 +141,56 @@ gt.oreprefix.tiny_pile_of_material_pulp=Tiny Pile of %s Pulp
 gt.oreprefix.triple_material_plate=Triple %s Plate
 gt.oreprefix.triple_material_sheet=Triple %s Sheet
 
+# Ores with a host stone: argument 1 is the material, argument 2 is the stone prefix.
+# These shared templates also support Inflection Manager rules and positional placeholders.
+gt.oreprefix.material.with_stone=%2$s %1$s
+gt.oreprefix.material_ice.with_stone=%2$s %1$s Ice
+gt.oreprefix.material_infused_stone.with_stone=%2$s %1$s Infused Stone
+gt.oreprefix.material_ore.with_stone=%2$s %1$s Ore
+gt.oreprefix.small_material_ore.with_stone=Small %2$s %1$s Ore
+
+# Host stone prefixes, shared by all ore materials and sizes.
+gt.ore.stone.netherrack=Nether
+gt.ore.stone.endstone=End
+gt.ore.stone.blackgranite=Black Granite
+gt.ore.stone.redgranite=Red Granite
+gt.ore.stone.marble=Marble
+gt.ore.stone.basalt=Basalt
+gt.ore.stone.moon=Moon
+gt.ore.stone.mars=Mars
+gt.ore.stone.asteroid=Asteroid
+gt.ore.stone.phobos=Phobos
+gt.ore.stone.deimos=Deimos
+gt.ore.stone.ceres=Ceres
+gt.ore.stone.io=Io
+gt.ore.stone.europa=Europa
+gt.ore.stone.ganymede=Ganymede
+gt.ore.stone.callisto=Callisto
+gt.ore.stone.enceladus=Enceladus
+gt.ore.stone.titan=Titan
+gt.ore.stone.miranda=Miranda
+gt.ore.stone.oberon=Oberon
+gt.ore.stone.proteus=Proteus
+gt.ore.stone.triton=Triton
+gt.ore.stone.pluto=Pluto
+gt.ore.stone.haumea=Haumea
+gt.ore.stone.makemake=Makemake
+gt.ore.stone.venus=Venus
+gt.ore.stone.mercury=Mercury
+gt.ore.stone.alphacentauri=Alpha Centauri
+gt.ore.stone.tcetie=T Ceti E
+gt.ore.stone.vegab=Vega B
+gt.ore.stone.barnardae=Barnarda E
+gt.ore.stone.barnardaf=Barnarda F
+gt.ore.stone.horus=Horus
+gt.ore.stone.anubisandmaahes=Anubis And Maahes
+gt.ore.stone.packedice=Packed Ice
+gt.ore.stone.sethice=Seth Ice
+gt.ore.stone.sethclay=Seth Clay
+gt.ore.stone.deepslate=Deepslate
+gt.ore.stone.tuff=Tuff
+gt.ore.stone.blueice=Blue Ice
+
 #Special Components
 gt.oreprefix.cardboard=Cardboard
 gt.oreprefix.carton=Carton

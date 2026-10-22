@@ -69,7 +69,7 @@ public class OrePrefixes {
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     public static final OrePrefixes oreBlackgranite = new OrePrefixBuilder("oreBlackgranite")
         .withDefaultLocalName("Black Granite Ores")
-        .withPrefix("Granite ")
+        .withPrefix("Black Granite ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -80,7 +80,7 @@ public class OrePrefixes {
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     public static final OrePrefixes oreRedgranite = new OrePrefixBuilder("oreRedgranite")
         .withDefaultLocalName("Red Granite Ores")
-        .withPrefix("Granite ")
+        .withPrefix("Red Granite ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -3250,6 +3250,12 @@ public class OrePrefixes {
      * available; otherwise attempts inflection formatting.
      */
     public static String getLocalizedNameForItemWithInflection(String prefixKey, IOreMaterial material) {
+        return getLocalizedNameForItemWithInflection(prefixKey, material, material.getLocalizedNameKey());
+    }
+
+    /** Formats a material prefix with additional localization keys, such as the host stone of an ore. */
+    public static String getLocalizedNameForItemWithInflection(String prefixKey, IOreMaterial material,
+        String... formatterKeys) {
         final String key = prefixKey + "."
             + material.getInternalName()
                 .toLowerCase();
@@ -3260,9 +3266,9 @@ public class OrePrefixes {
         if (StatCollector.canTranslate(phraseKey) && material.getLocalizedName()
             .trim()
             .indexOf(' ') != -1) {
-            return GTInflectionManager.formatInflection(phraseKey, material.getLocalizedNameKey());
+            return GTInflectionManager.formatInflection(phraseKey, formatterKeys);
         }
-        return GTInflectionManager.formatInflection(prefixKey, material.getLocalizedNameKey());
+        return GTInflectionManager.formatInflection(prefixKey, formatterKeys);
     }
 
     /**
