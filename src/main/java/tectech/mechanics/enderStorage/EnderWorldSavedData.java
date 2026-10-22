@@ -33,6 +33,10 @@ public class EnderWorldSavedData extends WorldSavedData {
     private static final String ENDER_LIQUID_TAG_VERSION = DATA_NAME + "_Version";
 
     private Map<EnderLinkTag, EnderFluidContainer> EnderLiquidTagLink = new HashMap<>();
+    /**
+     * Channels of covers saved before the channel moved into the cover itself. Entries are handed over to their cover
+     * on its first tick and dropped; the rest is kept so that covers in unloaded chunks can still claim theirs later.
+     */
     private Map<EnderLinkTank, EnderLinkTag> EnderLiquidTankLink = new HashMap<>();
 
     public EnderWorldSavedData() {
@@ -122,7 +126,8 @@ public class EnderWorldSavedData extends WorldSavedData {
         NBTTagList tags = new NBTTagList();
 
         EnderLiquidTagLink.forEach((tag, container) -> {
-            if (usedTags.contains(tag)) {
+            // channels are owned by the covers now, so a channel is kept as long as it holds something
+            if (usedTags.contains(tag) || !container.isEmpty()) {
                 NBTTagCompound entry = new NBTTagCompound();
                 entry.setTag("k", tag.save());
                 entry.setTag("v", container.save());
@@ -162,40 +167,19 @@ public class EnderWorldSavedData extends WorldSavedData {
         return getEnderLiquidLink().get(tag);
     }
 
-    public static EnderLinkTag getEnderLinkTag(IFluidHandler handler) {
-        EnderLinkTank tank = new EnderLinkTank(handler);
-        EnderLinkTag tag = getEnderLiquidTankLink().get(tank);
+    /**
+     * Returns the channel that was bound to this tank's position before channels moved into the cover, and forgets it.
+     *
+     * @return The channel, or null if there is none left for this position.
+     */
+    public static EnderLinkTag takeLegacyLink(IFluidHandler handler) {
+        Map<EnderLinkTank, EnderLinkTag> links = getEnderLiquidTankLink();
 
-        if (tag != null && Objects.equals(tag.getFrequency(), "")) {
-            tag = null;
-        }
+        if (links.isEmpty()) return null;
 
-        return tag;
-    }
+        EnderLinkTag tag = links.remove(new EnderLinkTank(handler));
 
-    public static void bindEnderLinkTag(IFluidHandler handler, EnderLinkTag tag) {
-        EnderLinkTank tank = new EnderLinkTank(handler);
-
-        if (!tag.equals(getEnderLiquidTankLink().get(tank))) {
-            unbindTank(handler);
-
-            getEnderLiquidTankLink().remove(tank);
-            getEnderLiquidTankLink().put(tank, tag);
-        }
-    }
-
-    public static void unbindTank(IFluidHandler handler) {
-        EnderLinkTank tank = new EnderLinkTank(handler);
-        EnderLinkTag oldTag = getEnderLiquidTankLink().remove(tank);
-
-        if (oldTag != null) {
-            boolean isReferenced = getEnderLiquidTankLink().values()
-                .contains(oldTag);
-
-            if (!isReferenced) {
-                getEnderLiquidLink().remove(oldTag);
-            }
-        }
+        return tag == null || Objects.equals(tag.getFrequency(), "") ? null : tag;
     }
 
     @SubscribeEvent
