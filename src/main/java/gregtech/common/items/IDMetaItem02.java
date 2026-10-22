@@ -22,7 +22,7 @@ public enum IDMetaItem02 {
     Bottle_Vodka(105),
     Bottle_Leninade(106),
     Bottle_Mineral_Water(107),
-    Bottle_Salty_Water(108),
+    Bottle_Salt_Water(108),
     Bottle_Reed_Water(109),
     Bottle_Rum(110),
     Bottle_Pirate_Brew(111),
