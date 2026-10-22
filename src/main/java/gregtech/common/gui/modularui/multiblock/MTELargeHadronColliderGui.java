@@ -521,7 +521,9 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         int finalRate = (int) result[1];
         long finalEUt = (long) result[2];
 
-        long collisionEnergyeV = (long) (finalBeamEnergyKeV * 2 * 1000); // x2 for collision, and conversion keV->eV
+        // collision multiplier, and conversion keV->eV
+        long collisionEnergyeV = (long) (finalBeamEnergyKeV * MTELargeHadronCollider.COLLISION_ENERGY_MULTIPLIER
+            * 1000);
 
         return EnumChatFormatting.GREEN + format(collisionEnergyeV)
             + "eV"
