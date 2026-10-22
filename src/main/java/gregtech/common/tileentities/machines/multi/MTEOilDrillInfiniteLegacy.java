@@ -12,6 +12,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEOilDrillInfiniteLegacy extends MTEOilDrillBase {
 
     public MTEOilDrillInfiniteLegacy(int aID, String aName, String aNameRegional) {

@@ -20,8 +20,10 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -48,8 +50,11 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseOven>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final float SPEED_BONUS = 0.5f;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 3;
@@ -100,10 +105,12 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Coke Oven")
-            .addInfo("Industrial Charcoal producer")
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addInfo("EU/t is not affected by Coil Tier")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "pyrolyse-oven"),
+                ImmutableMap.of())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 6, 5, true)
             .addController("Front center, 2nd layer")
@@ -120,6 +127,7 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

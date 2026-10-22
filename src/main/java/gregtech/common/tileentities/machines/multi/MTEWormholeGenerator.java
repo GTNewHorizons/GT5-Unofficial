@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -34,11 +35,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -84,6 +87,7 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeGenerator>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -983,17 +987,14 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
         // spotless:off
         tt.addMachineType("Wormhole Generator, MWG")
-            .addInfo("Transfers EU between two wormhole generators")
-            .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot")
-            .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate")
-            .addInfo("If the transfer rate is completely stable, the transfer efficiency is " + String.format("%.1f", TRANSFER_EFFICIENCY * 100.0) + "%")
-            .addInfo("EU will only be transferred if there is space in the laser source hatch")
-            .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side")
-            .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started")
-            .addInfo("Right click the controller with a screwdriver to disable overclocking")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "wormhole-generator"),
+                ImmutableMap.<String, Object>builder()
+                    .put("transfer_efficiency", formatNumber(TRANSFER_EFFICIENCY * 100))
+                    .put("overclock_limit", MAX_OVERCLOCKS)
+                    .build())
             .addSupportAny()
             .beginStructureBlock(7, 7, 7, true)
             .addEnergyHatchGlassTier()
@@ -1008,13 +1009,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addMaintenanceHatch("1", "Any high power casing", 1)
             .addInputBus("1+", "Any high power casing", 1)
             .addStructureInfo("")
-            .addStructureFooter("Insert an entangled singularity into the controller to link it with another one")
-            .addStructureFooter("Each laser target hatch must have a corresponding laser source hatch")
-            .addStructureFooter("on the other linked generator on the opposite side")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         // spotless:on
-
         return tt;
     }
 

@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -57,6 +58,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.MTETranscendentPlasmaMixerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETranscendentPlasmaMixer>
     implements ISurvivalConstructable {
 
@@ -105,11 +107,9 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Transcendent Mixer, TPM")
-            .addInfo("Assisting in all your DTPF needs!")
-            .addInfo("Set the amount of parallels in the controller menu")
-            .addInfo("All inputs scale, except time...")
-            .addInfo("Power is only pulled from wireless networks")
+            .addMarkdown(new ResourceLocation("gregtech", "transcendent-plasma-mixer"), ImmutableMap.of())
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front center, 4th layer")
             .addCasing("48", "Dimensionally Transcendent Casing", false)
@@ -119,6 +119,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addInputHatch("1+", "Any injection casing", 1)
             .addOutputHatch("1+", "Any injection casing", 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

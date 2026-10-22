@@ -20,6 +20,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEToxicResidueSensorGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEToxicResidueSensor extends MTEHatch {
 
     private int threshold = 0;

@@ -45,9 +45,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -89,6 +91,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -127,21 +130,9 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Tree Farm, TGS")
-            .addInfo("Farms and harvests trees using EU")
-            .addInfo("Place a sapling in the controller slot")
-            .addInfo("Place a tool in an input bus")
-            .addInfo("Different tools are required for different outputs")
-            .addInfo("Advanced tools multiply output amount")
-            .addInfo("  Logs: Saw (1x), Buzzsaw (2x), Chainsaw (4x)")
-            .addInfo("  Saplings: Branch Cutter (1x), Grafter (4x)")
-            .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Electric Wire Cutter (4x)")
-            .addInfo("  Fruit: Knife (1x)")
-            .addInfo("Multiple tools can be used at the same time")
-            .addSeparator()
-            .addInfo("Work time is fixed at 5 seconds")
-            .addInfo("Energy Input Tier multiplies output further")
-            .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
+            .addMarkdown(new ResourceLocation("gregtech", "tree-farm"), ImmutableMap.of())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, true)
             .addController("Front bottom center")
@@ -158,6 +149,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

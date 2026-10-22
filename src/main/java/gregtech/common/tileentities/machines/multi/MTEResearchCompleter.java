@@ -14,11 +14,13 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -53,6 +55,7 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.tiles.TileNode;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchCompleter>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -360,9 +363,9 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Research Completer")
-            .addInfo("Completes Thaumcraft research notes using EU and Thaumcraft nodes")
-            .addInfo("Place nodes in the center row")
+            .addMarkdown(new ResourceLocation("gregtech", "research-completer"), ImmutableMap.of())
             .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
             .addController("Front center, 2nd layer")
             .addCasing("9-52", "Magical Machine Casing", false)
@@ -374,6 +377,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

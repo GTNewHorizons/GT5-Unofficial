@@ -23,11 +23,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -60,6 +62,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWashingPlant>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -108,9 +111,10 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Ore Washer, Simple Washer, OWP")
             .addBulkMachineInfo(4, 5f, 1f)
-            .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
+            .addMarkdown(new ResourceLocation("gregtech", "ore-washing-plant"), ImmutableMap.of())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center, 2nd layer")
@@ -124,6 +128,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addInputHatch("1+", "Any wash plant casing", 1)
             .addOutputBus("1+", "Any wash plant casing", 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

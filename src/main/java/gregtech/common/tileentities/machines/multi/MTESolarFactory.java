@@ -13,10 +13,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.copyAmount;
 import static gregtech.api.util.GTUtility.copyAmountUnsafe;
-import static net.minecraft.util.EnumChatFormatting.AQUA;
-import static net.minecraft.util.EnumChatFormatting.BOLD;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
-import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.List;
 
@@ -25,6 +22,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -33,6 +31,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -43,6 +42,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -64,9 +64,9 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -394,31 +394,17 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Solar Factory")
-            .addInfo("Controller block for the Solar Factory")
-            .addInfo("Produces solar panels in bulk")
-            .addInfo("The structure has 3 tiers, each allowing greater production than the last")
-            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2" + WHITE + BOLD + " and above:")
-            .addInfo(GREEN + "  Supports Multi-Amp energy hatches")
-            .addInfo("  25% more outputs for every Wafer Tier used above the minimum required")
-            .addInfo("  The bonus to output occurs after parallels, and cannot be greater than 100%")
-            .addInfo("  The recipes shown in NEI display the minimum Wafer Tier required")
-            .addInfo("  LV-LuV Solar Panels can be made without the previous panel, but at a higher cost")
-            .addInfo(
-                "  " + EnumChatFormatting.WHITE
-                    + "Precise Casing"
-                    + EnumChatFormatting.GRAY
-                    + " Tier determines "
-                    + TooltipHelper.parallelText("Parallels"))
-            .addInfo(
-                "  " + tieredTextLine("Mk-I", "Mk-II", "Mk-III", "Mk-IV")
-                    + "->"
-                    + tieredTextLine("8", "16", "32", "64")
-                    + " Parallels")
-            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3" + WHITE + BOLD + ":")
-            .addInfo(GREEN + "  Supports Laser energy hatches")
-            .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
-            .addInfo("  Bonus per increased Wafer Tier is raised to 50%")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "solar-factory"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier_lv", VoltageIndex.LV)
+                    .put("tier_luv", VoltageIndex.LuV)
+                    .put("tier_zpm", VoltageIndex.ZPM)
+                    .put("tier_uv", VoltageIndex.UV)
+                    .build())
+            .addSupportAny()
             .beginStructureBlock(9, 10, 8, false)
             .addController("Front bottom center")
             .addEnergyHatch("1+", "Any machine casing", 1)
@@ -449,6 +435,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import cpw.mods.fml.relauncher.Side;
@@ -40,6 +42,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -67,6 +70,7 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements IMetricsExporter, IWorkAreaProvider {
 
     protected int mTier = 1;
@@ -485,30 +489,23 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         String casings = getCasingBlockItem().get(0)
             .getDisplayName();
 
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
+        String cycleTimeDisplay = GTUtility.formatTime(baseCycleTime);
+
         final String chunkDiameter = formatNumber(chunkRadiusConfig * 2L);
         final String blockDiameter = formatNumber(chunkRadiusConfig * 32L);
+
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Miner, MBM")
-            .addInfo("Use a Screwdriver to configure working area")
-            .addInfo(
-                "Maximum area is " + chunkDiameter
-                    + "x"
-                    + chunkDiameter
-                    + " chunks ("
-                    + blockDiameter
-                    + "x"
-                    + blockDiameter
-                    + " blocks)")
-            .addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
-            .addInfo("Use Soldering iron to turn off chunk mode")
-            .addInfo("Use Wire Cutter to toggle replacing mined blocks with cobblestone")
-            .addInfo("Requires Drilling Fluid to operate")
-            .addInfo("Gives ~3x as much crushed ore vs normal processing")
-            .addInfo("Fortune bonus of " + formatNumber(mTier + 3) + ". Only works on small ores")
-            .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
-                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "ore-drilling-plant"),
+                ImmutableMap.<String, Object>builder()
+                    .put("chunk_diameter", chunkDiameter)
+                    .put("block_diameter", blockDiameter)
+                    .put("fortune", formatNumber(mTier + 3))
+                    .put("cycle_time", cycleTimeDisplay)
+                    .build())
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
@@ -521,6 +518,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
