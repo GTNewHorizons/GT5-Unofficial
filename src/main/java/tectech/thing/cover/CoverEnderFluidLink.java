@@ -39,8 +39,8 @@ public class CoverEnderFluidLink extends Cover {
     private String frequency = "";
     private boolean checkedLegacyBinding;
     // TODO: REMOVE AFTER 2.9
-    public static final int IMPORT_EXPORT_MASK = 0b0001;
-    public static final int PUBLIC_PRIVATE_MASK = 0b0010;
+    private static final int IMPORT_EXPORT_MASK = 0b0001;
+    private static final int PUBLIC_PRIVATE_MASK = 0b0010;
 
     public CoverEnderFluidLink(@NotNull CoverContext context, ITexture coverFGTexture) {
         super(context, coverFGTexture);
@@ -57,12 +57,8 @@ public class CoverEnderFluidLink extends Cover {
         }
     }
 
-    public static boolean testBit(int coverData, int bitMask) {
+    private static boolean testBit(int coverData, int bitMask) {
         return (coverData & bitMask) != 0;
-    }
-
-    public static int toggleBit(int coverData, int bitMask) {
-        return (coverData ^ bitMask);
     }
 
     @Override
