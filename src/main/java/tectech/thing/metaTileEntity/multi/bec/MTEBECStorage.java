@@ -32,7 +32,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import appeng.api.storage.data.IAEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -42,7 +41,7 @@ import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.IGTHatchAdder;
@@ -143,7 +142,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         StructureWrapperTooltipBuilder<MTEBECStorage> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         // spotless:off
-        tt.addMachineType("BEC Storage, Entangled Condensate Storage")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_storage"))
             .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-storage"))
             .addSupportAny();
 
@@ -160,7 +159,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
             .addMiscHatch("1-4", "Bose-Einstein Condensate Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.bec-hatch-pos"), 2)
             .addMiscHatch("0+", "Bose-Einstein Condensate Detector Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }
@@ -200,7 +199,17 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 .removeIf(e -> e.getLongValue() <= 0);
         }
 
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        return SimpleCheckRecipeResult.ofSuccess("routing");
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRunningText() {
+        return false;
     }
 
     public double getAmountStored() {
