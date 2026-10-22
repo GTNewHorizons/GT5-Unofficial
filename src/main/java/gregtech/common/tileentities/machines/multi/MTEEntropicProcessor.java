@@ -18,8 +18,10 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -45,11 +47,11 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import io.netty.buffer.ByteBuf;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntropicProcessor>
     implements ISurvivalConstructable, IStructureProvider<MTEEntropicProcessor>, ICasingTextureProvider {
 
@@ -191,23 +193,20 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Entropic Processor")
-            .addInfo("Processes substances by increasing or decreasing their entropy")
-            .addSeparator()
-            .addInfo("Has " + TooltipHelper.parallelText(8) + " parallels by default")
-            .addInfo(
-                "Using Advanced Alchemical Constructs increases the machine's parallels to "
-                    + TooltipHelper.parallelText(32))
-            .addSeparator()
-            .addInfo("Mixes fluids or solids with a magical catalyst")
-            .addInfo("Catalyst is consumed by the recipe, then returned upon completion")
-            .addSeparator()
-            .addInfo("Performs one perfect overclock per Casing Tier (Thaumium = 1 perfect OC)")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "entropic-processor"),
+                ImmutableMap.<String, Object>builder()
+                    .put("base_parallels", 8)
+                    .put("advanced_parallels", 32)
+                    .build())
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front center")
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CASING)
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CONSTRUCT)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

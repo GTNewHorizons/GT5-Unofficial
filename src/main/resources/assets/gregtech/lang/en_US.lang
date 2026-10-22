@@ -2281,9 +2281,7 @@ GT5U.tooltip.windmill.any_type=%s (any)
 GT5U.tooltip.windmill.any_block=Any %s
 
 # Tooltip flavor text
-gt.mbtt.flavor.exothermic_hearth=Never one...
 gt.mbtt.flavor.spinmatron=Maahes guides the way...
-gt.mbtt.flavor.endothermic_fridge=... without the other!
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)

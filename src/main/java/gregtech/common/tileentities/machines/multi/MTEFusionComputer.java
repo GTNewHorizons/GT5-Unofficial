@@ -195,7 +195,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     .build())
             .beginStructureBlock(15, 3, 15, false)
             .addController(translateToLocal("gt.mbtt.structure.middle_center_2nd_layer"))
-            .addCasing("79-123",  new ItemStack(getCasing(), 1, getCasingMeta()).getDisplayName(), false)
+            .addCasing("79-123", new ItemStack(getCasing(), 1, getCasingMeta()).getDisplayName(), false)
             .addCasing("32", new ItemStack(getFusionCoil(), 1, getFusionCoilMeta()).getDisplayName(), false)
             .addEnergyHatch("1-16", StatCollector.translateToLocalFormatted("gt.mbtt.structure.specific_casings_on_each_curve", GTValues.VN[tier()]), 2)
             .addInputHatch("1+", translateToLocal("gt.mbtt.structure.specific_casings_on_each_top_or_bottom"), 1)

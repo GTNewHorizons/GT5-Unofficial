@@ -169,7 +169,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cutting_machine"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-cutting-machine"),
-                ImmutableMap.<String, Object>builder().build())
+                ImmutableMap.of())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
