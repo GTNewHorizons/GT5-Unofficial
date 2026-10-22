@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.STEAM_PER_WATER;
@@ -226,7 +225,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         if (isSuperheated()) {
-            tt.addMachineType("Boiler")
+            tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.boiler"))
                 .addMarkdown(
                     new ResourceLocation("gregtech", "large-boiler-superheated"),
                     ImmutableMap.<String, Object>builder()
@@ -235,10 +234,9 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         .put("heat_seconds", String.format("%.2f", (double) SECONDS_PER_HEAT_UNIT / getEfficiencyIncrease()))
                         .put("throttle_amount", formatNumber(THROTTLE_DISPLAY_AMOUNT))
                         .put("multi_fuel_boost", formatNumber((double) 100 / MULTI_FUEL_BOOST_DIVISOR) + "%")
-                        .put("fluid_unit", getFluidUnit())
                         .build());
         } else {
-            tt.addMachineType("Boiler")
+            tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.boiler"))
                 .addMarkdown(
                     new ResourceLocation("gregtech", "large-boiler"),
                     ImmutableMap.<String, Object>builder()
@@ -247,23 +245,22 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         .put("heat_seconds", String.format("%.2f", (double) SECONDS_PER_HEAT_UNIT / getEfficiencyIncrease()))
                         .put("throttle_amount", formatNumber(THROTTLE_DISPLAY_AMOUNT))
                         .put("multi_fuel_boost", formatNumber((double) 100 / MULTI_FUEL_BOOST_DIVISOR) + "%")
-                        .put("fluid_unit", getFluidUnit())
                         .build());
         }
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 3, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("20-28", getCasingMaterial() + " " + getCasingBlockType(), false)
-            .addCasing("5-15", getCasingMaterial() + " Firebox Casing", false)
-            .addCasing("4", getCasingMaterial() + " Pipe Casing", false)
-            .addMaintenanceHatch("1", "Any machine or firebox casing", 1)
-            .addMufflerHatch("1", "Any machine or firebox casing", 1)
-            .addInputBus("0+", "Any machine or firebox casing", 1)
-            .addInputHatch("1+", "Any machine or firebox casing", 1)
-            .addOutputHatch("1+", "Any machine or firebox casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("20-28", casing.getLocalizedName(), false)
+            .addCasing("5-15", fireboxCasing.getLocalizedName(), false)
+            .addCasing("4", pipeCasing.getLocalizedName(), false)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_or_firebox_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_or_firebox_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_or_firebox_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_or_firebox_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_or_firebox_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter("Use solid fuel, liquid fuel, or both")
-            .addStructureFooter("Use regular or distilled water")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.large_boiler_fuel"))
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.large_boiler_water"))
             .toolTipFinisher();
         // spotless:on
         return tt;

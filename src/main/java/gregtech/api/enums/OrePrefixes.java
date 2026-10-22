@@ -2850,6 +2850,7 @@ public class OrePrefixes {
             if (prefix == orePluto && oreDictName.equals("orePlutonium")) return ore;
             if (prefix == orePluto && oreDictName.equals("orePlutonium241")) return ore;
             if (prefix == oreTitan && oreDictName.equals("oreTitanium")) return ore;
+            if (prefix == oreTitan && oreDictName.equals("oreTitanite")) return ore;
             if (prefix == oreCallisto && oreDictName.equals("oreCallistoIce")) return ore;
             if (prefix == oreNether && oreDictName.equals("oreNetherQuartz")) return ore;
             if (prefix == oreNether && oreDictName.equals("oreNetherStar")) return ore;
