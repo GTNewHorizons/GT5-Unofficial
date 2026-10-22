@@ -20,12 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -64,8 +66,11 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<MTEIndustrialLaserEngraver>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int GLASS_TIER_FOR_LAZER = VoltageIndex.UEV;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialLaserEngraver> STRUCTURE_DEFINITION = StructureDefinition
@@ -219,35 +224,23 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Laser Engraver, HILE")
-            .addStaticSpeedInfo(3.5F)
-            .addStaticEuEffInfo(0.8F)
-            .addInfo("Laser Source Hatch determines maximum Recipe Tier and parallels")
-            .addInfo("Recipe Tier and overclocks limited to Laser Source Tier + 1")
-            .addInfo(
-                "When using a " + GTValues.TIER_COLORS[VoltageIndex.UEV]
-                    + GTValues.VN[VoltageIndex.UEV]
-                    + EnumChatFormatting.GRAY
-                    + "+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches")
-            .addInfo("Parallels equal to the cube root of laser source amperage input")
-            .addInfo(
-                EnumChatFormatting.WHITE + "Glass "
-                    + EnumChatFormatting.GRAY
-                    + "Tier determines maximum Laser Source Tier")
-            .addInfo("Use screwdriver to disable laser rendering")
-            .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-laser-engraver"),
+                ImmutableMap.<String, Object>builder()
+                    .put("speed", 350)
+                    .put("eu_eff", 80)
+                    .put("tier", GTUtility.getColoredTierNameForTooltip(GLASS_TIER_FOR_LAZER))
+                    .build())
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front bottom center")
             .addCasing("35-58", "Laser Containment Casing", false)
             .addCasing("9", "Tungstensteel Frame Box", false)
             .addCasing("3", "Any Tiered Glass", true)
             .addCasing("1", "Laser Resistant Plate", false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
-                "Casing above glass",
-                2)
+            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "Casing above glass", 2)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputAny("1+", "Any casing", 1)
@@ -255,6 +248,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -297,7 +291,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
         checkCasingMin(errors, mCasingAmount, 35);
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (laserSource.mTier < VoltageIndex.UEV) {
+            if (laserSource.mTier < GLASS_TIER_FOR_LAZER) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.laser_need_uev"));
             } else {
                 int count = mEnergyHatches.size() + mExoticEnergyHatches.size();

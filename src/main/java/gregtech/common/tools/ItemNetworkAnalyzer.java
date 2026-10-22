@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -32,6 +31,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTUtility;
 import gregtech.common.networkanalyzer.NetworkAnalyzerData;
 import gregtech.common.networkanalyzer.NetworkAnalyzerData.AnalyzerModes;
 import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
@@ -93,13 +93,7 @@ public class ItemNetworkAnalyzer extends ItemTool {
                 final DimensionalCoord coord = new DimensionalCoord(tile);
                 setLocation(stack, coord);
 
-                player.addChatMessage(
-                    new ChatComponentText(
-                        StatCollector.translateToLocalFormatted(
-                            "gt.NetworkAnalyzer.bound",
-                            String.valueOf(coord.x),
-                            String.valueOf(coord.y),
-                            String.valueOf(coord.z))));
+                GTUtility.sendChatTrans(player, "gt.NetworkAnalyzer.bound", coord.x, coord.y, coord.z);
 
                 return true;
             }
@@ -166,8 +160,7 @@ public class ItemNetworkAnalyzer extends ItemTool {
                     ItemStackNBT.removeTag(stack, "dim");
                     NetworkAnalyzerPlayerTracker.reset(player);
                     GTValues.NW.sendToPlayer(new GTPacketNetworkAnalyzer(new NetworkAnalyzerData()), player);
-                    player.addChatMessage(
-                        new ChatComponentText(StatCollector.translateToLocal("gt.NetworkAnalyzer.target_lost")));
+                    GTUtility.sendChatTrans(player, "gt.NetworkAnalyzer.target_lost");
                 }
 
         }
