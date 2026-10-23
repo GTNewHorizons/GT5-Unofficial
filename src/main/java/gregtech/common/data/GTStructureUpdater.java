@@ -200,8 +200,13 @@ public class GTStructureUpdater {
                     }
                 }
                 if (doUpdate && updated) {
-                    for (IMachineBlockUpdateable controller : controllers) {
-                        controller.onMachineBlockUpdate();
+                    if (first != null) {
+                        first.onMachineBlockUpdate();
+                        if (controllers != null) {
+                            for (IMachineBlockUpdateable controller : controllers) {
+                                controller.onMachineBlockUpdate();
+                            }
+                        }
                     }
                 }
             }
