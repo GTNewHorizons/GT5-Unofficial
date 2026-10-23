@@ -5,13 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.World;
 
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
@@ -34,21 +37,22 @@ public class GTStructureUpdater {
 
     private static class PerWorldStructureUpdater implements IWorldAccess {
 
-        private Long2ObjectOpenHashMap<List<IMachineBlockUpdateable>> map = new Long2ObjectOpenHashMap<>();
+        private final Long2ObjectOpenHashMap<BlockRecord> map = new Long2ObjectOpenHashMap<>();
+        private final World world;
 
         private PerWorldStructureUpdater(World world) {
+            this.world = world;
             world.addWorldAccess(this);
         }
 
         private void addCoord(IMachineBlockUpdateable controller, long packedCoord) {
-            map.computeIfAbsent(packedCoord, $ -> new ArrayList<>())
-                .add(controller);
+            map.computeIfAbsent(packedCoord, packed -> new BlockRecord(world, packed)).controllers.add(controller);
         }
 
         private void removeCoord(IMachineBlockUpdateable controller, long packedCoord) {
-            List<IMachineBlockUpdateable> controllers = map.get(packedCoord);
-            controllers.remove(controller);
-            if (controllers.isEmpty()) {
+            BlockRecord record = map.get(packedCoord);
+            record.controllers.remove(controller);
+            if (record.controllers.isEmpty()) {
                 map.remove(packedCoord);
             }
         }
@@ -56,9 +60,10 @@ public class GTStructureUpdater {
         @Override
         public void markBlockForUpdate(int x, int y, int z) {
             long packed = CoordinatePacker.pack(x, y, z);
-            List<IMachineBlockUpdateable> controllers = map.get(packed);
-            if (controllers == null) return;
-            for (IMachineBlockUpdateable controller : controllers) {
+            BlockRecord record = map.get(packed);
+            if (record == null) return;
+            if (!record.checkForUpdate(world, packed)) return;
+            for (IMachineBlockUpdateable controller : record.controllers) {
                 controller.onMachineBlockUpdate();
             }
         }
@@ -125,6 +130,46 @@ public class GTStructureUpdater {
 
         @Override
         public void onStaticEntitiesChanged() {
+
+        }
+
+        private static class BlockRecord {
+
+            private Block block;
+            private int metadata;
+            private short mid;
+            private final List<IMachineBlockUpdateable> controllers = new ArrayList<>();
+
+            private BlockRecord(World world, long packed) {
+                checkForUpdate(world, packed);
+            }
+
+            boolean checkForUpdate(World world, long packed) {
+                int x = CoordinatePacker.unpackX(packed);
+                int y = CoordinatePacker.unpackY(packed);
+                int z = CoordinatePacker.unpackZ(packed);
+                if (!world.blockExists(x, y, z)) return false;
+                boolean updated = false;
+                Block newBlock = world.getBlock(x, y, z);
+                if (block != newBlock) {
+                    block = newBlock;
+                    updated = true;
+                }
+                int newMeta = world.getBlockMetadata(x, y, z);
+                if (metadata != newMeta) {
+                    metadata = newMeta;
+                    updated = true;
+                }
+                TileEntity newTileEntity = world.getTileEntity(x, y, z);
+                if (newTileEntity instanceof IGregTechTileEntity igte) {
+                    int newMID = igte.getMetaTileID();
+                    if (mid != newMID) {
+                        mid = (short) newMID;
+                        updated = true;
+                    }
+                }
+                return updated;
+            }
 
         }
     }
