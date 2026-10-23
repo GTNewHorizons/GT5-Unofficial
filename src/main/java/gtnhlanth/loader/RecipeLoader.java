@@ -2,6 +2,7 @@ package gtnhlanth.loader;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
+import static gregtech.api.recipe.RecipeEnvironment.CLEANROOM;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
@@ -512,7 +513,7 @@ public class RecipeLoader {
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK1)))
             .outputChances(10000)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .duration(144 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(autoclaveRecipes);
@@ -524,7 +525,7 @@ public class RecipeLoader {
             .itemOutputs(new ItemStack(LanthItemList.SUBSTRATE_PRECURSOR))
             .duration(60 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_LuV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(autoclaveRecipes);
 
         // Now to deposit nitride
@@ -537,7 +538,6 @@ public class RecipeLoader {
             .duration(30 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .specialValue(3200)
-            .requiresCleanRoom()
             .addTo(blastFurnaceRecipes);
 
         for (ItemStack lens : OreDictionary.getOres("craftingLensYellow")) {
@@ -547,7 +547,7 @@ public class RecipeLoader {
                 .itemOutputs(new ItemStack(LanthItemList.MASKED_MASK))
                 .duration(30 * GTRecipeBuilder.SECONDS)
                 .eut(TierEU.RECIPE_IV)
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .addTo(WaferEngravingRecipes);
 
         }
@@ -559,7 +559,7 @@ public class RecipeLoader {
             .itemOutputs(new ItemStack(LanthItemList.ETCHED_MASK_1))
             .duration(60 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_LuV)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(autoclaveRecipes);
 
         // Etch pt. 2 with LiCl
@@ -622,7 +622,7 @@ public class RecipeLoader {
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
-                        .requiresCleanRoom()
+                        .requiresEnvironment(CLEANROOM)
                         .addTo(UniversalChemical);
 
                 } else if (mask == MaskList.PrHPIC) {
@@ -635,7 +635,7 @@ public class RecipeLoader {
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrHPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
-                        .requiresCleanRoom()
+                        .requiresEnvironment(CLEANROOM)
                         .addTo(UniversalChemical);
 
                 } else if (mask == MaskList.PrNPIC) {
@@ -649,7 +649,7 @@ public class RecipeLoader {
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
-                        .requiresCleanRoom()
+                        .requiresEnvironment(CLEANROOM)
                         .addTo(UniversalChemical);
 
                 } else if (mask == MaskList.PrQPIC) {
@@ -664,7 +664,7 @@ public class RecipeLoader {
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrQPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
-                        .requiresCleanRoom()
+                        .requiresEnvironment(CLEANROOM)
                         .addTo(UniversalChemical);
 
                 } else if (mask == MaskList.PrCPU) {
@@ -678,7 +678,7 @@ public class RecipeLoader {
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrCPU)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
-                        .requiresCleanRoom()
+                        .requiresEnvironment(CLEANROOM)
                         .addTo(UniversalChemical);
 
                 } else if (mask == MaskList.PrNCPU) {
@@ -691,7 +691,7 @@ public class RecipeLoader {
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNCPU)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
-                        .requiresCleanRoom()
+                        .requiresEnvironment(CLEANROOM)
                         .addTo(UniversalChemical);
 
                     GTValues.RA.stdBuilder()
@@ -702,7 +702,7 @@ public class RecipeLoader {
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNCPU)))
                         .duration(45 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
-                        .requiresCleanRoom()
+                        .requiresEnvironment(CLEANROOM)
                         .addTo(UniversalChemical);
 
                 }
@@ -720,7 +720,7 @@ public class RecipeLoader {
                         new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
                         GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.EnderPearl, Shapes.lens, 1)))
                     .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
-                    .requiresCleanRoom()
+                    .requiresEnvironment(CLEANROOM)
                     .duration(120 * SECONDS)
                     .eut(mask.getEngraverEUt())
                     .addTo(WaferEngravingRecipes);
@@ -732,7 +732,7 @@ public class RecipeLoader {
                         new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
                         GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.EnderEye, Shapes.lens, 1)))
                     .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
-                    .requiresCleanRoom()
+                    .requiresEnvironment(CLEANROOM)
                     .duration(120 * SECONDS)
                     .eut(mask.getEngraverEUt())
                     .addTo(WaferEngravingRecipes);
@@ -758,7 +758,7 @@ public class RecipeLoader {
                                     FluidShapes.fluidLiquid,
                                     (int) (mask.getMaxUses() * 4L * 50 * 3 / 4)))
                             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
-                            .requiresCleanRoom()
+                            .requiresEnvironment(CLEANROOM)
                             .duration(120 * SECONDS)
                             .eut(mask.getEngraverEUt())
                             .addTo(WaferEngravingRecipes);
@@ -770,7 +770,7 @@ public class RecipeLoader {
                                 new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
                                 GTUtility.copyAmount(0, lens))
                             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
-                            .requiresCleanRoom()
+                            .requiresEnvironment(CLEANROOM)
                             .duration(120 * SECONDS)
                             .eut(mask.getEngraverEUt())
                             .addTo(WaferEngravingRecipes);
@@ -3663,7 +3663,7 @@ public class RecipeLoader {
                     GTUtility.copyAmount(0, itemStack),
                     MaterialLibAPI.getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.gemExquisite, 1))
                 .itemOutputs(ItemList.Circuit_Chip_CrystalSoC2.get(16))
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .eut(160000)
                 .duration(40 * SECONDS)
                 .addTo(laserEngraverRecipes);
@@ -3676,7 +3676,7 @@ public class RecipeLoader {
                     GTUtility.copyAmount(0, itemStack),
                     MaterialLibAPI.getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.gemExquisite, 1))
                 .itemOutputs(ItemList.Circuit_Chip_CrystalSoC.get(16))
-                .requiresCleanRoom()
+                .requiresEnvironment(CLEANROOM)
                 .eut(160000)
                 .duration(40 * SECONDS)
                 .addTo(laserEngraverRecipes);

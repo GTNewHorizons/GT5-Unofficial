@@ -51,9 +51,6 @@ import gregtech.api.util.GTUtility;
 
 public class BWUtil {
 
-    @Deprecated
-    public static final int CLEANROOM = -200;
-
     public static int calculateRecipeEU(Material material, int defaultRecipeEUPerTick) {
         int tier = MaterialUtils.processingMaterialTierEU(material);
         return tier == 0 ? defaultRecipeEUPerTick : tier;
