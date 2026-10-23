@@ -46,13 +46,14 @@ public class GTStructureUpdater {
         }
 
         private void addCoord(IMachineBlockUpdateable controller, long packedCoord) {
-            map.computeIfAbsent(packedCoord, packed -> new BlockRecord(world, packed)).controllers.add(controller);
+            map.computeIfAbsent(packedCoord, packed -> new BlockRecord(world, packed))
+                .add(controller);
         }
 
         private void removeCoord(IMachineBlockUpdateable controller, long packedCoord) {
             BlockRecord record = map.get(packedCoord);
-            record.controllers.remove(controller);
-            if (record.controllers.isEmpty()) {
+            record.remove(controller);
+            if (record.isEmpty()) {
                 map.remove(packedCoord);
             }
         }
@@ -62,10 +63,7 @@ public class GTStructureUpdater {
             long packed = CoordinatePacker.pack(x, y, z);
             BlockRecord record = map.get(packed);
             if (record == null) return;
-            if (!record.checkForUpdate(world, packed)) return;
-            for (IMachineBlockUpdateable controller : record.controllers) {
-                controller.onMachineBlockUpdate();
-            }
+            record.checkForUpdate(world, packed);
         }
 
         @Override
@@ -138,17 +136,50 @@ public class GTStructureUpdater {
             private Block block;
             private int metadata;
             private short mid;
-            private final List<IMachineBlockUpdateable> controllers = new ArrayList<>();
+            IMachineBlockUpdateable first;
+            private List<IMachineBlockUpdateable> controllers;
 
             private BlockRecord(World world, long packed) {
-                checkForUpdate(world, packed);
+                checkForUpdate(world, packed, false);
             }
 
-            boolean checkForUpdate(World world, long packed) {
+            void checkForUpdate(World world, long packed) {
+                checkForUpdate(world, packed, true);
+            }
+
+            void add(IMachineBlockUpdateable controller) {
+                if (first == null) {
+                    first = controller;
+                } else {
+                    if (controllers == null) {
+                        controllers = new ArrayList<>();
+                    }
+                    controllers.add(controller);
+                }
+            }
+
+            void remove(IMachineBlockUpdateable controller) {
+                if (first == controller) {
+                    if (controllers != null && !controllers.isEmpty()) {
+                        first = controllers.getLast();
+                        controllers.removeLast();
+                    } else {
+                        first = null;
+                    }
+                } else {
+                    controllers.remove(controller);
+                }
+            }
+
+            boolean isEmpty() {
+                return first == null;
+            }
+
+            void checkForUpdate(World world, long packed, boolean doUpdate) {
                 int x = CoordinatePacker.unpackX(packed);
                 int y = CoordinatePacker.unpackY(packed);
                 int z = CoordinatePacker.unpackZ(packed);
-                if (!world.blockExists(x, y, z)) return false;
+                if (!world.blockExists(x, y, z)) return;
                 boolean updated = false;
                 Block newBlock = world.getBlock(x, y, z);
                 if (block != newBlock) {
@@ -168,9 +199,12 @@ public class GTStructureUpdater {
                         updated = true;
                     }
                 }
-                return updated;
+                if (doUpdate && updated) {
+                    for (IMachineBlockUpdateable controller : controllers) {
+                        controller.onMachineBlockUpdate();
+                    }
+                }
             }
-
         }
     }
 }
