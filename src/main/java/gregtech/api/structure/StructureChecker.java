@@ -3,9 +3,6 @@ package gregtech.api.structure;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.GTMod;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.common.GTProxy;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -13,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureWalker;
 
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.structure.error.PositionedStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
