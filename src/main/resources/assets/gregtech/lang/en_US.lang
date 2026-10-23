@@ -9931,6 +9931,8 @@ gt.fakecircuitcomponent.name=Fake Circuit Component Item
 
 # ItemIntegratedCircuit
 gt.integrated_circuit.name=Programmed Circuit
+gt.integrated_circuit.configured.name=%1$s %2$s
+gt.integrated_circuit.configuration=%1$s %2$s
 
 # ItemWirelessHeadphones
 gt.WirelessHeadphones.name=Wireless Headphones
