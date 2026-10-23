@@ -47,6 +47,11 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
         super(aCosts);
     }
 
+    /** Returns the side length in chunks of the square area scanned with the given radius. */
+    public static int getScanDiameter(int radius) {
+        return 2 * radius + 1;
+    }
+
     @Override
     public ItemStack onItemRightClick(MetaBaseItem aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (!aWorld.isRemote) {
