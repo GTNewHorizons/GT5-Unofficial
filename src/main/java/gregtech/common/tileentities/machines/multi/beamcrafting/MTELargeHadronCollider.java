@@ -359,7 +359,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                     .put("nerf_power", formatNumber(RATE_NERF_POWER))
                     .put("nerf_power_qgp", formatNumber(RATE_NERF_POWER_QGP))
                     .put("nerf_power_magmatter", formatNumber(RATE_NERF_POWER_MAGMATTER))
-                    .put("tier", GTUtility.getColoredTierNameForTooltip(POWER_TIER))
+                    .put("tier", POWER_TIER)
                     .put("collision_multiplier", formatNumber(COLLISION_ENERGY_MULTIPLIER))
                     .build())
             .addSeparator()

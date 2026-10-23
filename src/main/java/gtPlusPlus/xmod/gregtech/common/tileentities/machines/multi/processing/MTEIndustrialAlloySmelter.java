@@ -132,7 +132,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
         tt.addMachineType(getMachineType())
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-alloy-smelter"),
-                ImmutableMap.of("heat_per_perfect_oc", formatNumber(HEAT_PER_PERFECT_OVERCLOCK)))
+                ImmutableMap.of("heat_per_poc", formatNumber(HEAT_PER_PERFECT_OVERCLOCK)))
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
