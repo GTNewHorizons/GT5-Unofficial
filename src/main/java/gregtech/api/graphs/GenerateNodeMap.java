@@ -12,19 +12,24 @@ import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
+import gregtech.api.metatileentity.implementations.MTECable;
 
 // generates the node map
 public abstract class GenerateNodeMap {
 
     // clearing the node map to make sure it is gone on reset
     public static void clearNodeMap(Node aNode, int aReturnNodeValue) {
+        aNode.mInvalid = true;
         if (aNode.mTileEntity instanceof BaseMetaPipeEntity tPipe) {
-            tPipe.setNode(null);
-            tPipe.setNodePath(null);
+            if (tPipe.getNode() == aNode) tPipe.setNode(null);
             if (aNode.mSelfPath != null) {
                 aNode.mSelfPath.clearPath();
                 aNode.mSelfPath = null;
             }
+        }
+        if (aNode.mUnroutedPaths != null) {
+            for (NodePath path : aNode.mUnroutedPaths) path.clearPath();
+            aNode.mUnroutedPaths = null;
         }
         for (byte side : ALL_VALID_SIDES) {
             final NodePath tPath = aNode.mNodePaths[side];
@@ -56,12 +61,14 @@ public abstract class GenerateNodeMap {
             if (side == aInvalidSide) {
                 continue;
             }
+            if (tMetaPipe != null && !tMetaPipe.isConnectedAtSide(side)) continue;
             final TileEntity tNextTileEntity = aPipe.getTileEntityAtSide(side);
-            if (tNextTileEntity == null || (tMetaPipe != null && !tMetaPipe.isConnectedAtSide(side))) continue;
+            if (tNextTileEntity == null) continue;
             final ArrayList<MetaPipeEntity> tNewPipes = new ArrayList<>();
             final Pair nextTileEntity = getNextValidTileEntity(tNextTileEntity, tNewPipes, side, tNodeMap);
+            Node tNextNode = null;
             if (nextTileEntity != null) {
-                final Node tNextNode = generateNode(
+                tNextNode = generateNode(
                     nextTileEntity.mTileEntity,
                     aPipeNode,
                     aNextNodeValue + 1,
@@ -78,6 +85,13 @@ public abstract class GenerateNodeMap {
                     aPipeNode.locks[i] = aPipeNode.returnValues.returnLock;
                     aPipeNode.mNodePaths[i].reloadLocks();
                 }
+            }
+            if (tNextNode == null && !tNewPipes.isEmpty()) {
+                // Loop-closing runs still need an owner so edits invalidate the routing tree.
+                final NodePath path = getNewPath(tNewPipes.toArray(new MetaPipeEntity[0]));
+                path.setNodeMap(aPipeNode);
+                if (aPipeNode.mUnroutedPaths == null) aPipeNode.mUnroutedPaths = new ArrayList<>();
+                aPipeNode.mUnroutedPaths.add(path);
             }
         }
         aPipe.reloadLocks();
@@ -102,14 +116,17 @@ public abstract class GenerateNodeMap {
             } else {
                 tPipeNode = getPipeNode(aNextNodeValue, oppositeSide, aTileEntity, aConsumers);
             }
+            tPipeNode.joinNodeMap(aPreviousNode);
             tPipe.setNode(tPipeNode);
             aNodeMap.add(tPipeNode);
             tPipeNode.mSelfPath = getNewPath(new MetaPipeEntity[] { tMetaPipe });
+            tPipeNode.mSelfPath.setNodeMap(tPipeNode);
             tThisNode = tPipeNode;
             if (tInvalidSide != ForgeDirection.UNKNOWN) {
                 final int iInvalid = tInvalidSide.ordinal();
                 tPipeNode.mNeighbourNodes[iInvalid] = aPreviousNode;
                 tPipeNode.mNodePaths[iInvalid] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
+                tPipeNode.mNodePaths[iInvalid].setNodeMap(tPipeNode);
                 final Lock lock = new Lock();
                 tPipeNode.mNodePaths[oppositeSide.ordinal()].lock = lock;
                 tPipeNode.locks[iInvalid] = lock;
@@ -121,8 +138,11 @@ public abstract class GenerateNodeMap {
         } else if (addConsumer(aTileEntity, oppositeSide, aNextNodeValue, aConsumers)) {
             final int oppositeSideOrdinal = oppositeSide.ordinal();
             final ConsumerNode tConsumeNode = aConsumers.get(aConsumers.size() - 1);
+            tConsumeNode.joinNodeMap(aPreviousNode);
+            aNodeMap.add(tConsumeNode);
             tConsumeNode.mNeighbourNodes[oppositeSideOrdinal] = aPreviousNode;
             tConsumeNode.mNodePaths[oppositeSideOrdinal] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
+            tConsumeNode.mNodePaths[oppositeSideOrdinal].setNodeMap(tConsumeNode);
             final Lock lock = new Lock();
             tConsumeNode.mNodePaths[oppositeSideOrdinal].lock = lock;
             aPreviousNode.returnValues.mReturnPath = tConsumeNode.mNodePaths[oppositeSideOrdinal];
@@ -132,34 +152,47 @@ public abstract class GenerateNodeMap {
         return tThisNode;
     }
 
-    // go over the pipes until we see a valid tile entity that needs a node
+    // Walk degree-two runs without consuming a stack frame per cable.
     protected Pair getNextValidTileEntity(TileEntity aTileEntity, ArrayList<MetaPipeEntity> aPipes, ForgeDirection side,
         HashSet<Node> aNodeMap) {
-        if (!isPipe(aTileEntity)) return new Pair(aTileEntity, side);
+        walk: while (true) {
+            if (!isPipe(aTileEntity)) return new Pair(aTileEntity, side);
 
-        final BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) aTileEntity;
-        final MetaPipeEntity tMetaPipe = (MetaPipeEntity) tPipe.getMetaTileEntity();
-        final Node tNode = tPipe.getNode();
-        if (tNode != null && aNodeMap.contains(tNode)) return null;
+            final BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) aTileEntity;
+            final MetaPipeEntity tMetaPipe = (MetaPipeEntity) tPipe.getMetaTileEntity();
+            final Node tNode = tPipe.getNode();
+            if (tNode != null && aNodeMap.contains(tNode)) return null;
 
-        final ForgeDirection tSideOpposite = side.getOpposite();
-        if (!tMetaPipe.isConnectedAtSide(tSideOpposite)) return null;
+            final ForgeDirection tSideOpposite = side.getOpposite();
+            if (!tMetaPipe.isConnectedAtSide(tSideOpposite)) return null;
 
-        final int tConnections = getNumberOfConnections(tMetaPipe);
-        if (tConnections != 2) return new Pair(aTileEntity, side);
-
-        for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
-            if (s == tSideOpposite || !(tMetaPipe.isConnectedAtSide(s))) continue;
-            final TileEntity tNewTileEntity = tPipe.getTileEntityAtSide(s);
-            if (tNewTileEntity == null) return new Pair(aTileEntity, side);
-            if (isPipe(tNewTileEntity)) {
-                aPipes.add(tMetaPipe);
-                return getNextValidTileEntity(tNewTileEntity, aPipes, s, aNodeMap);
-            } else {
-                return new Pair(aTileEntity, s);
+            final Node owner = tPipe.getNodeMap();
+            if (owner != null) {
+                if (aNodeMap.contains(owner)) return null;
+                // Retire a separate grid before any of its cables acquire replacement bindings.
+                clearNodeMap(owner, -1);
             }
+
+            final int tConnections = getNumberOfConnections(tMetaPipe);
+            // Keep known sources as nodes so alternating injections reuse the same paths and overload history.
+            if (tConnections != 2 || tMetaPipe instanceof MTECable cable && cable.isEnergySource())
+                return new Pair(aTileEntity, side);
+
+            for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
+                if (s == tSideOpposite || !(tMetaPipe.isConnectedAtSide(s))) continue;
+                final TileEntity tNewTileEntity = tPipe.getTileEntityAtSide(s);
+                if (tNewTileEntity == null) return new Pair(aTileEntity, side);
+                if (isPipe(tNewTileEntity)) {
+                    aPipes.add(tMetaPipe);
+                    aTileEntity = tNewTileEntity;
+                    side = s;
+                    continue walk;
+                } else {
+                    return new Pair(aTileEntity, side);
+                }
+            }
+            return null;
         }
-        return null;
     }
 
     // check if the tile entity is the correct pipe
