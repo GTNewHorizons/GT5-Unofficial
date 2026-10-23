@@ -3206,6 +3206,7 @@ GT5U.gui.text.item_amount_display=§b%s§f x §6%s§f
 GT5U.gui.text.fluid_amount_display=§b%s§f x §6%sL§f
 GT5U.gui.text.recipe_result.generating=§aGenerating power
 GT5U.gui.text.recipe_result.no_recipe=§7No valid recipe found
+GT5U.gui.text.recipe_result.missing_environment=§7Required processing environment is missing
 GT5U.gui.text.recipe_result.item_output_full=§7Not enough item output space
 GT5U.gui.text.recipe_result.fluid_output_full=§7Not enough fluid output space
 GT5U.gui.text.recipe_result.none=

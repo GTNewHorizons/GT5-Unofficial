@@ -54,6 +54,9 @@ public final class CheckRecipeResultRegistry {
      */
     @Nonnull
     public static final CheckRecipeResult NO_RECIPE = SimpleCheckRecipeResult.ofFailure("no_recipe");
+
+    public static final CheckRecipeResult MISSING_ENVIRONMENT = SimpleCheckRecipeResult
+        .ofFailure("missing_environment");
     /**
      * Cannot process recipe because item output is full.
      */

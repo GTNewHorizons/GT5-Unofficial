@@ -60,6 +60,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -325,7 +326,13 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
             if (mRunningOnLoad && checkStructure(true, aBaseMetaTileEntity)) {
-                checkRecipe();
+                RecipeEnvironmentRequirements savedEnvironments = getActiveRecipeEnvironments();
+                if (!savedEnvironments.matches(this, true)) {
+                    mRunningOnLoad = false;
+                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                } else if (checkRecipe()) {
+                    setActiveRecipeEnvironments(getActiveRecipeEnvironments().and(savedEnvironments));
+                }
             }
             if (mUpdated) {
                 mUpdate = 50;
@@ -341,7 +348,8 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             }
             if (mStartUpCheck < 0) {
                 if (mMachine) {
-                    if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
+                    if (mMaxProgresstime > 0 && (aBaseMetaTileEntity.getStoredEU() <= 0
+                        || !satisfiesActiveRecipeEnvironments(mProgresstime >= mMaxProgresstime - 1))) {
                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     }
 
@@ -371,6 +379,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                             mOutputFluids = null;
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
+                            setActiveRecipeEnvironments(RecipeEnvironmentRequirements.EMPTY);
                             mEfficiencyIncrease = 0;
                             recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
                             mLastWorkingTick = mTotalRunTime;
