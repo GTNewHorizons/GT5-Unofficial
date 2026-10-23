@@ -3,6 +3,9 @@ package gregtech.api.structure;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.GTMod;
+import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import gregtech.common.GTProxy;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +17,7 @@ import gregtech.api.structure.error.PositionedStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 
-public class StructureChecker<T> implements IStructureWalker<T> {
+public class StructureChecker<T extends IMachineBlockUpdateable> implements IStructureWalker<T> {
 
     T instance;
     final boolean forced;
@@ -30,6 +33,7 @@ public class StructureChecker<T> implements IStructureWalker<T> {
     @Override
     public boolean visit(IStructureElement<T> element, World world, int x, int y, int z, int a, int b, int c) {
         boolean result = element.check(instance, world, x, y, z);
+        instance.addMachineCoord(world, x, y, z);
 
         if (!result) {
             this.success = false;

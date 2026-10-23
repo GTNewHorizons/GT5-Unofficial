@@ -34,6 +34,8 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+import it.unimi.dsi.fastutil.longs.LongList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -245,6 +247,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      */
     public LongArrayList mCoils = new LongArrayList();
     private GTCoilTracker.MultiCoilLease coilLease = null;
+    private final LongList trackedCoords = new LongArrayList();
 
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
@@ -529,6 +532,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mUpdated = true;
     }
 
+    @Override
+    public void addMachineCoord(World world, int x, int y, int z) {
+        if (world != this.getBaseMetaTileEntity().getWorld()) return;
+        long packed = CoordinatePacker.pack(x, y, z);
+        trackedCoords.add(packed);
+        GTMod.proxy.structureUpdater.addCoord(this, world, packed);
+    }
+
     /**
      * ClearHatches as a part of structure check. If your multiblock has any hatches that need clearing override this
      * method, call super, and clear your own hatches
@@ -561,6 +572,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mCoils.clear();
         deactivateCoilLease();
         debugEnergyPresent = false;
+        for (long coord: trackedCoords) {
+            GTMod.proxy.structureUpdater.removeCoord(this, getBaseMetaTileEntity().getWorld(), coord);
+        }
+        trackedCoords.clear();
     }
 
     public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {

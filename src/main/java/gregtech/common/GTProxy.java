@@ -141,6 +141,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
+import gregtech.common.data.GTStructureUpdater;
 import gregtech.common.data.WirelessEnergyHatchManager;
 import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.data.maglev.TetherManager;
@@ -365,6 +366,7 @@ public class GTProxy implements IFuelHandler {
     public CameraViewportManager cameraViewportManager;
     public TetherManager tetherManager;
     public WirelessEnergyHatchManager wirelessEnergyHatchManager;
+    public GTStructureUpdater structureUpdater;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
     public SyncedKeybind CTRL_KEYBIND;
@@ -857,6 +859,7 @@ public class GTProxy implements IFuelHandler {
         if (cameraViewportManager == null) cameraViewportManager = new CameraViewportManager();
         tetherManager = new TetherManager();
         wirelessEnergyHatchManager = new WirelessEnergyHatchManager();
+        structureUpdater = new GTStructureUpdater();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(powerfailTracker);
@@ -950,6 +953,7 @@ public class GTProxy implements IFuelHandler {
         powerfailTracker = null;
         tetherManager = null;
         wirelessEnergyHatchManager = null;
+        structureUpdater = null;
         PLAYERS_BY_UUID = null;
         UUID_BY_NAME = null;
         // spotless:on
