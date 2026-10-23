@@ -398,11 +398,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             if (ePowerPass && getEUVar() > V[3]
                 || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
                 explodeMultiblock();
-            } else {
-                super.onRemoval();
             }
-            // Without this the hatches keep the crafting icon of a controller that is already gone, since
-            // clearHatches only runs from here and from the structure check.
+            // Runs in the explosion case as well, otherwise the hatches keep the crafting icon of a controller
+            // that is already gone.
             super.onRemoval();
         } catch (Exception e) {
             if (ConfigHandler.debug.DEBUG_MODE) {
