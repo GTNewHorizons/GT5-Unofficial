@@ -534,7 +534,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public void addMachineCoord(World world, int x, int y, int z) {
-        if (world != this.getBaseMetaTileEntity().getWorld()) return;
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) return;
+        if (world != base.getWorld()) return;
+        if (x == base.getXCoord() && y == base.getYCoord() && z == base.getZCoord()) return;
         long packed = CoordinatePacker.pack(x, y, z);
         trackedCoords.add(packed);
         GTMod.proxy.structureUpdater.addCoord(this, world, packed);
