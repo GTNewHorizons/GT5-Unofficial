@@ -217,7 +217,9 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
     }
 
     @Override
-    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {}
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        doPeriodicChecks = true;
+    }
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
