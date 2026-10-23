@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.nanochip;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import java.util.Collection;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -157,19 +158,19 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     @Override
     public void onEdgeAdded(VacuumFactoryElement adjacent) {
         VacuumFactoryElement.super.onEdgeAdded(adjacent);
-        mCheckConnections = true;
+        setCheckConnections();
     }
 
     @Override
     public void onEdgeRemoved(VacuumFactoryElement adjacent) {
         VacuumFactoryElement.super.onEdgeRemoved(adjacent);
-        mCheckConnections = true;
+        setCheckConnections();
     }
 
     @Override
     public void onEdgeChanged(VacuumFactoryElement adjacent) {
         VacuumFactoryElement.super.onEdgeChanged(adjacent);
-        mCheckConnections = true;
+        setCheckConnections();
     }
 
     @Override
@@ -187,6 +188,11 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
             if (!(igte.getMetaTileEntity() instanceof VacuumFactoryElement element)) continue;
             if (!element.canConnectOnSide(dir.getOpposite()) || !this.canConnectOnSide(dir)) continue;
             mConnections |= dir.flag;
+        }
+
+        if (base instanceof BaseMetaPipeEntity pipe) {
+            pipe.updateConnections();
+            pipe.syncConnectionToClient();
         }
 
     }

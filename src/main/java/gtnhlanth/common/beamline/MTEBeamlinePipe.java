@@ -2,6 +2,7 @@ package gtnhlanth.common.beamline;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,14 +23,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.common.render.GTTextureBuilder;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
 
 public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamline {
 
     private static IIconContainer pipe;
-
-    private byte connectionCount = 0;
-
-    private boolean active;
 
     public MTEBeamlinePipe(int id, String name, String nameRegional) {
         super(id, name, 0);
@@ -44,31 +42,46 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
         return false;
     }
 
+    protected void checkConnections() {
+        mCheckConnections = false;
+        mConnections = 0;
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            ForgeDirection d1 = dir.getOpposite();
+            TileEntity tTileEntity = base.getTileEntityAtSide(dir);
+            if (tTileEntity instanceof IConnectsToBeamline neigh) {
+                if (neigh.canConnect(d1)) {
+                    mConnections |= 1 << dir.ordinal();
+                }
+            } else if (tTileEntity instanceof IGregTechTileEntity neighBase) {
+                if (neighBase.getMetaTileEntity() instanceof IConnectsToBeamline neigh) {
+                    if (neigh.canConnect(d1)) {
+                        mConnections |= 1 << dir.ordinal();
+                    }
+                }
+            }
+        }
+
+        if (base instanceof BaseMetaPipeEntity pipe) {
+            pipe.updateConnections();
+            pipe.syncConnectionToClient();
+        }
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        if (base.isServerSide()) {
+            checkConnections();
+        }
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if ((aTick & 31) == 31) {
-                mConnections = 0;
-                connectionCount = 0;
-
-                for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-                    ForgeDirection d1 = dir.getOpposite();
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(dir);
-                    if (tTileEntity instanceof IConnectsToBeamline) {
-                        if (((IConnectsToBeamline) tTileEntity).canConnect(d1)) {
-                            mConnections |= 1 << dir.ordinal();
-                            connectionCount++;
-                        }
-                    } else if (tTileEntity instanceof IGregTechTileEntity) {
-                        IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                        if (meta instanceof IConnectsToBeamline) {
-                            if (((IConnectsToBeamline) meta).canConnect(d1)) {
-                                mConnections |= 1 << dir.ordinal();
-                                connectionCount++;
-                            }
-                        }
-                    }
-                }
+            if (aTick > 1) {
+                aBaseMetaTileEntity.tryDisableTicking();
             }
         }
     }
@@ -141,9 +154,8 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
                 .build() };
     }
 
-    public void markUsed() {
-        this.active = true;
-    }
+    @Deprecated
+    public void markUsed() {}
 
     @Override
     public boolean isDataInputFacing(ForgeDirection side) {
