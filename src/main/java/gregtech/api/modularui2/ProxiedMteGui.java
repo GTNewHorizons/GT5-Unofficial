@@ -34,6 +34,7 @@ import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
+import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputSlaveGui;
 
 /**
  * This GUI may be opened when the corresponding TileEntity is not loaded on the client!
@@ -55,6 +56,11 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
 
     public static void open(MetaTileEntity mte, EntityPlayerMP player) {
         GuiManager.open(GUI, new ProxiedMteGuiData(player, mte), player);
+    }
+
+    /** Opens the GUI of an MTE for a player who interacted with another MTE, like the Crafting Input Proxy does. */
+    public static void open(MetaTileEntity mte, EntityPlayerMP player, MetaTileEntity originMTE) {
+        GuiManager.open(GUI, new ProxiedMteGuiData(player, mte, originMTE), player);
     }
 
     @SideOnly(Side.CLIENT)
@@ -80,6 +86,10 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
             new PosGuiData(data.getPlayer(), base.getXCoord(), base.getYCoord(), base.getZCoord()),
             syncManager,
             uiSettings);
+
+        if (data.hasOrigin()) {
+            MTEHatchCraftingInputSlaveGui.addRecipeOrderButton(panel, syncManager, data.getOriginMTE());
+        }
 
         UUID playerUUID = (syncManager.isClient()) ? null
             : data.getPlayer()
@@ -120,14 +130,23 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
     final public static class ProxiedMteGuiData extends GuiData {
 
         final private @Nullable MetaTileEntity serverMTE;
+        /** The MTE the player interacted with, if it is not the MTE whose GUI is shown. Server side only. */
+        final private @Nullable MetaTileEntity originMTE;
+        final private boolean hasOrigin;
         final private int mid;
         final private int x;
         final private int y;
         final private int z;
 
         public ProxiedMteGuiData(EntityPlayer player, MetaTileEntity serverMTE) {
+            this(player, serverMTE, null);
+        }
+
+        public ProxiedMteGuiData(EntityPlayer player, MetaTileEntity serverMTE, @Nullable MetaTileEntity originMTE) {
             super(player);
             this.serverMTE = serverMTE;
+            this.originMTE = originMTE;
+            this.hasOrigin = originMTE != null;
             IGregTechTileEntity base = serverMTE.getBaseMetaTileEntity();
             this.mid = base.getMetaTileID();
             this.x = base.getXCoord();
@@ -135,9 +154,11 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
             this.z = base.getZCoord();
         }
 
-        public ProxiedMteGuiData(EntityPlayer player, int mid, int x, int y, int z) {
+        public ProxiedMteGuiData(EntityPlayer player, int mid, int x, int y, int z, boolean hasOrigin) {
             super(player);
             this.serverMTE = null;
+            this.originMTE = null;
+            this.hasOrigin = hasOrigin;
             this.mid = mid;
             this.x = x;
             this.y = y;
@@ -146,6 +167,14 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
 
         public @Nullable MetaTileEntity getServerMTE() {
             return serverMTE;
+        }
+
+        public @Nullable MetaTileEntity getOriginMTE() {
+            return originMTE;
+        }
+
+        public boolean hasOrigin() {
+            return hasOrigin;
         }
 
         public int getMetaId() {
@@ -205,6 +234,7 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
             buffer.writeInt(guiData.getX());
             buffer.writeInt(guiData.getY());
             buffer.writeInt(guiData.getZ());
+            buffer.writeBoolean(guiData.hasOrigin());
         }
 
         @Override
@@ -214,7 +244,8 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
                 buffer.readInt(),
                 buffer.readInt(),
                 buffer.readInt(),
-                buffer.readInt());
+                buffer.readInt(),
+                buffer.readBoolean());
         }
     }
 }
