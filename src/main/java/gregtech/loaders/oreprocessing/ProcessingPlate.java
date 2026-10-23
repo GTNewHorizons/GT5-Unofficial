@@ -504,13 +504,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         switch (aOreDictName) {
             case "plateAlloyCarbon" -> {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTModHandler.getIC2Item("generator", 1L), GTUtility.copyAmount(4, aStack))
-                    .itemOutputs(GTModHandler.getIC2Item("windMill", 1L))
-                    .duration(5 * MINUTES + 20 * SECONDS)
-                    .eut(TierEU.RECIPE_ULV)
-                    .addTo(assemblerRecipes);
-
-                GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
                     .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
