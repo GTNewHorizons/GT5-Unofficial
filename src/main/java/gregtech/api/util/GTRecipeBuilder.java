@@ -29,6 +29,8 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeEnvironment;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.RecipeMetadataStorage;
@@ -774,14 +776,28 @@ public class GTRecipeBuilder {
         return false;
     }
 
-    /// The metadata the recipe under construction is built with: the builder's own storage, plus the enclosing
-    /// [#withVariantGroup] tag when there is one. Never mutates the builder's storage.
+    /// Builds recipe metadata without mutating the builder's storage
+    /// Converts the old environment keys to requirements and adds the enclosing variant group
     private @Nullable IRecipeMetadataStorage buildMetadata() {
-        if (variantGroup == null) return metadataStorage;
-        if (getMetadata(GTRecipeConstants.VARIANT_GROUP) != null) return metadataStorage;
+        Boolean cleanroom = getMetadata(GTRecipeConstants.CLEANROOM);
+        Boolean lowGravity = getMetadata(GTRecipeConstants.LOW_GRAVITY);
+        boolean addVariant = variantGroup != null && getMetadata(GTRecipeConstants.VARIANT_GROUP) == null;
+        if (cleanroom == null && lowGravity == null && !addVariant) return metadataStorage;
 
         IRecipeMetadataStorage storage = metadataStorage == null ? new RecipeMetadataStorage() : metadataStorage.copy();
-        storage.store(GTRecipeConstants.VARIANT_GROUP, variantGroup);
+        if (cleanroom != null || lowGravity != null) {
+            RecipeEnvironmentRequirements requirements = getMetadataOrDefault(
+                GTRecipeConstants.ENVIRONMENT_REQUIREMENTS,
+                RecipeEnvironmentRequirements.EMPTY);
+            if (Boolean.TRUE.equals(cleanroom)) requirements = requirements.with(RecipeEnvironment.CLEANROOM);
+            if (Boolean.TRUE.equals(lowGravity)) requirements = requirements.with(RecipeEnvironment.LOW_GRAVITY);
+            storage.getEntries()
+                .removeIf(
+                    entry -> entry.getKey() == GTRecipeConstants.CLEANROOM
+                        || entry.getKey() == GTRecipeConstants.LOW_GRAVITY);
+            if (!requirements.isEmpty()) storage.store(GTRecipeConstants.ENVIRONMENT_REQUIREMENTS, requirements);
+        }
+        if (addVariant) storage.store(GTRecipeConstants.VARIANT_GROUP, variantGroup);
         return storage;
     }
 
@@ -826,12 +842,63 @@ public class GTRecipeBuilder {
         return this;
     }
 
+    /**
+     * @deprecated Use {@link #requiresEnvironment(RecipeEnvironment...)} with {@link RecipeEnvironment#CLEANROOM}
+     */
+    @Deprecated
     public GTRecipeBuilder requiresCleanRoom() {
-        return metadata(GTRecipeConstants.CLEANROOM, true);
+        return requiresEnvironment(RecipeEnvironment.CLEANROOM);
     }
 
+    /**
+     * Adds conditions checked before recipe input consumption by basic machines and ProcessingLogic
+     * Custom recipe consumers must integrate environment validation into their own lifecycle
+     */
+    public GTRecipeBuilder requiresEnvironment(RecipeEnvironment... environments) {
+        if (skip) return this;
+        return requiresEnvironment(RecipeEnvironmentRequirements.of(environments));
+    }
+
+    public GTRecipeBuilder requiresEnvironment(RecipeEnvironmentRequirements requirements) {
+        if (skip || requirements.isEmpty()) return this;
+        return metadata(
+            GTRecipeConstants.ENVIRONMENT_REQUIREMENTS,
+            getMetadataOrDefault(GTRecipeConstants.ENVIRONMENT_REQUIREMENTS, RecipeEnvironmentRequirements.EMPTY)
+                .and(requirements));
+    }
+
+    /**
+     * Adds or removes one condition, for conditional material recipes and recipe conversions
+     */
+    public GTRecipeBuilder requiresEnvironment(RecipeEnvironment environment, boolean required) {
+        if (skip) return this;
+        if (required) return requiresEnvironment(environment);
+        if (environment == RecipeEnvironment.CLEANROOM && getMetadataOrDefault(GTRecipeConstants.CLEANROOM, false)) {
+            metadata(GTRecipeConstants.CLEANROOM, false);
+        }
+        if (environment == RecipeEnvironment.LOW_GRAVITY
+            && getMetadataOrDefault(GTRecipeConstants.LOW_GRAVITY, false)) {
+            metadata(GTRecipeConstants.LOW_GRAVITY, false);
+        }
+        RecipeEnvironmentRequirements requirements = getMetadataOrDefault(
+            GTRecipeConstants.ENVIRONMENT_REQUIREMENTS,
+            RecipeEnvironmentRequirements.EMPTY);
+        if (!requirements.contains(environment)) return this;
+        RecipeEnvironmentRequirements remaining = requirements.without(environment);
+        if (remaining.isEmpty()) {
+            metadataStorage.getEntries()
+                .removeIf(entry -> entry.getKey() == GTRecipeConstants.ENVIRONMENT_REQUIREMENTS);
+            return this;
+        }
+        return metadata(GTRecipeConstants.ENVIRONMENT_REQUIREMENTS, remaining);
+    }
+
+    /**
+     * @deprecated Use {@link #requiresEnvironment(RecipeEnvironment...)} with {@link RecipeEnvironment#LOW_GRAVITY}
+     */
+    @Deprecated
     public GTRecipeBuilder requiresLowGravity() {
-        return metadata(GTRecipeConstants.LOW_GRAVITY, true);
+        return requiresEnvironment(RecipeEnvironment.LOW_GRAVITY);
     }
 
     /**
@@ -1257,8 +1324,6 @@ public class GTRecipeBuilder {
         if (recipe.mSpecialValue != 0) return;
 
         int specialValue = 0;
-        if (getMetadataOrDefault(GTRecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
-        if (getMetadataOrDefault(GTRecipeConstants.CLEANROOM, false)) specialValue -= 200;
         for (RecipeMetadataKey<? extends Number> ident : GTRecipeMapUtil.SPECIAL_VALUE_ALIASES) {
             Number metadata = getMetadataOrDefault(ident, null);
 
