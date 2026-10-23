@@ -545,8 +545,12 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (lastCheckStack != null && !lastCheckStack.isItemEqual(getControllerSlot())) {
-                onMachineBlockUpdate();
+            if (lastCheckStack != getControllerSlot()) {
+                if (getControllerSlot() == null || lastCheckStack == null) {
+                    onMachineBlockUpdate();
+                } else if (!getControllerSlot().isItemEqual(lastCheckStack)) {
+                    onMachineBlockUpdate();
+                }
             }
             if (renderActive && !renderDisabled) {
                 RenderingTileEntityNanoForge tile = getRenderer();
