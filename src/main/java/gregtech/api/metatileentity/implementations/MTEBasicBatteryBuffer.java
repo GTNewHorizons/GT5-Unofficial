@@ -57,10 +57,14 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
     @Override
     public String getLocalName() {
         if (!hasOwnLocalName()) return super.getLocalName();
-        return StatCollector.translateToLocalFormatted(
-            "gt.blockmachines.batterybuffer.name",
-            GTValues.getLocalizedLongVoltageName(mTier),
-            GTValues.VN[mTier]);
+        String nameKey = switch (mInventory.length) {
+            case 1 -> "gt.blockmachines.batterybuffer.small.name";
+            case 9 -> "gt.blockmachines.batterybuffer.large.name";
+            case 16 -> "gt.blockmachines.batterybuffer.huge.name";
+            default -> "gt.blockmachines.batterybuffer.name";
+        };
+        return StatCollector
+            .translateToLocalFormatted(nameKey, GTValues.getLocalizedLongVoltageName(mTier), GTValues.VN[mTier]);
     }
 
     @Override
