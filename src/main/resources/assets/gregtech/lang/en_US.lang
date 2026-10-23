@@ -6381,7 +6381,7 @@ gt.item.circuit.wafer.ypic.name=YPIC Wafer
 gt.item.circuit.wafer.plpic.name=PlPIC Wafer
 
 ## Chips
-gt.item.circuit.chip.ilc.name=Integrated Logic Circuit
+gt.item.circuit.chip.ilc.name=Logic IC
 gt.item.circuit.chip.ilc.tooltip=Integrated Circuit
 gt.item.circuit.chip.ram.name=Random Access Memory Chip
 gt.item.circuit.chip.ram.tooltip=Integrated Circuit
