@@ -101,10 +101,7 @@ public class ItemEjectionHelper {
             GTUtility.ItemId id = e.getKey();
             long amount = e.getLongValue();
 
-            ItemParallelData parallelData = new ItemParallelData(
-                id,
-                amount * startingParallels,
-                amount);
+            ItemParallelData parallelData = new ItemParallelData(id, amount * startingParallels, amount);
 
             outputParallels.add(parallelData);
 
@@ -172,7 +169,8 @@ public class ItemEjectionHelper {
             for (ItemParallelData parallelData : outputParallels) {
                 long ejected = parallelData.initialAmount - parallelData.remainingAmount;
 
-                startingParallels = GTUtility.longToInt(Math.min(startingParallels, ejected / parallelData.perParallel));
+                startingParallels = GTUtility
+                    .longToInt(Math.min(startingParallels, ejected / parallelData.perParallel));
             }
         }
 
