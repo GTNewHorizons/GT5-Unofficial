@@ -78,6 +78,7 @@ import gregtech.api.hazards.HazardProtection;
 import gregtech.api.hazards.HazardProtectionTooltip;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.IUpdatePlayerMovement;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
@@ -102,6 +103,7 @@ import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
+import gregtech.client.PipeThermalEffectsRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.client.renderer.entity.RenderDrone;
@@ -273,6 +275,12 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEDebugStructureWriter.EventHandler());
         MinecraftForge.EVENT_BUS.register(new GTWorkAreaRenderer());
+        final PipeThermalEffectsRenderer pipeThermalEffects = new PipeThermalEffectsRenderer();
+        MinecraftForge.EVENT_BUS.register(pipeThermalEffects);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(pipeThermalEffects);
+
         WorldOverlayRenderer.init();
         powerfailRenderer = new GTPowerfailRenderer();
         MinecraftForge.EVENT_BUS.register(powerfailRenderer);
@@ -358,6 +366,11 @@ public class GTClient extends GTProxy {
     @Override
     public void reloadNEICache() {
         mReloadCount++;
+    }
+
+    @Override
+    public void trackThermalPipe(IGregTechTileEntity pipe) {
+        PipeThermalEffectsRenderer.setTracked(pipe, true);
     }
 
     @Override
