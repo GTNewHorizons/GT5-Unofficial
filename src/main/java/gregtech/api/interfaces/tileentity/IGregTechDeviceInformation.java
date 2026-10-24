@@ -2,14 +2,18 @@ package gregtech.api.interfaces.tileentity;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.GTValues;
 
@@ -43,6 +47,19 @@ public interface IGregTechDeviceInformation {
     }
 
     default void getExtraInfoData(List<String> info) {}
+
+    /**
+     * Returns an array of {@link IChatComponent} containing the information to be displayed in chat.
+     * <br>
+     * Will be rendered after the information from {@link #getInfoData()} and {@link #getExtraInfoData(List)}.
+     *
+     * @return a List of {@link IChatComponent} containing the information to be displayed in chat.
+     */
+    default List<IChatComponent> getChatInfoData() {
+        return new ArrayList<>();
+    }
+
+    default void getExtraChatInfoData(List<IChatComponent> info) {}
 
     /**
      * Returns a map of key-value pairs containing device information.
@@ -139,6 +156,23 @@ public interface IGregTechDeviceInformation {
             for (int i = 1; i < parts.length; i++) sb.append(" ")
                 .append(parts[i]);
             return sb.toString();
+        }
+    }
+
+    static String encodeChat(@NotNull IChatComponent component) {
+        return IChatComponent.Serializer.func_150696_a(component);
+    }
+
+    static String decodeChat(String data) {
+        if (data == null) return "";
+        try {
+            IChatComponent component = IChatComponent.Serializer.func_150699_a(data);
+            return component.getFormattedText();
+        } catch (Exception e) {
+            GT_FML_LOGGER.error("Failed to deserialize chat component for advanced sensor card: {}", e.getMessage());
+            GT_FML_LOGGER.error("Serialized chat component: {}", data);
+            GT_FML_LOGGER.error("Stack trace: ", e);
+            return EnumChatFormatting.RED + "invalid info data";
         }
     }
 }

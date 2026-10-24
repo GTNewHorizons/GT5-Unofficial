@@ -323,11 +323,18 @@ public class ScannerHelper {
     private static void addMachineInfoComp(List<IChatComponent> list, TileEntity tileEntity) {
         try {
             if (tileEntity instanceof IGregTechDeviceInformation info && info.isGivingInformation()) {
-                final String[] data = info.getInfoData();
-                if (data == null || data.length == 0) return;
+                List<IChatComponent> chats = new ArrayList<>();
 
+                final String[] data = info.getInfoData();
+                if (data != null) {
+                    for (String s : data) chats.add(IGregTechDeviceInformation.toComponent(s));
+                }
+                List<IChatComponent> chatData = info.getChatInfoData();
+                if (chatData != null) {
+                    chats.addAll(chatData);
+                }
                 list.add(addTitleComp("title_machine_info"));
-                for (String s : data) list.add(IGregTechDeviceInformation.toComponent(s));
+                list.addAll(chats);
             }
         } catch (Exception e) {
             list.add(transComp("error_machine_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));

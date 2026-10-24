@@ -811,9 +811,21 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
+    public List<IChatComponent> getChatInfoData() {
+        return canAccessData() ? getMetaTileEntity().getChatInfoData() : Collections.emptyList();
+    }
+
+    @Override
     public void getExtraInfoData(List<String> info) {
         if (canAccessData()) {
             getMetaTileEntity().getExtraInfoData(info);
+        }
+    }
+
+    @Override
+    public void getExtraChatInfoData(List<IChatComponent> info) {
+        if (canAccessData()) {
+            getMetaTileEntity().getExtraChatInfoData(info);
         }
     }
 
