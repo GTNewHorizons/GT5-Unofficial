@@ -192,7 +192,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
                     .put("eu_eff", EU_EFFICIENCY * 100)
                     .put("momentum_max", MOMENTUM_MAX)
                     .put("momentum_gain", MOMENTUM_GAIN_PER_SEC)
-                    .put("momentum_decay", OMENTUM_DECAY_PER_SEC)
+                    .put("momentum_decay", MOMENTUM_DECAY_PER_SEC)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)
