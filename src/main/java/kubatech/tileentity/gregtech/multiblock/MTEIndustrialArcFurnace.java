@@ -286,7 +286,12 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     @Override
     public void clearHatches() {
         super.clearHatches();
+        // Electrode hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        if (electrodeHatch != null) {
+            electrodeHatch.updateCraftingIcon(null, getBaseMetaTileEntity());
+        }
         electrodeHatch = null;
+        clearCraftingIcons(electrodeDetectorHatch);
         electrodeDetectorHatch.clear();
     }
 
@@ -297,7 +302,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchElectrode hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             electrodeHatch = hatch;
             return true;
         }
@@ -310,7 +315,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchElectrodeDetector hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             electrodeDetectorHatch.add(hatch);
             return true;
         }
