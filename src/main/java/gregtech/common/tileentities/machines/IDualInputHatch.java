@@ -16,14 +16,10 @@ public interface IDualInputHatch extends IMetaTileEntity, ISmartInputHatch {
 
     void updateTexture(int id);
 
-    void updateCraftingIcon(ItemStack icon);
-
     /**
      * Sets the icon of the multiblock at {@code owner}, or clears it when {@code icon} is null.
      */
-    default void updateCraftingIcon(ItemStack icon, IGregTechTileEntity owner) {
-        updateCraftingIcon(icon);
-    }
+    void updateCraftingIcon(ItemStack icon, IGregTechTileEntity owner);
 
     Optional<IDualInputInventory> getFirstNonEmptyInventory();
 
