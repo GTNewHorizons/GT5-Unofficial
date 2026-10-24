@@ -44,7 +44,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
 
     private int configuredTier;
-    private @Nullable NaniteTier requiredTier;
+    private int requiredTier = -1;
     private ComparisonWithAnalog comparison = ComparisonWithAnalog.EQ;
 
     private Lazy<List<String>> tooltip = null;
@@ -75,6 +75,19 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
         configuredTier = tag == null ? 0 : tag.getInteger("configuredTier");
         comparison = ComparisonWithAnalog.values()[tag == null ? 0 : tag.getInteger("op")];
         refreshOutput();
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound tag) {
+        super.saveNBTData(tag);
+        tag.setInteger("requiredTier", requiredTier);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound tag) {
+        // Load required tier before config load to avoid triggering unnecessary redstone updates
+        requiredTier = tag.hasKey("requiredTier") ? tag.getInteger("requiredTier") : -1;
+        super.loadNBTData(tag);
     }
 
     @Override
@@ -111,14 +124,14 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
 
     private void refreshOutput() {
         if (comparison == ComparisonWithAnalog.ANALOG) {
-            setOutput(requiredTier == null ? 0 : requiredTier.tier);
+            setOutput(requiredTier == -1 ? 0 : requiredTier);
         } else {
-            setOutput(requiredTier != null && comparison.test(requiredTier.tier, configuredTier));
+            setOutput(requiredTier != -1 && comparison.test(requiredTier, configuredTier));
         }
     }
 
     public void setRequiredTier(@Nullable NaniteTier requiredTier) {
-        this.requiredTier = requiredTier;
+        this.requiredTier = requiredTier == null ? -1 : requiredTier.tier;
         refreshOutput();
     }
 
@@ -185,7 +198,7 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                         DisableableTextFieldWidget::new)
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),
-                        new IntSyncValue(() -> requiredTier == null ? -1 : requiredTier.ordinal()),
+                        new IntSyncValue(() -> requiredTier),
                         nanite -> {
                             NaniteTier tier = GTDataUtils.getIndexSafe(NaniteTier.values(), nanite);
 
