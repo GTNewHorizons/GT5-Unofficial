@@ -3163,14 +3163,7 @@ public class OrePrefixes {
             }
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> {
                 if (name.startsWith("dust")) return materialPrefix + "%material";
-                switch (name) {
-                    case "crushedCentrifuged", "crushedPurified" -> {
-                        return materialPrefix + "%material";
-                    }
-                    case "crushed" -> {
-                        return "Ground " + "%material";
-                    }
-                }
+                if (this == crushed) return "Ground " + "%material" + materialPostfix;
             }
         }
         if (ProcessingModSupport.aEnableThaumcraftMats) {
@@ -3196,7 +3189,6 @@ public class OrePrefixes {
         if (this == ore) {
             return switch (aMaterial.getInternalName()) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
-                case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
                 default -> materialPrefix + "%material" + materialPostfix;
             };
         }
