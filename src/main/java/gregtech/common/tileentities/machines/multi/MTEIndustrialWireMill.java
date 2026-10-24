@@ -13,6 +13,7 @@ import static gregtech.api.util.GTStructureUtility.chainItemPipeCasings;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -41,6 +42,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEIndustrialWireMill>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -132,25 +134,27 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Wiremill, IWF")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.wiremill"))
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
             .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
             .addStaticEuEffInfo((float) EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 7, false)
-            .addController("Front bottom center")
-            .addCasing("14-35", "Wire Factory Casing", false)
-            .addCasing("15", "Any Tiered Glass", false)
-            .addCasing("3", "Item Pipe Casing", true)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("14-35", Casings.WireFactoryCasing.getLocalizedName(), false)
+            .addCasing("15", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("3", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
