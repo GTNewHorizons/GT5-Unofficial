@@ -145,7 +145,12 @@ public final class CheckRecipeResultRegistry {
      */
     @Nonnull
     public static CheckRecipeResult insufficientPower(long required) {
-        return new ResultInsufficientPower(required);
+        return insufficientPower(required, 0);
+    }
+
+    @Nonnull
+    public static CheckRecipeResult insufficientPower(long required, long current) {
+        return new ResultInsufficientPower(required, current);
     }
 
     /**
@@ -153,7 +158,12 @@ public final class CheckRecipeResultRegistry {
      */
     @Nonnull
     public static CheckRecipeResult insufficientVoltage(long required) {
-        return new ResultInsufficientVoltage(required);
+        return insufficientVoltage(required, 0);
+    }
+
+    @Nonnull
+    public static CheckRecipeResult insufficientVoltage(long required, long current) {
+        return new ResultInsufficientVoltage(required, current);
     }
 
     /**
@@ -197,8 +207,8 @@ public final class CheckRecipeResultRegistry {
 
     static {
         register(new SimpleCheckRecipeResult(false, "", false));
-        register(new ResultInsufficientPower(0));
-        register(new ResultInsufficientVoltage(0));
+        register(new ResultInsufficientPower(0, 0));
+        register(new ResultInsufficientVoltage(0, 0));
         register(new ResultInsufficientHeat(0));
         register(new ResultInsufficientMachineTier(0));
         register(new ResultInsufficientStartupPower(0));
