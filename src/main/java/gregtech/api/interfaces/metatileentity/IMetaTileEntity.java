@@ -363,7 +363,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean doTickProfilingMessageDuringThisTick();
 
     /**
-     * Deprecated. Please use {@link getSpecialDebugInfoComp} instead.
+     * Deprecated. This function returns a String directly, preventing the text from being translated on the client.
+     * Please use {@link getSpecialDebugInfoChat} instead.
+     * <br>
      * returns the DebugLog
      */
     @Deprecated
@@ -375,11 +377,11 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * returns the DebugLog
      */
-    default ArrayList<IChatComponent> getSpecialDebugInfoComp(IGregTechTileEntity aBaseMetaTileEntity,
+    default ArrayList<IChatComponent> getSpecialDebugInfoChat(IGregTechTileEntity aBaseMetaTileEntity,
         EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
         ArrayList<String> chats = new ArrayList<>();
         chats = this.getSpecialDebugInfo(aBaseMetaTileEntity, aPlayer, aLogLevel, chats);
-        if(chats == null) return aList;
+        if (chats == null) return aList;
         aList.addAll(
             chats.stream()
                 .map(ChatComponentText::new)

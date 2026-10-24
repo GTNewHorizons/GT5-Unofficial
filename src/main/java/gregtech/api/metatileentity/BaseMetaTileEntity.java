@@ -797,7 +797,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             if (!mHasEnoughEnergy) tList.add(new ChatComponentTranslation("GT5U.scanner.debug.needs_power"));
         }
         if (joinedIc2Enet) tList.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
-        return mMetaTileEntity.getSpecialDebugInfoComp(this, aPlayer, aLogLevel, tList);
+        return mMetaTileEntity.getSpecialDebugInfoChat(this, aPlayer, aLogLevel, tList);
     }
 
     @Override

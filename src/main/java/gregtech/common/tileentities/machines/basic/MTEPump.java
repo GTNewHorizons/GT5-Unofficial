@@ -840,7 +840,7 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     @Override
-    public ArrayList<IChatComponent> getSpecialDebugInfoComp(IGregTechTileEntity aBaseMetaTileEntity,
+    public ArrayList<IChatComponent> getSpecialDebugInfoChat(IGregTechTileEntity aBaseMetaTileEntity,
         EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
         aList.addAll(
             Arrays.asList(

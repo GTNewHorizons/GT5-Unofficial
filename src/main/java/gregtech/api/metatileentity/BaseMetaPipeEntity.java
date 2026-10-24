@@ -342,7 +342,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         }
         if (joinedIc2Enet) tList.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
 
-        return mMetaTileEntity != null ? mMetaTileEntity.getSpecialDebugInfoComp(this, aPlayer, aLogLevel, tList)
+        return mMetaTileEntity != null ? mMetaTileEntity.getSpecialDebugInfoChat(this, aPlayer, aLogLevel, tList)
             : new ArrayList<>();
     }
 

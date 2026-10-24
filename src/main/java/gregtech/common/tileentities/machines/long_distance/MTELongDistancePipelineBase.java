@@ -178,7 +178,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     }
 
     @Override
-    public ArrayList<IChatComponent> getSpecialDebugInfoComp(IGregTechTileEntity aBaseMetaTileEntity,
+    public ArrayList<IChatComponent> getSpecialDebugInfoChat(IGregTechTileEntity aBaseMetaTileEntity,
         EntityPlayer aPlayer, int aLogLevel, ArrayList<IChatComponent> aList) {
         if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
             final ChunkCoordinates coords = mSender.getCoords();
