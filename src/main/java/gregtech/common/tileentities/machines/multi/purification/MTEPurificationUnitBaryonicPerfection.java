@@ -540,17 +540,7 @@ public class MTEPurificationUnitBaryonicPerfection
         info.add(StatCollector.translateToLocal("GT5U.infodata.pubp.catalyst_history"));
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             ItemStack stack = insertedCatalysts.get(i);
-            String name = stack.getDisplayName();
-            String[] split = name.split("-");
-            info.add(
-                EnumChatFormatting.YELLOW + ""
-                    + (i + 1)
-                    + ": "
-                    + getQuarkColor(stack)
-                    + split[0]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + split[1]);
+            info.add(EnumChatFormatting.YELLOW + "" + (i + 1) + ": " + getQuarkColor(stack) + stack.getDisplayName());
         }
         info.add(
             StatCollector
