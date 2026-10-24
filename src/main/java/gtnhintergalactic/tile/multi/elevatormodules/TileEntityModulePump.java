@@ -18,10 +18,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableMap;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -77,6 +73,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     private IntegerParameter[] gasTypeParameters;
     private IntegerParameter[] parallelParameters;
 
+    public static final int PUMP_BATCH_MIN = 1;
+    public static final int PUMP_BATCH_MAX = 128;
     /** Name of the planet type setting */
     private static final INameFunction<TileEntityModulePump> PLANET_TYPE_SETTING_NAME = (base,
         p) -> StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.pump.cfgi.0") + " "
@@ -105,7 +103,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         .translateToLocal("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
     /** Status of the batch setting */
     private static final IStatusFunction<TileEntityModulePump> BATCH_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
+        .fromLimitsInclusiveOuterBoundary(p.get(), PUMP_BATCH_MIN, 0, 32, PUMP_BATCH_MAX);
 
     /** Flag if this machine has an ME output hatch, will be updated in the structure check */
     protected boolean hasMeOutputHatch = false;
@@ -142,11 +140,11 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         int recipes = getParallelRecipes();
 
         batchParameter = new IntegerParameter(
-            1,
+            PUMP_BATCH_MIN,
             "gt.blockmachines.multimachine.project.ig.pump.cfgi.3",
             "batch",
-            () -> 1,
-            () -> 128);
+            () -> PUMP_BATCH_MIN,
+            () -> PUMP_BATCH_MAX);
 
         planetTypeParameters = new IntegerParameter[recipes];
         gasTypeParameters = new IntegerParameter[recipes];
@@ -223,12 +221,12 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
         ArrayList<FluidStack> outputs = new ArrayList<>();
         int usedEUt = 0;
         // We store the highest batch size as time multiplier
-        int maxBatchSize = Math.min(Math.max(batchParameter.getValue(), 1), 128);
+        int maxBatchSize = Math.clamp(batchParameter.getValue(), PUMP_BATCH_MIN, PUMP_BATCH_MAX);
         for (int i = 0; i < getParallelRecipes(); i++) {
             FluidStack fluid = SpacePumpingRecipes.RECIPES
                 .get(Pair.of(planetTypeParameters[i].getValue(), gasTypeParameters[i].getValue()));
             if (fluid != null) {
-                int batchSize = Math.min(Math.max(batchParameter.getValue(), 1), 128);
+                int batchSize = Math.clamp(batchParameter.getValue(), PUMP_BATCH_MIN, PUMP_BATCH_MAX);
                 MTEHatchOutput targetOutput = null;
                 if (!hasMeOutputHatch && !eSafeVoid) {
                     for (MTEHatchOutput output : mOutputHatches) {
@@ -297,7 +295,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
      *
      * @return Number of possible parallels
      */
-    protected abstract int getParallels();
+    public abstract int getParallels();
 
     /**
      * Get the number of parallel recipes that this module can handle
@@ -325,51 +323,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
                 .makeInParameter(0, getParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
         }
         batchSetting = parametrization.getGroup(9, false)
-            .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
-    }
-
-    /**
-     * Draw texts on the project module GUI
-     *
-     * @param screenElements Column that holds all screen elements
-     * @param inventorySlot  Inventory slot of the controller
-     */
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.config"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine));
-
-        for (int i = 0; i < getParallelRecipes(); i++) {
-            final int fluidIndex = i;
-            screenElements.widget(TextWidget.dynamicString(() -> {
-                String fluidName = getPumpedFluid(fluidIndex);
-                if (fluidName != null) {
-                    return " - " + fluidName;
-                }
-                return "";
-            })
-                .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine && getPumpedFluid(fluidIndex) != null))
-                .widget(
-                    new FakeSyncWidget.IntegerSyncer(
-                        () -> (int) planetTypeSettings[fluidIndex].get(),
-                        val -> parametrization.trySetParameters(
-                            planetTypeSettings[fluidIndex].id % 10,
-                            planetTypeSettings[fluidIndex].id / 10,
-                            planetTypeSettings[fluidIndex].get())))
-                .widget(
-                    new FakeSyncWidget.IntegerSyncer(
-                        () -> (int) planetTypeSettings[fluidIndex].get(),
-                        val -> parametrization.trySetParameters(
-                            gasTypeSettings[fluidIndex].id % 10,
-                            gasTypeSettings[fluidIndex].id / 10,
-                            gasTypeSettings[fluidIndex].get())));
-        }
+            .makeInParameter(1, PUMP_BATCH_MIN, BATCH_SETTING_NAME, BATCH_STATUS);
     }
 
     /** Texture that will be displayed on the side of the module */
@@ -486,7 +440,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
          * @return Number of possible parallels
          */
         @Override
-        protected int getParallels() {
+        public int getParallels() {
             return MAX_PARALLELS;
         }
 
@@ -575,7 +529,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
          * @return Number of possible parallels
          */
         @Override
-        protected int getParallels() {
+        public int getParallels() {
             return MAX_PARALLELS;
         }
 
@@ -664,7 +618,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
          * @return Number of possible parallels
          */
         @Override
-        protected int getParallels() {
+        public int getParallels() {
             return MAX_PARALLELS;
         }
 
