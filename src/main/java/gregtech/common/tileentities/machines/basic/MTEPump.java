@@ -45,6 +45,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ChatComponentBlockName;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
@@ -854,10 +855,12 @@ public class MTEPump extends MTEBasicMachine {
                     .appendSibling(new ChatComponentTranslation("GT5U.machines.blocks")),
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.pump.primary",
-                    (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None")),
+                    (this.mPrimaryPumpedBlock != null ? new ChatComponentBlockName(this.mPrimaryPumpedBlock)
+                        : new ChatComponentTranslation("GT5U.gui.text.nil"))),
                 new ChatComponentTranslation(
                     "GT5U.scanner.debug.pump.secondary",
-                    (this.mSecondaryPumpedBlock != null ? this.mSecondaryPumpedBlock.getLocalizedName() : "None")),
+                    (this.mSecondaryPumpedBlock != null ? new ChatComponentBlockName(this.mSecondaryPumpedBlock)
+                        : new ChatComponentTranslation("GT5U.gui.text.nil"))),
                 new ChatComponentTranslation("GT5U.scanner.debug.pump.pumps", mPumpCountBelow),
                 new ChatComponentTranslation("GT5U.scanner.debug.pump.queue_size", mPumpList.size()),
                 new ChatComponentTranslation("GT5U.scanner.debug.pump.head", getYOfPumpHead()),
