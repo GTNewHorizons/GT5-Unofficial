@@ -822,6 +822,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
+    public void addInfoDataComp(List<IChatComponent> components) {
+        if (canAccessData()) {
+            getMetaTileEntity().addInfoDataComp(components);
+        }
+    }
+
+    @Override
     public void getExtraInfoData(List<String> info) {
         if (canAccessData()) {
             getMetaTileEntity().getExtraInfoData(info);
