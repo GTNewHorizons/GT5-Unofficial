@@ -1557,7 +1557,7 @@ public class BECStructureDefinitions {
         "     DB  A  C  A  1  A  C  A  1  A  C  A  1  A  C  A  BD     ",
         "     DBDDADDCDDADD1DDADDCDDADD1DDADDCDDADD1DDADDCDDADDBD     ",
         "     AAAAAAAAAAAAAAAAAAAAAAAAA~AAAAAAAAAAAAAAAAAAAAAAAAA     ",
-        "     DBDDADDCDDADD1DDADDCDDADD1DDADDCDDADDBDDADDCDDADDBD     ",
+        "     DBDDADDCDDADD1DDADDCDDADD1DDADDCDDADD1DDADDCDDADDBD     ",
         "     DB  A  C  A  1  A  C  A  1  A  C  A  1  A  C  A  BD     ",
         "     DB  A  C  A  1  A  C  A  1  A  C  A  1  A  C  A  BD     ",
         "            E           E           E           E            ",
