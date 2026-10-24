@@ -345,7 +345,6 @@ public class GTMod {
         GTPreLoad.initLocalization(
             event.getModConfigurationDirectory()
                 .getParentFile());
-        GTPreLoad.adjustScrap();
 
         AE2Compat.onPreInit();
 

@@ -79,6 +79,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.ItemScrapbox;
 import gregtech.common.items.toolbox.ToolboxDelegateInventory;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.mixin.interfaces.accessors.ShapedOreRecipeAccessor;
@@ -436,7 +437,7 @@ public class GTModHandler {
         if (aOutput == null || aChance <= 0) return false;
         aOutput.stackSize = 1;
         if (GTConfig.troll && !GTUtility.areStacksEqual(aOutput, new ItemStack(Items.wooden_hoe, 1, 0))) return false;
-        Recipes.scrapboxDrops.addDrop(GTUtility.copyOrNull(aOutput), aChance);
+        ItemScrapbox.ScrapDrop.addDrop(aChance, GTUtility.copyOrNull(aOutput));
         return true;
     }
 
@@ -2002,11 +2003,11 @@ public class GTModHandler {
             if (searchRecyclerCache(aInput, recyclerBlacklist)) {
                 return null;
             } else {
-                return ItemList.IC2_Scrap.get(1);
+                return ItemList.Scrap.get(1);
             }
         } else {
             if (searchRecyclerCache(aInput, recyclerWhitelist)) {
-                return ItemList.IC2_Scrap.get(1);
+                return ItemList.Scrap.get(1);
             } else {
                 return null;
             }
@@ -2034,13 +2035,6 @@ public class GTModHandler {
         }
         // ic2.api.recipe.RecipeInputItemStack#matches expects item with wildcard meta to accept arbitrary meta
         return set.contains(GTUtility.ItemId.createAsWildcard(stack));
-    }
-
-    /**
-     * For the Scrapboxinator
-     */
-    public static ItemStack getRandomScrapboxDrop() {
-        return Recipes.scrapboxDrops.getDrop(ItemList.IC2_Scrapbox.get(1), false);
     }
 
     /**

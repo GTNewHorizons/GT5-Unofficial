@@ -496,7 +496,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(Items.rotten_flesh, 1, 0),
                 new ItemStack(Items.fermented_spider_eye, 1, 0),
-                ItemList.IC2_Scrap.get(1),
+                ItemList.Scrap.get(1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 1))
             .itemOutputs(ItemList.Food_Chum.get(4))
             .fluidInputs(getFluidStack("potion.purpledrink", 750))
