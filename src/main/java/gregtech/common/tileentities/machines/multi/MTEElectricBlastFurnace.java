@@ -72,10 +72,10 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectricBlastFurnace>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
-    /** Extra heat granted for every voltage tier above {@link #HEAT_BONUS_START_TIER} */
+    /** Extra heat granted for every voltage tier above {@link #BASE_TIER_FOR_HEAT_INCREASE} */
     public static final int HEAT_PER_VOLTAGE_TIER = 100;
     /** Voltage tier above which the per-tier heat bonus starts */
-    public static final int HEAT_BONUS_START_TIER = VoltageIndex.MV;
+    public static final int BASE_TIER_FOR_HEAT_INCREASE = VoltageIndex.MV;
 
     private int mHeatingCapacity = 0;
     private static final int EU_REDUCTION_PERCENT = 5;
@@ -133,11 +133,12 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addMarkdown(
                 new ResourceLocation("gregtech", "electric-blast-furnace"),
                 ImmutableMap.<String, Object>builder()
-                    .put("heat_per_tier", formatNumber(HEAT_PER_TIER))
+                    .put("heat_per_tier", HEAT_PER_TIER)
                     .put("eu_reduction", EU_REDUCTION_PERCENT)
-                    .put("eu_reduction_heat", formatNumber(EU_REDUCTION_HEAT_THRESHOLD))
-                    .put("heat_per_poc", formatNumber(HEAT_PER_PERFECT_OC))
+                    .put("eu_reduction_heat", EU_REDUCTION_HEAT_THRESHOLD)
+                    .put("heat_per_poc", HEAT_PER_PERFECT_OC)
                     .put("voltageTier_MV", voltageTooltipFormatted(2))
+                    .put("base_tier_for_heat_increase", BASE_TIER_FOR_HEAT_INCREASE)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
@@ -230,7 +231,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         checkHasAnyOutput(errors);
 
         this.mHeatingCapacity = (int) getCoilLevel().getHeat()
-            + HEAT_PER_VOLTAGE_TIER * (GTUtility.getTier(getMaxInputVoltage()) - HEAT_BONUS_START_TIER);
+            + HEAT_PER_VOLTAGE_TIER * (GTUtility.getTier(getMaxInputVoltage()) - BASE_TIER_FOR_HEAT_INCREASE);
     }
 
     @Override

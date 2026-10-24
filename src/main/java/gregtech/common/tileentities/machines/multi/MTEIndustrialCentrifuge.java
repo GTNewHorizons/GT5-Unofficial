@@ -82,6 +82,9 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final double EXTRA_SPEED = 1.0D;
     private static final double MAX_SPEED = SPEED + EXTRA_SPEED;
     private static final double EU_EFFICIENCY = 0.9D;
+    private static final int MOMENTUM_MAX = 100;
+    private static final int MOMENTUM_GAIN_PER_SEC = 2;
+    private static final int MOMENTUM_DECAY_PER_SEC = 8;
 
     private int momentum = 0;
     private int runningTickCounter = 0;
@@ -181,11 +184,15 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.centrifuge"))
             .addMarkdown(new ResourceLocation("gregtech", "industrial-centrifuge"),
                 ImmutableMap.<String, Object>builder()
-                    .put("min_parallels", formatNumber(BASE_PARALLEL_PER_TIER))
-                    .put("max_parallels", formatNumber((BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / 100D)))
-                    .put("min_speed", formatNumber(SPEED * 100))
-                    .put("max_speed", formatNumber((SPEED + EXTRA_SPEED) * 100))
-                    .put("eu_eff", formatNumber(EU_EFFICIENCY * 100))
+                    .put("base_parallels", BASE_PARALLEL_PER_TIER)
+                    .put("max_parallels", BASE_PARALLEL_PER_TIER * 2)
+                    .put("max_multiplier", 1.0D + (MOMENTUM_MAX / 100D))
+                    .put("min_speed", SPEED * 100)
+                    .put("max_speed", MAX_SPEED * 100)
+                    .put("eu_eff", EU_EFFICIENCY * 100)
+                    .put("momentum_max", MOMENTUM_MAX)
+                    .put("momentum_gain", MOMENTUM_GAIN_PER_SEC)
+                    .put("momentum_decay", MOMENTUM_DECAY_PER_SEC)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, true)

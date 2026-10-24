@@ -75,6 +75,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMacerator>
     implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
+    private static final double SPEED_T1 = 1.6D;
+
     public static final String TIER = "mTier";
     private int controllerTier = 1;
     private int structureTier;
@@ -112,17 +114,15 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.macerator_ims"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-maceration-stack"),
-                ImmutableMap.of(
-                    "parallel_base",
-                    PARALLEL_T1,
-                    "speed_base",
-                    160,
-                    "chip",
-                    GregtechItemList.Maceration_Upgrade_Chip.get(1)
-                        .getDisplayName()))
+                ImmutableMap.<String, Object>builder()
+                    .put("parallel_base", PARALLEL_T1)
+                    .put("speed_base", (1.0D / SPEED_T1) * 100)
+                    .put("chip", GregtechItemList.Maceration_Upgrade_Chip.get(1).getDisplayName())
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
@@ -145,6 +145,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

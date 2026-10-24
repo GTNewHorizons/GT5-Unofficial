@@ -28,6 +28,7 @@ import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
 
     public MTEExtremeDieselEngineLegacy(int aID, String aName, String aNameRegional) {

@@ -121,7 +121,6 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addInputAny("1+", "Any casing", 1)
             .addOutputAny("1+", "Any casing", 1)
             .addStructureInfo("")
-            .addStructureFooter("Heating Coil can be any tier and on any side")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         // spotless:on

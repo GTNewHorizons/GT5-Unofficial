@@ -65,6 +65,11 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 public class MTELargeNaquadahReactor extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
+    private static final int COOLANT_AMT_HIGH = 1000;
+    private static final int COOLANT_AMT_LOW = 20;
+    private static final int EXCITED_AMT_HIGH = 180;
+    private static final int EXCITED_AMT_LOW = 20;
+
     private static final int OFFSET_X = 3;
     private static final int OFFSET_Y = 10;
     private static final int OFFSET_Z = 0;
@@ -365,20 +370,20 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-naquadah-reactor"),
                 ImmutableMap.<String, Object>builder()
-                    .put("liquid_air", formatNumber(LiquidAirConsumptionPerSecond))
-                    .put("coolant_ic2", formatNumber(CoolantEfficiency[3]))
-                    .put("coolant_super", formatNumber(CoolantEfficiency[2]))
-                    .put("coolant_cryo", formatNumber(CoolantEfficiency[1]))
-                    .put("coolant_tachyon", formatNumber(CoolantEfficiency[0]))
-                    .put("excited_caesium", formatNumber(ExcitedLiquidCoe[4]))
-                    .put("excited_uranium", formatNumber(ExcitedLiquidCoe[3]))
-                    .put("excited_naquadah", formatNumber(ExcitedLiquidCoe[2]))
-                    .put("excited_asc", formatNumber(ExcitedLiquidCoe[1]))
-                    .put("excited_space", formatNumber(ExcitedLiquidCoe[0]))
-                    .put("coolant_amt_high", formatNumber(1000))
-                    .put("coolant_amt_low", formatNumber(20))
-                    .put("excited_amt_high", formatNumber(180))
-                    .put("excited_amt_low", formatNumber(20))
+                    .put("liquid_air", LiquidAirConsumptionPerSecond)
+                    .put("coolant_ic2", CoolantEfficiency[3])
+                    .put("coolant_super", CoolantEfficiency[2])
+                    .put("coolant_cryo", CoolantEfficiency[1])
+                    .put("coolant_tachyon", CoolantEfficiency[0])
+                    .put("excited_caesium", ExcitedLiquidCoe[4])
+                    .put("excited_uranium", ExcitedLiquidCoe[3])
+                    .put("excited_naquadah", ExcitedLiquidCoe[2])
+                    .put("excited_asc", ExcitedLiquidCoe[1])
+                    .put("excited_space", ExcitedLiquidCoe[0])
+                    .put("coolant_amt_high", COOLANT_AMT_HIGH)
+                    .put("coolant_amt_low", COOLANT_AMT_LOW)
+                    .put("excited_amt_high", EXCITED_AMT_HIGH)
+                    .put("excited_amt_low", EXCITED_AMT_LOW)
                     .build())
             .addSupportAny()
             .beginStructureBlock(7, 11, 7, false)

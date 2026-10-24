@@ -198,8 +198,13 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.entropic_processor"))
-            .addMarkdown(new ResourceLocation("gregtech", "entropic-processor"), ImmutableMap.of("base", BASE_PARALLELS, "max", CONSTRUCT_PARALLELS))
+        tt.addMachineType("Entropic Processor")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "entropic-processor"),
+                ImmutableMap.<String, Object>builder()
+                    .put("base_parallels", BASE_PARALLELS)
+                    .put("advanced_parallels", CONSTRUCT_PARALLELS)
+                    .build())
             .beginStructureBlock(7, 5, 7, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
             .addSubChannel(GTStructureChannels.ALCHEMICAL_CASING)

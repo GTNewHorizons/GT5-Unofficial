@@ -6,6 +6,6 @@ Higher tier plasmas increase the chances of mining bigger asteroids, and improve
 Needs to be fed with computation to work.
 Computation is consumed per parallel
 Mining Drones must be placed in a regular input bus (neither linked nor stocking bus).
-Runs at {var:voltageTier} with up to {color_parallel:4} parallels
+Runs at {VNF:voltageTier} with up to {color_parallel:4} parallels
 {lang:gt.blockmachines.multimachine.project.ig.motorT2}
 Ores can be black-/whitelisted by putting them in an input bus

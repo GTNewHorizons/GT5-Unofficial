@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -49,6 +48,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
@@ -129,11 +129,11 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(getMachineType())
-            .addMarkdown(
-                new ResourceLocation("gregtech", "industrial-alloy-smelter"),
-                ImmutableMap.of("heat_per_perfect_oc", formatNumber(HEAT_PER_PERFECT_OVERCLOCK)))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.alloy_smelter"))
+            .addInfo(TooltipHelper.parallelText("Voltage Tier * Coil Tier") + " Parallels")
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-alloy-smelter"),
+                ImmutableMap.of("heat_per_poc", HEAT_PER_PERFECT_OVERCLOCK))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))

@@ -73,6 +73,7 @@ import gregtech.common.gui.modularui.multiblock.MTEDrillerBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrillerBase>
     implements IChunkLoader, ISurvivalConstructable, ICasingTextureProvider {
 

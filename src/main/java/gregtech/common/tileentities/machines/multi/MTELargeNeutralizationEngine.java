@@ -49,7 +49,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -81,6 +80,21 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 @IMetaTileEntity.SkipGenerateDescription
 public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTELargeNeutralizationEngine>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int SODIUM_HYDROXIDE_EFF = 150;
+    private static final int SODIUM_HYDROXIDE_RATE = 60;
+    private static final int POTASSIUM_HYDROXIDE_EFF = 190;
+    private static final int POTASSIUM_HYDROXIDE_RATE = 24;
+    private static final int CAESIUM_HYDROXIDE_EFF = 250;
+    private static final int CAESIUM_HYDROXIDE_RATE = 6;
+    private static final int FRANCIUM_HYDROXIDE_EFF = 500;
+    private static final int FRANCIUM_HYDROXIDE_RATE = 5;
+    private static final int TIER1_DECAY = 200;
+    private static final int TIER1_CAPACITY = 375000;
+    private static final int TIER2_DECAY = 400;
+    private static final int TIER2_CAPACITY = 1000000;
+    private static final int TIER3_DECAY = 700;
+    private static final int TIER3_CAPACITY = 2500000;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -304,24 +318,24 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-neutralization-engine"),
                 ImmutableMap.<String, Object>builder()
-                    .put("sodium_hydroxide_eff", 150)
-                    .put("sodium_hydroxide_rate", 60)
-                    .put("potassium_hydroxide_eff", 190)
-                    .put("potassium_hydroxide_rate", 24)
-                    .put("caesium_hydroxide_eff", 250)
-                    .put("caesium_hydroxide_rate", 6)
-                    .put("francium_hydroxide_eff", 500)
-                    .put("francium_hydroxide_rate", 5)
-                    .put("residue_rand_min", String.format("%.1f", (float) RANDOM_MIN / 1000))
-                    .put("residue_rand_max", String.format("%.1f", (float) RANDOM_MAX / 1000))
-                    .put("tier1_decay", 200)
-                    .put("tier1_capacity", formatNumber(375000))
-                    .put("tier2_decay", 400)
-                    .put("tier2_capacity", formatNumber(1000000))
-                    .put("tier3_decay", 700)
-                    .put("tier3_capacity", formatNumber(2500000))
-                    .put("tier_iv", GTValues.TIER_COLORS[VoltageIndex.IV] + GTValues.VN[VoltageIndex.IV])
-                    .put("tier_luv", GTValues.TIER_COLORS[VoltageIndex.LuV] + GTValues.VN[VoltageIndex.LuV])
+                    .put("sodium_hydroxide_eff", SODIUM_HYDROXIDE_EFF)
+                    .put("sodium_hydroxide_rate", SODIUM_HYDROXIDE_RATE)
+                    .put("potassium_hydroxide_eff", POTASSIUM_HYDROXIDE_EFF)
+                    .put("potassium_hydroxide_rate", POTASSIUM_HYDROXIDE_RATE)
+                    .put("caesium_hydroxide_eff", CAESIUM_HYDROXIDE_EFF)
+                    .put("caesium_hydroxide_rate", CAESIUM_HYDROXIDE_RATE)
+                    .put("francium_hydroxide_eff", FRANCIUM_HYDROXIDE_EFF)
+                    .put("francium_hydroxide_rate", FRANCIUM_HYDROXIDE_RATE)
+                    .put("residue_rand_min", RANDOM_MIN / 1000.0)
+                    .put("residue_rand_max", RANDOM_MAX / 1000.0)
+                    .put("tier1_decay", TIER1_DECAY)
+                    .put("tier1_capacity", TIER1_CAPACITY)
+                    .put("tier2_decay", TIER2_DECAY)
+                    .put("tier2_capacity", TIER2_CAPACITY)
+                    .put("tier3_decay", TIER3_DECAY)
+                    .put("tier3_capacity", TIER3_CAPACITY)
+                    .put("tier_iv", VoltageIndex.IV)
+                    .put("tier_luv", VoltageIndex.LuV)
                     .build())
             .addSupportAny()
             .beginStructureBlock(11, 7, 3, true)

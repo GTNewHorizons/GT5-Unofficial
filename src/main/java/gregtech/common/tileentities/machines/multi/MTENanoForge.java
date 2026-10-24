@@ -749,8 +749,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         // spotless:off
         tt.addMachineType("Nanite Fabricator")
             .addMarkdown(new ResourceLocation("gregtech", "nano-forge"))
-            .addSupportAny()
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(41, 52, 41, false)
             .addController("Front bottom center")
             .addEnergyHatch("1-2", "Any bottom casing", 1)

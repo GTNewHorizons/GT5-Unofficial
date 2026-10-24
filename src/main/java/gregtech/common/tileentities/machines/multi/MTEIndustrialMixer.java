@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -52,6 +51,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMixer>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -66,6 +66,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     private static final double SPEED_INCREASE_TIER = 1.0D;
     private static final double SPEED_BASIC = 1.0D;
     private static final int GLASS_TIER_FOR_MULTI_AMP = VoltageIndex.UIV;
+    private static final int EU_EFFICIENCY = 100;
 
     private int glassTier = -1;
 
@@ -186,9 +187,9 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-mixer"),
                 ImmutableMap.<String, Object>builder()
-                    .put("speed_increase", formatNumber(SPEED_INCREASE_TIER * 100))
-                    .put("eu_eff", 100)
-                    .put("tier", GTUtility.getColoredTierNameForTooltip(GLASS_TIER_FOR_MULTI_AMP))
+                    .put("speed_increase", (SPEED_INCREASE_TIER * 100))
+                    .put("eu_eff", EU_EFFICIENCY)
+                    .put("glass_tier_for_multiamp", GLASS_TIER_FOR_MULTI_AMP)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)

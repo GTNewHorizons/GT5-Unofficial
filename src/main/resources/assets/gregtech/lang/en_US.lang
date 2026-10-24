@@ -1983,7 +1983,7 @@ GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
 GT5U.MBTT.Parallel.Singular=%s Parallel
 GT5U.MBTT.Speed.Base=%s Speed
 GT5U.MBTT.Speed.Additional=%s Speed per %s Tier
-GT5U.MBTT.Speed.Absolute=Speed is %s times %s Tier
+GT5U.MBTT.Speed.Absolute=§a+§7%s Speed per %s Tier
 GT5U.MBTT.EuDiscount.Base=%s EU Usage
 GT5U.MBTT.EuDiscount.Additional=%s EU Usage per %s Tier
 GT5U.MBTT.SteamDiscount.Base=%s Steam Usage
@@ -2305,10 +2305,8 @@ GT5U.tooltip.windmill.any_type=%s (any)
 GT5U.tooltip.windmill.any_block=Any %s
 
 # Tooltip flavor text
-gt.mbtt.flavor.exothermic_hearth=Never one...
 gt.mbtt.flavor.spinmatron=Maahes guides the way...
-gt.mbtt.flavor.endothermic_fridge=... without the other!
-gt.mbtt.flavor.exo_foundry=Glorious Evolution!
+gt.mbtt.flavor.latex=AKA Laminate Application and Thermal Enclosure eXocoater
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)

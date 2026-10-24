@@ -1,6 +1,5 @@
 package kekztech.common.tileentities;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -22,7 +21,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,6 +39,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -112,25 +111,32 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private final LongData energyInputValues5m = energyInputValues1h.view(5 * 60 * 20);
     private final LongData energyOutputValues5m = energyOutputValues1h.view(5 * 60 * 20);
 
+    private final long wireless_cap_passive_drain_tier_multiplier = 100;
     private final long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
-    private final long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
-    private final long max_passive_drain_eu_per_tick_per_uiv_cap = (long) GTUtility.powInt(10, 10);
-    private final long max_passive_drain_eu_per_tick_per_umv_cap = (long) GTUtility.powInt(10, 12);
+    private final long max_passive_drain_eu_per_tick_per_uev_cap = max_passive_drain_eu_per_tick_per_uhv_cap
+        * wireless_cap_passive_drain_tier_multiplier;
+    private final long max_passive_drain_eu_per_tick_per_uiv_cap = max_passive_drain_eu_per_tick_per_uev_cap
+        * wireless_cap_passive_drain_tier_multiplier;
+    private final long max_passive_drain_eu_per_tick_per_umv_cap = max_passive_drain_eu_per_tick_per_uiv_cap
+        * wireless_cap_passive_drain_tier_multiplier;
+
+    /** The number of glass tiers below the given */
+    private static final int glass_tiers_below_cell_allowed = 3;
 
     private final BigInteger guiCapacityStoredReformatLimit = BigInteger.valueOf(1_000_000_000_000L);
 
     public enum Capacitor {
 
-        IV(2, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.IV_cap_storage)),
-        LuV(3, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.LuV_cap_storage)),
-        ZPM(4, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.ZPM_cap_storage)),
-        UV(5, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UV_cap_storage)),
-        UHV(6, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UHV_cap_storage)),
+        IV(VoltageIndex.IV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.IV_cap_storage)),
+        LuV(VoltageIndex.LuV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.LuV_cap_storage)),
+        ZPM(VoltageIndex.ZPM, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.ZPM_cap_storage)),
+        UV(VoltageIndex.UV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UV_cap_storage)),
+        UHV(VoltageIndex.UHV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UHV_cap_storage)),
         None(0, BigInteger.ZERO),
-        EV(1, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.EV_cap_storage)),
-        UEV(7, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UEV_cap_storage)),
-        UIV(8, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UIV_cap_storage)),
-        UMV(9, ItemBlockLapotronicEnergyUnit.UMV_cap_storage);
+        EV(VoltageIndex.EV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.EV_cap_storage)),
+        UEV(VoltageIndex.UEV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UEV_cap_storage)),
+        UIV(VoltageIndex.UIV, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.UIV_cap_storage)),
+        UMV(VoltageIndex.UMV, ItemBlockLapotronicEnergyUnit.UMV_cap_storage);
 
         private final int minimalGlassTier;
         private final BigInteger providedCapacity;
@@ -139,8 +145,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .sorted(Comparator.comparingInt(Capacitor::getMinimalGlassTier))
             .toArray(Capacitor[]::new);
 
-        Capacitor(int minimalGlassTier, BigInteger providedCapacity) {
-            this.minimalGlassTier = minimalGlassTier;
+        Capacitor(int voltageIndex, BigInteger providedCapacity) {
+            this.minimalGlassTier = Math.max(0, voltageIndex - glass_tiers_below_cell_allowed);
             this.providedCapacity = providedCapacity;
         }
 
@@ -403,15 +409,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final Map<String, Object> tooltipVars = Map.of(
-            "maxPassiveDrain",
-            formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
-            "tierColorName",
-            GTUtility.getColoredTierNameForTooltip(VoltageIndex.UHV),
-            "rebalanceTicks",
-            formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks),
-            "wirelessEuCap",
-            formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap));
+        final ImmutableMap<String, Object> tooltipVars = ImmutableMap.<String, Object>builder()
+            .put("maxPassiveDrain", (max_passive_drain_eu_per_tick_per_uhv_cap))
+            .put("wirelessCapPassiveDrainTierMultiplier", (wireless_cap_passive_drain_tier_multiplier))
+            .put("tierColorName", VoltageIndex.UHV)
+            .put("rebalanceTicks", (ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks))
+            .put("wirelessCapTierMultiplier", (ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap_tier_multiplier))
+            .put("wirelessEuCap", (ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap))
+            .put("glassTiersBelowCellAllowed", glass_tiers_below_cell_allowed)
+            .build();
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.machine_type"))
             .addMarkdown(new ResourceLocation("gregtech", "lapotronic-super-capacitor"), tooltipVars)
@@ -881,11 +887,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 "kekztech.infodata.lapotronic_super_capacitor.passive_loss",
                 nf.format(passiveDischargeAmount)));
         ll.add(
-            IGregTechDeviceInformation
-                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_in", formatNumber(inputLastTick)));
+            IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.eu_in", (inputLastTick)));
         ll.add(
-            IGregTechDeviceInformation
-                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_out", formatNumber(outputLastTick)));
+            IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.eu_out", (outputLastTick)));
         ll.add(
             IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec",
@@ -1233,7 +1237,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             ItemStack trigger, AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             // glass for LSC can be paired with capacitors up to 3 tiers higher
-            int glassTier = GTStructureChannels.BOROGLASS.getValue(trigger) + 2;
+            int glassTier = GTStructureChannels.BOROGLASS.getValue(trigger) + glass_tiers_below_cell_allowed - 1;
             ItemStack targetStack;
             // if user specified a capacitor tier, use it.
             // otherwise scan for any capacitor that can be used
