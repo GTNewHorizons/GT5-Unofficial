@@ -32,18 +32,25 @@ import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import static gregtech.api.util.GTUtility.getTier;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -71,6 +78,7 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.mixin.interfaces.accessors.ShapedOreRecipeAccessor;
 import ic2.api.reactor.IReactorComponent;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 
 /**
  * Class for Automatic Recipe registering.
@@ -677,6 +685,7 @@ public class GTRecipeRegistrator {
     private static synchronized void registerStickStuff(String aPlate, ItemData aItemData, boolean aRecipeReplacing) {
         IdentityHashMap<IRecipe, Boolean> tKnownMatches = aRecipeReplacing && aPlate != null ? new IdentityHashMap<>()
             : null;
+        Map<List<IRecipe>, StickRecipeIndex> tIndexes = new IdentityHashMap<>();
         for (Materials tMaterial : sRodMaterialList) {
             ItemStack tMt2 = GTOreDictUnificator.get(OrePrefixes.stick, tMaterial, 1);
             if (tMt2 == null) {
@@ -696,7 +705,7 @@ public class GTRecipeRegistrator {
                 boolean tRemovalAttempted = false;
 
                 for (ItemStack tCrafted : GTModHandler.getRecipeOutputs(
-                    getRecipeList(tRecipe),
+                    StickRecipeIndex.candidates(tIndexes, getRecipeList(tRecipe), tRecipe.shape),
                     true,
                     tRecipe.shape,
                     tCanReplace ? tKnownMatches : null)) {
@@ -958,6 +967,182 @@ public class GTRecipeRegistrator {
                 if (mappedIndex < 0 || mappedIndex > 8 || shape[mappedIndex] == null) b.add(i);
             }
             return b.build();
+        }
+    }
+
+    /**
+     * The stick pass tries every rod material in every shape against the recipes of that shape. A recipe whose shape
+     * cannot fit the grid, or whose inputs do not take its items, fails matches() anyway, so this hands out only the
+     * others, in list order. Removing through the returned list removes from the indexed list.
+     */
+    private static final class StickRecipeIndex {
+
+        private final List<IRecipe> list;
+        private final IRecipe[] recipes;
+        private final boolean[] removed;
+        private final int oreVersion;
+        private int expectedSize;
+        // recipes that may take any item, and the others by every item they accept
+        private final int[] anyItem;
+        private final Map<Item, int[]> byItem = new IdentityHashMap<>();
+        private final Map<Integer, int[]> anyItemFitting = new HashMap<>();
+        private final Set<List<Object>> triedGrids = new HashSet<>();
+
+        private StickRecipeIndex(List<IRecipe> list) {
+            this.list = list;
+            recipes = list.toArray(new IRecipe[0]);
+            removed = new boolean[recipes.length];
+            expectedSize = recipes.length;
+            oreVersion = CraftingRecipeFilter.getOreVersion();
+            IntArrayList any = new IntArrayList();
+            Map<Item, IntArrayList> buckets = new IdentityHashMap<>();
+            for (int i = 0; i < recipes.length; i++) {
+                Set<Item> accepted = CraftingRecipeFilter.acceptedItems(recipes[i]);
+                if (accepted == null) {
+                    any.add(i);
+                } else {
+                    for (Item item : accepted) buckets.computeIfAbsent(item, k -> new IntArrayList())
+                        .add(i);
+                }
+            }
+            anyItem = any.toIntArray();
+            buckets.forEach((item, positions) -> byItem.put(item, positions.toIntArray()));
+        }
+
+        /** The recipes of the list that can match the grid. */
+        private static List<IRecipe> candidates(Map<List<IRecipe>, StickRecipeIndex> indexes, List<IRecipe> list,
+            ItemStack[] shape) {
+            if (list == null || shape == null) return list;
+            int occupied = 0, count = 0;
+            Item[] items = new Item[9];
+            for (int i = 0; i < 9 && i < shape.length; i++) {
+                if (shape[i] == null) continue;
+                Item item = shape[i].getItem();
+                if (item == null) return list;
+                occupied |= 1 << i;
+                items[count++] = item;
+            }
+            if (count == 0) return list;
+
+            StickRecipeIndex index = indexes.get(list);
+            if (index == null || index.expectedSize != list.size()
+                || index.oreVersion != CraftingRecipeFilter.getOreVersion()) {
+                index = new StickRecipeIndex(list);
+                indexes.put(list, index);
+            }
+            // A grid tried before already took everything it can: the matches were removed, and the rest either
+            // fails matches() or was skipped for its output, so it would give nothing again.
+            if (!index.triedGrids.add(gridKey(shape))) return Collections.emptyList();
+            return index.select(occupied, items, count);
+        }
+
+        private static List<Object> gridKey(ItemStack[] shape) {
+            List<Object> key = new ArrayList<>(36);
+            for (int i = 0; i < 9 && i < shape.length; i++) {
+                ItemStack stack = shape[i];
+                if (stack == null) {
+                    key.add(null);
+                    continue;
+                }
+                key.add(stack.getItem());
+                key.add(stack.getItemDamage());
+                key.add(stack.stackSize);
+                key.add(stack.stackTagCompound == null ? null : stack.stackTagCompound.toString());
+            }
+            return key;
+        }
+
+        private List<IRecipe> select(int occupied, Item[] items, int count) {
+            int[] bucket = byItem.getOrDefault(items[0], new int[0]);
+            int[] any = anyItemFitting.computeIfAbsent(occupied, mask -> {
+                IntArrayList fitting = new IntArrayList();
+                for (int position : anyItem) {
+                    if (CraftingRecipeFilter.mayFit(recipes[position], mask)) fitting.add(position);
+                }
+                return fitting.toIntArray();
+            });
+            IntArrayList chosen = new IntArrayList();
+            int a = 0, b = 0;
+            // both are ascending, merging them keeps list order
+            while (a < any.length || b < bucket.length) {
+                boolean fromAny = b >= bucket.length || a < any.length && any[a] < bucket[b];
+                int next = fromAny ? any[a++] : bucket[b++];
+                if (removed[next]) continue;
+                if (!fromAny && (!CraftingRecipeFilter.mayFit(recipes[next], occupied)
+                    || !acceptsAll(recipes[next], items, count))) {
+                    continue;
+                }
+                chosen.add(next);
+            }
+            return new Candidates(chosen.toIntArray());
+        }
+
+        private static boolean acceptsAll(IRecipe recipe, Item[] items, int count) {
+            Set<Item> accepted = CraftingRecipeFilter.acceptedItems(recipe);
+            if (accepted == null) return true;
+            for (int i = 1; i < count; i++) {
+                if (!accepted.contains(items[i])) return false;
+            }
+            return true;
+        }
+
+        private void remove(int position) {
+            removed[position] = true;
+            IRecipe recipe = recipes[position];
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i) == recipe) {
+                    list.remove(i);
+                    expectedSize--;
+                    return;
+                }
+            }
+        }
+
+        private final class Candidates extends AbstractList<IRecipe> {
+
+            private final int[] positions;
+
+            private Candidates(int[] positions) {
+                this.positions = positions;
+            }
+
+            @Override
+            public IRecipe get(int i) {
+                return recipes[positions[i]];
+            }
+
+            @Override
+            public int size() {
+                return positions.length;
+            }
+
+            @Override
+            public Iterator<IRecipe> iterator() {
+                return new Iterator<>() {
+
+                    private int next;
+                    private int current = -1;
+
+                    @Override
+                    public boolean hasNext() {
+                        return next < positions.length;
+                    }
+
+                    @Override
+                    public IRecipe next() {
+                        if (next >= positions.length) throw new NoSuchElementException();
+                        current = positions[next++];
+                        return recipes[current];
+                    }
+
+                    @Override
+                    public void remove() {
+                        if (current < 0) throw new IllegalStateException();
+                        StickRecipeIndex.this.remove(current);
+                        current = -1;
+                    }
+                };
+            }
         }
     }
 }

@@ -1409,7 +1409,7 @@ public class GTModHandler {
             }
 
             Boolean knownMatch = knownMatches == null ? null : knownMatches.get(recipe);
-            if (knownMatch != null ? knownMatch : recipe.matches(craftMatrix, DW)) {
+            if (knownMatch != null ? knownMatch : CraftingRecipeFilter.matches(recipe, craftMatrix, DW)) {
                 result = recipe.getCraftingResult(craftMatrix);
                 allRecipes.remove(i--);
             }
@@ -1742,7 +1742,7 @@ public class GTModHandler {
         ItemStack tOreDictOutput = null;
 
         for (IRecipe recipe : recipes) {
-            if (recipe.matches(craftMatrix, DW)) {
+            if (CraftingRecipeFilter.matches(recipe, craftMatrix, DW)) {
                 ItemStack tOutput = aUncopiedStack ? recipe.getRecipeOutput() : recipe.getCraftingResult(craftMatrix);
 
                 if (aPreferNonOreDict && recipe instanceof ShapedOreRecipe) {
@@ -1905,7 +1905,7 @@ public class GTModHandler {
             if (recipe instanceof ShapelessOreRecipe) continue;
             if (recipe instanceof IGTCraftingRecipe) continue;
 
-            boolean matches = recipe.matches(craftMatrix, DW);
+            boolean matches = CraftingRecipeFilter.matches(recipe, craftMatrix, DW);
             if (knownMatches != null) knownMatches.put(recipe, matches);
             if (!matches) continue;
 
