@@ -47,6 +47,11 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
         super(aCosts);
     }
 
+    /** Returns the scan radius in chunks around the player's chunk for the given scanner. */
+    public static int getScanRadius(MetaBaseItem aItem, ItemStack aStack) {
+        return aItem.getHarvestLevel(aStack, "");
+    }
+
     /** Returns the side length in chunks of the square area scanned with the given radius. */
     public static int getScanDiameter(int radius) {
         return 2 * radius + 1;
@@ -82,14 +87,11 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             final List<Chunk> chunks = new ArrayList<>();
             aPlayer.addChatMessage(new ChatComponentTranslation("detrav.scanner.chat.scanning"));
 
-            final int radius = aItem.getHarvestLevel(aStack, "");
+            final int radius = getScanRadius(aItem, aStack);
 
-            int scanRadius = radius + 1;
-            for (int i = -scanRadius; i <= scanRadius; i++) {
-                for (int j = -scanRadius; j <= scanRadius; j++) {
-                    if (i != -scanRadius && i != scanRadius && j != -scanRadius && j != scanRadius) {
-                        chunks.add(aWorld.getChunkFromChunkCoords(cX + i, cZ + j));
-                    }
+            for (int i = -radius; i <= radius; i++) {
+                for (int j = -radius; j <= radius; j++) {
+                    chunks.add(aWorld.getChunkFromChunkCoords(cX + i, cZ + j));
                 }
             }
 
