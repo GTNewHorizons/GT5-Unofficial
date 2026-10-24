@@ -33,7 +33,6 @@ import org.joml.Math;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -167,9 +166,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cutting_machine"))
-            .addMarkdown(
-                new ResourceLocation("gregtech", "industrial-cutting-machine"),
-                ImmutableMap.of())
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-cutting-machine"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))

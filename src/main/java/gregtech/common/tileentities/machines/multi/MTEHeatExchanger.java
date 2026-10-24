@@ -128,10 +128,10 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final ImmutableMap.Builder<String, Object> vars = ImmutableMap.builder();
-        vars.put("explode_seconds", formatNumber(dryHeatMaximum / 20))
-            .put("threshold_reduction", formatNumber(100.0 * SH_THRESHOLD_REDUCTION_PER_CONFIG / BASE_SH_THRESHOLD))
-            .put("steam_penalty", formatNumber(100.0 * PENALTY_PER_CONFIG))
-            .put("min_circuit", formatNumber(MIN_CIRCUIT_CONFIG));
+        vars.put("explode_seconds", (dryHeatMaximum / 20))
+            .put("threshold_reduction", (100.0 * SH_THRESHOLD_REDUCTION_PER_CONFIG / BASE_SH_THRESHOLD))
+            .put("steam_penalty", (100.0 * PENALTY_PER_CONFIG))
+            .put("min_circuit", (MIN_CIRCUIT_CONFIG));
         putCoolantVars(vars, "lava", "lava");
         putCoolantVars(vars, "coolant", "ic2hotcoolant");
         putCoolantVars(vars, "salt", "molten.solarsalthot");

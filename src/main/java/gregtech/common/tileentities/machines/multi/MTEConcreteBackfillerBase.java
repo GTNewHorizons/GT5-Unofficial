@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -107,9 +106,9 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addMarkdown(
                 new ResourceLocation("gregtech", "concrete-backfiller"),
                 ImmutableMap.<String, Object>builder()
-                    .put("radius", formatNumber(getRadius()))
+                    .put("radius", (getRadius()))
                     .put("min_tier", getMinTier())
-                    .put("concrete_per_block", formatNumber(CONCRETE_PER_BLOCK))
+                    .put("concrete_per_block", (CONCRETE_PER_BLOCK))
                     .put("cycle_time", GTUtility.formatTime(baseCycleTime))
                     .build())
             .beginStructureBlock(3, 7, 3, false)

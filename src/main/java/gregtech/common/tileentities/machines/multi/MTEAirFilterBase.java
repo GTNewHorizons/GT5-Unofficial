@@ -195,6 +195,10 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         };
     }
 
+    private int getChunkSize() {
+        return 2 * multiTier + 1;
+    }
+
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
@@ -203,14 +207,14 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addMarkdown(
                 new ResourceLocation("gregtech", "air-filter"),
                 ImmutableMap.<String, Object>builder()
-                    .put("chunk_size", formatNumber(2 * multiTier + 1))
-                    .put("global_multiplier", formatNumber(GLOBAL_MULTIPLIER))
-                    .put("scaling_factor", formatNumber(SCALING_FACTOR))
-                    .put("tier_bonus", formatNumber(getBonusByTier()))
-                    .put("eu_usage", formatNumber(getEUt()))
-                    .put("filter_lifespan", formatNumber(USES_PER_FILTER * PROGRESS_TIME / 20))
-                    .put("boost_per_filter", formatNumber(BOOST_PER_FILTER))
-                    .put("maint_penalty", formatNumber(MAINTENANCE_PENALTY_PERCENT))
+                    .put("chunk_size", getChunkSize())
+                    .put("global_multiplier", (GLOBAL_MULTIPLIER))
+                    .put("scaling_factor", (SCALING_FACTOR))
+                    .put("tier_bonus", (getBonusByTier()))
+                    .put("eu_usage", (getEUt()))
+                    .put("filter_lifespan", (USES_PER_FILTER * PROGRESS_TIME / 20))
+                    .put("boost_per_filter", (BOOST_PER_FILTER))
+                    .put("maint_penalty", (MAINTENANCE_PENALTY_PERCENT))
                     .build())
             .beginStructureBlock(3, 4, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))

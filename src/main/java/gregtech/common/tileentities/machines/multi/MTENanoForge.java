@@ -748,7 +748,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Nanite Fabricator")
-            .addMarkdown(new ResourceLocation("gregtech", "nano-forge"), ImmutableMap.of())
+            .addMarkdown(new ResourceLocation("gregtech", "nano-forge"))
             .addUnlimitedTierSkips()
             .addSupportAny()
             .beginStructureBlock(41, 52, 41, false)

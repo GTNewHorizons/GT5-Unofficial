@@ -25,7 +25,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -211,7 +210,7 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
         // spotless:off
         tt.addMachineType("Naquadah Fuel Refinery, NFR")
             .addDynamicParallelInfo(4, TooltipTier.FIELD_RESTRICTION_COIL)
-            .addMarkdown(new ResourceLocation("gregtech", "naquadah-fuel-refinery"), ImmutableMap.of())
+            .addMarkdown(new ResourceLocation("gregtech", "naquadah-fuel-refinery"))
             .addUnlimitedTierSkips()
             .addSupportAny()
             .beginStructureBlock(27, 27, 5, false)

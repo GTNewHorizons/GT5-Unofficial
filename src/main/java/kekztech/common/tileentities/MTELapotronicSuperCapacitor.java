@@ -1,6 +1,5 @@
 package kekztech.common.tileentities;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -411,16 +410,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final ImmutableMap<String, Object> tooltipVars = ImmutableMap.<String, Object>builder()
-            .put("maxPassiveDrain", formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap))
-            .put("wirelessCapPassiveDrainTierMultiplier", formatNumber(wireless_cap_passive_drain_tier_multiplier))
+            .put("maxPassiveDrain", (max_passive_drain_eu_per_tick_per_uhv_cap))
+            .put("wirelessCapPassiveDrainTierMultiplier", (wireless_cap_passive_drain_tier_multiplier))
             .put("tierColorName", VoltageIndex.UHV)
-            .put(
-                "rebalanceTicks",
-                formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks))
-            .put(
-                "wirelessCapTierMultiplier",
-                formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap_tier_multiplier))
-            .put("wirelessEuCap", formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap))
+            .put("rebalanceTicks", (ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks))
+            .put("wirelessCapTierMultiplier", (ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap_tier_multiplier))
+            .put("wirelessEuCap", (ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap))
             .put("glassTiersBelowCellAllowed", glass_tiers_below_cell_allowed)
             .build();
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
@@ -892,11 +887,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 "kekztech.infodata.lapotronic_super_capacitor.passive_loss",
                 nf.format(passiveDischargeAmount)));
         ll.add(
-            IGregTechDeviceInformation
-                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_in", formatNumber(inputLastTick)));
+            IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.eu_in", (inputLastTick)));
         ll.add(
-            IGregTechDeviceInformation
-                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_out", formatNumber(outputLastTick)));
+            IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.eu_out", (outputLastTick)));
         ll.add(
             IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec",

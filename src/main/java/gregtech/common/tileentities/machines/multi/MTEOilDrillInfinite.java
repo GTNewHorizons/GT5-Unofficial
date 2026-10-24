@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -100,12 +99,12 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
         // spotless:off
         tt.addMachineType("Pump, FDR")
             .addMarkdown(
-                new ResourceLocation("gregtech", "infinite-oil-drilling-rig"),
+                new ResourceLocation("gregtech", "infinite-oil-drill"),
                 ImmutableMap.<String, Object>builder()
-                    .put("parallels", formatNumber(parallels))
-                    .put("min_tier", getMinTier())
                     .put("range", getRangeInChunks())
                     .put("cycle_time", cycleTimeDisplay)
+                    .put("parallels", parallels)
+                    .put("min_tier", getMinTier())
                     .build())
             .beginStructureBlock(9, 14, 9, false)
             .addController("Front bottom center")

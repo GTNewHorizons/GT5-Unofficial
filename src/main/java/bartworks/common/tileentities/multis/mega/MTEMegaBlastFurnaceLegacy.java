@@ -180,7 +180,7 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
                 ImmutableMap.of(
                     "discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
                     "heat_per_tier", formatNumber(MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER),
-                    "start_tier", GTValues.VN[MTEElectricBlastFurnace.HEAT_BONUS_START_TIER],
+                    "start_tier", GTValues.VN[MTEElectricBlastFurnace.BASE_TIER_FOR_HEAT_INCREASE],
                     "perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
             .addSeparator()
             .addSupportAny()
@@ -362,7 +362,7 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
             this.mHeatingCapacity = (int) this.getCoilLevel()
                 .getHeat()
                 + MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER
-                    * (BWUtil.getTier(this.getMaxInputEu()) - MTEElectricBlastFurnace.HEAT_BONUS_START_TIER);
+                    * (BWUtil.getTier(this.getMaxInputEu()) - MTEElectricBlastFurnace.BASE_TIER_FOR_HEAT_INCREASE);
         }
     }
 

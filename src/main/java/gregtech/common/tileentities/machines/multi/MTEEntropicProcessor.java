@@ -202,8 +202,8 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             .addMarkdown(
                 new ResourceLocation("gregtech", "entropic-processor"),
                 ImmutableMap.<String, Object>builder()
-                    .put("base_parallels", 8)
-                    .put("advanced_parallels", 32)
+                    .put("base_parallels", BASE_PARALLELS)
+                    .put("advanced_parallels", CONSTRUCT_PARALLELS)
                     .build())
             .beginStructureBlock(7, 5, 7, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))

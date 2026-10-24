@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -188,7 +187,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-mixer"),
                 ImmutableMap.<String, Object>builder()
-                    .put("speed_increase", formatNumber(SPEED_INCREASE_TIER * 100))
+                    .put("speed_increase", (SPEED_INCREASE_TIER * 100))
                     .put("eu_eff", EU_EFFICIENCY)
                     .put("glass_tier_for_multiamp", GLASS_TIER_FOR_MULTI_AMP)
                     .build())

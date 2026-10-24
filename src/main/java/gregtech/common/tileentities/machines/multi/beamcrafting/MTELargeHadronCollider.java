@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -352,15 +351,15 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-hadron-collider"),
                 ImmutableMap.<String, Object>builder()
-                    .put("max_energy", formatNumber(MAXIMUM_PARTICLE_ENERGY_keV / 1_000_000_000))
-                    .put("ev_per_eu", formatNumber(keV_EU_RATIO * 1000))
-                    .put("rate_gain", formatNumber(RATE_SCALE_FACTOR - 1))
-                    .put("nerf_cutoff", formatNumber(RATE_NERF_CUTOFF))
-                    .put("nerf_power", formatNumber(RATE_NERF_POWER))
-                    .put("nerf_power_qgp", formatNumber(RATE_NERF_POWER_QGP))
-                    .put("nerf_power_magmatter", formatNumber(RATE_NERF_POWER_MAGMATTER))
+                    .put("max_energy", (MAXIMUM_PARTICLE_ENERGY_keV / 1_000_000_000))
+                    .put("ev_per_eu", (keV_EU_RATIO * 1000))
+                    .put("rate_gain", (RATE_SCALE_FACTOR - 1))
+                    .put("nerf_cutoff", (RATE_NERF_CUTOFF))
+                    .put("nerf_power", (RATE_NERF_POWER))
+                    .put("nerf_power_qgp", (RATE_NERF_POWER_QGP))
+                    .put("nerf_power_magmatter", (RATE_NERF_POWER_MAGMATTER))
                     .put("tier", POWER_TIER)
-                    .put("collision_multiplier", formatNumber(COLLISION_ENERGY_MULTIPLIER))
+                    .put("collision_multiplier", (COLLISION_ENERGY_MULTIPLIER))
                     .build())
             .addSeparator()
             .addSupportAny()

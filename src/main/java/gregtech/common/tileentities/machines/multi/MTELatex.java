@@ -30,6 +30,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -295,8 +296,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Cable Coater, LATEX")
-            .addInfo(
-                EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminate Application and Thermal Enclosure eXocoater")
+            .addInfo(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gt.mbtt.flavor.latex"))
             .addBulkMachineInfo(8, 2F, 0.85F)
             .addMarkdown(
                 new ResourceLocation("gregtech", "latex"),

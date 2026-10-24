@@ -29,7 +29,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -114,7 +113,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
         // spotless:off
         tt.addMachineType("Ore Washer, Simple Washer, OWP")
             .addBulkMachineInfo(4, 5f, 1f)
-            .addMarkdown(new ResourceLocation("gregtech", "ore-washing-plant"), ImmutableMap.of())
+            .addMarkdown(new ResourceLocation("gregtech", "ore-washing-plant"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center, 2nd layer")

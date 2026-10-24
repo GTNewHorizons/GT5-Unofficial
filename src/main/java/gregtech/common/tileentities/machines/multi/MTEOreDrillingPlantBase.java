@@ -75,6 +75,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     protected int mTier = 1;
 
+    private static final int FORTUNE_VALUE = 3;
+    private static final int ORE_MULTIPLIER = 3;
+
     private static final String NBT_VEIN_NAME = "veinName";
     private static final String NBT_REPLACE_WITH_COBBLESTONE = "replaceWithCobblestone";
     private static final String NBT_CHUNK_RADIUS_CONFIG = "chunkRadiusConfig";
@@ -496,15 +499,15 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         final String blockDiameter = formatNumber(chunkRadiusConfig * 32L);
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Miner, MBM")
             .addMarkdown(
                 new ResourceLocation("gregtech", "ore-drilling-plant"),
                 ImmutableMap.<String, Object>builder()
                     .put("chunk_diameter", chunkDiameter)
                     .put("block_diameter", blockDiameter)
-                    .put("fortune", formatNumber(mTier + 3))
+                    .put("fortune", mTier + FORTUNE_VALUE)
                     .put("cycle_time", cycleTimeDisplay)
+                    .put("ore_multiplier", ORE_MULTIPLIER)
                     .build())
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
@@ -518,7 +521,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

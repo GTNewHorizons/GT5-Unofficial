@@ -187,11 +187,11 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             .addMarkdown(
                 new ResourceLocation("gregtech", "fusion-computer"),
                 ImmutableMap.<String, Object>builder()
-                    .put("power", formatNumber(GTValues.V[tier()] / MAX_ENERGY_HATCHES))
-                    .put("capacity", formatNumber(capableStartupCanonical() / MAX_ENERGY_HATCHES))
+                    .put("power", (GTValues.V[tier()] / MAX_ENERGY_HATCHES))
+                    .put("capacity", (capableStartupCanonical() / MAX_ENERGY_HATCHES))
                     .put("tier", tier())
-                    .put("eu_per_oc", formatNumber(fod.getEUtIncreasePerOC()))
-                    .put("time_per_oc", formatNumber(fod.getDurationDecreasePerOC()))
+                    .put("eu_per_oc", (fod.getEUtIncreasePerOC()))
+                    .put("time_per_oc", (fod.getDurationDecreasePerOC()))
                     .build())
             .beginStructureBlock(15, 3, 15, false)
             .addController(translateToLocal("gt.mbtt.structure.middle_center_2nd_layer"))

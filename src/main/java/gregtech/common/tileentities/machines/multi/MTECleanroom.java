@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -11,7 +10,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIV
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_GLOW;
 import static gregtech.api.util.GlassTier.getGlassBlockTier;
-import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +39,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.ITexture;
@@ -74,6 +73,8 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     public static final int IDLE_EU = 4;
     public static final int LV_AMPERAGE = 2;
     public static final float MAINTENANCE_PENALTY_PERCENT = 10.0f;
+    private static final int MIN_TIER = VoltageIndex.LV;
+    private static final int MIN_TIER_FOR_OC = VoltageIndex.HV;
 
     /**
      * Maximum width (horizontal size) of the cleanroom. Includes walls.
@@ -149,13 +150,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addMarkdown(
                 new ResourceLocation("gregtech", "cleanroom"),
                 ImmutableMap.<String, Object>builder()
-                    .put("startup_eu", formatNumber(STARTUP_EU))
-                    .put("idle_eu", formatNumber(IDLE_EU))
-                    .put("lv_amperage", formatNumber(LV_AMPERAGE))
-                    .put("maint_penalty", formatNumber(MAINTENANCE_PENALTY_PERCENT))
-                    .put("voltageTier_LV", voltageTooltipFormatted(1))
-                    .put("voltageTier_HV", voltageTooltipFormatted(3))
-                    .put("tier_LV", 1)
+                    .put("startup_eu", STARTUP_EU)
+                    .put("idle_eu", IDLE_EU)
+                    .put("min_tier_amperage", LV_AMPERAGE)
+                    .put("maint_penalty", MAINTENANCE_PENALTY_PERCENT)
+                    .put("min_tier", MIN_TIER)
+                    .put("min_tier_for_oc", MIN_TIER_FOR_OC)
                     .build())
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.top_center"))

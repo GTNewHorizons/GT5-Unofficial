@@ -20,7 +20,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -363,9 +362,8 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Research Completer")
-            .addMarkdown(new ResourceLocation("gregtech", "research-completer"), ImmutableMap.of())
+            .addMarkdown(new ResourceLocation("gregtech", "research-completer"))
             .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
             .addController("Front center, 2nd layer")
             .addCasing("9-52", "Magical Machine Casing", false)
@@ -377,7 +375,6 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

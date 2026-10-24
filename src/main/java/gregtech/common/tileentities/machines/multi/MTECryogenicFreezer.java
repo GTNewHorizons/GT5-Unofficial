@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.CryotheumHatch;
@@ -95,7 +94,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addMarkdown(
                 new ResourceLocation("gregtech", "cryogenic-freezer"),
                 ImmutableMap.<String, Object>builder()
-                    .put("cryotheum", formatNumber(CRYOTHEUM_PER_SECOND))
+                    .put("cryotheum", (CRYOTHEUM_PER_SECOND))
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 7, true)

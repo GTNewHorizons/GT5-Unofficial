@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -104,7 +103,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
         // spotless:off
         tt.addMachineType("Canner, TCP")
             .addBulkMachineInfo(8, 2f, 1)
-            .addMarkdown(new ResourceLocation("gregtech", "multi-canner"), ImmutableMap.of())
+            .addMarkdown(new ResourceLocation("gregtech", "multi-canner"))
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front center, 3rd layer")
             .addCasing("85-93", "Solid Steel Machine Casing", false)

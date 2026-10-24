@@ -13,7 +13,7 @@ Every tick, {dark_green:Toxic Residue} decays by {green:Base Decay * Decay Boost
 {yellow:Residue decays 10x slower when the multiblock is disabled}
 {hr}
 Insert up to {blue:16 Robot Arms} to increase {blue:Decay Boost}:
-{white:Decay Boost =} {green:sqrt(Robot Arms) * N^(Robot Arm Tier - 1)} where {green:N=1.2} ({tier-color:tier_iv:{VN:tier_iv}-}) or {green:N=1.4} ({tier-color:tier_luv:{VN:tier_luv}+})
+{white:Decay Boost =} {green:sqrt(Robot Arms) * N^(Robot Arm Tier - 1)} where {green:N=1.2} ({VNF:tier_iv}-) or {green:N=1.4} ({VNF:tier_luv}+)
 Every minute, there is a {green:Robot Arms / (45 * (Robot Arm Tier + 1))} chance to void exactly one {blue:Robot Arm}
 {hr}
 The structure has {color_mode:3 Tiers} which determine {blue:Base Decay} and {dark_aqua:Capacity}:

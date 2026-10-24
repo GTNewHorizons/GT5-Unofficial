@@ -24,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -107,8 +106,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
         tt.addMachineType("Chemical Reactor, MCR")
             .addStaticParallelInfo(PARALLELS)
             .addMarkdown(
-                new ResourceLocation("gregtech", "mega-chemical-reactor"),
-                ImmutableMap.of())
+                new ResourceLocation("gregtech", "mega-chemical-reactor"))
             .addUnlimitedTierSkips()
             .addSupportAny()
             .beginStructureBlock(5, 5, 9, false)

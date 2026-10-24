@@ -27,7 +27,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -110,8 +109,7 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
         tt.addMachineType("Rock Breaker")
             .addBulkMachineInfo(8, 3f, 0.75f)
             .addMarkdown(
-                new ResourceLocation("gregtech", "industrial-rock-breaker"),
-                ImmutableMap.of())
+                new ResourceLocation("gregtech", "industrial-rock-breaker"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
             .addController("Front center, 3rd layer")

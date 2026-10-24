@@ -49,7 +49,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -132,7 +131,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Tree Farm, TGS")
-            .addMarkdown(new ResourceLocation("gregtech", "tree-farm"), ImmutableMap.of())
+            .addMarkdown(new ResourceLocation("gregtech", "tree-farm"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, true)
             .addController("Front bottom center")

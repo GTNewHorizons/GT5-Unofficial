@@ -28,7 +28,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -111,7 +110,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Chemical Reactor, LCR")
-            .addMarkdown(new ResourceLocation("gregtech", "large-chemical-reactor"), ImmutableMap.of())
+            .addMarkdown(new ResourceLocation("gregtech", "large-chemical-reactor"))
             .beginStructureBlock(3, 3, 3, false)
             .addController("Front center, 2nd layer")
             .addCasing("8-22", "Chemically Inert Machine Casing", false)

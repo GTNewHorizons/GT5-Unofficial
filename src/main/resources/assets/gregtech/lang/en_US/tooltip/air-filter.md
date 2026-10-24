@@ -1,6 +1,6 @@
 Requires a {color_name:Turbine} in the controller to run
 Cleans pollution in a {color_range:{var:chunk_size}x{var:chunk_size}} chunk area
-Consumes {color_eu_usage:{var:eu_usage} {EU/t}} while active
+Consumes {color_voltage:{var:eu_usage}} {color_tier:{EU/t}} while active
 {hr}
 Each {color_name:Muffler Hatch} cleans pollution from one chunk per second based on
 {color_amount:{var:global_multiplier} * B * turbineEff * ({var:scaling_factor}^Muffler Tier)}

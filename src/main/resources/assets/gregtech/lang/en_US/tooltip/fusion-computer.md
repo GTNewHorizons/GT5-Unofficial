@@ -1,4 +1,4 @@
-{color_eu_usage:{var:power} {EU/t}} and {color_amount:{var:capacity} {EU}} capacity per {color_name:Energy Hatch}
+{color_voltage:{var:power}} {color_tier:{EU/t}} and {color_eu_capacity:{var:capacity}} {EU} capacity per {color_name:Energy Hatch}
 The total combined {EU} capacity must be greater than the recipe start cost to ignite
 Can only run {VNF:tier} recipes and below
 {hr}

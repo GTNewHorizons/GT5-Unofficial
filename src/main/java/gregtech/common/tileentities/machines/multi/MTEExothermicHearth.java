@@ -201,16 +201,16 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addMarkdown(
                 new ResourceLocation("gregtech", "exothermic-hearth"),
                 ImmutableMap.<String, Object>builder()
-                    .put("discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD))
-                    .put("heat_per_tier", formatNumber(MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER))
-                    .put("start_tier", MTEElectricBlastFurnace.HEAT_BONUS_START_TIER)
-                    .put("perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD))
-                    .put("max_multiplier", formatNumber(MAX_PARALLEL_MULTIPLIER))
-                    .put("heatup_minutes", formatNumber(HEATUP_MINUTES))
-                    .put("pyrotheum", formatNumber(PYROTHEUM_DRAIN_BASE))
-                    .put("max_pyrotheum", formatNumber(PYROTHEUM_DRAIN_BASE * MAX_PARALLEL_MULTIPLIER))
-                    .put("pyrotheum_speedup", formatNumber(PYROTHEUM_HEATUP_SPEEDUP))
-                    .put("eu_discount_percent", formatNumber(EU_DISCOUNT_PERCENT))
+                    .put("discount_heat", (OverclockCalculator.HEAT_DISCOUNT_THRESHOLD))
+                    .put("heat_per_tier", (MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER))
+                    .put("start_tier", MTEElectricBlastFurnace.BASE_TIER_FOR_HEAT_INCREASE)
+                    .put("perfect_oc_heat", (OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD))
+                    .put("max_multiplier", (MAX_PARALLEL_MULTIPLIER))
+                    .put("heatup_minutes", (HEATUP_MINUTES))
+                    .put("pyrotheum", (PYROTHEUM_DRAIN_BASE))
+                    .put("max_pyrotheum", (PYROTHEUM_DRAIN_BASE * MAX_PARALLEL_MULTIPLIER))
+                    .put("pyrotheum_speedup", (PYROTHEUM_HEATUP_SPEEDUP))
+                    .put("eu_discount_percent", (EU_DISCOUNT_PERCENT))
                     .build())
             .addUnlimitedTierSkips()
             .addSupportAny()
@@ -492,8 +492,9 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             }
         }
         if (errors.isEmpty()) {
-            this.heatingCapacity = (int) getCoilLevel().getHeat() + MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER
-                * (GTUtility.getTierExtended(this.getMaxInputEu()) - MTEElectricBlastFurnace.HEAT_BONUS_START_TIER);
+            this.heatingCapacity = (int) getCoilLevel().getHeat()
+                + MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER * (GTUtility.getTierExtended(this.getMaxInputEu())
+                    - MTEElectricBlastFurnace.BASE_TIER_FOR_HEAT_INCREASE);
         }
     }
 

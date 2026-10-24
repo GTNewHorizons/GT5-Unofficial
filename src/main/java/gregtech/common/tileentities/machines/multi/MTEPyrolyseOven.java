@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -105,12 +104,9 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Coke Oven")
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addMarkdown(
-                new ResourceLocation("gregtech", "pyrolyse-oven"),
-                ImmutableMap.of())
+            .addMarkdown(new ResourceLocation("gregtech", "pyrolyse-oven"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 6, 5, true)
             .addController("Front center, 2nd layer")
@@ -127,7 +123,6 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

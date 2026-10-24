@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER;
@@ -233,8 +232,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-laser-engraver"),
                 ImmutableMap.<String, Object>builder()
-                    .put("speed", formatNumber(SPEED_BONUS * 100))
-                    .put("eu_eff", formatNumber(EU_MODIFIER * 100))
+                    .put("speed", SPEED_BONUS * 100)
+                    .put("eu_eff", EU_MODIFIER * 100)
                     .put("glass_tier_for_laser", GLASS_TIER_FOR_LASER)
                     .build())
             .beginStructureBlock(5, 5, 5, false)

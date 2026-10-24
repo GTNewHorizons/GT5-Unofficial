@@ -70,6 +70,11 @@ import gregtech.common.misc.GTStructureChannels;
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
+    private static final int T2_MIN_DIRECT_TIER = VoltageIndex.LV;
+    private static final int T2_MAX_DIRECT_TIER = VoltageIndex.LuV;
+    private static final int T3_MIN_DIRECT_TIER = VoltageIndex.LV;
+    private static final int T3_MAX_DIRECT_TIER = VoltageIndex.UV;
+
     private static final int CASING_T1_INDEX = 49;
     private static final int CASING_T2_INDEX = 48;
     private static final int CASING_T3_INDEX = 183;
@@ -399,10 +404,10 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addMarkdown(
                 new ResourceLocation("gregtech", "solar-factory"),
                 ImmutableMap.<String, Object>builder()
-                    .put("tier_lv", VoltageIndex.LV)
-                    .put("tier_luv", VoltageIndex.LuV)
-                    .put("tier_zpm", VoltageIndex.ZPM)
-                    .put("tier_uv", VoltageIndex.UV)
+                    .put("t2_min_tier", T2_MIN_DIRECT_TIER)
+                    .put("t2_max_tier", T2_MAX_DIRECT_TIER)
+                    .put("t3_min_tier", T3_MIN_DIRECT_TIER)
+                    .put("t3_max_tier", T3_MAX_DIRECT_TIER)
                     .build())
             .addSupportAny()
             .beginStructureBlock(9, 10, 8, false)

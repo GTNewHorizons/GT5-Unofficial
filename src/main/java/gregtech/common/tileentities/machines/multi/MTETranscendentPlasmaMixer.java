@@ -111,7 +111,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Transcendent Mixer, TPM")
-            .addMarkdown(new ResourceLocation("gregtech", "transcendent-plasma-mixer"), ImmutableMap.of())
+            .addMarkdown(new ResourceLocation("gregtech", "transcendent-plasma-mixer"))
             .beginStructureBlock(5, 7, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("48", Casings.DimensionallyTranscendentCasing.getLocalizedName(), false)
