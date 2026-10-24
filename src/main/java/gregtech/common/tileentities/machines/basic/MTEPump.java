@@ -32,6 +32,7 @@ import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -875,6 +876,14 @@ public class MTEPump extends MTEBasicMachine {
         mFakePlayer.setWorld(aBaseTile.getWorld());
         mFakePlayer.setPosition(aBaseTile.getXCoord(), aBaseTile.getYCoord(), aBaseTile.getZCoord());
         return mFakePlayer;
+    }
+
+    /**
+     * Keep this method to avoid get super infoData.
+     */
+    @Override
+    public String[] getInfoData() {
+        return GTValues.emptyStringArray;
     }
 
     @Override
