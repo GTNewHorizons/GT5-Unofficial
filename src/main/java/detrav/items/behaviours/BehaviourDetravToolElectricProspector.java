@@ -84,12 +84,9 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
 
             final int radius = aItem.getHarvestLevel(aStack, "");
 
-            int scanRadius = radius + 1;
-            for (int i = -scanRadius; i <= scanRadius; i++) {
-                for (int j = -scanRadius; j <= scanRadius; j++) {
-                    if (i != -scanRadius && i != scanRadius && j != -scanRadius && j != scanRadius) {
-                        chunks.add(aWorld.getChunkFromChunkCoords(cX + i, cZ + j));
-                    }
+            for (int i = -radius; i <= radius; i++) {
+                for (int j = -radius; j <= radius; j++) {
+                    chunks.add(aWorld.getChunkFromChunkCoords(cX + i, cZ + j));
                 }
             }
 
