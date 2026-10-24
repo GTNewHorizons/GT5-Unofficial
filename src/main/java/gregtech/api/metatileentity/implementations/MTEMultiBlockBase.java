@@ -64,6 +64,7 @@ import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.FluidDrawable;
@@ -164,6 +165,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatch
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -246,6 +248,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      */
     public LongArrayList mCoils = new LongArrayList();
     private GTCoilTracker.MultiCoilLease coilLease = null;
+    private final LongList trackedCoords = new LongArrayList();
 
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
@@ -530,6 +533,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mUpdated = true;
     }
 
+    @Override
+    public void addMachineCoord(World world, int x, int y, int z) {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) return;
+        if (world != base.getWorld()) return;
+        if (x == base.getXCoord() && y == base.getYCoord() && z == base.getZCoord()) return;
+        long packed = CoordinatePacker.pack(x, y, z);
+        trackedCoords.add(packed);
+        GTMod.proxy.structureUpdater.addCoord(this, world, packed);
+    }
+
     /**
      * ClearHatches as a part of structure check. If your multiblock has any hatches that need clearing override this
      * method, call super, and clear your own hatches
@@ -562,6 +576,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mCoils.clear();
         deactivateCoilLease();
         debugEnergyPresent = false;
+        for (long coord : trackedCoords) {
+            GTMod.proxy.structureUpdater.removeCoord(this, getBaseMetaTileEntity().getWorld(), coord);
+        }
+        trackedCoords.clear();
     }
 
     /**
