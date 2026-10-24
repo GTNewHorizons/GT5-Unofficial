@@ -110,7 +110,6 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Ore Washer, Simple Washer, OWP")
             .addBulkMachineInfo(4, 5f, 1f)
             .addMarkdown(new ResourceLocation("gregtech", "ore-washing-plant"))
@@ -127,7 +126,6 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addInputHatch("1+", "Any wash plant casing", 1)
             .addOutputBus("1+", "Any wash plant casing", 1)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

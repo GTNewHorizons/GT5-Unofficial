@@ -305,7 +305,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(MACHINE_TYPE)
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-molecular-assembler"),
@@ -328,7 +327,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("")
             .addStructureFooter("Place a data orb inside the controller and connect it to an AE2 network")
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

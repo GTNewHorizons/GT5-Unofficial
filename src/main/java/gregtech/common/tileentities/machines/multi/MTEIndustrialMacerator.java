@@ -75,8 +75,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMacerator>
     implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
-    private static final double SPEED_T1 = 1.6D;
-
     public static final String TIER = "mTier";
     private int controllerTier = 1;
     private int structureTier;
@@ -94,7 +92,11 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     private static final int OFFSET_Z_T2 = 0;
 
     private static final int PARALLEL_T1 = 2;
-    private static final int PARALLEL_T2 = 8;
+    private static final int PARALLEL_T2 = PARALLEL_T1 * (2 * 2);
+
+    private static final double SPEED_T1 = 1.6D;
+    private static final double SPEED_T2 = SPEED_T1 * (2 * 2);
+
     // Lazy allocation since GTPP blocks are not loaded during init
     private static IStructureDefinition<MTEIndustrialMacerator> STRUCTURE_DEFINITION = null;
 
@@ -114,14 +116,16 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.macerator_ims"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-maceration-stack"),
                 ImmutableMap.<String, Object>builder()
                     .put("parallel_base", PARALLEL_T1)
                     .put("speed_base", (1.0D / SPEED_T1) * 100)
-                    .put("chip", GregtechItemList.Maceration_Upgrade_Chip.get(1).getDisplayName())
+                    .put(
+                        "chip",
+                        GregtechItemList.Maceration_Upgrade_Chip.get(1)
+                            .getDisplayName())
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
@@ -145,7 +149,6 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
@@ -490,6 +493,6 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     }
 
     public double getSpeedBonus() {
-        return 1.0D / (structureTier == 2 ? 6.4D : 1.6D);
+        return 1.0D / (structureTier == 2 ? SPEED_T2 : SPEED_T1);
     }
 }

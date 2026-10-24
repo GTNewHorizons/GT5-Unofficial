@@ -100,7 +100,6 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Canner, TCP")
             .addBulkMachineInfo(8, 2f, 1)
             .addMarkdown(new ResourceLocation("gregtech", "multi-canner"))
@@ -113,7 +112,6 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
             .addInputAny("1+", "Any machine casing", 1)
             .addOutputAny("1+", "Any machine casing", 1)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

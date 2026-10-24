@@ -187,7 +187,7 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-mixer"),
                 ImmutableMap.<String, Object>builder()
-                    .put("speed_increase", (SPEED_INCREASE_TIER * 100))
+                    .put("speed_increase", SPEED_INCREASE_TIER * 100)
                     .put("eu_eff", EU_EFFICIENCY)
                     .put("glass_tier_for_multiamp", GLASS_TIER_FOR_MULTI_AMP)
                     .build())

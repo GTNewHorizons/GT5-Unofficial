@@ -86,8 +86,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExothermicHearth>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
-    private static final int EU_DISCOUNT_PERCENT = 5;
-
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VERTICAL_OFFSET = 39;
     private static final int HORIZONTAL_OFFSET = 11;
@@ -195,7 +193,6 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace_exh"))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addMarkdown(
@@ -210,7 +207,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                     .put("pyrotheum", PYROTHEUM_DRAIN_BASE)
                     .put("max_pyrotheum", PYROTHEUM_DRAIN_BASE * MAX_PARALLEL_MULTIPLIER)
                     .put("pyrotheum_speedup", PYROTHEUM_HEATUP_SPEEDUP)
-                    .put("eu_discount_percent", EU_DISCOUNT_PERCENT)
+                    .put("eu_discount_percent", OverclockCalculator.DEFAULT_HEAT_DISCOUNT_PERCENT_FOR_TOOLTIPS)
                     .build())
             .addUnlimitedTierSkips()
             .addSupportAny()
@@ -238,7 +235,6 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

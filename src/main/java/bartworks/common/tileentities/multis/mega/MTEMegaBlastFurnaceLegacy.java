@@ -171,17 +171,20 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace_mebf"))
             .addStructureDeprecatedLine()
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addMarkdown(
                 new ResourceLocation("gregtech", "mega-blast-furnace"),
                 ImmutableMap.of(
-                    "discount_heat", (OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
-                    "heat_per_tier", (MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER),
-                    "start_tier", GTValues.VN[MTEElectricBlastFurnace.BASE_TIER_FOR_HEAT_INCREASE],
-                    "perfect_oc_heat", (OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
+                    "discount_heat",
+                    OverclockCalculator.HEAT_DISCOUNT_THRESHOLD,
+                    "heat_per_tier",
+                    MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER,
+                    "start_tier",
+                    GTValues.VN[MTEElectricBlastFurnace.BASE_TIER_FOR_HEAT_INCREASE],
+                    "perfect_oc_heat",
+                    OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD))
             .addSeparator()
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
@@ -205,7 +208,6 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

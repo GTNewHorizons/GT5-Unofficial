@@ -202,7 +202,6 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.air_filter"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "air-filter"),
@@ -227,7 +226,6 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
@@ -484,7 +482,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (size == 0) { // here in case it's not set by NBT loading
-            size = 2 * multiTier + 1;
+            size = getChunkSize();
         }
         super.onPreTick(aBaseMetaTileEntity, aTick);
     }
@@ -598,7 +596,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             }
         } else { // change radius on sneak
             if (size == 1) {
-                size = 2 * multiTier + 1;
+                size = getChunkSize();
             } else {
                 size -= 2; // always get odd number
             }

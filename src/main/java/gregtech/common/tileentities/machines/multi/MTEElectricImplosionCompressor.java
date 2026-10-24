@@ -64,12 +64,6 @@ import gregtech.common.misc.GTStructureChannels;
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
-    private static final int NEUTRONIUM_PARALLELS = 1;
-    private static final int INFINITY_PARALLELS = 4;
-    private static final int TRANSCENDENT_PARALLELS = 16;
-    private static final int SPACETIME_PARALLELS = 64;
-    private static final int UNIVERSUM_PARALLELS = 256;
-
     private int pistonTier = 0;
     private int casingAmount;
     private static final int OFFSET_X = 7;
@@ -131,16 +125,15 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.implosion_compressor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "electric-implosion-compressor"),
                 ImmutableMap.<String, Object>builder()
-                    .put("neutronium_para", NEUTRONIUM_PARALLELS)
-                    .put("infinity_para", INFINITY_PARALLELS)
-                    .put("transcendent_para", TRANSCENDENT_PARALLELS)
-                    .put("spacetime_para", SPACETIME_PARALLELS)
-                    .put("universium_para", UNIVERSUM_PARALLELS)
+                    .put("tier_1_para", getMaxParallelRecipes(1))
+                    .put("tier_2_para", getMaxParallelRecipes(2))
+                    .put("tier_3_para", getMaxParallelRecipes(3))
+                    .put("tier_4_para", getMaxParallelRecipes(4))
+                    .put("tier_5_para", getMaxParallelRecipes(5))
                     .build())
             .addMaxTierSkips(1)
             .addSupportAny()
@@ -160,7 +153,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addSubChannel(GTStructureChannels.EIC_PISTON)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
@@ -223,6 +215,10 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public int getMaxParallelRecipes() {
+        return getMaxParallelRecipes(this.pistonTier);
+    }
+
+    public static int getMaxParallelRecipes(int pistonTier) {
         return (int) GTUtility.powInt(4, Math.max(pistonTier - 1, 0));
     }
 

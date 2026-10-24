@@ -841,7 +841,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             }
 
             List<ItemStack> oreBlockDrops = OreManager
-                .mineBlock(random, world, x, y, z, true, mTier + 3, simulate, replaceWithCobblestone);
+                .mineBlock(random, world, x, y, z, true, mTier + FORTUNE_VALUE, simulate, replaceWithCobblestone);
 
             ItemStack[] toOutput = getOutputByDrops(oreBlockDrops);
 

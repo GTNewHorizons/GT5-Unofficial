@@ -102,11 +102,9 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Chemical Reactor, MCR")
             .addStaticParallelInfo(PARALLELS)
-            .addMarkdown(
-                new ResourceLocation("gregtech", "mega-chemical-reactor"))
+            .addMarkdown(new ResourceLocation("gregtech", "mega-chemical-reactor"))
             .addUnlimitedTierSkips()
             .addSupportAny()
             .beginStructureBlock(5, 5, 9, false)
@@ -124,7 +122,6 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

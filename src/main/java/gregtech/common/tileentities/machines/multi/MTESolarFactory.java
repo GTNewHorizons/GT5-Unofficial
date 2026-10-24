@@ -72,8 +72,10 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
 
     private static final int T2_MIN_DIRECT_TIER = VoltageIndex.LV;
     private static final int T2_MAX_DIRECT_TIER = VoltageIndex.LuV;
-    private static final int T3_MIN_DIRECT_TIER = VoltageIndex.LV;
+    private static final int T3_MIN_DIRECT_TIER = VoltageIndex.ZPM;
     private static final int T3_MAX_DIRECT_TIER = VoltageIndex.UV;
+    private static final double LOW_OUTPUT_MULT = 0.25D;
+    private static final double HIGH_OUTPUT_MULT = 0.5D;
 
     private static final int CASING_T1_INDEX = 49;
     private static final int CASING_T2_INDEX = 48;
@@ -288,7 +290,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     }
 
     protected ItemStack[] calculateNewOutput(ItemStack currentOutput, int seed) {
-        outputMultiplierSlope = mTier >= 3 ? 0.50 : 0.25;
+        outputMultiplierSlope = mTier >= 3 ? HIGH_OUTPUT_MULT : LOW_OUTPUT_MULT;
         double calculatedMultiplier = Math.min((outputMultiplierSlope * seed) + 1, outputMultiplierCap);
         int outputSize = (int) Math.floor(currentOutput.stackSize * calculatedMultiplier);
         return new ItemStack[] { copyAmountUnsafe(outputSize, currentOutput) };
@@ -384,8 +386,12 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         }.setMaxParallelSupplier(this::getMaxParallel);
     }
 
-    // 2^(casingTier + 3)
     protected int getMaxParallel() {
+        return getMaxParallel(mTier, casingTier);
+    }
+
+    // 2^(casingTier + 3)
+    private static int getMaxParallel(int mTier, int casingTier) {
         if (mTier <= 1) return 1;
         return (int) GTUtility.powInt(2, 1 + (casingTier + 2));
     }
@@ -399,7 +405,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Solar Factory")
             .addMarkdown(
                 new ResourceLocation("gregtech", "solar-factory"),
@@ -408,6 +413,12 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     .put("t2_max_tier", T2_MAX_DIRECT_TIER)
                     .put("t3_min_tier", T3_MIN_DIRECT_TIER)
                     .put("t3_max_tier", T3_MAX_DIRECT_TIER)
+                    .put("mk1_para", getMaxParallel(2, 1))
+                    .put("mk2_para", getMaxParallel(2, 2))
+                    .put("mk3_para", getMaxParallel(2, 3))
+                    .put("mk4_para", getMaxParallel(2, 4))
+                    .put("low_output_mult", LOW_OUTPUT_MULT)
+                    .put("high_output_mult", HIGH_OUTPUT_MULT)
                     .build())
             .addSupportAny()
             .beginStructureBlock(9, 10, 8, false)
@@ -440,7 +451,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

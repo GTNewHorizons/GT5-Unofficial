@@ -88,11 +88,11 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
     private static List<Pair<FluidStack, Integer>> getExcitedLiquid() {
         if (excitedLiquid == null) {
             excitedLiquid = Arrays.asList(
-                Pair.of(Materials.Space.getMolten(20L), ExcitedLiquidCoe[0]),
-                Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
-                Pair.of(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
-                Pair.of(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
-                Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
+                Pair.of(Materials.Space.getMolten(EXCITED_AMT_LOW), ExcitedLiquidCoe[0]),
+                Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(EXCITED_AMT_LOW), ExcitedLiquidCoe[1]),
+                Pair.of(Materials.Naquadah.getMolten(EXCITED_AMT_LOW), ExcitedLiquidCoe[2]),
+                Pair.of(Materials.Uranium235.getMolten(EXCITED_AMT_HIGH), ExcitedLiquidCoe[3]),
+                Pair.of(Materials.Caesium.getMolten(EXCITED_AMT_HIGH), ExcitedLiquidCoe[4]));
         }
         return excitedLiquid;
     }
@@ -100,10 +100,10 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
     private static List<Pair<FluidStack, Integer>> getCoolant() {
         if (coolant == null) {
             coolant = Arrays.asList(
-                Pair.of(Materials.Time.getMolten(20L), CoolantEfficiency[0]),
-                Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
-                Pair.of(Materials.SuperCoolant.getFluid(1_000), CoolantEfficiency[2]),
-                Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
+                Pair.of(Materials.Time.getMolten(COOLANT_AMT_LOW), CoolantEfficiency[0]),
+                Pair.of(new FluidStack(TFFluids.fluidCryotheum, COOLANT_AMT_HIGH), CoolantEfficiency[1]),
+                Pair.of(Materials.SuperCoolant.getFluid(COOLANT_AMT_HIGH), CoolantEfficiency[2]),
+                Pair.of(GTModHandler.getIC2Coolant(COOLANT_AMT_HIGH), CoolantEfficiency[3]));
         }
         return coolant;
     }

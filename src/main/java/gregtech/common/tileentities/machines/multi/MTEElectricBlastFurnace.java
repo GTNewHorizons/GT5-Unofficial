@@ -17,7 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 
 import java.util.List;
 
@@ -78,10 +77,6 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     public static final int BASE_TIER_FOR_HEAT_INCREASE = VoltageIndex.MV;
 
     private int mHeatingCapacity = 0;
-    private static final int EU_REDUCTION_PERCENT = 5;
-    private static final int HEAT_PER_TIER = 100;
-    private static final int EU_REDUCTION_HEAT_THRESHOLD = 900;
-    private static final int HEAT_PER_PERFECT_OC = 1800;
 
     protected static final int CASING_INDEX = 11;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -133,11 +128,10 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addMarkdown(
                 new ResourceLocation("gregtech", "electric-blast-furnace"),
                 ImmutableMap.<String, Object>builder()
-                    .put("heat_per_tier", HEAT_PER_TIER)
-                    .put("eu_reduction", EU_REDUCTION_PERCENT)
-                    .put("eu_reduction_heat", EU_REDUCTION_HEAT_THRESHOLD)
-                    .put("heat_per_poc", HEAT_PER_PERFECT_OC)
-                    .put("voltageTier_MV", voltageTooltipFormatted(2))
+                    .put("heat_per_tier", HEAT_PER_VOLTAGE_TIER)
+                    .put("eu_reduction", OverclockCalculator.DEFAULT_HEAT_DISCOUNT_PERCENT_FOR_TOOLTIPS)
+                    .put("eu_reduction_heat", OverclockCalculator.HEAT_DISCOUNT_THRESHOLD)
+                    .put("heat_per_poc", OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
                     .put("base_tier_for_heat_increase", BASE_TIER_FOR_HEAT_INCREASE)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
