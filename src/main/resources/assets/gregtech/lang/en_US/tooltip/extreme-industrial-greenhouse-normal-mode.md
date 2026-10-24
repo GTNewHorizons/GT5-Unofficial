@@ -1,5 +1,5 @@
-{gray:{hr}}
-{gold:Normal Crops}:
+{hr}
+{color_mode:Normal Crops}:
 Min voltage: {green:{var:minVoltageTier}}
 Starts with {green:{var:startingSlotCount}} slot, {green:{var:slotPerTierMultiplier}x} slots per tier past {green:{var:minVoltageTier}}
 Each slot holds {green:{var:seedCapacityPerSlot}} seeds
