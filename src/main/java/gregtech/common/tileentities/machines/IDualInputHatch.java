@@ -17,6 +17,15 @@ public interface IDualInputHatch extends IMetaTileEntity, ISmartInputHatch {
     void updateTexture(int id);
 
     /**
+     * @deprecated use {@link #updateCraftingIcon(ItemStack, IGregTechTileEntity)}, this one stays for addons built
+     *             against older GregTech.
+     */
+    @Deprecated
+    default void updateCraftingIcon(ItemStack icon) {
+        updateCraftingIcon(icon, null);
+    }
+
+    /**
      * Sets the icon of the multiblock at {@code owner}, or clears it when {@code icon} is null.
      */
     void updateCraftingIcon(ItemStack icon, IGregTechTileEntity owner);
