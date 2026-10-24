@@ -993,7 +993,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addMarkdown(
                 new ResourceLocation("gregtech", "wormhole-generator"),
                 ImmutableMap.<String, Object>builder()
-                    .put("transfer_efficiency", formatNumber(TRANSFER_EFFICIENCY * 100))
+                    .put("transfer_efficiency", TRANSFER_EFFICIENCY * 100)
                     .put("overclock_limit", MAX_OVERCLOCKS)
                     .build())
             .addSupportAny()

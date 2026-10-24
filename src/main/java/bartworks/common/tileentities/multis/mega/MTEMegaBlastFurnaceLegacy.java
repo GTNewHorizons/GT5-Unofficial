@@ -178,10 +178,10 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
             .addMarkdown(
                 new ResourceLocation("gregtech", "mega-blast-furnace"),
                 ImmutableMap.of(
-                    "discount_heat", formatNumber(OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
-                    "heat_per_tier", formatNumber(MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER),
+                    "discount_heat", (OverclockCalculator.HEAT_DISCOUNT_THRESHOLD),
+                    "heat_per_tier", (MTEElectricBlastFurnace.HEAT_PER_VOLTAGE_TIER),
                     "start_tier", GTValues.VN[MTEElectricBlastFurnace.BASE_TIER_FOR_HEAT_INCREASE],
-                    "perfect_oc_heat", formatNumber(OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
+                    "perfect_oc_heat", (OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)))
             .addSeparator()
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)

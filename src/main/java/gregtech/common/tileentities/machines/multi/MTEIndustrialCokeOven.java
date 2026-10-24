@@ -110,12 +110,12 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-coke-oven"),
                 ImmutableMap.<String, Object>builder()
-                    .put("base_para_t1", (PARALLELS_T1))
-                    .put("slice_para_t1", (SLICE_PARALLELS_T1))
-                    .put("base_para_t2", (PARALLELS_T2))
-                    .put("slice_para_t2", (SLICE_PARALLELS_T2))
-                    .put("eu_reduction", (Math.round((1 - EU_MODIFIER) * 100)))
-                    .put("max_slices", (MAX_LENGTH - 1))
+                    .put("base_para_t1", PARALLELS_T1)
+                    .put("slice_para_t1", SLICE_PARALLELS_T1)
+                    .put("base_para_t2", PARALLELS_T2)
+                    .put("slice_para_t2", SLICE_PARALLELS_T2)
+                    .put("eu_reduction", Math.round((1 - EU_MODIFIER) * 100))
+                    .put("max_slices", MAX_LENGTH - 1)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(6, 36, 7, 7, 5, 5, false)

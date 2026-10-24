@@ -133,10 +133,10 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addMarkdown(
                 new ResourceLocation("gregtech", "electric-blast-furnace"),
                 ImmutableMap.<String, Object>builder()
-                    .put("heat_per_tier", (HEAT_PER_TIER))
-                    .put("eu_reduction", (EU_REDUCTION_PERCENT))
-                    .put("eu_reduction_heat", (EU_REDUCTION_HEAT_THRESHOLD))
-                    .put("heat_per_poc", (HEAT_PER_PERFECT_OC))
+                    .put("heat_per_tier", HEAT_PER_TIER)
+                    .put("eu_reduction", EU_REDUCTION_PERCENT)
+                    .put("eu_reduction_heat", EU_REDUCTION_HEAT_THRESHOLD)
+                    .put("heat_per_poc", HEAT_PER_PERFECT_OC)
                     .put("voltageTier_MV", voltageTooltipFormatted(2))
                     .put("base_tier_for_heat_increase", BASE_TIER_FOR_HEAT_INCREASE)
                     .build())

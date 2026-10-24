@@ -230,8 +230,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 .addMarkdown(
                     new ResourceLocation("gregtech", "large-boiler-superheated"),
                     ImmutableMap.<String, Object>builder()
-                        .put("steam_1_coal", (getEUt() * STEAM_MULTIPLIER) * ((runtimeBoost(20) / (20f)) / STEAM_DIVISOR_SUPERHEATED))
-                        .put("steam_per_sec", (getEUt() * STEAM_MULTIPLIER) / STEAM_DIVISOR_SUPERHEATED)
+                        .put("steam_1_coal", getEUt() * STEAM_MULTIPLIER * (runtimeBoost(20) / 20f) / STEAM_DIVISOR_SUPERHEATED)
+                        .put("steam_per_sec", getEUt() * STEAM_MULTIPLIER / STEAM_DIVISOR_SUPERHEATED)
                         .put("heat_seconds", (double) SECONDS_PER_HEAT_UNIT / getEfficiencyIncrease())
                         .put("throttle_amount", THROTTLE_DISPLAY_AMOUNT)
                         .put("multi_fuel_boost", (double) 100 / MULTI_FUEL_BOOST_DIVISOR)
@@ -241,7 +241,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 .addMarkdown(
                     new ResourceLocation("gregtech", "large-boiler"),
                     ImmutableMap.<String, Object>builder()
-                        .put("steam_1_coal", (getEUt() * STEAM_MULTIPLIER) * (runtimeBoost(20) / 20f))
+                        .put("steam_1_coal", getEUt() * STEAM_MULTIPLIER * (runtimeBoost(20) / 20f))
                         .put("steam_per_sec", getEUt() * STEAM_MULTIPLIER)
                         .put("heat_seconds", (double) SECONDS_PER_HEAT_UNIT / getEfficiencyIncrease())
                         .put("throttle_amount", THROTTLE_DISPLAY_AMOUNT)

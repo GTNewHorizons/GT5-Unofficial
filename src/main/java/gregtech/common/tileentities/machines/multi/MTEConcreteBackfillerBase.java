@@ -106,9 +106,9 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addMarkdown(
                 new ResourceLocation("gregtech", "concrete-backfiller"),
                 ImmutableMap.<String, Object>builder()
-                    .put("radius", (getRadius()))
+                    .put("radius", getRadius())
                     .put("min_tier", getMinTier())
-                    .put("concrete_per_block", (CONCRETE_PER_BLOCK))
+                    .put("concrete_per_block", CONCRETE_PER_BLOCK)
                     .put("cycle_time", GTUtility.formatTime(baseCycleTime))
                     .build())
             .beginStructureBlock(3, 7, 3, false)
