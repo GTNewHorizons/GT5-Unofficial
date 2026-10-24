@@ -22,7 +22,7 @@ detrav.scanner.found.texts.6=Found %s
 detrav.scanner.found.fluid=Fluid
 
 detrav.scanner.success=All chunks scanned successfully!
-detrav.scanner.fail=Failed on %s chunks. Better luck next time!
+detrav.scanner.fail.chunks=Failed on %s chunks. Better luck next time!
 
 detrav.scanner.prospecting=Prospecting at
 

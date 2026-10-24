@@ -49,9 +49,8 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
     @Override
     protected void decode(ChannelHandlerContext ctx, FMLProxyPacket msg, List<Object> out) throws Exception {
         ByteBuf payload = msg.payload();
-        byte id = payload.readByte();
-        ByteBufInputStream in = new ByteBufInputStream(payload);
-        out.add(id == 1 ? ScannerChatPacket.decode(in) : ProspectingPacket.decode(in));
+        payload.readByte(); // Sub Channel - Ignore
+        out.add(ProspectingPacket.decode(new ByteBufInputStream(payload)));
     }
 
     public void sendToPlayer(DetravPacket aPacket, EntityPlayerMP aPlayer) {

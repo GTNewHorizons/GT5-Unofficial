@@ -2,7 +2,6 @@ package detrav.proxies;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.MinecraftForge;
 
 import detrav.DetravScannerMod;
@@ -41,11 +40,6 @@ public class ClientProxy extends CommonProxy {
             (int) player.posX,
             (int) player.posY,
             (int) player.posZ);
-    }
-
-    @Override
-    public void addClientChatMessage(IChatComponent message) {
-        Minecraft.getMinecraft().thePlayer.addChatMessage(message);
     }
 
     @Override

@@ -25,12 +25,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentItemName;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
 import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
-import detrav.net.DetravNetwork;
-import detrav.net.ScannerChatPacket;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
@@ -171,7 +170,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         }
 
         IChatComponent result = badluck == 0 ? new ChatComponentTranslation("detrav.scanner.success")
-            : new ChatComponentTranslation("detrav.scanner.fail", badluck);
+            : new ChatComponentTranslation("detrav.scanner.fail.chunks", badluck);
         result.getChatStyle()
             .setColor(EnumChatFormatting.WHITE);
         aPlayer.addChatMessage(result);
@@ -238,8 +237,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         ItemData itemData = GTOreDictUnificator.getAssociation(blockStack);
 
         if (itemData != null) {
-            DetravNetwork.INSTANCE
-                .sendToPlayer(ScannerChatPacket.ore(blockStack, -1, distTextIndex), (EntityPlayerMP) aPlayer);
+            addChatMassageByValue(aPlayer, -1, new ChatComponentItemName(blockStack));
             if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
 
             return;
@@ -308,8 +306,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
     /** Sends one chat line per ore; the client localizes the ore name. */
     static void sendOres(EntityPlayer aPlayer, Map<String, ItemStack> group, int dist) {
         for (ItemStack ore : group.values()) {
-            DetravNetwork.INSTANCE
-                .sendToPlayer(ScannerChatPacket.ore(ore, ore.stackSize, dist), (EntityPlayerMP) aPlayer);
+            aPlayer.addChatMessage(foundMessage(ore.stackSize, new ChatComponentItemName(ore), dist));
         }
     }
 
@@ -318,7 +315,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
     }
 
     /** Builds the chat line for a find: the name, its distance and the sample size for the given count. */
-    public static IChatComponent foundMessage(int value, IChatComponent name, int dist) {
+    static IChatComponent foundMessage(int value, IChatComponent name, int dist) {
         if (value < 0) return new ChatComponentTranslation("detrav.scanner.found.texts.6", name);
         if (value < 1) return new ChatComponentTranslation("detrav.scanner.found.texts.0");
         int size = value < 10 ? 1 : value < 30 ? 2 : value < 60 ? 3 : value < 100 ? 4 : 5;

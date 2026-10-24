@@ -22,7 +22,7 @@ detrav.scanner.found.texts.6=Найдено %s
 detrav.scanner.found.fluid=Жидкость
 
 detrav.scanner.success=Все чанки успешно просканированы!
-detrav.scanner.fail=Не удалось просканировать чанков: %s. Удачи в следующий раз!
+detrav.scanner.fail.chunks=Не удалось просканировать чанков: %s. Удачи в следующий раз!
 
 detrav.scanner.prospecting=Поиск в
 
