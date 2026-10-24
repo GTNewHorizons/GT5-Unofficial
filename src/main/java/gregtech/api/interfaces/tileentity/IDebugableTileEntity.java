@@ -3,6 +3,8 @@ package gregtech.api.interfaces.tileentity;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 
 public interface IDebugableTileEntity {
 
@@ -14,5 +16,17 @@ public interface IDebugableTileEntity {
      *                  visible to more advanced Scanners 3 = Debug ONLY
      * @return a String-Array containing the DebugInfo, every Index is a separate line (0 = first Line)
      */
-    ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel);
+    @Deprecated
+    default ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
+        return new ArrayList<>();
+    }
+
+    default ArrayList<IChatComponent> getDebugInfoChat(EntityPlayer aPlayer, int aLogLevel) {
+        ArrayList<String> chats = this.getDebugInfo(aPlayer, aLogLevel);
+        if(chats == null) return new ArrayList<>();
+        return chats
+            .stream()
+            .map(ChatComponentText::new)
+            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    }
 }

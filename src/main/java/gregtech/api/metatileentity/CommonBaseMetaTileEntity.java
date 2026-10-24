@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.util.ArrayList;
@@ -14,8 +13,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
@@ -395,9 +395,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         hasTimeStatisticsStarted = true;
     }
 
-    protected void addProfilingInformation(List<String> tList) {
+    protected void addProfilingInformation(List<IChatComponent> tList) {
         if (mTickDisabled) {
-            tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.tick_disabled"));
+            tList.add(new ChatComponentTranslation("GT5U.scanner.debug.tick_disabled"));
         } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
@@ -417,22 +417,29 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                    StatCollector.translateToLocalFormatted(
+                    new ChatComponentTranslation(
                         "GT5U.scanner.debug.tick_stats",
-                        formatNumber(tAverageTime / samples),
-                        formatNumber(samples),
-                        formatNumber(tWorstTime)));
+                        GTUtility.styledComp(tAverageTime / samples, EnumChatFormatting.GOLD),
+                        GTUtility.styledComp(samples, EnumChatFormatting.GOLD),
+                        GTUtility.styledComp(tWorstTime, EnumChatFormatting.GOLD)));
             }
         } else {
             startTimeStatistics();
-            tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.tick_stats_started"));
+            tList.add(new ChatComponentTranslation("GT5U.scanner.debug.tick_stats_started"));
         }
         if (mLagWarningCount > 0) {
-            tList.add(
-                StatCollector.translateToLocalFormatted(
-                    mLagWarningCount >= 10 ? "GT5U.scanner.debug.lag_warnings_many" : "GT5U.scanner.debug.lag_warnings",
-                    mLagWarningCount >= 10 ? GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING : mLagWarningCount,
-                    GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING));
+            if (mLagWarningCount >= 10) {
+                tList.add(
+                    new ChatComponentTranslation(
+                        "GT5U.scanner.debug.lag_warnings_many",
+                        GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING));
+            } else {
+                tList.add(
+                    new ChatComponentTranslation(
+                        "GT5U.scanner.debug.lag_warnings",
+                        mLagWarningCount,
+                        GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING));
+            }
         }
     }
 

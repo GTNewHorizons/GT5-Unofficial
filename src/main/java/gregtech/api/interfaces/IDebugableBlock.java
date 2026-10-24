@@ -3,6 +3,8 @@ package gregtech.api.interfaces;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 
 /**
  * You are allowed to include this File in your Download, as i will not change it.
@@ -20,5 +22,17 @@ public interface IDebugableBlock {
      *                  visible to more advanced Scanners 3 = Debug ONLY
      * @return a String-Array containing the DebugInfo, every Index is a separate line (0 = first Line)
      */
-    ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel);
+    @Deprecated
+    default ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
+        return new ArrayList<>();
+    }
+
+    default ArrayList<IChatComponent> getDebugInfoChat(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
+        ArrayList<String> chats = this.getDebugInfo(aPlayer, aX, aY, aZ, aLogLevel);
+        if(chats == null) return new ArrayList<>();
+        return chats
+            .stream()
+            .map(ChatComponentText::new)
+            .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    }
 }
