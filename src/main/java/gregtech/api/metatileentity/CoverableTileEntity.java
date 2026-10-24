@@ -366,6 +366,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
      * Sets a new value for strong redstone. If the value is changed, block update is issued automatically.
      */
     public final void setStrongRedstone(byte newStrongRedstone) {
+        if (isClientSide()) return;
         if (newStrongRedstone != mStrongRedstone) {
             mStrongRedstone = newStrongRedstone;
             markDirty();
@@ -403,6 +404,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
      * Handles sided Redstone changing
      */
     protected final void handleSidedRedstoneChangeServer() {
+        if (isClientSide()) return;
         byte redstone = getSidedRedstoneMask();
         if (redstone == oldRedstoneData) {
             return;
