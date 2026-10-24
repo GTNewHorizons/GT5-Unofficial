@@ -243,7 +243,8 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         }
 
         // from here, it's for the electric prospector scanners
-        range = BehaviourDetravToolElectricProspector.getScanDiameter(getHarvestLevel(aStack, ""));
+        range = BehaviourDetravToolElectricProspector
+            .getScanDiameter(BehaviourDetravToolElectricProspector.getScanRadius(this, aStack));
         aList.add(
             tOffset,
             EnumChatFormatting.GREEN + StatCollector.translateToLocalFormatted(
