@@ -215,6 +215,16 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     /**
+     * @deprecated use {@link #updateCraftingIcon(ItemStack, IGregTechTileEntity)}, this one stays for addons built
+     *             against older GregTech.
+     */
+    @Deprecated
+    public final void updateCraftingIcon(ItemStack icon) {
+        // The icon gets no owner, so clearHatches never drops it.
+        updateCraftingIcon(icon, null);
+    }
+
+    /**
      * Sets the icon of the multiblock at {@code owner}, or clears it when {@code icon} is null.
      */
     public final void updateCraftingIcon(ItemStack icon, IGregTechTileEntity owner) {
