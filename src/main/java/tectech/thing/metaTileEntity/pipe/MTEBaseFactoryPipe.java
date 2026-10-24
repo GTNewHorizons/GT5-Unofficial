@@ -1,7 +1,6 @@
 package tectech.thing.metaTileEntity.pipe;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,10 +115,19 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity {
         return mIsActive;
     }
 
+    public void setActive(boolean active) {
+        if (mIsActive != active) {
+            mIsActive = active;
+            getBaseMetaTileEntity().issueTileUpdate();
+        }
+    }
+
     @Override
     public void onFirstTick(IGregTechTileEntity base) {
         super.onFirstTick(base);
-        onPostTick(base, 31);
+        if (base.isServerSide()) {
+            checkConnections();
+        }
     }
 
     @Override
@@ -132,24 +140,14 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity {
         super.onPostTick(base, aTick);
 
         if (base.isServerSide()) {
-            if (mCheckConnections && base.isServerSide()) {
+            if (mCheckConnections) {
                 mCheckConnections = false;
                 checkConnections();
             }
-
-            if (aTick % SECONDS == 0) {
-
-                boolean isActive = checkActive();
-                if (mIsActive != isActive) {
-                    mIsActive = isActive;
-                    base.issueTileUpdate();
-                }
+            if (aTick > 1) {
+                base.tryDisableTicking();
             }
         }
-    }
-
-    protected boolean checkActive() {
-        return false;
     }
 
     @Override
