@@ -72,6 +72,9 @@ public class MultiblockTooltipBuilder {
     private final String TT_Steam_StaticSteamEff = StatCollector.translateToLocal("GT5U.MBTT.SteamDiscount.Base");
 
     private final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
+    private final String TT_length = StatCollector.translateToLocal("GT5U.MBTT.Dimensions.Length");
+    private final String TT_width = StatCollector.translateToLocal("GT5U.MBTT.Dimensions.Width");
+    private final String TT_height = StatCollector.translateToLocal("GT5U.MBTT.Dimensions.Height");
     private final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
     private final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
     private final String TT_tier = StatCollector.translateToLocal("GT5U.MBTT.Tier");
@@ -426,15 +429,15 @@ public class MultiblockTooltipBuilder {
                 + EnumChatFormatting.GRAY
                 + " ("
                 + EnumChatFormatting.GOLD
-                + "L"
+                + TT_length
                 + EnumChatFormatting.GRAY
                 + "x"
                 + EnumChatFormatting.GOLD
-                + "W"
+                + TT_width
                 + EnumChatFormatting.GRAY
                 + "x"
                 + EnumChatFormatting.GOLD
-                + "H"
+                + TT_height
                 + EnumChatFormatting.GRAY
                 + ") "
                 + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
@@ -477,15 +480,15 @@ public class MultiblockTooltipBuilder {
                 + EnumChatFormatting.GRAY
                 + " ("
                 + EnumChatFormatting.GOLD
-                + "L"
+                + TT_length
                 + EnumChatFormatting.GRAY
                 + "x"
                 + EnumChatFormatting.GOLD
-                + "W"
+                + TT_width
                 + EnumChatFormatting.GRAY
                 + "x"
                 + EnumChatFormatting.GOLD
-                + "H"
+                + TT_height
                 + EnumChatFormatting.GRAY
                 + ") "
                 + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
