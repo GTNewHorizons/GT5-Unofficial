@@ -2783,6 +2783,7 @@ GT5U.recipes.chance.unorganized=Has a %d%% chance to output an unorganized versi
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
+GT5U.machines.workarea.s=Work Area: %s %s
 GT5U.machines.workareaset.s=Work Area set to %sx%s
 GT5U.machines.workareaset.chunks=Work Area set to %sx%s Chunks
 GT5U.machines.workareaset.blocks=Work Area set to %sx%s Chunks (%sx%s Blocks)
