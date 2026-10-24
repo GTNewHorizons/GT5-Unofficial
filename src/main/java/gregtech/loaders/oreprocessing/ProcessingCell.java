@@ -128,7 +128,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
 
                         // Electrolyzer recipe
                         if (GTUtility.getFluidForFilledItem(aStack, true) == null) {
-                            // dust stuffed cell e.g. Phosphate, Phosphorous Pentoxide
+                            // dust stuffed cell e.g. Phosphate, Phosphorus Pentoxide
                             GTRecipeBuilder recipeBuilder = RA.stdBuilder();
                             if (tCapsuleCount > 0L) {
                                 recipeBuilder.itemInputs(
