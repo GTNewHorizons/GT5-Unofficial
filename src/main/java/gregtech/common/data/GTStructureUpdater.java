@@ -16,6 +16,7 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
+import it.unimi.dsi.fastutil.longs.Long2ObjectFunction;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 /**
@@ -39,14 +40,16 @@ public class GTStructureUpdater {
 
         private final Long2ObjectOpenHashMap<BlockRecord> map = new Long2ObjectOpenHashMap<>();
         private final World world;
+        private final Long2ObjectFunction<BlockRecord> makeRecord;
 
         private PerWorldStructureUpdater(World world) {
             this.world = world;
+            this.makeRecord = packed -> new BlockRecord(world, packed);
             world.addWorldAccess(this);
         }
 
         private void addCoord(IMachineBlockUpdateable controller, long packedCoord) {
-            map.computeIfAbsent(packedCoord, packed -> new BlockRecord(world, packed))
+            map.computeIfAbsent(packedCoord, makeRecord)
                 .add(controller);
         }
 
