@@ -22,6 +22,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.IDMetaTool01;
@@ -544,6 +545,8 @@ public class ProcessingToolHead implements PartRecipeGenerator { // TODO COMPARE
                             .fluidInputs(MaterialUtils.molten(material, 4 * INGOTS))
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(material, (int) TierEU.RECIPE_MV))
+                            .requiresEnvironment(
+                                material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                             .addTo(fluidSolidifierRecipes);
                     }
                     if (material.hasShape(Shapes.ingot)) {

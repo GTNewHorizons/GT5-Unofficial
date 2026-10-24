@@ -122,6 +122,7 @@ public class ProcessingAlloyBlastSmelter {
                 .duration(duration / Math.max(1, totalParts))
                 .eut(GTValues.VP[tier])
                 .recipeCategory(RecipeCategories.absNonAlloyRecipes)
+                .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                 .addTo(alloyBlastSmelterRecipes);
         }
     }
@@ -157,6 +158,7 @@ public class ProcessingAlloyBlastSmelter {
         builder.fluidOutputs(MaterialUtils.anyFluid(material, 144L * totalParts))
             .eut(ebf ? voltage : voltage / 2)
             .duration(duration)
+            .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
             .addTo(alloyBlastSmelterRecipes);
     }
 

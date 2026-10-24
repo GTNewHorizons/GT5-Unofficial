@@ -27,6 +27,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
@@ -62,6 +63,7 @@ public class ProcessingStick implements PartRecipeGenerator {
             .fluidInputs(fluid)
             .duration(duration)
             .eut(calculateRecipeEU(material, 16))
+            .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
             .addTo(fluidSolidifierRecipes);
         if (GTRecipeRegistrator.hasReverseFluidSmeltingRecipe(material)) return;
         GTValues.RA.stdBuilder()
@@ -70,6 +72,7 @@ public class ProcessingStick implements PartRecipeGenerator {
             .duration((int) Math.max(1, 24 * prefix.getMaterialAmount() / M))
             .eut(calculateRecipeEU(material, 16))
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+            .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
             .addTo(fluidExtractionRecipes);
     }
 

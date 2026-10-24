@@ -30,6 +30,7 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -334,6 +335,7 @@ public class ProcessingBlock implements PartRecipeGenerator {
                         .fluidInputs(MaterialUtils.molten(material, 9 * INGOTS))
                         .duration(MaterialUtils.mass(material) * 9 * TICKS)
                         .eut(calculateRecipeEU(material, 8))
+                        .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                         .addTo(fluidSolidifierRecipes);
                 }
             }

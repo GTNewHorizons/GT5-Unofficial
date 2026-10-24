@@ -40,6 +40,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -103,6 +104,7 @@ public class ProcessingPlate implements PartRecipeGenerator {
                 .fluidInputs(MaterialUtils.molten(material, 1 * INGOTS))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(calculateRecipeEU(material, 8))
+                .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                 .addTo(fluidSolidifierRecipes);
         }
 
@@ -378,6 +380,7 @@ public class ProcessingPlate implements PartRecipeGenerator {
                 .fluidInputs(MaterialUtils.molten(material, 1 * HALF_INGOTS))
                 .duration(16 * TICKS)
                 .eut(calculateRecipeEU(material, 8))
+                .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                 .addTo(fluidSolidifierRecipes);
         }
 

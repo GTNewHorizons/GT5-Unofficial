@@ -67,6 +67,7 @@ public class ProcessingIngot implements PartRecipeGenerator {
                         .fluidInputs(MaterialUtils.molten(material, 1 * INGOTS))
                         .duration(1 * SECONDS + 12 * TICKS)
                         .eut(calculateRecipeEU(material, 8))
+                        .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                         .addTo(fluidSolidifierRecipes);
                 }
                 // Reverse recipes

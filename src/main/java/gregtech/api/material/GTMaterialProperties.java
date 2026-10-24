@@ -6,12 +6,18 @@ import java.util.List;
 import com.ruling_0.materiallib.api.MaterialRef;
 import com.ruling_0.materiallib.api.Property;
 
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
+
 /// Typed property keys GregTech attaches to MaterialLib materials. Values referencing other materials use
 /// [MaterialRef], since registration order across mods is unspecified.
 ///
 /// The `WERKSTOFF_IDS` key carries the identity saved `bw.*` blocks and items address a material by. It describes no
 /// behaviour of the material itself.
 public class GTMaterialProperties {
+
+    /// Conditions added by GT's fluid conversion recipe generators for this material
+    public static final Property<RecipeEnvironmentRequirements> MOLTEN_PROCESSING_ENVIRONMENTS = Property
+        .of("gregtech", "moltenProcessingEnvironments", RecipeEnvironmentRequirements.EMPTY);
 
     /// The lang key of the NEI search alias every oredict-registered item of the material carries.
     public static final Property<String> ALIAS_KEY = Property.of("gregtech", "aliasKey");

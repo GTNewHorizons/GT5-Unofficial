@@ -254,6 +254,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                         .duration((int) MaterialUtils.mass(material))
                         .eut(fluidEut)
                         .recipeCategory(RecipeCategories.fluidExtractorRecycling)
+                        .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                         .addTo(fluidExtractionRecipes);
                     GTValues.RA.stdBuilder()
                         .circuit(1)
@@ -261,6 +262,7 @@ public class ProcessingDust implements PartRecipeGenerator {
                         .fluidInputs(dustFluid.copy())
                         .duration((int) MaterialUtils.mass(material))
                         .eut(fluidEut)
+                        .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                         .addTo(fluidSolidifierRecipes);
                 }
 

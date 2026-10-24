@@ -20,6 +20,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
@@ -63,6 +64,7 @@ public class ProcessingNugget implements PartRecipeGenerator {
                     .fluidInputs(MaterialUtils.molten(material, 1 * NUGGETS))
                     .duration(16 * TICKS)
                     .eut(calculateRecipeEU(material, 4))
+                    .requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                     .addTo(fluidSolidifierRecipes);
             }
         }

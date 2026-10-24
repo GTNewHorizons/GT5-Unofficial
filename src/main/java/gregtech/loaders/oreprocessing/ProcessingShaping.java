@@ -31,6 +31,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
@@ -187,6 +188,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 1 * QUARTER_INGOTS))
                                 .duration(5 * SECONDS)
                                 .eut(calculateRecipeEU(material, 4 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (material.hasShape(Shapes.screw)) {
@@ -196,6 +199,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 1 * EIGHTH_INGOTS))
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(material, 2 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (material.hasShape(Shapes.stick)) {
@@ -205,6 +210,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 1 * HALF_INGOTS))
                                 .duration(7 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (material.hasShape(Shapes.bolt)) {
@@ -214,6 +221,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 1 * EIGHTH_INGOTS))
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(material, 2 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (material.hasShape(Shapes.round)) {
@@ -223,6 +232,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 1 * NUGGETS))
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(material, 2 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (material.hasShape(Shapes.stickLong)) {
@@ -232,6 +243,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 1 * INGOTS))
                                 .duration(15 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (material.hasShape(Shapes.turbineBlade)) {
@@ -241,6 +254,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 6 * INGOTS))
                                 .duration(20 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (pipe(material, TEBlockShapes.pipeTiny, TEBlockShapes.itemPipeTiny) != null) {
@@ -250,6 +265,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 1 * HALF_INGOTS))
                                 .duration(1 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (pipe(material, TEBlockShapes.pipeSmall, TEBlockShapes.itemPipeSmall) != null) {
@@ -259,6 +276,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 1 * INGOTS))
                                 .duration(2 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (pipe(material, TEBlockShapes.pipeMedium, TEBlockShapes.itemPipeMedium) != null) {
@@ -268,6 +287,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 3 * INGOTS))
                                 .duration(4 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (pipe(material, TEBlockShapes.pipeLarge, TEBlockShapes.itemPipeLarge) != null) {
@@ -277,6 +298,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 6 * INGOTS))
                                 .duration(8 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                         if (pipe(material, TEBlockShapes.pipeHuge, TEBlockShapes.itemPipeHuge) != null) {
@@ -286,6 +309,8 @@ public class ProcessingShaping implements PartRecipeGenerator {
                                 .fluidInputs(MaterialUtils.molten(material, 1728L))
                                 .duration(16 * SECONDS)
                                 .eut(calculateRecipeEU(material, 8 * tVoltageMultiplier))
+                                .requiresEnvironment(
+                                    material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS))
                                 .addTo(fluidSolidifierRecipes);
                         }
                     }

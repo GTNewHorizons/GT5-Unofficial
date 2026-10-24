@@ -236,6 +236,7 @@ public class GTRecipeRegistrator {
             .duration((int) Math.max(1, (24 * materialAmount) / M))
             .eut(meltingVoltage(smeltTarget, moltenFluid));
         if (isRecycling) builder.recipeCategory(RecipeCategories.fluidExtractorRecycling);
+        builder.requiresEnvironment(material.getProperty(GTMaterialProperties.MOLTEN_PROCESSING_ENVIRONMENTS));
         builder.addTo(fluidExtractionRecipes);
     }
 
