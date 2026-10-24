@@ -79,7 +79,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable,
     ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEFluidStack> {
 
-    public static long DEFAULT_CAPACITY = 128_000;
+    public static final long DEFAULT_CAPACITY = 128_000;
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 4, null, 1);

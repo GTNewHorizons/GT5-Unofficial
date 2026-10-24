@@ -77,7 +77,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable,
     ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEItemStack> {
 
-    public static long DEFAULT_CAPACITY = 1600;
+    public static final long DEFAULT_CAPACITY = 1600;
 
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 4, null, 1);
