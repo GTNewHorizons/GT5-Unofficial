@@ -89,8 +89,10 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentStyle;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -134,6 +136,7 @@ import com.google.auto.value.AutoValue;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
@@ -577,6 +580,18 @@ public class GTUtility {
      */
     public static void sendChatComp(EntityPlayer player, @Nonnull IChatComponent component) {
         player.addChatComponentMessage(component);
+    }
+
+    public static IChatComponent styledComp(ChatComponentStyle comp, EnumChatFormatting style) {
+        return comp.setChatStyle(new ChatStyle().setColor(style));
+    }
+
+    public static IChatComponent styledComp(String text, EnumChatFormatting style) {
+        return new ChatComponentText(text).setChatStyle(new ChatStyle().setColor(style));
+    }
+
+    public static IChatComponent styledComp(Number number, EnumChatFormatting style) {
+        return new ChatComponentNumber(number).setChatStyle(new ChatStyle().setColor(style));
     }
 
     public static void sendMessageInRadius(World world, double x, double y, double z, double range,
