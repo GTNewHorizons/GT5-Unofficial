@@ -198,7 +198,7 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Entropic Processor")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.entropic_processor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "entropic-processor"),
                 ImmutableMap.<String, Object>builder()

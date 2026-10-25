@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -46,14 +47,13 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseOven>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
-    private static final float SPEED_BONUS = 0.5f;
+    private static final float SPEED_BONUS_PER_COIL_TIER = 2.0f;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 3;
@@ -105,8 +105,9 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven")
-            .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addMarkdown(new ResourceLocation("gregtech", "pyrolyse-oven"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "pyrolyse-oven"),
+                ImmutableMap.<String, Object>of("speed_bonus", (1.0F / SPEED_BONUS_PER_COIL_TIER) * 100))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 6, 5, true)
             .addController("Front center, 2nd layer")
@@ -173,7 +174,7 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     }
 
     public double getSpeedBonus() {
-        return 2.0D / (1.0D + coilHeat.getTier());
+        return SPEED_BONUS_PER_COIL_TIER / (1.0D + coilHeat.getTier());
     }
 
     @Override

@@ -2307,6 +2307,7 @@ GT5U.tooltip.windmill.any_block=Any %s
 # Tooltip flavor text
 gt.mbtt.flavor.spinmatron=Maahes guides the way...
 gt.mbtt.flavor.latex=AKA Laminate Application and Thermal Enclosure eXocoater
+gt.mbtt.flavor.exo_foundry=Glorious Evolution!
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)

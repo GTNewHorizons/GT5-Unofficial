@@ -1,5 +1,6 @@
 package kekztech.common.tileentities;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -887,9 +888,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 "kekztech.infodata.lapotronic_super_capacitor.passive_loss",
                 nf.format(passiveDischargeAmount)));
         ll.add(
-            IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.eu_in", (inputLastTick)));
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_in", formatNumber(inputLastTick)));
         ll.add(
-            IGregTechDeviceInformation.encode("kekztech.infodata.lapotronic_super_capacitor.eu_out", (outputLastTick)));
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_out", formatNumber(outputLastTick)));
         ll.add(
             IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec",

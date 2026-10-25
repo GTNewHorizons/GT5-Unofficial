@@ -7,6 +7,6 @@ Excess power is voided if the {color_name:Dynamo Hatch} is full or the output ex
 Efficiency is determined by the ratio ({color_formula:R}) of {yellow:Combustion Promoter} to {gold:Fuel}
 The more Combustion Promoter, the higher the efficiency
 Follows an exponential curve, {color_formula:exp(-C / R) * {var:efficiency_ceiling}}, where {color_formula:C} is a constant based on the fuel type
-{color_key:Gas/Diesel Fuel}: {color_key:Gas/Diesel Fuel}: {color_formula:C = {var:gas_coefficient}} | {color_key:Rocket Fuel}: {color_formula:C = {var:rocket_coefficient}}
+{color_key:Gas/Diesel Fuel}: {color_formula:C = {var:gas_coefficient}} | {color_key:Rocket Fuel}: {color_formula:C = {var:rocket_coefficient}}
 {hr}
 Produces {color_pollution:sqrt({EU/t})} pollution per second

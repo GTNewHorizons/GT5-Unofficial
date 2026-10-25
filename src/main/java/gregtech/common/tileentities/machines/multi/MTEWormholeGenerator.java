@@ -988,7 +988,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Wormhole Generator, MWG")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.wormhole_generator"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "wormhole-generator"),
                 ImmutableMap.<String, Object>builder()
