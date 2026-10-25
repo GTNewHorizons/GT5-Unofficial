@@ -180,7 +180,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private final ArrayList<MTEBlackHoleUtility> utilityHatches = new ArrayList<>();
 
     /**
-     * 1: Off 2: On, stable 3: On, unstable 4: On, superstable
+     * 1: Off 2: On, stable 3: On, unstable 4: On, superstable 5: On, supermassive
      */
     private byte blackHoleStatus = 1;
 
@@ -349,7 +349,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         IIconContainer MAIN_OVERLAY;
         IIconContainer GLOW_OVERLAY;
         switch (blackHoleStatus) {
-            case 2, 4 -> {
+            case 2, 4, 5 -> {
                 MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
                 GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
             }
@@ -532,7 +532,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         ItemStack[] catalysts = new ItemStack[] {
             ItemList.Black_Hole_Opener.get(1),
             ItemList.Black_Hole_Closer.get(1),
-            ItemList.Black_Hole_Stabilizer.get(1)
+            ItemList.Black_Hole_Stabilizer.get(1),
+            ItemList.Supermassive_Black_Hole_Opener.get(1)
         };
         //spotless:on
 
@@ -551,6 +552,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     closeBlackHole();
                 } else if (ItemList.Black_Hole_Stabilizer.isStackEqual(removed) && blackHoleStatus == 1) {
                     blackHoleStatus = 4;
+                    createRenderBlock();
+                } else if (ItemList.Supermassive_Black_Hole_Opener.isStackEqual(removed) && blackHoleStatus == 1) {
+                    blackHoleStatus = 5;
+                    catalyzingCostModifier = 64;
                     createRenderBlock();
                 }
                 return;
@@ -755,11 +760,14 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (blackHoleStatus == 4) {
             if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
             parallels *= SUPERSTABLE_PARALLEL_MULTIPLIER;
-        } else if (blackHoleStability < LOW_STABILITY) {
-            parallels *= LOW_STABILITY_PARALLEL_MULTIPLIER;
-            if (blackHoleStability < CRITICAL_STABILITY) {
-                if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
+        } else {
+            if (blackHoleStatus == 5) parallels *= 4;
+            if (blackHoleStability < LOW_STABILITY) {
                 parallels *= LOW_STABILITY_PARALLEL_MULTIPLIER;
+                if (blackHoleStability < CRITICAL_STABILITY) {
+                    if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
+                    parallels *= LOW_STABILITY_PARALLEL_MULTIPLIER;
+                }
             }
         }
         return parallels;
