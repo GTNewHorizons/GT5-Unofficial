@@ -495,8 +495,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
         String cycleTimeDisplay = GTUtility.formatTime(baseCycleTime);
 
-        final String chunkDiameter = formatNumber(chunkRadiusConfig * 2L);
-        final String blockDiameter = formatNumber(chunkRadiusConfig * 32L);
+        final long chunkDiameter = chunkRadiusConfig * 2L;
+        final long blockDiameter = chunkRadiusConfig * 32L;
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Miner, MBM")

@@ -105,11 +105,9 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Rock Breaker")
             .addBulkMachineInfo(8, 3f, 0.75f)
-            .addMarkdown(
-                new ResourceLocation("gregtech", "industrial-rock-breaker"))
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-rock-breaker"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
             .addController("Front center, 3rd layer")
@@ -122,9 +120,9 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
             .addInputBus("0+", "Any casing", 1)
             .addOutputBus("1+", "Any casing", 1)
             .addStructureInfo("")
+            .addStructureFooter("The water and lava is spawned for free once formed")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

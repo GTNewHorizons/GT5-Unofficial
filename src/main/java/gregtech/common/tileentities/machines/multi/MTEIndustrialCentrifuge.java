@@ -81,7 +81,6 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final int BASE_PARALLEL_PER_TIER = 4;
     private static final double SPEED = 2.0D;
     private static final double EXTRA_SPEED = 1.0D;
-    private static final double MAX_SPEED = SPEED + EXTRA_SPEED;
     private static final double EU_EFFICIENCY = 0.9D;
 
     private static final double MOMENTUM_MAX = 100D;
@@ -190,14 +189,14 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.centrifuge"))
-            .addMarkdown(new ResourceLocation("gregtech", "industrial-centrifuge"),
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-centrifuge"),
                 ImmutableMap.<String, Object>builder()
-                    .put("base_parallels", BASE_PARALLEL_PER_TIER)
-                    .put("max_parallels", BASE_PARALLEL_PER_TIER * 2)
-                    .put("min_speed", SPEED * 100)
-                    .put("max_speed", MAX_SPEED * 100)
+                    .put("base_parallels", (int) getParallelsPerTier(0))
+                    .put("max_parallels", (int) getParallelsPerTier((int) MOMENTUM_MAX))
+                    .put("min_speed", getSpeedWithMomentum((int) 0) * 100)
+                    .put("max_speed", getSpeedWithMomentum((int) MOMENTUM_MAX) * 100)
                     .put("eu_eff", EU_EFFICIENCY * 100)
                     .put("momentum_max", MOMENTUM_MAX)
                     .put("momentum_gain", MOMENTUM_GAIN_PER_SEC)
@@ -215,7 +214,6 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
@@ -235,14 +233,21 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    private Double getSpeedWithMomentum() {
+    private double getSpeedWithMomentum() {
+        return getSpeedWithMomentum(momentum);
+    }
+
+    private static double getSpeedWithMomentum(int momentum) {
         return 1.0D / (SPEED + EXTRA_SPEED * momentum / MOMENTUM_MAX);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) ((BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / MOMENTUM_MAX)
-            * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (int) getParallelsPerTier(momentum) * GTUtility.getTier(this.getMaxInputVoltage());
+    }
+
+    public static double getParallelsPerTier(int momentum) {
+        return BASE_PARALLEL_PER_TIER + BASE_PARALLEL_PER_TIER * momentum / MOMENTUM_MAX;
     }
 
     private int casingAmount;
@@ -323,7 +328,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     public boolean onRunningTick(ItemStack stack) {
         runningTickCounter++;
-        if (runningTickCounter % TICKS_FOR_MOMENTUM_GAIN == 0 && momentum < 100) {
+        if (runningTickCounter % TICKS_FOR_MOMENTUM_GAIN == 0 && momentum < MOMENTUM_MAX) {
             runningTickCounter = 0;
             momentum += MOMENTUM_GAIN_AMOUNT;
         }

@@ -65,7 +65,6 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
 
     private int dryHeatCounter = 0; // Counts up to dryHeatMaximum to check for explosion conditions
     private static final int dryHeatMaximum = 2000; // 2000 ticks = 100 seconds
-    private static final float PENALTY_PER_CONFIG = 0.015f;
     private static final int CASING_INDEX = 50;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHeatExchanger> STRUCTURE_DEFINITION = StructureDefinition
@@ -130,7 +129,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         final ImmutableMap.Builder<String, Object> vars = ImmutableMap.builder();
         vars.put("explode_seconds", dryHeatMaximum / 20)
             .put("threshold_reduction", 100.0 * SH_THRESHOLD_REDUCTION_PER_CONFIG / BASE_SH_THRESHOLD)
-            .put("steam_penalty", 100.0 * PENALTY_PER_CONFIG)
+            .put("steam_penalty", 100.0 * penalty_per_config)
             .put("min_circuit", MIN_CIRCUIT_CONFIG);
         putCoolantVars(vars, "lava", "lava");
         putCoolantVars(vars, "coolant", "ic2hotcoolant");
