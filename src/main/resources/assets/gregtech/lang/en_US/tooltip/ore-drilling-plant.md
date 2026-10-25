@@ -1,4 +1,4 @@
-Maximum area is {color_range:{var:chunk_diameter}x{var:chunk_diameter}} chunks (color_range:{var:block_diameter}x{var:block_diameter}} blocks)
+Maximum area is {color_range:{var:chunk_diameter}x{var:chunk_diameter}} chunks ({color_range:{var:block_diameter}x{var:block_diameter}} blocks)
 In chunk mode, working area center is the chunk corner nearest to the drill
 Requires {color_key:Drilling Fluid} to operate
 Gives {color_speed:~{var:ore_multiplier}x} as much crushed ore vs normal processing
