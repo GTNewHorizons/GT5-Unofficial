@@ -39,8 +39,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -66,6 +68,7 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -404,7 +407,8 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Solar Factory")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.solar_factory"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "solar-factory"),
                 ImmutableMap.<String, Object>builder()
@@ -421,35 +425,36 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     .build())
             .addSupportAny()
             .beginStructureBlock(9, 10, 8, false)
-            .addController("Front bottom center")
-            .addEnergyHatch("1+", "Any machine casing", 1)
-            .addMaintenanceHatch("1+", "Any machine casing", 1)
-            .addInputBus("1+", "Any machine casing", 1)
-            .addInputHatch("1+", "Any machine casing", 1)
-            .addOutputBus("1+", "Any machine casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addMaintenanceHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addCasing("15-36", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("24", "Any Tiered Glass", false)
-            .addCasing("20", "Damascus Steel Frame Box", false)
+            .addCasing("15-36", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("24", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.DamascusSteel), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
-            .addCasing("35-96", "Tungstensteel Machine Casing", false)
-            .addCasing("75", "Tungsten Frame Box", false)
-            .addCasing("74", "Any Tiered Glass", false)
-            .addCasing("20", "Precise Electronic Unit Casing", true)
+            .addCasing("35-96", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("75", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("74", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("20", StatCollector.translateToLocal("preciseUnitCasing.name"), true)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three"))
-            .addCasing("50-134", "Advanced Iridium Machine Casing", false)
-            .addCasing("67", "Any Tiered Glass", false)
-            .addCasing("26", "Precise Electronic Unit Casing", true)
-            .addCasing("24", "Tungsten Frame Box", false)
-            .addCasing("6", "Black Plutonium Item Pipe", false)
+            .addCasing("50-134", Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), false)
+            .addCasing("67", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("26", StatCollector.translateToLocal("preciseUnitCasing.name"), true)
+            .addCasing("24", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing("6", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

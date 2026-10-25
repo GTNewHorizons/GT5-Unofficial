@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -61,6 +62,7 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeNaquadahReactor extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -365,7 +367,7 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Naquadah Reactor, LNR")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.naquadah_reactor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-naquadah-reactor"),
                 ImmutableMap.<String, Object>builder()
@@ -386,14 +388,14 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
                     .build())
             .addSupportAny()
             .beginStructureBlock(7, 11, 7, false)
-            .addController("Front bottom center")
-            .addCasing("130-141", "Naquadah Reactor Casing", false)
-            .addCasing("81", "Field Restriction Casing", false)
-            .addCasing("32", "Radiation Proof Steel Frame Box", false)
-            .addDynamoHatch("1", "Any reactor casing", 1)
-            .addMaintenanceHatch("1", "Any reactor casing", 1)
-            .addInputHatch("1+", "Any reactor casing", 1)
-            .addOutputHatch("1+", "Any reactor casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("130-141", Casings.NaquadahReactorCasing.getLocalizedName(), false)
+            .addCasing("81", Casings.FieldRestrictionCasing.getLocalizedName(), false)
+            .addCasing("32", Casings.RadiantProofSteelFrameBox.getLocalizedName(), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_reactor_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_reactor_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reactor_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reactor_casing"), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;

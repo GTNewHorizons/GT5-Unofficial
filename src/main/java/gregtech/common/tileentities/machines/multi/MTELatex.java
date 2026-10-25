@@ -45,8 +45,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -64,6 +66,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -294,7 +297,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType("Cable Coater, LATEX")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cable_coater"))
             .addInfo(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gt.mbtt.flavor.latex"))
             .addBulkMachineInfo(8, 2F, 0.85F)
             .addMarkdown(
@@ -305,16 +308,16 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
                     .put("singularity_discount", SINGULARITY_RUBBER_DISCOUNT)
                     .build())
             .beginStructureBlock(5, 8, 5, false)
-            .addController("Front bottom center")
-            .addCasing("14-36", "Chemically Inert Casing", false)
-            .addCasing("32", "Any Tiered Glass", false)
-            .addCasing("16", "Polyvinyl Chloride Frame Box", false)
-            .addCasing("6", "Item Pipe Casing", true)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputBus("1+", "Any casing", 1)
-            .addInputHatch("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("14-36", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("32", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.PolyvinylChloride), false)
+            .addCasing("6", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
