@@ -77,7 +77,6 @@ import gregtech.common.gui.modularui.multiblock.MTENanoForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
@@ -749,8 +748,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         // spotless:off
         tt.addMachineType("Nanite Fabricator")
             .addMarkdown(new ResourceLocation("gregtech", "nano-forge"))
-            .addSupportAny()
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(41, 52, 41, false)
             .addController("Front bottom center")
             .addEnergyHatch("1-2", "Any bottom casing", 1)

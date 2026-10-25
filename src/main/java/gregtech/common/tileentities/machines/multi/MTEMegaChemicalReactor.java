@@ -21,11 +21,9 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -48,10 +46,8 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMegaChemicalReactor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -105,18 +101,11 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Chemical Reactor, MCR")
-            .addInfo(
-                TooltipHelper
-                    .coloredText(TooltipHelper.italicText("Infinite Potential!"), EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(PARALLELS)
-            .addSeparator()
-            .addMarkdown(
-                new ResourceLocation("gregtech", "mega-chemical-reactor"),
-                ImmutableMap.<String, Object>builder().build())
-            .addSupportAny()
+            .addMarkdown(new ResourceLocation("gregtech", "mega-chemical-reactor"))
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(5, 5, 9, false)
             .addEnergyHatchGlassTier()
             .addMinGlassForLaser(VoltageIndex.UV)
@@ -132,7 +121,6 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
