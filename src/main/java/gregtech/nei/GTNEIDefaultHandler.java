@@ -559,7 +559,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             return;
         }
 
-        String text = "Hover to see stack trace";
+        String text = StatCollector.translateToLocal("GT5U.nei.hover_to_see");
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
         stacktraceHoverAreas.put(
