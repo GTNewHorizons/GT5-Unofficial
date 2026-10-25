@@ -1,4 +1,6 @@
+{color_eu_usage:{var:eu_usage_base}^(Heating Coil Tier)} EU Usage
+{hr}
 Hydro and Steam-Cracking have different benefits:
-{gold:Hydro} - Consumes {dark_aqua:{var:hydro_h2_saving}%} less Hydrogen and outputs {dark_aqua:{var:hydro_output_bonus}%} more cracked fluid
-{gold:Steam} - Outputs {dark_aqua:{var:steam_output_bonus}%} more cracked fluid
-{yellow:Compared to a Chemical Reactor}
+{color_mode:Hydro} - Consumes {color_amount:{var:hydro_h2_saving}%} less Hydrogen and outputs {color_amount:{var:hydro_output_bonus}%} more cracked fluid
+{color_mode:Steam} - Outputs {color_amount:{var:steam_output_bonus}%} more cracked fluid
+{color_note:Compared to a Chemical Reactor}

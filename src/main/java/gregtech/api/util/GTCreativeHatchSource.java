@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,8 +38,8 @@ public class GTCreativeHatchSource implements IItemSource {
         addHatchById(MUFFLER_HATCH_UHV.ID);
         addHatchById(INPUT_BUS_DEBUG.ID);
         addHatchById(INPUT_HATCH_DEBUG.ID);
-        addHatchById(OUTPUT_BUS_ME.ID);
-        addHatchById(OUTPUT_HATCH_ME.ID);
+        addMaxCapacityMEHatchById(OUTPUT_BUS_ME.ID);
+        addMaxCapacityMEHatchById(OUTPUT_HATCH_ME.ID);
         addHatchById(DebugDataHatch.ID);
         addHatchById(DebugDataAccessHatch.ID);
         addHatchById(Hatch_Input_Debug_Steam.ID);
@@ -52,6 +53,14 @@ public class GTCreativeHatchSource implements IItemSource {
 
     private void addHatchById(int id) {
         allHatches.add(new ItemStack(GregTechAPI.sBlockMachines, 1, id));
+    }
+
+    private void addMaxCapacityMEHatchById(int id) {
+        ItemStack hatch = new ItemStack(GregTechAPI.sBlockMachines, 1, id);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setLong("baseCapacity", Long.MAX_VALUE);
+        hatch.setTagCompound(tag);
+        allHatches.add(hatch);
     }
 
     @Override

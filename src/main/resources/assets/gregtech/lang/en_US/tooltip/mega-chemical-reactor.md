@@ -1,1 +1,1 @@
-{light_purple:Performs 4/4 Perfect Overclocks}
+{color_mechanic:Performs 4/4 Perfect Overclocks}
