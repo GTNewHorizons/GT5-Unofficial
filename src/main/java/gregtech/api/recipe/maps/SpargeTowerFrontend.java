@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeConstants.SPARGE_MAX_BYPRODUCT;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,15 +32,17 @@ public class SpargeTowerFrontend extends FluidOnlyFrontend {
 
         FluidStack spargeGas = recipe.mFluidInputs[0];
         if (hoveredFluid.isFluidEqual(spargeGas)) {
-            currentTip.add("The amount returned is the remainder after all other outputs.");
-            currentTip.add("Maximum Output: " + spargeGas.amount + "L");
+            currentTip.add(StatCollector.translateToLocal("GT5U.nei.sparge_tower.remainder"));
+            currentTip
+                .add(StatCollector.translateToLocalFormatted("GT5U.nei.sparge_tower.maximum_output", spargeGas.amount));
             return currentTip;
         }
 
         int maximumByproducts = recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0);
         for (int i = 2; i < recipe.mFluidOutputs.length; i++) {
             if (hoveredFluid.isFluidEqual(recipe.mFluidOutputs[i])) {
-                currentTip.add("Maximum Output: " + maximumByproducts + "L");
+                currentTip.add(
+                    StatCollector.translateToLocalFormatted("GT5U.nei.sparge_tower.maximum_output", maximumByproducts));
             }
         }
 

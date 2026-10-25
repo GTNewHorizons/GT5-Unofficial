@@ -52,7 +52,7 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
     protected String getTierNameWithParentheses(long voltage, OverclockCalculator calculator) {
         String nameString = super.getTierNameWithParentheses(voltage, calculator);
         if (wasOverclocked(calculator)) {
-            nameString = StatCollector.translateToLocal("GT5U.nei.display.overclock") + " " + nameString;
+            nameString = StatCollector.translateToLocalFormatted("GT5U.nei.display.overclocked_tier", nameString);
         }
         return nameString;
     }

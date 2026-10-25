@@ -212,15 +212,10 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void drawExtras(int recipeIndex) {
         GuiDraw
-            .drawStringC(I18n.format("ig.nei.siphon.planet") + ":", CATEGORY_TITLE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(I18n.format("ig.nei.siphon.depth") + ":", CATEGORY_TITLE_X, GAS_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(
-            I18n.format("ig.nei.siphon.baserate") + ":",
-            CATEGORY_TITLE_X,
-            OUT_AMOUNT_Y,
-            TEXT_COLOR,
-            false);
-        GuiDraw.drawStringC(I18n.format("ig.nei.elevatorpump.eut") + ":", CATEGORY_TITLE_X, EUT_Y, TEXT_COLOR, false);
+            .drawStringC(I18n.format("ig.nei.siphon.planet_label"), CATEGORY_TITLE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(I18n.format("ig.nei.siphon.depth_label"), CATEGORY_TITLE_X, GAS_TYPE_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(I18n.format("ig.nei.siphon.rate_label"), CATEGORY_TITLE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(I18n.format("ig.nei.siphon.eut_label"), CATEGORY_TITLE_X, EUT_Y, TEXT_COLOR, false);
 
         CachedSiphonRecipe recipe = (CachedSiphonRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(
@@ -231,13 +226,16 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
             false);
         GuiDraw.drawStringC(formatValue(recipe.depth), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(
-            formatValue(formatFluid(recipe.amount)) + "/s",
+            I18n.format("ig.nei.siphon.rate_value", formatValue(formatFluid(recipe.amount))),
             CATEGORY_VALUE_X,
             OUT_AMOUNT_Y,
             TEXT_COLOR,
             false);
         GuiDraw.drawStringC(
-            formatNumber(recipe.eut) + " " + GTUtility.getTierNameWithParentheses(recipe.eut),
+            I18n.format(
+                "ig.nei.siphon.eut_value",
+                formatNumber(recipe.eut),
+                GTUtility.getTierNameWithParentheses(recipe.eut)),
             CATEGORY_VALUE_X,
             EUT_Y,
             TEXT_COLOR,

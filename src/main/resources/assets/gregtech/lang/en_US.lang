@@ -2726,10 +2726,8 @@ gt.nei.tgs.tooltip.shears=Place in an input bus to harvest leaves
 gt.nei.tgs.tooltip.needsShears=Requires Shears to harvest
 gt.nei.tgs.tooltip.knife=Place in an input bus to harvest fruit
 gt.nei.tgs.tooltip.needsKnife=Requires a Knife to harvest
-gt.nei.tgs.tooltip.multiplier=Output multiplier:
-gt.nei.tgs.info-1=Output is further boosted
-gt.nei.tgs.info-2=by machine energy tier
-gt.nei.tgs.info-3=and tool type
+gt.nei.tgs.tooltip.output_multiplier=Output multiplier: %sx
+gt.nei.tgs.output_boost=Output is further boosted\nby machine energy tier\nand tool type
 gt.nei.ap.tier=Algae Pond Tier: %s
 
 GT5U.recipes.recipe_by.original=Original Recipe by: %s
@@ -10184,7 +10182,7 @@ GT5U.gui.text.bec-speed-divisor=Speed Divisor
 
 # Misc BEC Tooltips
 gt.tooltip.nanite-tier=Nanite Tier: %s
-gt.tooltip.max-nanite=Max Nanite Tier:
+GT5U.nei.bec.max_nanite_tier=Max Nanite Tier:\n%s
 GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
 GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
 
@@ -10608,3 +10606,11 @@ Material.polytetrafluoroethylene.fluidpipe.newname=PTFE
 Material.polyvinylchloride.itempipe.newname=PVC
 Material.redstone.fluidpipe.newname=High Pressure
 Material.wood.fluidpipe.newname=Wooden
+GT5U.nanite.tier_description=%s (Tier %s)
+gt.nei.chemplant.casing_tier=Tier: %s - %s
+GT5U.nei.thermal_boiler.steam_output=Steam output shown\nat maximum efficiency.
+GT5U.nei.thermal_boiler.without_filter=Without a Lava Filter,\nonly Obsidian is produced.
+GT5U.nei.sparge_tower.remainder=The amount returned is the remainder after all other outputs.
+GT5U.nei.sparge_tower.maximum_output=Maximum Output: %sL
+GT5U.nei.display.overclocked_tier=(OC) %s
+GT5U.nei.duration_alternatives=%s/%s

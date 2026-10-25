@@ -4,8 +4,8 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
@@ -37,6 +37,8 @@ public class FakeCuttingSpecialInfo {
             .stream()
             .map(baseDuration -> (baseDuration * overclockFactor) / SECONDS)
             .map(NumberFormatUtil::formatNumber)
-            .collect(Collectors.joining("/"));
+            .reduce(
+                (left, right) -> StatCollector.translateToLocalFormatted("GT5U.nei.duration_alternatives", left, right))
+            .orElse("");
     }
 }

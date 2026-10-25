@@ -1,8 +1,7 @@
 package gregtech.api.enums;
 
-import java.text.MessageFormat;
-
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
@@ -64,7 +63,8 @@ public enum NaniteTier {
     }
 
     public String describe() {
-        return MessageFormat.format("{0} (Tier {1})", getMaterial().getLocalizedName(), tier);
+        return StatCollector
+            .translateToLocalFormatted("GT5U.nanite.tier_description", getMaterial().getLocalizedName(), tier);
     }
 
     public static NaniteTier fromMaterial(Materials mat) {

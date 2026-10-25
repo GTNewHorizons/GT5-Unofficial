@@ -396,12 +396,11 @@ gg.recipe.componentassemblyline=Component Assembly Line
 #NEI Info
 value.naquadah_reactor=Basic Output Voltage: %s EU/t
 value.naquadah_fuel_refine_factory=Need Tier %s Coil
-value.neutron_activator.0=Minimum Neutron Kinetic Energy:
-value.neutron_activator.1=Maximum Neutron Kinetic Energy:
-value.neutron_activator.2= MeV
-value.extreme_heat_exchanger.0=Max Hot Fluid Input:
-value.extreme_heat_exchanger.1=Max Distilled Water Input:
-value.extreme_heat_exchanger.4=Threshold:
+value.neutron_activator.minimum_energy=Minimum Neutron Kinetic Energy:\n%s MeV
+value.neutron_activator.maximum_energy=Maximum Neutron Kinetic Energy:\n%s MeV
+value.extreme_heat_exchanger.hot_fluid_input=Max Hot Fluid Input: %s L/s
+value.extreme_heat_exchanger.water_input=Max Distilled Water Input:\n%s L/s
+value.extreme_heat_exchanger.threshold=Threshold: %s L/s
 value.precise_assembler=Need Mk-%s Casing
 value.component_assembly_line=Casing Tier: %s
 

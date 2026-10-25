@@ -90,9 +90,13 @@ public class RecipeDisplayInfo {
      */
     public void drawText(@Nullable String text, int xStart, int yShift) {
         if (isStringInvalid(text)) return;
-        Minecraft.getMinecraft().fontRenderer
-            .drawString(text, xStart, yPos, neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
-        yPos += yShift;
+        // Let translations choose line breaks, including literal \n sequences in .lang files.
+        for (String line : text.replace("\\n", "\n")
+            .split("\n", -1)) {
+            Minecraft.getMinecraft().fontRenderer
+                .drawString(line, xStart, yPos, neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
+            yPos += yShift;
+        }
     }
 
     public void drawTextMultipleLines(List<String> texts) {
