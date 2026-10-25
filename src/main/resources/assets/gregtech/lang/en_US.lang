@@ -5769,6 +5769,8 @@ gt.item.electromagnet.tengam.name=§aTengam Electromagnet
 ## Black Hole items
 gt.item.black_hole.seed.name=Black Hole Seed
 gt.item.black_hole.seed.tooltip=Opens a pseudostable black hole
+gt.item.black_hole.supermassive_seed.name=Supermassive Black Hole Seed
+gt.item.black_hole.supermassive_seed.tooltip=Opens a more powerful pseudostable black hole\nMachine gains 4x parallels\nDecay halt cost starts at 64 L/s instead of 1 
 gt.item.black_hole.collapser.name=Black Hole Collapser
 gt.item.black_hole.collapser.tooltip=Safely closes a pseudostable black hole
 gt.item.black_hole.stabilizer.name=Superstable Black Hole Seed
@@ -6431,7 +6433,7 @@ gt.item.circuit.wafer.ypic.name=YPIC Wafer
 gt.item.circuit.wafer.plpic.name=PlPIC Wafer
 
 ## Chips
-gt.item.circuit.chip.ilc.name=Integrated Logic Circuit
+gt.item.circuit.chip.ilc.name=Logic IC
 gt.item.circuit.chip.ilc.tooltip=Integrated Circuit
 gt.item.circuit.chip.ram.name=Random Access Memory Chip
 gt.item.circuit.chip.ram.tooltip=Integrated Circuit
@@ -6587,8 +6589,8 @@ gt.item.circuit_board.multifiberglass_elite.name=Elite Circuit Board
 gt.item.circuit_board.multifiberglass_elite.tooltip=An elite Circuit Board
 gt.item.circuit_board.wetware_extreme.name=Extreme Wetware Lifesupport Circuit Board
 gt.item.circuit_board.wetware_extreme.tooltip=The Board that keeps life
-gt.item.circuit_board.plastic_advanced.name=Plastic Circuit Board
-gt.item.circuit_board.plastic_advanced.tooltip=A good Board
+gt.item.circuit_board.plastic_advanced.name=Better Circuit Board
+gt.item.circuit_board.plastic_advanced.tooltip=A better Circuit Board
 gt.item.circuit_board.bio_ultra.name=Ultra Bio Mutated Circuit Board
 gt.item.circuit_board.bio_ultra.tooltip=Bio genetic mutated Board
 gt.item.circuit_board.optical.name=Optical Circuit Board
@@ -8698,6 +8700,7 @@ GT5U.gui.multimachine.spinmatron.rotational_power=Rotational Power: %s
 GT5U.gui.multimachine.spinmatron.parallels=Parallels: %s
 
 GT5U.infodata.pubp.catalyst_history=Catalyst insertion history for this recipe cycle
+GT5U.infodata.pubp.catalyst_entry=%s: %s
 GT5U.infodata.pubp.quark_combination=Quark Combination correctly identified: %s
 
 GT5U.infodata.purification_unit_base.linked_at=This Purification Unit is linked to the Water Purification Plant at %d, %d, %d.
