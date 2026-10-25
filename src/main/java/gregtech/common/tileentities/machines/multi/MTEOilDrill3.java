@@ -7,7 +7,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEOilDrill3 extends MTEOilDrillBase {
 
     public MTEOilDrill3(int aID, String aName, String aNameRegional) {

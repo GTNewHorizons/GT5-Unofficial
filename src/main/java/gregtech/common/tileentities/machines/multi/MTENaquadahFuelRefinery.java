@@ -52,7 +52,6 @@ import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTENaquadahFuelRefinery extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 

@@ -91,7 +91,6 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

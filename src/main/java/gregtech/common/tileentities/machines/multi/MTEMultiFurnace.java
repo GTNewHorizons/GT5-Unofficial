@@ -57,7 +57,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

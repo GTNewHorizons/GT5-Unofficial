@@ -54,7 +54,6 @@ import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.lib.research.ResearchNoteData;
 import thaumcraft.common.tiles.TileNode;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchCompleter>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

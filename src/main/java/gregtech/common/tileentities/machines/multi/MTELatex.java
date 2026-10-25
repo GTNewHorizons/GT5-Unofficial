@@ -64,7 +64,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.misc.GTStructureChannels;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

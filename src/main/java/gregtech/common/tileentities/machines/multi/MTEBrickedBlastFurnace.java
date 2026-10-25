@@ -48,7 +48,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -70,7 +69,6 @@ import gregtech.common.pollution.Pollution;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment, ISurvivalConstructable,
     RecipeMapWorkable, IGetTitleColor, ISecondaryDescribable, ICasingTextureProvider {
 

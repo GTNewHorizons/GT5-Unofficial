@@ -77,7 +77,6 @@ import gregtech.common.gui.modularui.multiblock.MTENanoForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 

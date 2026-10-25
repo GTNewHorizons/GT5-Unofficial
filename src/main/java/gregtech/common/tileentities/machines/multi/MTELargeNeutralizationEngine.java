@@ -77,7 +77,6 @@ import gregtech.common.gui.modularui.multiblock.MTELargeNeutralizationEngineGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTELargeNeutralizationEngine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

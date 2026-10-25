@@ -5,7 +5,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEOreDrillingPlant4 extends MTEOreDrillingPlantBase {
 
     public MTEOreDrillingPlant4(int aID, String aName, String aNameRegional) {

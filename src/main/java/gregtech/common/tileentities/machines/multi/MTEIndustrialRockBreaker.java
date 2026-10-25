@@ -54,7 +54,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTEIndustrialRockBreaker>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

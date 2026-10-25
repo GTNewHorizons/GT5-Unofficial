@@ -61,7 +61,6 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeNaquadahReactor extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
