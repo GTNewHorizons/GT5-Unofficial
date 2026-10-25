@@ -49,7 +49,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEIndustrialThermalCentrifuge>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

@@ -81,7 +81,6 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTELargeFusionComputer extends TTMultiblockBase
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
