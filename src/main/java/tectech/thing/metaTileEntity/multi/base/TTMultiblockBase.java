@@ -398,9 +398,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             if (ePowerPass && getEUVar() > V[3]
                 || eDismantleBoom && mMaxProgresstime > 0 && areChunksAroundLoaded_EM()) {
                 explodeMultiblock();
-            } else {
-                super.onRemoval();
             }
+            // Runs in the explosion case as well, otherwise the hatches keep the crafting icon of a controller
+            // that is already gone.
+            super.onRemoval();
         } catch (Exception e) {
             if (ConfigHandler.debug.DEBUG_MODE) {
                 TecTech.LOGGER.error(e);
@@ -1553,7 +1554,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
         if (aMetaTileEntity instanceof MTEHatchUncertainty hatch) return eUncertainHatches.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) return eEnergyMulti.add(hatch);
@@ -1574,7 +1575,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
         addIfSmartInput(aMetaTileEntity);
         switch (aMetaTileEntity) {
@@ -1639,7 +1640,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
         }
 
         return false;
@@ -1664,7 +1665,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         if (aMetaTileEntity instanceof MTEHatchMuffler muffler) {
             muffler.updateTexture(aBaseCasingIndex);
-            muffler.updateCraftingIcon(this.getMachineCraftingIcon());
+            muffler.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mMufflerHatches.add(muffler);
         }
 
@@ -1684,17 +1685,17 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         switch (aMetaTileEntity) {
             case IDualInputHatch hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return mDualInputHatches.add(hatch);
             }
             case MTEHatchInput hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return mInputHatches.add(hatch);
             }
             case MTEHatchInputBus hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 hatch.mRecipeMap = getRecipeMap();
                 return mInputBusses.add(hatch);
             }
@@ -1717,12 +1718,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mOutputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchOutputBus hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mOutputBusses.add(hatch);
         }
 
@@ -1742,12 +1743,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
             case MTEHatchEnergyMulti hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return eEnergyMulti.add(hatch);
             }
             case MTEHatchEnergy hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return mEnergyHatches.add(hatch);
             }
             default -> {
@@ -1769,12 +1770,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
             case MTEHatchDynamoMulti hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return eDynamoMulti.add(hatch);
             }
             case MTEHatchDynamo hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return mDynamoHatches.add(hatch);
             }
             default -> {
@@ -1795,22 +1796,22 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
             case MTEHatchEnergyMulti hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return eEnergyMulti.add(hatch);
             }
             case MTEHatchEnergy hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return mEnergyHatches.add(hatch);
             }
             case MTEHatchDynamoMulti hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return eDynamoMulti.add(hatch);
             }
             case MTEHatchDynamo hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return mDynamoHatches.add(hatch);
             }
             default -> {
@@ -1858,7 +1859,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchUncertainty hatch) {
             addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return eUncertainHatches.add(hatch);
         }
         return false;
@@ -1876,7 +1877,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
             case MTEHatchMaintenance hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
                     droneDownLink.registerMachineController(this);
                 }
@@ -1884,7 +1885,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
             case MTEHatchUncertainty hatch -> {
                 hatch.updateTexture(aBaseCasingIndex);
-                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
                 return eUncertainHatches.add(hatch);
             }
             default -> {
@@ -1904,7 +1905,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return mMaintenanceHatches.add(hatch);
         }
         return false;
@@ -1922,7 +1923,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchDataInput hatch) {
             addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return eInputData.add(hatch);
         }
         return false;
@@ -1939,7 +1940,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         if (aMetaTileEntity instanceof MTEHatchDataOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             return eOutputData.add(hatch);
         }
         return false;
