@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -26,8 +27,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
+import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -42,6 +51,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
@@ -72,8 +82,14 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.render.IMTERenderer;
+import gregtech.common.render.shader.ShaderHandle;
+import gregtech.common.render.shader.ShaderRecipe;
+import gregtech.common.render.shader.Uniform;
+import gregtech.common.render.shader.VertexAttribute;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import io.netty.buffer.ByteBuf;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
@@ -82,7 +98,7 @@ import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public abstract class MTELargeFusionComputer extends TTMultiblockBase
-    implements ISurvivalConstructable, IOverclockDescriptionProvider {
+    implements ISurvivalConstructable, IOverclockDescriptionProvider, IMTERenderer, I3DGeometryRenderer {
 
     public Parameters.Group.ParameterIn batchSetting;
 
@@ -278,10 +294,17 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        shouldRender = aNBT.getBoolean("shouldRender");
         // Migration code
         if (lEUt > 0) {
             lEUt = -lEUt;
         }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("shouldRender", shouldRender);
     }
 
     @Override
@@ -304,6 +327,14 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.batch_mode.disable");
         }
         return true;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        shouldRender = !shouldRender;
+        getBaseMetaTileEntity().issueTileUpdate();
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.animations." + (shouldRender ? "enabled" : "disabled"));
     }
 
     @Override
@@ -658,6 +689,110 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    private boolean shouldRender = true;
+    private static boolean renderInitialized;
+    private static IVertexArrayObject ring;
+
+    private static ShaderHandle ringShader;
+
+    private static final Matrix4f ringMatrix = new Matrix4f();
+
+    private static final ShaderRecipe FUSION = ShaderRecipe.of(GregTech.resourceDomain, "foundry")
+        .required("u_Color")
+        .modelUniform("u_ModelMatrix")
+        .attribute("a_Position", VertexAttribute.POSITION);
+
+    private static final Uniform RING_COLOR = FUSION.uniform("u_Color");
+
+    public static void reloadRender() {
+        renderInitialized = false;
+        releaseRender();
+        // spotless:off
+        ringShader = FUSION.bake();
+        if (!ringShader.isValid()) {
+            GTLoggers.GT_FML_LOGGER.error("Failed to initialize fusion shader");
+            releaseRender();
+            return;
+        }
+
+        try {
+            final ResourceLocation model = new ResourceLocation(
+                GregTech.resourceDomain,
+                "textures/model/fusion_ring.obj"
+            );
+            ring = WavefrontVBOBuilder.compileToVBO(model, ringShader.vertexFormat());
+        } catch (RuntimeException e) {
+            GTLoggers.GT_FML_LOGGER.error("Failed to load fusion ring model", e);
+            releaseRender();
+            return;
+        }
+
+        renderInitialized = true;
+        // spotless:on
+    }
+
+    private static void releaseRender() {
+        if (ringShader != null) {
+            ringShader.release();
+            ringShader = null;
+        }
+        if (ring != null) {
+            ring.delete();
+            ring = null;
+        }
+    }
+
+    @Override
+    public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        if (!shouldRender || !getBaseMetaTileEntity().isActive()) {
+            return;
+        }
+
+        if (!renderInitialized) return;
+
+        ForgeDirection dir = getDirection();
+        PostProcessingManager.getInstance()
+            .addDelayedRenderer(this, x + 0.5f - dir.offsetX * 7, y + 0.5f, z + 0.5f - dir.offsetZ * 7);
+    }
+
+    @Override
+    public void render(Object none) {
+        renderRing(false);
+
+        BloomShader.getInstance()
+            .bindFramebuffer();
+
+        renderRing(true);
+
+        BloomShader.unbind();
+        ShaderProgram.clear();
+    }
+
+    private void renderRing(boolean bloom) {
+        renderStandardRing(bloom ? 1.0f : 0, bloom ? 1.0f : 0, bloom ? 1.0f : 0);
+    }
+
+    private static void renderStandardRing(float red, float green, float blue) {
+        ringShader.use();
+        GL20.glUniform3f(ringShader.loc(RING_COLOR), red, green, blue);
+        ringMatrix.translation(0, 0, -24)
+            .scale(2.54f, 2.65f, 2.54f);
+        ringShader.uploadModel(ringMatrix);
+        ring.render();
+    }
+
+    @Override
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeBoolean(shouldRender);
+    }
+
+    @Override
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        shouldRender = buffer.readBoolean();
     }
 
     public static final String[] L0 = { "                                               ",

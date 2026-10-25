@@ -64,7 +64,11 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Long> FUSION_THRESHOLD = SimpleRecipeMetadataKey
         .create(Long.class, "fusion_threshold");
-
+    /**
+     * Used for fusion reactor recipes. Denotes recipe color used for fusion ring render.
+     */
+    public static final RecipeMetadataKey<Integer> FUSION_RECIPE_COLOR = SimpleRecipeMetadataKey
+        .create(Integer.class, "fusion_recipe_color");
     /**
      * Scanning data used for scanner for assembly line recipes (time and voltage). Scanning time should be between 30
      * seconds and 3 minutes, and the voltage 1 tiers below the available scanner tier for the recipe.
