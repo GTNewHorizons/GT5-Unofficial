@@ -112,13 +112,13 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private final LongData energyInputValues5m = energyInputValues1h.view(5 * 60 * 20);
     private final LongData energyOutputValues5m = energyOutputValues1h.view(5 * 60 * 20);
 
-    private final long WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER = 100;
-    private final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UHV_CAP = 1_000_000;
-    private final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UEV_CAP = MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UHV_CAP
+    private static final long WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER = 100;
+    private static final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UHV_CAP = 1_000_000;
+    private static final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UEV_CAP = MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UHV_CAP
         * WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER;
-    private final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UIV_CAP = MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UEV_CAP
+    private static final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UIV_CAP = MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UEV_CAP
         * WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER;
-    private final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UMV_CAP = MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UIV_CAP
+    private static final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UMV_CAP = MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UIV_CAP
         * WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER;
 
     /** The number of tiers under the capacitor tier that can be used for the structural glass. */
@@ -690,7 +690,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             wireless_mode = false;
         }
 
-        // Every LSC_time_between_wireless_rebalance_in_ticks check against wireless network for re-balancing.
+        // Every LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS check against wireless network for re-balancing.
         counter++;
         if (wireless_mode && (counter >= ItemBlockLapotronicEnergyUnit.LSC_TIME_BETWEEN_WIRELESS_REBALANCE_IN_TICKS)) {
 
