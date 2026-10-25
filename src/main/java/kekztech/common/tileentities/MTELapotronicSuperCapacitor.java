@@ -121,7 +121,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private final long MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UMV_CAP = MAX_PASSIVE_DRAIN_EU_PER_TICK_PER_UIV_CAP
         * WIRELESS_CAP_PASSIVE_DRAIN_TIER_MULTIPLIER;
 
-    /** The number of glass tiers below the given */
+    /** The number of tiers under the capacitor tier that can be used for the structural glass. */
     private static final int GLASS_TIERS_BELOW_CELL_ALLOWED = 3;
 
     private final BigInteger guiCapacityStoredReformatLimit = BigInteger.valueOf(1_000_000_000_000L);
