@@ -1,6 +1,6 @@
 package goodgenerator.api.recipe;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,13 +47,13 @@ public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
             String[] description = new String[3];
             description[0] = StatCollector.translateToLocalFormatted(
                 "value.extreme_heat_exchanger.hot_fluid_input",
-                formatNumber(Inputs[0].amount));
+                formatFluid(Inputs[0].amount));
             description[1] = StatCollector
-                .translateToLocalFormatted("value.extreme_heat_exchanger.water_input", formatNumber(Inputs[1].amount));
+                .translateToLocalFormatted("value.extreme_heat_exchanger.water_input", formatFluid(Inputs[1].amount));
             if (!Inputs[0].getUnlocalizedName()
                 .contains("plasma")) {
                 description[2] = StatCollector
-                    .translateToLocalFormatted("value.extreme_heat_exchanger.threshold", threshold);
+                    .translateToLocalFormatted("value.extreme_heat_exchanger.threshold", formatFluid(threshold));
 
             }
             return Arrays.asList(description);

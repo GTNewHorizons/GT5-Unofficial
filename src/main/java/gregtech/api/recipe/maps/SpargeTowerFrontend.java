@@ -1,5 +1,6 @@
 package gregtech.api.recipe.maps;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static gregtech.api.util.GTRecipeConstants.SPARGE_MAX_BYPRODUCT;
 
 import java.util.List;
@@ -33,8 +34,9 @@ public class SpargeTowerFrontend extends FluidOnlyFrontend {
         FluidStack spargeGas = recipe.mFluidInputs[0];
         if (hoveredFluid.isFluidEqual(spargeGas)) {
             currentTip.add(StatCollector.translateToLocal("GT5U.nei.sparge_tower.remainder"));
-            currentTip
-                .add(StatCollector.translateToLocalFormatted("GT5U.nei.sparge_tower.maximum_output", spargeGas.amount));
+            currentTip.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.nei.sparge_tower.maximum_output", formatFluid(spargeGas.amount)));
             return currentTip;
         }
 
@@ -42,7 +44,9 @@ public class SpargeTowerFrontend extends FluidOnlyFrontend {
         for (int i = 2; i < recipe.mFluidOutputs.length; i++) {
             if (hoveredFluid.isFluidEqual(recipe.mFluidOutputs[i])) {
                 currentTip.add(
-                    StatCollector.translateToLocalFormatted("GT5U.nei.sparge_tower.maximum_output", maximumByproducts));
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.nei.sparge_tower.maximum_output",
+                        formatFluid(maximumByproducts)));
             }
         }
 

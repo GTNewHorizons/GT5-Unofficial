@@ -398,9 +398,9 @@ value.naquadah_reactor=Basic Output Voltage: %s EU/t
 value.naquadah_fuel_refine_factory=Need Tier %s Coil
 value.neutron_activator.minimum_energy=Minimum Neutron Kinetic Energy:\n%s MeV
 value.neutron_activator.maximum_energy=Maximum Neutron Kinetic Energy:\n%s MeV
-value.extreme_heat_exchanger.hot_fluid_input=Max Hot Fluid Input: %s L/s
-value.extreme_heat_exchanger.water_input=Max Distilled Water Input:\n%s L/s
-value.extreme_heat_exchanger.threshold=Threshold: %s L/s
+value.extreme_heat_exchanger.hot_fluid_input=Max Hot Fluid Input: %s/s
+value.extreme_heat_exchanger.water_input=Max Distilled Water Input:\n%s/s
+value.extreme_heat_exchanger.threshold=Threshold: %s/s
 value.precise_assembler=Need Mk-%s Casing
 value.component_assembly_line=Casing Tier: %s
 

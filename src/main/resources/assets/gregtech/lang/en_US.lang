@@ -10584,6 +10584,6 @@ gt.nei.chemplant.casing_tier=Tier: %s - %s
 GT5U.nei.thermal_boiler.steam_output=Steam output shown\nat maximum efficiency.
 GT5U.nei.thermal_boiler.without_filter=Without a Lava Filter,\nonly Obsidian is produced.
 GT5U.nei.sparge_tower.remainder=The amount returned is the remainder after all other outputs.
-GT5U.nei.sparge_tower.maximum_output=Maximum Output: %sL
+GT5U.nei.sparge_tower.maximum_output=Maximum Output: %s
 GT5U.nei.display.overclocked_tier=(OC) %s
 GT5U.nei.duration_alternatives=%s/%s
