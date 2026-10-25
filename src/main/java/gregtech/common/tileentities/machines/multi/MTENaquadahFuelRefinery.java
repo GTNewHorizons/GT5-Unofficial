@@ -52,7 +52,6 @@ import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTENaquadahFuelRefinery extends TTMultiblockBase
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -211,8 +210,8 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
         tt.addMachineType("Naquadah Fuel Refinery, NFR")
             .addDynamicParallelInfo(4, TooltipTier.FIELD_RESTRICTION_COIL)
             .addMarkdown(new ResourceLocation("gregtech", "naquadah-fuel-refinery"))
-            .addSupportAny()
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(27, 27, 5, false)
             .addController("Front center, 14th layer")
             .addCasing("470-483", "Naquadah Fuel Refinery Casing", false)

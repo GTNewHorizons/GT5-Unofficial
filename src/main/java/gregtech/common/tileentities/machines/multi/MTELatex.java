@@ -18,7 +18,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +30,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -64,7 +64,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.misc.GTStructureChannels;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -296,8 +295,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType("Cable Coater, LATEX")
-            .addInfo(
-                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminate Application and Thermal Enclosure eXocoater")
+            .addInfo(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gt.mbtt.flavor.latex"))
             .addBulkMachineInfo(8, 2F, 0.85F)
             .addMarkdown(
                 new ResourceLocation("gregtech", "latex"),
