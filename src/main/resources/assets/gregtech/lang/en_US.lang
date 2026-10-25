@@ -6357,7 +6357,7 @@ gt.item.circuit.wafer.optical_enhanced.name=Photonically Enhanced Wafer
 gt.item.circuit.wafer.infinite.name=Infinite Wafer
 
 ## Wafer variants (for circuits)
-gt.item.circuit.wafer.ilc.name=Integrated Logic Circuit (Wafer)
+gt.item.circuit.wafer.ilc.name=Logic IC (Wafer)
 gt.item.circuit.wafer.ram.name=Random Access Memory Chip (Wafer)
 gt.item.circuit.wafer.nand.name=NAND Memory Chip (Wafer)
 gt.item.circuit.wafer.nor.name=NOR Memory Chip (Wafer)
