@@ -69,6 +69,11 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     }
 
     @Override
+    protected boolean deferCheckConnection() {
+        return false;
+    }
+
+    @Override
     public void onFirstTick(IGregTechTileEntity base) {
         super.onFirstTick(base);
         if (base.isServerSide()) {
