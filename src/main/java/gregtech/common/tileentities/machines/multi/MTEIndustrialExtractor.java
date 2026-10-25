@@ -42,7 +42,6 @@ import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.misc.GTStructureChannels;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIndustrialExtractor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

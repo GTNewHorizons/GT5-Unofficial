@@ -46,7 +46,6 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchExtrusion;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEIndustrialExtruder>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

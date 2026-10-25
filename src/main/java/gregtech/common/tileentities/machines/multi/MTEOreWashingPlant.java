@@ -61,7 +61,6 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWashingPlant>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

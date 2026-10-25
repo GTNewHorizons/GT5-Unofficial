@@ -42,7 +42,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndustrialSifter>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

@@ -72,7 +72,6 @@ import gregtech.common.misc.workarea.IWorkAreaProvider;
 import gregtech.common.misc.workarea.WorkAreaProviderRegistry;
 import io.netty.buffer.ByteBuf;
 
-@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetricsExporter, IWorkAreaProvider {
 
     protected int batchMultiplier = 1;

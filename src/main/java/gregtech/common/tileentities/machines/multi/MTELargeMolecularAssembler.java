@@ -99,7 +99,6 @@ import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gregtech.crossmod.ae2.InputBusInventoryProxy;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler> implements
     ICraftingProvider, IActionHost, IGridProxyable, IInterfaceViewable, ISurvivalConstructable, ICasingTextureProvider {
 

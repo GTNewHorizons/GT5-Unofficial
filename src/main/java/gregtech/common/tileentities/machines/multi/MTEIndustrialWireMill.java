@@ -41,7 +41,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEIndustrialWireMill>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

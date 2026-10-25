@@ -66,7 +66,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<MTEIndustrialLaserEngraver>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

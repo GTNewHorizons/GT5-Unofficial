@@ -43,7 +43,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndustrialBrewery>
     implements ISurvivalConstructable, ICasingTextureProvider {
 

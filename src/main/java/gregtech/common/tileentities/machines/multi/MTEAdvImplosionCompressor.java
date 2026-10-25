@@ -40,7 +40,6 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEAdvImplosionCompressor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
