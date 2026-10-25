@@ -7,6 +7,7 @@ import java.util.Optional;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import appeng.me.helpers.AENetworkProxy;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
@@ -15,6 +16,15 @@ public interface IDualInputHatch extends IMetaTileEntity, ISmartInputHatch {
     Iterator<? extends IDualInputInventory> inventories();
 
     void updateTexture(int id);
+
+    /**
+     * @deprecated use {@link #updateCraftingIcon(ItemStack, IGregTechTileEntity)}, this one stays for addons built
+     *             against older GregTech.
+     */
+    @Deprecated
+    default void updateCraftingIcon(ItemStack icon) {
+        updateCraftingIcon(icon, null);
+    }
 
     /**
      * Sets the icon of the multiblock at {@code owner}, or clears it when {@code icon} is null.
@@ -73,4 +83,6 @@ public interface IDualInputHatch extends IMetaTileEntity, ISmartInputHatch {
         return rList.toArray(new FluidStack[rList.size()]);
 
     }
+
+    AENetworkProxy getProxy();
 }
