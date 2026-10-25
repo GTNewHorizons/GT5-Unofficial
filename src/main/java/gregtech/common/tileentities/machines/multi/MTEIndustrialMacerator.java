@@ -121,7 +121,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
                 new ResourceLocation("gregtech", "industrial-maceration-stack"),
                 ImmutableMap.<String, Object>builder()
                     .put("parallel_base", PARALLEL_T1)
-                    .put("speed_base", (1.0D / SPEED_T1) * 100)
+                    .put("speed_base", SPEED_T1 * 100)
                     .put(
                         "chip",
                         GregtechItemList.Maceration_Upgrade_Chip.get(1)
