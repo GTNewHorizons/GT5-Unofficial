@@ -77,6 +77,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable,
     ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEItemStack> {
 
+    public static final long DEFAULT_CAPACITY = 1600;
+
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 4, null, 1);
     }
@@ -107,7 +109,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     EntityPlayer lastClickedPlayer = null;
 
-    private final MTEHatchOutputMEBase<IAEItemStack> provider = new MTEHatchOutputMEBase<IAEItemStack>(this, 1_600) {};
+    private final MTEHatchOutputMEBase<IAEItemStack> provider = new MTEHatchOutputMEBase<IAEItemStack>(this) {};
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -144,6 +146,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         if (provider.getCacheMode())
             return provider.isFiltered() ? OutputBusType.MECacheFiltered : OutputBusType.MECacheUnfiltered;
         else return provider.isFiltered() ? OutputBusType.MEFiltered : OutputBusType.MEUnfiltered;
+    }
+
+    @Override
+    public long getDefaultCapacity() {
+        return DEFAULT_CAPACITY;
     }
 
     @Override
