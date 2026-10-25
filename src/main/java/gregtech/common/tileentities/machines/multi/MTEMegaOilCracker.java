@@ -203,7 +203,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
         tt.addMachineType("Cracker, MOC")
             .addInfo(
                 TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
+                    TooltipHelper.italicText("Thermally cracks heavy hydrocarbons into lighter fractions"),
                     EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addMarkdown(
