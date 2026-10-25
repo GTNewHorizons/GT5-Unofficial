@@ -243,7 +243,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public int getMaxParallelRecipes() {
-        return (int) getParallelsPerTier(momentum) * GTUtility.getTier(this.getMaxInputVoltage());
+        return (int) (getParallelsPerTier(momentum) * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     public static double getParallelsPerTier(int momentum) {
