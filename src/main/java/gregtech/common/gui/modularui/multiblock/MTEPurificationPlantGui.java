@@ -1,8 +1,5 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import java.util.Arrays;
-import java.util.List;
-
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -34,26 +31,26 @@ import gregtech.common.tileentities.machines.multi.purification.PurificationUnit
 
 public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificationPlant> {
 
-    private static final List<String> TIER_ORDER = Arrays.asList(
-        "multimachine.purificationunitclarifier",
-        "multimachine.purificationunitozonation",
-        "multimachine.purificationunitflocculator",
-        "multimachine.purificationunitphadjustment",
-        "multimachine.purificationunitplasmaheater",
-        "multimachine.purificationunituvtreatment",
-        "multimachine.purificationunitdegasifier",
-        "multimachine.purificationunitextractor");
+    // Declaration order is the water tier order
+    private enum UnitTier {
 
-    // Index-aligned with TIER_ORDER
-    private static final List<ItemList> TIER_ITEMS = Arrays.asList(
-        ItemList.Machine_Multi_PurificationUnitClarifier,
-        ItemList.Machine_Multi_PurificationUnitOzonation,
-        ItemList.Machine_Multi_PurificationUnitFlocculator,
-        ItemList.Machine_Multi_PurificationUnitPhAdjustment,
-        ItemList.Machine_Multi_PurificationUnitPlasmaHeater,
-        ItemList.Machine_Multi_PurificationUnitUVTreatment,
-        ItemList.Machine_Multi_PurificationUnitDegasifier,
-        ItemList.Machine_Multi_PurificationUnitParticleExtractor);
+        CLARIFIER("multimachine.purificationunitclarifier", ItemList.Machine_Multi_PurificationUnitClarifier),
+        OZONATION("multimachine.purificationunitozonation", ItemList.Machine_Multi_PurificationUnitOzonation),
+        FLOCCULATOR("multimachine.purificationunitflocculator", ItemList.Machine_Multi_PurificationUnitFlocculator),
+        PH_ADJUSTMENT("multimachine.purificationunitphadjustment", ItemList.Machine_Multi_PurificationUnitPhAdjustment),
+        PLASMA_HEATER("multimachine.purificationunitplasmaheater", ItemList.Machine_Multi_PurificationUnitPlasmaHeater),
+        UV_TREATMENT("multimachine.purificationunituvtreatment", ItemList.Machine_Multi_PurificationUnitUVTreatment),
+        DEGASIFIER("multimachine.purificationunitdegasifier", ItemList.Machine_Multi_PurificationUnitDegasifier),
+        EXTRACTOR("multimachine.purificationunitextractor", ItemList.Machine_Multi_PurificationUnitParticleExtractor);
+
+        private final String unitName;
+        private final ItemList item;
+
+        UnitTier(String unitName, ItemList item) {
+            this.unitName = unitName;
+            this.item = item;
+        }
+    }
 
     private static final int NOT_LINKED = -1;
 
@@ -67,9 +64,11 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         BooleanSyncValue debugMode = new BooleanSyncValue(multiblock::isDebugMode, multiblock::setDebugMode).allowC2S();
 
         syncManager.syncValue("debugMode", debugMode);
-        for (int i = 0; i < TIER_ORDER.size(); i++) {
-            String unitName = TIER_ORDER.get(i);
-            syncManager.syncValue("linkedUnitStatus", i, new IntSyncValue(() -> getLinkedUnitStatus(unitName)));
+        for (UnitTier unitTier : UnitTier.values()) {
+            syncManager.syncValue(
+                "linkedUnitStatus",
+                unitTier.ordinal(),
+                new IntSyncValue(() -> getLinkedUnitStatus(unitTier.unitName)));
         }
     }
 
@@ -105,18 +104,17 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         row.paddingTop(4)
             .paddingBottom(4)
             .coverChildrenHeight();
-        for (int i = 0; i < TIER_ORDER.size(); i++) {
-            IntSyncValue status = syncManager.findSyncHandler("linkedUnitStatus", i, IntSyncValue.class);
-            String translationKey = "GT5U.gui." + TIER_ORDER.get(i);
-            int tier = i + 1;
+        for (UnitTier unitTier : UnitTier.values()) {
+            IntSyncValue status = syncManager
+                .findSyncHandler("linkedUnitStatus", unitTier.ordinal(), IntSyncValue.class);
+            String translationKey = "GT5U.gui." + unitTier.unitName;
+            int tier = unitTier.ordinal() + 1;
             row.child(
                 new ItemDisplayWidget().disableHoverBackground()
                     .size(20)
                     .background(IDrawable.EMPTY)
                     .overlay(new DynamicDrawable(() -> getOverlayIcon(toStatus(status))))
-                    .item(
-                        TIER_ITEMS.get(i)
-                            .get(1))
+                    .item(unitTier.item.get(1))
                     .tooltipDynamic(tooltip -> {
                         tooltip.addLine(StatCollector.translateToLocalFormatted("GT5U.gui.purification.tier", tier));
                         tooltip.addLine(StatCollector.translateToLocal(translationKey));
