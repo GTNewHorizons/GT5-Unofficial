@@ -121,6 +121,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             formatNumber(OXYGEN_PER_SEC));
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
             .addMarkdown(new ResourceLocation("gregtech", "so-fuel-cell-mk1"), vars)
+            .addSupport4ADynamo()
             .beginStructureBlock(3, 3, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("12-31", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)

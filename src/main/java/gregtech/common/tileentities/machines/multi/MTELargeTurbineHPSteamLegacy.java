@@ -63,6 +63,7 @@ public class MTELargeTurbineHPSteamLegacy extends MTELargeTurbineLegacy {
             .addInfo("Outputs Steam as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
+            .addSupport4ADynamo()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Titanium Turbine Casing", 8, 31, false)

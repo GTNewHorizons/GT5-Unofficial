@@ -1194,6 +1194,11 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
+    public MultiblockTooltipBuilder addSupport4ADynamo() {
+        iLines.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.MBTT.Support4ADynamo"));
+        return this;
+    }
+
     /**
      * Add a line of information about the structure:<br>
      * Supports Laser Hatches!

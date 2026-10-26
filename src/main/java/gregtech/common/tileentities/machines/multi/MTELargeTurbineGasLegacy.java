@@ -59,6 +59,7 @@ public class MTELargeTurbineGasLegacy extends MTELargeTurbineLegacy {
             .addStructureDeprecatedLine()
             .addInfo("Needs a Turbine, place inside controller")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSupport4ADynamo()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Stainless Steel Turbine Casing", 8, 30, false)

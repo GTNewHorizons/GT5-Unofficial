@@ -144,6 +144,7 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
             .addInfo("Outputs 1L of Superheated (SH) Steam for every 1L of Supercritical Steam")
             .addInfo("Use a screwdriver to adjust the fitting of the turbine")
             .addInfo("Loose fit increases flow in exchange for efficiency")
+            .addSupport4ADynamo()
             .beginStructureBlock(3, 3, 6, false)
             .addController("Front center, 2nd layer")
             .addCasing("14", "PBI Frame Box", false)

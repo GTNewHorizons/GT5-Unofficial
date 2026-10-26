@@ -137,6 +137,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     .put("wait_power", WAIT_POWER_PERCENT)
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSupport4ADynamo()
             .beginStructureBlock(10, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
             .addCasing("30-33", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
