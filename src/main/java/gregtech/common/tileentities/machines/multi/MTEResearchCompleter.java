@@ -14,6 +14,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -361,8 +362,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Research Completer")
-            .addInfo("Completes Thaumcraft research notes using EU and Thaumcraft nodes")
-            .addInfo("Place nodes in the center row")
+            .addMarkdown(new ResourceLocation("gregtech", "research-completer"))
             .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
             .addController("Front center, 2nd layer")
             .addCasing("9-52", "Magical Machine Casing", false)
