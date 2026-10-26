@@ -107,7 +107,7 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addMufflerHatch("1", anyCasingText(), 1)
             .addInputAny("1+", anyCasingText(), 1)
             .addOutputAny("1+", anyCasingText(), 1)
-                        .toolTipFinisher();
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }

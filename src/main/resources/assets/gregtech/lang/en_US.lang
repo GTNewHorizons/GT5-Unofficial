@@ -2305,9 +2305,8 @@ GT5U.tooltip.windmill.any_type=%s (any)
 GT5U.tooltip.windmill.any_block=Any %s
 
 # Tooltip flavor text
-gt.mbtt.flavor.exothermic_hearth=Never one...
 gt.mbtt.flavor.spinmatron=Maahes guides the way...
-gt.mbtt.flavor.endothermic_fridge=... without the other!
+gt.mbtt.flavor.latex=AKA Laminate Application and Thermal Enclosure eXocoater
 gt.mbtt.flavor.exo_foundry=Glorious Evolution!
 
 GT5U.MBTT.HatchInfo=Any %s
@@ -6866,6 +6865,10 @@ GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
 GT5U.waila.stocking_hatch.min_amount=Minimum Amount: %s
 GT5U.waila.drone_downlink.noConnection=Not connected
 GT5U.waila.drone_downlink.connection=Connected to centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.nearestCentre=Nearest centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.nearestCentreNoDrone=Nearest centre has no drone inserted
+GT5U.waila.drone_downlink.noCentreLoaded=No loaded centre in this dimension
+GT5U.waila.drone_downlink.distance=Distance: %s / %s
 GT5U.waila.drone_downlink.connectionCount=Connection Count: %s
 GT5U.waila.drone_downlink.droneLevel=Drone Level: %s
 GT5U.waila.producing=Producing:
