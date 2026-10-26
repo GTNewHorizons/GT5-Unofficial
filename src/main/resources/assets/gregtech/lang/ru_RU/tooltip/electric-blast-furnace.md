@@ -1,7 +1,7 @@
-Базовый {red:нагрев} определяется {white:нагревательными катушками}
-Нагрев растёт на {red:+{var:heat_per_tier}K} за каждый тир {white:вольтажа} выше {var:voltageTier_MV}
-{gray:{hr}}
-Каждые {red:{var:eu_reduction_heat}K} выше требований рецепта снижают {aqua:расход EU} на {aqua:{var:eu_reduction}%}
-Каждые {red:{var:heat_per_poc}K} выше требований рецепта дают {light_purple:1 идеальный разгон}
-Идеальный разгон ускоряет рецепт в 4 раза вместо 2 (100% энергоэффективность)
-{yellow:Некоторые жидкости также сокращают базовое время рецепта}
+Базовый {color_heat:нагрев} определяется {color_name:нагревательными катушками}
+Нагрев растёт на {color_heat:+{var:heat_per_tier}{K}} за каждый тир {color_name:вольтажа} выше {VNF:base_tier_for_heat_increase}
+{hr}
+Каждые {color_heat:{var:eu_reduction_heat}{K}} выше требований рецепта снижают расход {EU} на {color_eu_usage:{var:eu_reduction}%}
+Каждые {color_heat:{var:heat_per_poc}{K}} выше требований рецепта дают {color_mechanic:1 идеальный разгон}
+{color_mechanic:Идеальный разгон} ускоряет рецепт в {color_speed:4x} вместо {color_speed:2x} (100% энергоэффективность)
+{color_note:Некоторые жидкости также сокращают базовое время рецепта}
