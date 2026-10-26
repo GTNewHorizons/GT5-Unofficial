@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -650,20 +648,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Ore Processor, IOF")
             .addMarkdown(
                 new ResourceLocation("gregtech", "integrated-ore-factory"),
                 ImmutableMap.<String, Object>builder()
                     .put("eut_per_ore", RECIPE_EUT)
-                    .put("lubricant_per_ore", formatFluid(LUBRICANT_PER_ORE))
-                    .put("water_per_ore", formatFluid(WATER_PER_ORE))
-                    .put("fluid_unit", getFluidUnit())
+                    .put("lubricant_per_ore", LUBRICANT_PER_ORE)
+                    .put("water_per_ore", WATER_PER_ORE)
                     .build())
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
             .beginStructureBlock(15, 9, 13, false)
             .addController("Front center, 3rd layer")
             .addCasing("462", "Advanced Iridium Plated Machine Casing", false)
@@ -684,7 +678,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

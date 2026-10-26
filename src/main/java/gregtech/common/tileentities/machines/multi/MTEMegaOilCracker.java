@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -79,7 +78,6 @@ import gregtech.common.tileentities.machines.MTEHatchInputME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOilCracker>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -201,24 +199,22 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType("Cracker, MOC")
             .addInfo(
                 TooltipHelper.coloredText(
-                    TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
+                    TooltipHelper.italicText("Thermally cracks heavy hydrocarbons into lighter fractions"),
                     EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addMarkdown(
                 new ResourceLocation("gregtech", "mega-oil-cracker"),
                 ImmutableMap.<String, Object>builder()
+                    .put("eu_usage_base", EU_USAGE_BASE)
                     .put("hydro_h2_saving", HYDRO_H2_SAVING_PERCENT)
                     .put("hydro_output_bonus", HYDRO_OUTPUT_BONUS_PERCENT)
                     .put("steam_output_bonus", STEAM_OUTPUT_BONUS_PERCENT)
-                    .put("eu_usage_base", formatNumber(EU_USAGE_BASE))
                     .build())
-            .addSeparator()
-            .addSupportAny()
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(13, 8, 9, true)
             .addEnergyHatchGlassTier()
             .addMinGlassForLaser(VoltageIndex.UV)
@@ -238,7 +234,6 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
