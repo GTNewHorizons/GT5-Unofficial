@@ -1,6 +1,10 @@
 package goodgenerator.blocks.tileEntity.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.alignment.enumerable.Rotation.CLOCKWISE;
+import static com.gtnewhorizon.structurelib.alignment.enumerable.Rotation.COUNTER_CLOCKWISE;
+import static com.gtnewhorizon.structurelib.alignment.enumerable.Rotation.NORMAL;
+import static com.gtnewhorizon.structurelib.alignment.enumerable.Rotation.UPSIDE_DOWN;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -10,6 +14,12 @@ import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -39,6 +49,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShad
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -760,28 +771,40 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     @Override
     public void render(Object none) {
-        ForgeDirection dir = getDirection();
-        renderRing(false, dir);
+
+        renderRing(false);
 
         BloomShader.getInstance()
             .bindFramebuffer();
 
-        renderRing(true, dir);
+        renderRing(true);
 
         BloomShader.unbind();
         ShaderProgram.clear();
     }
 
-    private void renderRing(boolean bloom, ForgeDirection dir) {
-        renderStandardRing(dir, bloom ? 0.62f : 0, bloom ? 0.96f : 0, bloom ? 1.0f : 0);
+    private void renderRing(boolean bloom) {
+        renderStandardRing(bloom ? 0.62f : 0, bloom ? 0.96f : 0, bloom ? 1.0f : 0);
     }
 
-    private static void renderStandardRing(ForgeDirection dir, float red, float green, float blue) {
+    private void renderStandardRing(float red, float green, float blue) {
+        ForgeDirection dir = getDirection();
+        Rotation rot = getRotation();
         ringShader.use();
         GL20.glUniform3f(ringShader.loc(RING_COLOR), red, green, blue);
-        ringMatrix.identity()
-            .translation(dir.offsetX * 24, 0, dir.offsetZ * 24)
-            .scale(2.54f, 2.65f, 2.54f);
+        ringMatrix.identity();
+        ringMatrix.translation(dir.offsetX * 24, dir.offsetY * 16, dir.offsetZ * 24);
+        ringMatrix.scale(2.55f, 2.55f, 2.55f);
+        if ((dir == UP && (rot == NORMAL || rot == UPSIDE_DOWN))
+            || (dir == DOWN && (rot == NORMAL || rot == UPSIDE_DOWN))
+            || (dir == WEST && (rot == COUNTER_CLOCKWISE || rot == CLOCKWISE))
+            || (dir == EAST && (rot == COUNTER_CLOCKWISE || rot == CLOCKWISE)))
+            ringMatrix.rotateX((float) Math.toRadians(90));
+        if ((dir == UP && (rot == COUNTER_CLOCKWISE || rot == CLOCKWISE))
+            || (dir == DOWN && (rot == COUNTER_CLOCKWISE || rot == CLOCKWISE))
+            || (dir == NORTH && (rot == COUNTER_CLOCKWISE || rot == CLOCKWISE))
+            || (dir == SOUTH && (rot == COUNTER_CLOCKWISE || rot == CLOCKWISE)))
+            ringMatrix.rotateZ((float) Math.toRadians(90));
         ringShader.uploadModel(ringMatrix);
         ring.render();
     }
