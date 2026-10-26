@@ -767,7 +767,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
         ForgeDirection dir = getDirection();
         PostProcessingManager.getInstance()
-            .addDelayedRenderer(this, x + 0.5f - dir.offsetX * 7, y + 0.5f, z + 0.5f - dir.offsetZ * 7);
+            .addDelayedRenderer(this, x + 0.5f + dir.offsetX * 17, y + 0.5f, z + 0.5f + dir.offsetZ * 17);
     }
 
     @Override
@@ -800,7 +800,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         ringShader.use();
         GL20.glUniform3f(ringShader.loc(RING_COLOR), red, green, blue);
         ringMatrix.identity();
-        ringMatrix.translation(dir.offsetX * 24, dir.offsetY * 17, dir.offsetZ * 24);
+        ringMatrix.translation(0, 0, 0);
         ringMatrix.scale(1.0f, 1.0f, 1.0f);
         if ((dir == UP && (rot == NORMAL || rot == UPSIDE_DOWN))
             || (dir == DOWN && (rot == NORMAL || rot == UPSIDE_DOWN))
