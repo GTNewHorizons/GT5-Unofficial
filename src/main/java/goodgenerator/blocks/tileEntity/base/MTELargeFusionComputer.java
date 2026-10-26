@@ -760,25 +760,27 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     @Override
     public void render(Object none) {
-        renderRing(false);
+        ForgeDirection dir = getDirection();
+        renderRing(false, dir);
 
         BloomShader.getInstance()
             .bindFramebuffer();
 
-        renderRing(true);
+        renderRing(true, dir);
 
         BloomShader.unbind();
         ShaderProgram.clear();
     }
 
-    private void renderRing(boolean bloom) {
-        renderStandardRing(bloom ? 0.62f : 0, bloom ? 0.96f : 0, bloom ? 1.0f : 0);
+    private void renderRing(boolean bloom, ForgeDirection dir) {
+        renderStandardRing(dir, bloom ? 0.62f : 0, bloom ? 0.96f : 0, bloom ? 1.0f : 0);
     }
 
-    private static void renderStandardRing(float red, float green, float blue) {
+    private static void renderStandardRing(ForgeDirection dir, float red, float green, float blue) {
         ringShader.use();
         GL20.glUniform3f(ringShader.loc(RING_COLOR), red, green, blue);
-        ringMatrix.translation(0, 0, -24)
+        ringMatrix.identity()
+            .translation(dir.offsetX * 24, 0, dir.offsetZ * 24)
             .scale(2.54f, 2.65f, 2.54f);
         ringShader.uploadModel(ringMatrix);
         ring.render();
