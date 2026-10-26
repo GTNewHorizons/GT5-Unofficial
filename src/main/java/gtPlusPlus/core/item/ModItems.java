@@ -584,6 +584,9 @@ public final class ModItems {
         // Ores
         MaterialGenerator.generateOreMaterial(MaterialsFluorides.FLUORITE);
         MaterialGenerator.generateOreMaterial(MaterialsAlloy.KOBOLDITE);
+        // Deep Dark void miner only
+        MaterialGenerator.generateOreMaterial(MaterialsElements.getInstance().NEPTUNIUM, true, false, false);
+        MaterialGenerator.generateOreMaterial(MaterialsElements.getInstance().FERMIUM, true, false, false);
         GTPPEverglades.GenerateOreMaterials();
 
         // Formula overrides
