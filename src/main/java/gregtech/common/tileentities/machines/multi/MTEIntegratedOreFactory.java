@@ -650,7 +650,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.ore_processor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "integrated-ore-factory"),
@@ -681,7 +680,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

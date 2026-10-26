@@ -110,7 +110,6 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.large_chemical_reactor"))
             .addMarkdown(new ResourceLocation("gregtech", "large-chemical-reactor"))
             .beginStructureBlock(3, 3, 3, false)
@@ -126,7 +125,6 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.heating_coil_any_tier_any_side"))
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

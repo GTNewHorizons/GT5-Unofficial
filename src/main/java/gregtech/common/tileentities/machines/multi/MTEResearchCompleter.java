@@ -363,7 +363,6 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.research_completer"))
             .addMarkdown(new ResourceLocation("gregtech", "research-completer"))
             .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
@@ -377,7 +376,6 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

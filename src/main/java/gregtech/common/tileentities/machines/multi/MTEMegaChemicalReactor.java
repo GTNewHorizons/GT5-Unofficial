@@ -103,7 +103,6 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.mega_chemical_reactor"))
             .addStaticParallelInfo(PARALLELS)
             .addMarkdown(new ResourceLocation("gregtech", "mega-chemical-reactor"))
@@ -116,7 +115,13 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .addCasing("0-79", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
             .addCasing("64", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
             .addCasing("28", Casings.PTFEPipeCasing.getLocalizedName(), false)
-            .addCasing("7", StatCollector.translateToLocalFormatted("gt.mbtt.structure.either_block", Casings.FusionCoilBlock.getLocalizedName(), Casings.EternalCoilBlock.getLocalizedName()), false)
+            .addCasing(
+                "7",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.either_block",
+                    Casings.FusionCoilBlock.getLocalizedName(),
+                    Casings.EternalCoilBlock.getLocalizedName()),
+                false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
@@ -124,7 +129,6 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

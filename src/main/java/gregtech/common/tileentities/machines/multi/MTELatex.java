@@ -296,9 +296,11 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cable_coater"))
-            .addInfo(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gt.mbtt.flavor.latex"))
+            .addInfo(
+                EnumChatFormatting.DARK_GRAY + ""
+                    + EnumChatFormatting.ITALIC
+                    + StatCollector.translateToLocal("gt.mbtt.flavor.latex"))
             .addBulkMachineInfo(8, 2F, 0.85F)
             .addMarkdown(
                 new ResourceLocation("gregtech", "latex"),
@@ -322,7 +324,6 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

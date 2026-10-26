@@ -366,7 +366,6 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.naquadah_reactor"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-naquadah-reactor"),
@@ -397,7 +396,6 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reactor_casing"), 1)
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reactor_casing"), 1)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

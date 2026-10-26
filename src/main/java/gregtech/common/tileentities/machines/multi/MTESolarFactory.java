@@ -407,7 +407,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.solar_factory"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "solar-factory"),
@@ -454,7 +453,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

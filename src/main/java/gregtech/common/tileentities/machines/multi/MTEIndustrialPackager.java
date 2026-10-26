@@ -157,7 +157,6 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.packager_unpackager"))
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
             .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
@@ -179,7 +178,6 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

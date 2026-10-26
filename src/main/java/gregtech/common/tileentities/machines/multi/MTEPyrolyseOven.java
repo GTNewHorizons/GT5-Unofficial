@@ -106,7 +106,6 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.coke_oven"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "pyrolyse-oven"),
@@ -127,7 +126,6 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

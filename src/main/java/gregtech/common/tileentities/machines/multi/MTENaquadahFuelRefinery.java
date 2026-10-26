@@ -207,7 +207,6 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.naquadah_fuel_refinery"))
             .addDynamicParallelInfo(4, TooltipTier.FIELD_RESTRICTION_COIL)
             .addMarkdown(new ResourceLocation("gregtech", "naquadah-fuel-refinery"))
@@ -228,7 +227,6 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.coiltier"))
             .addSubChannel(GTStructureChannels.FIELD_RESTRICTION_COIL)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

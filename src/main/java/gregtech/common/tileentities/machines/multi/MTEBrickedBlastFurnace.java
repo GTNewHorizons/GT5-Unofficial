@@ -132,7 +132,6 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     protected MultiblockTooltipBuilder getTooltip() {
         if (tooltipBuilder == null) {
             tooltipBuilder = new MultiblockTooltipBuilder();
-            // spotless:off
             tooltipBuilder.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bricked_blast_furnace"))
                 .addMarkdown(new ResourceLocation("gregtech", "bricked-blast-furnace"))
                 .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
@@ -144,7 +143,6 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.wallshare_1"))
                 .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.wallshare_2"))
                 .toolTipFinisher();
-            // spotless:on
         }
         return tooltipBuilder;
     }

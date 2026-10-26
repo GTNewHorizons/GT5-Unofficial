@@ -183,7 +183,6 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.industrial_mixer"))
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
             .addMarkdown(
@@ -210,7 +209,6 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

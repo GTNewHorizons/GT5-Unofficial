@@ -107,7 +107,6 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.rock_breaker"))
             .addBulkMachineInfo(8, 3f, 0.75f)
             .addMarkdown(new ResourceLocation("gregtech", "industrial-rock-breaker"))
@@ -126,7 +125,6 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.water_and_lava_free"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

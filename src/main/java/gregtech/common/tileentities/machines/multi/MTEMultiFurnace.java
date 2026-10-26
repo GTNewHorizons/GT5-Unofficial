@@ -109,7 +109,6 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.furnace"))
             .addMarkdown(new ResourceLocation("gregtech", "multi-furnace"))
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -126,7 +125,6 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

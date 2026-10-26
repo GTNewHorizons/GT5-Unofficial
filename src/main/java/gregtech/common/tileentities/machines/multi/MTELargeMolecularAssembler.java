@@ -305,7 +305,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.molecular_assembler"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-molecular-assembler"),
@@ -323,12 +322,15 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .addCasing(MIN_CASING_COUNT + "-40", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
-            .addMiscHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.input_bus_or_pattern_provider"), StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("gt.mbtt.structure.input_bus_or_pattern_provider"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
+                1)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.large_molecular_assembler_data_orb"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

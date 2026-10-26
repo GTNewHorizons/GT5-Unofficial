@@ -321,7 +321,6 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.acid_generator"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-neutralization-engine"),
@@ -354,7 +353,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addCasing("30-43", StatCollector.translateToLocal("GT5U.MBTT.Tiers.MachineCasing"), true)
             .addCasing("34", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
             .addCasing("15", Casings.PTFEPipeCasing.getLocalizedName(), false)
-            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.ToxicResidueSensorHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addMiscHatch(
+                "0+",
+                StatCollector.translateToLocal("GT5U.MBTT.ToxicResidueSensorHatch"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"),
+                1)
             .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
@@ -362,7 +365,6 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
