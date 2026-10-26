@@ -2214,6 +2214,7 @@ gt.mbtt.structure.any_reactor_casing=Any reactor casing
 gt.mbtt.structure.any_machine_casing=Any machine casing
 gt.mbtt.structure.any_refinery_casing=Any refinery casing
 gt.mbtt.structure.any_anchor_casing=Any anchor casing
+gt.mbtt.structure.any_thermal_casing=Any thermal casing
 gt.mbtt.structure.any_mining_casing=Any mining casing
 gt.mbtt.structure.any_mining_casing_min_tier=Any mining casing (%s+)
 gt.mbtt.structure.any_reinforced_distillation_casing=Any reinforced distillation casing
@@ -2343,6 +2344,7 @@ gt.mbtt.machine_type.ore_drilling_plant=Miner, MBM
 gt.mbtt.machine_type.research_completer=Research Completer
 gt.mbtt.machine_type.solar_factory=Solar Factory
 gt.mbtt.machine_type.tree_farm=Tree Farm, TGS
+gt.mbtt.machine_type.thermal_centrifuge=Thermal Centrifuge, LTR
 
 # BartWorks multiblock structure text
 GT5U.tooltip.manual_trafo.winding_layers=1 Layer for each tier transformed
