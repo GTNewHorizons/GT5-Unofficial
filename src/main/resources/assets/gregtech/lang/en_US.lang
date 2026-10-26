@@ -2305,9 +2305,8 @@ GT5U.tooltip.windmill.any_type=%s (any)
 GT5U.tooltip.windmill.any_block=Any %s
 
 # Tooltip flavor text
-gt.mbtt.flavor.exothermic_hearth=Never one...
 gt.mbtt.flavor.spinmatron=Maahes guides the way...
-gt.mbtt.flavor.endothermic_fridge=... without the other!
+gt.mbtt.flavor.latex=AKA Laminate Application and Thermal Enclosure eXocoater
 gt.mbtt.flavor.exo_foundry=Glorious Evolution!
 
 GT5U.MBTT.HatchInfo=Any %s
@@ -5719,6 +5718,8 @@ gt.item.electromagnet.tengam.name=§aTengam Electromagnet
 ## Black Hole items
 gt.item.black_hole.seed.name=Black Hole Seed
 gt.item.black_hole.seed.tooltip=Opens a pseudostable black hole
+gt.item.black_hole.supermassive_seed.name=Supermassive Black Hole Seed
+gt.item.black_hole.supermassive_seed.tooltip=Opens a more powerful pseudostable black hole\nMachine gains 4x parallels\nDecay halt cost starts at 64 L/s instead of 1 
 gt.item.black_hole.collapser.name=Black Hole Collapser
 gt.item.black_hole.collapser.tooltip=Safely closes a pseudostable black hole
 gt.item.black_hole.stabilizer.name=Superstable Black Hole Seed
@@ -6381,7 +6382,7 @@ gt.item.circuit.wafer.ypic.name=YPIC Wafer
 gt.item.circuit.wafer.plpic.name=PlPIC Wafer
 
 ## Chips
-gt.item.circuit.chip.ilc.name=Integrated Logic Circuit
+gt.item.circuit.chip.ilc.name=Logic IC
 gt.item.circuit.chip.ilc.tooltip=Integrated Circuit
 gt.item.circuit.chip.ram.name=Random Access Memory Chip
 gt.item.circuit.chip.ram.tooltip=Integrated Circuit
@@ -6537,8 +6538,8 @@ gt.item.circuit_board.multifiberglass_elite.name=Elite Circuit Board
 gt.item.circuit_board.multifiberglass_elite.tooltip=An elite Circuit Board
 gt.item.circuit_board.wetware_extreme.name=Extreme Wetware Lifesupport Circuit Board
 gt.item.circuit_board.wetware_extreme.tooltip=The Board that keeps life
-gt.item.circuit_board.plastic_advanced.name=Plastic Circuit Board
-gt.item.circuit_board.plastic_advanced.tooltip=A good Board
+gt.item.circuit_board.plastic_advanced.name=Better Circuit Board
+gt.item.circuit_board.plastic_advanced.tooltip=A better Circuit Board
 gt.item.circuit_board.bio_ultra.name=Ultra Bio Mutated Circuit Board
 gt.item.circuit_board.bio_ultra.tooltip=Bio genetic mutated Board
 gt.item.circuit_board.optical.name=Optical Circuit Board
@@ -6866,6 +6867,10 @@ GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
 GT5U.waila.stocking_hatch.min_amount=Minimum Amount: %s
 GT5U.waila.drone_downlink.noConnection=Not connected
 GT5U.waila.drone_downlink.connection=Connected to centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.nearestCentre=Nearest centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.nearestCentreNoDrone=Nearest centre has no drone inserted
+GT5U.waila.drone_downlink.noCentreLoaded=No loaded centre in this dimension
+GT5U.waila.drone_downlink.distance=Distance: %s / %s
 GT5U.waila.drone_downlink.connectionCount=Connection Count: %s
 GT5U.waila.drone_downlink.droneLevel=Drone Level: %s
 GT5U.waila.producing=Producing:
@@ -8648,6 +8653,7 @@ GT5U.gui.multimachine.spinmatron.rotational_power=Rotational Power: %s
 GT5U.gui.multimachine.spinmatron.parallels=Parallels: %s
 
 GT5U.infodata.pubp.catalyst_history=Catalyst insertion history for this recipe cycle
+GT5U.infodata.pubp.catalyst_entry=%s: %s
 GT5U.infodata.pubp.quark_combination=Quark Combination correctly identified: %s
 
 GT5U.infodata.purification_unit_base.linked_at=This Purification Unit is linked to the Water Purification Plant at %d, %d, %d.
