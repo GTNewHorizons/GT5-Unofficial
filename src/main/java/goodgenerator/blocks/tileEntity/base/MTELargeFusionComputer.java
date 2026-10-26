@@ -20,6 +20,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -781,6 +782,11 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             .scale(2.54f, 2.65f, 2.54f);
         ringShader.uploadModel(ringMatrix);
         ring.render();
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
+        return AxisAlignedBB.getBoundingBox(x - 32, y - 8, z - 32, x + 32, y + 8, z + 32);
     }
 
     @Override
