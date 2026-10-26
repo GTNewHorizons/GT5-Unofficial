@@ -89,7 +89,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(4, 5, 5, false)
             .addController("Front center, 2nd layer")
-            .addCasing("30-39", "Wash Plant Casing", false)
+            .addCasing("10-39", "Wash Plant Casing", false)
             .addCasing("20", "Watertight Steel Frame Box", false)
             .addCasing("14", "Water", false)
             .addCasing("4", "Chemically Inert Machine Casing", false)
@@ -164,7 +164,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                 'F');
             return;
         }
-        checkCasingMin(errors, casingAmount, 30);
+        checkCasingMin(errors, casingAmount, 10);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
