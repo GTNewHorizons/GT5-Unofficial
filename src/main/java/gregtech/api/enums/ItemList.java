@@ -2086,6 +2086,8 @@ public enum ItemList implements IItemContainer {
     Circuit_OpticalComputer,
     Circuit_OpticalMainframe,
     Optical_Cpu_Containment_Housing,
+    Raw_Dense_Optical_Cpu_Containment_Housing,
+    Superdense_Optical_Cpu_Containment_Housing,
     Optically_Perfected_CPU,
     Optically_Compatible_Memory,
 
