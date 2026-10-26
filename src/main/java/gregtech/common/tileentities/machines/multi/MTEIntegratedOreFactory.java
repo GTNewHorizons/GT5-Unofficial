@@ -35,6 +35,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -44,6 +45,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.drawable.UITexture;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -79,6 +81,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final long RECIPE_EUT = 30;
+    private static final int LUBRICANT_PER_ORE = 2;
+    private static final int WATER_PER_ORE = 200;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int OFFSET_X = 7;
@@ -259,7 +263,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             else if (fluid.equals(Materials.Lubricant.getFluid(1L))) lubricantAmount += fluid.amount;
         }
 
-        final long parallelFromFluids = Math.min(lubricantAmount / 2, waterAmount / 200);
+        final long parallelFromFluids = Math.min(lubricantAmount / LUBRICANT_PER_ORE, waterAmount / WATER_PER_ORE);
         if (parallelFromFluids <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
@@ -282,7 +286,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        long totalWaterToDrain = (long) effectiveParallel * 200L;
+        long totalWaterToDrain = (long) effectiveParallel * WATER_PER_ORE;
         while (totalWaterToDrain > 0) {
             int tryDrain = (int) Math.min(totalWaterToDrain, Integer.MAX_VALUE);
             if (!depleteInput(GTModHandler.getDistilledWater(tryDrain))) {
@@ -299,7 +303,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             totalWaterToDrain -= tryDrain;
         }
 
-        long totalLubricantToDrain = (long) effectiveParallel * 2L;
+        long totalLubricantToDrain = (long) effectiveParallel * LUBRICANT_PER_ORE;
         while (totalLubricantToDrain > 0) {
             int tryDrain = (int) Math.min(totalLubricantToDrain, Integer.MAX_VALUE);
             if (!depleteInput(Materials.Lubricant.getFluid(tryDrain))) {
@@ -645,17 +649,15 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Ore Processor, IOF")
-            .addInfo("Does all ore processing in one step")
-            .addInfo("Parallel count scales with total input power: EU/t / 30")
-            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water")
-            .addInfo("Recipes that need extra input require their extra inputs on top of the normal costs")
-            .addInfo("Processing time is dependent on mode")
-            .addInfo("Use a screwdriver to switch mode")
-            .addInfo("Sneak click with screwdriver to void the stone dust")
+            .addMarkdown(
+                new ResourceLocation("gregtech", "integrated-ore-factory"),
+                ImmutableMap.<String, Object>builder()
+                    .put("eut_per_ore", RECIPE_EUT)
+                    .put("lubricant_per_ore", LUBRICANT_PER_ORE)
+                    .put("water_per_ore", WATER_PER_ORE)
+                    .build())
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
             .beginStructureBlock(15, 9, 13, false)
             .addController("Front center, 3rd layer")
             .addCasing("462", "Advanced Iridium Plated Machine Casing", false)
@@ -675,7 +677,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addOutputBus("1+", "Any stainless steel casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Bavib")
             .toolTipFinisher();
         return tt;
     }
@@ -771,7 +772,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return super.getGui().withMachineModeIcons(MODE_ICONS);
     }
 

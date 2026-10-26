@@ -23,7 +23,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -103,13 +103,10 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Rock Breaker")
             .addBulkMachineInfo(8, 3f, 0.75f)
-            .addInfo("Use Integrated Circuit to determine recipe")
-            .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack, 7 = Endstone")
-            .addInfo("Needs Soul Sand and Blue Ice in input bus for basalt")
-            .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-rock-breaker"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 5, 5, false)
             .addController("Front center, 3rd layer")
@@ -124,7 +121,6 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
             .addStructureInfo("")
             .addStructureFooter("The water and lava is spawned for free once formed")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
     }

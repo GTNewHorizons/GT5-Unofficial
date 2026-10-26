@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -19,9 +18,10 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -47,7 +47,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -65,6 +64,8 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
     private static final int PARALLEL_PER_TIER = 8;
     private static final double SPEED_INCREASE_TIER = 1.0D;
     private static final double SPEED_BASIC = 1.0D;
+    private static final int GLASS_TIER_FOR_MULTI_AMP = VoltageIndex.UIV;
+    private static final int EU_EFFICIENCY = 100;
 
     private int glassTier = -1;
 
@@ -178,17 +179,17 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Mixer, IMM")
-            .addVoltageParallelInfo(8)
-            .addStaticSpeedInfo((float) SPEED_BASIC)
-            .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
-            .addStaticEuEffInfo(1)
-            .addInfo(
-                TIER_COLORS[VoltageIndex.UIV] + "UIV+ "
-                    + EnumChatFormatting.GRAY
-                    + "glass allows for single multi-amp energy hatch")
-            .addSupportMultiAmp()
+            .addVoltageParallelInfo(PARALLEL_PER_TIER)
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-mixer"),
+                ImmutableMap.<String, Object>builder()
+                    .put("speed_increase", SPEED_INCREASE_TIER * 100)
+                    .put("eu_eff", EU_EFFICIENCY)
+                    .put("glass_tier_for_multiamp", GLASS_TIER_FOR_MULTI_AMP)
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 7, 5, false)
             .addController("Front center, 2nd layer")
@@ -205,8 +206,8 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Shiray")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -271,8 +272,8 @@ public class MTEIndustrialMixer extends MTEExtendedPowerMultiBlockBase<MTEIndust
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
-            if (glassTier < VoltageIndex.UIV) {
-                errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UIV));
+            if (glassTier < GLASS_TIER_FOR_MULTI_AMP) {
+                errors.add(StructureErrors.glassTierNotEnough(GLASS_TIER_FOR_MULTI_AMP));
             }
         } else {
             checkHasEnergyHatch(errors);

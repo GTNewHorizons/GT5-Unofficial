@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -14,10 +13,11 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -91,27 +91,20 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
+        String cycleTimeDisplay = GTUtility.formatTime(baseCycleTime);
+
+        // spotless:off
         tt.addMachineType("Pump, FDR")
-            .addInfo(
-                EnumChatFormatting.GOLD + formatNumber(parallels)
-                    + EnumChatFormatting.GRAY
-                    + " Parallels per "
-                    + EnumChatFormatting.WHITE
-                    + "Energy Hatch"
-                    + EnumChatFormatting.GRAY
-                    + " Tier above "
-                    + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-            .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
-            .addInfo("Use a Screwdriver to configure range")
-            .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
-            .addInfo("If total circuit # is greater than output per operation, the machine will halt.")
-            .addInfo("Minimum Energy Hatch Tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
-            .addInfo(
-                "Base cycle time: "
-                    + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + (baseCycleTime == 1 ? " tick" : " ticks")
-                        : formatNumber(baseCycleTime / 20.0) + " seconds"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "infinite-oil-drill"),
+                ImmutableMap.<String, Object>builder()
+                    .put("range", getRangeInChunks())
+                    .put("cycle_time", cycleTimeDisplay)
+                    .put("parallels", parallels)
+                    .put("min_tier", getMinTier())
+                    .build())
             .beginStructureBlock(9, 14, 9, false)
             .addController("Front bottom center")
             .addCasing("90-103", "Mining Neutronium Casing", false)
@@ -128,8 +121,8 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

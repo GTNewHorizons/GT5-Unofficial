@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,6 +40,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -50,6 +52,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -76,6 +79,28 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTELargeNeutralizationEngine>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final int TOOLTIP_RATE_DIVIDER = 1200;
+    private static final float SODIUM_HYDROXIDE_EFF = 1.5F;
+    private static final int SODIUM_HYDROXIDE_TICKS = 20;
+    private static final float POTASSIUM_HYDROXIDE_EFF = 1.9F;
+    private static final int POTASSIUM_HYDROXIDE_TICKS = 50;
+    private static final float CAESIUM_HYDROXIDE_EFF = 2.5F;
+    private static final int CAESIUM_HYDROXIDE_TICKS = 200;
+    private static final float FRANCIUM_HYDROXIDE_EFF = 5.0F;
+    private static final int FRANCIUM_HYDROXIDE_TICKS = 240;
+    private static final int TIER1_DECAY = 200;
+    private static final int TIER1_CAPACITY = 375000;
+    private static final int TIER2_DECAY = 400;
+    private static final int TIER2_CAPACITY = 1000000;
+    private static final int TIER3_DECAY = 700;
+    private static final int TIER3_CAPACITY = 2500000;
+
+    // pre-computed for the actual tier passed to the function
+    private static final int ROBOT_ARM_BONUS_THRESHOLD = VoltageIndex.IV - 1;
+    private static final float ROBOT_ARM_BONUS_LOW = 1.2F;
+    private static final float ROBOT_ARM_BONUS_HIGH = 1.4F;
+    private static final int ROBOT_ARM_AMOUNT_FOR_DECAY_BOOST = 16;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -137,9 +162,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     public void updateResidueCapacity() {
         this.residueCapacity = switch (structureTier) {
-            case 1 -> 375000;
-            case 2 -> 1000000;
-            case 3 -> 2500000;
+            case 1 -> TIER1_CAPACITY;
+            case 2 -> TIER2_CAPACITY;
+            case 3 -> TIER3_CAPACITY;
             default -> -1;
         };
     }
@@ -151,9 +176,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int getBaseResidueDecay() {
         return switch (structureTier) {
-            case 1 -> 200;
-            case 2 -> 400;
-            case 3 -> 700;
+            case 1 -> TIER1_DECAY;
+            case 2 -> TIER2_DECAY;
+            case 3 -> TIER3_DECAY;
             default -> -1;
         };
     }
@@ -189,8 +214,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     private static float getRobotArmDecayBoost(int tier) {
-        if (tier <= 4) return (float) Math.pow(1.2F, tier);
-        return (float) Math.pow(1.4F, tier);
+        if (tier <= ROBOT_ARM_BONUS_THRESHOLD) return (float) Math.pow(ROBOT_ARM_BONUS_LOW, tier);
+        return (float) Math.pow(ROBOT_ARM_BONUS_HIGH, tier);
     }
 
     private float getResidueScaleDecayBoost() {
@@ -294,73 +319,33 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Acid Generator, LNE")
-            .addInfo("(Dis)solves all your problems!")
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.efficiency"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.alkali_text",
-                    "Sodium Hydroxide",
-                    150,
-                    60))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.alkali_text",
-                    "Potassium Hydroxide",
-                    190,
-                    24))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.alkali_text",
-                    "Caesium Hydroxide",
-                    250,
-                    6))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.alkali_text",
-                    "Francium Hydroxide",
-                    500,
-                    5))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.2"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.toxic_residue.3",
-                    (float) RANDOM_MIN / 1000,
-                    (float) RANDOM_MAX / 1000))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.4"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.5"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.6"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.1"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.2"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.3"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.4"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.structure_tiers"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.tier_info",
-                    1,
-                    "Strengthened Inanimate Machine Casing",
-                    200,
-                    formatNumber(375000)))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.tier_info",
-                    2,
-                    "Precise Stationary Machine Casing",
-                    400,
-                    formatNumber(1000000)))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.tier_info",
-                    3,
-                    "Ultimate Static Machine Casing",
-                    700,
-                    formatNumber(2500000)))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "large-neutralization-engine"),
+                ImmutableMap.<String, Object>builder()
+                    .put("sodium_hydroxide_eff", SODIUM_HYDROXIDE_EFF * 100)
+                    .put("sodium_hydroxide_rate", TOOLTIP_RATE_DIVIDER / SODIUM_HYDROXIDE_TICKS)
+                    .put("potassium_hydroxide_eff", POTASSIUM_HYDROXIDE_EFF * 100)
+                    .put("potassium_hydroxide_rate", TOOLTIP_RATE_DIVIDER / POTASSIUM_HYDROXIDE_TICKS)
+                    .put("caesium_hydroxide_eff", CAESIUM_HYDROXIDE_EFF * 100)
+                    .put("caesium_hydroxide_rate", TOOLTIP_RATE_DIVIDER / CAESIUM_HYDROXIDE_TICKS)
+                    .put("francium_hydroxide_eff", FRANCIUM_HYDROXIDE_EFF * 100)
+                    .put("francium_hydroxide_rate", TOOLTIP_RATE_DIVIDER / FRANCIUM_HYDROXIDE_TICKS)
+                    .put("residue_rand_min", RANDOM_MIN / 1000.0)
+                    .put("residue_rand_max", RANDOM_MAX / 1000.0)
+                    .put("tier1_decay", TIER1_DECAY)
+                    .put("tier1_capacity", TIER1_CAPACITY)
+                    .put("tier2_decay", TIER2_DECAY)
+                    .put("tier2_capacity", TIER2_CAPACITY)
+                    .put("tier3_decay", TIER3_DECAY)
+                    .put("tier3_capacity", TIER3_CAPACITY)
+                    .put("arm_tier_low", ROBOT_ARM_BONUS_THRESHOLD + 1)
+                    .put("arm_tier_high", ROBOT_ARM_BONUS_THRESHOLD + 2)
+                    .put("robot_arm_bonus_low", ROBOT_ARM_BONUS_LOW)
+                    .put("robot_arm_bonus_high", ROBOT_ARM_BONUS_HIGH)
+                    .put("robot_arm_amount_for_decay_boost", ROBOT_ARM_AMOUNT_FOR_DECAY_BOOST)
+                    .build())
             .addSupportAny()
             .beginStructureBlock(11, 7, 3, true)
             .addController("Top center, 6th layer")
@@ -375,6 +360,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -468,17 +454,17 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private void useBooster() {
         if (depleteInput(FRANCIUM_HYDROXIDE_DUST)) {
-            this.boosterEUBoost = 5F;
-            this.boosterBoostTicks = 240;
+            this.boosterEUBoost = FRANCIUM_HYDROXIDE_EFF;
+            this.boosterBoostTicks = FRANCIUM_HYDROXIDE_TICKS;
         } else if (depleteInput(CAESIUM_HYDROXIDE_DUST)) {
-            this.boosterEUBoost = 2.5F;
-            this.boosterBoostTicks = 200;
+            this.boosterEUBoost = CAESIUM_HYDROXIDE_EFF;
+            this.boosterBoostTicks = CAESIUM_HYDROXIDE_TICKS;
         } else if (depleteInput(POTASSIUM_HYDROXIDE_DUST)) {
-            this.boosterEUBoost = 1.9F;
-            this.boosterBoostTicks = 50;
+            this.boosterEUBoost = POTASSIUM_HYDROXIDE_EFF;
+            this.boosterBoostTicks = POTASSIUM_HYDROXIDE_TICKS;
         } else if (depleteInput(SODIUM_HYDROXIDE_DUST)) {
-            this.boosterEUBoost = 1.5F;
-            this.boosterBoostTicks = 20;
+            this.boosterEUBoost = SODIUM_HYDROXIDE_EFF;
+            this.boosterBoostTicks = SODIUM_HYDROXIDE_TICKS;
         } else {
             this.boosterEUBoost = 1.0F;
         }
@@ -611,7 +597,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         }
         robotArmTier = getRobotArmTier(); // robotArmTier is 1 less than real robot arm tier
         if (robotArmTier != -1) {
-            int amount = Math.min(robotArmAmount, 16);
+            int amount = Math.min(robotArmAmount, ROBOT_ARM_AMOUNT_FOR_DECAY_BOOST);
             this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
             if (getBaseMetaTileEntity().getWorld()
                 .getTotalWorldTime() % MINUTES == 0) {

@@ -18,7 +18,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -48,7 +48,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
@@ -206,15 +206,12 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Naquadah Fuel Refinery, NFR")
-            .addInfo("Produces naquadah fuels")
-            .addInfo(
-                "Gains " + TooltipHelper.parallelText(
-                    4) + " Parallels per " + EnumChatFormatting.WHITE + "Coil" + EnumChatFormatting.GRAY + " Tier")
-            .addInfo("Needs field restriction coils to control the fatal radiation")
-            .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
-            .addSupportAny()
+            .addDynamicParallelInfo(4, TooltipTier.FIELD_RESTRICTION_COIL)
+            .addMarkdown(new ResourceLocation("gregtech", "naquadah-fuel-refinery"))
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(27, 27, 5, false)
             .addController("Front center, 14th layer")
             .addCasing("470-483", "Naquadah Fuel Refinery Casing", false)
@@ -229,8 +226,8 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.coiltier"))
             .addSubChannel(GTStructureChannels.FIELD_RESTRICTION_COIL)
-            .addStructureAuthors("GregTech Odyssey")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

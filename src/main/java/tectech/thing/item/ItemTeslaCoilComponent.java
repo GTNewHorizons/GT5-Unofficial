@@ -17,7 +17,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import tectech.Reference;
 import tectech.thing.CustomItemList;
-import tectech.util.CommonValues;
 
 public final class ItemTeslaCoilComponent extends Item {
 
@@ -32,7 +31,6 @@ public final class ItemTeslaCoilComponent extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
-        aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.itemTeslaComponent.desc")); // Tesla bois need
                                                                                                   // these!
     }

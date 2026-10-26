@@ -24,7 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -155,11 +155,10 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Packager, Unpackager, AWD")
-            .addInfo("This Multiblock is used for EXTREME packaging requirements")
-            .addInfo("Can be configured to work as an Unpackager in controller")
             .addVoltageParallelInfo(PARALLEL_PER_TIER)
             .addDynamicSpeedBonusInfo((float) SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
             .addStaticEuEffInfo((float) EU_EFFICIENCY)
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-packager"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 3, true)
             .addController("Front right, 2nd layer")
@@ -175,7 +174,6 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Oasis_Cactus")
             .toolTipFinisher();
         return tt;
     }

@@ -24,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -107,9 +108,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Reactor, LCR")
-            .addInfo("Accepts fluids instead of fluid cells")
-            .addInfo("Can perform several direct recipes that skip intermediate compounds")
-            .addPerfectOCInfo()
+            .addMarkdown(new ResourceLocation("gregtech", "large-chemical-reactor"))
             .beginStructureBlock(3, 3, 3, false)
             .addController("Front center, 2nd layer")
             .addCasing("8-22", "Chemically Inert Machine Casing", false)

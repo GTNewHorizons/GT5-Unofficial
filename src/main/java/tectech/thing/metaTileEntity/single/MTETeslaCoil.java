@@ -36,7 +36,6 @@ import tectech.mechanics.spark.RendererMessage;
 import tectech.mechanics.spark.ThaumSpark;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.ITeslaConnectableSimple;
-import tectech.util.CommonValues;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnectable {
@@ -76,8 +75,9 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
     @Override
     public String[] getDescription() {
-        String[] jargon = new String[] { CommonValues.THETA_MOVEMENT,
-            translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"), // Your Tesla I/O machine of choice
+        String[] jargon = new String[] { translateToLocal("gt.blockmachines.machine.tt.tesla.desc.0"), // Your Tesla I/O
+                                                                                                       // machine of
+                                                                                                       // choice
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.machine.tt.tesla.desc.1") // Lightning
                                                                                                    // stoves for the
                                                                                                    // rich
