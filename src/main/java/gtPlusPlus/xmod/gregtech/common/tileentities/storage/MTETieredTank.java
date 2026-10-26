@@ -68,7 +68,10 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
     public String[] getDescription() {
         List<String> description = new ArrayList<>(Arrays.asList(this.mDescriptionArray));
 
-        description.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", GTValues.VN[mTier]));
+        description.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.tooltip.electric.tier.s",
+                GTUtility.getColoredTierNameFromTier(mTier)));
         description.add(StatCollector.translateToLocal("gtpp.tiered_tank.desc.portable"));
 
         if (this.mFluid != null) {
