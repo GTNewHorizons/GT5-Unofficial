@@ -21,6 +21,7 @@ import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
+import java.awt.Color;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -784,7 +785,13 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     }
 
     private void renderRing(boolean bloom) {
-        renderStandardRing(bloom ? 0.62f : 0, bloom ? 0.96f : 0, bloom ? 1.0f : 0);
+        Color c = new Color(132, 255, 255);
+        float HDR_Multiplier = 0.1f;
+        if(bloom) {
+            renderStandardRing(c.getRed() * HDR_Multiplier, c.getGreen() * HDR_Multiplier, c.getBlue() * HDR_Multiplier);
+        } else {
+            renderStandardRing(0, 0, 0);
+        }
     }
 
     private void renderStandardRing(float red, float green, float blue) {
@@ -793,7 +800,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         ringShader.use();
         GL20.glUniform3f(ringShader.loc(RING_COLOR), red, green, blue);
         ringMatrix.identity();
-        ringMatrix.translation(dir.offsetX * 24, dir.offsetY * 16, dir.offsetZ * 24);
+        ringMatrix.translation(dir.offsetX * 24, dir.offsetY * 17, dir.offsetZ * 24);
         ringMatrix.scale(1.0f, 1.0f, 1.0f);
         if ((dir == UP && (rot == NORMAL || rot == UPSIDE_DOWN))
             || (dir == DOWN && (rot == NORMAL || rot == UPSIDE_DOWN))
