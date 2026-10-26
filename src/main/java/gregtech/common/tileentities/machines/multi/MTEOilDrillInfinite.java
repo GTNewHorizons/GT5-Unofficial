@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -14,7 +13,6 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,7 +33,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEOilDrillInfinite extends MTEOilDrillBase {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -100,20 +97,13 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
 
         // spotless:off
         tt.addMachineType("Pump, FDR")
-            .addInfo(
-                EnumChatFormatting.GOLD + formatNumber(parallels)
-                    + EnumChatFormatting.GRAY
-                    + " Parallels per "
-                    + EnumChatFormatting.WHITE
-                    + "Energy Hatch"
-                    + EnumChatFormatting.GRAY
-                    + " Tier above "
-                    + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addMarkdown(
-                new ResourceLocation("gregtech", "fluid-drilling-rig"),
+                new ResourceLocation("gregtech", "infinite-oil-drill"),
                 ImmutableMap.<String, Object>builder()
                     .put("range", getRangeInChunks())
                     .put("cycle_time", cycleTimeDisplay)
+                    .put("parallels", parallels)
+                    .put("min_tier", getMinTier())
                     .build())
             .beginStructureBlock(9, 14, 9, false)
             .addController("Front bottom center")
