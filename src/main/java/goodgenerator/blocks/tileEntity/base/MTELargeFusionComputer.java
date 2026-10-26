@@ -724,7 +724,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         // spotless:off
         ringShader = FUSION.bake();
         if (!ringShader.isValid()) {
-            GTLoggers.GT_FML_LOGGER.error("Failed to initialize fusion shader");
+            GTLoggers.GT_FML_LOGGER.error("Failed to initialize compact fusion shader");
             releaseRender();
             return;
         }
@@ -732,11 +732,11 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         try {
             final ResourceLocation model = new ResourceLocation(
                 GregTech.resourceDomain,
-                "textures/model/fusion_ring.obj"
+                "textures/model/compact_fusion_ring.obj"
             );
             ring = WavefrontVBOBuilder.compileToVBO(model, ringShader.vertexFormat());
         } catch (RuntimeException e) {
-            GTLoggers.GT_FML_LOGGER.error("Failed to load fusion ring model", e);
+            GTLoggers.GT_FML_LOGGER.error("Failed to load compact fusion ring model", e);
             releaseRender();
             return;
         }
@@ -794,7 +794,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         GL20.glUniform3f(ringShader.loc(RING_COLOR), red, green, blue);
         ringMatrix.identity();
         ringMatrix.translation(dir.offsetX * 24, dir.offsetY * 16, dir.offsetZ * 24);
-        ringMatrix.scale(2.55f, 2.55f, 2.55f);
+        ringMatrix.scale(1.0f, 1.0f, 1.0f);
         if ((dir == UP && (rot == NORMAL || rot == UPSIDE_DOWN))
             || (dir == DOWN && (rot == NORMAL || rot == UPSIDE_DOWN))
             || (dir == WEST && (rot == COUNTER_CLOCKWISE || rot == CLOCKWISE))
