@@ -2837,6 +2837,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2850,6 +2851,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2863,6 +2865,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2876,6 +2879,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2889,6 +2893,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2902,6 +2907,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2915,6 +2921,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2928,6 +2935,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2941,6 +2949,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2954,6 +2963,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2967,6 +2977,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -2980,6 +2991,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
                 .setOverlays("FLUID_CANNER")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
     }
@@ -7580,6 +7592,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7593,6 +7606,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7606,6 +7620,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7619,6 +7634,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7632,6 +7648,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7645,6 +7662,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7658,6 +7676,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7671,6 +7690,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7684,6 +7704,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7697,6 +7718,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7710,6 +7732,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
 
@@ -7723,6 +7746,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setDeprecated()
                 .build()
                 .getStackForm(1L));
     }
