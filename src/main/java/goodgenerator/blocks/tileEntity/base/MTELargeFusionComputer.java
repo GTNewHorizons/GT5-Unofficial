@@ -771,7 +771,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     }
 
     private void renderRing(boolean bloom) {
-        renderStandardRing(bloom ? 1.0f : 0, bloom ? 1.0f : 0, bloom ? 1.0f : 0);
+        renderStandardRing(bloom ? 0.62f : 0, bloom ? 0.96f : 0, bloom ? 1.0f : 0);
     }
 
     private static void renderStandardRing(float red, float green, float blue) {
