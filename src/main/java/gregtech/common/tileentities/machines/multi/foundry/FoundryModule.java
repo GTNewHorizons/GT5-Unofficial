@@ -42,7 +42,7 @@ public enum FoundryModule {
         13, foundryData -> {
             if(foundryData.universalCollapserPresent) return;
             foundryData.universalCollapserPresent = true;
-            foundryData.UIVRecipesEnabled = true;
+            foundryData.moduleOnlyRecipesEnabled = true;
             foundryData.euEffMultiplier *= 4;
             foundryData.speedMultiplier *= 4;
         }
@@ -86,7 +86,7 @@ public enum FoundryModule {
         new Color(225, 45, 225),
         EnumChatFormatting.LIGHT_PURPLE,
         11, foundryData -> {
-            foundryData.UIVRecipesEnabled=true;
+            foundryData.moduleOnlyRecipesEnabled =true;
         }
     ),
     HYPERCOOLER(

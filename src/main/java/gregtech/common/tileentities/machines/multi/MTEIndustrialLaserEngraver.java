@@ -66,11 +66,12 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<MTEIndustrialLaserEngraver>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
-    private static final int GLASS_TIER_FOR_LAZER = VoltageIndex.UEV;
+    private static final int GLASS_TIER_FOR_LASER = VoltageIndex.UEV;
+    private static final double SPEED_BONUS = 3.5D;
+    private static final double EU_MODIFIER = 0.8D;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialLaserEngraver> STRUCTURE_DEFINITION = StructureDefinition
@@ -230,9 +231,9 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-laser-engraver"),
                 ImmutableMap.<String, Object>builder()
-                    .put("speed", 350)
-                    .put("eu_eff", 80)
-                    .put("tier", GTUtility.getColoredTierNameForTooltip(GLASS_TIER_FOR_LAZER))
+                    .put("speed", SPEED_BONUS * 100)
+                    .put("eu_eff", EU_MODIFIER * 100)
+                    .put("glass_tier_for_laser", GLASS_TIER_FOR_LASER)
                     .build())
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front bottom center")
@@ -291,7 +292,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
         checkCasingMin(errors, mCasingAmount, 35);
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (laserSource.mTier < GLASS_TIER_FOR_LAZER) {
+            if (laserSource.mTier < GLASS_TIER_FOR_LASER) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.laser_need_uev"));
             } else {
                 int count = mEnergyHatches.size() + mExoticEnergyHatches.size();
@@ -362,8 +363,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 if (renderer != null) renderer.setShouldRender(false);
                 return super.clear();
             }
-        }.setSpeedBonus(1.0D / 3.5D)
-            .setEuModifier(0.8D)
+        }.setSpeedBonus(1.0D / SPEED_BONUS)
+            .setEuModifier(EU_MODIFIER)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 

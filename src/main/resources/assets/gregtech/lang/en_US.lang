@@ -279,6 +279,9 @@ gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.batterybuffer.name=%1$s Battery Buffer
+gt.blockmachines.batterybuffer.small.name=Small %1$s Battery Buffer
+gt.blockmachines.batterybuffer.large.name=Large %1$s Battery Buffer
+gt.blockmachines.batterybuffer.huge.name=Huge %1$s Battery Buffer
 gt.blockmachines.hatch.energy.name=%s Energy Hatch
 gt.blockmachines.hatch.energy.debug.name=Debug Energy Hatch
 gt.blockmachines.hatch.dynamo.name=%s Dynamo Hatch
@@ -1797,7 +1800,7 @@ GTPP.algae.yellow-green_algae.name=Yellow-Green Algae
 GT5U.power_goggles.open_config_gui=Open Power Goggles Config
 GT5U.power_goggles.toggle_power_chart=Toggle Power Goggles Chart
 GT5U.power_goggles.toggle_measurements_section=Toggle Power Goggles measurements section
-GT5U.power_goggles.link_lsc=Goggles linked to LSC at %d,%d,%d.
+GT5U.power_goggles.link_lsc.s=Goggles linked to LSC at %s, %s, %s.
 GT5U.power_goggles.link_fail=That's not an LSC...
 GT5U.power_goggles.unlink=Goggles Unlinked.
 GT5U.power_goggles.link_tooltip=Linked to LSC at %d,%d,%d: %s
@@ -1881,6 +1884,9 @@ GT5U.MBTT.PowerUsage=Power Usage
 GT5U.MBTT.BaseAmperage=Base Amperage
 GT5U.MBTT.StaticParallels=Processes up to %s recipes at once
 GT5U.MBTT.Dimensions=Dimensions
+GT5U.MBTT.Dimensions.Length=L
+GT5U.MBTT.Dimensions.Width=W
+GT5U.MBTT.Dimensions.Height=H
 GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure
 GT5U.MBTT.Controller=Controller
@@ -2024,6 +2030,12 @@ GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData S
 
 gt.mbtt.structure.back_center=Back center
 gt.mbtt.structure.front_bottom_center=Front bottom center
+gt.mbtt.structure.middle_of_structure_6th_layer=Middle of structure, 6th layer
+gt.mbtt.structure.any_electric_compressor_casing=Any electric compressor casing
+gt.mbtt.structure.any_side_pipe_casing=Any side pipe casing
+gt.mbtt.structure.any_neutronium_casing=Any neutronium casing
+gt.mbtt.structure.any_absorbent_casing=Any absorbent casing
+gt.mbtt.structure.any_absorbent_casing_or_behind_laser=Any absorbent casing (inputs), the casing behind each laser (spacetime)
 gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
 gt.mbtt.structure.front_center_4th_layer=Front center, 4th layer
@@ -2168,6 +2180,28 @@ gt.mbtt.structure.containment_block=Containment Block
 gt.mbtt.structure.heat_resistant_proof_coke_oven_casing=Heat Resistant/Proof Coke Oven Casing
 gt.mbtt.structure.input_or_solidifier_hatch=Input/Solidifier Hatch
 gt.mbtt.structure.input_or_chisel_bus=Input/Chisel Bus
+gt.mbtt.structure.above_controller=Above controller
+gt.mbtt.structure.opposite_controller=Opposite controller
+gt.mbtt.structure.center_of_both_ends=Center of both ends of the structure
+gt.mbtt.structure.any_accelerator_casing=Any accelerator casing
+gt.mbtt.structure.lhc_controller=Front center of accelerator ring, 12th layer
+gt.mbtt.structure.lhc_ring_entrance=Entrance to accelerator ring
+gt.mbtt.structure.lhc_module_inner_side=Inner side of module
+gt.mbtt.structure.lhc_module=§b%s Module §9(%s)
+gt.mbtt.structure.beam_mirror_bend=§9%s Degree Bend §b(T%s)
+gt.mbtt.structure.middle_3rd_layer=Middle of the structure, 3rd layer
+gt.mbtt.structure.any_injection_casing=Any injection casing
+gt.mbtt.structure.any_high_power_casing=Any high power casing
+gt.mbtt.structure.any_primary_casing=Any primary casing
+gt.mbtt.structure.magnetic_chassis=Magnetic Chassis
+gt.mbtt.structure.exo_foundry_module_costs=Check NEI for module costs
+gt.mbtt.structure.any_machine_or_firebox_casing=Any machine or firebox casing
+gt.mbtt.structure.large_boiler_fuel=Use solid fuel, liquid fuel, or both
+gt.mbtt.structure.large_boiler_water=Use regular or distilled water
+gt.mbtt.structure.any_middle_casing=Any middle casing
+gt.mbtt.structure.any_side_casing=Any side casing
+gt.mbtt.structure.heat_exchanger_input_hatch=Bottom center casing (hot fluid), any casing (distilled water)
+gt.mbtt.structure.heat_exchanger_output_hatch=Top center casing (cooled fluid), any casing (steam)
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -2192,6 +2226,10 @@ gt.mbtt.machine_type.arc_furnace_iaf=Arc Furnace, IAF
 gt.mbtt.machine_type.solar_tower=Solar Tower
 gt.mbtt.machine_type.macerator_ims=Macerator, IMS
 gt.mbtt.machine_type.compressor=Compressor
+gt.mbtt.machine_type.electric_compressor=Compressor, LEC
+gt.mbtt.machine_type.isostatic_press_compressor=Compressor, HIP
+gt.mbtt.machine_type.neutronium_compressor=Neutronium Compressor
+gt.mbtt.machine_type.black_hole_compressor=Compressor, Advanced Neutronium Compressor, BHC
 gt.mbtt.machine_type.forge_hammer=Forge Hammer
 gt.mbtt.machine_type.furnace=Furnace
 gt.mbtt.machine_type.furnace_blaster_smoker=Furnace, Blaster, Smoker
@@ -2243,6 +2281,18 @@ gt.mbtt.machine_type.industrial_coke_oven=Coke Oven, ICO
 gt.mbtt.machine_type.cutting_machine=Cutting Machine, ICF
 gt.mbtt.machine_type.electromagnetic_separator=Electromagnetic Separator/Polarizer, MFE
 gt.mbtt.machine_type.fish_trap=Fish Trap, ZFP
+gt.mbtt.machine_type.particle_collider=Particle Accelerator, Particle Collider, LHC
+gt.mbtt.machine_type.beam_crafter=Beam Crafter, Beam Assembler
+gt.mbtt.machine_type.beam_mirror=Beam Mirror
+gt.mbtt.machine_type.beam_splitter=Beam Splitter
+gt.mbtt.machine_type.beam_stabilizer=Beam Stabilizer
+gt.mbtt.machine_type.plasma_forge=Plasma Forge, DTPF
+gt.mbtt.machine_type.transcendent_mixer=Transcendent Mixer, TPM
+gt.mbtt.machine_type.wormhole_generator=Wormhole Generator, MWG
+gt.mbtt.machine_type.entropic_processor=Entropic Processor
+gt.mbtt.machine_type.boiler=Boiler
+gt.mbtt.machine_type.heat_exchanger=Heat Exchanger
+gt.mbtt.machine_type.large_heat_exchanger=Heat Exchanger, LHE
 
 # BartWorks multiblock structure text
 GT5U.tooltip.manual_trafo.winding_layers=1 Layer for each tier transformed
@@ -2255,9 +2305,9 @@ GT5U.tooltip.windmill.any_type=%s (any)
 GT5U.tooltip.windmill.any_block=Any %s
 
 # Tooltip flavor text
-gt.mbtt.flavor.exothermic_hearth=Never one...
 gt.mbtt.flavor.spinmatron=Maahes guides the way...
-gt.mbtt.flavor.endothermic_fridge=... without the other!
+gt.mbtt.flavor.latex=AKA Laminate Application and Thermal Enclosure eXocoater
+gt.mbtt.flavor.exo_foundry=Glorious Evolution!
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
@@ -2331,17 +2381,6 @@ gt.multiblock.ThermalBoiler.desc1=Uses the heat from §chot fluids§7 to evapora
 gt.multiblock.ThermalBoiler.desc2=Filters raw materials from §clava§7 and §cpahoehoe lava
 gt.multiblock.ThermalBoiler.desc3=Requires a Lava Filter in the controller slot for byproducts
 gt.multiblock.ThermalBoiler.desc4=Explodes after 10s if it runs out of water
-
-gt.multiblock.HeatExchanger.desc1=Inputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt
-gt.multiblock.HeatExchanger.desc2=Outputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt
-gt.multiblock.HeatExchanger.desc3=Converts distilled water into §rSteam§7 or §rSH Steam§7 in the process
-gt.multiblock.HeatExchanger.desc4=Outputs §rSH Steam§7 if the input rate of hot fluid is above a certain §dthreshold
-gt.multiblock.HeatExchanger.desc5=Explodes after 100s if it runs out of distilled water
-gt.multiblock.HeatExchanger.lava=§cLava§7 | SH Threshold §d1,000 %s/s§7 | Max Input §c2,000 %s/s§7 | Max Output §r8,000 %s/t SH Steam
-gt.multiblock.HeatExchanger.hotcoolant=§cHot Coolant§7 | SH Threshold §d800 %s/s§7 | Max Input §c1,600 %s/s§7 | Max Output §r16,000 %s/t SH Steam
-gt.multiblock.HeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SH Threshold §d160 %s/s§7 | Max Input §c320 %s/s§7 | Max Output §r16,000 %s/t SH Steam
-gt.multiblock.HeatExchanger.throttle1=A circuit in the controller lowers the SH threshold at the cost of steam
-gt.multiblock.HeatExchanger.throttle2=§d-3.75%§7 SH Threshold and §r-1.5%§7 steam output per circuit over 1
 
 gt.multiblock.AdvHeatExchanger.desc1=Equivalent to 32 Large Heat Exchangers
 gt.multiblock.AdvHeatExchanger.desc2=Inputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt
@@ -4109,6 +4148,8 @@ GT5U.gui.circuit.timer.description=Pulses Redstone
 GT5U.gui.circuit.timer.data_description.pulses=Pulses
 GT5U.gui.circuit.timer.data_description.time=Time
 
+GT5U.gui.text.tick=%s tick
+GT5U.gui.text.tick.plural=%s ticks
 GT5U.gui.text.second=%s second
 GT5U.gui.text.second.plural=%s seconds
 GT5U.gui.text.minute=%s minute
@@ -4171,87 +4212,14 @@ GT5U.gui.text.LHC.boostmode.restart=Restart machine to apply
 GT5U.gui.text.beamcrafter.guiheadercrafting=Current Particles Required
 GT5U.gui.text.beamcrafter.guiheaderbuffer=Current Particle Buffer
 
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype=Beam Crafter, Beam Assembler
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1=Collides two beams of particles into target materials to modify
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip2=their subatomic structure
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3=Input Beams can be supplied to either Beam Input Hatch
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4=Inputs are consumed immediately and will wait for particles
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5=Up to §b%s§7 particles of each type can be buffered
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6=Recipe progress is determined purely by particles consumed
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7=from the buffer
-gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8=Has §6%s§7 parallels
 gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer=Click to dump
-
-gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype=Beam Mirror
-gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1=Takes in particle beams and sends them back out
-gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2=§6That's literally it.
-
-gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype=Beam Splitter
 gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake=Beam Splitter, Bean Splitter
-gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip1=Select which particles to blacklist in the output hatches
-gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2=Input particles will be split evenly among all valid output hatches
 
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype=Beam Stabilizer
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip1=Accepts and stores up to 100000 §aParticles§7 from
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip2=potentially intermittent high §cRate§7 particle beam packets
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip3=and re-releases those particles as a stable beam at a
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip4=§cRate§7 of your choosing
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip5=If a particle beam with a different §aParticle§7, §6Energy§7 or
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip6=§bFocus§7 is sent to the machine during operation, it is
-gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7=ignored UNLESS there are no currently stored §aParticles
-
-gt.blockmachines.multimachine.beamcrafting.LHC.machinetype=Particle Accelerator, Particle Collider, LHC
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip1=Accelerates particles to high energies and then collides them to generate new particles
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip2=Electrically neutral particles are unaffected
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3=Set the §9Target Beam Energy§7 (up to 1TeV) and the §dmaximum number of cycles§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip4=Cycles every second
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5=§f§nAccelerator mode§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in the smaller LHC ring
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §9Beam Energy§7 by §3EU Consumed in cycle§7 * §f0.1eV§7 / §6Beam Rate§7,
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=until the §9Target Beam Energy§7 is reached, or the §dmaximum number of cycles§7 is reached
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §9Target Beam Energy§7 is reached, add §f0.3§7 * §6Beam Rate§7 to the current §6Beam Rate§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f15000§7, add (§f0.3§7 * §6Beam Rate§7)^§40.5§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=to the current §6Beam Rate§7 instead
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§3Power§7 cost starts at §f1A§7 of §fUV§7 per §6Beam Rate§7 and increases quadratically
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=with the §dnumber of completed cycles§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14=§3P§7 = (§f1A UV§7) * §6R§7 * (§dN§7+1)^2
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15=Automatically switches to Collider mode when the §dmaximum number of cycles§7 is reached
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16=§f§nCollider mode§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip17=Splits the beam into §ftwo§7 beams that go in opposite directions in the larger LHC ring, which
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18=then collide to generate new particles
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19=The §bCollision Energy§7 is two times the §9Beam Energy§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20=If the §bCollision Energy§7 exceeds the rest mass of a particle, that particle will start
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21=appearing in the outputs
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22=§fFiltered Beam Output Hatches§7 and the Probability Table will allow you to see the list of 
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23=possible outputs, and filter them
-
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24=§c§nBooster Fluids§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25=§fBooster Fluids§7 can be supplied to enhance the LHC §4scaling exponent§7 for 
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26=§6Beam Rates§7 above §f15000§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27=§fNo fluid§7 - §40.5§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=§fDegenerate Quark-Gluon Plasma§7 - §40.7§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§fMolten Magmatter§7 - §40.9§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30=The §9Beam Energy§7 is immediately set to §f1TeV§7, and §6Beam Rate§7 L of fluid is consumed every cycle 
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip31=If the §fBooster Fluid§7 supplied is changed, the beam must be re-accelerated from scratch
-
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip32=There are four LHC modules, marked by the letter on top of the module:
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip33=§bE - Electromagnetism§7 - Charged Matter Sensor (§bCMS§7)
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip34=§2W - Weak Interaction§7 - Advanced Total Lepton Assimilation Snare (§2ATLAS§7)
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip35=§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip36=§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)
-
-gt.blockmachines.multimachine.beamcrafting.ttcontroller=Front center
-gt.blockmachines.multimachine.beamcrafting.ttehatch=Energy Hatch
 gt.blockmachines.multimachine.beamcrafting.ttcasing=Collider Casing
 gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing=Shielded Accelerator Casing
 gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass=Shielded Accelerator Glass
-gt.blockmachines.multimachine.beamcrafting.ttanyglass=Any Tiered Glass
-gt.blockmachines.multimachine.beamcrafting.ttanycasing=Any Collider Casing
 gt.blockmachines.multimachine.beamcrafting.ttgratecasing=Grate Machine Casing
 gt.blockmachines.multimachine.beamcrafting.ttanyneonite=Neonite (any color)
-gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch=Beam Input Hatch
-gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch=Beam Output Hatch
-gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered=Filtered Beam Output Hatch
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description1=Allows blacklisting of specific particle types in the Large Hadron Collider (LHC)
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2=Right click to open the GUI and change selections
 gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate=Target Beam Rate:
@@ -4371,6 +4339,7 @@ GT5U.chat.rendering.off=Rendering off
 GT5U.chat.rendering.on=Rendering on
 GT5U.chat.auto_place.done=§aAuto placing done!
 GT5U.chat.auto_place.done.water=§aAuto placing done! Now go place the water yourself!
+GT5U.chat.auto_place.done.flowers=§aAuto placing done! Now go place the flowers yourself!
 
 GT5U.chat.cover.decorative.redstone=Redstone
 GT5U.chat.cover.decorative.energy=Energy
@@ -4774,7 +4743,7 @@ GT5U.nei.purified_water.grade_4.1=%s pH/1000L
 GT5U.nei.cauldron.consumed=Consumed per operation
 GT5U.nei.cauldron.anystack=Works with any stack size
 GT5U.nei.foundry_module.chassis_tier=Chassis must match Foundry Tier!
-
+GT5U.nei.hover_to_see=Hover to see stack trace
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation
@@ -5749,6 +5718,8 @@ gt.item.electromagnet.tengam.name=§aTengam Electromagnet
 ## Black Hole items
 gt.item.black_hole.seed.name=Black Hole Seed
 gt.item.black_hole.seed.tooltip=Opens a pseudostable black hole
+gt.item.black_hole.supermassive_seed.name=Supermassive Black Hole Seed
+gt.item.black_hole.supermassive_seed.tooltip=Opens a more powerful pseudostable black hole\nMachine gains 4x parallels\nDecay halt cost starts at 64 L/s instead of 1 
 gt.item.black_hole.collapser.name=Black Hole Collapser
 gt.item.black_hole.collapser.tooltip=Safely closes a pseudostable black hole
 gt.item.black_hole.stabilizer.name=Superstable Black Hole Seed
@@ -6411,7 +6382,7 @@ gt.item.circuit.wafer.ypic.name=YPIC Wafer
 gt.item.circuit.wafer.plpic.name=PlPIC Wafer
 
 ## Chips
-gt.item.circuit.chip.ilc.name=Integrated Logic Circuit
+gt.item.circuit.chip.ilc.name=Logic IC
 gt.item.circuit.chip.ilc.tooltip=Integrated Circuit
 gt.item.circuit.chip.ram.name=Random Access Memory Chip
 gt.item.circuit.chip.ram.tooltip=Integrated Circuit
@@ -6567,8 +6538,8 @@ gt.item.circuit_board.multifiberglass_elite.name=Elite Circuit Board
 gt.item.circuit_board.multifiberglass_elite.tooltip=An elite Circuit Board
 gt.item.circuit_board.wetware_extreme.name=Extreme Wetware Lifesupport Circuit Board
 gt.item.circuit_board.wetware_extreme.tooltip=The Board that keeps life
-gt.item.circuit_board.plastic_advanced.name=Plastic Circuit Board
-gt.item.circuit_board.plastic_advanced.tooltip=A good Board
+gt.item.circuit_board.plastic_advanced.name=Better Circuit Board
+gt.item.circuit_board.plastic_advanced.tooltip=A better Circuit Board
 gt.item.circuit_board.bio_ultra.name=Ultra Bio Mutated Circuit Board
 gt.item.circuit_board.bio_ultra.tooltip=Bio genetic mutated Board
 gt.item.circuit_board.optical.name=Optical Circuit Board
@@ -6896,6 +6867,10 @@ GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
 GT5U.waila.stocking_hatch.min_amount=Minimum Amount: %s
 GT5U.waila.drone_downlink.noConnection=Not connected
 GT5U.waila.drone_downlink.connection=Connected to centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.nearestCentre=Nearest centre: x:%s y:%s z:%s
+GT5U.waila.drone_downlink.nearestCentreNoDrone=Nearest centre has no drone inserted
+GT5U.waila.drone_downlink.noCentreLoaded=No loaded centre in this dimension
+GT5U.waila.drone_downlink.distance=Distance: %s / %s
 GT5U.waila.drone_downlink.connectionCount=Connection Count: %s
 GT5U.waila.drone_downlink.droneLevel=Drone Level: %s
 GT5U.waila.producing=Producing:
@@ -8678,6 +8653,7 @@ GT5U.gui.multimachine.spinmatron.rotational_power=Rotational Power: %s
 GT5U.gui.multimachine.spinmatron.parallels=Parallels: %s
 
 GT5U.infodata.pubp.catalyst_history=Catalyst insertion history for this recipe cycle
+GT5U.infodata.pubp.catalyst_entry=%s: %s
 GT5U.infodata.pubp.quark_combination=Quark Combination correctly identified: %s
 
 GT5U.infodata.purification_unit_base.linked_at=This Purification Unit is linked to the Water Purification Plant at %d, %d, %d.
