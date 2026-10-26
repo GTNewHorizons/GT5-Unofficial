@@ -772,7 +772,6 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     @Override
     public void render(Object none) {
-
         renderRing(false);
 
         BloomShader.getInstance()
