@@ -40,6 +40,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -64,6 +66,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MTEIndustrialChemicalBath>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -102,7 +105,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Bath, ICB")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_bath"))
             .addBulkMachineInfo(4, 5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(
@@ -112,19 +115,31 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                     + TooltipHelper.HATCH_COLOR
                     + "Multi-Amp Energy Hatch")
             .beginStructureBlock(4, 5, 5, false)
-            .addController("Front center, 2nd layer")
-            .addCasing("30-39", "Wash Plant Casing", false)
-            .addCasing("20", "Watertight Steel Frame Box", false)
-            .addCasing("14", "Water", false)
-            .addCasing("4", "Chemically Inert Machine Casing", false)
-            .addCasing("2", "Block of Zinc or Octiron", false)
-            .addCasing("2", "Block of Copper or Six-Phased Copper", false)
-            .addEnergyHatch("1+", "Any wash plant casing", 1)
-            .addMaintenanceHatch("1", "Any wash plant casing", 1)
-            .addMufflerHatch("1", "Any wash plant casing", 1)
-            .addInputBus("0+", "Any wash plant casing", 1)
-            .addInputHatch("1+", "Any wash plant casing", 1)
-            .addOutputAny("1+", "Any wash plant casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("30-39", Casings.WashPlantCasing.getLocalizedName(), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.AQUATIC_STEEL), false)
+            .addCasing("14", StatCollector.translateToLocal("tile.water.name"), false)
+            .addCasing("4", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing(
+                "2",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.either_block",
+                    OrePrefixes.block.getLocalizedNameForItem(Materials.Zinc),
+                    OrePrefixes.block.getLocalizedNameForItem(MaterialsAlloy.OCTIRON)),
+                false)
+            .addCasing(
+                "2",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.either_block",
+                    OrePrefixes.block.getLocalizedNameForItem(Materials.Copper),
+                    OrePrefixes.block.getLocalizedNameForItem(Materials.SixPhasedCopper)),
+                false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterCost"))
             .toolTipFinisher();
