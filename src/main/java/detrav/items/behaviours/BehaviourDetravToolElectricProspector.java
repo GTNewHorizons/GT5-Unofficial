@@ -17,12 +17,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.MapMaker;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
 import detrav.items.DetravMetaGeneratedTool01;
@@ -45,6 +46,11 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
 
     public BehaviourDetravToolElectricProspector(int aCosts) {
         super(aCosts);
+    }
+
+    /** Returns the scan radius in chunks around the player's chunk for the given scanner. */
+    public static int getScanRadius(MetaBaseItem aItem, ItemStack aStack) {
+        return aItem.getHarvestLevel(aStack, "");
     }
 
     /** Returns the side length in chunks of the square area scanned with the given radius. */
@@ -82,14 +88,11 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             final List<Chunk> chunks = new ArrayList<>();
             aPlayer.addChatMessage(new ChatComponentTranslation("detrav.scanner.chat.scanning"));
 
-            final int radius = aItem.getHarvestLevel(aStack, "");
+            final int radius = getScanRadius(aItem, aStack);
 
-            int scanRadius = radius + 1;
-            for (int i = -scanRadius; i <= scanRadius; i++) {
-                for (int j = -scanRadius; j <= scanRadius; j++) {
-                    if (i != -scanRadius && i != scanRadius && j != -scanRadius && j != scanRadius) {
-                        chunks.add(aWorld.getChunkFromChunkCoords(cX + i, cZ + j));
-                    }
+            for (int i = -radius; i <= radius; i++) {
+                for (int j = -radius; j <= radius; j++) {
+                    chunks.add(aWorld.getChunkFromChunkCoords(cX + i, cZ + j));
                 }
             }
 
@@ -183,16 +186,21 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
     }
 
     @Override
-    void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
-        if (value < 0) {
-            aPlayer.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name)));
-        } else if (value < 1) {
-            aPlayer.addChatMessage(
-                new ChatComponentText(StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", "")));
-        } else aPlayer.addChatMessage(
-            new ChatComponentText(
-                StatCollector.translateToLocalFormatted("detrav.scanner.found.texts.6", name) + " " + value));
+    void addChatMassageByValue(EntityPlayer aPlayer, int value, IChatComponent name) {
+        aPlayer.addChatMessage(amountMessage(value, name));
+    }
+
+    /** Builds the "Found <name> <amount>" chat line. */
+    private static IChatComponent amountMessage(int value, IChatComponent name) {
+        if (value < 0) return new ChatComponentTranslation("detrav.scanner.found.texts.6", name);
+        if (value < 1) return new ChatComponentTranslation("detrav.scanner.found.texts.6", "");
+        return new ChatComponentTranslation("detrav.scanner.found.texts.6", name).appendText(" " + value);
+    }
+
+    /** Returns the fluid name in brackets, localized on the client like ChatComponentItemName. */
+    private static IChatComponent fluidName(FluidStack fluid) {
+        return new ChatComponentText("[").appendSibling(new ChatComponentFluidName(fluid))
+            .appendText("]");
     }
 
     @Override
@@ -203,7 +211,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             if (aWorld.getBlock(aX, aY, aZ) == Blocks.bedrock) {
                 if (!aWorld.isRemote) {
                     FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
-                    addChatMassageByValue(aPlayer, fStack.amount, fStack.getLocalizedName());
+                    addChatMassageByValue(aPlayer, fStack.amount, fluidName(fStack));
                     if (!aPlayer.capabilities.isCreativeMode)
                         ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
                 }
@@ -216,12 +224,15 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
         }
         if (data < 3) if (!aWorld.isRemote) {
             FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
-            addChatMassageByValue(aPlayer, fStack.amount, fStack.getLocalizedName());
+            addChatMassageByValue(aPlayer, fStack.amount, fluidName(fStack));
             if (!aPlayer.capabilities.isCreativeMode) ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
             return true;
         }
         if (!aWorld.isRemote) {
-            addChatMassageByValue(aPlayer, getPollution(aWorld, aX, aZ), "Pollution");
+            addChatMassageByValue(
+                aPlayer,
+                getPollution(aWorld, aX, aZ),
+                new ChatComponentTranslation("gui.detrav.scanner.pollution"));
         }
         return true;
     }
