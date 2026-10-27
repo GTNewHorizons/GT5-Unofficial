@@ -87,7 +87,6 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.forming_press"))
             .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -105,7 +104,6 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
             .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

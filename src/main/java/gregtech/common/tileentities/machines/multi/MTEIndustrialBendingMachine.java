@@ -85,7 +85,6 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bending_machine"))
             .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -101,7 +100,6 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
             .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

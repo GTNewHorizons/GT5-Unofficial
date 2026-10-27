@@ -87,7 +87,6 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_bath"))
             .addBulkMachineInfo(4, 5f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -108,7 +107,6 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterCost"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

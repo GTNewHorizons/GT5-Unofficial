@@ -147,7 +147,6 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.electrolyzer"))
             .addBulkMachineInfo(PARALLEL_PER_TIER, (float) SPEED, (float) EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -163,7 +162,6 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
             .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_electrolyzer_casing"), 1)
             .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_electrolyzer_casing"), 1)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

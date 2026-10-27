@@ -76,11 +76,12 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.forge_hammer"))
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
-            .addMarkdown(new ResourceLocation("gregtech", "industrial-forge-hammer"), ImmutableMap.of("parallel", PARALLEL_PER_TIER))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "industrial-forge-hammer"),
+                ImmutableMap.of("parallel", PARALLEL_PER_TIER))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 9, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
@@ -98,7 +99,6 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.SOLENOID)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
