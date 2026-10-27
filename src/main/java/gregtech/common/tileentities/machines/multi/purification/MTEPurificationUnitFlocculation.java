@@ -269,9 +269,16 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_flocculation"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-flocculation"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("input", INPUT_CHEMICAL.getLocalizedName()).put("waste", OUTPUT_WASTE.getLocalizedName()).put("per_level", formatNumber(INPUT_CHEMICAL_PER_LEVEL)).put("success", formatNumber(SUCCESS_PER_LEVEL)).build())
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-flocculation"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("input", INPUT_CHEMICAL.getLocalizedName())
+                    .put("waste", OUTPUT_WASTE.getLocalizedName())
+                    .put("per_level", formatNumber(INPUT_CHEMICAL_PER_LEVEL))
+                    .put("success", formatNumber(SUCCESS_PER_LEVEL))
+                    .build())
             .beginStructureBlock(9, 5, 8, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing(MIN_CASING + "-63", Casings.SlickSterileFlocculationCasing.getLocalizedName(), false)
@@ -279,7 +286,12 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addCasing("16", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
             .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Adamantium), false)
             .addCasing("9", Casings.FilterMachineCasing.getLocalizedName(), false)
-            .addCasing("6", StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_color", StatCollector.translateToLocal("gt.blocktintedglass.name")), false)
+            .addCasing(
+                "6",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.tooltip.windmill.any_color",
+                    StatCollector.translateToLocal("gt.blocktintedglass.name")),
+                false)
             .addInputHatch("1-3", StatCollector.translateToLocal("gt.mbtt.structure.any_flocculation_casing"), 1)
             .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_flocculation_casing"), 1)
             .addOutputHatch("1-3", StatCollector.translateToLocal("gt.mbtt.structure.any_flocculation_casing"), 1)
@@ -287,7 +299,6 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

@@ -174,9 +174,17 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_clarifier"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-clarifier"), ImmutableMap.of("tier", formatNumber(getWaterTier()), "filter", ItemList.ActivatedCarbonFilterMesh.get(1).getDisplayName(), "filter_chance", formatNumber(FILTER_DAMAGE_RATE)))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-clarifier"),
+                ImmutableMap.of(
+                    "tier",
+                    getWaterTier(),
+                    "filter",
+                    ItemList.ActivatedCarbonFilterMesh.get(1)
+                        .getDisplayName(),
+                    "filter_chance",
+                    formatNumber(FILTER_DAMAGE_RATE)))
             .beginStructureBlock(11, 4, 11, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("123-128", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
@@ -192,7 +200,6 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

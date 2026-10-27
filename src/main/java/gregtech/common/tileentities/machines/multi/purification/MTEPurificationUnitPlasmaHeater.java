@@ -258,23 +258,48 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_plasma_heater"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-plasma-heater"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("heating_point", formatNumber(HEATING_POINT)).put("success", formatNumber(SUCCESS_PER_CYCLE)).put("max_temp", formatNumber(MAX_TEMP)).put("max_plasma", formatNumber(MAX_PLASMA_PER_SEC)).put("max_coolant", formatNumber(MAX_COOLANT_PER_SEC)).put("plasma", plasmaMaterial.getPlasma(1).getLocalizedName()).put("coolant", coolantMaterial.getFluid(1).getLocalizedName()).put("plasma_temp", formatNumber(PLASMA_TEMP_PER_LITER)).put("coolant_temp", formatNumber(-COOLANT_TEMP_PER_LITER)).build())
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-plasma-heater"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("heating_point", formatNumber(HEATING_POINT))
+                    .put("success", SUCCESS_PER_CYCLE)
+                    .put("max_temp", formatNumber(MAX_TEMP))
+                    .put("max_plasma", MAX_PLASMA_PER_SEC)
+                    .put("max_coolant", MAX_COOLANT_PER_SEC)
+                    .put(
+                        "plasma",
+                        plasmaMaterial.getPlasma(1)
+                            .getLocalizedName())
+                    .put(
+                        "coolant",
+                        coolantMaterial.getFluid(1)
+                            .getLocalizedName())
+                    .put("plasma_temp", PLASMA_TEMP_PER_LITER)
+                    .put("coolant_temp", -COOLANT_TEMP_PER_LITER)
+                    .build())
             .beginStructureBlock(23, 15, 15, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("672", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
-            .addCasing("64", StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_color", StatCollector.translateToLocal("gt.blocktintedglass.name")), false)
+            .addCasing(
+                "64",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.tooltip.windmill.any_color",
+                    StatCollector.translateToLocal("gt.blocktintedglass.name")),
+                false)
             .addCasing(MIN_CASING + "-53", Casings.HeatResistantTriniumPlatedCasing.getLocalizedName(), false)
             .addCasing("40", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.SuperconductorZPMBase), false)
             .addCasing("9", Casings.SuperconductingCoilBlock.getLocalizedName(), false)
-            .addCasing("8", StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"), false)
+            .addCasing(
+                "8",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                false)
             .addInputHatch("3+", StatCollector.translateToLocal("gt.mbtt.structure.plasma_heater_input_hatch"), 1, 2, 3)
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_trinium_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

@@ -218,23 +218,42 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_uv_treatment"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-uv-treatment"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("housing", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing")).put("indicator", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator")).put("min_swap", formatNumber((float) MIN_TIME_BETWEEN_SWAPS / SECONDS)).put("max_swap", formatNumber((float) MAX_TIME_BETWEEN_SWAPS / SECONDS)).put("success", formatNumber(SUCCESS_PER_LENS)).put("first_lens", GGMaterial.orundum.get(OrePrefixes.lens, 1).getDisplayName()).build())
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-uv-treatment"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("housing", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"))
+                    .put("indicator", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"))
+                    .put("min_swap", formatNumber((float) MIN_TIME_BETWEEN_SWAPS / SECONDS))
+                    .put("max_swap", formatNumber((float) MAX_TIME_BETWEEN_SWAPS / SECONDS))
+                    .put("success", formatNumber(SUCCESS_PER_LENS))
+                    .put(
+                        "first_lens",
+                        GGMaterial.orundum.get(OrePrefixes.lens, 1)
+                            .getDisplayName())
+                    .build())
             .beginStructureBlock(13, 9, 9, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("144-153", Casings.NaquadriaReinforcedWaterPlantCasing.getLocalizedName(), false)
             .addCasing("144", Casings.ElectronPermeableNeutroniumCoatedGlass.getLocalizedName(), false)
             .addCasing("56", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StellarAlloy), false)
             .addCasing("29", Casings.HighEnergyUltravioletEmitterCasing.getLocalizedName(), false)
-            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"), StatCollector.translateToLocal("gt.mbtt.structure.top_center_casing"), 2)
-            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"), StatCollector.translateToLocal("gt.mbtt.structure.top_back_casing"), 3)
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"),
+                StatCollector.translateToLocal("gt.mbtt.structure.top_center_casing"),
+                2)
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"),
+                StatCollector.translateToLocal("gt.mbtt.structure.top_back_casing"),
+                3)
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 1)
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

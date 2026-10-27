@@ -176,14 +176,29 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_ozonation"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-ozonation"), ImmutableMap.of("tier", formatNumber(getWaterTier()), "max_ozone", formatNumber(MAX_OZONE_GAS_FOR_EXPLOSION), "bonus", formatNumber(SUCCESS_PER_OZONE_DOUBLING), "ozone", Materials.Ozone.getGas(1).getLocalizedName()))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-ozonation"),
+                ImmutableMap.of(
+                    "tier",
+                    getWaterTier(),
+                    "max_ozone",
+                    formatNumber(MAX_OZONE_GAS_FOR_EXPLOSION),
+                    "bonus",
+                    formatNumber(SUCCESS_PER_OZONE_DOUBLING),
+                    "ozone",
+                    Materials.Ozone.getGas(1)
+                        .getLocalizedName()))
             .beginStructureBlock(9, 10, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing(MIN_CASING + "-99", Casings.InertFiltrationCasing.getLocalizedName(), false)
             .addCasing("27", Casings.ReactiveGasContainmentCasing.getLocalizedName(), false)
-            .addCasing("9", StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_color", StatCollector.translateToLocal("gt.blocktintedglass.name")), false)
+            .addCasing(
+                "9",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.tooltip.windmill.any_color",
+                    StatCollector.translateToLocal("gt.blocktintedglass.name")),
+                false)
             .addCasing("6", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenSteel), false)
             .addCasing("3", Casings.PTFEPipeCasing.getLocalizedName(), false)
             .addInputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.ozonation_input_hatch"), 1, 2)
@@ -192,7 +207,6 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

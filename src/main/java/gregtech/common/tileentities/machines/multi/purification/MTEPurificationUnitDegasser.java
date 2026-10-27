@@ -285,12 +285,27 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         FluidStack[] gases = INERT_GASES.get();
-        // spotless:off
         SuperconductorMaterial[] superconductors = SUPERCONDUCTOR_MATERIALS.get();
-        ImmutableMap.Builder<String, Object> vars = ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("control_hatch", StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch")).put("gas0", gases[0].getLocalizedName()).put("gas0_amount", formatNumber(gases[0].amount)).put("gas1", gases[1].getLocalizedName()).put("gas1_amount", formatNumber(gases[1].amount)).put("gas2", gases[2].getLocalizedName()).put("gas2_amount", formatNumber(gases[2].amount)).put("gas3", gases[3].getLocalizedName()).put("gas3_amount", formatNumber(gases[3].amount)).put("supercon_amount", formatNumber(SUPERCON_FLUID_AMOUNT)).put("catalyst", CATALYST_FLUID.getLocalizedName()).put("catalyst_amount", formatNumber(CATALYST_FLUID.amount)).put("coolant", COOLANT_FLUID.getLocalizedName()).put("coolant_amount", formatNumber(COOLANT_FLUID.amount));
+        ImmutableMap.Builder<String, Object> vars = ImmutableMap.<String, Object>builder()
+            .put("tier", getWaterTier())
+            .put("control_hatch", StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch"))
+            .put("gas0", gases[0].getLocalizedName())
+            .put("gas0_amount", formatNumber(gases[0].amount))
+            .put("gas1", gases[1].getLocalizedName())
+            .put("gas1_amount", formatNumber(gases[1].amount))
+            .put("gas2", gases[2].getLocalizedName())
+            .put("gas2_amount", formatNumber(gases[2].amount))
+            .put("gas3", gases[3].getLocalizedName())
+            .put("gas3_amount", formatNumber(gases[3].amount))
+            .put("supercon_amount", formatNumber(SUPERCON_FLUID_AMOUNT))
+            .put("catalyst", CATALYST_FLUID.getLocalizedName())
+            .put("catalyst_amount", formatNumber(CATALYST_FLUID.amount))
+            .put("coolant", COOLANT_FLUID.getLocalizedName())
+            .put("coolant_amount", formatNumber(COOLANT_FLUID.amount));
         // SUPERCONDUCTOR_MATERIALS lists the UV to UMV superconductors in tier order
         for (int i = 0; i < superconductors.length; i++) {
-            vars.put("tier" + i, GTUtility.getColoredTierNameForTooltip(VoltageIndex.UV + i)).put("mult" + i, formatNumber(superconductors[i].multiplier));
+            vars.put("tier" + i, GTUtility.getColoredTierNameForTooltip(VoltageIndex.UV + i))
+                .put("mult" + i, formatNumber(superconductors[i].multiplier));
         }
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_degasser"))
             .addMarkdown(new ResourceLocation("gregtech", "purification-unit-degasser"), vars.build())
@@ -299,13 +314,16 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             .addCasing(MIN_CASING + "-800", Casings.HeatResistantTriniumPlatedCasing.getLocalizedName(), false)
             .addCasing("622", Casings.OmniPurposeInfinityFusedGlass.getLocalizedName(), false)
             .addCasing("124", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bedrockium), false)
-            .addMiscHatch("1", StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
+                1)
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

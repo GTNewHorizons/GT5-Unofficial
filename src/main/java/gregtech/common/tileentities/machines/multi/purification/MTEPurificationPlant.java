@@ -150,9 +150,20 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_plant"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-plant"), ImmutableMap.of("distance", MAX_UNIT_DISTANCE, "cycle", CYCLE_TIME_TICKS / SECONDS, "boost_fluid", formatNumber(WATER_BOOST_NEEDED_FLUID * 100), "boost_chance", formatNumber(WATER_BOOST_BONUS_CHANCE * 100), "debug_cycle", CYCLE_TIME_IN_DEBUG / SECONDS))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-plant"),
+                ImmutableMap.of(
+                    "distance",
+                    MAX_UNIT_DISTANCE,
+                    "cycle",
+                    CYCLE_TIME_TICKS / SECONDS,
+                    "boost_fluid",
+                    formatNumber(WATER_BOOST_NEEDED_FLUID * 100),
+                    "boost_chance",
+                    formatNumber(WATER_BOOST_BONUS_CHANCE * 100),
+                    "debug_cycle",
+                    CYCLE_TIME_IN_DEBUG / SECONDS))
             .addSupportAny()
             .beginStructureBlock(7, 9, 8, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
@@ -160,13 +171,17 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addCasing("71-72", Casings.SterileWaterPlantCasing.getLocalizedName(), false)
             .addCasing("56", Casings.SuperplasticizerTreatedHighStrengthConcrete.getLocalizedName(), false)
             .addCasing("30", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
-            .addCasing("6", StatCollector.translateToLocalFormatted("GT5U.tooltip.windmill.any_color", StatCollector.translateToLocal("gt.blocktintedglass.name")), false)
+            .addCasing(
+                "6",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.tooltip.windmill.any_color",
+                    StatCollector.translateToLocal("gt.blocktintedglass.name")),
+                false)
             .addEnergyHatch("1-2", StatCollector.translateToLocal("gt.mbtt.structure.adjacent_to_controller"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.adjacent_to_controller"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

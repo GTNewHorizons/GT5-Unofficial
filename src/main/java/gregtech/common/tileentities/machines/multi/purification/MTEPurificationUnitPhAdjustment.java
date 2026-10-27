@@ -315,23 +315,54 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_ph_adjustment"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-ph-adjustment"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("ph_min", formatNumber(PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION)).put("ph_max", formatNumber(PH_NEUTRAL_VALUE + INITIAL_PH_DEVIATION)).put("ph_deviation", formatNumber(PH_MAX_DEVIATION)).put("ph_neutral", formatNumber(PH_NEUTRAL_VALUE)).put("sensor", StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch")).put("interval", CONSUME_INTERVAL).put("alkaline", ALKALINE_MATERIAL.getLocalizedName()).put("acid", ACIDIC_MATERIAL.getLocalizedName()).put("dust", ALKALINE_MATERIAL.getDust(1).getDisplayName()).put("ph_per_dust", formatNumber(PH_PER_ALKALINE_DUST)).put("ph_per_acid", formatNumber(-PH_PER_10_ACID_LITER)).build())
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-ph-adjustment"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("ph_min", formatNumber(PH_NEUTRAL_VALUE - INITIAL_PH_DEVIATION))
+                    .put("ph_max", formatNumber(PH_NEUTRAL_VALUE + INITIAL_PH_DEVIATION))
+                    .put("ph_deviation", formatNumber(PH_MAX_DEVIATION))
+                    .put("ph_neutral", formatNumber(PH_NEUTRAL_VALUE))
+                    .put("sensor", StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"))
+                    .put("interval", CONSUME_INTERVAL)
+                    .put("alkaline", ALKALINE_MATERIAL.getLocalizedName())
+                    .put("acid", ACIDIC_MATERIAL.getLocalizedName())
+                    .put(
+                        "dust",
+                        ALKALINE_MATERIAL.getDust(1)
+                            .getDisplayName())
+                    .put("ph_per_dust", formatNumber(PH_PER_ALKALINE_DUST))
+                    .put("ph_per_acid", formatNumber(-PH_PER_10_ACID_LITER))
+                    .build())
             .beginStructureBlock(15, 6, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("134", Casings.InertNeutralizationWaterPlantCasing.getLocalizedName(), false)
             .addCasing("48", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
             .addCasing("18", Casings.ChemicalGradeGlass.getLocalizedName(), false)
             .addCasing("12-17", Casings.StabilizedNaquadahWaterPlantCasing.getLocalizedName(), false)
-            .addMiscHatch("0-2", StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.below_controller"), 2)
-            .addInputBus("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.ph_adjustment_input_bus", ALKALINE_MATERIAL.getLocalizedName()), 3)
-            .addInputHatch("2+", StatCollector.translateToLocalFormatted("gt.mbtt.structure.ph_adjustment_input_hatch", ACIDIC_MATERIAL.getLocalizedName()), 1, 4)
+            .addMiscHatch(
+                "0-2",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"),
+                StatCollector.translateToLocal("gt.mbtt.structure.below_controller"),
+                2)
+            .addInputBus(
+                "1",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.ph_adjustment_input_bus",
+                    ALKALINE_MATERIAL.getLocalizedName()),
+                3)
+            .addInputHatch(
+                "2+",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.ph_adjustment_input_hatch",
+                    ACIDIC_MATERIAL.getLocalizedName()),
+                1,
+                4)
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.behind_controller"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

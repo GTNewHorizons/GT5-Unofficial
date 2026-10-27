@@ -261,9 +261,24 @@ public class MTEPurificationUnitBaryonicPerfection
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_baryonic_perfection"))
-            .addMarkdown(new ResourceLocation("gregtech", "purification-unit-baryonic-perfection"), ImmutableMap.<String, Object>builder().put("tier", formatNumber(getWaterTier())).put("interval", CONSUME_INTERVAL).put("catalyst_cost",formatNumber(CATALYST_BASE_COST)).put("infinity", Materials.Infinity.getMolten(1).getLocalizedName()).put("output", formatNumber(BARYONIC_MATTER_OUTPUT)).put("extra_output", formatNumber(PurifiedWaterRecipes.extraBaryonicOutput)).put("baryonic", Materials.StableBaryonicMatter.getFluid(1).getLocalizedName()).build())
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-baryonic-perfection"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("interval", CONSUME_INTERVAL)
+                    .put("catalyst_cost", CATALYST_BASE_COST)
+                    .put(
+                        "infinity",
+                        Materials.Infinity.getMolten(1)
+                            .getLocalizedName())
+                    .put("output", formatNumber(BARYONIC_MATTER_OUTPUT))
+                    .put("extra_output", PurifiedWaterRecipes.extraBaryonicOutput)
+                    .put(
+                        "baryonic",
+                        Materials.StableBaryonicMatter.getFluid(1)
+                            .getLocalizedName())
+                    .build())
             .beginStructureBlock(17, 17, 17, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
             .addCasing(MIN_CASINGS + "-339", Casings.QuarkExclusionCasing.getLocalizedName(), false)
@@ -271,14 +286,16 @@ public class MTEPurificationUnitBaryonicPerfection
             .addCasing("108", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bedrockium), false)
             .addCasing("96", Casings.FemtometerCalibratedParticleBeamCasing.getLocalizedName(), false)
             .addCasing("37", Casings.ParticleBeamGuidancePipeCasing.getLocalizedName(), false)
-            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_quark_exclusion_casing_no_stocking"), 1)
+            .addInputBus(
+                "1+",
+                StatCollector.translateToLocal("gt.mbtt.structure.any_quark_exclusion_casing_no_stocking"),
+                1)
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_quark_exclusion_casing"), 1)
             .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_quark_exclusion_casing"), 1)
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_quark_exclusion_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
