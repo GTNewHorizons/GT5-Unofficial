@@ -214,7 +214,7 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                // ensures heavy mode recipes can not run
+                // ensures heavy mode recipes cannot run
                 if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE))
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 return super.validateRecipe(recipe);

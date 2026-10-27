@@ -6,6 +6,7 @@ import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_BUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_BUS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_COLORS;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -73,6 +74,7 @@ import appeng.api.implementations.IPowerChannelState;
 import appeng.api.interfaces.IInterfaceNameProvider;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.crafting.ICraftingGrid;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.crafting.ICraftingProviderHelper;
@@ -103,6 +105,7 @@ import appeng.util.PatternMultiplierHelper;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.ScheduledReason;
+import appeng.util.TunnelPatternExpander;
 import appeng.util.inv.MEInventoryCrafting;
 import gregtech.GTLoggers;
 import gregtech.api.enums.Dyes;
@@ -258,7 +261,15 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             FluidStack[] inputFluids = GTValues.emptyFluidStackArray;
 
             if (patternDetails != null) {
-                for (IAEStack<?> singleInput : patternDetails.getAEInputs()) {
+                List<IAEStack<?>> list;
+                try {
+                    final CraftingGridCache cc = this.parentMTE.getProxy().getGrid().getCache(ICraftingGrid.class);
+                    list = TunnelPatternExpander.expandInputs(patternDetails.getAEInputs(), cc, null);
+                } catch (Exception ignored) {
+                    list = List.of(patternDetails.getAEInputs());
+                }
+
+                for (IAEStack<?> singleInput : list) {
                     switch (singleInput) {
                         case null -> {
                             continue;
@@ -513,8 +524,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
+        byte color = getBaseMetaTileEntity().getColorization();
+        ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_ME_CRAFTING_INPUT_COLORS[color + 1]);
         return new ITexture[] { aBaseTexture,
-            TextureFactory.of(supportFluids ? OVERLAY_ME_CRAFTING_INPUT_BUFFER : OVERLAY_ME_CRAFTING_INPUT_BUS) };
+            TextureFactory.of(supportFluids ? OVERLAY_ME_CRAFTING_INPUT_BUFFER : OVERLAY_ME_CRAFTING_INPUT_BUS),
+            coloredPipeOverlay };
     }
 
     @Override
@@ -1442,9 +1456,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             if (slot == null) continue;
             if (slot.getPatternDetails() == null) continue;
 
-            IAEItemStack[] outputs = slot.getPatternDetails()
-                .getCondensedOutputs();
-            list.add(outputs[0].getItemStack());
+            IAEStack<?> output = slot.getPatternDetails()
+                .getCondensedAEOutputs()[0];
+            ItemStack stack = output.getItemStackForNEI();
+            if (stack == null) continue;
+            stack.stackSize = (int) Math.min(Integer.MAX_VALUE, output.getStackSize());
+            list.add(stack);
         }
         return list;
     }

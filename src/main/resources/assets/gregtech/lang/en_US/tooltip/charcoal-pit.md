@@ -1,2 +1,2 @@
-Converts {gold:Logs} into {gold:Brittle Charcoal Blocks}
+Converts {color_key:Logs} into {color_key:Brittle Charcoal Blocks}
 Automatically starts when formed

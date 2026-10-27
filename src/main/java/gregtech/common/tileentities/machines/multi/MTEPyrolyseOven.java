@@ -20,9 +20,11 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -34,6 +36,7 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -46,11 +49,13 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseOven>
     implements ISurvivalConstructable, ICasingTextureProvider {
+
+    private static final float SPEED_BONUS_PER_COIL_TIER = 2.0f;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 3;
@@ -101,26 +106,25 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Coke Oven")
-            .addInfo("Industrial Charcoal producer")
-            .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
-            .addInfo("EU/t is not affected by Coil Tier")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.coke_oven"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "pyrolyse-oven"),
+                ImmutableMap.<String, Object>of("speed_bonus", (1.0F / SPEED_BONUS_PER_COIL_TIER) * 100))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 6, 5, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("60-68", "Pyrolyse Oven Casing", false)
-            .addCasing("12", "Heating Coil", true)
-            .addCasing("8", "Steel Pipe Casing", false)
-            .addCasing("4", "Steel Firebox Casing", false)
-            .addCasing("2", "Steel Frame Box", false)
-            .addEnergyHatch("1+", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addMufflerHatch("1", "Any top casing", 2)
-            .addInputAny("1+", "Any top casing", 2)
-            .addOutputAny("1+", "Any bottom casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("60-68", Casings.PyrolyseOvenCasing.getLocalizedName(), false)
+            .addCasing("12", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("8", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("4", Casings.SteelFireboxCasing.getLocalizedName(), false)
+            .addCasing("2", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Ya9yu")
             .toolTipFinisher();
         return tt;
     }
@@ -172,7 +176,7 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     }
 
     public double getSpeedBonus() {
-        return 2.0D / (1.0D + coilHeat.getTier());
+        return SPEED_BONUS_PER_COIL_TIER / (1.0D + coilHeat.getTier());
     }
 
     @Override
