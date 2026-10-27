@@ -23,7 +23,7 @@ public enum MaskList {
     CBLANK("cblank", "Crystal", 0, "X-RAY", null, null, 0, 0, 0, 0, 0, null, null), // Better at resolving smaller
                                                                                     // features, in theory
 
-    ILC("ilc", "Integrated Logic Circuit", 100, "", BLANK1, Dyes.dyeRed, TierEU.RECIPE_MV, 0.5e-3f, 4e-3f, 35, 1,
+    ILC("ilc", "Logic IC", 100, "", BLANK1, Dyes.dyeRed, TierEU.RECIPE_MV, 0.5e-3f, 4e-3f, 35, 1,
         ItemList.Circuit_Wafer_ILC.get(1), null),
     RAM("ram", "Random Access Memory", 200, "", BLANK1, Dyes.dyeCyan, TierEU.RECIPE_MV, 2e-3f, 4e-3f, 40, 2,
         ItemList.Circuit_Wafer_Ram.get(1), null, ItemList.Circuit_Silicon_Wafer),
