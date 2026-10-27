@@ -14,7 +14,7 @@
 {white:{bold:Бит 2: }}{color_misc:{bold:Деионизация сверхпроводником}}
 Если этот бит включён, нужно подать {white:{var:supercon_amount} {L}} {white:расплавленной основы сверхпроводника}
 Сверхпроводник более высокого тира даёт бонус к выходу
-Множитель выхода: {var:tier0}: {white:{var:mult0}x} / {var:tier1}: {white:{var:mult1}x} / {var:tier2}: {white:{var:mult2}x} / {var:tier3}: {white:{var:mult3}x} / {var:tier4}: {white:{var:mult4}x}
+Множитель выхода: {tier-color-name:tier0}: {white:{var:mult0}x} / {tier-color-name:tier1}: {white:{var:mult1}x} / {tier-color-name:tier2}: {white:{var:mult2}x} / {tier-color-name:tier3}: {white:{var:mult3}x} / {tier-color-name:tier4}: {white:{var:mult4}x}
 {hr}
 {white:{bold:Бит 3: }}{color_misc:{bold:Гравитационная дифференциальная вакуумная экстракция}}
 Если этот бит включён, нужно подать {white:{var:catalyst_amount} {L}} вещества {white:{var:catalyst}}

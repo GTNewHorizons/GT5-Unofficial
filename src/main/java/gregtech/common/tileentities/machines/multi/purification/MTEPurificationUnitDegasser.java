@@ -61,7 +61,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -304,7 +303,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             .put("coolant_amount", formatNumber(COOLANT_FLUID.amount));
         // SUPERCONDUCTOR_MATERIALS lists the UV to UMV superconductors in tier order
         for (int i = 0; i < superconductors.length; i++) {
-            vars.put("tier" + i, GTUtility.getColoredTierNameForTooltip(VoltageIndex.UV + i))
+            vars.put("tier" + i, VoltageIndex.UV + i)
                 .put("mult" + i, formatNumber(superconductors[i].multiplier));
         }
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_degasser"))

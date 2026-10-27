@@ -14,7 +14,7 @@ To determine which gas to insert, interpret bits {color_misc:2-3} as a 2-bit num
 {white:{bold:Bit 2: }}{color_misc:{bold:Superconductive Deionization}}
 If this bit is on, you must insert {white:{var:supercon_amount} {L}} of {white:Molten Superconductor Base}
 Using higher tier superconductor provides bonus output
-Output multiplier: {var:tier0}: {white:{var:mult0}x} / {var:tier1}: {white:{var:mult1}x} / {var:tier2}: {white:{var:mult2}x} / {var:tier3}: {white:{var:mult3}x} / {var:tier4}: {white:{var:mult4}x}
+Output multiplier: {tier-color-name:tier0}: {white:{var:mult0}x} / {tier-color-name:tier1}: {white:{var:mult1}x} / {tier-color-name:tier2}: {white:{var:mult2}x} / {tier-color-name:tier3}: {white:{var:mult3}x} / {tier-color-name:tier4}: {white:{var:mult4}x}
 {hr}
 {white:{bold:Bit 3: }}{color_misc:{bold:Gravitationally-Generated Differential Vacuum Extraction}}
 If this bit is on, you must insert {white:{var:catalyst_amount} {L}} of {white:{var:catalyst}}
