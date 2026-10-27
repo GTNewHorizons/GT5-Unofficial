@@ -195,22 +195,25 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         };
     }
 
+    private int getChunkSize() {
+        return 2 * multiTier + 1;
+    }
+
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.air_filter"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "air-filter"),
                 ImmutableMap.<String, Object>builder()
-                    .put("chunk_size", 2 * multiTier + 1)
-                    .put("global_multiplier", formatNumber(GLOBAL_MULTIPLIER))
-                    .put("scaling_factor", formatNumber(SCALING_FACTOR))
-                    .put("tier_bonus", formatNumber(getBonusByTier()))
-                    .put("eu_usage", formatNumber(getEUt()))
+                    .put("chunk_size", getChunkSize())
+                    .put("global_multiplier", GLOBAL_MULTIPLIER)
+                    .put("scaling_factor", SCALING_FACTOR)
+                    .put("tier_bonus", getBonusByTier())
+                    .put("eu_usage", getEUt())
                     .put("filter_lifespan", USES_PER_FILTER * PROGRESS_TIME / 20)
-                    .put("boost_per_filter", formatNumber(BOOST_PER_FILTER))
-                    .put("maint_penalty", formatNumber(MAINTENANCE_PENALTY_PERCENT))
+                    .put("boost_per_filter", BOOST_PER_FILTER)
+                    .put("maint_penalty", MAINTENANCE_PENALTY_PERCENT)
                     .build())
             .beginStructureBlock(3, 4, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
@@ -223,7 +226,6 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
@@ -480,7 +482,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (size == 0) { // here in case it's not set by NBT loading
-            size = 2 * multiTier + 1;
+            size = getChunkSize();
         }
         super.onPreTick(aBaseMetaTileEntity, aTick);
     }
@@ -594,7 +596,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             }
         } else { // change radius on sneak
             if (size == 1) {
-                size = 2 * multiTier + 1;
+                size = getChunkSize();
             } else {
                 size -= 2; // always get odd number
             }
