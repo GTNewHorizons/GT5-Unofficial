@@ -46,6 +46,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -63,6 +64,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -91,6 +93,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -142,7 +145,8 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Tree Farm, TGS")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.tree_farm"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "tree-farm"),
                 ImmutableMap.<String, Object>builder()
@@ -159,20 +163,21 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, true)
-            .addController("Front bottom center")
-            .addCasing("60", "Steel Frame Box", false)
-            .addCasing("57", "Any Tiered Glass", false)
-            .addCasing("45-55", "Sterile Farm Casing", false)
-            .addCasing("25", "Dirt or Grass", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("0+", "Any casing", 1)
-            .addOutputBus("0+", "Any casing", 1)
-            .addAir("Interior center column")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("60", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("57", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("45-55", Casings.SterileFarmCasing.getLocalizedName(), false)
+            .addCasing("25", StatCollector.translateToLocalFormatted("gt.mbtt.structure.either_block", Blocks.dirt.getLocalizedName(), Blocks.grass.getLocalizedName()), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior_center_column"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
