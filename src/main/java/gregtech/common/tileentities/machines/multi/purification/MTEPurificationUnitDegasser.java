@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -295,7 +294,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             .put("gas2", gases[2].getLocalizedName())
             .put("gas2_amount", gases[2].amount)
             .put("gas3", gases[3].getLocalizedName())
-            .put("gas3_amount", gases[3].amount))
+            .put("gas3_amount", gases[3].amount)
             .put("supercon_amount", SUPERCON_FLUID_AMOUNT)
             .put("catalyst", CATALYST_FLUID.getLocalizedName())
             .put("catalyst_amount", CATALYST_FLUID.amount)
