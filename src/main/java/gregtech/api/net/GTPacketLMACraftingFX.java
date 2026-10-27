@@ -51,7 +51,9 @@ public class GTPacketLMACraftingFX extends GTPacket {
         try {
             ByteBuf stackBuffer = Unpooled.buffer();
             itemStack.writeToPacket(stackBuffer);
-            byte[] data = stackBuffer.array();
+            // only the written bytes: the backing array also holds the buffer's unused capacity
+            byte[] data = new byte[stackBuffer.readableBytes()];
+            stackBuffer.readBytes(data);
             buffer.writeInt(data.length);
             buffer.writeBytes(data);
         } catch (IOException e) {
