@@ -28,7 +28,6 @@ import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
@@ -124,10 +123,13 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     public void clearHatches() {
         super.clearHatches();
 
+        // LoS and nanite hatches register outside addIfSmartInput, so they need their crafting icon dropped here.
+        clearCraftingIcons(this.losHatches);
         for (MTEHatchLoS hatch : this.losHatches) {
             hatch.setOwner(null);
         }
         this.losHatches.clear();
+        clearCraftingIcons(this.naniteHatches);
         this.naniteHatches.clear();
     }
 
@@ -163,7 +165,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
             .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.NaniteContainmentBus"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
             .addMiscHatch("1+", StatCollector.translateToLocal("GT5U.MBTT.LineOfSightHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.los-hatch-pos"), 3)
             .addMiscHatch("1-2", StatCollector.translateToLocal("GT5U.MBTT.CondensateHatch"), StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"), 2)
-            .toolTipFinisher(GTAuthors.AuthorPineapple);
+            .toolTipFinisher();
         return tt;
         // spotless:on
     }
@@ -329,7 +331,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
             if (igte.getMetaTileEntity() instanceof MTEHatchNanite naniteHatch) {
                 assembler.naniteHatches.add(naniteHatch);
                 naniteHatch.updateTexture(texture);
-                naniteHatch.updateCraftingIcon(assembler.getMachineCraftingIcon());
+                naniteHatch.updateCraftingIcon(assembler.getMachineCraftingIcon(), assembler.getBaseMetaTileEntity());
 
                 return true;
             }
@@ -390,7 +392,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
                 if (imte instanceof MTEHatchLoS hatch) {
                     hatch.updateTexture(id);
-                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
                     hatch.setOwner(self);
 
                     self.losHatches.add(hatch);

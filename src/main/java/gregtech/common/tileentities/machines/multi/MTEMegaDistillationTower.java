@@ -28,12 +28,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -42,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.common.configs.Configuration;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -59,10 +62,10 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -576,61 +579,52 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery, DT, MDT")
-            .addInfo("Stats dictated by tower mode, change mode in GUI or with a screwdriver")
-            .addInfo("Has up to 5 middle slices and 1 top slice, the amount of middle slices is the 'Tower Height'")
-            .addInfo("Each middle slice adds 2 output hatches, the top slice adds one output hatch")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "Distillery Mode")
-            .addInfo("Outputs only one fluid in the first hatch")
-            .addInfo(
-                TooltipHelper.parallelText(Configuration.Multiblocks.megaMachinesMax + " * (1 + Tower Height/2)")
-                    + " Parallels")
-            .addStaticSpeedInfo((float) DISTILLERY_SPEED)
-            .addStaticEuEffInfo((float) DISTILLERY_EU_EFFICIENCY)
-            .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "Distillation Tower Mode")
-            .addInfo("Fluids are output one per layer based on the slot number in NEI")
-            .addInfo("Increase the height to output more fluid types")
-            .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addStaticSpeedInfo((float) TOWER_SPEED)
-            .addStaticEuEffInfo((float) TOWER_EU_EFFICIENCY)
-            .addSeparator()
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.mega_distillation_tower"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "mega-distillation-tower"),
+                ImmutableMap.<String, Object>builder()
+                    .put("mega_max", Configuration.Multiblocks.megaMachinesMax)
+                    .put("distillery_speed", (int) (DISTILLERY_SPEED * 100))
+                    .put("distillery_eu_eff", (int) (DISTILLERY_EU_EFFICIENCY * 100))
+                    .put("tower_speed", (int) (TOWER_SPEED * 100))
+                    .put("tower_eu_eff", (int) (TOWER_EU_EFFICIENCY * 100))
+                    .build())
             .addSupportAny()
             .addUnlimitedTierSkips()
-            .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
+            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("gt.mbtt.flavor.mega_distillation_tower"))
             .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
-            .addController("Front center, 3rd Layer")
-            .addEnergyHatch("1+", "Any base reinforced distillation casing", 1)
-            .addMaintenanceHatch("1+", "Any base reinforced distillation casing", 1)
-            .addInputBus("0+", "Any base reinforced distillation casing", 1)
-            .addInputHatch("1+", "Bronze pipe casing on base structure", 3)
-            .addOutputBus("0+", "Steel pipe casing on base structure", 2)
-            .addOutputHatch("3-11", "Two per middle layer, one on top layer", 4)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_reinforced_distillation_casing"), 1)
+            .addMaintenanceHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_reinforced_distillation_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_reinforced_distillation_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.bronze_pipe_casing_on_base"), 3)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.steel_pipe_casing_on_base"), 2)
+            .addOutputHatch("3-11", StatCollector.translateToLocal("gt.mbtt.structure.two_per_middle_layer_one_on_top"), 4)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("361", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("215", "Strong Bronze Machine Casing", false)
-            .addCasing("179", "Naquadah Sheetmetal", false)
-            .addCasing("150-165", "Naquadah Reinforced Distillation Casing", false)
-            .addCasing("99", "Stainless Steel Frame Box", false)
-            .addCasing("80", "Bronze Pipe Casing", false)
-            .addCasing("43-44", "Steel Pipe Casing", false)
-            .addCasing("41", "Solid Steel Machine Casing", false)
+            .addCasing("361", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("215", Casings.StrongBronzeMachineCasing.getLocalizedName(), false)
+            .addCasing("179", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Naquadah), false)
+            .addCasing("150-165", Casings.NaquadahReinforcedDistillationCasing.getLocalizedName(), false)
+            .addCasing("99", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addCasing("80", Casings.BronzePipeCasing.getLocalizedName(), false)
+            .addCasing("43-44", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("41", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
-            .addCasing("48", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("57", "Strong Bronze Machine Casing", false)
-            .addCasing("32", "Naquadah Sheetmetal", false)
-            .addCasing("27", "Stainless Steel Frame Box", false)
-            .addCasing("16", "Naquadah Reinforced Distillation Casing", false)
-            .addCasing("14", "Bronze Pipe Casing", false)
-            .addCasing("6", "Steel Pipe Casing", false)
+            .addCasing("48", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("57", Casings.StrongBronzeMachineCasing.getLocalizedName(), false)
+            .addCasing("32", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Naquadah), false)
+            .addCasing("27", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addCasing("16", Casings.NaquadahReinforcedDistillationCasing.getLocalizedName(), false)
+            .addCasing("14", Casings.BronzePipeCasing.getLocalizedName(), false)
+            .addCasing("6", Casings.SteelPipeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Mallady")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

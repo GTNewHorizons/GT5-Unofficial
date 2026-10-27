@@ -18,8 +18,8 @@ import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableMap;
@@ -33,6 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -50,6 +51,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEIndustrialThermalCentrifuge>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -87,8 +89,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType("Thermal Centrifuge, LTR")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.thermal_centrifuge"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "industrial-thermal-centrifuge"),
                 ImmutableMap.<String, Object>builder()
@@ -101,25 +102,23 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 8, 6, false)
-            .addController("Front bottom center")
-            .addCasing("85-92", "Thermal Processing Casing", false)
-            .addCasing("20", "Red Steel Frame Box", false)
-            .addCasing("16", "Heating Coil", true)
-            .addCasing("6", "Solenoid Superconducting Coil", true)
-            .addCasing("6", "Any Tiered Glass", false)
-            .addCasing("4", "Heat Proof Machine Casing", false)
-            .addEnergyHatch("1+", "Any thermal casing", 1)
-            .addMaintenanceHatch("1", "Any thermal casing", 1)
-            .addMufflerHatch("1", "Any thermal casing", 1)
-            .addInputBus("1+", "Any thermal casing", 1)
-            .addOutputBus("1+", "Any thermal casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("85-92", Casings.ThermalProcessingCasing.getLocalizedName(), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.RedSteel), false)
+            .addCasing("16", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addCasing("6", StatCollector.translateToLocal("gt.blockcasings.cyclotron_coils.name"), true)
+            .addCasing("6", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("4", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_thermal_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_thermal_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_thermal_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_thermal_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_thermal_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.SOLENOID)
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "Oasis_Cactus")
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

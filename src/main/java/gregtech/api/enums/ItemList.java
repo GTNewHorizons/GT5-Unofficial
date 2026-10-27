@@ -232,7 +232,7 @@ public enum ItemList implements IItemContainer {
     Bottle_Vodka,
     Bottle_Leninade,
     Bottle_Mineral_Water,
-    Bottle_Salty_Water,
+    Bottle_Salt_Water,
     Bottle_Reed_Water,
     Bottle_Rum,
     Bottle_Pirate_Brew,
@@ -1519,6 +1519,7 @@ public enum ItemList implements IItemContainer {
     Black_Hole_Opener,
     Black_Hole_Closer,
     Black_Hole_Stabilizer,
+    Supermassive_Black_Hole_Opener,
 
     Machine_Multi_IndustrialBrewery,
 

@@ -56,6 +56,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEngineLegacy>
     implements ISurvivalConstructable {
 

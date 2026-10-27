@@ -45,10 +45,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -62,6 +64,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -90,12 +93,26 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int TICKS_PER_OPERATION = 100;
     private static final int TOOL_DAMAGE_PER_OPERATION = 1;
     private static final int TOOL_CHARGE_PER_OPERATION = 32;
+
+    public static final int TOOL_MULTIPLIER_LOGS_SAW = 1;
+    public static final int TOOL_MULTIPLIER_LOGS_BUZZSAW = 2;
+    public static final int TOOL_MULTIPLIER_LOGS_CHAINSAW = 4;
+
+    public static final int TOOL_MULTIPLIER_SAPLINGS_BRANCH_CUTTER = 1;
+    public static final int TOOL_MULTIPLIER_SAPLINGS_GRAFTER = 4;
+
+    public static final int TOOL_MULTIPLIER_LEAVES_SHEAR = 1;
+    public static final int TOOL_MULTIPLIER_LEAVES_WIRE_CUTTER = 2;
+    public static final int TOOL_MULTIPLIER_LEAVES_ELECTRIC_WIRE_CUTTER = 4;
+
+    public static final int TOOL_MULTIPLIER_FRUIT_KNIFE = 1;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 3;
@@ -128,38 +145,39 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Tree Farm, TGS")
-            .addInfo("Farms and harvests trees using EU")
-            .addInfo("Place a sapling in the controller slot")
-            .addInfo("Place a tool in an input bus")
-            .addInfo("Different tools are required for different outputs")
-            .addInfo("Advanced tools multiply output amount")
-            .addInfo("  Logs: Saw (1x), Buzzsaw (2x), Chainsaw (4x)")
-            .addInfo("  Saplings: Branch Cutter (1x), Grafter (4x)")
-            .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Electric Wire Cutter (4x)")
-            .addInfo("  Fruit: Knife (1x)")
-            .addInfo("Multiple tools can be used at the same time")
-            .addSeparator()
-            .addInfo("Work time is fixed at 5 seconds")
-            .addInfo("Energy Input Tier multiplies output further")
-            .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.tree_farm"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "tree-farm"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tool_multiplier_logs_saw", TOOL_MULTIPLIER_LOGS_SAW)
+                    .put("tool_multiplier_logs_buzzsaw", TOOL_MULTIPLIER_LOGS_BUZZSAW)
+                    .put("tool_multiplier_logs_chainsaw", TOOL_MULTIPLIER_LOGS_CHAINSAW)
+                    .put("tool_multiplier_saplings_branch_cutter", TOOL_MULTIPLIER_SAPLINGS_BRANCH_CUTTER)
+                    .put("tool_multiplier_saplings_grafter", TOOL_MULTIPLIER_SAPLINGS_GRAFTER)
+                    .put("tool_multiplier_leaves_shear", TOOL_MULTIPLIER_LEAVES_SHEAR)
+                    .put("tool_multiplier_leaves_wire_cutter", TOOL_MULTIPLIER_LEAVES_WIRE_CUTTER)
+                    .put("tool_multiplier_leaves_electric_wire_cutter", TOOL_MULTIPLIER_LEAVES_ELECTRIC_WIRE_CUTTER)
+                    .put("tool_multiplier_fruit_knife", TOOL_MULTIPLIER_FRUIT_KNIFE)
+                    .put("ticks_per_operation", GTUtility.formatTime(TICKS_PER_OPERATION))
+                    .build())
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, true)
-            .addController("Front bottom center")
-            .addCasing("60", "Steel Frame Box", false)
-            .addCasing("57", "Any Tiered Glass", false)
-            .addCasing("45-55", "Sterile Farm Casing", false)
-            .addCasing("25", "Dirt or Grass", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addMufflerHatch("1", "Any casing", 1)
-            .addInputBus("0+", "Any casing", 1)
-            .addOutputBus("0+", "Any casing", 1)
-            .addAir("Interior center column")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("60", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("57", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("45-55", Casings.SterileFarmCasing.getLocalizedName(), false)
+            .addCasing("25", StatCollector.translateToLocalFormatted("gt.mbtt.structure.either_block", Blocks.dirt.getLocalizedName(), Blocks.grass.getLocalizedName()), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior_center_column"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.GOLD + "EvgenWarGold")
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -515,15 +533,15 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                 if (tool instanceof MetaGeneratedTool01) {
 
                     if (damage == SAW.ID || damage == POCKET_SAW.ID || damage == POCKET_MULTITOOL.ID) {
-                        return 1;
+                        return TOOL_MULTIPLIER_LOGS_SAW;
                     }
 
                     if (damage == BUZZSAW_LV.ID || damage == BUZZSAW_MV.ID || damage == BUZZSAW_HV.ID) {
-                        return 2;
+                        return TOOL_MULTIPLIER_LOGS_BUZZSAW;
                     }
 
                     if (damage == CHAINSAW_LV.ID || damage == CHAINSAW_MV.ID || damage == CHAINSAW_HV.ID) {
-                        return 4;
+                        return TOOL_MULTIPLIER_LOGS_CHAINSAW;
                     }
                 }
                 break;
@@ -532,27 +550,27 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
                 if (tool instanceof MetaGeneratedTool01
                     && (damage == BRANCHCUTTER.ID || damage == POCKET_BRANCHCUTTER.ID
                         || damage == POCKET_MULTITOOL.ID)) {
-                    return 1;
+                    return TOOL_MULTIPLIER_SAPLINGS_BRANCH_CUTTER;
                 }
                 if (Forestry.isModLoaded() && tool instanceof IToolGrafter && tool.isDamageable()) {
-                    return 4;
+                    return TOOL_MULTIPLIER_SAPLINGS_GRAFTER;
                 }
                 break;
 
             case LEAVES:
                 // Do not allow unbreakable tools. Operation should have a running cost.
                 if (tool instanceof ItemShears && tool.isDamageable()) {
-                    return 1;
+                    return TOOL_MULTIPLIER_LEAVES_SHEAR;
                 }
                 if (tool instanceof MetaGeneratedTool01) {
                     if (damage == POCKET_MULTITOOL.ID) {
-                        return 1;
+                        return TOOL_MULTIPLIER_LEAVES_SHEAR;
                     }
                     if (damage == WIRECUTTER.ID || damage == POCKET_WIRECUTTER.ID) {
-                        return 2;
+                        return TOOL_MULTIPLIER_LEAVES_WIRE_CUTTER;
                     }
                     if (damage == WIRECUTTER_LV.ID || damage == WIRECUTTER_MV.ID || damage == WIRECUTTER_HV.ID) {
-                        return 4;
+                        return TOOL_MULTIPLIER_LEAVES_ELECTRIC_WIRE_CUTTER;
                     }
                 }
                 break;
@@ -560,7 +578,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             case FRUIT:
                 if (tool instanceof MetaGeneratedTool01
                     && (damage == KNIFE.ID || damage == POCKET_KNIFE.ID || damage == POCKET_MULTITOOL.ID)) {
-                    return 1;
+                    return TOOL_MULTIPLIER_FRUIT_KNIFE;
                 }
                 break;
         }
