@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -44,6 +45,7 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -83,13 +85,71 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     private static final String[] FACING_DIRECTION_NAMES = new String[] { "GT5U.waila.facing.down",
         "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
         "GT5U.waila.facing.east", "GT5U.waila.facing.unknown" };
+    private static final int ENVIRONMENT_CHECK_INTERVAL = 100;
 
     @Override
     public IItemHandlerModifiable getInventoryHandler() {
         return inventoryHandler;
     }
 
-    protected final ICleanroomReceiver cleanroomReference = new CleanroomReference();
+    protected final ICleanroomReceiver cleanroomReference = new CleanroomReference() {
+
+        @Override
+        public void onCleanroomChanged() {
+            MetaTileEntity.this.onRecipeEnvironmentChanged();
+        }
+    };
+
+    private RecipeEnvironmentRequirements activeRecipeEnvironments = RecipeEnvironmentRequirements.EMPTY;
+    private boolean hasContinuousEnvironmentRequirements;
+    private boolean activeEnvironmentsSatisfied = true;
+    private long nextEnvironmentCheck;
+
+    public final void setActiveRecipeEnvironments(RecipeEnvironmentRequirements requirements) {
+        activeRecipeEnvironments = requirements;
+        hasContinuousEnvironmentRequirements = requirements.hasContinuousRequirements();
+        activeEnvironmentsSatisfied = true;
+        nextEnvironmentCheck = 0;
+    }
+
+    protected final RecipeEnvironmentRequirements getActiveRecipeEnvironments() {
+        return activeRecipeEnvironments;
+    }
+
+    protected final boolean satisfiesActiveRecipeEnvironments() {
+        return satisfiesActiveRecipeEnvironments(false);
+    }
+
+    protected final boolean satisfiesActiveRecipeEnvironments(boolean completingRecipe) {
+        if (!hasContinuousEnvironmentRequirements) return true;
+        long tick = getBaseMetaTileEntity().getTimer();
+        if (tick >= nextEnvironmentCheck || (completingRecipe && activeEnvironmentsSatisfied)) {
+            activeEnvironmentsSatisfied = activeRecipeEnvironments.matches(this, true);
+            nextEnvironmentCheck = tick + ENVIRONMENT_CHECK_INTERVAL;
+        }
+        return activeEnvironmentsSatisfied;
+    }
+
+    /**
+     * Invalidates cached conditions on the server thread
+     * Native machines queue their next admission attempt
+     */
+    public void onRecipeEnvironmentChanged() {
+        nextEnvironmentCheck = 0;
+    }
+
+    final void saveRecipeEnvironmentsNBT(NBTTagCompound tag) {
+        if (activeRecipeEnvironments.isEmpty()) {
+            tag.removeTag("recipeEnvironments");
+        } else {
+            tag.setTag("recipeEnvironments", activeRecipeEnvironments.writeToNBT());
+        }
+    }
+
+    final void loadRecipeEnvironmentsNBT(NBTTagCompound tag) {
+        setActiveRecipeEnvironments(
+            RecipeEnvironmentRequirements.readFromNBT(tag.getTagList("recipeEnvironments", Constants.NBT.TAG_STRING)));
+    }
 
     /**
      * accessibility to this Field is no longer given, see below

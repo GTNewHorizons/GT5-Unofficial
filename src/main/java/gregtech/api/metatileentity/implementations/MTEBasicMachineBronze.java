@@ -41,6 +41,8 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
+import gregtech.api.recipe.RecipeEnvironment;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -193,10 +195,15 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
             .items(getAllInputs())
             .voltage(TierEU.LV)
             .find();
-        if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
-            && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
+        if (tRecipe == null) return DID_NOT_FIND_RECIPE;
+        RecipeEnvironmentRequirements requirements = tRecipe.getEnvironmentRequirements()
+            .without(RecipeEnvironment.CLEANROOM)
+            .without(RecipeEnvironment.LOW_GRAVITY);
+        if (!requirements.matches(this, false)) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        if ((canOutput(tRecipe.mOutputs)) && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
             this.mOutputItems[0] = tRecipe.rollOutput(getBaseMetaTileEntity(), 0);
             calculateCustomOverclock(tRecipe);
+            setActiveRecipeEnvironments(requirements);
             return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
         return DID_NOT_FIND_RECIPE;

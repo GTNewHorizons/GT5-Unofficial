@@ -84,6 +84,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.ErrorType;
@@ -969,6 +970,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         dischargeController_EM(aBaseMetaTileEntity);
                         chargeController_EM(aBaseMetaTileEntity);
 
+                        if (mMaxProgresstime > 0 && !satisfiesActiveRecipeEnvironments()) {
+                            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                        }
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
                             if (onRunningTick(mInventory[1])) { // Compute EU
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
@@ -979,7 +983,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                 if (mMaxProgresstime > 0) {
                                     incrementProgressTime();
 
-                                    if (getProgresstime() >= mMaxProgresstime) {
+                                    boolean recipeComplete = getProgresstime() >= mMaxProgresstime;
+                                    if (recipeComplete && !satisfiesActiveRecipeEnvironments(true)) {
+                                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                                    } else if (recipeComplete) {
                                         hatchesStatusUpdate_EM();
 
                                         outputAfterRecipe_EM();
@@ -989,6 +996,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                         updateSlots();
                                         mProgresstime = 0;
                                         mMaxProgresstime = 0;
+                                        setActiveRecipeEnvironments(RecipeEnvironmentRequirements.EMPTY);
                                         mEfficiencyIncrease = 0;
                                         mLastWorkingTick = mTotalRunTime;
                                         if (processingLogic != null) {

@@ -62,6 +62,7 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.multiblock.MTECleanRoomGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -105,6 +106,8 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected static final int MIN_GLASS_TIER = 4; // EV
 
     private final Set<ICleanroomReceiver> cleanroomReceivers = new HashSet<>();
+    private final Set<ICleanroomReceiver> scannedReceivers = new HashSet<>();
+    private boolean cleanroomAvailable;
     private int mHeight = -1;
 
     public MTECleanroom(int aID, String aName, String aNameRegional) {
@@ -139,6 +142,26 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         mHardHammer = false;
         mSolderingTool = false;
         mCrowbar = false;
+        notifyAvailabilityChange();
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity base, long tick) {
+        super.runMachine(base, tick);
+        notifyAvailabilityChange();
+    }
+
+    @Override
+    public void stopMachine(@Nonnull ShutDownReason reason) {
+        super.stopMachine(reason);
+        notifyAvailabilityChange();
+    }
+
+    private void notifyAvailabilityChange() {
+        boolean available = isValidCleanroom() && getCleanness() != 0;
+        if (available == cleanroomAvailable) return;
+        cleanroomAvailable = available;
+        cleanroomReceivers.forEach(ICleanroomReceiver::onCleanroomChanged);
     }
 
     @Override
@@ -585,8 +608,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mUpdate = 100;
-        cleanroomReceivers.forEach(r -> r.setCleanroom(null));
-        cleanroomReceivers.clear();
+        scannedReceivers.clear();
 
         casingCount = 0;
         otherCount = 0;
@@ -664,7 +686,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             aBaseMetaTileEntity.setInternalOutputRedstoneSignal(tSide, t);
         }
 
-        // Re-add machines inside the cleanroom.
+        // Collect final membership before publishing associations after the structure check
 
         for (int dy = dyMin + 1; dy < 0; ++dy) {
             for (int dx = dxMin + 1; dx <= dxMax - 1; ++dx) {
@@ -672,8 +694,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     TileEntity te = aBaseMetaTileEntity.getTileEntityOffset(dx, dy, dz);
                     ICleanroomReceiver receiver = Capabilities.getCapability(te, ICleanroomReceiver.class);
                     if (receiver != null) {
-                        receiver.setCleanroom(this);
-                        cleanroomReceivers.add(receiver);
+                        scannedReceivers.add(receiver);
                     }
                 }
             }
@@ -681,6 +702,39 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
         if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Check successful.");
 
+    }
+
+    @Override
+    protected void onStructureCheckFinished(IGregTechTileEntity base) {
+        super.onStructureCheckFinished(base);
+        cleanroomReceivers.removeIf(receiver -> {
+            if (scannedReceivers.contains(receiver)) return false;
+            receiver.removeCleanroom(this);
+            return true;
+        });
+        for (ICleanroomReceiver receiver : scannedReceivers) {
+            if (cleanroomReceivers.add(receiver)) receiver.addCleanroom(this);
+        }
+        scannedReceivers.clear();
+        notifyAvailabilityChange();
+    }
+
+    private void detachReceivers() {
+        cleanroomReceivers.forEach(receiver -> receiver.removeCleanroom(this));
+        cleanroomReceivers.clear();
+        scannedReceivers.clear();
+    }
+
+    @Override
+    public void onRemoval() {
+        detachReceivers();
+        super.onRemoval();
+    }
+
+    @Override
+    public void onUnload() {
+        detachReceivers();
+        super.onUnload();
     }
 
     @Override

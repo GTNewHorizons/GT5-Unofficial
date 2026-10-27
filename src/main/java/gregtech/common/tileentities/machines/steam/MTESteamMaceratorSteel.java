@@ -33,6 +33,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineSteel;
+import gregtech.api.recipe.RecipeEnvironment;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -107,10 +109,15 @@ public class MTESteamMaceratorSteel extends MTEBasicMachineSteel {
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
 
+        RecipeEnvironmentRequirements requirements = tRecipe.getEnvironmentRequirements()
+            .without(RecipeEnvironment.CLEANROOM)
+            .without(RecipeEnvironment.LOW_GRAVITY);
+        if (!requirements.matches(this, false)) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.getOutput(0) != null) mOutputItems[0] = tRecipe.rollOutput(getBaseMetaTileEntity(), 0);
         calculateCustomOverclock(tRecipe);
+        setActiveRecipeEnvironments(requirements);
         return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
     }
 
