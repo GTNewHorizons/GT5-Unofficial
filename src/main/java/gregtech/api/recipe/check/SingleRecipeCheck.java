@@ -79,7 +79,7 @@ public class SingleRecipeCheck {
      */
     private SingleRecipeCheck(@Nonnull GTRecipe recipe, @Nonnull RecipeMap<?> recipeMap,
         @Nonnull ImmutableMap<ItemId, Integer> itemCost, @Nonnull ImmutableMap<Fluid, Integer> fluidCost) {
-        this.recipe = recipe;
+        this.recipe = recipe.getLogicalRecipe();
         this.recipeMap = recipeMap;
         this.itemCost = itemCost;
         this.fluidCost = fluidCost;

@@ -373,6 +373,10 @@ public class ParallelHelper {
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
     protected void determineParallel() {
+        if (recipe.isRecipeFamily()) {
+            result = CheckRecipeResultRegistry.MISSING_ENVIRONMENT;
+            return;
+        }
         if (maxParallel <= 0) {
             return;
         }

@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,6 +21,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.Contract;
 
 import com.LazyFlesh.variablehorizons.variants.VariantNames;
+import com.google.common.collect.ImmutableList;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
@@ -125,6 +127,7 @@ public class GTRecipeBuilder {
      */
     protected boolean skip = false;
     protected boolean valid = true;
+    private List<Consumer<GTRecipeBuilder>> familyVariants;
 
     GTRecipeBuilder() {}
 
@@ -134,7 +137,7 @@ public class GTRecipeBuilder {
         int duration, int eut, int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe,
         boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive, boolean exactItemInputs,
         String[] neiDesc, RecipeCategory recipeCategory, @Nullable IRecipeMetadataStorage metadataStorage,
-        boolean checkForCollision, boolean skip, boolean valid) {
+        boolean checkForCollision, boolean skip, boolean valid, List<Consumer<GTRecipeBuilder>> familyVariants) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -167,6 +170,7 @@ public class GTRecipeBuilder {
         this.checkForCollision = checkForCollision;
         this.skip = skip;
         this.valid = valid;
+        this.familyVariants = familyVariants;
     }
 
     // region helper methods
@@ -902,6 +906,18 @@ public class GTRecipeBuilder {
     }
 
     /**
+     * Defines environmental outcomes under one input registration. Each callback receives a copy of the common
+     * builder and may set outputs and requirements. Inputs, duration and power must remain common.
+     * Outcomes skipped by their mod or material requirements are omitted. An empty family is not registered.
+     */
+    @SafeVarargs
+    public final GTRecipeBuilder variants(Consumer<GTRecipeBuilder>... variants) {
+        if (variants.length == 0) throw new IllegalArgumentException("A recipe family needs outcomes");
+        familyVariants = ImmutableList.copyOf(variants);
+        return this;
+    }
+
+    /**
      * Specifies whether a variant modifies this recipe. If any of the listed variants are loaded, all the operations
      * for this builder will be ignored. If Variable Horizons is not loaded, this does nothing.
      *
@@ -966,7 +982,8 @@ public class GTRecipeBuilder {
             metadataStorage,
             checkForCollision,
             skip,
-            valid);
+            valid,
+            familyVariants);
     }
 
     /**
@@ -1002,7 +1019,8 @@ public class GTRecipeBuilder {
             null,
             checkForCollision,
             skip,
-            valid);
+            valid,
+            familyVariants);
     }
 
     // region getter
@@ -1230,7 +1248,7 @@ public class GTRecipeBuilder {
             return Optional.empty();
         }
         preBuildChecks();
-        return Optional.of(
+        return finishBuild(
             decorate(
                 new GTRecipe(
                     inputsBasic,
@@ -1273,7 +1291,7 @@ public class GTRecipeBuilder {
             return Optional.empty();
         }
         preBuildChecks();
-        return Optional.of(
+        return finishBuild(
             decorate(
                 new GTRecipe.GTRecipe_WithAlt(
                     inputsBasic,
@@ -1305,6 +1323,22 @@ public class GTRecipeBuilder {
     private void preBuildChecks() {
         if (duration == -1) throw new IllegalStateException("no duration");
         if (eut == -1) throw new IllegalStateException("no eut");
+    }
+
+    private <T extends GTRecipe> Optional<T> finishBuild(T recipe) {
+        if (familyVariants == null) return Optional.of(recipe);
+        List<GTRecipe> outcomes = new ArrayList<>();
+        for (Consumer<GTRecipeBuilder> configure : familyVariants) {
+            GTRecipeBuilder outcome = copy();
+            outcome.familyVariants = null;
+            configure.accept(outcome);
+            if (outcome.familyVariants != null) throw new IllegalArgumentException("Nested recipe families");
+            if (outcome.skip || outcome.takesOmittedInput()) continue;
+            outcomes.addAll(GTRecipeMapUtil.buildOrEmpty(outcome));
+        }
+        if (outcomes.isEmpty()) return Optional.empty();
+        recipe.setFamilyVariants(outcomes);
+        return Optional.of(recipe);
     }
 
     private <T extends GTRecipe> T decorate(T r) {
@@ -1364,6 +1398,7 @@ public class GTRecipeBuilder {
     }
 
     public GTRecipeBuilder reset() {
+        familyVariants = null;
         metadataStorage = null;
         alts = null;
         altFluidInputs = null;

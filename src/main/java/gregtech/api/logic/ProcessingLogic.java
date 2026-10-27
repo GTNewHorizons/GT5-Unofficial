@@ -460,6 +460,9 @@ public class ProcessingLogic {
      */
     @Nonnull
     private CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
+        recipe = recipe.selectRecipe(machine instanceof MetaTileEntity controller ? controller : null);
+        if (recipe == null) return CalculationResult.ofFailure(CheckRecipeResultRegistry.MISSING_ENVIRONMENT);
+
         RecipeEnvironmentRequirements requirements = recipe.getEnvironmentRequirements();
         if (!requirements.isEmpty()
             && (!(machine instanceof MetaTileEntity controller) || !requirements.matches(controller, false))) {
@@ -496,7 +499,7 @@ public class ProcessingLogic {
     protected CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
         @Nonnull OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
         if (recipe.mCanBeBuffered) {
-            lastRecipe = recipe;
+            lastRecipe = recipe.getLogicalRecipe();
         } else {
             lastRecipe = null;
         }

@@ -239,6 +239,9 @@ public class RecipeMapBackend {
                 return Collections.emptyList();
             }
             properties.transformRecipe(recipe);
+            if (recipe.isRecipeFamily()) {
+                for (GTRecipe variant : recipe.getRecipeVariants()) properties.transformRecipe(variant);
+            }
             if (builder.isCheckForCollision() && ENABLE_COLLISION_CHECK && checkCollision(recipe)) {
                 handleCollision(recipe);
                 continue;

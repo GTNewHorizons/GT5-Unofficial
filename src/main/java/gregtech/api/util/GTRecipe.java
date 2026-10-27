@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.D2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,6 +21,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableList;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import gregtech.GTMod;
@@ -29,6 +32,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.MaterialParts;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -143,6 +147,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * otherwise it can be null.
      */
     private RecipeCategory recipeCategory;
+    private List<GTRecipe> familyVariants;
+    private GTRecipe logicalRecipe;
+    private boolean ambiguityReported;
     /**
      * Stores which mod added this recipe
      */
@@ -183,7 +190,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
         mHidden = aRecipe.mHidden;
         RecipeEnvironmentRequirements requirements = aRecipe
             .getMetadataOrDefault(GTRecipeConstants.ENVIRONMENT_REQUIREMENTS, RecipeEnvironmentRequirements.EMPTY);
-        if (requirements.isEmpty()) {
+        if (aRecipe.isRecipeFamily() || aRecipe.logicalRecipe != null) {
+            metadataStorage = aRecipe.metadataStorage.copy();
+            recipeCategory = aRecipe.recipeCategory;
+            neiDesc = aRecipe.neiDesc == null ? null : aRecipe.neiDesc.clone();
+            logicalRecipe = aRecipe.logicalRecipe;
+        } else if (requirements.isEmpty()) {
             metadataStorage = EmptyRecipeMetadataStorage.INSTANCE;
         } else {
             RecipeMetadataStorage copiedMetadata = new RecipeMetadataStorage();
@@ -191,6 +203,15 @@ public class GTRecipe implements Comparable<GTRecipe> {
             metadataStorage = copiedMetadata;
         }
         owners = aRecipe.owners == null ? null : new ArrayList<>(aRecipe.owners);
+        if (aRecipe.isRecipeFamily()) {
+            List<GTRecipe> outcomes = new ArrayList<>();
+            for (GTRecipe outcome : aRecipe.familyVariants) {
+                GTRecipe copied = outcome.copy();
+                copied.logicalRecipe = this;
+                outcomes.add(copied);
+            }
+            familyVariants = ImmutableList.copyOf(outcomes);
+        }
         reloadOwner();
     }
 
@@ -434,6 +455,78 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return new GTRecipe(this, true);
     }
 
+    void setFamilyVariants(List<GTRecipe> variants) {
+        if (isRecipeFamily() || logicalRecipe != null || variants.isEmpty()) {
+            throw new IllegalArgumentException("Invalid recipe family");
+        }
+        if (mOutputs.length != 0 || mFluidOutputs.length != 0) {
+            throw new IllegalArgumentException("Family outputs belong to its variants");
+        }
+        for (GTRecipe variant : variants) {
+            if (this instanceof GTRecipe_WithAlt || variant instanceof GTRecipe_WithAlt
+                || mAltFluidInputs != null
+                || variant.mAltFluidInputs != null) {
+                throw new IllegalArgumentException("Recipe families require concrete common inputs");
+            }
+            if (!sameStacks(mInputs, variant.mInputs) || !sameFluids(mFluidInputs, variant.mFluidInputs)
+                || !sameSpecialItems(mSpecialItems, variant.mSpecialItems)
+                || !Arrays.equals(mInputChances, variant.mInputChances)
+                || !Arrays.equals(mFluidInputChances, variant.mFluidInputChances)
+                || isNBTSensitive != variant.isNBTSensitive
+                || exactItemInputs != variant.exactItemInputs
+                || mEUt != variant.mEUt
+                || mDuration != variant.mDuration) {
+                throw new IllegalArgumentException("Recipe family variants must share inputs, duration and power");
+            }
+            variant.logicalRecipe = this;
+        }
+        familyVariants = ImmutableList.copyOf(variants);
+    }
+
+    public boolean isRecipeFamily() {
+        return familyVariants != null;
+    }
+
+    /**
+     * Returns the indexed recipe identity. Operation outcomes and recipe locks share this identity.
+     */
+    public GTRecipe getLogicalRecipe() {
+        return logicalRecipe == null ? this : logicalRecipe;
+    }
+
+    /**
+     * Returns authored outcomes for display and recipe-map transformations. Do not mutate these during processing.
+     */
+    public List<GTRecipe> getRecipeVariants() {
+        return isRecipeFamily() ? familyVariants : Collections.singletonList(this);
+    }
+
+    /**
+     * Selects exactly one eligible outcome before output protection or consumption. Each operation receives its own
+     * copy. Missing or ambiguous conditions fail admission without choosing a default outcome.
+     */
+    @Nullable
+    public GTRecipe selectRecipe(@Nullable MetaTileEntity machine) {
+        GTRecipe root = getLogicalRecipe();
+        if (!root.isRecipeFamily()) return this;
+        if (machine == null) return null;
+        GTRecipe selected = null;
+        for (GTRecipe variant : root.familyVariants) {
+            if (!variant.mEnabled || !variant.getEnvironmentRequirements()
+                .matches(machine, false)) continue;
+            if (selected != null) {
+                if (!root.ambiguityReported) {
+                    GT_FML_LOGGER
+                        .error("Ambiguous environmental recipe family for inputs {}", Arrays.toString(root.mInputs));
+                    root.ambiguityReported = true;
+                }
+                return null;
+            }
+            selected = variant;
+        }
+        return selected == null ? null : selected.copy();
+    }
+
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, FluidStack[] aFluidInputs,
         ItemStack... aInputs) {
         return isRecipeInputEqual(aDecreaseStacksizeBySuccess, false, 1, aFluidInputs, aInputs);
@@ -547,6 +640,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
      */
     public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes,
         int amountMultiplier, FluidStack[] aFluidInputs, ItemStack... aInputs) {
+        if (aDecreaseStacksizeBySuccess && isRecipeFamily()) return false;
         double maxParallel = maxParallelCalculatedByInputs(amountMultiplier, aFluidInputs, aInputs);
         if (aDontCheckStackSizes) {
             return maxParallel > 0;
@@ -562,8 +656,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
     /**
      * WARNING: Ensure that item inputs and fluid inputs are enough to be consumed with
      * {@link #maxParallelCalculatedByInputs} before calling this method!
+     *
+     * @throws IllegalStateException if this recipe is a family whose outcome has not been selected
      */
     public void consumeInput(int amountMultiplier, FluidStack[] fluidInputs, ItemStack... itemInputs) {
+        if (isRecipeFamily()) throw new IllegalStateException("Select a recipe family outcome before consuming inputs");
         if (amountMultiplier <= 0) return;
 
         if (fluidInputs != null) {
@@ -848,6 +945,14 @@ public class GTRecipe implements Comparable<GTRecipe> {
     /// alternative inputs are never identical to another.
     public boolean isIdenticalTo(GTRecipe other) {
         if (other == this) return true;
+        if (isRecipeFamily() != other.isRecipeFamily()) return false;
+        if (isRecipeFamily()) {
+            if (familyVariants.size() != other.familyVariants.size()) return false;
+            for (int i = 0; i < familyVariants.size(); i++) {
+                if (!familyVariants.get(i)
+                    .isIdenticalTo(other.familyVariants.get(i))) return false;
+            }
+        }
         if (getClass() != other.getClass() || this instanceof GTRecipe_WithAlt) return false;
         return mDuration == other.mDuration && mEUt == other.mEUt
             && mSpecialValue == other.mSpecialValue
@@ -944,6 +1049,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
      */
     public void setRecipeCategory(RecipeCategory recipeCategory) {
         this.recipeCategory = recipeCategory;
+        if (isRecipeFamily()) {
+            for (GTRecipe variant : familyVariants) variant.setRecipeCategory(recipeCategory);
+        }
     }
 
     private static final List<String> excludedStacktraces = Arrays.asList(

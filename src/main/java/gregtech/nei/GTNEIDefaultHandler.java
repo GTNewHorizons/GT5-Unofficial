@@ -205,6 +205,10 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 cache = OreVariantGroups.collapse(
                     recipes.stream()
                         .filter(r -> !r.mHidden)
+                        .flatMap(
+                            r -> r.getRecipeVariants()
+                                .stream())
+                        .filter(r -> !r.mHidden)
                         .sorted(neiProperties.comparator)
                         .collect(Collectors.toList()),
                     this::createCachedRecipe);

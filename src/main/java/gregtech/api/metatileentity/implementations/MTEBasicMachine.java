@@ -1121,6 +1121,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (tRecipe == null) {
             return DID_NOT_FIND_RECIPE;
         }
+        tRecipe = tRecipe.selectRecipe(this);
+        if (tRecipe == null) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.getMetadataOrDefault(EXPLODE, false) && getBaseMetaTileEntity() != null) {
             getBaseMetaTileEntity().doExplosion(V[mTier] * 4);
             return DID_NOT_FIND_RECIPE;
@@ -1130,7 +1132,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             return DID_NOT_FIND_RECIPE;
         }
         if (tRecipe.getMetadataOrDefault(COMPRESSION_TIER, 0) > 0) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
+        if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe.getLogicalRecipe();
         if (!canOutput(tRecipe)) {
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
