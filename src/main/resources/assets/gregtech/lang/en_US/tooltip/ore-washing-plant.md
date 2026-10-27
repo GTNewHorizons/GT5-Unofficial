@@ -1,2 +1,2 @@
 {hr}
-Switch to {color_mode:Simple Washer} mode with a {color_name:Screwdriver} or the button in the controller GUI
+Use a {color_name:Screwdriver} to switch modes

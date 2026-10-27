@@ -171,6 +171,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
                     .put("rocket_coefficient", formatNumber(ROCKET_EFFICIENCY_COEFFICIENT, new FormatOptions().setDecimalPlaces(3)))
                     .build())
             .addSupportAny()
+            .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 13, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))

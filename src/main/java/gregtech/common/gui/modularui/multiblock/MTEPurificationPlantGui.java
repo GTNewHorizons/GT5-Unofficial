@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import net.minecraft.util.StatCollector;
 
@@ -60,7 +61,13 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         BooleanSyncValue debugMode = new BooleanSyncValue(multiblock::isDebugMode, multiblock::setDebugMode).allowC2S();
 
         GenericListSyncHandler<LinkedPurificationUnit> linkedPurifierUnits = new GenericListSyncHandler.Builder<LinkedPurificationUnit>()
-            .getter(multiblock::getLinkedUnits)
+            .getter(
+                () -> multiblock.getLinkedUnits()
+                    .stream()
+                    .filter(
+                        unit -> unit.metaTileEntity()
+                            .isValid())
+                    .collect(Collectors.toList()))
             .setter(links -> {
                 multiblock.getLinkedUnits()
                     .clear();

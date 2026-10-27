@@ -32,7 +32,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -175,22 +174,19 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.vacuum_freezer"))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
-            .addSeparator()
             .addMarkdown(
                 new ResourceLocation("gregtech", "endothermic-fridge"),
                 ImmutableMap.<String, Object>builder()
-                    .put("max_speed", formatNumber(MAX_SPEED_BONUS))
+                    .put("max_speed", MAX_SPEED_BONUS)
                     .put("warmup_minutes", WARMUP_SECONDS / 60)
                     .put("cryo_speedup", CRYO_SPEEDUP)
                     .put("subspace_tier", SUBSPACE_COOLING_TIER)
-                    .put("booster_drain", formatNumber(BOOSTER_DRAIN))
-                    .put("min_cryo", formatNumber(CRYOTHEUM_DRAIN_BASE))
-                    .put("max_cryo", formatNumber(CRYOTHEUM_DRAIN_BASE * MAX_SPEED_BONUS))
+                    .put("booster_drain", BOOSTER_DRAIN)
+                    .put("min_cryo", CRYOTHEUM_DRAIN_BASE)
+                    .put("max_cryo", CRYOTHEUM_DRAIN_BASE * MAX_SPEED_BONUS)
                     .build())
-            .addSupportAny()
             .addUnlimitedTierSkips()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.mbtt.flavor.endothermic_fridge"))
+            .addSupportAny()
             .beginStructureBlock(23, 16, 23, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("750-773", Casings.FridgeCasing.getLocalizedName(), false)

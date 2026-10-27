@@ -66,16 +66,14 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.molecular_transformer"))
             .addMarkdown(new ResourceLocation("gregtech", "industrial-molecular-transformer"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("95-104", Casings.MolecularContainmentCasing.getLocalizedName(), false)
-            .addCasing("35", new ItemStack(Loaders.speedingPipe, 1, 0).getDisplayName(), false)
+            .addCasing("35", StatCollector.translateToLocal("speedingPipe.0.name"), false)
             .addCasing("30", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("14", Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_containment_casing"), 1)
@@ -86,7 +84,6 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 

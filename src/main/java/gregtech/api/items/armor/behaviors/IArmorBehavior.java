@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
-import gregtech.GTLoggers;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.items.armor.ArmorContext;
 
@@ -115,8 +114,6 @@ public interface IArmorBehavior {
      */
     @NotNull
     default IArmorBehavior merge(@NotNull IArmorBehavior other) {
-        GTLoggers.GT_FML_LOGGER
-            .warn("Tried to merge armor behavior that does not support stacking! {} -> {}", other, this);
         return this;
     }
 
