@@ -41,6 +41,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -62,6 +63,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     protected MetaPipeEntity mMetaTileEntity;
     private boolean mWorkUpdate = false, mWorks = true;
     private byte oldConnections = 0;
+    private int mCustomTint = NO_CUSTOM_TINT;
+    public static final int NO_CUSTOM_TINT = -1;
     protected Node node;
     protected NodePath nodePath;
 
@@ -125,6 +128,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             writeCommonNBT(nbt);
             nbt.setByte("mConnections", mConnections);
             nbt.setBoolean("mWorks", !mWorks);
+            if (mCustomTint != NO_CUSTOM_TINT) nbt.setInteger("mCustomTint", mCustomTint);
         } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity", e);
         }
@@ -148,6 +152,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             else mID = aID;
             mConnections = aNBT.getByte("mConnections");
             mWorks = !aNBT.getBoolean("mWorks");
+            mCustomTint = aNBT.hasKey("mCustomTint") ? aNBT.getInteger("mCustomTint") : NO_CUSTOM_TINT;
 
             readCommonNBT(aNBT);
             readCoverNBT(aNBT);
@@ -262,6 +267,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         buffer.writeByte(getUpdateData());
         buffer.writeByte(getSidedRedstoneMask());
         buffer.writeByte(getColorRaw());
+        buffer.writeInt(mCustomTint);
     }
 
     @Override
@@ -271,6 +277,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, buffer.readByte());
         receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, buffer.readByte());
         receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, buffer.readByte());
+        mCustomTint = buffer.readInt();
     }
 
     @Override
@@ -1099,7 +1106,29 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         if (aColor > 15 || aColor < -1) aColor = -1;
         byte rawColor = (byte) (aColor + 1);
         setColorRaw(rawColor);
+        setCustomTint(NO_CUSTOM_TINT);
         return rawColor;
+    }
+
+    public int getCustomTint() {
+        return mCustomTint;
+    }
+
+    public void setCustomTint(int rgb) {
+        if (rgb != NO_CUSTOM_TINT) rgb &= 0xFFFFFF;
+        if (mCustomTint == rgb) return;
+        mCustomTint = rgb;
+        if (worldObj != null && isServerSide()) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        } else {
+            issueTextureUpdate();
+        }
+    }
+
+    public static short @Nullable [] getCustomTintRGBa(IGregTechTileEntity base) {
+        if (!(base instanceof BaseMetaPipeEntity pipe) || pipe.mCustomTint == NO_CUSTOM_TINT) return null;
+        final int rgb = pipe.mCustomTint;
+        return new short[] { (short) ((rgb >> 16) & 0xFF), (short) ((rgb >> 8) & 0xFF), (short) (rgb & 0xFF), 0 };
     }
 
     @Override
