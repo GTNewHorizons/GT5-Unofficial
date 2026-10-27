@@ -38,9 +38,10 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
         ByteBuf buf = Unpooled.buffer();
         buf.writeByte(msg.getPacketID());
         msg.encode(new ByteBufOutputStream(buf));
+        // FMLProxyPacket sends the whole backing array of its buffer, so give it one holding only the written bytes
         out.add(
             new FMLProxyPacket(
-                buf,
+                buf.copy(),
                 ctx.channel()
                     .attr(NetworkRegistry.FML_CHANNEL)
                     .get()));

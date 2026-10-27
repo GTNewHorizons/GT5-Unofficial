@@ -55,9 +55,10 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacket> i
         final ByteBuf tBuf = Unpooled.buffer()
             .writeByte(aPacket.getPacketID());
         aPacket.encode(tBuf);
+        // FMLProxyPacket sends the whole backing array of its buffer, so give it one holding only the written bytes
         aOutput.add(
             new FMLProxyPacket(
-                tBuf,
+                tBuf.copy(),
                 aContext.channel()
                     .attr(NetworkRegistry.FML_CHANNEL)
                     .get()));
