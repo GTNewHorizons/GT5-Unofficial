@@ -2019,7 +2019,6 @@ GT5U.MBTT.Structure.Projector=§fUse the Multiblock Structure §9Hologram §1Pro
 GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for §fLaser Hatches§7
 GT5U.MBTT.Structure.EnergyHatchGlassTier=§aEnergy Hatch limited by Glass Tier
 GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier unlocks all
-GT5U.MBTT.Structure.DynamoLimit=§cDynamo cannot be greater than 4A
 GT5U.MBTT.Structure.Rain=§cDon't forget to protect the machine from rain and/or meteors!
 GT5U.MBTT.Structure.WaterCost=The water is a one-time-cost to prime the machine, insert with a hatch
 GT5U.MBTT.Structure.WaterFree=The water is spawned for free once formed

@@ -154,7 +154,6 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_tungstensteel_casing_next_to_gearbox"), 1)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.area_above_engine_intakes"))
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         // spotless:on
         return tt;

@@ -15,7 +15,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -70,6 +69,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
             .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .addSupport4A()
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front center, 2nd layer")
             .addCasing("16-21", "Stable Titanium Machine Casing", false)
@@ -80,7 +80,6 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             .addMufflerHatch("1", "Any machine casing", 1)
             .addInputHatch("1+", "Any machine casing", 1)
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
     }

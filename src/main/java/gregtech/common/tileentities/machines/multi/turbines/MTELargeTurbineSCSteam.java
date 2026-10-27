@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.turbines;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -156,7 +155,6 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
             .addOutputHatch("0+", "Any back turbine casing", 1)
             .addAir("3x3 area in front of controller")
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
     }
 }

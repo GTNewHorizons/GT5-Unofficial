@@ -9,7 +9,6 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -94,7 +93,6 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
             .addOutputHatch("0+", "Any back turbine casing", 1)
             .addAir("3x3 area in front of controller")
             .addStructureInfo("")
-            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
     }
