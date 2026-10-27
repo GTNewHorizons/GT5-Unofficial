@@ -41,6 +41,7 @@ gt.oreprefix.flawed_material_crystal=Flawed %s Crystal
 gt.oreprefix.flawless_material=Flawless %s
 gt.oreprefix.flawless_material_crystal=Flawless %s Crystal
 gt.oreprefix.ground_material=Ground %s
+gt.oreprefix.ground_material_ore=Ground %s Ore
 gt.oreprefix.hot_material_ingot=Hot %s Ingot
 gt.oreprefix.impure_pile_of_material=Impure Pile of %s
 gt.oreprefix.impure_pile_of_material_crystal_powder=Impure Pile of %s Crystal Powder
