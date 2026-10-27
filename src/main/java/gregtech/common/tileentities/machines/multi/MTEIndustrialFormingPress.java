@@ -13,6 +13,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -24,6 +25,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,6 +42,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MTEIndustrialFormingPress>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -84,22 +87,22 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Forming Press, IFP")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.forming_press"))
             .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 3, false)
-            .addController("Front bottom center")
-            .addCasing("5-20", "Metalworking Machine Casing", false)
-            .addCasing("6", "Titanium Frame Box", false)
-            .addCasing("6", "Steel Pipe Casing", false)
-            .addCasing("5", "Forming Core", false)
-            .addCasing("1", "Titanium Gear Box Casing", false)
-            .addEnergyHatch("1+", "Any machine casing", 1)
-            .addMaintenanceHatch("1", "Any machine casing", 1)
-            .addMufflerHatch("1", "Any machine casing", 1)
-            .addInputBus("1+", "Any machine casing", 1)
-            .addInputHatch("0+", "Any machine casing", 1)
-            .addOutputBus("1+", "Any machine casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("5-20", Casings.MaterialPressCasing.getLocalizedName(), false)
+            .addCasing("6", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Titanium), false)
+            .addCasing("6", Casings.SteelPipeCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.FormingCore.getLocalizedName(), false)
+            .addCasing("1", Casings.TitaniumGearBoxCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .toolTipFinisher();
         return tt;
     }

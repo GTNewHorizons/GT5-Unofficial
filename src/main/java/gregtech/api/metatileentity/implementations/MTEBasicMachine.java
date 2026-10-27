@@ -1372,8 +1372,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         NBTTagCompound tag) {
         for (int i = 0; i < itemStacks.length; i++) {
             if (tag.hasKey(nameTag + i)) {
-                ItemStack inputStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag(nameTag + i));
-
+                ItemStack inputStack = GTUtility.loadItem(tag.getCompoundTag(nameTag + i));
                 if (inputStack == null) {
                     continue;
                 }
@@ -1387,12 +1386,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
     }
 
-    private void getWailaNBTTagWithItems(ItemStack[] itemStacks, String nameTag, NBTTagCompound tag) {
+    protected void getWailaNBTTagWithItems(ItemStack[] itemStacks, String nameTag, NBTTagCompound tag) {
         for (int i = 0; i < itemStacks.length; i++) {
             ItemStack itemStack = itemStacks[i];
             if (itemStack != null) {
-                NBTTagCompound itemTag = new NBTTagCompound();
-                itemStack.writeToNBT(itemTag);
+                NBTTagCompound itemTag = GTUtility.saveItem(itemStack);
                 tag.setTag(nameTag + i, itemTag);
             }
         }
