@@ -184,7 +184,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     ItemList.ActivatedCarbonFilterMesh.get(1)
                         .getDisplayName(),
                     "filter_chance",
-                    formatNumber(FILTER_DAMAGE_RATE)))
+                    FILTER_DAMAGE_RATE))
             .beginStructureBlock(11, 4, 11, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("123-128", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)

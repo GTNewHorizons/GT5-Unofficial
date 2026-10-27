@@ -225,9 +225,9 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     .put("tier", getWaterTier())
                     .put("housing", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"))
                     .put("indicator", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"))
-                    .put("min_swap", formatNumber((float) MIN_TIME_BETWEEN_SWAPS / SECONDS))
-                    .put("max_swap", formatNumber((float) MAX_TIME_BETWEEN_SWAPS / SECONDS))
-                    .put("success", formatNumber(SUCCESS_PER_LENS))
+                    .put("min_swap", (float) MIN_TIME_BETWEEN_SWAPS / SECONDS)
+                    .put("max_swap", (float) MAX_TIME_BETWEEN_SWAPS / SECONDS)
+                    .put("success", SUCCESS_PER_LENS)
                     .put(
                         "first_lens",
                         GGMaterial.orundum.get(OrePrefixes.lens, 1)

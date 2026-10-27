@@ -269,13 +269,13 @@ public class MTEPurificationUnitBaryonicPerfection
                     .put("interval", CONSUME_INTERVAL)
                     .put("catalyst_cost", CATALYST_BASE_COST)
                     .put(
-                        "infinity",
+                        "catalyst_fluid",
                         Materials.Infinity.getMolten(1)
                             .getLocalizedName())
-                    .put("output", formatNumber(BARYONIC_MATTER_OUTPUT))
+                    .put("output", BARYONIC_MATTER_OUTPUT)
                     .put("extra_output", PurifiedWaterRecipes.extraBaryonicOutput)
                     .put(
-                        "baryonic",
+                        "output_fluid",
                         Materials.StableBaryonicMatter.getFluid(1)
                             .getLocalizedName())
                     .build())

@@ -159,9 +159,9 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     "cycle",
                     CYCLE_TIME_TICKS / SECONDS,
                     "boost_fluid",
-                    formatNumber(WATER_BOOST_NEEDED_FLUID * 100),
+                    WATER_BOOST_NEEDED_FLUID * 100,
                     "boost_chance",
-                    formatNumber(WATER_BOOST_BONUS_CHANCE * 100),
+                    WATER_BOOST_BONUS_CHANCE * 100,
                     "debug_cycle",
                     CYCLE_TIME_IN_DEBUG / SECONDS))
             .addSupportAny()

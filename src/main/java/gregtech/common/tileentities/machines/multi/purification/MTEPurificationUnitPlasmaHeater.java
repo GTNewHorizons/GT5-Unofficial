@@ -263,9 +263,9 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 new ResourceLocation("gregtech", "purification-unit-plasma-heater"),
                 ImmutableMap.<String, Object>builder()
                     .put("tier", getWaterTier())
-                    .put("heating_point", formatNumber(HEATING_POINT))
+                    .put("heating_point", HEATING_POINT)
                     .put("success", SUCCESS_PER_CYCLE)
-                    .put("max_temp", formatNumber(MAX_TEMP))
+                    .put("max_temp", MAX_TEMP)
                     .put("max_plasma", MAX_PLASMA_PER_SEC)
                     .put("max_coolant", MAX_COOLANT_PER_SEC)
                     .put(

@@ -7,12 +7,12 @@ will correctly identify the lone quark and succeed the recipe
 The order of catalysts in the combination does not matter, so {blue:Up}/{light_purple:Down} can be identified by inserting {light_purple:Down}/{blue:Up}
 {hr}
 Every {color_time:{var:interval}} ticks, consumes ALL catalysts in the input bus
-The base cost of inserting a catalyst is {color_name:{var:catalyst_cost} {L}} of {color_name:{var:infinity}}
+The base cost of inserting a catalyst is {color_name:{var:catalyst_cost} {L}} of {color_name:{var:catalyst_fluid}}
 For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled
 {hr}
 Keeps track of the entire sequence of catalysts inserted this recipe
-If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs {color_name:{var:output} {L}} of {color_name:{var:baryonic}}
-At the end of a successful recipe, outputs additional {color_name:{var:extra_output} {L}} of {color_name:{var:baryonic}} per parallel
+If the correct catalyst combination is in the sequence of inserted catalysts, immediately outputs {color_name:{var:output} {L}} of {color_name:{var:output_fluid}}
+At the end of a successful recipe, outputs additional {color_name:{var:extra_output} {L}} of {color_name:{var:output_fluid}} per parallel
 At the end of the recipe, returns all incorrectly inserted catalysts in the output bus
 {hr}
 {aqua:{italic:The final stage of water purification goes beyond subatomic particles and identifies the smallest}}

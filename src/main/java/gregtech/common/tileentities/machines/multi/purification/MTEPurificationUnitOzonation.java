@@ -183,9 +183,9 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                     "tier",
                     getWaterTier(),
                     "max_ozone",
-                    formatNumber(MAX_OZONE_GAS_FOR_EXPLOSION),
+                    MAX_OZONE_GAS_FOR_EXPLOSION,
                     "bonus",
-                    formatNumber(SUCCESS_PER_OZONE_DOUBLING),
+                    SUCCESS_PER_OZONE_DOUBLING,
                     "ozone",
                     Materials.Ozone.getGas(1)
                         .getLocalizedName()))
