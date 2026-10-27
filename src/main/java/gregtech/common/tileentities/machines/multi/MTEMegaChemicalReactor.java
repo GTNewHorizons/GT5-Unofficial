@@ -22,6 +22,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -48,6 +49,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMegaChemicalReactor>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -101,7 +103,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor, MCR")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.mega_chemical_reactor"))
             .addStaticParallelInfo(PARALLELS)
             .addMarkdown(new ResourceLocation("gregtech", "mega-chemical-reactor"))
             .addUnlimitedTierSkips()
@@ -109,15 +111,21 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .beginStructureBlock(5, 5, 9, false)
             .addEnergyHatchGlassTier()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addController("Front center, 3rd layer")
-            .addCasing("0-79", "Chemically Inert Machine Casing", false)
-            .addCasing("64", "Any Tiered Glass", true)
-            .addCasing("28", "PTFE Pipe Casing", false)
-            .addCasing("7", "Fusion Coil Block or Eternal Heating Coil", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputAny("1+", "Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
+            .addCasing("0-79", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
+            .addCasing("64", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing("28", Casings.PTFEPipeCasing.getLocalizedName(), false)
+            .addCasing(
+                "7",
+                StatCollector.translateToLocalFormatted(
+                    "gt.mbtt.structure.either_block",
+                    Casings.FusionCoilBlock.getLocalizedName(),
+                    Casings.EternalCoilBlock.getLocalizedName()),
+                false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

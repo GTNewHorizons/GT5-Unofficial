@@ -51,6 +51,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
@@ -77,6 +78,7 @@ import gregtech.common.gui.modularui.multiblock.MTELargeNeutralizationEngineGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTELargeNeutralizationEngine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -319,8 +321,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType("Acid Generator, LNE")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.acid_generator"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-neutralization-engine"),
                 ImmutableMap.<String, Object>builder()
@@ -348,19 +349,22 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     .build())
             .addSupportAny()
             .beginStructureBlock(11, 7, 3, true)
-            .addController("Top center, 6th layer")
-            .addCasing("30-43", "Machine Casing", true)
-            .addCasing("34", "PTFE Frame Box", false)
-            .addCasing("15", "PTFE Pipe Casing", false)
-            .addMiscHatch("0+", "Toxic Residue Sensor Hatch", "Any machine casing", 1)
-            .addDynamoHatch("1+", "Any machine casing", 1)
-            .addMaintenanceHatch("1", "Any machine casing", 1)
-            .addInputBus("0+", "Any machine casing", 1)
-            .addInputHatch("1+", "Any machine casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.top_center_6th_layer"))
+            .addCasing("30-43", StatCollector.translateToLocal("GT5U.MBTT.Tiers.MachineCasing"), true)
+            .addCasing("34", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
+            .addCasing("15", Casings.PTFEPipeCasing.getLocalizedName(), false)
+            .addMiscHatch(
+                "0+",
+                StatCollector.translateToLocal("GT5U.MBTT.ToxicResidueSensorHatch"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"),
+                1)
+            .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
