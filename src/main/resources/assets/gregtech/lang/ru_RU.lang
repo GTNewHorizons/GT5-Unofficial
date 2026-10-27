@@ -259,7 +259,7 @@ gt.blockmachines.output_bus_void.desc=Уничтожает предметы из
 gt.blockmachines.output_bus_super.desc=Вывод предметов для мультиблоков\n%s слотов\nЛКМ с флешкой, чтобы сохранить настройки фильтра\nПКМ с флешкой, чтобы загрузить настройки фильтра
 gt.blockmachines.muffler.desc=Выводит загрязнение (Может что-то вызывать...)\nНЕ ЗАГРАЖДАЙТЕ ВЫХОД!\nУменьшает загрязнение до %s%%
 gt.blockmachines.boiler.solar.desc=Энергия пара от солнца\nПроизводит %sЛ пара в секунду\nС течением времени снижает выход пара до %sЛ/с из за кальцификации\nДемонтируйте и поставьте снова для удаления накипи
-gt.blockmachines.fluidpipe.capacity.desc=§9Пропускает: %s Л/сек§7
+gt.blockmachines.fluidpipe.capacity.desc=Вместимость: %s/с
 gt.blockmachines.fluidpipe.heat.desc=§cПредел температуры: %s K§7
 gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Не умею обращаться с газом§7
 gt.blockmachines.fluidpipe.pipe_amount.desc=§bКоличество труб: %s§7
@@ -4309,7 +4309,7 @@ GT5U.item.cable.multi.success=Обнаружено %d кабелей, подкл
 
 GT5U.item.tank.locked_to=Содержимое заблокировано на §e%s
 
-GT5U.item.pipe.capacity=Ёмкость
+GT5U.item.pipe.capacity=Вместимость жидкости: %s
 GT5U.item.pipe.heat_resistance=Жаростойкость
 GT5U.item.pipe.gas_proof=Газонепроницаемость
 GT5U.item.pipe.gas_proof.yes=Да

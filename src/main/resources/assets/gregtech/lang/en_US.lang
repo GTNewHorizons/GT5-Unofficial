@@ -312,7 +312,7 @@ gt.blockmachines.output_bus_void.desc=Voids items from Multiblocks\nMust be conf
 gt.blockmachines.output_bus_super.desc=Item Output for Multiblocks\n%s Slots\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
 gt.blockmachines.muffler.desc=Outputs the Pollution (Might cause ... things)\nDO NOT OBSTRUCT THE OUTPUT!\nReduces Pollution to %s%%
 gt.blockmachines.boiler.solar.desc=Steam Power by the Sun\nProduces %sL of Steam per second\nCalcifies over time, reducing Steam output to %sL/s\nBreak and replace to descale
-gt.blockmachines.fluidpipe.capacity.desc=§9Fluid Capacity: %s L/sec§7
+gt.blockmachines.fluidpipe.capacity.desc=Fluid Capacity: %s/s
 gt.blockmachines.fluidpipe.heat.desc=§cHeat Limit: %s K§7
 gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Cannot handle gas§7
 gt.blockmachines.fluidpipe.pipe_amount.desc=§bPipe Amount: %s§7
@@ -4574,7 +4574,7 @@ GT5U.item.cable.multi.success=Found %d cables, connected %d cables and %d blocks
 
 GT5U.item.tank.locked_to=Content locked to §e%s
 
-GT5U.item.pipe.capacity=Capacity
+GT5U.item.pipe.capacity=Fluid Capacity: %s
 GT5U.item.pipe.heat_resistance=Heat Resistance
 GT5U.item.pipe.gas_proof=Gas Proof
 GT5U.item.pipe.gas_proof.yes=Yes

@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 import static gregtech.api.enums.Mods.TinkerConstruct;
@@ -936,9 +937,10 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     @Override
     public String[] getDescription() {
         List<String> descriptions = new ArrayList<>();
+        String fluidText = formatFluid(mCapacity * 20L).replaceAll("§.", "");
         descriptions.add(
-            StatCollector
-                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatNumber(mCapacity * 20L)));
+            EnumChatFormatting.BLUE
+                + StatCollector.translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", fluidText));
         descriptions.add(
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));
@@ -987,11 +989,11 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         IWailaConfigHandler config) {
 
         // Basic pipe stats
+        String fluidText = formatFluid(mCapacity * 20L).replaceAll("§.", "");
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.pipe.capacity") + ": "
-                + EnumChatFormatting.BLUE
-                + formatNumber(mCapacity * 20L)
-                + " L/s");
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "GT5U.item.pipe.capacity",
+                EnumChatFormatting.BLUE + fluidText + "/s" + EnumChatFormatting.GRAY));
 
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.pipe.heat_resistance") + ": "
