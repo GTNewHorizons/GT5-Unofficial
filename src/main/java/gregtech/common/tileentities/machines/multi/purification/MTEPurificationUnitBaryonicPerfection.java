@@ -46,6 +46,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
@@ -462,24 +463,17 @@ public class MTEPurificationUnitBaryonicPerfection
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add(StatCollector.translateToLocal("GT5U.infodata.pubp.catalyst_history"));
+        info.add(IGregTechDeviceInformation.encode("GT5U.infodata.pubp.catalyst_history"));
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             ItemStack stack = insertedCatalysts.get(i);
-            String name = stack.getDisplayName();
-            String[] split = name.split("-");
             info.add(
-                EnumChatFormatting.YELLOW + ""
-                    + (i + 1)
-                    + ": "
-                    + getQuarkColor(stack)
-                    + split[0]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + split[1]);
+                IGregTechDeviceInformation.encode(
+                    "GT5U.infodata.pubp.catalyst_entry",
+                    "" + EnumChatFormatting.YELLOW + (i + 1),
+                    getQuarkColor(stack) + stack.getDisplayName()));
         }
         info.add(
-            StatCollector
-                .translateToLocalFormatted("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
+            IGregTechDeviceInformation.encode("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
         return info.toArray(new String[] {});
     }
 
