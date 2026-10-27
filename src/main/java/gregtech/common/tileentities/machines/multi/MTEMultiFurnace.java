@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +37,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -54,9 +57,9 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -106,20 +109,19 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Furnace")
-            .addStaticParallelInfo(4)
-            .addDynamicMultiplicativeParallelInfo(2, TooltipTier.COIL)
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.furnace"))
+            .addMarkdown(new ResourceLocation("gregtech", "multi-furnace"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front bottom center")
-            .addCasing("8-12", "Heat Proof Machine Casing", false)
-            .addCasing("8", "Heating Coil", true)
-            .addEnergyHatch("1", "Any bottom casing", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addMufflerHatch("1", "Top center casing", 2)
-            .addInputBus("1+", "Any bottom casing", 1)
-            .addOutputBus("1+", "Any bottom casing", 1)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("8-12", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addCasing("8", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
+            .addEnergyHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.top_center_casing"), 2)
+            .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
