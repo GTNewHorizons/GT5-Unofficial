@@ -130,7 +130,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.alloy_smelter"))
-            .addInfo(TooltipHelper.parallelText("Voltage Tier * Coil Tier") + " Parallels")
+            .addInfo(StatCollector.translateToLocalFormatted("GT5U.MBTT.Parallel.Base", TooltipHelper.parallelText(StatCollector.translateToLocal("gt.mbtt.formula.voltage_tier_times_coil_tier"))))
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
             .addMarkdown(new ResourceLocation("gregtech", "industrial-alloy-smelter"),
                 ImmutableMap.of("heat_per_poc", HEAT_PER_PERFECT_OVERCLOCK))
