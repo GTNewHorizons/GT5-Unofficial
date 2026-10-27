@@ -487,6 +487,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.gtnewhorizons.modularui.api.KeyboardUtil;
+
 import codechicken.enderstorage.api.EnderStorageDyeTool;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
@@ -4084,6 +4086,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
+        CoverChest.addItemTooltip(aStack, aList, KeyboardUtil.isShiftKeyDown());
         int aDamage = aStack.getItemDamage();
         if (Materials.isMaterialItem(aDamage)) {
             Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];

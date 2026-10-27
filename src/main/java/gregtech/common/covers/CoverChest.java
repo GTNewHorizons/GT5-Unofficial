@@ -2,10 +2,14 @@ package gregtech.common.covers;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.List;
+
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +32,7 @@ import io.netty.buffer.ByteBuf;
 
 public class CoverChest extends Cover {
 
+    private static final String NBT_COVER_DATA = "CoverData";
     private final int slots;
     private final int stackSizeLimit = 1;
     private LegacyLimitingItemStackHandler items;
@@ -46,6 +51,11 @@ public class CoverChest extends Cover {
 
     public LegacyLimitingItemStackHandler getItems() {
         return items;
+    }
+
+    public boolean isAttached() {
+        ICoverable tile = coveredTile.get();
+        return tile != null && !tile.isDead() && tile.getCoverAtSide(coverSide) == this;
     }
 
     @Override
@@ -86,20 +96,64 @@ public class CoverChest extends Cover {
     }
 
     @Override
-    public void onCoverRemoval() {
-        ICoverable iCoverable = coveredTile.get();
-        if (iCoverable == null || iCoverable.getWorld().isRemote) return;
-        dropAll(iCoverable, coverSide);
+    public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
+        if (coverItem.hasTagCompound() && coverItem.getTagCompound()
+            .hasKey(NBT_COVER_DATA)) {
+            readFromNbt(
+                coverItem.getTagCompound()
+                    .getCompoundTag(NBT_COVER_DATA));
+        }
     }
 
-    private void dropAll(ICoverable coverable, ForgeDirection direction) {
+    @Override
+    public void onCoverRemoval() {
+        // detachCover snapshots the portable inventory before invalidating open GUI handlers.
         for (int i = 0; i < items.getSlots(); i++) {
-            ItemStack tItem = items.getStackInSlot(i);
-            if (tItem == null) {
-                continue;
-            }
-            dropItem(coverable, direction, tItem);
             items.setStackInSlot(i, null);
+        }
+    }
+
+    @Override
+    public ItemStack asItemStack() {
+        ItemStack stack = super.asItemStack();
+        for (int i = 0; i < items.getSlots(); i++) {
+            if (items.getStackInSlot(i) != null) {
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setTag(NBT_COVER_DATA, writeToNBT(new NBTTagCompound()));
+                stack.setTagCompound(tag);
+                break;
+            }
+        }
+        return stack;
+    }
+
+    public static void addItemTooltip(ItemStack stack, List<String> tooltip, boolean showContents) {
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey(NBT_COVER_DATA)) {
+            addContentsTooltip(
+                stack.getTagCompound()
+                    .getCompoundTag(NBT_COVER_DATA),
+                tooltip,
+                showContents);
+        }
+    }
+
+    public static void addContentsTooltip(NBTTagCompound coverData, List<String> tooltip, boolean showContents) {
+        ItemStackHandler inventory = new ItemStackHandler(0);
+        inventory.deserializeNBT(coverData.getCompoundTag("d"));
+        boolean hasContents = false;
+        for (int i = 0; i < inventory.getSlots(); i++) {
+            ItemStack stack = inventory.getStackInSlot(i);
+            if (stack == null) continue;
+            if (!showContents) {
+                tooltip.add(StatCollector.translateToLocal("gt.item.cover.chest.contents.shift"));
+                return;
+            }
+            if (!hasContents) {
+                tooltip.add(StatCollector.translateToLocal("gt.item.cover.chest.contents"));
+                hasContents = true;
+            }
+            tooltip.add("  " + stack.stackSize + " x " + stack.getDisplayName());
         }
     }
 
@@ -144,7 +198,7 @@ public class CoverChest extends Cover {
         return new ChestUIFactory(buildContext).createWindow();
     }
 
-    private static class LegacyLimitingItemStackHandler extends ItemStackHandler implements IItemHandlerModifiable {
+    private class LegacyLimitingItemStackHandler extends ItemStackHandler implements IItemHandlerModifiable {
 
         private final int slotLimit;
 
@@ -156,6 +210,21 @@ public class CoverChest extends Cover {
         @Override
         public int getSlotLimit(int slot) {
             return slotLimit;
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return isAttached();
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            return isAttached() ? super.insertItem(slot, stack, simulate) : stack;
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            return isAttached() ? super.extractItem(slot, amount, simulate) : null;
         }
     }
 
