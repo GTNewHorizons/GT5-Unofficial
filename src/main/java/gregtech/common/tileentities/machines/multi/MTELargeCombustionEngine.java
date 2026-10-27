@@ -135,7 +135,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                     .put("wait_power", formatNumber(WAIT_POWER_PERCENT))
                     .build())
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSupport4ADynamo()
+            .addSupport4A()
             .beginStructureBlock(8, 3, 3, false)
             .addController("Front left, 2nd layer")
             .addCasing("21", "PTFE Frame Box", false)

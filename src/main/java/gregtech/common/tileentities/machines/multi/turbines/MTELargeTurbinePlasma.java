@@ -84,7 +84,7 @@ public class MTELargeTurbinePlasma extends MTELargeTurbineBase {
             .addInfo("Outputs 1L of fluid for every 1L of Plasma")
             .addInfo("Use a screwdriver to adjust the fitting of the turbine")
             .addInfo("Loose fit increases flow in exchange for efficiency")
-            .addSupport4ADynamo()
+            .addSupport4A()
             .beginStructureBlock(3, 3, 6, false)
             .addController("Front center, 2nd layer")
             .addCasing("14", "Tungstensteel Frame Box", false)

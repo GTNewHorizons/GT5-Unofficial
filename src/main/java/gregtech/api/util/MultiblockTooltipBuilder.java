@@ -1194,8 +1194,8 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
-    public MultiblockTooltipBuilder addSupport4ADynamo() {
-        iLines.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.MBTT.Support4ADynamo"));
+    public MultiblockTooltipBuilder addSupport4A() {
+        iLines.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.MBTT.Support4A"));
         return this;
     }
 

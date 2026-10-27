@@ -86,7 +86,7 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
             .addInfo("Use a screwdriver to adjust the fitting of the turbine")
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSupport4ADynamo()
+            .addSupport4A()
             .beginStructureBlock(3, 3, 6, false)
             .addController("Front center, 2nd layer")
             .addCasing("14", "Stainless Steel Frame Box", false)
