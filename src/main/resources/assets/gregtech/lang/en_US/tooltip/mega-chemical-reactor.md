@@ -1,1 +1,2 @@
-{light_purple:Performs 4/4 Perfect Overclocks}
+{italic:Infinite Potential!}
+{color_mechanic:Performs 4/4 Perfect Overclocks}

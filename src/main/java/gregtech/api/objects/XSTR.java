@@ -32,9 +32,6 @@ public class XSTR extends Random {
     private static final long serialVersionUID = 6208727693524452904L;
     private long seed;
     private long last;
-    private static final long GAMMA = 0x9e3779b97f4a7c15L;
-    private static final int PROBE_INCREMENT = 0x9e3779b9;
-    private static final long SEEDER_INCREMENT = 0xbb67ae8584caa73bL;
     private static final double DOUBLE_UNIT = 0x1.0p-53; // 1.0 / (1L << 53)
     private static final float FLOAT_UNIT = 0x1.0p-24f; // 1.0f / (1 << 24)
     private static final AtomicLong seedUniquifier = new AtomicLong(8682522807148012L);
@@ -79,7 +76,7 @@ public class XSTR extends Random {
      * @param seed the initial seed
      */
     public XSTR(long seed) {
-        this.seed = seed;
+        this.seed = seed == 0 ? 42 : seed;
     }
 
     @Override
@@ -109,7 +106,7 @@ public class XSTR extends Random {
      */
     @Override
     public synchronized void setSeed(long seed) {
-        this.seed = seed;
+        this.seed = seed == 0 ? 42 : seed;
     }
 
     /**

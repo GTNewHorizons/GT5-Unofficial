@@ -14,7 +14,6 @@
 package bartworks.common.tileentities.multis;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -163,9 +162,9 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                     .put("helium", formatNumber(HELIUM_NEEDED))
                     .put("min_pebbles", formatNumber(MIN_CAPACITY_TO_START))
                     .put("max_pebbles", formatNumber(MAX_CAPACITY))
+                    .put("power_usage", formatNumber(POWER_USAGE))
                     .put("consumption", formatNumber(FUEL_CONSUMPTION_RATE * 100))
                     .put("coolant_rate", formatNumber(COOLANT_PER_TICK))
-                    .put("unit", getFluidUnit())
                     .put("duration", formatNumber(OPERATION_DURATION_TICKS / 20 / 60 / 60))
                     .build())
             .beginStructureBlock(11, 12, 11, true)
