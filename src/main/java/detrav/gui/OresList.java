@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import cpw.mods.fml.client.GuiScrollingList;
 import detrav.net.ProspectingPacket;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.util.StatCollector;
 
 class OresList extends GuiScrollingList {
 
@@ -28,6 +29,9 @@ class OresList extends GuiScrollingList {
         this.parent = parent;
         this.onSelected = onSelected;
         allKeys = packet.getAllKeys();
+        if (allKeys.size() > 1) {
+            keys.add(StatCollector.translateToLocal("gui.detrav.scanner.all"));
+        }
         keys.addAll(allKeys);
         selectedName = keys.isEmpty() ? null : keys.get(0);
         colors = packet.getColorMap();
@@ -81,10 +85,10 @@ class OresList extends GuiScrollingList {
         String name = keys.get(slotIdx);
 
         int textLeft = this.left + 3;
-        int textColor = 0xFFE0E0E0; // entries without a colour (e.g. "All")
+        int textColor = 0xFFE0E0E0; // entries without a color (e.g. "All")
         if (colors.containsKey(name)) {
             int color = 0xFF000000 | colors.getInt(name);
-            // true colour swatch, plus the label tinted to match (lifted for legibility)
+            // true color swatch, plus the label tinted to match (lifted for legibility)
             Gui.drawRect(this.left + 3, slotTop, this.left + 11, slotTop + 8, color);
             textLeft = this.left + 14;
             textColor = readable(color);
@@ -98,7 +102,7 @@ class OresList extends GuiScrollingList {
             textColor);
     }
 
-    /** Lifts dark ore colours toward white so the label stays readable on the dark list background. */
+    /** Lifts dark ore colors toward white so the label stays readable on the dark list background. */
     private static int readable(int argb) {
         int r = (argb >> 16) & 0xFF, g = (argb >> 8) & 0xFF, b = argb & 0xFF;
         int luma = (r * 299 + g * 587 + b * 114) / 1000;
