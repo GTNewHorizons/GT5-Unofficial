@@ -11,6 +11,7 @@ import static gregtech.common.items.behaviors.BehaviourSprayColorInfinite.sendPa
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -68,7 +69,9 @@ public class SprayColorInfiniteGui {
                     tooltip -> tooltip.clearText()
                         .add(getTooltip(index))
                         .newLine()
-                        .add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.favorite_hint")));
+                        .add(
+                            EnumChatFormatting.GRAY + StatCollector
+                                .translateToLocal("gt.behaviour.paintspray.infinite.gui.favorite_hint")));
                 widget.onMousePressed(mouseButton -> {
                     if (mouseButton == 1) {
                         toggleFavorite(index);
@@ -81,13 +84,14 @@ public class SprayColorInfiniteGui {
             })
             .build();
 
-        panel.size(PANEL_WIDTH, DYE_GRID_HEIGHT + 66);
+        panel.size(PANEL_WIDTH, DYE_GRID_HEIGHT + 68);
         addHexRow(panel, DYE_GRID_HEIGHT);
-        addFavoritesRow(panel, DYE_GRID_HEIGHT + 20);
+        addFavoritesRow(panel, DYE_GRID_HEIGHT + 22);
         panel.child(
             IKey.dynamic(this::getConnectsAsText)
+                .style(EnumChatFormatting.DARK_GRAY)
                 .asWidget()
-                .pos(7, DYE_GRID_HEIGHT + 52)
+                .pos(7, DYE_GRID_HEIGHT + 54)
                 .height(10));
 
         return panel;
@@ -96,14 +100,15 @@ public class SprayColorInfiniteGui {
     private void addHexRow(ModularPanel panel, int y) {
         panel.child(
             IKey.lang("gt.behaviour.paintspray.infinite.gui.hex")
+                .style(EnumChatFormatting.DARK_GRAY)
                 .asWidget()
-                .pos(7, y + 4)
+                .pos(7, y + 5)
                 .height(10));
         panel.child(
             new TextFieldWidget().setValidator(raw -> raw.startsWith("#") || raw.isEmpty() ? raw : "#" + raw)
                 .value(new StringValue.Dynamic(() -> hexInput, value -> hexInput = value))
                 .autoUpdateOnChange(true)
-                .pos(32, y)
+                .pos(32, y + 1)
                 .size(54, 16));
         final IPanelHandler colorPicker = IPanelHandler.simple(
             panel,
@@ -123,7 +128,7 @@ public class SprayColorInfiniteGui {
                     colorPicker.openPanel();
                     return true;
                 })
-                .pos(89, y)
+                .pos(89, y + 1)
                 .size(16, 16));
         panel.child(
             new ButtonWidget<>().overlay(IKey.lang("gt.behaviour.paintspray.infinite.gui.apply"))
@@ -136,7 +141,7 @@ public class SprayColorInfiniteGui {
                     return true;
                 })
                 .pos(108, y)
-                .size(32, 16));
+                .size(32, 18));
         panel.child(
             new ButtonWidget<>().overlay(IKey.lang("gt.behaviour.paintspray.infinite.gui.save"))
                 .addTooltipLine(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.save.tooltip"))
@@ -146,12 +151,13 @@ public class SprayColorInfiniteGui {
                     return true;
                 })
                 .pos(142, y)
-                .size(27, 16));
+                .size(27, 18));
     }
 
     private void addFavoritesRow(ModularPanel panel, int y) {
         panel.child(
             IKey.lang("gt.behaviour.paintspray.infinite.gui.favorites")
+                .style(EnumChatFormatting.DARK_GRAY)
                 .asWidget()
                 .pos(7, y)
                 .height(10));
@@ -168,7 +174,7 @@ public class SprayColorInfiniteGui {
                         if (slot < favorites.size()) {
                             tooltip.addLine(getTooltip(favorites.get(slot)))
                                 .addLine(
-                                    StatCollector
+                                    EnumChatFormatting.GRAY + StatCollector
                                         .translateToLocal("gt.behaviour.paintspray.infinite.gui.favorite_use"));
                         }
                     })
