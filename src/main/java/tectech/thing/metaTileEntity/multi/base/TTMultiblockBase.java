@@ -511,6 +511,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     protected long getActualEnergyUsage() {
+        if (getPowerFlow() < 0) {
+            long effectivePower = GTUtility
+                .fastDivMul(getPowerFlow(), Math.max(1000L, mEfficiency), getMaxEfficiency(getControllerSlot()));
+            return -GTUtility.mulSafe(effectivePower, eAmpereFlow);
+        }
+
         long base = -(useLongPower ? lEUt : mEUt) * eAmpereFlow;
         long maxEfficiency = 10_000;
         long efficiency = Math.max(1_000, mEfficiency);
@@ -972,6 +978,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) { // Start
                             if (onRunningTick(mInventory[1])) { // Compute EU
+                                markDirty();
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
                                     stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                                 }
