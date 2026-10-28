@@ -93,13 +93,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
     }
 
     private ModularPanel getSpacePumpUtilityPanel(ModularPanel parent, PanelSyncManager syncManager) {
-        return new ModularPanel("fluidList") {
-
-            @Override
-            public boolean isDraggable() {
-                return true;
-            }
-        }.coverChildren()
+        return new ModularPanel("fluidList") {}.coverChildren()
             .relative(parent)
             .topRel(0)
             .leftRel(0)
