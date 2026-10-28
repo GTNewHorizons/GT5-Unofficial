@@ -263,9 +263,12 @@ gt.blockmachines.fluidpipe.capacity.desc=Вместимость: %s/с
 gt.blockmachines.fluidpipe.heat.desc=§cПредел температуры: %s K§7
 gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Не умею обращаться с газом§7
 gt.blockmachines.fluidpipe.pipe_amount.desc=§bКоличество труб: %s§7
-gt.blockmachines.itempipe.capacity.second=Пропускная способность: %s стак(ов)/%s сек
-gt.blockmachines.itempipe.capacity.persecond=Пропускная способность: %s стак(ов)/сек
-gt.blockmachines.itempipe.capacity.tick=Пропускная способность: %s стак(ов)/%s тик
+gt.blockmachines.itempipe.capacity.persecond.singular=Пропускная способность: %s стак/s
+gt.blockmachines.itempipe.capacity.second.singular=Пропускная способность: %s стак/s
+gt.blockmachines.itempipe.capacity.tick.singular=Пропускная способность: %s стак/t
+gt.blockmachines.itempipe.capacity.second=Пропускная способность: %s стак(ов)/s
+gt.blockmachines.itempipe.capacity.persecond=Пропускная способность: %s стак(ов)/s
+gt.blockmachines.itempipe.capacity.tick=Пропускная способность: %s стак(ов)/t
 gt.blockmachines.itempipe.rounting_value=Значение маршрутизации: %s
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Диапазон поглощения: %s блоков

@@ -316,9 +316,12 @@ gt.blockmachines.fluidpipe.capacity.desc=Fluid Capacity: %s/s
 gt.blockmachines.fluidpipe.heat.desc=§cHeat Limit: %s K§7
 gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Cannot handle gas§7
 gt.blockmachines.fluidpipe.pipe_amount.desc=§bPipe Amount: %s§7
-gt.blockmachines.itempipe.capacity.second=Item Capacity: %s Stacks/%s sec
-gt.blockmachines.itempipe.capacity.persecond=Item Capacity: %s Stacks/sec
-gt.blockmachines.itempipe.capacity.tick=Item Capacity: %s Stacks/%s ticks
+gt.blockmachines.itempipe.capacity.persecond.singular=Item Capacity: %s Stack/s
+gt.blockmachines.itempipe.capacity.second.singular=Item Capacity: %s Stack/s
+gt.blockmachines.itempipe.capacity.tick.singular=Item Capacity: %s Stack/t
+gt.blockmachines.itempipe.capacity.second=Item Capacity: %s Stacks/s
+gt.blockmachines.itempipe.capacity.persecond=Item Capacity: %s Stacks/s
+gt.blockmachines.itempipe.capacity.tick=Item Capacity: %s Stacks/t
 gt.blockmachines.itempipe.rounting_value=Routing Value: %s
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Absorption range: %s blocks
