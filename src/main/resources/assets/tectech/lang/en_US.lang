@@ -1096,6 +1096,9 @@ gt.blockmachines.machine.tt.tesla.02.name=Advanced Tesla Transceiver
 gt.blockmachines.machine.tt.tesla.03.name=Epyc Tesla Transceiver
 gt.blockmachines.machine.tt.tesla.04.name=Ultimate Power Tesla Transceiver
 gt.blockmachines.machine.tt.tesla.05.name=Insane Tesla Transceiver
+gt.blockmachines.machine.tt.tesla.small.name=Small %s
+gt.blockmachines.machine.tt.tesla.large.name=Large %s
+gt.blockmachines.machine.tt.tesla.huge.name=Huge %s
 gt.blockmachines.machine.tt.tesla.desc.0=Your Tesla I/O machine of choice
 gt.blockmachines.machine.tt.tesla.desc.1=Lightning stoves for the rich
 
