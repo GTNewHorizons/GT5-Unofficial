@@ -715,7 +715,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return Math
-            .max(0, (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * getCircuit())));
+        return Math.max(0, (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * getCircuit())));
     }
 }
