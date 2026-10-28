@@ -42,7 +42,7 @@ public class MTEDebugChest extends MTEQuantumChest {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && getItemStack() != null) {
             setItemCount(Integer.MAX_VALUE);
-            // Void input if it's the same stack
+            // Void input if it's the same item
             if (GTUtility.areStacksEqual(getItemStack(), mInventory[0], true)) {
                 mInventory[0] = null;
             }
