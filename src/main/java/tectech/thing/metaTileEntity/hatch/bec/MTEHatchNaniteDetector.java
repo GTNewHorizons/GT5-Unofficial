@@ -34,7 +34,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.DisableableTextFieldWidget;
@@ -200,12 +199,10 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                         IKey.lang("GT5U.gui.text.bec-current"),
                         new IntSyncValue(() -> requiredTier),
                         nanite -> {
-                            NaniteTier tier = GTDataUtils.getIndexSafe(NaniteTier.values(), nanite);
-
-                            if (tier == null) {
+                            if (nanite == -1) {
                                 return IKey.lang("GT5U.gui.text.nil");
                             } else {
-                                return IKey.lang("GT5U.gui.text.nanite-detector-tier", tier.tier);
+                                return IKey.lang("GT5U.gui.text.nanite-detector-tier", nanite);
                             }
                         })
                     .build(panel, syncManager, getContentHolderHeight())
