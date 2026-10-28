@@ -1,6 +1,5 @@
 package tectech.thing.metaTileEntity.hatch.bec;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,13 +11,10 @@ import net.minecraft.util.ResourceLocation;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 
 import gregtech.api.enums.ComparisonWithAnalog;
@@ -33,11 +29,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
-import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.gui.modularui.widget.DisableableTextFieldWidget;
-import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
+import gregtech.common.gui.modularui.hatch.MTEHatchNaniteDetectorGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 
 public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
@@ -56,6 +49,22 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
         super(prototype);
 
         tooltip = prototype.tooltip;
+    }
+
+    public int getConfiguredTier() {
+        return configuredTier;
+    }
+
+    public void setConfiguredTier(int configuredTier) {
+        this.configuredTier = configuredTier;
+    }
+
+    public ComparisonWithAnalog getComparison() {
+        return comparison;
+    }
+
+    public void setComparison(ComparisonWithAnalog comparison) {
+        this.comparison = comparison;
     }
 
     @Override
@@ -107,6 +116,11 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
             .build() };
     }
 
+    @Nullable
+    public NaniteTier getRequiredTier() {
+        return requiredTier;
+    }
+
     public void setRequiredTier(@Nullable NaniteTier requiredTier) {
         this.requiredTier = requiredTier;
     }
@@ -129,58 +143,11 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new Gui().build(data, syncManager, uiSettings);
+        return new MTEHatchNaniteDetectorGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
     public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
-    }
-
-    private class Gui extends MTEHatchBaseGui<MTEHatchNaniteDetector> {
-
-        public Gui() {
-            super(MTEHatchNaniteDetector.this);
-        }
-
-        @Override
-        protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-            // spotless:off
-            return super.createContentSection(panel, syncManager)
-                .child(SettingsPanel.builder()
-                    .addEnumCycleButton(
-                        IKey.lang("GT5U.gui.text.bec-operation"),
-                        ComparisonWithAnalog.class,
-                        () -> comparison,
-                        v -> comparison = v)
-                    .addIntEditor(
-                        IKey.lang("GT5U.gui.text.bec-threshold"),
-                        () -> configuredTier,
-                        i -> {
-                            if (comparison != ComparisonWithAnalog.ANALOG) {
-                                configuredTier = i;
-                            }
-                        },
-                        i -> Math.clamp(i, 1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt()),
-                        (_, _, textField) -> {
-                            textField.setEditable(() -> comparison != ComparisonWithAnalog.ANALOG);
-                        },
-                        DisableableTextFieldWidget::new)
-                    .addReadout(
-                        IKey.lang("GT5U.gui.text.bec-current"),
-                        new IntSyncValue(() -> requiredTier == null ? -1 : requiredTier.ordinal()),
-                        nanite -> {
-                            NaniteTier tier = GTDataUtils.getIndexSafe(NaniteTier.values(), nanite);
-
-                            if (tier == null) {
-                                return IKey.lang("GT5U.gui.text.nil");
-                            } else {
-                                return IKey.lang("GT5U.gui.text.nanite-detector-tier", tier.tier);
-                            }
-                        })
-                    .build(panel, syncManager, getContentHolderHeight())
-                    .horizontalCenter());
-            // spotless:on
-        }
     }
 }
