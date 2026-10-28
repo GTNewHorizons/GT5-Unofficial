@@ -50,6 +50,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShad
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -126,6 +127,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     public static final int M = 1_000_000;
     private static final int MAX_ENERGY_HATCHES = 32;
     public GTRecipe lastRecipe;
+    private ExtendedFacing cachedRingRenderFacing;
     public int para;
     protected OverclockDescriber overclockDescriber;
     private static final ClassValue<IStructureDefinition<MTELargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -760,10 +762,15 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         if (!shouldRender || !getBaseMetaTileEntity().isActive()) {
+            cachedRingRenderFacing = null;
             return;
         }
 
         if (!renderInitialized) return;
+
+        ExtendedFacing facing = getExtendedFacing();
+        if (cachedRingRenderFacing == null) cachedRingRenderFacing = facing;
+        if (cachedRingRenderFacing != facing) return;
 
         ForgeDirection dir = getDirection();
         PostProcessingManager.getInstance()
