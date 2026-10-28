@@ -792,7 +792,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     private void renderRing(boolean bloom) {
         Color c = new Color(132, 255, 255);
-        float HDR_Multiplier = 0.1f;
+        float HDR_Multiplier = 12 / 255f;
         if (bloom) {
             renderStandardRing(
                 c.getRed() * HDR_Multiplier,
