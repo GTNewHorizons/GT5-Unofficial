@@ -155,10 +155,10 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     "FFFFF"
                 }, {
                     "  CCC",
-                    "  C-C",
-                    "PPC-C",
-                    "PCC-P",
-                    "C---C",
+                    "  C C",
+                    "PPC C",
+                    "PCC P",
+                    "C   C",
                     "FFFFF"
                 }, {
                     "   C ",
@@ -176,13 +176,14 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     .atLeast(InputHatch, InputBus, OutputHatch, Maintenance, Muffler)
                     .casingIndex(casing.getTextureId())
                     .hint(1)
+                    .allowOnly(ForgeDirection.NORTH)
                     .buildAndChain(
                         onElementPass(
                             MTELargeBoilerBase::onCasingAdded,
                             ofBlock(casing.getBlock(), casing.getBlockMeta()))))
             .addElement(
                 'F',
-                buildHatchAdder(MTELargeBoilerBase.class)
+                buildHatchAdder(MTELargeBoilerBase.class).allowOnly(ForgeDirection.SOUTH)
                     .atLeast(InputHatch, InputBus, OutputHatch, Maintenance, Muffler)
                     .casingIndex(fireboxCasing.getTextureId())
                     .hint(1)

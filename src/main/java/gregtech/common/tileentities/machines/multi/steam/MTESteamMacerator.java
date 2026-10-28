@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -183,7 +184,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                     { "AAA", "AAA", "AAA" }}))
                 .addShape(STRUCTURE_PIECE_MAIN, new String[][] {
                     {" A ", "CAC", "C~C", "AAA"},
-                    {"ABA", "A-A", "A-A", "AAA"},
+                    {"ABA", "A A", "A A", "AAA"},
                     {" A ", "CAC", "CAC", "AAA"}})
                 // spotless:on
                 .addElement(
@@ -196,6 +197,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
                             .casingIndex(10)
                             .hint(1)
+                            .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(
                             this::getTierMachineCasing,
