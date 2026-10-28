@@ -47,6 +47,7 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
 
     // properly needs to use GenericListSync
     private final List<IndexGasMapping> indexQueue = new CopyOnWriteArrayList<>();
+    private List<ButtonWidget<?>> queueButtons = null;
 
     public TileEntityModulePumpGui(TileEntityModulePump multiblock) {
         super(multiblock);
@@ -226,21 +227,25 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
     }
 
     private Flow queue(PanelSyncManager syncManager) {
-        List<IWidget> queueButtons = new ArrayList<>();
+        List<IWidget> localQueueButtons = new ArrayList<>(multiblock.getParallelRecipes());
+        queueButtons = new ArrayList<>(multiblock.getParallelRecipes());
         for (int i = 0; i < multiblock.getParallelRecipes(); i++) {
-            queueButtons.add(createQueueButton(i));
+            ButtonWidget<?> button = createQueueButton(i);
+            localQueueButtons.add(button);
+            queueButtons.add(button);
         }
         return Flow.row()
             .coverChildren()
             .child(
                 new Grid().coverChildren()
                     .minElementMargin(1, 1)
-                    .row(queueButtons));
+                    .row(localQueueButtons));
     }
 
     private ButtonWidget<?> createQueueButton(int i) {
         return new ButtonWidget<>().overlay(queueButtonOverlay(i))
             .onMousePressed(_ -> {
+                queueButtons.forEach(b -> b.tooltip().markDirty());
                 if (i >= getIndexQueue().size()) {
                     return false;
                 }
@@ -255,14 +260,14 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
                     FluidStack fluidStack = SpacePumpingRecipes.RECIPES.get(Pair.of(index.planet, index.gas));
                     t.addLine(IKey.lang("tt.spacepump.utilityselected", fluidStack.getLocalizedName()));
                 }
-                t.markDirty();
             });
     }
 
     private IDrawable queueButtonOverlay(int i) {
         return new DynamicDrawable(() -> {
-            if (getIndexQueue().size() > i) {
-                var index = getIndexQueue().get(i);
+            var queue = getIndexQueue();
+            if (queue.size() > i) {
+                var index = queue.get(i);
                 FluidStack fluidStack = SpacePumpingRecipes.RECIPES.get(Pair.of(index.planet, index.gas));
                 return new ItemDrawable(GTUtility.getFluidDisplayStack(fluidStack.getFluid())).asIcon()
                     .size(16);
