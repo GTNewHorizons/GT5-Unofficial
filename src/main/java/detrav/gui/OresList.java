@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import cpw.mods.fml.client.GuiScrollingList;
 import detrav.net.ProspectingPacket;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.util.StatCollector;
 
 class OresList extends GuiScrollingList {
 
@@ -28,6 +29,9 @@ class OresList extends GuiScrollingList {
         this.parent = parent;
         this.onSelected = onSelected;
         allKeys = packet.getAllKeys();
+        if (allKeys.size() > 1) {
+            keys.add(StatCollector.translateToLocal("gui.detrav.scanner.all"));
+        }
         keys.addAll(allKeys);
         selectedName = keys.isEmpty() ? null : keys.get(0);
         colors = packet.getColorMap();

@@ -3842,7 +3842,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .setTextAlignment(Alignment.CenterLeft));
         }
 
-        //TODO: remove before merge
+move        // TODO: remove before merge
         assert getBaseMetaTileEntity() != null;
 
         screenElements
