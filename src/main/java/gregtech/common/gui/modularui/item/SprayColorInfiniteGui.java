@@ -13,8 +13,8 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.MCHelper;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.Rectangle;
@@ -22,6 +22,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ColorPickerDialog;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.enums.Dyes;
@@ -104,12 +105,26 @@ public class SprayColorInfiniteGui {
                 .autoUpdateOnChange(true)
                 .pos(32, y)
                 .size(54, 16));
+        final IPanelHandler colorPicker = IPanelHandler.simple(
+            panel,
+            (parent, player) -> new ColorPickerDialog(
+                color -> hexInput = formatHex(color),
+                Color.withAlpha(getPickerColor(), 255),
+                false),
+            true);
+        final DynamicDrawable preview = new DynamicDrawable(
+            () -> new Rectangle().color(Color.withAlpha(getPickerColor(), 255)));
         panel.child(
-            new DynamicDrawable(
-                () -> parseHex(hexInput) == -1 ? IDrawable.EMPTY
-                    : new Rectangle().color(Color.withAlpha(parseHex(hexInput), 255))).asWidget()
-                        .pos(89, y)
-                        .size(16, 16));
+            new ButtonWidget<>().overlay(preview)
+                .hoverOverlay(preview)
+                .addTooltipLine(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.picker.tooltip"))
+                .onMousePressed(mouseButton -> {
+                    colorPicker.deleteCachedPanel();
+                    colorPicker.openPanel();
+                    return true;
+                })
+                .pos(89, y)
+                .size(16, 16));
         panel.child(
             new ButtonWidget<>().overlay(IKey.lang("gt.behaviour.paintspray.infinite.gui.apply"))
                 .addTooltipLine(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.apply.tooltip"))
@@ -211,6 +226,11 @@ public class SprayColorInfiniteGui {
         return selection == REMOVE_COLOR
             ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
             : Dyes.get(selection).mName;
+    }
+
+    private int getPickerColor() {
+        final int rgb = parseHex(hexInput);
+        return rgb != -1 ? rgb : getDisplayColor(BehaviourSprayColorInfinite.getSelection(itemStack));
     }
 
     private static int getDisplayColor(int selection) {
