@@ -245,7 +245,9 @@ public class TileEntityModulePumpGui extends TileEntityModuleBaseGui<TileEntityM
     private ButtonWidget<?> createQueueButton(int i) {
         return new ButtonWidget<>().overlay(queueButtonOverlay(i))
             .onMousePressed(_ -> {
-                queueButtons.forEach(b -> b.tooltip().markDirty());
+                queueButtons.forEach(
+                    b -> b.tooltip()
+                        .markDirty());
                 if (i >= getIndexQueue().size()) {
                     return false;
                 }
