@@ -19,10 +19,10 @@ detrav.scanner.found.texts.3= §2medium sample§r.
 detrav.scanner.found.texts.4= §elarge sample§r.
 detrav.scanner.found.texts.5= §dvery large sample§r.
 detrav.scanner.found.texts.6=Found %s
+detrav.scanner.found.fluid=Fluid
 
-# Don't translate "%badluck"
 detrav.scanner.success=All chunks scanned successfully!
-detrav.scanner.fail=Failed on %badluck chunks. Better luck next time!
+detrav.scanner.fail.chunks=Failed on %s chunks. Better luck next time!
 
 detrav.scanner.prospecting=Prospecting at
 
