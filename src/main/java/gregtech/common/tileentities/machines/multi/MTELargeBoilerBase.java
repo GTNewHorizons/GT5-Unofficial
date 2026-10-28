@@ -97,7 +97,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     private boolean firstRun = true;
     private int efficiencyChangePerTick = 0;
-    private int integratedCircuitConfig = 0;
+    private int integratedCircuitConfigFluid = 0;
+    private int integratedCircuitConfigSolid = 0;
     private int excessWater = 0;
     private int excessFuel = 0;
     private int excessProjectedEU = 0;
@@ -307,20 +308,25 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         return false;
     }
 
-    @Override
-    @NotNull
-    public CheckRecipeResult checkProcessing() {
+    protected void setupCircuit(boolean isFluid) {
         // Do we have an integrated circuit with a valid configuration?
         if (Circuit_Integrated.isStackEqual(mInventory[1], true, true)) {
             int circuit_config = mInventory[1].getItemDamage();
             if (circuit_config >= 1 && circuit_config <= 25) {
                 // If so, overwrite the current config
-                this.integratedCircuitConfig = circuit_config;
+                if (isFluid) this.integratedCircuitConfigFluid = circuit_config;
+                else this.integratedCircuitConfigSolid = circuit_config;
             }
         } else {
             // If not, set the config to zero
-            this.integratedCircuitConfig = 0;
+            if (isFluid) this.integratedCircuitConfigFluid = 0;
+            else this.integratedCircuitConfigSolid = 0;
         }
+    }
+
+    @Override
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
 
         if (fluidBurnTime == 0) {
             for (FluidStack fluidInput : this.getStoredFluids()) {
@@ -385,8 +391,10 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         int adjustedTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
         if (isFluid) {
             this.fluidBurnTime = this.maxFluidBurnTime = adjustedTime;
+            setupCircuit(true);
         } else {
             this.solidBurnTime = this.maxSolidBurnTime = adjustedTime;
+            setupCircuit(false);
         }
         this.efficiencyChangePerTick = getEfficiencyChangePerTick(safeBurnTime, changePerTick);
         this.mEfficiencyIncrease = 1;
@@ -492,6 +500,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         aNBT.setInteger("fluidBurnTime", fluidBurnTime);
         aNBT.setInteger("maxSolidBurnTime", maxSolidBurnTime);
         aNBT.setInteger("maxFluidBurnTime", maxFluidBurnTime);
+        aNBT.setInteger("integratedCircuitConfigSolid", integratedCircuitConfigSolid);
+        aNBT.setInteger("integratedCircuitConfigFluid", integratedCircuitConfigFluid);
     }
 
     @Override
@@ -509,6 +519,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         fluidBurnTime = aNBT.getInteger("fluidBurnTime");
         maxSolidBurnTime = aNBT.getInteger("maxSolidBurnTime");
         maxFluidBurnTime = aNBT.getInteger("maxFluidBurnTime");
+        integratedCircuitConfigSolid = aNBT.getInteger("integratedCircuitConfigSolid");
+        integratedCircuitConfigFluid = aNBT.getInteger("integratedCircuitConfigFluid");
     }
 
     @Override
@@ -549,9 +561,13 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         checkHasOutputHatch(errors);
     }
 
+    private int getCircuit() {
+        return Math.max(integratedCircuitConfigFluid, integratedCircuitConfigSolid);
+    }
+
     private int adjustEUtForConfig(int rawEUt) {
         int adjustedSteamOutput = rawEUt
-            - (isSuperheated() ? THROTTLE_STEAM_SUPERHEATED : THROTTLE_STEAM_NORMAL) * integratedCircuitConfig;
+            - (isSuperheated() ? THROTTLE_STEAM_SUPERHEATED : THROTTLE_STEAM_NORMAL) * getCircuit();
         return Math.max(adjustedSteamOutput, MIN_STEAM_OUTPUT);
     }
 
@@ -562,8 +578,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     private int adjustBurnTimeForConfig(int rawBurnTime) {
         int adjustedEUt = Math.max(
             MIN_STEAM_OUTPUT,
-            getEUt()
-                - (isSuperheated() ? THROTTLE_STEAM_SUPERHEATED : THROTTLE_STEAM_NORMAL) * integratedCircuitConfig);
+            getEUt() - (isSuperheated() ? THROTTLE_STEAM_SUPERHEATED : THROTTLE_STEAM_NORMAL) * getCircuit());
         int adjustedBurnTime = (int) (rawBurnTime * (long) getEUt() / adjustedEUt);
         this.excessProjectedEU += getEUt() * rawBurnTime - adjustedEUt * adjustedBurnTime;
         adjustedBurnTime += this.excessProjectedEU / adjustedEUt;
@@ -700,8 +715,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return Math.max(
-            0,
-            (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * integratedCircuitConfig)));
+        return Math
+            .max(0, (int) (pollutionPerSecond * (1 - GTMod.proxy.mPollutionReleasedByThrottle * getCircuit())));
     }
 }
