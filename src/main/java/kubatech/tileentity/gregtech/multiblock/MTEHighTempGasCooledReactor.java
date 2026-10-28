@@ -23,8 +23,6 @@ package kubatech.tileentity.gregtech.multiblock;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorKuba;
-import static gregtech.api.enums.GTAuthors.AuthorPxx500;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -237,7 +235,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
             addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             setHatchRecipeMap(hatch);
             heliumInputHatch = hatch;
             mCustomHatches.add(hatch);
@@ -254,7 +252,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
             addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             setHatchRecipeMap(hatch);
             coolantInputHatch = hatch;
             mCustomHatches.add(hatch);
@@ -271,7 +269,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
             addIfSmartInput(aMetaTileEntity);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             coolantOutputHatch = hatch;
             mCustomHatches.add(hatch);
             return true;
@@ -287,7 +285,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
             addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             waterInputHatch = hatch;
             mCustomHatches.add(hatch);
             return true;
@@ -303,7 +301,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
             addIfSmartInput(aMetaTileEntity);
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon(), getBaseMetaTileEntity());
             steamOutputHatch = hatch;
             mCustomHatches.add(hatch);
             return true;
@@ -365,7 +363,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .addInputHatch("3+", StatCollector.translateToLocal("gt.mbtt.structure.htgr_input_hatches"), 1, 5, 6)
             .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.bottom_of_reactor_burned_triso"), 3)
             .addOutputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.htgr_output_hatches"), 4, 7)
-            .toolTipFinisher(AuthorKuba, AuthorPxx500);
+            .toolTipFinisher();
         // spotless:on
         return tt;
     }

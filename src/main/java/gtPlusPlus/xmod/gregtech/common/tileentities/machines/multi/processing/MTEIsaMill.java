@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -139,7 +140,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                             .casingIndex(getCasingTextureIndex())
                             .hint(1)
                             .build(),
-                        buildHatchAdder(MTEIsaMill.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        buildHatchAdder(MTEIsaMill.class)
+                            .atLeast(InputBus, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
                             .casingIndex(getCasingTextureIndex())
                             .hint(1)
                             .build(),

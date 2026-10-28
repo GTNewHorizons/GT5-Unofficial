@@ -11,7 +11,7 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.util.GTDataUtils;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
@@ -55,8 +55,9 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
         if (mat == null) mat = Materials._NULL;
 
         boolean small = blockOre.isSmallOre(stack.getItemDamage());
+        StoneType stoneType = blockOre.getStoneType(stack.getItemDamage());
 
-        return (small ? OrePrefixes.oreSmall : OrePrefixes.ore).getLocalizedNameForItem(mat);
+        return (stoneType == null ? StoneType.Stone : stoneType).getLocalizedOreName(mat, small);
     }
 
     @Override

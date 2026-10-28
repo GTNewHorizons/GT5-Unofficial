@@ -24,7 +24,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,7 +33,6 @@ import org.joml.Math;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -168,9 +166,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.cutting_machine"))
-            .addMarkdown(
-                new ResourceLocation("gregtech", "industrial-cutting-machine"),
-                ImmutableMap.<String, Object>builder().build())
+            .addMarkdown(new ResourceLocation("gregtech", "industrial-cutting-machine"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 4, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
@@ -186,7 +182,6 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
             .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_cutting_factory_frame"), 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Auynonymous")
             .toolTipFinisher();
         // spotless:on
         return tt;
