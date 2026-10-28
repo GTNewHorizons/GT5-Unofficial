@@ -42,6 +42,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -69,6 +70,7 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 
+@IMetaTileEntity.SkipGenerateDescription
 public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements IMetricsExporter, IWorkAreaProvider {
 
     protected int mTier = 1;
@@ -497,7 +499,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         final long blockDiameter = chunkRadiusConfig * 32L;
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Miner, MBM")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.ore_drilling_plant"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "ore-drilling-plant"),
                 ImmutableMap.<String, Object>builder()
@@ -508,17 +511,18 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     .put("ore_multiplier", ORE_MULTIPLIER)
                     .build())
             .beginStructureBlock(3, 7, 3, false)
-            .addController("Front bottom center")
-            .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
             .addCasing("5-7", casings, false)
-            .addEnergyHatch("1-2", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
-            .addMaintenanceHatch("1", "Any bottom casing", 1)
-            .addInputBus("0-1", "Any bottom casing", 1)
-            .addInputHatch("1", "Any bottom casing", 1)
-            .addOutputBus("1", "Any bottom casing", 1)
+            .addEnergyHatch("1-2", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_bottom_casing_min_tier", VN[getMinTier()]), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputBus("0-1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addInputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

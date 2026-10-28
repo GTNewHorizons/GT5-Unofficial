@@ -161,6 +161,7 @@ tile.recipe.tc=Target Chamber
 tile.recipe.sc=Source Chamber
 
 item.particle.name=Particle
+particle.name.fmt=%s (%s)
 particle.photon=Photon
 particle.zboson=Z Boson
 particle.wboson=W Boson
@@ -212,7 +213,7 @@ item.photomask.csoc.name=Mask (Crystal SoC)
 item.photomask.elc.name=Mask (Engraved Lapotron Chip)
 item.photomask.fpic.name=Mask (FPIC)
 item.photomask.hpic.name=Mask (High Power IC)
-item.photomask.ilc.name=Mask (Integrated Logic Circuit)
+item.photomask.ilc.name=Mask (Logic IC)
 item.photomask.lcc.name=Mask (Living Crystal Chip)
 item.photomask.lpic.name=Mask (Low Power IC)
 item.photomask.nand.name=Mask (NAND)
