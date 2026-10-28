@@ -4736,6 +4736,7 @@ gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
 gt.behaviour.paintspray.infinite.gui.shake_toggle=Allow/disallow color iteration
 gt.behaviour.paintspray.infinite.gui.hex=Hex:
+gt.behaviour.paintspray.infinite.gui.picker.tooltip=Open the color picker
 gt.behaviour.paintspray.infinite.gui.apply=Apply
 gt.behaviour.paintspray.infinite.gui.apply.tooltip=Use this exact color. GT pipes show it; everything else gets the nearest dye.
 gt.behaviour.paintspray.infinite.gui.save=Save
