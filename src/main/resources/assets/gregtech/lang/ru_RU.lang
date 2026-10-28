@@ -259,16 +259,13 @@ gt.blockmachines.output_bus_void.desc=Уничтожает предметы из
 gt.blockmachines.output_bus_super.desc=Вывод предметов для мультиблоков\n%s слотов\nЛКМ с флешкой, чтобы сохранить настройки фильтра\nПКМ с флешкой, чтобы загрузить настройки фильтра
 gt.blockmachines.muffler.desc=Выводит загрязнение (Может что-то вызывать...)\nНЕ ЗАГРАЖДАЙТЕ ВЫХОД!\nУменьшает загрязнение до %s%%
 gt.blockmachines.boiler.solar.desc=Энергия пара от солнца\nПроизводит %sЛ пара в секунду\nС течением времени снижает выход пара до %sЛ/с из за кальцификации\nДемонтируйте и поставьте снова для удаления накипи
-gt.blockmachines.fluidpipe.capacity.desc=Вместимость: %s/с
+gt.blockmachines.fluidpipe.capacity.desc=§9Пропускает: %s Л/сек§7
 gt.blockmachines.fluidpipe.heat.desc=§cПредел температуры: %s K§7
 gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Не умею обращаться с газом§7
 gt.blockmachines.fluidpipe.pipe_amount.desc=§bКоличество труб: %s§7
-gt.blockmachines.itempipe.capacity.persecond.singular=Пропускная способность: %s стак/s
-gt.blockmachines.itempipe.capacity.second.singular=Пропускная способность: %s стак/s
-gt.blockmachines.itempipe.capacity.tick.singular=Пропускная способность: %s стак/t
-gt.blockmachines.itempipe.capacity.second=Пропускная способность: %s стак(ов)/s
-gt.blockmachines.itempipe.capacity.persecond=Пропускная способность: %s стак(ов)/s
-gt.blockmachines.itempipe.capacity.tick=Пропускная способность: %s стак(ов)/t
+gt.blockmachines.itempipe.capacity.second=Пропускная способность: %s стак(ов)/%s сек
+gt.blockmachines.itempipe.capacity.persecond=Пропускная способность: %s стак(ов)/сек
+gt.blockmachines.itempipe.capacity.tick=Пропускная способность: %s стак(ов)/%s тик
 gt.blockmachines.itempipe.rounting_value=Значение маршрутизации: %s
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Диапазон поглощения: %s блоков
@@ -4312,7 +4309,7 @@ GT5U.item.cable.multi.success=Обнаружено %d кабелей, подкл
 
 GT5U.item.tank.locked_to=Содержимое заблокировано на §e%s
 
-GT5U.item.pipe.capacity=Вместимость жидкости: %s
+GT5U.item.pipe.capacity=Ёмкость
 GT5U.item.pipe.heat_resistance=Жаростойкость
 GT5U.item.pipe.gas_proof=Газонепроницаемость
 GT5U.item.pipe.gas_proof.yes=Да
@@ -6991,61 +6988,63 @@ gt.blockmachines.magical.maintenance.desc.1=Расходует §b25 §7перв
 gt.blockmachines.magical.maintenance.desc.2=§eAer§7, §aTerra§7, §cIgnis§7, §9Aqua§7, §fOrdo§7, §8Perditio
 
 # Exo-Foundry
-gt.blockmachines.multimachine.foundry.tier=%s §7Тир
 gt.blockmachines.multimachine.foundry.basemodule=При использовании в экзо-литейной:
 gt.blockmachines.multimachine.foundry.modulelimit=- Не более §f1 §7на §6литейную
+gt.blockmachines.multimachine.foundry.tier=- Тир: %s
 gt.blockmachines.multimachine.foundry.chassis1.flavor=Сломай бесконечность
 gt.blockmachines.multimachine.foundry.chassis2.flavor=Стань вечным
 gt.blockmachines.multimachine.foundry.chassis3.flavor=Вознесись над реальностью
 
 gt.blockmachines.multimachine.foundry.universalcollapser.flavor=Расколотая вселенная
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- §a400%%§7 скорости
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- §b400%%§7 потребления ЕС
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- §6-15 §7места для люков
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Позволяет обрабатывать рецепты §1§nUIV+§7
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=- §a200%%§7 скорости и §b200%%§7 потребления ЕС в паре с модулем §bHypercooler§7
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- Умножает скорость на %s4x
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- Умножает расход EU на §c4x
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- Уменьшает число мест под шлюзы на §615
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Дополнительно позволяет обрабатывать рецепты §1§nUIV+§7
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=- Умножает скорость дополнительно на %s2x§7, а расход EU дополнительно на §c2x§7 в
 
-gt.blockmachines.multimachine.foundry.efficientoc.flavor=Оптимизированные разгоны
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- §d+0.4 §7коэф. разгона, давая §a+40%%§7 скорости
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- §d+0.1 §7коэф. разгона в паре с модулем §aProto-Volt Stabilizer§7
+gt.blockmachines.multimachine.foundry.efficientoc.flavor=Оптимизированный разгон
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Повышает множитель разгона на §d0.4
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- То есть каждый разгон даёт дополнительно %s40%%§7 скорости
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip3=- Повышает множитель разгона дополнительно на §d0.1§7 в
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   паре с модулем §aПрото-вольтовый стабилизатор§7
 
 gt.blockmachines.multimachine.foundry.powerefficient.flavor=Стабильный ток
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- §b90%%§7 потребления ЕС
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- §b0.8x §7стоимости ЕС за §fмодуль§7 (мультипликативно)
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- §b0.5x §7стоимости ЕС в паре с модулем §3Sentient Overclocker§7
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- Убирает %s10%%§7 от начальной стоимости EU
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- Умножает стоимость EU на %s0.8x
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- Убирает дополнительно %s50%%§7 от начальной стоимости EU в
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   паре с модулем §3Разумный разгонщик§7
 
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Поднятая граница
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Позволяет обрабатывать рецепты §1§nUIV+§7
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Даёт дополнительные эффекты в паре как минимум с 2 другими модулями §dHeliocast Reinforcement§7
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- Случайно изменяет значения обработки на коэффициент Энтропии, который бросается отдельно для каждого значения
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=- Энтропия бросается от 0 до числа присутствующих §dмодулей Heliocast Reinforcement§7 (включительно)
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=§f3+ модуля:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §a100%% * Энтропия§7 базовой скорости
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=- §b-15%% * Энтропия§7 базовой стоимости §bЕС§7
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=- §6+8 * Энтропия§7 параллелей за §fтир напряжения§7
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §d+0.05 * Энтропия§7 коэф. разгона
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=§f4 модуля:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11=- Увеличивает §5максимум разгонов§7 на Энтропию
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Даёт дополнительные эффекты в паре как минимум с 2 другими модулями §dГелиолитейное усиление§7
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- Случайно увеличивает параметры обработки на множитель энтропии, который бросается для каждого параметра отдельно
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=- Энтропия выпадает в диапазоне от 0 до числа установленных модулей §dГелиолитейное усиление§7 включительно
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=- §f3 и более модулей:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=   - Повышает базовую скорость на %s100%% * энтропия
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Убирает %s15%% * энтропия§7 от начальной стоимости EU
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Добавляет %s8 * энтропия§7 параллелей за каждый тир %sвольтажа§7
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=   - Повышает множитель разгона на §d0.05 * энтропия
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=- §f4 модуля:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11=   - Увеличивает максимальное число разгонов на величину энтропии
 
-gt.blockmachines.multimachine.foundry.parallel.flavor=Великая судьба
-gt.blockmachines.multimachine.foundry.parallel.tooltip1=- §612 §7параллелей за %s §7тир
-gt.blockmachines.multimachine.foundry.parallel.tooltip2=- §6+8 §7параллелей за %s §7тир в паре с модулем §cStreamlined Casting§7
-gt.blockmachines.multimachine.foundry.parallel.tooltip3=- §6+36 §7места для люков
+gt.blockmachines.multimachine.foundry.parallel.flavor=Высшая судьба
+gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Добавляет §612 §7параллелей за каждый тир %s§7
+gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Увеличивает число мест под шлюзы на §636
+gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Добавляет ещё §68 §7параллелей за каждый тир %s§7 в
+gt.blockmachines.multimachine.foundry.parallel.tooltip4=   паре с модулем §cПотоковое литьё§7
 
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Укрощённая ярость
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Расходует §bохлаждающую жидкость§7 ради §dдополнительных разгонов
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Тратит §3%s§7/§5%s§7 %s §3%s§7/§5%s§7 ради §31§7/§52§7 §dк максимуму разгонов
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Тратит §bохлаждающую жидкость§7 только когда §6литейная§7 работает
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Расходует §bохлаждающую жидкость §7ради §dдополнительных разгонов
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Тратит %s Л/сек %s, чтобы получить %s к максимуму разгонов
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Тратит §bохлаждающую жидкость §7только когда §6литейная §7работает
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Нужен входной шлюз на любом криогенном корпусе, откуда брать жидкость!
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Может использовать §aвечность§7 по §a%s§7 ради §a3§7 к максимуму разгонов в
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Может использовать §aвечность §7по §a25 §7Л/сек ради §a3 §7к максимуму разгонов в
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   паре с модулем §5Универсальный коллапсер§7
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.super_coolant=§3Суперхладагент
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.spacetime=§5Пространство-время
 
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Время ведьм!
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- §a150%%§7 скорости
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- §a+80%%§7 скорости в паре с модулем §eСверхплотная литейная ванна§7
-
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Повышает базовую скорость на %s150%%
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Повышает базовую скорость дополнительно на %s80%% в
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   паре с модулем §eСверхплотные литейные ванны§7
 # Exo-Foundry GUI
 GT5U.gui.text.foundry.modules.preview=Показаны предварительные модули
 GT5U.gui.text.foundry.modules.installed=Отображение установленных модулей
