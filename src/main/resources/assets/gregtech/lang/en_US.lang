@@ -7525,66 +7525,60 @@ gt.blockmachines.magical.maintenance.desc.1=Consumes §b25 §7Primal Vis of each
 gt.blockmachines.magical.maintenance.desc.2=§eAer§7, §aTerra§7, §cIgnis§7, §9Aqua§7, §fOrdo§7, §8Perditio
 
 # Exo-Foundry
+gt.blockmachines.multimachine.foundry.tier=%s §7Tier
 gt.blockmachines.multimachine.foundry.basemodule=When used in the Exo-Foundry:
 gt.blockmachines.multimachine.foundry.modulelimit=- Limit of §f1 §7per §6Foundry
-gt.blockmachines.multimachine.foundry.tier=- Tier: %s
 gt.blockmachines.multimachine.foundry.chassis1.flavor=Break Infinity
 gt.blockmachines.multimachine.foundry.chassis2.flavor=Become Eternal
 gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
 
 gt.blockmachines.multimachine.foundry.universalcollapser.flavor=Fractured Universe
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- Multiplies Speed by %s4x
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- Multiplies EU Consumption by §c4x
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- Reduces Hatch Space by §615
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Additionally allows for §1§nUIV+§7 Recipes to be processed
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip6=   paired with the §bHypercooler§7 module
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- §a400%%§7 Speed
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- §b400%%§7 EU Usage
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- §6-15 §7Hatch Space
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Allows §1§nUIV+§7 Recipes to be processed
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=- §a200%%§7 Speed and §b200%%§7 EU Usage when paired with the §bHypercooler§7 module
 
 gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.4
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- This means that each overclock provides an additional %s40%%§7 speed
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip3=- Increases Overclock Factor by an additional §d0.1§7 when
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   paired with the §aProto-Volt Stabilizer§7 module
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- §d+0.4 §7Overclock Factor, providing §a+40%%§7 Speed
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- §d+0.1 §7Overclock Factor when paired with the §aProto-Volt Stabilizer§7 module
 
 gt.blockmachines.multimachine.foundry.powerefficient.flavor=Stable Current
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- Subtracts %s10%%§7 from Initial EU Cost
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- Multiplies EU cost by %s0.8x
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- Subtracts an additional %s50%%§7 from Initial EU Cost when
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the §3Sentient Overclocker§7 module
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- §b90%%§7 EU Usage
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- §b0.8x §7EU Cost per §fModule§7 (multiplicative)
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- §b0.5x §7EU Cost when paired with the §3Sentient Overclocker§7 module
 
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Raised Boundary
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §1§nUIV+§7 Recipes to be processed
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows §1§nUIV+§7 Recipes to be processed
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants extra effects when paired with at least 2 other §dHeliocast Reinforcement§7 modules
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- Randomly increases processing values by a factor of Entropy which is rolled independently per value
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=- Entropy is rolled between 0 and the number of §dHeliocast Reinforcement§7 Modules present (inclusive)
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=- §f3+ Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=   - Increases Base Speed by %s100%% * Entropy
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Subtracts %s15%% * Entropy§7 from Initial EU Cost
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Adds %s8 * Entropy§7 Parallels per %sVoltage§7 Tier
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=   - Increases Overclock Factor by §d0.05 * Entropy
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=- §f4 Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11=   - Increases Maximum Overclocks by Entropy
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- Randomly increases processing values by a factor of Entropy, rolled independently per value
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=- Entropy is rolled between 0 and the number of §dHeliocast Reinforcement Modules§7 present (inclusive)
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=§f3+ Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §a100%% * Entropy§7 Speed
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=- §b-15%% * Entropy§7 EU Cost
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=- §6+8 * Entropy§7 Parallels per §fVoltage§7 Tier
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §d+0.05 * Entropy§7 Overclock Factor
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=§f4 Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11=- Increases §5Maximum Overclocks§7 by Entropy
 
 gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
-gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7Tier
-gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
-gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §68 §7Parallels per %s §7Tier when
-gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casting §7module
+gt.blockmachines.multimachine.foundry.parallel.tooltip1=- §612 §7Parallels per %s §7Tier
+gt.blockmachines.multimachine.foundry.parallel.tooltip2=- §6+8 §7Parallels per %s §7Tier when paired with the §cStreamlined Casting §7module
+gt.blockmachines.multimachine.foundry.parallel.tooltip3=- §6+36 §7Hatch Space
 
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid §7for §dExtra Overclocks
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Drains %s L/s of %s to gain %s Maximum Overclocks
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bcooling fluid §7when the §6Foundry §7is active
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Cryogenic Casing to drain from!
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §a25 §7L/s to gain §a3 §7Maximum Overclocks when
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Universal Collapser §7module
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid§7 for §dExtra Overclocks
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Drains §3%s§7/§5%s§7 %s of §3%s§7/§5%s§7 to gain §31§7/§52§7 §dMaximum Overclocks
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bCooling Fluid§7 when the §6Foundry§7 is active
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- Requires an Input Hatch on any Cryogenic Casing to drain from!
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity§7 at §a%s§7 to gain §a3§7 Maximum Overclocks when
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Universal Collapser§7 module
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.super_coolant=Super Coolant
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip2.spacetime=Spacetime
 
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s80%% when
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eSuperdense Casting Basins §7module
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- §a150%%§7 Speed
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- §a+80%%§7 Speed when paired with the §eSuperdense Casting Basin §7module
 # Exo-Foundry GUI
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
 GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
