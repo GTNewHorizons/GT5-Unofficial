@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -24,18 +23,23 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import goodgenerator.items.GGMaterial;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -55,6 +59,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEPurificationUnitUVTreatment>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -212,72 +217,39 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit, LPU");
-        tt.addInfo(
-            EnumChatFormatting.AQUA + ""
-                + EnumChatFormatting.BOLD
-                + "Water Tier: "
-                + EnumChatFormatting.WHITE
-                + formatNumber(getWaterTier())
-                + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work")
-            .addSeparator()
-            .addInfo("During operation, swap the lens in the " + EnumChatFormatting.WHITE + "Lens Housing")
-            .addInfo(
-                "The multiblock will output a signal through the " + EnumChatFormatting.WHITE + "Lens Indicator Hatch")
-            .addInfo("when the current lens must be swapped")
-            .addInfo(
-                "Lens swaps will be requested in random intervals of " + EnumChatFormatting.RED
-                    + (MIN_TIME_BETWEEN_SWAPS / SECONDS)
-                    + " to "
-                    + (MAX_TIME_BETWEEN_SWAPS / SECONDS)
-                    + "s")
-            .addSeparator()
-            .addInfo(
-                "Success chance is boosted by " + EnumChatFormatting.RED
-                    + SUCCESS_PER_LENS
-                    + "% "
-                    + EnumChatFormatting.GRAY
-                    + "for each successful swap performed.")
-            .addInfo("Removing a lens too early will fail the recipe")
-            .addInfo("Find the order of lenses in the recipe in NEI,")
-            .addInfo("or use a portable scanner to view the currently requested lens")
-            .addInfo("The recipe always starts at the Orundum Lens")
-            .addSeparator()
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "The sixth step of water purification involves identifying any remaining negatively charged ions within")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "the water which may cause electrical faults in future wafer manufacturing. Bombarding the water with varying")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "wavelengths of photon beams will impart energy into outer-shell electrons, causing them to detach from the")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_uv_treatment"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "purification-unit-uv-treatment"),
+                ImmutableMap.<String, Object>builder()
+                    .put("tier", getWaterTier())
+                    .put("housing", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"))
+                    .put("indicator", StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"))
+                    .put("min_swap", (float) MIN_TIME_BETWEEN_SWAPS / SECONDS)
+                    .put("max_swap", (float) MAX_TIME_BETWEEN_SWAPS / SECONDS)
+                    .put("success", SUCCESS_PER_LENS)
+                    .put(
+                        "first_lens",
+                        GGMaterial.orundum.get(OrePrefixes.lens, 1)
+                            .getDisplayName())
+                    .build())
             .beginStructureBlock(13, 9, 9, true)
-            .addController("Front bottom center")
-            .addCasing("144-153", "Naquadria-Reinforced Water Plant Casing", false)
-            .addCasing("144", "Electron-Permeable Neutronium Coated Glass", false)
-            .addCasing("56", "Stellar Alloy Frame Box", false)
-            .addCasing("29", "High Energy Ultraviolet Emitter Casing", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("144-153", Casings.NaquadriaReinforcedWaterPlantCasing.getLocalizedName(), false)
+            .addCasing("144", Casings.ElectronPermeableNeutroniumCoatedGlass.getLocalizedName(), false)
+            .addCasing("56", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StellarAlloy), false)
+            .addCasing("29", Casings.HighEnergyUltravioletEmitterCasing.getLocalizedName(), false)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"),
-                "Top center casing",
+                StatCollector.translateToLocal("gt.mbtt.structure.top_center_casing"),
                 2)
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"),
-                "Top back casing",
+                StatCollector.translateToLocal("gt.mbtt.structure.top_back_casing"),
                 3)
-            .addInputHatch("1+", "Any bottom side casing", 1)
-            .addOutputHatch("1+", "Any bottom side casing", 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_side_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();

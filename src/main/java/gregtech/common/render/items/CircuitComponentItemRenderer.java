@@ -204,6 +204,8 @@ public class CircuitComponentItemRenderer implements IItemRenderer {
                     return;
                 }
             }
+            // allows for transparent PC textures
+            GL11.glEnable(GL11.GL_BLEND);
             ItemRenderUtil.renderItem(type, item.getIconIndex());
         }
     }
