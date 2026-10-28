@@ -7,11 +7,11 @@ import java.util.function.BiConsumer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.client.GuiScrollingList;
 import detrav.net.ProspectingPacket;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.util.StatCollector;
 
 class OresList extends GuiScrollingList {
 
