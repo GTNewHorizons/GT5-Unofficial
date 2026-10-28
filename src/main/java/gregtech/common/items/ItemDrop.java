@@ -152,7 +152,7 @@ public class ItemDrop extends Item {
         RecipeManagers.squeezerManager.addRecipe(
             400,
             new ItemStack[] { tDrop },
-            Materials.LiquidOxygen.getGas(100),
+            Materials.LiquidOxygen.getFluid(100),
             GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
             30);
         tDrop = getStackForType(DropType.ENDERGOO);

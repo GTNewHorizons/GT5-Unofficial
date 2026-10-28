@@ -40,7 +40,7 @@ public enum FoundryModule {
         13, foundryData -> {
             if(foundryData.universalCollapserPresent) return;
             foundryData.universalCollapserPresent = true;
-            foundryData.UIVRecipesEnabled = true;
+            foundryData.moduleOnlyRecipesEnabled = true;
             foundryData.euEffMultiplier *= 4;
             foundryData.speedMultiplier *= 4;
         }
@@ -81,7 +81,7 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_HR,
         new Color(225, 45, 225),
         EnumChatFormatting.LIGHT_PURPLE,
-        11, foundryData -> foundryData.UIVRecipesEnabled = true
+        11, foundryData -> foundryData.moduleOnlyRecipesEnabled = true
     ),
     HYPERCOOLER(
         "GT5U.gui.text.foundry.modules.hc.name", "H.C", "hypercooler",

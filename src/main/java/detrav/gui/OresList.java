@@ -7,16 +7,14 @@ import java.util.function.BiConsumer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.client.GuiScrollingList;
-import detrav.items.DetravMetaGeneratedTool01;
 import detrav.net.ProspectingPacket;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 class OresList extends GuiScrollingList {
 
-    private final Object2IntOpenHashMap<String> colors = new Object2IntOpenHashMap<>();
+    private final Object2IntOpenHashMap<String> colors;
     private final List<String> allKeys; // every entry, unfiltered
     private final List<String> keys = new ArrayList<>(); // entries currently visible
     private final GuiScreen parent;
@@ -29,31 +27,10 @@ class OresList extends GuiScrollingList {
         super(parent.mc, width, height, top, bottom, left, entryHeight);
         this.parent = parent;
         this.onSelected = onSelected;
-        if (packet.ptype == DetravMetaGeneratedTool01.MODE_POLLUTION) {
-            allKeys = new ArrayList<>();
-            allKeys.add(StatCollector.translateToLocal("gui.detrav.scanner.pollution"));
-        } else {
-            allKeys = packet.objects.short2ObjectEntrySet()
-                .stream()
-                .map(
-                    e -> e.getValue()
-                        .left())
-                .sorted()
-                .toList();
-        }
-        if (allKeys.size() > 1) {
-            keys.addFirst("All");
-        }
+        allKeys = packet.getAllKeys();
         keys.addAll(allKeys);
-        selectedName = keys.isEmpty() ? null : keys.getFirst();
-
-        for (var e : packet.objects.short2ObjectEntrySet()) {
-            this.colors.put(
-                e.getValue()
-                    .left(),
-                e.getValue()
-                    .rightInt());
-        }
+        selectedName = keys.isEmpty() ? null : keys.get(0);
+        colors = packet.getColorMap();
     }
 
     /** Rebuilds the visible list from the search query. Selection (by name) is preserved. */

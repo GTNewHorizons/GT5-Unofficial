@@ -63,6 +63,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     protected final SoundResource mSoundResource;
     protected FallbackableUITexture progressBarTexture;
     protected int recipeCatalystPriority;
+    private boolean deprecated;
     private int mMachineEUtMultiplier = 1;
 
     /**
@@ -299,7 +300,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             this.mSoundResource,
             this.mSpecialEffect).setProgressBarTexture(this.progressBarTexture)
                 .setMachineEUtMultiplier(this.mMachineEUtMultiplier)
-                .setRecipeCatalystPriority(this.recipeCatalystPriority);
+                .setRecipeCatalystPriority(this.recipeCatalystPriority)
+                .setDeprecated(this.deprecated);
     }
 
     public MTEBasicMachineWithRecipe setProgressBarTexture(FallbackableUITexture progressBarTexture) {
@@ -493,6 +495,16 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     public MTEBasicMachineWithRecipe setRecipeCatalystPriority(int recipeCatalystPriority) {
         this.recipeCatalystPriority = recipeCatalystPriority;
+        return this;
+    }
+
+    @Override
+    public boolean isDeprecated() {
+        return deprecated;
+    }
+
+    public MTEBasicMachineWithRecipe setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
         return this;
     }
 

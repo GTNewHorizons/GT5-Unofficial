@@ -22,7 +22,7 @@ public class CCNEIRepresentation {
             // Circuits
             if (cc.circuitType != CircuitCalibration.NONE) {
                 ItemStack ccItem = cc.getFakeStack(1);
-                // for circuit type ccs that can NOT be taken out of the NAC e.g., Primed Unattuned Circuitry
+                // for circuit type ccs that CANNOT be taken out of the NAC e.g., Primed Unattuned Circuitry
                 if (cc.realComponent == null) continue;
 
                 ItemStack realItem = cc.realComponent.get();

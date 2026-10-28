@@ -1,8 +1,6 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
-import static gregtech.api.enums.GTAuthors.Authorguid118;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -78,7 +76,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivalBuildPiece(STRUCTURE_PIECE_BIO_CHAMBER, stackSize, 2, 6, 0, elementBudget, env, true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_BIO_CHAMBER, stackSize, 2, 6, 0, elementBudget, env, true, true);
         if (built == -1) {
             GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done");
             return 0;
@@ -115,7 +113,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
             .addStructureFooter("Does not require maintenance or power")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.PCB"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(AuthorBlueWeabo, Authorguid118);
+            .toolTipFinisher();
         return tt;
     }
 

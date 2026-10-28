@@ -53,7 +53,6 @@ public class NEIPluginConfig implements IConfigureNEI {
             ItemList.OilDrill2,
             ItemList.OilDrill3,
             ItemList.OilDrill4,
-            ItemList.OilDrillInfinite,
             ItemList.InfiniteFluidDrillingRig);
         for (ItemList catalyst : catalysts) {
             API.addRecipeCatalyst(catalyst.get(1), pluginGT5UndergroundFluid);

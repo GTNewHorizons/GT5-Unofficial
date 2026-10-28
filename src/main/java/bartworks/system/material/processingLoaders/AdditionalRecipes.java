@@ -413,7 +413,7 @@ public class AdditionalRecipes {
                 Materials.Nitrogen.getGas(78_084_000),
                 Materials.Oxygen.getGas(20_946_000),
                 Materials.Argon.getGas(934_000),
-                Materials.CarbonDioxide.getGas(40_700),
+                Materials.CarbonDioxide.getGas(43_234),
                 WerkstoffLoader.Neon.getFluidOrGas(1_818),
                 Materials.Helium.getGas(524),
                 Materials.Methane.getGas(180),

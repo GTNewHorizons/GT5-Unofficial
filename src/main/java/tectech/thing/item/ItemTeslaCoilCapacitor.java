@@ -18,7 +18,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import tectech.Reference;
 import tectech.thing.CustomItemList;
-import tectech.util.CommonValues;
 
 public final class ItemTeslaCoilCapacitor extends Item {
 
@@ -33,7 +32,6 @@ public final class ItemTeslaCoilCapacitor extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
-        aList.add(CommonValues.THETA_MOVEMENT);
         if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 6) {
             aList.add(
                 translateToLocal("item.tm.teslaCoilCapacitor.desc.0") + " "

@@ -123,19 +123,19 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         String getEnableKey();
 
         String getDisableKey();
+
+        long getDefaultCapacity();
     }
 
     private final Environment<T> env;
     protected AENetworkProxy proxy;
     protected final AECacheCounter<T> cache = new AECacheCounter<>();
-    public static long DEFAULT_CAPACITY;
     protected long baseCapacity;
     protected long cacheCapacity;
 
-    public MTEHatchOutputMEBase(Environment<T> env, final long baseCapacity) {
+    public MTEHatchOutputMEBase(Environment<T> env) {
         this.env = env;
-        DEFAULT_CAPACITY = baseCapacity;
-        this.baseCapacity = baseCapacity;
+        this.baseCapacity = env.getDefaultCapacity();
         updateState();
     }
 
@@ -503,7 +503,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     }
 
     public void setItemNBT(NBTTagCompound aNBT) {
-        if (baseCapacity != DEFAULT_CAPACITY) aNBT.setLong("baseCapacity", baseCapacity);
+        if (baseCapacity != env.getDefaultCapacity()) aNBT.setLong("baseCapacity", baseCapacity);
     }
 
     public void flushCachedStack() {
@@ -675,7 +675,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
-        if (baseCapacity == 0) baseCapacity = DEFAULT_CAPACITY;
+        if (baseCapacity == 0) baseCapacity = env.getDefaultCapacity();
         cacheMode = aNBT.getBoolean("cacheMode");
         checkMode = aNBT.getBoolean("checkMode");
         myPriority = aNBT.getInteger("myPriority");

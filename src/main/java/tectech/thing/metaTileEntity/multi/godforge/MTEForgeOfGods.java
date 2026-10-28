@@ -838,7 +838,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addStructureInfo(EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.third-ring") + EnumChatFormatting.AQUA + " (T3)")
             .addCasing("3728", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)
             .addCasing("1736", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
-            .addCasing("397", CentralGravitonFlowModulator.getLocalizedName(), false)
+            .addCasing("395", CentralGravitonFlowModulator.getLocalizedName(), false)
             .addCasing("312", CelestialMatterGuidanceCasing.getLocalizedName(), false)
             .addCasing("101", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
             .addCasing("14", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)

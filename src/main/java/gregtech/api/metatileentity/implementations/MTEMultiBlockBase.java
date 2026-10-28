@@ -22,6 +22,7 @@ import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -156,6 +157,7 @@ import gregtech.common.tileentities.machines.multi.drone.production.ProductionRe
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
@@ -563,6 +565,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         debugEnergyPresent = false;
     }
 
+    /**
+     * Drops this multiblock's AE2 crafting icon from hatches kept outside {@link #mSmartInputHatches}, for a
+     * {@link #clearHatches()} override to call on its own lists before clearing them.
+     */
+    protected void clearCraftingIcons(Collection<? extends MTEHatch> hatches) {
+        for (MTEHatch hatch : hatches) {
+            hatch.updateCraftingIcon(null, getBaseMetaTileEntity());
+        }
+    }
+
     public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
         if (!aBaseMetaTileEntity.isServerSide()) return mMachine;
         // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
@@ -661,9 +673,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 deactivateCoilLease();
             }
 
-            if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
-                coilLease = GTCoilTracker.activate(this, mCoils);
+            if (mMachine && isActive) {
+                tryActivateCoilLease();
             }
+        }
+    }
+
+    // method to hook into for non-coil coilLeases.
+    protected void tryActivateCoilLease() {
+        if (!mCoils.isEmpty() && coilLease == null) {
+            coilLease = GTCoilTracker.activate(this, mCoils);
         }
     }
 
@@ -719,7 +738,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * Starts checking for recipes with some operations needed to actually run the check. Overriding this without due
      * care
-     * may result in dupe of items, hence it's marked as final.
+     * may result in dupe of items; hence it's marked as final.
      * <p>
      * See {@link #createProcessingLogic()} or {@link #checkProcessing()} for what you want to override.
      *
@@ -1168,32 +1187,44 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected CheckRecipeResult doCheckRecipe() {
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
-        // check crafting input hatches first
-        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-            ItemStack[] sharedItems = dualInputHatch.getSharedItems();
-            for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                IDualInputInventory slot = it.next();
+        short craftingHatchColors = 0;
+        for (var hatch : mDualInputHatches) {
+            craftingHatchColors |= (short) (1 << ((MetaTileEntity) hatch).getColor());
+        }
+        boolean doCraftingColorChecking = craftingHatchColors != 0;
 
-                if (!slot.isEmpty()) {
-                    // try to cache the possible recipes from pattern
-                    if (slot instanceof IDualInputInventoryWithPattern withPattern) {
-                        if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
-                            // move on to next slots if it returns false, which means there are no possible recipes with
-                            // given pattern.
-                            continue;
+        // Crafting inputs are always separated: check unpainted hatches once, then colors 0-15.
+        for (byte color = -1; color < (doCraftingColorChecking ? 16 : 0); color++) {
+            if (color != -1 && isColorAbsent(craftingHatchColors, color)) continue;
+            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                byte hatchColor = ((MetaTileEntity) dualInputHatch).getColor();
+                if (hatchColor != color) continue;
+
+                ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+                for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                    IDualInputInventory slot = it.next();
+
+                    if (!slot.isEmpty()) {
+                        // try to cache the possible recipes from pattern
+                        if (slot instanceof IDualInputInventoryWithPattern withPattern) {
+                            if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
+                                // move on to next slots if it returns false, which means there are no possible recipes
+                                // with given pattern.
+                                continue;
+                            }
                         }
-                    }
 
-                    processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
-                    processingLogic.setInputFluids(slot.getFluidInputs());
+                        processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
+                        processingLogic.setInputFluids(slot.getFluidInputs());
 
-                    CheckRecipeResult foundResult = processingLogic.process();
-                    if (foundResult.wasSuccessful()) {
-                        return foundResult;
-                    }
-                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                        // Recipe failed in interesting way, so remember that and continue searching
-                        result = foundResult;
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) {
+                            return foundResult;
+                        }
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                            // Recipe failed in interesting way, so remember that and continue searching
+                            result = foundResult;
+                        }
                     }
                 }
             }
@@ -1204,7 +1235,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             return result;
         }
 
-        // Use hatch colors if any; fallback to color 1 otherwise.
+        // Use ordinary hatch colors if any; otherwise check unpainted inputs in a single pass.
         short hatchColors = getHatchColors();
         boolean doColorChecking = hatchColors != 0;
         if (!doColorChecking) hatchColors = 0b1;
@@ -1213,7 +1244,27 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (isColorAbsent(hatchColors, color)) continue;
             processingLogic.setInputFluids(getStoredFluidsForColor(Optional.of(color)));
             if (isInputSeparationEnabled()) {
-                if (mInputBusses.isEmpty()) {
+                boolean checkedBus = false;
+                for (MTEHatchInputBus bus : mInputBusses) {
+                    if (bus instanceof MTEHatchCraftingInputME) continue;
+                    byte busColor = bus.getColor();
+                    if (busColor != -1 && busColor != color) continue;
+                    checkedBus = true;
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack stored = bus.getStackInSlot(i);
+                        if (stored != null) inputItems.add(stored);
+                    }
+                    if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                        inputItems.add(getControllerSlot());
+                    }
+                    processingLogic.setInputItems(inputItems);
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) return foundResult;
+                    // Recipe failed in interesting way, so remember that and continue searching
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+                }
+                if (!checkedBus) {
                     List<ItemStack> inputItems = new ArrayList<>();
                     if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
                         inputItems.add(getControllerSlot());
@@ -1223,25 +1274,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     if (foundResult.wasSuccessful()) return foundResult;
                     // Recipe failed in interesting way, so remember that and continue searching
                     if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
-                } else {
-                    for (MTEHatchInputBus bus : mInputBusses) {
-                        if (bus instanceof MTEHatchCraftingInputME) continue;
-                        byte busColor = bus.getColor();
-                        if (busColor != -1 && busColor != color) continue;
-                        List<ItemStack> inputItems = new ArrayList<>();
-                        for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                            ItemStack stored = bus.getStackInSlot(i);
-                            if (stored != null) inputItems.add(stored);
-                        }
-                        if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
-                            inputItems.add(getControllerSlot());
-                        }
-                        processingLogic.setInputItems(inputItems);
-                        CheckRecipeResult foundResult = processingLogic.process();
-                        if (foundResult.wasSuccessful()) return foundResult;
-                        // Recipe failed in interesting way, so remember that and continue searching
-                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
-                    }
                 }
             } else {
                 List<ItemStack> inputItems = getStoredInputsForColor(Optional.of(color));
@@ -1270,7 +1302,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Builds a bitmask of all input bus and hatch colors. Each set bit in the result marks a present color index.
+     * Builds a bitmask of ordinary input bus and hatch colors, including steam inputs.
      *
      * @return bitmask of used color indices.
      */
@@ -1922,6 +1954,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             setHatchRecipeMap(tHatch);
             switch (tHatch) {
+                case MTEHatchSolidifier ignored -> {}
                 case MTEHatchMultiInput multiInputHatch -> {
                     for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
                         if (tFluid != null) {
@@ -2733,12 +2766,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
             }
         }
-        currentTip.add(
-            GTWaila.getMachineProgressString(
-                isActive,
-                tag.getBoolean("isAllowedToWork"),
-                tag.getInteger("maxProgress"),
-                tag.getInteger("progress")));
+        // disables progress time display if recipe text is hidden
+        if (this.showRecipeTextInGUI()) {
+            currentTip.add(
+                GTWaila.getMachineProgressString(
+                    isActive,
+                    tag.getBoolean("isAllowedToWork"),
+                    tag.getInteger("maxProgress"),
+                    tag.getInteger("progress")));
+        }
         // Show ns on the tooltip
         if (GTMod.proxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
@@ -3240,8 +3276,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * This method should be used as a supplier to ProcessingLogic, not getMaxParallelRecipes()
      *
      * @return Gets the real parallel count based on the maximum and the limit imposed in the power panel. Always
-     *         returns at
-     *         least 1.
+     *         returns at least 1.
      */
     public final int getTrueParallel() {
         return Math.max(
@@ -3807,6 +3842,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .setTextAlignment(Alignment.CenterLeft));
         }
 
+        //TODO: remove before merge
         assert getBaseMetaTileEntity() != null;
 
         screenElements

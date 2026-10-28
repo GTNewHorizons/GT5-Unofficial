@@ -14,7 +14,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -218,10 +217,12 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     /**
-     * Sets the icon for the owning multiblock used for AE2 crafting display of attached interfaces, called on add to
-     * machine list.
+     * @deprecated use {@link #updateCraftingIcon(ItemStack, IGregTechTileEntity)}, this one stays for addons built
+     *             against older GregTech.
      */
+    @Deprecated
     public final void updateCraftingIcon(ItemStack icon) {
+        // The icon gets no owner, so clearHatches never drops it.
         updateCraftingIcon(icon, null);
     }
 
@@ -299,16 +300,11 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, String key, Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, key, formatted);
+        return MTEHatch.formatEnergyInfoDesc(null, isDynamo, tier, amp, key, formatted);
     }
 
     public static String[] formatEnergyInfoDesc(String suffixTooltip, boolean isDynamo, int tier, int amp, String key,
         Object... formatted) {
-        return MTEHatch.formatEnergyInfoDesc(null, suffixTooltip, isDynamo, tier, amp, key, formatted);
-    }
-
-    public static String[] formatEnergyInfoDesc(String[] author, String suffixTooltip, boolean isDynamo, int tier,
-        int amp, String key, Object... formatted) {
         final List<String> additionalTooltips = new LinkedList<>();
         if (suffixTooltip != null) {
             Collections.addAll(additionalTooltips, suffixTooltip);
@@ -321,9 +317,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
                 TooltipHelper.voltageText(GTValues.V[tier])));
         additionalTooltips
             .add(StatCollector.translateToLocalFormatted("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
-        if (author != null) {
-            additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
-        }
         final String[] suffixes = additionalTooltips.toArray(new String[0]);
         if (formatted.length == 0) {
             return GTSplit.splitLocalizedWithSuffix(key, suffixes);

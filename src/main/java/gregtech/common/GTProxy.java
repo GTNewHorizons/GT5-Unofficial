@@ -962,6 +962,7 @@ public class GTProxy implements IFuelHandler {
 
         VacuumFactoryGrid.onServerClosed();
         BECFactoryGrid.onServerClosed();
+        WirelessDataStore.onServerClosed();
     }
 
     /**
