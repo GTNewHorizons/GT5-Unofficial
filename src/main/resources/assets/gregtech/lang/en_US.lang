@@ -4742,8 +4742,8 @@ gt.behaviour.paintspray.infinite.gui.apply.tooltip=Use this exact color. GT pipe
 gt.behaviour.paintspray.infinite.gui.save=Save
 gt.behaviour.paintspray.infinite.gui.save.tooltip=Add the typed color (or the current color, if the field is empty) to favorites
 gt.behaviour.paintspray.infinite.gui.favorites=Favorites:
-gt.behaviour.paintspray.infinite.gui.favorite_hint=§7Right-click to add to or remove from favorites
-gt.behaviour.paintspray.infinite.gui.favorite_use=§7Left-click to use, right-click to remove
+gt.behaviour.paintspray.infinite.gui.favorite_hint=Right-click to add to or remove from favorites
+gt.behaviour.paintspray.infinite.gui.favorite_use=Left-click to use, right-click to remove
 gt.behaviour.paintspray.infinite.gui.custom=%s (connects as %s)
 gt.behaviour.paintspray.infinite.gui.connects_as=Connects as: %s
 
